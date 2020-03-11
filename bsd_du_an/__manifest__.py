@@ -14,6 +14,7 @@
         'security/bsd_security.xml',
         'views/bsd_du_an_views.xml',
         'views/bsd_toa_nha_views.xml',
+        'views/bsd_tang_views.xml',
         'views/bsd_menu_item_views.xml'
     ],
     'application': True,

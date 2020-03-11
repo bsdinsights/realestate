@@ -18,6 +18,11 @@
               sequence="11"
               action="bsd_toa_nha_action"
               parent="bsd_du_an_menu"/>
+    <menuitem id="bsd_tang_menu_action"
+              name="Tầng"
+              sequence="12"
+              action="bsd_tang_action"
+              parent="bsd_du_an_menu"/>
 
     <record id="bsd_du_an.bsd_main_du_an_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
