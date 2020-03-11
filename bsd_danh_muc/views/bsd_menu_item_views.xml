@@ -23,6 +23,11 @@
               sequence="12"
               action="bsd_quan_huyen_action"
               parent="bsd_danh_muc_menu"/>
+    <menuitem id="bsd_phuong_xa_menu_action"
+              name="Phường xã"
+              sequence="13"
+              action="bsd_phuong_xa_action"
+              parent="bsd_danh_muc_menu"/>
 
     <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
