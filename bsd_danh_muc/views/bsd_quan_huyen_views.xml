@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_quan_huyen_form">
+        <field name="name">bsd.quan_huyen.form</field>
+        <field name="model">bsd.quan_huyen</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_quoc_gia_id"/>
+                            <field name="bsd_tinh_thanh_id" domain="[('bsd_quoc_gia_id', 'in',[bsd_quoc_gia_id])]"/>
+                            <field name="bsd_ma"/>
+                            <field name="bsd_ten"/>
+                        </group>
+                        <group>
+                            <field name="bsd_dien_giai"/>
+                            <field name="bsd_trang_thai"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_quan_huyen_tree">
+        <field name="name">bsd.quan_huyen.tree</field>
+        <field name="model">bsd.quan_huyen</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_quoc_gia_id"/>
+                <field name="bsd_tinh_thanh_id"/>
+                <field name="bsd_ma"/>
+                <field name="bsd_ten"/>
+                <field name="bsd_dien_giai"/>
+                <field name="bsd_trang_thai"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_quan_huyen_action">
+        <field name="name">Quận huyện</field>
+        <field name="res_model">bsd.quan_huyen</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo thông tin quận huyện</p>
+        </field>
+    </record>
+</odoo>

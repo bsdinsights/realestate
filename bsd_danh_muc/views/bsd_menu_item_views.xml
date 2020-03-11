@@ -15,8 +15,13 @@
               parent="bsd_danh_muc_menu"/>
     <menuitem id="bsd_tinh_thanh_menu_action"
               name="Tỉnh thành"
-              sequence="10"
+              sequence="11"
               action="bsd_tinh_thanh_action"
+              parent="bsd_danh_muc_menu"/>
+    <menuitem id="bsd_quan_huyen_menu_action"
+              name="Quận huyện"
+              sequence="12"
+              action="bsd_quan_huyen_action"
               parent="bsd_danh_muc_menu"/>
 
     <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">
