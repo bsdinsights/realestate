@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!--Top menu-->
+    <menuitem id="bsd_main_du_an_root" name="Dự án"/>
+
+    <!--Unit menu-->
+    <menuitem id="bsd_du_an_menu_action"
+              name="Dự án"
+              sequence="10"
+              action="bsd_du_an_action"
+              parent="bsd_main_du_an_root"/>
+
+    <record id="bsd_du_an.bsd_main_du_an_root" model="ir.ui.menu">
+        <field name="action" eval="False"/>
+        <field name="active" eval="True"/>
+        <field name="groups_id" eval="[(6, 0, [])]"/>
+        <field name="name">Dự án</field>
+        <field name="parent_id" eval="False"/>
+        <field name="sequence">10</field>
+        <field name="web_icon">fa fa-building-o,#FFFFFF,#04B45F</field>
+    </record>
+</odoo>
