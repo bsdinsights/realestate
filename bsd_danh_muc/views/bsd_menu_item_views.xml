@@ -13,6 +13,11 @@
               sequence="10"
               action="bsd_quoc_gia_action"
               parent="bsd_danh_muc_menu"/>
+    <menuitem id="bsd_tinh_thanh_menu_action"
+              name="Tỉnh thành"
+              sequence="10"
+              action="bsd_tinh_thanh_action"
+              parent="bsd_danh_muc_menu"/>
 
     <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
