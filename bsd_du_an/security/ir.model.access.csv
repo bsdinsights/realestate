@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 bsd_du_an_manager,Quản lý thông tin dự án,model_bsd_du_an,bsd_du_an.group_manager,1,1,1,1
+bsd_toa_nha_manager,Quản lý thông tin tòa nhà,model_bsd_toa_nha,bsd_du_an.group_manager,1,1,1,1

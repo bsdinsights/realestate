@@ -3,12 +3,21 @@
     <!--Top menu-->
     <menuitem id="bsd_main_du_an_root" name="Dự án"/>
 
-    <!--Unit menu-->
+    <!--Dự án menu-->
+    <menuitem id="bsd_du_an_menu"
+              name="Dự án"
+              sequence="10"
+              parent="bsd_main_du_an_root"/>
     <menuitem id="bsd_du_an_menu_action"
               name="Dự án"
               sequence="10"
               action="bsd_du_an_action"
-              parent="bsd_main_du_an_root"/>
+              parent="bsd_du_an_menu"/>
+    <menuitem id="bsd_toa_nha_menu_action"
+              name="Tòa nhà"
+              sequence="11"
+              action="bsd_toa_nha_action"
+              parent="bsd_du_an_menu"/>
 
     <record id="bsd_du_an.bsd_main_du_an_root" model="ir.ui.menu">
         <field name="action" eval="False"/>

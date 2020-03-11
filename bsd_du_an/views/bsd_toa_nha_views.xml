@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_toa_nha_form">
+        <field name="name">bsd.toa_nha.form</field>
+        <field name="model">bsd.toa_nha</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_du_an_id"/>
+                            <field name="bsd_ma"/>
+                            <field name="bsd_ten"/>
+                            <field name="bsd_dia_chi"/>
+                            <field name="bsd_postal"/>
+                        </group>
+                        <group>
+                            <field name="bsd_so_thu_tu"/>
+                            <field name="bsd_so_tang"/>
+                            <field name="bsd_so_can_ho"/>
+                            <field name="bsd_dien_giai"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_toa_nha_tree">
+        <field name="name">bsd.toa_nha.tree</field>
+        <field name="model">bsd.toa_nha</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ten"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_toa_nha_action">
+        <field name="name">Tòa nhà</field>
+        <field name="res_model">bsd.toa_nha</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo thông tin tòa nhà</p>
+        </field>
+    </record>
+</odoo>
