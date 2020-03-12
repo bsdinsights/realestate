@@ -24,6 +24,12 @@
               action="bsd_tang_action"
               parent="bsd_du_an_menu"/>
 
+    <menuitem id="bsd_du_an_menu_action"
+              name="Unit"
+              sequence="11"
+              action="bsd_product_template_action"
+              parent="bsd_main_du_an_root"/>
+
     <record id="bsd_du_an.bsd_main_du_an_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
         <field name="active" eval="True"/>
