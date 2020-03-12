@@ -6,7 +6,8 @@
     'author': 'Thịnh Lưu',
     'depends': [
                 'base',
-                'mail'
+                'mail',
+                'product',
     ],
     'data': [
         'security/user_groups.xml',
@@ -15,6 +16,7 @@
         'views/bsd_du_an_views.xml',
         'views/bsd_toa_nha_views.xml',
         'views/bsd_tang_views.xml',
+        'views/bsd_product_template_views.xml',
         'views/bsd_menu_item_views.xml'
     ],
     'application': True,
