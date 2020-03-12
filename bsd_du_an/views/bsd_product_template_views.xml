@@ -5,23 +5,95 @@
         <field name="model">product.template</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button string="Ưu tiên"
+                            name="action_uu_tien"
+                            type="object"
+                            attrs="{'invisible':[('bsd_uu_tien','=','1'),('state','in',['chuan_bi','xu_ly'])]}"
+                            class="oe_highlight"/>
+                    <button string="Hủy ưu tiên"
+                            name="action_huy_uu_tien"
+                            type="object"
+                            attrs="{'invisible':[('bsd_uu_tien','=','0'),('state','in',['chuan_bi','xu_ly'])]}"
+                            class="oe_highlight"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
+                            <h2 style="margin-top:10px">Thông tin chung</h2>
                             <field name="bsd_du_an_id"/>
                             <field name="bsd_toa_nha_id"/>
                             <field name="bsd_tang_id"/>
                             <field name="bsd_so_thu_tu"/>
                             <field name="bsd_ma_can_ho"/>
-                            <field name="bsd_ma_he thong"/>
+                            <field name="name"/>
                             <field name="bsd_tien_dat_coc"/>
                             <field name="bsd_tien_giu_cho"/>
                             <field name="bsd_dien_giai"/>
+
+                            <h2 style="margin-top:10px">Diện tích</h2>
+                            <field name="bsd_dien_tich_chenh_lech"/>
+                            <field name="bsd_dien_tich_xay_dung"/>
+                            <field name="bsd_dien_tich_su_dung"/>
+                            <field name="bsd_dien_tich_thuc_te"/>
+                            <field name="bsd_dien_tich_so_hong"/>
+
+                            <h2 style="margin-top:10px">Mở bán</h2>
                             <field name="bsd_dot_mo_ban"/>
                             <field name="bsd_san_giao_dich"/>
+                            <field name="bsd_bi_thanh_ly"/>
+                            <field name="bsd_lan_thanh_ly"/>
+
+                            <h2 style="margin-top:10px">Ưu tiên</h2>
+                            <field name="bsd_uu_tien"/>
+                            <field name="bsd_nguoi_duyet_uu_tien_id"/>
+                            <field name="bsd_ngay_duyet_uu_tien"/>
+                            <field name="bsd_lan_uu_tien"/>
+                            <field name="bsd_ghi_chu_uu_tien" attrs="{'readonly':[('bsd_uu_tien','=','0')]}"/>
+                            <field name="bsd_nguoi_huy_uu_tien_id"/>
+                            <field name="bsd_ngay_huy_uu_tien"/>
+                        </group>
+                        <group>
+                            <h2 style="margin-top:10px">Phân nhóm</h2>
+                            <field name="bsd_phan_nhom_id"/>
+                            <field name="bsd_huong"/>
+                            <field name="bsd_view"/>
+                            <field name="bsd_so_phong_ngu"/>
+                            <field name="bsd_loai_bat_dong_san"/>
+                            <field name="bsd_phan_loai"/>
+                            <field name="bsd_loai_can_ho"/>
+                            <field name="bsd_ty_le_tien_coc"/>
+                            <field name="state"/>
+
+                            <h2 style="margin-top:10px">Giá bán</h2>
+                            <field name="bsd_don_gia_ban_m2"/>
+                            <field name="bsd_gia_ban"/>
+                            <field name="bsd_gia_tri_dat_m2"/>
+                            <field name="bsd_tong_gtsd_dat"/>
+                            <field name="bsd_ty_le_phi_bao_tri"/>
+                            <field name="bsd_phi_bao_tri"/>
+                            <field name="bsd_thue_suat"/>
+                            <field name="bsd_tien_thue"/>
+                            <field name="bsd_tong_gia_ban"/>
+
+                            <h2 style="margin-top:10px">Bàn giao</h2>
+                            <field name="bsd_ngay_du_kien_ban_giao"/>
+                            <field name="bsd_so_thang_dong_phi_quan_ly"/>
+                            <field name="bsd_phi_quan_ly_m2_thang"/>
+                            <field name="bsd_dieu_kien_ban_giao"/>
+                            <field name="bsd_ngay_ban_giao"/>
+                            <field name="bsd_ngay_cat_noc"/>
+                            <field name="bsd_ngay_nhan_ho_so"/>
+                            <field name="bsd_tinh_trang_vay"/>
+                            <field name="currency_id" invisible="1"/>
                         </group>
                     </group>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
             </form>
         </field>
     </record>
@@ -30,7 +102,7 @@
         <field name="model">product.template</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="bsd_so_thu_tu"/>
+                <field name="name"/>
             </tree>
         </field>
     </record>
