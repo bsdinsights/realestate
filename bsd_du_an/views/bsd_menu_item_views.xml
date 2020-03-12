@@ -24,7 +24,7 @@
               action="bsd_tang_action"
               parent="bsd_du_an_menu"/>
 
-    <menuitem id="bsd_du_an_menu_action"
+    <menuitem id="bsd_unit_menu_action"
               name="Unit"
               sequence="11"
               action="bsd_product_template_action"
