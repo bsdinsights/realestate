@@ -46,10 +46,10 @@ class BsdProject(models.Model):
                                     help="Định dạng khu, tòa nhà được sử dụng để tự động tạo mã căn hộ")
     bsd_dinh_dang_tang = fields.Char(string="Định dạng tầng", required=True,
                                      help="Định dạng tầng được sử dụng để tự động tạo mã căn hộ")
-    bsd_gia_tri_su_dung_dat = fields.Monetary(string="giá trị sử dụng đất", required=True)
+    bsd_gia_tri_su_dung_dat = fields.Monetary(string="Giá trị sử dụng đất", required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-    bsd_phi_bao_tri = fields.Float(string="Phí bảo trì(%)", required=True)
+    bsd_phi_bao_tri = fields.Float(string="Phí bảo trì (%)", required=True)
     bsd_so_thang_phi_quan_ly = fields.Integer(string="Số tháng đóng phí quản lý", required=True,
                                               help="Số tháng đóng phí quản lý trước đợt bàn giao tạm thời hoặc bàn giao chính thức")
     bsd_phi_quan_ly = fields.Monetary(string="Tiền phí quản lý", required=True,
@@ -68,7 +68,7 @@ class BsdProject(models.Model):
                                                   help="Số ngày cảnh báo sau khi tạo giữ chỗ")
     bsd_int_canh_bao_sau_dat_coc = fields.Integer(string="Cảnh báo sau đặt cọc",
                                                   help="Số ngày cảnh báo sau khi tạo đặt cọc")
-    bsd_time_quan_tam = fields.Float(string="Thời gian hiệu lực quan tâm(giờ)",
+    bsd_time_quan_tam = fields.Float(string="Thời gian hiệu lực quan tâm (giờ)",
                                            help="Số giờ hiệu lực của phiếu quan tâm bất động sản")
     bsd_so_giu_cho_NVBH = fields.Integer(string="Số giữ chỗ NVBH", required=True,
                                          help="Số lượng căn hộ tối đa mà nhân viên bán hàng được phép giữ chỗ")
@@ -76,13 +76,16 @@ class BsdProject(models.Model):
                                            help="Số lượng giữ chỗ tối đa cho mỗi căn hộ")
     bsd_so_giu_cho_theo_ngay = fields.Integer(string="Số giữ chỗ theo ngày",
                                               help="số lượng giữ chỗ tối đa trên 1 ngày")
-    bsd_so_giu_cho_NVBH_can_ho_ngay = fields.Integer(string="Số giữ chỗ NVBH/Căn hộ/ngày",
+    bsd_so_giu_cho_NVBH_can_ho_ngay = fields.Integer(string="Số giữ chỗ NVBH/căn hộ/ngày",
                                                      help="""Số lượng giữ chỗ tối đa mỗi nhân viên bán hàng được
                                                       phép giữ chỗ theo căn hộ""")
     bsd_huy_giu_cho_truoc_mo_ban = fields.Integer(string="Hủy giữ chỗ trước mở bán",
                                                       help="Hủy giữ chỗ trước khi căn hộ được mở bán", required=True)
     bsd_hour_huy_giu_cho_sau_mo_ban = fields.Float(string="Hủy giữ chỗ sau mở bán(giờ)",
                                                    help="Số giờ giữ chỗ sau khi căn hộ được mở bán", required=True)
+    bsd_trang_thai = fields.Selection([('active', 'Đang sử dụng'),
+                                       ('inactive', 'Ngưng sử dụng')],
+                                      string="Trạng thái", default='active')
 
     @api.constrains('bsd_ty_le_coc')
     def _check_ty_le_coc(self):
