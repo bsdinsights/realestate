@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_product_template_form">
+        <field name="name">bsd.product.template.form</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_du_an_id"/>
+                            <field name="bsd_toa_nha_id"/>
+                            <field name="bsd_tang_id"/>
+                            <field name="bsd_so_thu_tu"/>
+                            <field name="bsd_ma_can_ho"/>
+                            <field name="bsd_ma_he thong"/>
+                            <field name="bsd_tien_dat_coc"/>
+                            <field name="bsd_tien_giu_cho"/>
+                            <field name="bsd_dien_giai"/>
+                            <field name="bsd_dot_mo_ban"/>
+                            <field name="bsd_san_giao_dich"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_product_template_tree">
+        <field name="name">bsd.product.template.tree</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_so_thu_tu"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_product_template_select">
+        <field name="name">bsd.product.template.select</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="bsd_so_thu_tu"/>
+            </search>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_product_template_action">
+        <field name="name">Unit</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo mới unit</p>
+        </field>
+        <field name="view_id" ref="bsd_product_template_tree"/>
+        <field name="view_ids"
+               eval="[(5, 0, 0),
+                      (0, 0, {'view_mode': 'tree', 'view_id': ref('bsd_product_template_tree')}),
+                      (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_product_template_form')})]"/>
+        <field name="search_view_id" ref="bsd_product_template_select"/>
+    </record>
+</odoo>
