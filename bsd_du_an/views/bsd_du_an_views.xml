@@ -19,6 +19,7 @@
                                     <field name="bsd_giay_phep_dau_tu"/>
                                     <field name="bsd_ngay_cap_phep"/>
                                     <field name="bsd_dia_chi"/>
+                                    <field name="bsd_trang_thai"/>
                                 </group>
                                 <group>
                                     <field name="bsd_co_hd_coc"/>
