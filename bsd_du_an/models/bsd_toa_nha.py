@@ -20,3 +20,6 @@ class BsdBlock(models.Model):
     bsd_so_can_ho = fields.Integer(string="Số căn hộ")
     bsd_dia_chi = fields.Text(string="Địa chỉ", help="Địa chỉ tòa nhà")
     bsd_postal = fields.Char(string="Block Postal Code", help="Mã Postal")
+    bsd_trang_thai = fields.Selection([('active', 'Đang sử dụng'),
+                                       ('inactive', 'Ngưng sử dụng')],
+                                      string="Trạng thái", default='active')

@@ -19,6 +19,7 @@
                             <field name="bsd_so_tang"/>
                             <field name="bsd_so_can_ho"/>
                             <field name="bsd_dien_giai"/>
+                            <field name="bsd_trang_thai"/>
                         </group>
                     </group>
                 </sheet>
