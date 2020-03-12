@@ -17,4 +17,7 @@ class BsdFloor(models.Model):
                                 required=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án")
     bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà")
+    bsd_trang_thai = fields.Selection([('active', 'Đang sử dụng'),
+                                       ('inactive', 'Ngưng sử dụng')],
+                                      string="Trạng thái", default='active')
 
