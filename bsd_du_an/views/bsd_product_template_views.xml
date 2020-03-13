@@ -21,9 +21,9 @@
                     <group>
                         <group>
                             <h2 style="margin-top:10px">Thông tin chung</h2>
-                            <field name="bsd_du_an_id"/>
-                            <field name="bsd_toa_nha_id"/>
-                            <field name="bsd_tang_id"/>
+                            <field name="bsd_du_an_id" required="1"/>
+                            <field name="bsd_toa_nha_id" required="1"/>
+                            <field name="bsd_tang_id" required="1"/>
                             <field name="bsd_so_thu_tu"/>
                             <field name="bsd_ma_can_ho"/>
                             <field name="name"/>
@@ -55,7 +55,7 @@
                         </group>
                         <group>
                             <h2 style="margin-top:10px">Phân nhóm</h2>
-                            <field name="bsd_phan_nhom_id"/>
+                            <field name="bsd_phan_nhom_id" required="1"/>
                             <field name="bsd_huong"/>
                             <field name="bsd_view"/>
                             <field name="bsd_so_phong_ngu"/>
