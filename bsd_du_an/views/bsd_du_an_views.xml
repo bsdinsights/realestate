@@ -19,7 +19,7 @@
                                     <field name="bsd_giay_phep_dau_tu"/>
                                     <field name="bsd_ngay_cap_phep"/>
                                     <field name="bsd_dia_chi"/>
-                                    <field name="bsd_trang_thai"/>
+                                    <field name="state"/>
                                 </group>
                                 <group>
                                     <field name="bsd_co_hd_coc"/>
@@ -45,30 +45,34 @@
                         </page>
                         <page string="Bán hàng">
                             <group>
-                                <group string="Phí quản lý">
+                                <group>
+                                    <h2 style="margin-top:10px">Phí quản lý</h2>
                                     <field name="bsd_gia_tri_su_dung_dat"/>
                                     <field name="bsd_phi_bao_tri"/>
                                     <field name="bsd_so_thang_phi_quan_ly"/>
                                     <field name="bsd_phi_quan_ly"/>
                                     <field name="bsd_tien_giu_cho"/>
                                     <field name="bsd_tien_dat_coc"/>
+
+                                    <h2 style="margin-top:10px">Hoa hồng</h2>
+                                    <field name="bsd_ty_le_hoa_hong_nvbh"/>
+                                    <field name="bsd_hoa_hong_quan_ly"/>
+                                    <field name="bsd_hoa_hong_nvdv"/>
+
                                 </group>
-                                <group string="Hiệu lực">
+                                <group>
+                                    <h2 style="margin-top:10px">Hiệu lực</h2>
                                     <field name="bsd_int_hieu_luc_bao_gia"/>
                                     <field name="bsd_int_het_han_ky_phieu_coc"/>
                                     <field name="bsd_int_het_han_ky_hop_dong"/>
                                     <field name="bsd_int_canh_bao_sau_giu_cho"/>
                                     <field name="bsd_int_canh_bao_sau_dat_coc"/>
                                     <field name="bsd_time_quan_tam"/>
-                                </group>
-                            </group>
-                            <group string="Giữ chỗ">
-                                <group>
+
+                                    <h2 style="margin-top:10px">Giữ chỗ</h2>
                                     <field name="bsd_so_giu_cho_NVBH"/>
                                     <field name="bsd_so_giu_cho_can_ho"/>
                                     <field name="bsd_so_giu_cho_theo_ngay"/>
-                                </group>
-                                <group>
                                     <field name="bsd_so_giu_cho_NVBH_can_ho_ngay"/>
                                     <field name="bsd_huy_giu_cho_truoc_mo_ban"/>
                                     <field name="bsd_hour_huy_giu_cho_sau_mo_ban"/>
