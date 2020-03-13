@@ -3,7 +3,7 @@
 from odoo import models, fields, api
 
 
-class BsdQuocgia(models.Model):
+class BsdQuocGia(models.Model):
     _name = 'bsd.quoc_gia'
     _rec_name = 'bsd_ten'
     _description = 'Danh mục quốc gia'

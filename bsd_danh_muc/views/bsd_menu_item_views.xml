@@ -50,6 +50,11 @@
               sequence="13"
               action="account.action_tax_form"
               parent="bsd_bank_menu"/>
+    <menuitem id="bsd_lai_suat_menu_action"
+              name="Lãi suất"
+              sequence="13"
+              action="bsd_lai_suat_action"
+              parent="bsd_bank_menu"/>
 
     <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">
         <field name="action" eval="False"/>

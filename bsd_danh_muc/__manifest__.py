@@ -8,6 +8,7 @@
                 'base',
                 'mail',
                 'account',
+                'bsd_du_an',
     ],
     'data': [
         'security/user_groups.xml',
@@ -17,6 +18,7 @@
         'views/bsd_tinh_thanh_views.xml',
         'views/bsd_quan_huyen_views.xml',
         'views/bsd_phuong_xa_views.xml',
+        'views/bsd_lai_suat_views.xml',
         'views/bsd_menu_item_views.xml'
     ],
     'application': True,
