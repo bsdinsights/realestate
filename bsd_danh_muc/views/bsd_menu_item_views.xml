@@ -44,7 +44,7 @@
               sequence="12"
               action="base.action_currency_form"
               parent="bsd_bank_menu"/>
-    	account.action_tax_form
+
     <menuitem id="bsd_tax_menu_action"
               name="Thuế"
               sequence="13"
