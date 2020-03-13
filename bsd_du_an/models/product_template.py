@@ -14,9 +14,9 @@ class ProductTemplate(models.Model):
                                 help="Mã căn hộ bao gồm mã tòa nhà, mã tầng và số căn hộ")
     name = fields.Char(string="Mã hệ thống", required=False,
                        help="Mã đầy đủ của căn hộ bao gồm mã dự án, mã tòa nhà, mã tầng và số căn hộ")
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
-    bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà", required=True)
-    bsd_tang_id = fields.Many2one('bsd.tang', string="Tầng", required=True)
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án")
+    bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà")
+    bsd_tang_id = fields.Many2one('bsd.tang', string="Tầng")
     bsd_tien_dat_coc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc của căn hộ")
     bsd_tien_giu_cho = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ của căn hộ")
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Thông tin về căn hộ")
@@ -29,7 +29,7 @@ class ProductTemplate(models.Model):
     bsd_lan_thanh_ly = fields.Integer(string="Lần thanh lý",
                                       readonly=True,
                                       help="Số lần căn hộ bị thanh lý hợp đồng")
-    bsd_phan_nhom_id = fields.Char(string="Phân nhóm", required=True,
+    bsd_phan_nhom_id = fields.Char(string="Phân nhóm",
                                 help="Phân nhóm đặc tính kỹ thuật của căn hộ")
     bsd_huong = fields.Selection([('1', 'Đông'),
                                   ('2', 'Tây'),
@@ -103,7 +103,7 @@ class ProductTemplate(models.Model):
     bsd_nguoi_huy_uu_tien_id = fields.Many2one('res.users', string="Người hủy ưu tiên", readonly=True)
     bsd_ngay_huy_uu_tien = fields.Datetime(string="Ngày hủy ưu tiên", readonly=True)
     bsd_tinh_trang_vay = fields.Selection([('0', 'Không'),
-                                           ('1', 'Có')], string="Tình trạng", default='0',
+                                           ('1', 'Có')], string="Tình trạng vay", default='0',
                                           help="Tình trạng vay ngân hàng của căn hộ")
     bsd_ngay_du_kien_ban_giao = fields.Date(string="Dự kiến bàn giao")
     bsd_so_thang_dong_phi_quan_ly = fields.Integer(string="Số tháng đóng phí quản lý")
