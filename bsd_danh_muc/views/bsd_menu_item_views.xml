@@ -39,6 +39,11 @@
               sequence="11"
               action="base.action_res_bank_form"
               parent="bsd_bank_menu"/>
+    <menuitem id="bsd_currency_menu_action"
+              name="Tiền tệ"
+              sequence="12"
+              action="base.action_currency_form"
+              parent="bsd_bank_menu"/>
 
     <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
