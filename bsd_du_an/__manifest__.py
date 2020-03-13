@@ -17,6 +17,7 @@
         'views/bsd_toa_nha_views.xml',
         'views/bsd_tang_views.xml',
         'views/bsd_product_template_views.xml',
+        'views/bsd_loai_san_pham_views.xml',
         'views/bsd_menu_item_views.xml'
     ],
     'application': True,

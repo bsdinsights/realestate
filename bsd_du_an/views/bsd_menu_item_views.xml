@@ -24,11 +24,21 @@
               action="bsd_tang_action"
               parent="bsd_du_an_menu"/>
 
+    <!--Unit menu-->
+    <menuitem id="bsd_unit_menu"
+              name="Unit"
+              sequence="11"
+              parent="bsd_main_du_an_root"/>
     <menuitem id="bsd_unit_menu_action"
               name="Unit"
               sequence="11"
               action="bsd_product_template_action"
-              parent="bsd_main_du_an_root"/>
+              parent="bsd_unit_menu"/>
+    <menuitem id="bsd_loai_san_pham_menu_action"
+              name="Loại sản phẩm"
+              sequence="12"
+              action="bsd_loai_san_pham_action"
+              parent="bsd_unit_menu"/>
 
     <record id="bsd_du_an.bsd_main_du_an_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
