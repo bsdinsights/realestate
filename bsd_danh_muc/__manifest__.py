@@ -6,7 +6,8 @@
     'author': 'Thịnh Lưu',
     'depends': [
                 'base',
-                'mail'
+                'mail',
+                'account',
     ],
     'data': [
         'security/user_groups.xml',
