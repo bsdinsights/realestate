@@ -83,7 +83,12 @@ class BsdProject(models.Model):
                                                       help="Hủy giữ chỗ trước khi căn hộ được mở bán", required=True)
     bsd_hour_huy_giu_cho_sau_mo_ban = fields.Float(string="Hủy giữ chỗ sau mở bán(giờ)",
                                                    help="Số giờ giữ chỗ sau khi căn hộ được mở bán", required=True)
-    bsd_trang_thai = fields.Selection([('active', 'Đang sử dụng'),
+    bsd_ty_le_hoa_hong_nvbh = fields.Float(string="NVBH (%)", required=True,
+                                           help="Tỷ lệ (%) hoa hồng được hưởng của nhân viên bán hàng")
+    bsd_hoa_hong_quan_ly = fields.Float(string="Quản lý", help="Tiền hoa hồng được hương của quản lý", required=True)
+    bsd_hoa_hong_nvdv = fields.Float(string="Dịch vụ", required=True,
+                                     help="Tiền hoa hồng được hương của nhân viên dịch vụ khách hàng")
+    state = fields.Selection([('active', 'Đang sử dụng'),
                                        ('inactive', 'Ngưng sử dụng')],
                                       string="Trạng thái", default='active')
 
