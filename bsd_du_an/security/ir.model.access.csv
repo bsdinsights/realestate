@@ -4,3 +4,5 @@ bsd_toa_nha_manager,Quản lý thông tin tòa nhà,model_bsd_toa_nha,bsd_du_an.
 bsd_tang_manager,Quản lý thông tin tầng,model_bsd_tang,bsd_du_an.group_manager,1,1,1,1
 bsd_loai_san_pham_manager,Quản lý thông tin loại sản phẩm,model_bsd_loai_san_pham,bsd_du_an.group_manager,1,1,1,1
 
+bsd_thong_tin_ky_thuat_manager,Quản lý thông tin kỹ thuật,model_bsd_thong_tin_ky_thuat,bsd_du_an.group_manager,1,1,1,1
+bsd_thong_tin_ky_thuat_line_manager,Quản lý thông tin kỹ thuật chi tiết ,model_bsd_thong_tin_ky_thuat_line,bsd_du_an.group_manager,1,1,1,1
