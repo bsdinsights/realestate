@@ -3,7 +3,7 @@
     <!--Top menu-->
     <menuitem id="bsd_main_danh_muc_root" name="Danh mục"/>
 
-    <!--Dự án menu-->
+    <!-- quốc gia menu-->
     <menuitem id="bsd_danh_muc_menu"
               name="Danh mục"
               sequence="10"
@@ -28,6 +28,17 @@
               sequence="13"
               action="bsd_phuong_xa_action"
               parent="bsd_danh_muc_menu"/>
+
+    <!-- quốc gia menu-->
+    <menuitem id="bsd_bank_menu"
+              name="Ngân hàng"
+              sequence="10"
+              parent="bsd_main_danh_muc_root"/>
+    <menuitem id="bsd_bank_menu_action"
+              name="Ngân hàng"
+              sequence="11"
+              action="base.action_res_bank_form"
+              parent="bsd_bank_menu"/>
 
     <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
