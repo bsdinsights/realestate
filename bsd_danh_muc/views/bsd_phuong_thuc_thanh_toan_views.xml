@@ -13,7 +13,7 @@
                         </group>
                         <group>
                             <field name="bsd_dien_giai"/>
-                            <field name="bsd_trang_thai"/>
+                            <field name="state"/>
                         </group>
                     </group>
                 </sheet>
@@ -28,7 +28,7 @@
                 <field name="bsd_ma"/>
                 <field name="bsd_ten"/>
                 <field name="bsd_dien_giai"/>
-                <field name="bsd_trang_thai"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
