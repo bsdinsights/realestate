@@ -58,7 +58,11 @@
     <menuitem id="bsd_dk_bg_menu_action"
               name="Điều kiện bàn giao"
               sequence="14"
-              action="bsd_dk_bg_action"
+              action="bsd_dk_bg_action"/>
+    <menuitem id="bsd_pt_tt_menu_action"
+              name="Phương thức thanh toán"
+              sequence="14"
+              action="bsd_pt_tt_action"
               parent="bsd_bank_menu"/>
 
     <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">

@@ -20,6 +20,8 @@
         'views/bsd_phuong_xa_views.xml',
         'views/bsd_lai_suat_views.xml',
         'views/bsd_dieu_kien_ban_giao_views.xml',
+        'views/bsd_phuong_thuc_thanh_toan_views.xml',
+
         'views/bsd_menu_item_views.xml'
     ],
     'application': True,

@@ -5,5 +5,5 @@ bsd_quan_huyen_manager,Danh mục quận huyện,model_bsd_quan_huyen,bsd_danh_m
 bsd_phuong_xa_manager,Danh mục phường xã,model_bsd_phuong_xa,bsd_danh_muc.group_manager,1,1,1,1
 bsd_lai_suat_manager,Danh mục lãi suất,model_bsd_lai_suat,bsd_danh_muc.group_manager,1,1,1,1
 bsd_dk_bg_manager, Điều kiện bàn giao,model_bsd_dk_bg,bsd_danh_muc.group_manager,1,1,1,1
-
+bsd_pt_tt_manager,Phương thức thanh toán,model_bsd_pt_tt,bsd_danh_muc.group_manager,1,1,1,1
 
