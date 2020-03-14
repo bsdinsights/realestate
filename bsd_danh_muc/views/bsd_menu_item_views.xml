@@ -52,8 +52,13 @@
               parent="bsd_bank_menu"/>
     <menuitem id="bsd_lai_suat_menu_action"
               name="Lãi suất"
-              sequence="13"
+              sequence="14"
               action="bsd_lai_suat_action"
+              parent="bsd_bank_menu"/>
+    <menuitem id="bsd_dk_bg_menu_action"
+              name="Điều kiện bàn giao"
+              sequence="14"
+              action="bsd_dk_bg_action"
               parent="bsd_bank_menu"/>
 
     <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">

@@ -4,4 +4,6 @@ bsd_tinh_thanh_manager,Danh mục tỉnh thành,model_bsd_tinh_thanh,bsd_danh_mu
 bsd_quan_huyen_manager,Danh mục quận huyện,model_bsd_quan_huyen,bsd_danh_muc.group_manager,1,1,1,1
 bsd_phuong_xa_manager,Danh mục phường xã,model_bsd_phuong_xa,bsd_danh_muc.group_manager,1,1,1,1
 bsd_lai_suat_manager,Danh mục lãi suất,model_bsd_lai_suat,bsd_danh_muc.group_manager,1,1,1,1
+bsd_dk_bg_manager, Điều kiện bàn giao,model_bsd_dk_bg,bsd_danh_muc.group_manager,1,1,1,1
+
 

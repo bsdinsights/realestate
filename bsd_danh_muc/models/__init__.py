@@ -5,3 +5,4 @@ from . import bsd_tinh_thanh
 from . import bsd_quan_huyen
 from . import bsd_phuong_xa
 from . import bsd_lai_suat
+from . import bsd_dieu_kien_ban_giao
