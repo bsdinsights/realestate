@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_dk_bg_form">
+        <field name="name">bsd.dk_bg.form</field>
+        <field name="model">bsd.dk_bg</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma_dkbg"/>
+                            <field name="bsd_ten_dkbg"/>
+                        </group>
+                        <group>
+                            <field name="bsd_dien_giai"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_dk_bg_tree">
+        <field name="name">bsd.dk_bg.tree</field>
+        <field name="model">bsd.dk_bg</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_dkbg"/>
+                <field name="bsd_ten_dkbg"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_dk_bg_action">
+        <field name="name">Điều kiện bàn giao</field>
+        <field name="res_model">bsd.dk_bg</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo điều kiện bàn giao</p>
+        </field>
+    </record>
+</odoo>
