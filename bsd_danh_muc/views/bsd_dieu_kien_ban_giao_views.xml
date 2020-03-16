@@ -12,8 +12,8 @@
                             <field name="bsd_ten_dkbg"/>
                         </group>
                         <group>
-                            <field name="bsd_dien_giai"/>
-                            <field name="state"/>
+                            <!--<field name="bsd_dien_giai"/>-->
+                            <!--<field name="state"/>-->
                         </group>
                     </group>
                 </sheet>
