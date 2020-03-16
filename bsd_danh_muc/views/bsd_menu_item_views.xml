@@ -29,7 +29,6 @@
               action="bsd_phuong_xa_action"
               parent="bsd_danh_muc_menu"/>
 
-    <!-- quốc gia menu-->
     <menuitem id="bsd_bank_menu"
               name="Ngân hàng"
               sequence="10"
@@ -65,6 +64,12 @@
               sequence="14"
               action="bsd_pt_tt_action"
               parent="bsd_bank_menu"/>
+    <menuitem id="bsd_pmg_ttc_menu_action"
+              name="Phí môi giới"
+              sequence="11"
+              action="bsd_pmg_ttc_action"
+              parent="bsd_main_danh_muc_root"/>
+
 
     <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
