@@ -20,10 +20,14 @@
                             <field name="bsd_loai_bg"/>
                             <field name="bsd_dk_tt"/>
                             <field name="bsd_theo_ch"/>
-                            <field name="bsd_unit_id"/>
-                            <field name="bsd_gia_m2"/>
-                            <field name="bsd_tien"/>
-                            <field name="bsd_ty_le"/>
+                            <field name="bsd_unit_id" attrs="{'required':[('bsd_theo_ch', '=', '1')],
+                                                                'readonly':[('bsd_theo_ch', '=', '0')]}"/>
+                            <field name="bsd_gia_m2" attrs="{'required':[('bsd_dk_tt', '=', 'm2')],
+                                                                'readonly':[('bsd_dk_tt', 'in', ['tien','ty_le'])]}"/>
+                            <field name="bsd_tien" attrs="{'required':[('bsd_dk_tt', '=', 'tien')],
+                                                                'readonly':[('bsd_dk_tt', 'in', ['m2','ty_le'])]}"/>
+                            <field name="bsd_ty_le" attrs="{'required':[('bsd_dk_tt', '=', 'ty_le')],
+                                                                'readonly':[('bsd_dk_tt', 'in', ['tien','m2'])]}"/>
                             <field name="state"/>
                         </group>
                     </group>
