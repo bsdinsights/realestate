@@ -5,6 +5,7 @@ from odoo import models, fields, api
 
 class BsdPmgTtc(models.Model):
     _name = 'bsd.pmg_ttc'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Bảng phí môi giới"
 
     bsd_ma_phi_mg = fields.Char(string="Mã", help="Mã phí môi giới", required=True)
