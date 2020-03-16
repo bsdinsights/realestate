@@ -14,7 +14,6 @@
                             <field name="bsd_dot_mb_id"/>
                             <field name="bsd_tu_ngay"/>
                             <field name="bsd_den_ngay"/>
-                            <field name="bsd_dien_giai"/>
                         </group>
                         <group>
                             <field name="bsd_loai_bg"/>
