@@ -8,8 +8,6 @@ class BsdPmgTtc(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Bảng phí môi giới"
 
-    company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
-    currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     bsd_ma_phi_mg = fields.Char(string="Mã", help="Mã phí môi giới", required=True)
     bsd_ten_phi_mg = fields.Char(string="Tên", help="Tên phí môi giới", required=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string='Dự án', help="Tên dự án", required=True)
@@ -44,6 +42,8 @@ class BsdPmgTtc(models.Model):
 
     bsd_ctv_ids = fields.One2many('bsd.pmg_ctv', 'bsd_pmg_ttc_id', string="Công tác viên")
     bsd_cty_ids = fields.One2many('bsd.pmg_cty', 'bsd_pmg_ttc_id', string="Đơn vị")
+    company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
+    currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
 
 class BsdPmgCtv(models.Model):

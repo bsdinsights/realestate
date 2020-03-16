@@ -21,7 +21,6 @@
                                     <field name="bsd_muc"/>
                                 </group>
                                 <group>
-                                    <field name="company_id" invisible="1"/>
                                     <field name="currency_id" invisible="1"/>
                                     <field name="bsd_sl_tu" attrs="{'required':[('bsd_dieu_kien', '=', '1')],
                                                                 'readonly':[('bsd_dieu_kien', '=', '2')]}"/>
