@@ -45,7 +45,7 @@
         <field name="res_model">bsd.dk_bg</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
-            <p>Tạo điều kiện bàn giao</p>
+            <p>Tạo điều kiện bàt giao</p>
         </field>
     </record>
 </odoo>
