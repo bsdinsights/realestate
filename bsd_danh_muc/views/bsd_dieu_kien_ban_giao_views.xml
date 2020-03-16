@@ -19,6 +19,11 @@
                         <group>
                             <field name="bsd_loai_bg"/>
                             <field name="bsd_dk_tt"/>
+                            <field name="bsd_theo_ch"/>
+                            <field name="bsd_unit_id" attrs="{'required':[('bsd_theo_ch', '=', '1')],
+                                                                'readonly':[('bsd_theo_ch', '=', '0')]}"/>
+                            <field name="bsd_gia_m2" attrs="{'required':[('bsd_dk_tt', '=', 'm2')],
+                                                                'readonly':[('bsd_dk_tt', 'in', ['tien','ty_le'])]}"/>
                         </group>
                     </group>
                 </sheet>
