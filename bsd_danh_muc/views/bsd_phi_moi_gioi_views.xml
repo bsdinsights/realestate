@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_pmg_ttc_form">
+        <field name="name">bsd.pmg_ttc.form</field>
+        <field name="model">bsd.pmg_ttc</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <notebook>
+                        <page string="Thông tin chung">
+                            <group>
+                                <group>
+
+                                    <field name="bsd_ma_phi_mg"/>
+                                    <field name="bsd_ten_phi_mg"/>
+                                    <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                                    <field name="bsd_ap_dung"/>
+                                    <field name="bsd_tu_ngay"/>
+                                    <field name="bsd_den_ngay"/>
+                                    <field name="bsd_dieu_kien"/>
+                                    <field name="bsd_muc"/>
+                                </group>
+                                <group>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="bsd_sl_tu" attrs="{'required':[('bsd_dieu_kien', '=', '1')],
+                                                                'readonly':[('bsd_dieu_kien', '=', '2')]}"/>
+                                    <field name="bsd_sl_den" attrs="{'required':[('bsd_dieu_kien', '=', '1')],
+                                                                'readonly':[('bsd_dieu_kien', '=', '2')]}"/>
+                                    <field name="bsd_tien_tu" attrs="{'required':[('bsd_dieu_kien', '=', '2')],
+                                                                'readonly':[('bsd_dieu_kien', '=', '1')]}"/>
+                                    <field name="bsd_tien_den" attrs="{'required':[('bsd_dieu_kien', '=', '2')],
+                                                                'readonly':[('bsd_dieu_kien', '=', '1')]}"/>
+                                    <field name="bsd_cach_tinh"/>
+                                    <field name="bsd_ty_le" attrs="{'required':[('bsd_cach_tinh', '=', 'ty_le')],
+                                                                'readonly':[('bsd_cach_tinh', '=', 'tien')]}"/>
+                                    <field name="bsd_tien" attrs="{'required':[('bsd_cach_tinh', '=', 'tien')],
+                                                                'readonly':[('bsd_cach_tinh', '=', 'ty_le')]}"/>
+                                    <field name="bsd_dien_giai"/>
+                                    <field name="state"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Cộng tác viên">
+                            <field name="bsd_ctv_ids">
+                                <tree editable="bottom">
+                                    <field name="bsd_kh_cn_id" options="{'no_create':true}"/>
+                                    <field name="bsd_mobile"/>
+                                    <field name="bsd_email"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Đơn vị">
+                            <field name="bsd_cty_ids">
+                                <tree editable="bottom">
+                                    <field name="bsd_kh_ct_id" options="{'no_create':true}"/>
+                                    <field name="bsd_mobile"/>
+                                    <field name="bsd_email"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_pmg_ttc_tree">
+        <field name="name">bsd.pmg_ttc.tree</field>
+        <field name="model">bsd.pmg_ttc</field>
+        <field name="arch" type="xml">
+            <tree>
+
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_pmg_ttc_action">
+        <field name="name">Phí môi giới</field>
+        <field name="res_model">bsd.pmg_ttc</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo phí môi giới</p>
+        </field>
+    </record>
+</odoo>

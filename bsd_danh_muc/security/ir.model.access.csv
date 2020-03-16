@@ -7,3 +7,8 @@ bsd_lai_suat_manager,Danh mục lãi suất,model_bsd_lai_suat,bsd_danh_muc.grou
 bsd_dk_bg_manager, Điều kiện bàn giao,model_bsd_dk_bg,bsd_danh_muc.group_manager,1,1,1,1
 bsd_pt_tt_manager,Phương thức thanh toán,model_bsd_pt_tt,bsd_danh_muc.group_manager,1,1,1,1
 
+bsd_pmg_ttc_manager,Phí môi giới,model_bsd_pmg_ttc,bsd_danh_muc.group_manager,1,1,1,1
+bsd_pmg_ctv_manager,Phí môi giới ctv,model_bsd_pmg_ctv,bsd_danh_muc.group_manager,1,1,1,1
+bsd_pmg_cty_manager,Phí môi giới cty,model_bsd_pmg_cty,bsd_danh_muc.group_manager,1,1,1,1
+
+
