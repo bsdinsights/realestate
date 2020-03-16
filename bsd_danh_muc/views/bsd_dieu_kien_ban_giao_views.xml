@@ -10,9 +10,20 @@
                         <group>
                             <field name="bsd_ma_dkbg"/>
                             <field name="bsd_ten_dkbg"/>
+                            <field name="bsd_du_an_id"/>
+                            <field name="bsd_dot_mb_id"/>
+                            <field name="bsd_tu_ngay"/>
+                            <field name="bsd_den_ngay"/>
+                            <field name="bsd_dien_giai"/>
                         </group>
                         <group>
-                            <field name="bsd_dien_giai"/>
+                            <field name="bsd_loai_bg"/>
+                            <field name="bsd_dk_tt"/>
+                            <field name="bsd_theo_ch"/>
+                            <field name="bsd_unit_id"/>
+                            <field name="bsd_gia_m2"/>
+                            <field name="bsd_tien"/>
+                            <field name="bsd_ty_le"/>
                             <field name="state"/>
                         </group>
                     </group>
