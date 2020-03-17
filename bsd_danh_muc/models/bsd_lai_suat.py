@@ -7,6 +7,7 @@ class BsdLaiSuat(models.Model):
     _name = 'bsd.lai_suat'
     _description = "Bảng thông tin lại suất"
     _rec_name = 'bsd_ten'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     bsd_ma = fields.Char(string="Mã lãi suất", required=True)
     bsd_ten = fields.Char(string="Tên lãi suất", required=True)

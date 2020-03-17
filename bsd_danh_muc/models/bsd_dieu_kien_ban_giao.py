@@ -7,6 +7,7 @@ class BsDkbg(models.Model):
     _name = 'bsd.dk_bg'
     _res_name = 'bsd_ten_dkbg'
     _description = "Điều kiện bàn giao"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     bsd_ma_dkbg = fields.Char(string="Mã", help="Điều kiện bàn giao", required=True)
     bsd_ten_dkbg = fields.Char(string="Tên", help="Tên điều kiện bàn giao", required=True)

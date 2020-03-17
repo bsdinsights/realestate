@@ -7,6 +7,7 @@ class BsdPttt(models.Model):
     _name = 'bsd.pt_tt'
     _rec_name = 'bsd_ten'
     _description = 'Phương thức thanh toán'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     bsd_ten = fields.Char(string="Tên", required=True)
     bsd_ma = fields.Char(string="Mã", required=True)

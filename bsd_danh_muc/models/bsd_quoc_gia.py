@@ -7,6 +7,7 @@ class BsdQuocGia(models.Model):
     _name = 'bsd.quoc_gia'
     _rec_name = 'bsd_ten'
     _description = 'Danh mục quốc gia'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     bsd_ten = fields.Char(string="Tên quốc gia", required=True)
     bsd_ma = fields.Char(string="Mã quốc gia", required=True)

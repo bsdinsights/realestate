@@ -7,6 +7,7 @@ class BsdTinhThanh(models.Model):
     _name = 'bsd.tinh_thanh'
     _rec_name = 'bsd_ten'
     _description = 'Danh mục tỉnh thành'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     bsd_quoc_gia_id = fields.Many2one('bsd.quoc_gia', string="Quốc gia", required=True)
     bsd_ten = fields.Char(string="Tên tỉnh thành", required=True)
