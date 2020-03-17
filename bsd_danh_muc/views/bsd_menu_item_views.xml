@@ -33,6 +33,11 @@
               name="Ngân hàng"
               sequence="10"
               parent="bsd_main_danh_muc_root"/>
+    <menuitem id="bsd_partner_bank_menu_action"
+              name="Tài khoản ngân hàng"
+              sequence="10"
+              action="base.action_res_partner_bank_account_form"
+              parent="bsd_bank_menu"/>
     <menuitem id="bsd_bank_menu_action"
               name="Ngân hàng"
               sequence="11"
