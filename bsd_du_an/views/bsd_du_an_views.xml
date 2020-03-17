@@ -11,35 +11,35 @@
                             <group>
                                 <group>
                                     <field name="currency_id" invisible="1"/>
-                                    <field name="bsd_ma"/>
-                                    <field name="bsd_chu_dau_tu"/>
-                                    <field name="bsd_ten"/>
-                                    <field name="bsd_loai"/>
-                                    <field name="bsd_loai_hinh_su_dung"/>
-                                    <field name="bsd_giay_phep_dau_tu"/>
-                                    <field name="bsd_ngay_cap_phep"/>
+                                    <field name="bsd_ma_da"/>
+                                    <field name="bsd_chu_dt_id"/>
+                                    <field name="bsd_ten_da"/>
+                                    <field name="bsd_loai_da"/>
+                                    <field name="bsd_loai_sd"/>
+                                    <field name="bsd_gp_dt"/>
+                                    <field name="bsd_ngay_gp"/>
                                     <field name="bsd_dia_chi"/>
                                     <field name="state"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_co_hd_coc"/>
-                                    <field name="bsd_ty_le_coc"/>
-                                    <field name="bsd_ngay_du_kien_cat_noc"/>
-                                    <field name="bsd_ngay_du_kien_ban_giao"/>
-                                    <field name="bsd_ngay_hoan_tat_phap_ly"/>
-                                    <field name="bsd_ngay_cnqsd_dat"/>
-                                    <field name="bsd_so_cho_giu_xe"/>
-                                    <field name="bsd_ngay_thuc_te_cat_noc"/>
-                                    <field name="bsd_ngay_cap_phep_ban"/>
+                                    <field name="bsd_hd_coc"/>
+                                    <field name="bsd_tl_dc"/>
+                                    <field name="bsd_ngay_dkcn"/>
+                                    <field name="bsd_ngay_dkbg"/>
+                                    <field name="bsd_ngay_htpl"/>
+                                    <field name="bsd_ngay_qsdd"/>
+                                    <field name="bsd_cho_gx"/>
+                                    <field name="bsd_ngay_ttcn"/>
+                                    <field name="bsd_ngay_cpb"/>
                                 </group>
                             </group>
                             <group string="Định dạng">
                                 <group>
-                                    <field name="bsd_dinh_dang_du_an"/>
-                                    <field name="bsd_dinh_dang_khu"/>
+                                    <field name="bsd_dd_da"/>
+                                    <field name="bsd_dd_khu"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_dinh_dang_tang"/>
+                                    <field name="bsd_dd_tang"/>
                                 </group>
                             </group>
                         </page>
@@ -47,35 +47,72 @@
                             <group>
                                 <group>
                                     <h2 style="margin-top:10px">Phí quản lý</h2>
-                                    <field name="bsd_gia_tri_su_dung_dat"/>
-                                    <field name="bsd_phi_bao_tri"/>
-                                    <field name="bsd_so_thang_phi_quan_ly"/>
-                                    <field name="bsd_phi_quan_ly"/>
-                                    <field name="bsd_tien_giu_cho"/>
-                                    <field name="bsd_tien_dat_coc"/>
+                                    <field name="bsd_gt_sdd"/>
+                                    <field name="bsd_tl_pbt"/>
+                                    <field name="bsd_thang_pql"/>
+                                    <field name="bsd_tien_pql"/>
+                                    <field name="bsd_tien_gc"/>
+                                    <field name="bsd_tien_dc"/>
 
                                     <h2 style="margin-top:10px">Hoa hồng</h2>
-                                    <field name="bsd_ty_le_hoa_hong_nvbh"/>
-                                    <field name="bsd_hoa_hong_quan_ly"/>
-                                    <field name="bsd_hoa_hong_nvdv"/>
+                                    <field name="bsd_hh_nv"/>
+                                    <field name="bsd_hh_ql"/>
+                                    <field name="bsd_hh_dv"/>
 
                                 </group>
                                 <group>
                                     <h2 style="margin-top:10px">Hiệu lực</h2>
-                                    <field name="bsd_int_hieu_luc_bao_gia"/>
-                                    <field name="bsd_int_het_han_ky_phieu_coc"/>
-                                    <field name="bsd_int_het_han_ky_hop_dong"/>
-                                    <field name="bsd_int_canh_bao_sau_giu_cho"/>
-                                    <field name="bsd_int_canh_bao_sau_dat_coc"/>
-                                    <field name="bsd_time_quan_tam"/>
+                                    <field name="bsd_hh_bg"/>
+                                    <field name="bsd_hh_pc"/>
+                                    <field name="bsd_hh_hd"/>
+                                    <field name="bsd_cb_gc"/>
+                                    <field name="bsd_cb_dc"/>
+                                    <field name="bsd_hh_qt"/>
 
                                     <h2 style="margin-top:10px">Giữ chỗ</h2>
-                                    <field name="bsd_so_giu_cho_NVBH"/>
-                                    <field name="bsd_so_giu_cho_can_ho"/>
-                                    <field name="bsd_so_giu_cho_theo_ngay"/>
-                                    <field name="bsd_so_giu_cho_NVBH_can_ho_ngay"/>
-                                    <field name="bsd_huy_giu_cho_truoc_mo_ban"/>
-                                    <field name="bsd_hour_huy_giu_cho_sau_mo_ban"/>
+                                    <field name="bsd_gc_NVBH"/>
+                                    <field name="bsd_gc_ch"/>
+                                    <field name="bsd_gc_ngay"/>
+                                    <field name="bsd_gc_td"/>
+                                    <field name="bsd_huy_tmb"/>
+                                    <field name="bsd_huy_smb"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page  string="Ngân hàng">
+                            <group>
+                                <group string="Ngân hàng">
+                                    <field name="bsd_ngan_hang_ids" nolabel="1">
+                                        <tree editable="bottom">
+                                            <field name="bsd_ngan_hang_id" options="{'no_create':true}"/>
+                                            <field name="bsd_ma_nh"/>
+                                            <field name="state"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                                <group string="Tài khoản">
+                                    <field name="bsd_tk_ng_ids" nolabel="1">
+                                        <tree editable="bottom">
+                                            <field name="bsd_tk_nh_id"
+                                                   options="{'no_create':true}"
+                                                   domain="[('partner_id', '=', parent.bsd_chu_dt_id),('state', '=','active')]"/>
+                                            <field name="bsd_ngan_hang_id"/>
+                                            <field name="state"/>
+                                        </tree>
+                                        <form>
+                                            <sheet>
+                                                <group>
+                                                    <group>
+                                                        <field name="bsd_tk_nh_id"/>
+                                                        <field name="bsd_ngan_hang_id"/>
+                                                    </group>
+                                                    <group>
+                                                        <field name="state"/>
+                                                    </group>
+                                                </group>
+                                            </sheet>
+                                        </form>
+                                    </field>
                                 </group>
                             </group>
                         </page>
@@ -94,7 +131,7 @@
         <field name="model">bsd.du_an</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="bsd_ten"/>
+                <field name="bsd_ten_da"/>
             </tree>
         </field>
     </record>
