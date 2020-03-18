@@ -75,11 +75,18 @@
               action="bsd_pmg_ttc_action"
               parent="bsd_main_danh_muc_root"/>
 
+    <menuitem id="bsd_product_pricelist_menu_action"
+              name="Bảng giá bán"
+              sequence="12"
+              action="product.product_pricelist_action2"
+              parent="bsd_main_danh_muc_root"/>
+
     <menuitem id="bsd_tknh_ad_menu_action"
               name="Tài khoản ngân hàng đang áp dụng"
               sequence="15"
               action="bsd_tknh_ad_action"
               parent="bsd_bank_menu"/>
+
 
     <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">
         <field name="action" eval="False"/>

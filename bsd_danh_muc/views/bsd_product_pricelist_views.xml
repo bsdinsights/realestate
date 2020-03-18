@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_product_pricelist_form">
+        <field name="name">bsd.product.pricelist.form</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='pricelist_settings']" position="replace">
+                    <group>
+                        <field name="bsd_ma_bg"/>
+                        <field name="bsd_du_an_id"/>
+                        <field name="bsd_dien_giai"/>
+                    </group>
+                    <group>
+                        <field name="bsd_ngay_bd"/>
+                        <field name="bsd_ngay_kt"/>
+                        <field name="currency_id"/>
+                        <field name="state"/>
+                        <field name="active" invisible="1"/>
+                    </group>
+            </xpath>
+            <xpath expr="//field[@name='item_ids']" position="replace">
+                  <field name="item_ids" nolabel="1" context="{'default_base':'list_price', 'default_date_start':bsd_ngay_bd, 'default_date_end':bsd_ngay_kt}" groups="product.group_product_pricelist">
+                      <tree string="Pricelist Items">
+                          <field name="product_tmpl_id"/>
+                          <field name="price" string="Price"/>
+                          <field name="date_start" readonly="1"/>
+                          <field name="date_end" readonly="1"/>
+                          <field name="base" invisible="1"/>
+                          <field name="price_discount" invisible="1"/>
+                          <field name="applied_on" invisible="1"/>
+                          <field name="compute_price" invisible="1"/>
+                      </tree>
+                  </field>
+            </xpath>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_product_pricelist_item_form">
+        <field name="name">bsd.product.pricelist.item.form</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='min_quantity']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_start']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_end']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
