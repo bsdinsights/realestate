@@ -5,8 +5,8 @@ from odoo import models, fields, api
 
 class BsdKhuyenMai(models.Model):
     _name = 'bsd.khuyen_mai'
-    _description = "Bảng thông tin khuyến mãi"
-    _rec_name = 'bsd_ten'
+    _description = "Bảng chương trình khuyến mãi"
+    _rec_name = 'bsd_ten_km'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     bsd_ma_km = fields.Char(string="Mã khuyến mãi", required=True)
