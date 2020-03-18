@@ -11,4 +11,5 @@ bsd_pmg_ttc_manager,Phí môi giới,model_bsd_pmg_ttc,bsd_danh_muc.group_manage
 bsd_pmg_ctv_manager,Phí môi giới ctv,model_bsd_pmg_ctv,bsd_danh_muc.group_manager,1,1,1,1
 bsd_pmg_cty_manager,Phí môi giới cty,model_bsd_pmg_cty,bsd_danh_muc.group_manager,1,1,1,1
 
-
+bsd_tknh_ad_manager,Tài khoản ngân hàng đang áp dụng,model_bsd_tknh_ad,bsd_danh_muc.group_manager,1,1,1,1
+bsd_tknh_ch_manager,Tài khoản ngân hàng đang áp dụng căn hộ,model_bsd_tknh_ch,bsd_danh_muc.group_manager,1,1,1,1

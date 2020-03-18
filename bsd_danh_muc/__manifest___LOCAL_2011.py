@@ -22,7 +22,6 @@
         'views/bsd_dieu_kien_ban_giao_views.xml',
         'views/bsd_phuong_thuc_thanh_toan_views.xml',
         'views/bsd_phi_moi_gioi_views.xml',
-        'views/bsd_tknh_ad_views.xml',
         'views/bsd_menu_item_views.xml'
     ],
     'application': True,
