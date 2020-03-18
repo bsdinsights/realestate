@@ -185,12 +185,4 @@ class ProductTemplate(models.Model):
                     'bsd_ma_can_ho': toa_nha.bsd_ma + du_an.bsd_dinh_dang_khu + tang.bsd_ma + du_an.bsd_dinh_dang_tang
                 })
         return templates
-
-
-
-
-
-
-
-
-
+# test track
