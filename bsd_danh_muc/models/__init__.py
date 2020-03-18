@@ -10,3 +10,4 @@ from . import bsd_phuong_thuc_thanh_toan
 from . import bsd_pmg_ttc
 from . import bsd_tknh_ad
 from . import product_pricelist
+from . import bsd_khuyen_mai

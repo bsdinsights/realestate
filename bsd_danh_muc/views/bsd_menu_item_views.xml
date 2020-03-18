@@ -3,7 +3,6 @@
     <!--Top menu-->
     <menuitem id="bsd_main_danh_muc_root" name="Danh mục"/>
 
-    <!-- quốc gia menu-->
     <menuitem id="bsd_danh_muc_menu"
               name="Danh mục"
               sequence="10"
@@ -86,6 +85,12 @@
               sequence="15"
               action="bsd_tknh_ad_action"
               parent="bsd_bank_menu"/>
+
+    <menuitem id="bsd_khuyen_mai_menu_action"
+              name="Chương trình khuyến mãi"
+              sequence="13"
+              action="bsd_khuyen_mai_action"
+              parent="bsd_main_danh_muc_root"/>
 
 
     <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">
