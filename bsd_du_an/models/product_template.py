@@ -177,12 +177,12 @@ class ProductTemplate(models.Model):
             _logger.debug(tang)
             if not template.name:
                 template.write({
-                    'name': du_an.bsd_ma + du_an.bsd_dinh_dang_du_an +
-                            toa_nha.bsd_ma + du_an.bsd_dinh_dang_khu + tang.bsd_ma + du_an.bsd_dinh_dang_tang
+                    'name': du_an.bsd_ma + du_an.bsd_dd_da +
+                            toa_nha.bsd_ma + du_an.bsd_dd_khu + tang.bsd_ma + du_an.bsd_dd_tang
                 })
             if not template.bsd_ma_can_ho:
                 template.write({
-                    'bsd_ma_can_ho': toa_nha.bsd_ma + du_an.bsd_dinh_dang_khu + tang.bsd_ma + du_an.bsd_dinh_dang_tang
+                    'bsd_ma_can_ho': toa_nha.bsd_ma + du_an.bsd_dd_khu + tang.bsd_ma + du_an.bsd_dd_tang
                 })
         return templates
 # test track
