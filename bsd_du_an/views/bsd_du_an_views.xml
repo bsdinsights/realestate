@@ -95,7 +95,7 @@
                                         <tree editable="bottom">
                                             <field name="bsd_tk_nh_id"
                                                    options="{'no_create':true}"
-                                                   domain="[('partner_id', '=', parent.bsd_chu_dt_id),('state', '=','active')]"/>
+                                                   domain="[('partner_id', '=', parent.bsd_chu_dt_id)]"/>
                                             <field name="bsd_ngan_hang_id"/>
                                             <field name="state"/>
                                         </tree>
