@@ -7,5 +7,5 @@ bsd_lai_suat_manager,Danh mục lãi suất,model_bsd_lai_suat,bsd_danh_muc.grou
 bsd_dk_bg_manager, Điều kiện bàn giao,model_bsd_dk_bg,bsd_danh_muc.group_manager,1,1,1,1
 bsd_pt_tt_manager,Phương thức thanh toán,model_bsd_pt_tt,bsd_danh_muc.group_manager,1,1,1,1
 
-bsd_tknh_ap_manager,Tài khoản ngân hàng đang áp dụng,model_bsd_tknh_ap,bsd_danh_muc.group_manager,1,1,1,1
+bsd_tknh_ad_manager,Tài khoản ngân hàng đang áp dụng,model_bsd_tknh_ad,bsd_danh_muc.group_manager,1,1,1,1
 bsd_tknh_ch_manager,Tài khoản ngân hàng đang áp dụng căn hộ,model_bsd_tknh_ch,bsd_danh_muc.group_manager,1,1,1,1

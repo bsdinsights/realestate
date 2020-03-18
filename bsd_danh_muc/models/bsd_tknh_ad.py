@@ -4,9 +4,10 @@ from odoo import models, fields, api
 
 
 class BsdTknhAp(models.Model):
-    _name = 'bsd.tknh_ap'
+    _name = 'bsd.tknh_ad'
     _description = 'Tài khoản ngân hàng đang áp dụng'
     _rec_name = 'bsd_ten_tknh'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     bsd_ma_tknh = fields.Char(string="Mã", required=True)
     bsd_ten_tknh = fields.Char(string="Tên", required=True)
@@ -18,11 +19,13 @@ class BsdTknhAp(models.Model):
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Ngưng sử dụng')],
                              string="Trạng thái", default='active', required=True)
+    bsd_tknh_ch_ids = fields.One2many('bsd.tknh_ch', 'bsd_ma_tkad_id', string="Chi tiết")
 
 
 class BsdTknhCh(models.Model):
     _name = 'bsd.tknh_ch'
     _description = "Tài khoản ngân hàng đang áp dụng căn hộ"
+    _rec_name = 'bsd_can_ho_id'
 
     bsd_du_an_id = fields.Many2one(string="Dự án", required=True)
     bsd_can_ho_id = fields.Many2one('product.product', string="Căn hộ", required=True)
