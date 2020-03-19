@@ -109,6 +109,12 @@
               action="bsd_chiet_khau_chung_action"
               parent="bsd_chiet_khau_menu"/>
 
+    <menuitem id="bsd_chiet_khau_mua_si_menu_action"
+              name="Chiết khấu mua si"
+              sequence="12"
+              action="bsd_chiet_khau_mua_si_action"
+              parent="bsd_chiet_khau_menu"/>
+
     <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
         <field name="active" eval="True"/>

@@ -20,7 +20,7 @@ class BsdChietKhauMuaSi(models.Model):
                              string="Trạng thái", default='active', required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-    bsd_ct_ids = fields.One2many('bsd.ck_ch_ct', 'bsd_ck_ch_id', string="Chi tiết")
+    bsd_ct_ids = fields.One2many('bsd.ck_ms_ct', 'bsd_ck_ms_id', string="Chi tiết")
 
 
 class BsdChietKhauMuaSiChiTiet(models.Model):
