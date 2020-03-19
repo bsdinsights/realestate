@@ -36,3 +36,6 @@ bsd_ck_cstt_ct_manager,Quản lý chiết khấu theo chính sách thanh toán c
 bsd_ck_ttn_manager,Quản lý chiết khấu thanh toán nhanh,model_bsd_ck_ttn,bsd_danh_muc.group_manager,1,1,1,1
 bsd_ck_ttn_ct_manager,Quản lý chiết khấu thanh toán nhanh,model_bsd_ck_ttn_ct,bsd_danh_muc.group_manager,1,1,1,1
 
+bsd_lai_phat_tt_manager, Thông tin lãi phạt thanh toán,model_bsd_lai_phat_tt,bsd_danh_muc.group_manager,1,1,1,1
+
+
