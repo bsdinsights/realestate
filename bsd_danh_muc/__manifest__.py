@@ -28,6 +28,7 @@
         'views/bsd_chiet_khau_views.xml',
         'views/bsd_chiet_khau_chung_views.xml',
         'views/bsd_chiet_khau_mua_si_views.xml',
+        'views/bsd_chiet_khau_noi_bo_views.xml',
         'views/bsd_menu_item_views.xml'
     ],
     'application': True,

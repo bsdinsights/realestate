@@ -39,22 +39,22 @@
             </form>
         </field>
     </record>
-    <record model="ir.ui.view" id="bsd_ck_ch_tree">
-        <field name="name">bsd.ck_ch.tree</field>
-        <field name="model">bsd.ck_ch</field>
+    <record model="ir.ui.view" id="bsd_ck_nb_tree">
+        <field name="name">bsd.ck_nb.tree</field>
+        <field name="model">bsd.ck_nb</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="bsd_ma_ck_ch"/>
-                <field name="bsd_ten_ck_ch"/>
+                <field name="bsd_ma_ck_nb"/>
+                <field name="bsd_ten_ck_nb"/>
             </tree>
         </field>
     </record>
-    <record model="ir.actions.act_window" id="bsd_chiet_khau_chung_action">
-        <field name="name">Chiết khấu chung</field>
-        <field name="res_model">bsd.ck_ch</field>
+    <record model="ir.actions.act_window" id="bsd_chiet_khau_noi_bo_action">
+        <field name="name">Chiết khấu nội bộ</field>
+        <field name="res_model">bsd.ck_nb</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
-            <p>Tạo Chiết khấu chung</p>
+            <p>Tạo Chiết khấu nội bộ</p>
         </field>
     </record>
 </odoo>
