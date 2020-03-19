@@ -121,6 +121,12 @@
               action="bsd_chiet_khau_noi_bo_action"
               parent="bsd_chiet_khau_menu"/>
 
+    <menuitem id="bsd_chiet_khau_ttth_menu_action"
+              name="Chiết khấu thanh toán trước hạn"
+              sequence="14"
+              action="bsd_chiet_khau_ttth_action"
+              parent="bsd_chiet_khau_menu"/>
+
     <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
         <field name="active" eval="True"/>
