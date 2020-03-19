@@ -11,3 +11,4 @@ from . import bsd_pmg_ttc
 from . import bsd_tknh_ad
 from . import product_pricelist
 from . import bsd_khuyen_mai
+from . import bsd_chiet_khau
