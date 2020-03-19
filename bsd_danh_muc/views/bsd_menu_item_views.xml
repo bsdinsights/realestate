@@ -91,7 +91,11 @@
               sequence="13"
               action="bsd_khuyen_mai_action"
               parent="bsd_main_danh_muc_root"/>
-
+    <menuitem id="bsd_chiet_khau_menu_action"
+              name="Chiết khấu"
+              sequence="14"
+              action="bsd_chiet_khau_action"
+              parent="bsd_main_danh_muc_root"/>
 
     <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
