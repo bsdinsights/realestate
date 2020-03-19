@@ -138,6 +138,12 @@
               action="bsd_chiet_khau_ttn_action"
               parent="bsd_chiet_khau_menu"/>
 
+    <menuitem id="bsd_lai_phat_tt_menu_action"
+              name="Lãi phạt thanh toán"
+              sequence="15"
+              action="bsd_lai_phat_tt_action"
+              parent="bsd_main_danh_muc_root"/>
+
     <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
         <field name="active" eval="True"/>
