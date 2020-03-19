@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_lai_phat_tt_form">
+        <field name="name">bsd.lai_phat_tt.form</field>
+        <field name="model">bsd.lai_phat_tt</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="currency_id"/>
+                            <field name="bsd_ma_lptt"/>
+                            <field name="bsd_ten_lptt"/>
+                            <field name="bsd_du_an_id"/>
+                            <field name="bsd_tinh_phat"/>
+                            <field name="bsd_dien_giai"/>
+                        </group>
+                        <group>
+                            <field name="bsd_an_han"/>
+                            <field name="bsd_lai_phat"/>
+                            <field name="bsd_tien_td"/>
+                            <field name="bsd_tl_td"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_lai_phat_tt_tree">
+        <field name="name">bsd.lai_phat_tt.tree</field>
+        <field name="model">bsd.lai_phat_tt</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_lptt"/>
+                <field name="bsd_ten_lptt"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_lai_phat_tt_action">
+        <field name="name">Lãi phạt tối đa</field>
+        <field name="res_model">bsd.lai_phat_tt</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo lãi phạt tối đa</p>
+        </field>
+    </record>
+</odoo>
