@@ -132,6 +132,12 @@
               action="bsd_chiet_khau_cstt_action"
               parent="bsd_chiet_khau_menu"/>
 
+    <menuitem id="bsd_chiet_khau_ttn_menu_action"
+              name="Chiết khấu thanh toán nhanh"
+              sequence="15"
+              action="bsd_chiet_khau_ttn_action"
+              parent="bsd_chiet_khau_menu"/>
+
     <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
         <field name="active" eval="True"/>
