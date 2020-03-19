@@ -26,6 +26,7 @@
         'views/bsd_product_pricelist_views.xml',
         'views/bsd_khuyen_mai_views.xml',
         'views/bsd_chiet_khau_views.xml',
+        'views/bsd_chiet_khau_chung_views.xml',
         'views/bsd_menu_item_views.xml'
     ],
     'application': True,
