@@ -5,7 +5,7 @@ from odoo import models, fields, api
 
 class BsDkbg(models.Model):
     _name = 'bsd.dk_bg'
-    _res_name = 'bsd_ten_dkbg'
+    _rec_name = 'bsd_ten_dkbg'
     _description = "Điều kiện bàn giao"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 

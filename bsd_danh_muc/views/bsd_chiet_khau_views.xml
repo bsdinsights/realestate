@@ -41,8 +41,12 @@
                             <field name="bsd_tl_tt"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['ttn'])],
                                            'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','mua_si','ltt','ttth'])]}"/>
-                            <field name="bsd_tien_ck"/>
-                            <field name="bsd_tl_ck"/>
+                            <field name="bsd_tien_ck"
+                                   attrs="{'required':[('bsd_cach_tinh', 'in', ['tien'])],
+                                           'readonly':[('bsd_cach_tinh', 'in', ['phan_tram'])]}"/>
+                            <field name="bsd_tl_ck"
+                                   attrs="{'required':[('bsd_cach_tinh', 'in', ['phan_tram'])],
+                                           'readonly':[('bsd_cach_tinh', 'in', ['tien'])]}"/>
                             <field name="state"/>
                         </group>
                     </group>
