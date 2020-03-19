@@ -16,3 +16,5 @@ bsd_tknh_ch_manager,Tài khoản ngân hàng đang áp dụng căn hộ,model_bs
 
 bsd_khuyen_mai_manager,chương trình khuyến mãi,model_bsd_khuyen_mai,bsd_danh_muc.group_manager,1,1,1,1
 
+bsd_chiet_khau_manager,Quản lý chiết khấu,model_bsd_chiet_khau,bsd_danh_muc.group_manager,1,1,1,1
+
