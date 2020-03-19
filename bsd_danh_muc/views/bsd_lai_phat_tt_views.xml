@@ -8,7 +8,7 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="currency_id"/>
+                            <field name="currency_id" invisible="1"/>
                             <field name="bsd_ma_lptt"/>
                             <field name="bsd_ten_lptt"/>
                             <field name="bsd_du_an_id"/>
