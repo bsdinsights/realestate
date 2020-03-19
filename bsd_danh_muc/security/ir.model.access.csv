@@ -25,5 +25,8 @@ bsd_ck_ms_manager,Quản lý chiết khấu mua sỉ,model_bsd_ck_ms,bsd_danh_mu
 bsd_ck_ms_ct_manager,Quản lý chiết khấu mua sỉ chi tiết,model_bsd_ck_ms_ct,bsd_danh_muc.group_manager,1,1,1,1
 
 bsd_ck_nb_manager,Quản lý chiết khấu nội bộ,model_bsd_ck_nb,bsd_danh_muc.group_manager,1,1,1,1
-bsd_ck_nb_ct_manager,Quản lý chiết khấu nội bộ chi tiết,model_bsd_ck_nb_ct,bsd_danh_muc.group_manager,1,1,1,1
+bsd_ck_nb_ct_manager,Quản lý chiết khấu nội bộ chi tiết,model_bsd_ck_nb_ct,bsd_danh_muc.group_manager,1,1,1,
+
+bsd_ck_ttth_manager,Quản lý chiết khấu thanh toán trước hạn,model_bsd_ck_ttth,bsd_danh_muc.group_manager,1,1,1,1
+bsd_ck_ttth_ct_manager,Quản lý chiết khấu thanh toán trước hạn,model_bsd_ck_ttth_ct,bsd_danh_muc.group_manager,1,1,1,1
 
