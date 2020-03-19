@@ -33,7 +33,7 @@
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['mua_si'])],
                                            'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn'])]}"/>
                             <field name="bsd_cs_tt_id"
-                                   attrs="{'required':[('bsd_loai_ck', 'in', ['mua_si','ltt'])],
+                                   attrs="{'required':[('bsd_loai_ck', 'in', ['ltt'])],
                                            'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','ttth','ttn','mua_si'])]}"/>
                             <field name="bsd_ngay_tt"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['ttn'])],
