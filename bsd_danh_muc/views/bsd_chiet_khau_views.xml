@@ -24,8 +24,8 @@
                         <group>
                             <field name="currency_id" invisible="1"/>
                             <field name="bsd_cung_tang"
-                                   attrs="{'required':[('bsd_loai_ck', 'in', ['mua_si','ltt','ttth','ttn'])],
-                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo'])]}"/>
+                                   attrs="{'required':[('bsd_loai_ck', 'in', ['mua_si'])],
+                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn'])]}"/>
                             <field name="bsd_sl_tu"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['mua_si'])],
                                            'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn'])]}"/>

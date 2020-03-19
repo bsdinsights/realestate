@@ -30,3 +30,6 @@ bsd_ck_nb_ct_manager,Quản lý chiết khấu nội bộ chi tiết,model_bsd_c
 bsd_ck_ttth_manager,Quản lý chiết khấu thanh toán trước hạn,model_bsd_ck_ttth,bsd_danh_muc.group_manager,1,1,1,1
 bsd_ck_ttth_ct_manager,Quản lý chiết khấu thanh toán trước hạn,model_bsd_ck_ttth_ct,bsd_danh_muc.group_manager,1,1,1,1
 
+bsd_ck_cstt_manager,Quản lý chiết khấu theo chính sách thanh toán,model_bsd_ck_cstt,bsd_danh_muc.group_manager,1,1,1,1
+bsd_ck_cstt_ct_manager,Quản lý chiết khấu theo chính sách thanh toán chi tiết,model_bsd_ck_cstt_ct,bsd_danh_muc.group_manager,1,1,1,1
+
