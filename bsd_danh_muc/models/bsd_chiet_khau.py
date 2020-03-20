@@ -29,7 +29,7 @@ class BsdChietKhau(models.Model):
                                    help="Điều kiện xét chiết khấu mua sỉ số lượng mua có cùng chung một tầng hay không")
     bsd_sl_tu = fields.Integer(string="Số lượng từ", help="Điều kiện xét chiết khấu theo số lượng từ")
     bsd_sl_den = fields.Integer(string="Số lượng đến", help="Điều kiện xét chiết theo số lượng đến")
-    bsd_cs_tt_id = fields.Char(string="Chính sách thanh toán")
+    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="Chính sách thanh toán")
     bsd_ngay_tt = fields.Date(string="Ngày thanh toán",
                               help="Mốc (ngày) thanh toán được sử dụng để xét thanh toán nhanh")
     bsd_tl_tt = fields.Float(string="Tỷ lệ thanh toán", help="Tỷ lệ thanh toán để được xét chiết khấu thanh toán nhanh")
