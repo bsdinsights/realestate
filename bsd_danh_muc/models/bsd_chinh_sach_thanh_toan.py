@@ -1,18 +1,20 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class BsdChinhSachThanhToan(models.Model):
     _name = 'bsd.cs_tt'
-    _rec_name = 'bsd_ten_cs_tt'
+    _rec_name = 'bsd_ten_cstt'
     _description = "Thông tin chính sách thanh toán"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    bsd_ma_cs_tt = fields.Char(string="Mã chính sách", help="Mã chính sách thanh toán", required=True)
-    bsd_ten_cs_tt = fields.Char(string="Tên chính sách", help="Tên chính sách thanh toán", required=True)
+    bsd_ma_cstt = fields.Char(string="Mã chính sách", help="Mã chính sách thanh toán", required=True)
+    bsd_ten_cstt = fields.Char(string="Tên chính sách", help="Tên chính sách thanh toán", required=True)
     bsd_dien_giai = fields.Char(string="Diễn giải")
-    bsd_du_an_id = fields.Many2one(string="Dự án", required=True)
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng chính sách thanh toán")
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng chính sách thanh toán")
     bsd_ngay_tinh = fields.Selection([('ndc', 'Ngày đặt cọc'), ('nhd', 'Ngày hợp đồng')],
@@ -40,21 +42,22 @@ class BsdChinhSachThanhToan(models.Model):
                                help="Tổng số ngày trễ tối đa để thanh lý hợp đồng")
     bsd_qh_tt = fields.Integer(string="Quá hạn thanh toán", help="Số ngày trễ tối đa của mỗi đợt thanh toán")
     bsd_canh_bao1 = fields.Integer(string="Cảnh báo 1",
-                                   help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo lần 1")
+                                   help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo quá hạn thanh toán lần 1")
     bsd_canh_bao2 = fields.Integer(string="Cảnh báo 2",
-                                   help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo lần 2")
+                                   help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo quá hạn thanh toán lần 2")
     bsd_canh_bao3 = fields.Integer(string="Cảnh báo 3",
-                                   help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo lần 3")
+                                   help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo quá hạn thanh toán lần 3")
     bsd_canh_bao4 = fields.Integer(string="Cảnh báo 4",
-                                   help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo lần 4")
+                                   help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo quá hạn thanh toán lần 4")
     bsd_canh_bao5 = fields.Integer(string="Cảnh báo 5",
-                                   help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo lần 5")
+                                   help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo quá hạn thanh toán lần 5")
 
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Ngưng sử dụng')],
                              string="Trạng thái", default='active', required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+    bsd_ct_ids = fields.One2many('bsd.cs_tt_ct', 'bsd_cs_tt_id', string="Chi tiết")
 
 
 class BsdChinhSachThanhToanChiTiet(models.Model):
@@ -89,7 +92,7 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
     bsd_tu_nc = fields.Boolean(string="Từ ngày cọc",
                                help="""Thông tin quy định: hạn thanh toán của đợt thanh toán tính
                                 theo ngày cọc hay ngày ký hợp đồng""", default=False)
-    bsd_tiep_theo = fields.Selection([('ngay', 'Ngày'), ('thang', 'Tháng')],string="Đợt tiếp theo", default='ngay',
+    bsd_tiep_theo = fields.Selection([('ngay', 'Ngày'), ('thang', 'Tháng')], string="Đợt tiếp theo", default='ngay',
                                      help="""Cách xác định hạn thanh toán của đợt tiếp theo, được tính
                                      theo số ngày hoặc số tháng
                                      """)
@@ -115,3 +118,11 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
                                                                 chỉ cộng ngày gia hạn vào đợt tính tự động cuối cùng
                                                             """)
     bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="Chính sách thanh toán")
+    state = fields.Selection([('active', 'Đang sử dụng'),
+                              ('inactive', 'Ngưng sử dụng')],
+                             string="Trạng thái", default='active', required=True)
+
+    @api.onchange('bsd_dot_cuoi')
+    def _onchange_bsd_dot_cuoi(self):
+        _logger.debug("debug tại đây")
+        self.bsd_cach_tinh = None
