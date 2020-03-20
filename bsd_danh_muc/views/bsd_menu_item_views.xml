@@ -144,6 +144,12 @@
               action="bsd_lai_phat_tt_action"
               parent="bsd_main_danh_muc_root"/>
 
+    <menuitem id="bsd_cs_tt_menu_action"
+              name="Chính sách thanh toán"
+              sequence="16"
+              action="bsd_cs_tt_action"
+              parent="bsd_main_danh_muc_root"/>
+
     <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
         <field name="active" eval="True"/>

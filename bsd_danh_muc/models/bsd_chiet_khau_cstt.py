@@ -34,7 +34,7 @@ class BsdChietKhauCSTTChiTiet(models.Model):
     bsd_ma_ck = fields.Char(related="bsd_chiet_khau_id.bsd_ma_ck")
     bsd_tu_ngay = fields.Date(related="bsd_chiet_khau_id.bsd_tu_ngay")
     bsd_den_ngay = fields.Date(related="bsd_chiet_khau_id.bsd_den_ngay")
-    bsd_cs_tt_id = fields.Char(related="bsd_chiet_khau_id.bsd_cs_tt_id")
+    bsd_cs_tt_id = fields.Many2one(related="bsd_chiet_khau_id.bsd_cs_tt_id")
     bsd_cach_tinh = fields.Selection(related="bsd_chiet_khau_id.bsd_cach_tinh")
     bsd_tien_ck = fields.Monetary(related="bsd_chiet_khau_id.bsd_tien_ck")
     bsd_tl_ck = fields.Float(related="bsd_chiet_khau_id.bsd_tl_ck")

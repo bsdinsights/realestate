@@ -33,6 +33,7 @@
         'views/bsd_chiet_khau_cstt_views.xml',
         'views/bsd_chiet_khau_ttn_views.xml',
         'views/bsd_lai_phat_tt_views.xml',
+        'views/bsd_chinh_sach_thanh_toan_views.xml',
         'views/bsd_menu_item_views.xml'
     ],
     'application': True,
