@@ -9,13 +9,13 @@
                     <group>
                         <group>
                             <field name="bsd_quoc_gia_id"/>
-                            <field name="bsd_tinh_thanh_id" domain="[('bsd_quoc_gia_id', 'in',[bsd_quoc_gia_id])]"/>
+                            <field name="bsd_tinh_thanh_id" domain="[('country_id', 'in',[bsd_quoc_gia_id])]"/>
                             <field name="bsd_ma"/>
                             <field name="bsd_ten"/>
                         </group>
                         <group>
                             <field name="bsd_dien_giai"/>
-                            <field name="bsd_trang_thai"/>
+                            <field name="state"/>
                         </group>
                     </group>
                 </sheet>
@@ -37,7 +37,7 @@
                 <field name="bsd_ma"/>
                 <field name="bsd_ten"/>
                 <field name="bsd_dien_giai"/>
-                <field name="bsd_trang_thai"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>

@@ -10,12 +10,12 @@
     <menuitem id="bsd_quoc_gia_menu_action"
               name="Quốc gia"
               sequence="10"
-              action="bsd_quoc_gia_action"
+              action="base.action_country"
               parent="bsd_danh_muc_menu"/>
     <menuitem id="bsd_tinh_thanh_menu_action"
               name="Tỉnh thành"
               sequence="11"
-              action="bsd_tinh_thanh_action"
+              action="base.action_country_state"
               parent="bsd_danh_muc_menu"/>
     <menuitem id="bsd_quan_huyen_menu_action"
               name="Quận huyện"

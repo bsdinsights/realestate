@@ -14,8 +14,6 @@
         'security/user_groups.xml',
         'security/ir.model.access.csv',
         'security/bsd_security.xml',
-        'views/bsd_quoc_gia_views.xml',
-        'views/bsd_tinh_thanh_views.xml',
         'views/bsd_quan_huyen_views.xml',
         'views/bsd_phuong_xa_views.xml',
         'views/bsd_lai_suat_views.xml',
