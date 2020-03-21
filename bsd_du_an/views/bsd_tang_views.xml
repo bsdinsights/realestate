@@ -8,15 +8,17 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="bsd_du_an_id"/>
-                            <field name="bsd_toa_nha_id" domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
-                            <field name="bsd_ma"/>
-                            <field name="bsd_ten"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                            <field name="bsd_toa_nha_id"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
+                            <field name="bsd_ma_tang"/>
+                            <field name="bsd_ten_tang"/>
                         </group>
                         <group>
-                            <field name="bsd_so_thu_tu"/>
+                            <field name="bsd_stt"/>
                             <field name="bsd_dien_giai"/>
-                            <field name="bsd_trang_thai"/>
+                            <field name="state"/>
                         </group>
                     </group>
                 </sheet>
@@ -33,7 +35,10 @@
         <field name="model">bsd.tang</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="bsd_ten"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_toa_nha_id"/>
+                <field name="bsd_ma_tang"/>
+                <field name="bsd_ten_tang"/>
             </tree>
         </field>
     </record>

@@ -8,18 +8,18 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="bsd_du_an_id"/>
-                            <field name="bsd_ma"/>
-                            <field name="bsd_ten"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                            <field name="bsd_ma_tn"/>
+                            <field name="bsd_ten_tn"/>
                             <field name="bsd_dia_chi"/>
                             <field name="bsd_postal"/>
                         </group>
                         <group>
-                            <field name="bsd_so_thu_tu"/>
+                            <field name="bsd_stt"/>
                             <field name="bsd_so_tang"/>
-                            <field name="bsd_so_can_ho"/>
+                            <field name="bsd_so_unit"/>
                             <field name="bsd_dien_giai"/>
-                            <field name="bsd_trang_thai"/>
+                            <field name="state"/>
                         </group>
                     </group>
                 </sheet>
@@ -36,7 +36,9 @@
         <field name="model">bsd.toa_nha</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="bsd_ten"/>
+                <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                <field name="bsd_ma_tn"/>
+                <field name="bsd_ten_tn"/>
             </tree>
         </field>
     </record>
