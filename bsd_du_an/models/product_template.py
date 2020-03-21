@@ -177,12 +177,12 @@ class ProductTemplate(models.Model):
             _logger.debug(toa_nha)
             tang = template.bsd_tang_id
             _logger.debug(tang)
-            if not template.name:
+            if not template.bsd_ma_unit:
                 template.write({
                     'bsd_ma_unit': du_an.bsd_ma_da + du_an.bsd_dd_da +
                             toa_nha.bsd_ma_tn + du_an.bsd_dd_khu + tang.bsd_ma_tang + du_an.bsd_dd_tang
                 })
-            if not template.bsd_ma_can_ho:
+            if not template.bsd_ten_unit:
                 template.write({
                     'bsd_ten_unit': toa_nha.bsd_ma_tn + du_an.bsd_dd_khu + tang.bsd_ma_tang + du_an.bsd_dd_tang
                 })
