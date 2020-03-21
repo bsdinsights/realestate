@@ -31,7 +31,7 @@ class ProductTemplate(models.Model):
                                     help="Thông tin căn hộ có từng bị thanh lý hợp đồng hay không")
     bsd_lan_tl = fields.Integer(string="Lần thanh lý",
                                 help="Số lần căn hộ bị thanh lý hợp đồng")
-    bsd_loai_sp_id = fields.Many2one(string="Phân nhóm",
+    bsd_loai_sp_id = fields.Many2one('bsd.loai_sp',string="Phân nhóm",
                                      help="Phân nhóm đặc tính kỹ thuật của căn hộ")
     bsd_huong = fields.Selection([('1', 'Đông'),
                                   ('2', 'Tây'),
