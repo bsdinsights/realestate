@@ -24,14 +24,13 @@ class ProductTemplate(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Thông tin về căn hộ")
     bsd_dot_mb = fields.Integer(string="Đợt mở bán", help="Đợt mở bán hiện tại của căn hộ")
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch",
-                                    domain=[('company_type', '=', 'company')],
                                     help="Sàn giao dịch đang bán(căn hộ) theo đợt mở bán")
     bsd_thanh_ly = fields.Selection([('0', 'Không'), ('1', 'Có')], string="Thanh lý",
                                     default="0",
                                     help="Thông tin căn hộ có từng bị thanh lý hợp đồng hay không")
     bsd_lan_tl = fields.Integer(string="Lần thanh lý",
                                 help="Số lần căn hộ bị thanh lý hợp đồng")
-    bsd_loai_sp_id = fields.Many2one('bsd.loai_sp',string="Phân nhóm",
+    bsd_loai_sp_id = fields.Many2one('bsd.loai_sp', string="Phân nhóm",
                                      help="Phân nhóm đặc tính kỹ thuật của căn hộ")
     bsd_huong = fields.Selection([('1', 'Đông'),
                                   ('2', 'Tây'),

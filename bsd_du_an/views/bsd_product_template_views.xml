@@ -53,7 +53,9 @@
                             </group>
                             <group string="Mở bán" style="margin:0px" col="2" colspan="2">
                                 <field name="bsd_dot_mb"/>
-                                <field name="bsd_san_gd_id" options="{'no_create':true}"/>
+                                <field name="bsd_san_gd_id"
+                                       domain="[('is_company', '=',True)]"
+                                       options="{'no_create':true}"/>
                                 <field name="bsd_thanh_ly"/>
                                 <field name="bsd_lan_tl"/>
                             </group>
