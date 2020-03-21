@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record model="ir.ui.view" id="bsd_thong_tin_ky_thuat_form">
-        <field name="name">bsd.thong_tin_ky_thuat.form</field>
-        <field name="model">bsd.thong_tin_ky_thuat</field>
+        <field name="name">bsd.tt_kt.form</field>
+        <field name="model">bsd.tt_kt</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
                     <group>
                         <group>
-                            <field name="bsd_ma"/>
-                            <field name="bsd_ten"/>
-                            <field name="bsd_du_an_id"/>
-                            <field name="bsd_loai_san_pham_id"/>
+                            <field name="bsd_ma_ttkt"/>
+                            <field name="bsd_ten_ttkt"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                            <field name="bsd_loai_sp_id" options="{'no_create':true}"/>
                         </group>
                         <group>
                             <field name="bsd_dien_giai"/>
@@ -62,21 +62,21 @@
         </field>
     </record>
     <record model="ir.ui.view" id="bsd_thong_tin_ky_thuat_tree">
-        <field name="name">bsd.thong_tin_ky_thuat.tree</field>
-        <field name="model">bsd.thong_tin_ky_thuat</field>
+        <field name="name">bsd.tt_kt.tree</field>
+        <field name="model">bsd.tt_kt</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="bsd_ma"/>
-                <field name="bsd_ten"/>
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_loai_san_pham_id"/>
+                <field name="bsd_ma_ttkt"/>
+                <field name="bsd_ten_ttkt"/>
+                <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                <field name="bsd_loai_sp_id" options="{'no_create':true}"/>
                 <field name="state"/>
             </tree>
         </field>
     </record>
     <record model="ir.actions.act_window" id="bsd_thong_tin_ky_thuat_action">
         <field name="name">Thông tin kỹ thuật</field>
-        <field name="res_model">bsd.thong_tin_ky_thuat</field>
+        <field name="res_model">bsd.tt_kt</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
             <p>Tạo mới thông tin kỹ thuật</p>

@@ -8,7 +8,7 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="bsd_du_an_id"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
                             <field name="bsd_ma_tn"/>
                             <field name="bsd_ten_tn"/>
                             <field name="bsd_dia_chi"/>
@@ -36,7 +36,7 @@
         <field name="model">bsd.toa_nha</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="bsd_du_an_id"/>
+                <field name="bsd_du_an_id" options="{'no_create':true}"/>
                 <field name="bsd_ma_tn"/>
                 <field name="bsd_ten_tn"/>
             </tree>
