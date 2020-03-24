@@ -5,6 +5,12 @@
         <field name="model">bsd.dot_mb</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button string="Lọc unit"
+                            name="action_loc_unit"
+                            type="object"
+                            class="oe_highlight"/>
+                </header>
                 <sheet>
                     <notebook>
                         <page string="Thông tin chung">
@@ -80,6 +86,7 @@
                                     <field name="bsd_loai_bg"/>
                                     <field name="bsd_tien"/>
                                     <field name="bsd_ty_le"/>
+                                    <field name="currency_id" invisible="1"/>
                                 </tree>
                             </field>
                         </page>
@@ -91,6 +98,7 @@
                                     <field name="bsd_tang_id" options="{'no_create':true}"/>
                                     <field name="bsd_unit_id" options="{'no_create':true}"/>
                                     <field name="bsd_gia_ban"/>
+                                    <field name="currency_id" invisible="1"/>
                                 </tree>
                             </field>
                         </page>
@@ -102,6 +110,7 @@
                                     <field name="bsd_tang_id" options="{'no_create':true}"/>
                                     <field name="bsd_unit_id" options="{'no_create':true}"/>
                                     <field name="bsd_gia_ban"/>
+                                    <field name="currency_id" invisible="1"/>
                                 </tree>
                             </field>
 
@@ -124,6 +133,7 @@
             <tree>
                 <field name="bsd_ma_dot_mb"/>
                 <field name="bsd_ten_dot_mb"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>

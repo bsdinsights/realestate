@@ -1,6 +1,7 @@
 # -*- coding:utf-8
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 
 class BsdDotMoBan(models.Model):
@@ -15,11 +16,11 @@ class BsdDotMoBan(models.Model):
     bsd_ten_dot_mb = fields.Char(string="Tên đợt mở bán", required=True,
                                  readonly=True,
                                  states={'cph': [('readonly', False)]})
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án",
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True,
                                    readonly=True,
                                    states={'cph': [('readonly', False)]})
     bsd_bang_gia_id = fields.Many2one('product.pricelist', string="Bảng giá",
-                                      readonly=True,
+                                      readonly=True, required=True,
                                       states={'cph': [('readonly', False)]})
     bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="CK chung",
                                    readonly=True,
@@ -40,10 +41,10 @@ class BsdDotMoBan(models.Model):
                                      readonly=True,
                                      states={'cph': [('readonly', False)]})
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng của đợt mở bán",
-                                readonly=True,
-                                states={'cph': [('readonly', False)]})
+                              readonly=True, required=True,
+                              states={'cph': [('readonly', False)]})
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng của đợt mở bán",
-                               readonly=True,
+                               readonly=True, required=True,
                                states={'cph': [('readonly', False)]})
     bsd_ngay_ph = fields.Date(string="Ngày phát hành", help="Ngày duyệt phát hành đợt mở bán",
                               readonly=True,
@@ -90,6 +91,57 @@ class BsdDotMoBan(models.Model):
     bsd_ph_ids = fields.One2many('bsd.dot_mb_unit', 'bsd_dot_mb_id', string="Phát hành unit",
                                  readonly=True,
                                  states={'cph': [('readonly', False)]})
+
+    def action_loc_unit(self):
+        # gán giá trị biến nội hàm
+        tu_toa_nha_id = self.bsd_tu_toa_nha_id
+        den_toa_nha_id = self.bsd_den_toa_nha_id
+        tu_tang_id = self.bsd_tu_tang_id
+        den_tang_id = self.bsd_den_tang_id
+        # Kiểm tra trạng thái record
+        if self.state != 'cph':
+            pass
+        # Kiểm tra đầy đủ các field điều kiện lọc unit
+        elif not tu_toa_nha_id or not tu_tang_id or \
+                not den_toa_nha_id or not den_tang_id:
+            raise UserError("field điều kiện lọc unit trống")
+        elif tu_toa_nha_id.bsd_stt > den_toa_nha_id.bsd_stt:
+            raise UserError("Nhập sai số thứ tự 2 tòa nhà")
+        else:
+            ids_tang = []
+            tu_tang_stt = tu_tang_id.bsd_stt
+            den_tang_stt = den_tang_id.bsd_stt
+            # nếu lọc tầng cùng tòa nhà
+            if tu_toa_nha_id == den_toa_nha_id:
+                ids_tang.append(self.env['bsd.tang'].search([('bsd_stt' '>=', tu_tang_stt),
+                                                            ('bsd_stt', '<=', den_tang_stt),
+                                                            ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids)
+            # nếu lọc tầng khác tòa nhà
+            else:
+                # lọc tầng từ tòa nhà đầu
+                ids_tang.append(self.env['bsd.tang'].search([('bsd_stt' '>=', tu_tang_stt),
+                                                            ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids)
+                # lọc tầng đến tòa nhà cuối
+                ids_tang.append(self.env['bsd.tang'].search([('bsd_stt' '<=', den_tang_stt),
+                                                            ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids)
+                # lọc tầng các tòa nhà có số thứ tự lớn hơn tòa nhà đầu và nhỏ hơn tòa nhà cuối
+                if den_toa_nha_id.bsd_stt - tu_toa_nha_id.bsd_stt > 1:
+                    ids_toa_nha = self.env['bsd.toa_nha'].search([('bsd_stt', '>', tu_toa_nha_id.bsd_stt),
+                                                                 ('bsd_stt', '<', den_toa_nha_id.bsd_stt)],
+                                                                 ('bsd_du_an_id', '=', self.bsd_du_an_id.id)).ids
+                    ids_tang.append(self.env['bsd.tang'].search([('bsd_toa_nha_id', 'in', ids_toa_nha)]).ids)
+
+            # lọc unit theo các tầng đã tìm được:
+            units = self.env['product.template'].search([('bsd_tang_id', 'in', ids_tang)])
+            # Tạo dữ liệu cho bảng unit chuẩn bị mở bán
+            for unit in units:
+                self.bsd_cb_ids.create({
+                    'bsd_du_an_id': unit.bsd_du_an_id.id,
+                    'bsd_toa_nha_id': unit.bsd_toa_nha_id.id,
+                    'bsd_tang_id': unit.bsd_tang_id.id,
+                    'bsd_unit_id': unit.id,
+                    'bsd_gia_ban': unit.bsd_tong_gb,
+                })
 
 
 class BsdDotMoBanSanGiaoDich(models.Model):
@@ -147,6 +199,12 @@ class BsdDotMoBanCB(models.Model):
     bsd_gia_ban = fields.Monetary(string="Giá bán", required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+
+    _sql_constraints = [
+        ('bsd_unit_id_unique',
+         'UNIQUE(bsd_unit_id)',
+         "Căn hộ đã có trong đợt mở bán"),
+    ]
 
 
 class BsdDotMoBanUnit(models.Model):
