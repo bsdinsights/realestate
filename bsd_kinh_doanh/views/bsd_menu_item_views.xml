@@ -19,6 +19,12 @@
               action="bsd_kh_dn_action"
               parent="bsd_khach_hang_menu"/>
 
+    <menuitem id="bsd_dot_mb_menu_action"
+              name="Đợt mở bán"
+              sequence="11"
+              action="bsd_dot_mb_action"
+              parent="bsd_main_kinh_doanh_root"/>
+
     <record id="bsd_kinh_doanh.bsd_main_kinh_doanh_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
         <field name="active" eval="True"/>

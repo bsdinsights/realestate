@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_dot_mb_form">
+        <field name="name">bsd.dot_mb.form</field>
+        <field name="model">bsd.dot_mb</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma_dot_mb"/>
+                            <field name="bsd_ten_dot_mb"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_dot_mb_tree">
+        <field name="name">bsd.dot_mb.tree</field>
+        <field name="model">bsd.dot_mb</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_dot_mb"/>
+                <field name="bsd_ten_dot_mb"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_dot_mb_action">
+        <field name="name">Đợt mở bán</field>
+        <field name="res_model">bsd.dot_mb</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo đợt mở bán</p>
+        </field>
+    </record>
+</odoo>
