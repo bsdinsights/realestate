@@ -10,6 +10,10 @@
                             name="action_loc_unit"
                             type="object"
                             class="oe_highlight"/>
+                    <button string="Phát hành"
+                            type="object"
+                            class="oe_highlight"
+                            name="action_phat_hanh"/>
                 </header>
                 <sheet>
                     <notebook>

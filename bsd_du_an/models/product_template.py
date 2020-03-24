@@ -22,7 +22,6 @@ class ProductTemplate(models.Model):
     bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc của căn hộ", required=True)
     bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ của căn hộ")
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Thông tin về căn hộ")
-    bsd_dot_mb = fields.Integer(string="Đợt mở bán", help="Đợt mở bán hiện tại của căn hộ")
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch",
                                     help="Sàn giao dịch đang bán(căn hộ) theo đợt mở bán")
     bsd_thanh_ly = fields.Selection([('0', 'Không'), ('1', 'Có')], string="Thanh lý",

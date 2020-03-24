@@ -141,7 +141,27 @@ class BsdDotMoBan(models.Model):
                     'bsd_tang_id': unit.bsd_tang_id.id,
                     'bsd_unit_id': unit.id,
                     'bsd_gia_ban': unit.bsd_tong_gb,
+                    'bsd_dot_mb_id': self.id
                 })
+
+    def action_phat_hanh(self):
+        # kiểm tra trạng thái record
+        if self.state != 'cph':
+            pass
+        else:
+            phat_hanh_units = []
+            # lấy tất cả unit chuẩn bị phát hành
+            units = self.bsd_cb_ids.mapped('bsd_unit_id')
+            # lọc các unit thỏa điều kiện trường ưu tiên là không và field bsd_dot_mb_id = False
+            no_uu_dot_mb_units = set(units.filtered(lambda x: x.bsd_uu_tien == '0' and not x.bsd_dot_mb_id))
+            # lấy các unit trong bảng giá đang áp dụng cho đợt mở bán
+            bang_gia_units = set(self.bsd_bang_gia_id.item_ids.mapped('product_tmpl_id'))
+            # lấy các unit thỏa điều kiện  không trường ưu tiên và bsd_dot_mb_id và có trong bảng giá
+            phat_hanh_units.append(list(no_uu_dot_mb_units.intersection(bang_gia_units)))
+
+        # Tạo dự liệu trong bảng unit phát hành trong đợt mở bán
+        for unit in phat_hanh_units:
+            pass
 
 
 class BsdDotMoBanSanGiaoDich(models.Model):

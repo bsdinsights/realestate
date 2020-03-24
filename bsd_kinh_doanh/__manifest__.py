@@ -16,6 +16,7 @@
         'security/bsd_security.xml',
         'views/res_partner_views.xml',
         'views/bsd_dot_mo_ban_views.xml',
+        'views/bsd_product_template_views.xml',
         'views/bsd_menu_item_views.xml',
     ],
     'application': True,
