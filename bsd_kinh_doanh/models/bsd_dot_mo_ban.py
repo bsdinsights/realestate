@@ -132,7 +132,7 @@ class BsdDotMoBan(models.Model):
                     ids_tang.append(self.env['bsd.tang'].search([('bsd_toa_nha_id', 'in', ids_toa_nha)]).ids)
 
             # lọc unit theo các tầng đã tìm được:
-            units = self.env['product.template'].search([('bsd_tang_id', 'in', ids_tang)])
+            units = self.env['product.product'].search([('bsd_tang_id', 'in', ids_tang)])
             # Tạo dữ liệu cho bảng unit chuẩn bị mở bán
             for unit in units:
                 self.bsd_cb_ids.create({

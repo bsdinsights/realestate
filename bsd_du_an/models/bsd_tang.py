@@ -5,7 +5,7 @@ from odoo import models, fields, api
 
 class BsdFloor(models.Model):
     _name = "bsd.tang"
-    _rec_name = 'bsd_ten_tang'
+    _rec_name = 'bsd_ma_tang'
     _description = 'Thông tin tầng'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 

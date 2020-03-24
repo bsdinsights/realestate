@@ -31,7 +31,7 @@
                             <field name="bsd_dien_giai"/>
                         </group>
                         <group string="Phân nhóm" style="margin:0px ">
-                            <field name="bsd_loai_sp_id" required="1" options="{'no_create':true}"/>
+                            <field name="bsd_loai_sp_id" options="{'no_create':true}"/>
                             <field name="bsd_huong"/>
                             <field name="bsd_view"/>
                             <field name="bsd_so_pn"/>
