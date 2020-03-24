@@ -9,35 +9,87 @@ class BsdDotMoBan(models.Model):
     _rec_name = 'bsd_ten_dot_mb'
     _description = 'Thông tin đợt mở bán'
 
-    bsd_ma_dot_mb = fields.Char(string="Mã đợt mở bán", required=True)
-    bsd_ten_dot_mb = fields.Char(string="Tên đợt mở bán", required=True)
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án")
-    bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="CK chung")
-    bsd_ck_nb_id = fields.Many2one('bsd.ck_nb', string="CK nội bộ")
-    bsd_ck_ms_id = fields.Many2one('bsd.ck_ms', string="CK mua sỉ")
-    bsd_ck_ttth_id = fields.Many2one('bsd.ck_ttth', string="CK TT trước hạn")
-    bsd_ck_ttn_id = fields.Many2one('bsd.ck_ttn', string="CK TT nhanh")
-    bsd_ck_cstt_id = fields.Many2one('bsd.ck_cstt', string="CK chính sách TT")
-    bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng của đợt mở bán")
-    bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng của đợt mở bán")
-    bsd_ngay_ph = fields.Date(string="Ngày phát hành", help="Ngày duyệt phát hành đợt mở bán")
+    bsd_ma_dot_mb = fields.Char(string="Mã đợt mở bán", required=True,
+                                readonly=True,
+                                states={'cph': [('readonly', False)]})
+    bsd_ten_dot_mb = fields.Char(string="Tên đợt mở bán", required=True,
+                                 readonly=True,
+                                 states={'cph': [('readonly', False)]})
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án",
+                                   readonly=True,
+                                   states={'cph': [('readonly', False)]})
+    bsd_bang_gia_id = fields.Many2one('product.pricelist', string="Bảng giá",
+                                      readonly=True,
+                                      states={'cph': [('readonly', False)]})
+    bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="CK chung",
+                                   readonly=True,
+                                   states={'cph': [('readonly', False)]})
+    bsd_ck_nb_id = fields.Many2one('bsd.ck_nb', string="CK nội bộ",
+                                   readonly=True,
+                                   states={'cph': [('readonly', False)]})
+    bsd_ck_ms_id = fields.Many2one('bsd.ck_ms', string="CK mua sỉ",
+                                   readonly=True,
+                                   states={'cph': [('readonly', False)]})
+    bsd_ck_ttth_id = fields.Many2one('bsd.ck_ttth', string="CK TT trước hạn",
+                                     readonly=True,
+                                     states={'cph': [('readonly', False)]})
+    bsd_ck_ttn_id = fields.Many2one('bsd.ck_ttn', string="CK TT nhanh",
+                                    readonly=True,
+                                    states={'cph': [('readonly', False)]})
+    bsd_ck_cstt_id = fields.Many2one('bsd.ck_cstt', string="CK chính sách TT",
+                                     readonly=True,
+                                     states={'cph': [('readonly', False)]})
+    bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng của đợt mở bán",
+                                readonly=True,
+                                states={'cph': [('readonly', False)]})
+    bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng của đợt mở bán",
+                               readonly=True,
+                               states={'cph': [('readonly', False)]})
+    bsd_ngay_ph = fields.Date(string="Ngày phát hành", help="Ngày duyệt phát hành đợt mở bán",
+                              readonly=True,
+                              states={'cph': [('readonly', False)]})
     bsd_nguoi_ph = fields.Many2one('res.users', string="Người phát hành",
-                                   help="Người duyệt phát hành đợt mở bán")
-    bsd_tu_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Từ tòa nhà")
-    bsd_tu_tang_id = fields.Many2one('bsd.tang', string="Từ tầng")
-    bsd_den_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Đến tòa nhà")
-    bsd_den_tang_id = fields.Many2one('bsd.tang', string="Đến tầng")
+                                   help="Người duyệt phát hành đợt mở bán",
+                                   readonly=True,
+                                   states={'cph': [('readonly', False)]})
+    bsd_tu_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Từ tòa nhà",
+                                        readonly=True,
+                                        states={'cph': [('readonly', False)]})
+    bsd_tu_tang_id = fields.Many2one('bsd.tang', string="Từ tầng",
+                                     readonly=True,
+                                     states={'cph': [('readonly', False)]})
+    bsd_den_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Đến tòa nhà",
+                                         readonly=True,
+                                         states={'cph': [('readonly', False)]})
+    bsd_den_tang_id = fields.Many2one('bsd.tang', string="Đến tầng",
+                                      readonly=True,
+                                      states={'cph': [('readonly', False)]})
+    bsd_dien_giai = fields.Char(string="Diễn giải",
+                                readonly=True,
+                                states={'cph': [('readonly', False)]})
     state = fields.Selection([('cph', 'Chưa phát hành'), ('ph', 'Phát hành'),
                               ('thnb', 'Thu hồi mở bán'), ('thch', 'Thu hồi căn hộ')],
-                             string="Trạng thái", default="cph")
+                             string="Trạng thái", default="cph", tracking=1)
     bsd_san_gd = fields.Boolean(string="Sàn giao dịch", default=False,
                                 help="""Thông tin quy định đợt mở bán chỉ cho phép các sàn giao dịch được bán, 
-                                        hay cho sàn giao dịch và chủ đầu tư đều được bán""")
-    bsd_sgd_ids = fields.One2many('bsd.dot_mb_sgd', 'bsd_dot_mb_id', string="Các sàn giao dịch")
-    bsd_km_ids = fields.One2many('bsd.dot_mb_km', 'bsd_dot_mb_id', string="Khuyến mãi")
-    bsd_dkbg_ids = fields.One2many('bsd.dot_mb_dkbg', 'bsd_dot_mb_id', string="Bàn giao")
-    bsd_cs_ids = fields.One2many('bsd.dot_mb_cb', 'bsd_dot_mb_id', string="Chuẩn bị unit")
-    bsd_ph_ids = fields.One2many('bsd.dot_mb_unit', 'bsd_dot_mb_id', string="Phát hành unit")
+                                        hay cho sàn giao dịch và chủ đầu tư đều được bán""",
+                                readonly=True,
+                                states={'cph': [('readonly', False)]})
+    bsd_sgd_ids = fields.One2many('bsd.dot_mb_sgd', 'bsd_dot_mb_id', string="Các sàn giao dịch",
+                                  readonly=True,
+                                  states={'cph': [('readonly', False)]})
+    bsd_km_ids = fields.One2many('bsd.dot_mb_km', 'bsd_dot_mb_id', string="Khuyến mãi",
+                                 readonly=True,
+                                 states={'cph': [('readonly', False)]})
+    bsd_dkbg_ids = fields.One2many('bsd.dot_mb_dkbg', 'bsd_dot_mb_id', string="Bàn giao",
+                                   readonly=True,
+                                   states={'cph': [('readonly', False)]})
+    bsd_cb_ids = fields.One2many('bsd.dot_mb_cb', 'bsd_dot_mb_id', string="Chuẩn bị unit",
+                                 readonly=True,
+                                 states={'cph': [('readonly', False)]})
+    bsd_ph_ids = fields.One2many('bsd.dot_mb_unit', 'bsd_dot_mb_id', string="Phát hành unit",
+                                 readonly=True,
+                                 states={'cph': [('readonly', False)]})
 
 
 class BsdDotMoBanSanGiaoDich(models.Model):
@@ -50,8 +102,7 @@ class BsdDotMoBanSanGiaoDich(models.Model):
                                     help="Sàn giao dịch được bán các căn hộ trong đợt mở bán")
     bsd_san_gd_phone = fields.Char(string="Số điện thoại", related="bsd_san_gd_id.phone")
     bsd_san_gd_street = fields.Char('Đường', related="bsd_san_gd_id.street")
-    bsd_san_gd_street2 = fields.Char('Street2', related="bsd_san_gd_id.street2")
-    bsd_san_gd_city = fields.Char('City', related="bsd_san_gd_id.city")
+    bsd_san_gd_city = fields.Char('Thành phố', related="bsd_san_gd_id.city")
     bsd_san_gd_state_id = fields.Many2one("res.country.state", string='Tỉnh thành', related="bsd_san_gd_id.state_id")
     bsd_san_gd_country_id = fields.Many2one('res.country', string='Quốc gia', related="bsd_san_gd_id.country_id")
 
