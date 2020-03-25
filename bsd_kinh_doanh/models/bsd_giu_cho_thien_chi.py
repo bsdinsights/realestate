@@ -36,23 +36,20 @@ class BsdGiuChoThienChi(models.Model):
                               readonly=True,
                               states={'nhap': [('readonly', False)]})
     bsd_ctv_id = fields.Many2one('res.partner', string="Cộng tác viên", domain=[('is_company', '=', False)],
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                                 readonly=True,
+                                 states={'nhap': [('readonly', False)]})
     bsd_gioi_thieu_id = fields.Many2one('res.partner', string="Giới thiệu", help="Cá nhân hoặc đơn vị giới thiệu",
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                                        readonly=True,
+                                        states={'nhap': [('readonly', False)]})
     bsd_hl_gc = fields.Datetime(string="Hạn giữ chỗ", help="Hiệu lực của giữ chỗ",
                                 readonly=True, compute='_compute_htgc', store=True)
-    bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ",
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+    bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ")
     bsd_ngay_ut = fields.Datetime(string="Ưu tiên ráp căn",
                                   help="Thời gian được sử dụng để xét ưu tiên khi làm phiếu ráp căn",
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                                  readonly=True, compute="_compute_ngay_ut", store=True)
     bsd_het_han = fields.Boolean(string="Hết hạn", help="Giữ chỗ bị hết hạn sau khi thanh toán đủ",
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                                 readonly=True,
+                                 states={'nhap': [('readonly', False)]})
     bsd_ngay_rc = fields.Datetime(string="Ngày ráp căn", help="Ngày thực tế ráp căn", readonly=True)
     bsd_ngay_huy = fields.Datetime(string="Hủy ráp căn", help="Ngày hủy ráp căn", readonly=True)
     bsd_rap_can_id = fields.Many2one('bsd.rap_can', string="Ráp căn", help="Phiếu ráp căn", readonly=True)
@@ -64,14 +61,26 @@ class BsdGiuChoThienChi(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
-    @api.depends('bsd_ngay_gctc', 'bsd_du_an_id.bsd_gc_tmb')
+    @api.depends('bsd_ngay_gctc')
     def _compute_htgc(self):
         for each in self:
             each.bsd_hl_gc = each.bsd_ngay_gctc + datetime.timedelta(each.bsd_du_an_id.bsd_gc_tmb)
 
-    def action_confirm(self):
+    @api.depends('bsd_ngay_tt')
+    def _compute_ngay_ut(self):
+        for each in self:
+            if each.bsd_ngay_tt:
+                each.bsd_ngay_ut = each.bsd_ngay_tt + datetime.timedelta(each.bsd_du_an_id.bsd_gc_tmb)
+            else:
+                each.bsd_ngay_ut = False
+
+    def action_xac_nhan(self):
         self.write({
             'state': 'giu_cho',
             'bsd_ngay_gctc': datetime.datetime.now(),
         })
 
+    def action_huy(self):
+        self.write({
+            'state': 'huy',
+        })

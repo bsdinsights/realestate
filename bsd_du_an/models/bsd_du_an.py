@@ -88,13 +88,13 @@ class BsdProject(models.Model):
                                       sau khi có đợt mở bán""",
                               required=True)
     bsd_hh_nv = fields.Float(string="NVBH (%)", required=True,
-                                           help="Tỷ lệ (%) hoa hồng được hưởng của nhân viên bán hàng")
+                             help="Tỷ lệ (%) hoa hồng được hưởng của nhân viên bán hàng")
     bsd_hh_ql = fields.Float(string="Quản lý", help="Tiền hoa hồng được hương của quản lý", required=True)
     bsd_hh_dv = fields.Float(string="Dịch vụ", required=True,
-                                     help="Tiền hoa hồng được hương của nhân viên dịch vụ khách hàng")
+                             help="Tiền hoa hồng được hương của nhân viên dịch vụ khách hàng")
     state = fields.Selection([('active', 'Đang sử dụng'),
-                                       ('inactive', 'Ngưng sử dụng')],
-                                      string="Trạng thái", default='active')
+                              ('inactive', 'Ngưng sử dụng')],
+                             string="Trạng thái", default='active')
     bsd_tk_ng_ids = fields.One2many('bsd.da_tknh', 'bsd_du_an_id', string="Tài khoản ngân hàng")
     bsd_ngan_hang_ids = fields.One2many('bsd.da_nh', 'bsd_du_an_id', string="Ngân hàng")
 

@@ -7,9 +7,15 @@
             <form>
                 <header>
                     <button string="Xác nhận"
-                            name="action_confirm"
+                            name="action_xac_nhan"
                             type="object"
                             states="nhap"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"
+                            confirm="Bạn có muốn hủy giữ chỗ không?"
+                            states="giu_cho,thanh_toan"
                             class="oe_highlight"/>
                 </header>
                 <sheet>
