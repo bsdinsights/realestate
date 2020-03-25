@@ -117,7 +117,6 @@
                                     <field name="currency_id" invisible="1"/>
                                 </tree>
                             </field>
-
                         </page>
                     </notebook>
 
@@ -137,6 +136,8 @@
             <tree>
                 <field name="bsd_ma_dot_mb"/>
                 <field name="bsd_ten_dot_mb"/>
+                <field name="bsd_tu_ngay"/>
+                <field name="bsd_den_ngay"/>
                 <field name="state"/>
             </tree>
         </field>

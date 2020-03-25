@@ -2,6 +2,8 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class BsdDotMoBan(models.Model):
@@ -113,24 +115,25 @@ class BsdDotMoBan(models.Model):
             den_tang_stt = den_tang_id.bsd_stt
             # nếu lọc tầng cùng tòa nhà
             if tu_toa_nha_id == den_toa_nha_id:
-                ids_tang.append(self.env['bsd.tang'].search([('bsd_stt' '>=', tu_tang_stt),
+                ids_tang += self.env['bsd.tang'].search([('bsd_stt', '>=', tu_tang_stt),
                                                             ('bsd_stt', '<=', den_tang_stt),
-                                                            ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids)
+                                                            ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids
             # nếu lọc tầng khác tòa nhà
             else:
                 # lọc tầng từ tòa nhà đầu
-                ids_tang.append(self.env['bsd.tang'].search([('bsd_stt' '>=', tu_tang_stt),
-                                                            ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids)
+                ids_tang += self.env['bsd.tang'].search([('bsd_stt', '>=', tu_tang_stt),
+                                                         ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids
                 # lọc tầng đến tòa nhà cuối
-                ids_tang.append(self.env['bsd.tang'].search([('bsd_stt' '<=', den_tang_stt),
-                                                            ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids)
+                ids_tang += self.env['bsd.tang'].search([('bsd_stt', '<=', den_tang_stt),
+                                                            ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids
                 # lọc tầng các tòa nhà có số thứ tự lớn hơn tòa nhà đầu và nhỏ hơn tòa nhà cuối
                 if den_toa_nha_id.bsd_stt - tu_toa_nha_id.bsd_stt > 1:
                     ids_toa_nha = self.env['bsd.toa_nha'].search([('bsd_stt', '>', tu_toa_nha_id.bsd_stt),
-                                                                 ('bsd_stt', '<', den_toa_nha_id.bsd_stt)],
-                                                                 ('bsd_du_an_id', '=', self.bsd_du_an_id.id)).ids
-                    ids_tang.append(self.env['bsd.tang'].search([('bsd_toa_nha_id', 'in', ids_toa_nha)]).ids)
-
+                                                                 ('bsd_stt', '<', den_toa_nha_id.bsd_stt),
+                                                                 ('bsd_du_an_id', '=', self.bsd_du_an_id.id)]).ids
+                    ids_tang += self.env['bsd.tang'].search([('bsd_toa_nha_id', 'in', ids_toa_nha)]).ids
+            _logger.debug("id tầng")
+            _logger.debug(ids_tang)
             # lọc unit theo các tầng đã tìm được:
             units = self.env['product.product'].search([('bsd_tang_id', 'in', ids_tang)])
             # Tạo dữ liệu cho bảng unit chuẩn bị mở bán
@@ -149,19 +152,34 @@ class BsdDotMoBan(models.Model):
         if self.state != 'cph':
             pass
         else:
-            phat_hanh_units = []
             # lấy tất cả unit chuẩn bị phát hành
             units = self.bsd_cb_ids.mapped('bsd_unit_id')
-            # lọc các unit thỏa điều kiện trường ưu tiên là không và field bsd_dot_mb_id = False
-            no_uu_dot_mb_units = set(units.filtered(lambda x: x.bsd_uu_tien == '0' and not x.bsd_dot_mb_id))
+            # lọc các unit thỏa điều kiện trường ưu tiên là không và không có đợt mở bán
+            no_uu_dot_no_mb_units = units.filtered(lambda x: x.bsd_uu_tien == '0' and not x.bsd_dot_mb_id)
+            # lọc các unit thỏa điều kiện trường ưu tiên là không và có đợt mở bán
+            no_uu_dot_mb_units = units.filtered(lambda x: x.bsd_uu_tien == '0' and x.bsd_dot_mb_id)
+
+            # Lấy units template
+            units_template = set(no_uu_dot_no_mb_units.mapped('product_tmpl_id').ids)
             # lấy các unit trong bảng giá đang áp dụng cho đợt mở bán
-            bang_gia_units = set(self.bsd_bang_gia_id.item_ids.mapped('product_tmpl_id'))
+            bang_gia_units_template = set(self.bsd_bang_gia_id.item_ids.mapped('product_tmpl_id').ids)
             # lấy các unit thỏa điều kiện  không trường ưu tiên và bsd_dot_mb_id và có trong bảng giá
-            phat_hanh_units.append(list(no_uu_dot_mb_units.intersection(bang_gia_units)))
+            phat_hanh_units_templated = list(units_template.intersection(bang_gia_units_template))
+
+            units_ph = self.env['product.product'].search([('product_tmpl_id', 'in', phat_hanh_units_templated)])
 
         # Tạo dự liệu trong bảng unit phát hành trong đợt mở bán
-        for unit in phat_hanh_units:
-            pass
+        for unit in units_ph:
+            pricelist_item = self.env['product.pricelist.item'].search([('product_tmpl_id', '=', unit.product_tmpl_id.id)],
+                                                                       limit=1)
+            self.bsd_ph_ids.create({
+                'bsd_du_an_id': unit.bsd_du_an_id.id,
+                'bsd_toa_nha_id': unit.bsd_toa_nha_id.id,
+                'bsd_tang_id': unit.bsd_tang_id.id,
+                'bsd_unit_id': unit.id,
+                'bsd_gia_ban': pricelist_item.fixed_price,
+                'bsd_dot_mb_id': self.id
+            })
 
 
 class BsdDotMoBanSanGiaoDich(models.Model):
