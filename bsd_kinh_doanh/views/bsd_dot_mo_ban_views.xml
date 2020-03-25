@@ -24,7 +24,7 @@
                                     <field name="bsd_ten_dot_mb"/>
                                     <field name="bsd_du_an_id" options="{'no_create':true}"/>
                                     <field name="bsd_bang_gia_id"
-                                           domain="[('bsd_du_an_id', 'in', [bsd_bang_gia_id])]"
+                                           domain="[('bsd_du_an_id', 'in', [bsd_du_an_id])]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_ck_ch_id" options="{'no_create':true}"/>
                                     <field name="bsd_ck_nb_id" options="{'no_create':true}"/>
@@ -39,13 +39,13 @@
                                     <field name="bsd_ngay_ph"/>
                                     <field name="bsd_nguoi_ph"/>
                                     <field name="bsd_tu_toa_nha_id"
-                                           domain="[('bsd_du_an_id', 'in', [bsd_bang_gia_id])]"
+                                           domain="[('bsd_du_an_id', 'in', [bsd_du_an_id])]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_tu_tang_id"
                                            domain="[('bsd_toa_nha_id', 'in', [bsd_tu_toa_nha_id])]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_den_toa_nha_id"
-                                           domain="[('bsd_du_an_id', 'in', [bsd_bang_gia_id])]"
+                                           domain="[('bsd_du_an_id', 'in', [bsd_du_an_id])]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_den_tang_id"
                                            domain="[('bsd_toa_nha_id', 'in', [bsd_den_toa_nha_id])]"

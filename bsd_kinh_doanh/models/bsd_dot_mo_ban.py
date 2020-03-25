@@ -152,16 +152,34 @@ class BsdDotMoBan(models.Model):
         if self.state != 'cph':
             pass
         else:
-            # lấy tất cả unit chuẩn bị phát hành
-            units = self.bsd_cb_ids.mapped('bsd_unit_id')
+            # lấy tất cả unit chuẩn bị phát hành ở trạng thái chuẩn bị đặt chỗ, giữ chỗ
+            units = self.bsd_cb_ids.mapped('bsd_unit_id').filtered(lambda x: x.state in ['chuan_bi', 'dat_cho', 'giu_cho'])
             # lọc các unit thỏa điều kiện trường ưu tiên là không và không có đợt mở bán
             no_uu_dot_no_mb_units = units.filtered(lambda x: x.bsd_uu_tien == '0' and not x.bsd_dot_mb_id)
+            _logger.debug('không uu tien ko đợt phát hành')
+            _logger.debug(no_uu_dot_no_mb_units)
             # lọc các unit thỏa điều kiện trường ưu tiên là không và có đợt mở bán
             no_uu_dot_mb_units = units.filtered(lambda x: x.bsd_uu_tien == '0' and x.bsd_dot_mb_id)
-
+            _logger.debug('không uu tien có đợt phát hành')
+            _logger.debug(no_uu_dot_mb_units)
+            # lọc các unit không ưu tiên có đợt mở bán chưa phát hành
+            no_ph_units = no_uu_dot_mb_units.filtered(lambda x: x.bsd_dot_mb_id.state != 'ph')
+            _logger.debug('không uu tien có đợt mở bán chưa phát hành')
+            _logger.debug(no_ph_units)
+            ph_units = no_uu_dot_mb_units.filtered(lambda x: x.bsd_dot_mb_id.state == 'ph')
+            # kiểm tra các unit không trùng với đợt mở bán hiện tại đang phát hành
+            diff_mb_units = ph_units.filtered(lambda x: (x.bsd_dot_mb_id.bsd_tu_ngay < self.bsd_tu_ngay
+                                                                   and x.bsd_dot_mb_id.bsd_den_ngay < self.bsd_tu_ngay)
+                                                        or (x.bsd_dot_mb_id.bsd_tu_ngay > self.bsd_den_ngay
+                                                            and x.bsd_dot_mb_id.bsd_den_ngay > self.bsd_den_ngay)
+                                                       )
+            _logger.debug('diff_mb_units')
+            _logger.debug(diff_mb_units)
             # Lấy units template
-            units_template = set(no_uu_dot_no_mb_units.mapped('product_tmpl_id').ids)
-            # lấy các unit trong bảng giá đang áp dụng cho đợt mở bán
+            units_template = set(no_uu_dot_no_mb_units.mapped('product_tmpl_id').ids +
+                                 no_ph_units.mapped('product_tmpl_id').ids +
+                                 diff_mb_units.mapped('product_tmpl_id').ids)
+            # lấy các unit trong bảng giá đang áp dụng cho đợt mở báng
             bang_gia_units_template = set(self.bsd_bang_gia_id.item_ids.mapped('product_tmpl_id').ids)
             # lấy các unit thỏa điều kiện  không trường ưu tiên và bsd_dot_mb_id và có trong bảng giá
             phat_hanh_units_templated = list(units_template.intersection(bang_gia_units_template))
@@ -180,6 +198,21 @@ class BsdDotMoBan(models.Model):
                 'bsd_gia_ban': pricelist_item.fixed_price,
                 'bsd_dot_mb_id': self.id
             })
+            if unit.state == 'chuan_bi':
+                unit.write({
+                    'bsd_dot_mb_id': self.id,
+                    'state': 'san_sang'
+                })
+            else:
+                unit.write({
+                    'bsd_dot_mb_id': self.id,
+                })
+        # Cập lại lại trạng thái đợt mở bán ngày phát hình và người phát hành
+        self.write({
+            'state': 'ph',
+            'bsd_ngay_ph': fields.Date.today(),
+            'bsd_nguoi_ph': self.env.uid,
+        })
 
 
 class BsdDotMoBanSanGiaoDich(models.Model):
@@ -237,12 +270,6 @@ class BsdDotMoBanCB(models.Model):
     bsd_gia_ban = fields.Monetary(string="Giá bán", required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-
-    _sql_constraints = [
-        ('bsd_unit_id_unique',
-         'UNIQUE(bsd_unit_id)',
-         "Căn hộ đã có trong đợt mở bán"),
-    ]
 
 
 class BsdDotMoBanUnit(models.Model):
