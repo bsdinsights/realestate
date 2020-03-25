@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_gc_tc_form">
+        <field name="name">bsd.gc_tc.form</field>
+        <field name="model">bsd.gc_tc</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma_gctc"/>
+                            <field name="bsd_ngay_gctc"/>
+                            <field name="bsd_khach_hang_id"/>
+                            <field name="bsd_dien_giai"/>
+                        </group>
+                        <group>
+                            <field name="bsd_du_an_id"/>
+                            <field name="bsd_tien_gc"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                    <group string="MÔI GIỚI">
+                        <group>
+                            <field name="bsd_nvbh_id"/>
+                            <field name="bsd_san_gd_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ctv_id"/>
+                            <field name="bsd_gioi_thieu_id"/>
+                        </group>
+                    </group>
+                    <group string="RÁP CĂN">
+                        <group>
+                            <field name="bsd_hl_gc"/>
+                            <field name="bsd_ngay_tt"/>
+                            <field name="bsd_ngay_rc"/>
+                            <field name="bsd_rap_can_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ngay_ut"/>
+                            <field name="bsd_het_han"/>
+                            <field name="bsd_ngay_huy"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_gc_tc_tree">
+        <field name="name">bsd.gc_tc.tree</field>
+        <field name="model">bsd.gc_tc</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_gctc"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_gc_tc_action">
+        <field name="name">Giữ chỗ thiện chí</field>
+        <field name="res_model">bsd.gc_tc</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo giữ chỗ thiện chí</p>
+        </field>
+    </record>
+</odoo>
