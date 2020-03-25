@@ -5,28 +5,35 @@
         <field name="model">bsd.gc_tc</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button string="Xác nhận"
+                            name="action_confirm"
+                            type="object"
+                            states="nhap"
+                            class="oe_highlight"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
                             <field name="bsd_ma_gctc"/>
                             <field name="bsd_ngay_gctc"/>
-                            <field name="bsd_khach_hang_id"/>
+                            <field name="bsd_khach_hang_id" options="{'no_create':true}"/>
                             <field name="bsd_dien_giai"/>
                         </group>
                         <group>
-                            <field name="bsd_du_an_id"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
                             <field name="bsd_tien_gc"/>
                             <field name="state"/>
                         </group>
                     </group>
                     <group string="MÔI GIỚI">
                         <group>
-                            <field name="bsd_nvbh_id"/>
-                            <field name="bsd_san_gd_id"/>
+                            <field name="bsd_nvbh_id" options="{'no_create':true}"/>
+                            <field name="bsd_san_gd_id" options="{'no_create':true}"/>
                         </group>
                         <group>
-                            <field name="bsd_ctv_id"/>
-                            <field name="bsd_gioi_thieu_id"/>
+                            <field name="bsd_ctv_id" options="{'no_create':true}"/>
+                            <field name="bsd_gioi_thieu_id" options="{'no_create':true}"/>
                         </group>
                     </group>
                     <group string="RÁP CĂN">
@@ -34,7 +41,7 @@
                             <field name="bsd_hl_gc"/>
                             <field name="bsd_ngay_tt"/>
                             <field name="bsd_ngay_rc"/>
-                            <field name="bsd_rap_can_id"/>
+                            <field name="bsd_rap_can_id" options="{'no_create':true}"/>
                         </group>
                         <group>
                             <field name="bsd_ngay_ut"/>
@@ -57,6 +64,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="bsd_ma_gctc"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
