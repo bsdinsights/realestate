@@ -74,8 +74,8 @@
                                     <field name="bsd_gc_ch"/>
                                     <field name="bsd_gc_ngay"/>
                                     <field name="bsd_gc_td"/>
-                                    <field name="bsd_huy_tmb"/>
-                                    <field name="bsd_huy_smb"/>
+                                    <field name="bsd_gc_tmb"/>
+                                    <field name="bsd_gc_smb"/>
                                 </group>
                             </group>
                         </page>

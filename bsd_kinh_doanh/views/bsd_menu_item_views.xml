@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!--Top menu-->
+    <menuitem id="bsd_main_kinh_doanh_root" name="Kinh doanh"/>
+
+    <!--Khách hàng menu-->
+    <menuitem id="bsd_khach_hang_menu"
+              name="Khách hàng"
+              sequence="10"
+              parent="bsd_main_kinh_doanh_root"/>
+    <menuitem id="bsd_kh_cn_action_menu"
+              name="Khách hàng cá nhân"
+              sequence="10"
+              action="bsd_kh_cn_action"
+              parent="bsd_khach_hang_menu"/>
+    <menuitem id="bsd_kh_dn_action_menu"
+              name="Khách hàng doanh nghiệp"
+              sequence="11"
+              action="bsd_kh_dn_action"
+              parent="bsd_khach_hang_menu"/>
+
+    <menuitem id="bsd_dot_mb_menu_action"
+              name="Đợt mở bán"
+              sequence="11"
+              action="bsd_dot_mb_action"
+              parent="bsd_main_kinh_doanh_root"/>
+
+    <record id="bsd_kinh_doanh.bsd_main_kinh_doanh_root" model="ir.ui.menu">
+        <field name="action" eval="False"/>
+        <field name="active" eval="True"/>
+        <field name="groups_id" eval="[(6, 0, [])]"/>
+        <field name="name">Kinh doanh</field>
+        <field name="parent_id" eval="False"/>
+        <field name="sequence">10</field>
+        <field name="web_icon">fa fa-dollar,#FFFFFF,#002080</field>
+    </record>
+</odoo>

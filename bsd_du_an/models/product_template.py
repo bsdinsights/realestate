@@ -8,11 +8,15 @@ _logger = logging.getLogger(__name__)
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
-    _rec_name = 'bsd_ten_unit'
 
-    name = fields.Char(required=False)
+    name = fields.Char(compute='_compute_name', store=True, required=False)
+
+    @api.depends('bsd_ten_unit')
+    def _compute_name(self):
+        for each in self:
+            each.name = each.bsd_ten_unit
     bsd_stt = fields.Char(string="Số thứ tự", help="Số căn hộ", required=True)
-    bsd_ten_unit = fields.Char(string="Tên căn hộ", help="Têm căn hộ bao gồm mã tòa nhà, mã tầng và số căn hộ",
+    bsd_ten_unit = fields.Char(string="Tên căn hộ", help="Tên căn hộ bao gồm mã tòa nhà, mã tầng và số căn hộ",
                                required=True)
     bsd_ma_unit = fields.Char(string="Mã căn hộ", required=True,
                               help="Mã đầy đủ của căn hộ bao gồm mã dữ án, mã tòa nhà, mã tầng và số căn hộ")
@@ -22,7 +26,6 @@ class ProductTemplate(models.Model):
     bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc của căn hộ", required=True)
     bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ của căn hộ")
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Thông tin về căn hộ")
-    bsd_dot_mb = fields.Integer(string="Đợt mở bán", help="Đợt mở bán hiện tại của căn hộ")
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch",
                                     help="Sàn giao dịch đang bán(căn hộ) theo đợt mở bán")
     bsd_thanh_ly = fields.Selection([('0', 'Không'), ('1', 'Có')], string="Thanh lý",
@@ -142,12 +145,12 @@ class ProductTemplate(models.Model):
     @api.depends('bsd_gia_ban', 'bsd_tong_gtd', 'bsd_thue_suat')
     def _compute_tien_thue(self):
         for each in self:
-            each.bsd_tien_thue = (each.bsd_gia_ban - each.bsd_tong_gtd) * each.bsd_thue_suat
+            each.bsd_tien_thue = (each.bsd_gia_ban - each.bsd_tong_gtd) * each.bsd_thue_suat / 100
 
     @api.depends('bsd_gia_ban', 'bsd_tien_thue', 'bsd_phi_bt')
     def _compute_bsd_tong_gia_ban(self):
         for each in self:
-            each.bsd_tong_gia_ban = each.bsd_gia_ban + each.bsd_tien_thue + each.bsd_phi_bt
+            each.bsd_tong_gb = each.bsd_gia_ban + each.bsd_tien_thue + each.bsd_phi_bt
 
     def action_uu_tien(self):
         self.write({

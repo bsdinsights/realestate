@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+bsd_dot_mb_manager,Đợt mở bán,model_bsd_dot_mb,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_dot_mb_sgd_manager,Sàn giao dịch cho đợt mở bán,model_bsd_dot_mb_sgd,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_dot_mb_km_manager,Chương trình khuyến mãi cho đợt mở bán,model_bsd_dot_mb_km,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_dot_mb_dkbg_manager,Điều kiện bàn giao cho đợt mở bán,model_bsd_dot_mb_dkbg,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_dot_mb_cb_manager,Unit chuẩn bị cho đợt mở bán,model_bsd_dot_mb_cb,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_dot_mb_unit_manager,Unit phát hành cho đợt mở bán,model_bsd_dot_mb_unit,bsd_kinh_doanh.group_manager,1,1,1,1

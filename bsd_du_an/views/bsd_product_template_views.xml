@@ -31,7 +31,7 @@
                             <field name="bsd_dien_giai"/>
                         </group>
                         <group string="Phân nhóm" style="margin:0px ">
-                            <field name="bsd_loai_sp_id" required="1" options="{'no_create':true}"/>
+                            <field name="bsd_loai_sp_id" options="{'no_create':true}"/>
                             <field name="bsd_huong"/>
                             <field name="bsd_view"/>
                             <field name="bsd_so_pn"/>
@@ -52,7 +52,6 @@
                                 <field name="bsd_dt_sh"/>
                             </group>
                             <group string="Mở bán" style="margin:0px" col="2" colspan="2">
-                                <field name="bsd_dot_mb"/>
                                 <field name="bsd_san_gd_id"
                                        domain="[('is_company', '=',)]"
                                        options="{'no_create':true}"/>

@@ -26,7 +26,7 @@ class BsdThongTinKyThuatLine(models.Model):
     _description = "Bảng thông tin kỹ thuật chi tiết"
     _rec_name = "bsd_loai_phong"
 
-    bsd_tt_kt_id = fields.Many2one('bsd.tt_kt_id', string="Thông tin kỹ thuật")
+    bsd_tt_kt_id = fields.Many2one('bsd.tt_kt', string="Thông tin kỹ thuật")
     bsd_loai_phong = fields.Char(string="Loại phòng", required=True)
     bsd_thiet_bi = fields.Char(string="Thiết bị", help="Các thành phần chi tiết của căn hộ")
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
