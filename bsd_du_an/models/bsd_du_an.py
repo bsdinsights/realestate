@@ -71,14 +71,14 @@ class BsdProject(models.Model):
     bsd_hh_qt = fields.Float(string="Hiệu lực quan tâm(h)",
                                            help="Số giờ hiệu lực của phiếu quan tâm bất động sản")
     bsd_gc_NVBH = fields.Integer(string="Số giữ chỗ NVBH", required=True,
-                                         help="Số lượng căn hộ tối đa mà nhân viên bán hàng được phép giữ chỗ")
+                                         help="Số lượng căn hộ tối đa mà mỗi nhân viên bán hàng được thực hiện giữ chỗ")
     bsd_gc_unit = fields.Integer(string="Số giữ chỗ Căn hộ", required=True,
                                            help="Số lượng giữ chỗ tối đa cho mỗi căn hộ")
     bsd_gc_ngay = fields.Integer(string="Số giữ chỗ theo ngày",
-                                              help="số lượng giữ chỗ tối đa trên 1 ngày")
+                                 help="Số lượng giữ chỗ tối đa mà 1 nhân viên bán hàng được phép thực hiện trong 1 ngày")
     bsd_gc_td = fields.Integer(string="Số giữ chỗ NVBH/căn hộ/ngày",
-                               help="""Số lượng giữ chỗ tối đa mỗi nhân viên bán hàng được
-                                                      phép giữ chỗ theo căn hộ""")
+                               help="""Số lượng giữ chỗ tối đa trên 1 căn hộ mà 1 nhân viên bán hàng 
+                                       được phép thực hiện trong 1 ngày""")
     bsd_gc_tmb = fields.Integer(string="Giữ chỗ trước mở bán",
                                 help="""Số ngày giữ chỗ có hiệu lực kể từ ngày tạo giữ chỗ, và giữ chỗ được tạo 
                                         trước khi có đợt mở bán""",

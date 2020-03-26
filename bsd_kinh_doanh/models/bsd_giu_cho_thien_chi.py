@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 import datetime
 import logging
 _logger = logging.getLogger(__name__)
@@ -75,6 +76,20 @@ class BsdGiuChoThienChi(models.Model):
                                    datetime.timedelta(minutes=1)
             else:
                 each.bsd_ngay_ut = False
+
+    @api.constrains('bsd_nvbh_id')
+    def _constrain_nv_bh(self):
+        min_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
+        max_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.max.time())
+        gc_in_day = self.env['bsd.gc_tc'].search([('create_date', '<', max_time),
+                                                  ('create_date', '>', min_time),
+                                                  ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                  ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
+                                                  ('state', '=', 'giu_cho')])
+        _logger.debug("bắt nvbans")
+        _logger.debug(gc_in_day)
+        if len(gc_in_day) >= self.bsd_du_an_id.bsd_gc_ngay:
+            raise UserError("Số lượng giữ chỗ tối đa trên một ngày của bạn đã vượt mức.\n Vui lòng kiểm tra lại")
 
     def action_xac_nhan(self):
         self.write({

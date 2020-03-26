@@ -5,19 +5,46 @@
         <field name="model">bsd.rap_can</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            class="oe_highlight"
+                            confirm="Bạn có muốn Xác nhận Ráp Căn không?"
+                            states="nhap"
+                            type="object"/>
+                    <button string="Duyệt"
+                            name="action_duyet"
+                            class="oe_highlight"
+                            confirm="Bạn có muốn Duyệt Ráp Căn không?"
+                            states="xac_nhan"
+                            type="object"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            class="oe_highlight"
+                            confirm="Bạn có muốn Hủy Ráp Căn không?"
+                            states="xac_nhan,duyet"
+                            type="object"/>
+                </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button icon="fa-dot-circle-o">
+                            <field name="state" widget="statinfo" nolabel="1"/>
+                        </button>
+                    </div>
                     <group>
                         <group>
                             <field name="bsd_ma_rc"/>
                             <field name="bsd_ngay_rc"/>
-                            <field name="bsd_gc_tc_id"/>
+                            <field name="bsd_gc_tc_id" domain="[('state', '=','thanh_toan')]"/>
                             <field name="bsd_khach_hang_id"/>
                         </group>
                         <group>
                             <field name="bsd_du_an_id"/>
-                            <field name="bsd_unit_id"/>
+                            <field name="bsd_unit_id"
+                                   options="{'no_create':true}"
+                                   domain="[('state','=','chuan_bi'),('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
                             <field name="bsd_dien_giai"/>
-                            <field name="state"/>
+                            <!--<field name="state"/>-->
                         </group>
                     </group>
                     <group string="DUYỆT">
