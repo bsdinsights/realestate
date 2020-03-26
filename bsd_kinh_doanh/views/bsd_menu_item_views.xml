@@ -35,6 +35,11 @@
               sequence="12"
               action="bsd_gc_tc_action"
               parent="bsd_main_kinh_doanh_root"/>
+    <menuitem id="bsd_rap_can_menu_action"
+              name="Ráp căn"
+              sequence="13"
+              action="bsd_rap_can_action"
+              parent="bsd_main_kinh_doanh_root"/>
 
     <record id="bsd_kinh_doanh.bsd_main_kinh_doanh_root" model="ir.ui.menu">
         <field name="action" eval="False"/>

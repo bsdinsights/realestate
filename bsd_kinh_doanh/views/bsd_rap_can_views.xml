@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_rap_can_form">
+        <field name="name">bsd.rap_can.form</field>
+        <field name="model">bsd.rap_can</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma_rc"/>
+                            <field name="bsd_ngay_rc"/>
+                            <field name="bsd_gc_tc_id"/>
+                            <field name="bsd_khach_hang_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_du_an_id"/>
+                            <field name="bsd_unit_id"/>
+                            <field name="bsd_dien_giai"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                    <group string="DUYỆT">
+                        <group>
+                            <field name="bsd_ngay_duyet" readonly="1"/>
+                            <field name="bsd_nguoi_duyet_id" readonly="1"/>
+                            <field name="bsd_giu_cho_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ngay_huy" readonly="1"/>
+                            <field name="bsd_nguoi_huy_id" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_rap_can_tree">
+        <field name="name">bsd.rap_can.tree</field>
+        <field name="model">bsd.rap_can</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_rc"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_rap_can_action">
+        <field name="name">Ráp căn</field>
+        <field name="res_model">bsd.rap_can</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo phiếu ráp căn</p>
+        </field>
+    </record>
+</odoo>

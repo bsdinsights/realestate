@@ -8,3 +8,4 @@ bsd_dot_mb_unit_manager,Unit phát hành cho đợt mở bán,model_bsd_dot_mb_u
 
 bsd_gc_tc_manager, Phiếu giữ chỗ thiện chí,model_bsd_gc_tc,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_rap_can_manager, Phiếu ráp căn,model_bsd_rap_can,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_giu_cho_manager, Phiếu giữ chỗ,model_bsd_giu_cho,bsd_kinh_doanh.group_manager,1,1,1,1
