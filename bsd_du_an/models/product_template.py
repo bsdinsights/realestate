@@ -67,7 +67,7 @@ class ProductTemplate(models.Model):
                                         ('4', 'Penthouse')], string="Loại căn hộ")
     bsd_tl_tc = fields.Float(string="% Tiền cọc",
                              help="% thanh toán tối thiểu để ký thỏa thuận đặt cọc")
-    bsd_dt_cl = fields.Float(string="Diện tích chênh lệch (%)",
+    bsd_dt_cl = fields.Float(string="Chênh lệch (%)",
                              help="% Chênh lệch giữa diện tích xây dựng và diện tích sử dụng")
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng",
                              help="Diện tích tim tường")

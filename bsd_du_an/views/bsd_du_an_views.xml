@@ -44,35 +44,46 @@
                             </group>
                         </page>
                         <page string="Bán hàng">
-                            <group>
+                            <group string="PHÍ QUẢN LÝ">
                                 <group>
-                                    <h2 style="margin-top:10px">Phí quản lý</h2>
                                     <field name="bsd_gt_sdd"/>
                                     <field name="bsd_tl_pbt"/>
                                     <field name="bsd_thang_pql"/>
+                                </group>
+                                <group>
                                     <field name="bsd_tien_pql"/>
                                     <field name="bsd_tien_gc"/>
                                     <field name="bsd_tien_dc"/>
-
-                                    <h2 style="margin-top:10px">Hoa hồng</h2>
-                                    <field name="bsd_hh_nv"/>
-                                    <field name="bsd_hh_ql"/>
-                                    <field name="bsd_hh_dv"/>
-
                                 </group>
-                                <group>
-                                    <h2 style="margin-top:10px">Hiệu lực</h2>
+                            </group>
+                            <group string="HIỆU LỰC">
+                                <group style="margin:0px">
                                     <field name="bsd_hh_bg"/>
                                     <field name="bsd_hh_pc"/>
                                     <field name="bsd_hh_hd"/>
+                                </group>
+                                <group>
                                     <field name="bsd_cb_gc"/>
                                     <field name="bsd_cb_dc"/>
                                     <field name="bsd_hh_qt"/>
-
-                                    <h2 style="margin-top:10px">Giữ chỗ</h2>
+                                </group>
+                            </group>
+                            <group string="HOA HỒNG">
+                                <group>
+                                    <field name="bsd_hh_nv"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_hh_ql"/>
+                                    <field name="bsd_hh_dv"/>
+                                </group>
+                            </group>
+                            <group string="GIỮ CHỖ">
+                                <group>
                                     <field name="bsd_gc_NVBH"/>
-                                    <field name="bsd_gc_ch"/>
+                                    <field name="bsd_gc_unit"/>
                                     <field name="bsd_gc_ngay"/>
+                                </group>
+                                <group>
                                     <field name="bsd_gc_td"/>
                                     <field name="bsd_gc_tmb"/>
                                     <field name="bsd_gc_smb"/>
