@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record model="base.automation" id="bsd_gc_tc_huy_giu_cho">
+            <field name="name">Hủy giữ chỗ thiện chí</field>
+            <field name="model_id" ref="bsd_kinh_doanh.model_bsd_gc_tc"></field>
+            <field name="trigger">on_time</field>
+            <field name="filter_domain">[('state', '=','giu_cho')]</field>
+            <field name="trg_date_id" ref="bsd_kinh_doanh.field_bsd_gc_tc__bsd_hl_gc"></field>
+            <field name="state">code</field>
+            <field name="code">
+record = model.browse(env.context['active_id'])
+record.auto_huy_giu_cho()
+            </field>
+        </record>
+
+        <record model="base.automation" id="bsd_gc_tc_het_han_gc">
+            <field name="name">Hết hạn giữ chỗ</field>
+            <field name="model_id" ref="bsd_kinh_doanh.model_bsd_gc_tc"></field>
+            <field name="trigger">on_time</field>
+            <field name="filter_domain">[('state','=','thanh_toan'),('bsd_ngay_ut','!=',False)]</field>
+            <field name="trg_date_id" ref="bsd_kinh_doanh.field_bsd_gc_tc__bsd_ngay_ut"></field>
+            <field name="state">code</field>
+            <field name="code">
+record = model.browse(env.context['active_id'])
+record.auto_danh_dau_hh_gc()
+            </field>
+        </record>
+
+    </data>
+</odoo>

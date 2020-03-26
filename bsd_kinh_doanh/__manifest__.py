@@ -20,6 +20,7 @@
         'views/bsd_product_template_views.xml',
         'views/bsd_giu_cho_thien_chi_views.xml',
         'views/bsd_menu_item_views.xml',
+        'data/bsd_automation_data.xml',
     ],
     'application': True,
 }

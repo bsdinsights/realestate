@@ -57,20 +57,22 @@ class BsdGiuChoThienChi(models.Model):
                               ('giu_cho', 'Giữ chỗ'),
                               ('thanh_toan', 'Thanh toán'),
                               ('rap_can', 'Ráp căn'),
-                              ('huy', 'Hủy')], string="Trạng thái", default="nhap", readonly=True)
+                              ('huy', 'Hủy')], string="Trạng thái", default="nhap")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
     @api.depends('bsd_ngay_gctc')
     def _compute_htgc(self):
         for each in self:
-            each.bsd_hl_gc = each.bsd_ngay_gctc + datetime.timedelta(each.bsd_du_an_id.bsd_gc_tmb)
+            each.bsd_hl_gc = each.bsd_ngay_gctc + datetime.timedelta(each.bsd_du_an_id.bsd_gc_tmb) + \
+                             datetime.timedelta(minutes=1)
 
     @api.depends('bsd_ngay_tt')
     def _compute_ngay_ut(self):
         for each in self:
             if each.bsd_ngay_tt:
-                each.bsd_ngay_ut = each.bsd_ngay_tt + datetime.timedelta(each.bsd_du_an_id.bsd_gc_tmb)
+                each.bsd_ngay_ut = each.bsd_ngay_tt + datetime.timedelta(each.bsd_du_an_id.bsd_gc_tmb) + \
+                                   datetime.timedelta(minutes=1)
             else:
                 each.bsd_ngay_ut = False
 
@@ -84,3 +86,15 @@ class BsdGiuChoThienChi(models.Model):
         self.write({
             'state': 'huy',
         })
+
+    def auto_huy_giu_cho(self):
+        if self.state == 'giu_cho':
+            self.write({
+                'state': 'huy'
+            })
+
+    def auto_danh_dau_hh_gc(self):
+        if self.state == 'thanh_toan':
+            self.write({
+                'bsd_het_han': True
+            })
