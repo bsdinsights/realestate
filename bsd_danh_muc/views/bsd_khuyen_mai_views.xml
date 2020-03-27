@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_khuyen_mai_form">
+        <field name="name">bsd.khuyen_mai.form</field>
+        <field name="model">bsd.khuyen_mai</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="bsd_ma_km"/>
+                            <field name="bsd_ten_km"/>
+                            <field name="bsd_dot_mb"/>
+                            <field name="bsd_gia_tri"/>
+                            <field name="bsd_tu_ngay"/>
+                            <field name="bsd_den_ngay"/>
+                        </group>
+                        <group>
+                            <field name="bsd_loai"/>
+                            <field name="bsd_tong_tt" attrs="{'required':[('bsd_loai', '=', True)],
+                                                                'readonly':[('bsd_loai', '=', False)]}"/>
+                            <field name="bsd_tl_tt" attrs="{'required':[('bsd_loai', '=', True)],
+                                                                'readonly':[('bsd_loai', '=', False)]}"/>
+                            <field name="bsd_ngay_hldc"/>
+                            <field name="state"/>
+
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_khuyen_mai_tree">
+        <field name="name">bsd.khuyen_mai.tree</field>
+        <field name="model">bsd.khuyen_mai</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_km"/>
+                <field name="bsd_ten_km"/>
+                <field name="bsd_dien_giai"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_khuyen_mai_action">
+        <field name="name">Chương trình khuyến mãi</field>
+        <field name="res_model">bsd.khuyen_mai</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo chương trình khuyến mãi</p>
+        </field>
+    </record>
+</odoo>

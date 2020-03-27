@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_loai_san_pham_form">
+        <field name="name">bsd.loai_sp.form</field>
+        <field name="model">bsd.loai_sp</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma_nhom"/>
+                            <field name="bsd_ten_nhom"/>
+                            <field name="bsd_dien_giai"/>
+                        </group>
+                        <group>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                            <field name="bsd_toa_nha_id"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_loai_san_pham_tree">
+        <field name="name">bsd.loai_sp.tree</field>
+        <field name="model">bsd.loai_sp</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_nhom"/>
+                <field name="bsd_ten_nhom"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_loai_san_pham_action">
+        <field name="name">Loại sản phẩm</field>
+        <field name="res_model">bsd.loai_sp</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo thông tin nhóm sản phẩm</p>
+        </field>
+    </record>
+</odoo>

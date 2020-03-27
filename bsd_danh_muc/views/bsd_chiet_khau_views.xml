@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_chiet_khau_form">
+        <field name="name">bsd.chiet_khau.form</field>
+        <field name="model">bsd.chiet_khau</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma_ck"/>
+                            <field name="bsd_ten_ck"/>
+                            <field name="bsd_loai_ck"/>
+                            <field name="bsd_du_an_id"/>
+                            <field name="bsd_cach_tinh"/>
+                            <field name="bsd_tu_ngay"
+                                   attrs="{'required':[('bsd_loai_ck', 'in', ['ttth'])],
+                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','mua_si','ltt','ttn'])]}"/>
+                            <field name="bsd_den_ngay"
+                                   attrs="{'required':[('bsd_loai_ck', 'in', ['ttth'])],
+                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','mua_si','ltt','ttn'])]}"/>
+                            <field name="bsd_dien_giai"/>
+                        </group>
+                        <group>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="bsd_cung_tang"
+                                   attrs="{'required':[('bsd_loai_ck', 'in', ['mua_si'])],
+                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn'])]}"/>
+                            <field name="bsd_sl_tu"
+                                   attrs="{'required':[('bsd_loai_ck', 'in', ['mua_si'])],
+                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn'])]}"/>
+                            <field name="bsd_sl_den"
+                                   attrs="{'required':[('bsd_loai_ck', 'in', ['mua_si'])],
+                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn'])]}"/>
+                            <field name="bsd_cs_tt_id"
+                                   attrs="{'required':[('bsd_loai_ck', 'in', ['ltt'])],
+                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','ttth','ttn','mua_si'])]}"/>
+                            <field name="bsd_ngay_tt"
+                                   attrs="{'required':[('bsd_loai_ck', 'in', ['ttn'])],
+                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','mua_si','ltt','ttth'])]}"/>
+                            <field name="bsd_tl_tt"
+                                   attrs="{'required':[('bsd_loai_ck', 'in', ['ttn'])],
+                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','mua_si','ltt','ttth'])]}"/>
+                            <field name="bsd_tien_ck"
+                                   attrs="{'required':[('bsd_cach_tinh', 'in', ['tien'])],
+                                           'readonly':[('bsd_cach_tinh', 'in', ['phan_tram'])]}"/>
+                            <field name="bsd_tl_ck"
+                                   attrs="{'required':[('bsd_cach_tinh', 'in', ['phan_tram'])],
+                                           'readonly':[('bsd_cach_tinh', 'in', ['tien'])]}"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_chiet_khau_tree">
+        <field name="name">bsd.chiet_khau.tree</field>
+        <field name="model">bsd.chiet_khau</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_ck"/>
+                <field name="bsd_ten_ck"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_chiet_khau_action">
+        <field name="name">Chiết khấu</field>
+        <field name="res_model">bsd.chiet_khau</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo Chiết khấu</p>
+        </field>
+    </record>
+</odoo>

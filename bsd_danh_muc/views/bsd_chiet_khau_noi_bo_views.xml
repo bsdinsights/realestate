@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_chiet_khau_noi_bo_form">
+        <field name="name">bsd.ck_nb.form</field>
+        <field name="model">bsd.ck_nb</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma_ck_nb"/>
+                            <field name="bsd_ten_ck_nb"/>
+                            <field name="bsd_dien_giai"/>
+                        </group>
+                        <group>
+                            <field name="bsd_tu_ngay"/>
+                            <field name="bsd_den_ngay"/>
+                            <field name="state"/>
+                        </group>
+                        <field name="bsd_ct_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="bsd_chiet_khau_id" options="{'no_create':true}"/>
+                                <field name="bsd_ma_ck"/>
+                                <field name="bsd_tu_ngay"/>
+                                <field name="bsd_den_ngay"/>
+                                <field name="bsd_cach_tinh"/>
+                                <field name="bsd_tien_ck"/>
+                                <field name="bsd_tl_ck"/>
+                            </tree>
+                        </field>
+                    </group>
+
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_ck_nb_tree">
+        <field name="name">bsd.ck_nb.tree</field>
+        <field name="model">bsd.ck_nb</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_ck_nb"/>
+                <field name="bsd_ten_ck_nb"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_chiet_khau_noi_bo_action">
+        <field name="name">Chiết khấu nội bộ</field>
+        <field name="res_model">bsd.ck_nb</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo Chiết khấu nội bộ</p>
+        </field>
+    </record>
+</odoo>
