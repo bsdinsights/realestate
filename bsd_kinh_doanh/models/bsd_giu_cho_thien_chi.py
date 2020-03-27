@@ -77,6 +77,7 @@ class BsdGiuChoThienChi(models.Model):
             else:
                 each.bsd_ngay_ut = False
 
+    # KD.05.06 Quản lý số lượng giữ chỗ theo nhân viên bán hàng
     @api.constrains('bsd_nvbh_id')
     def _constrain_nv_bh(self):
         min_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
@@ -86,26 +87,30 @@ class BsdGiuChoThienChi(models.Model):
                                                   ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                   ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
                                                   ('state', '=', 'giu_cho')])
-        if len(gc_in_day) >= self.bsd_du_an_id.bsd_gc_ngay:
+        if len(gc_in_day) >= self.bsd_du_an_id.bsd_gc_nv_ngay:
             raise UserError("Số lượng giữ chỗ tối đa trên một ngày của bạn đã vượt mức.\n Vui lòng kiểm tra lại")
 
+    # KD.05.01 Xác nhận giữ chỗ thiện chí
     def action_xac_nhan(self):
         self.write({
             'state': 'giu_cho',
             'bsd_ngay_gctc': datetime.datetime.now(),
         })
 
+    # KD.05.02 Hủy giữ chỗ thiện chí
     def action_huy(self):
         self.write({
             'state': 'huy',
         })
 
+    # KD.05.03 Tự động hủy giữ chỗ
     def auto_huy_giu_cho(self):
         if self.state == 'giu_cho':
             self.write({
                 'state': 'huy'
             })
 
+    # KD.05.04 Tự động đánh dấu hết hạn giữ chỗ
     def auto_danh_dau_hh_gc(self):
         if self.state == 'thanh_toan':
             self.write({

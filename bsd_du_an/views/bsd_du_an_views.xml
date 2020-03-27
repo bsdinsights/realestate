@@ -79,12 +79,12 @@
                             </group>
                             <group string="GIỮ CHỖ">
                                 <group>
-                                    <field name="bsd_gc_NVBH"/>
+                                    <field name="bsd_gc_unit_nv"/>
                                     <field name="bsd_gc_unit"/>
-                                    <field name="bsd_gc_ngay"/>
+                                    <field name="bsd_gc_nv_ngay"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_gc_td"/>
+                                    <field name="bsd_gc_unit_nv_ngay"/>
                                     <field name="bsd_gc_tmb"/>
                                     <field name="bsd_gc_smb"/>
                                 </group>

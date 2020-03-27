@@ -70,13 +70,13 @@ class BsdProject(models.Model):
                                                   help="Số ngày cảnh báo sau khi tạo đặt cọc")
     bsd_hh_qt = fields.Float(string="Hiệu lực quan tâm(h)",
                                            help="Số giờ hiệu lực của phiếu quan tâm bất động sản")
-    bsd_gc_NVBH = fields.Integer(string="Số giữ chỗ NVBH", required=True,
+    bsd_gc_unit_nv = fields.Integer(string="Căn hộ/NVBH", required=True,
                                          help="Số lượng căn hộ tối đa mà mỗi nhân viên bán hàng được thực hiện giữ chỗ")
-    bsd_gc_unit = fields.Integer(string="Số giữ chỗ Căn hộ", required=True,
+    bsd_gc_unit = fields.Integer(string="Giữ chỗ/Căn hộ", required=True,
                                            help="Số lượng giữ chỗ tối đa cho mỗi căn hộ")
-    bsd_gc_ngay = fields.Integer(string="Số giữ chỗ theo ngày",
+    bsd_gc_nv_ngay = fields.Integer(string="NVBH/ngày",
                                  help="Số lượng giữ chỗ tối đa mà 1 nhân viên bán hàng được phép thực hiện trong 1 ngày")
-    bsd_gc_td = fields.Integer(string="Số giữ chỗ NVBH/căn hộ/ngày",
+    bsd_gc_unit_nv_ngay = fields.Integer(string="Căn hộ/NVBH/ngày",
                                help="""Số lượng giữ chỗ tối đa trên 1 căn hộ mà 1 nhân viên bán hàng 
                                        được phép thực hiện trong 1 ngày""")
     bsd_gc_tmb = fields.Integer(string="Giữ chỗ trước mở bán",
