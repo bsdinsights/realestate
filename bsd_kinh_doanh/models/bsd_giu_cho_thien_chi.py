@@ -86,8 +86,6 @@ class BsdGiuChoThienChi(models.Model):
                                                   ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                   ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
                                                   ('state', '=', 'giu_cho')])
-        _logger.debug("bắt nvbans")
-        _logger.debug(gc_in_day)
         if len(gc_in_day) >= self.bsd_du_an_id.bsd_gc_ngay:
             raise UserError("Số lượng giữ chỗ tối đa trên một ngày của bạn đã vượt mức.\n Vui lòng kiểm tra lại")
 

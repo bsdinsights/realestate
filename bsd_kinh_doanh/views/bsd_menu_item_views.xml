@@ -40,6 +40,11 @@
               sequence="13"
               action="bsd_rap_can_action"
               parent="bsd_main_kinh_doanh_root"/>
+    <menuitem id="bsd_giu_cho_menu_action"
+              name="Giữ chỗ"
+              sequence="14"
+              action="bsd_giu_cho_action"
+              parent="bsd_main_kinh_doanh_root"/>
 
     <record id="bsd_kinh_doanh.bsd_main_kinh_doanh_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
