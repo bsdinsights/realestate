@@ -8,8 +8,8 @@
                 <sheet>
                     <notebook>
                         <page string="Thông tin chung">
-                            <group>
-                                <group>
+                            <group style="margin:0px">
+                                <group style="margin:0px">
                                     <field name="currency_id" invisible="1"/>
                                     <field name="bsd_ma_da"/>
                                     <field name="bsd_chu_dt_id"/>
@@ -21,7 +21,7 @@
                                     <field name="bsd_dia_chi"/>
                                     <field name="state"/>
                                 </group>
-                                <group>
+                                <group style="margin:0px">
                                     <field name="bsd_hd_coc"/>
                                     <field name="bsd_tl_dc"/>
                                     <field name="bsd_ngay_dkcn"/>
@@ -33,12 +33,12 @@
                                     <field name="bsd_ngay_cpb"/>
                                 </group>
                             </group>
-                            <group string="Định dạng">
-                                <group>
+                            <group style="margin:0px" string="Định dạng">
+                                <group style="margin:0px">
                                     <field name="bsd_dd_da"/>
                                     <field name="bsd_dd_khu"/>
                                 </group>
-                                <group>
+                                <group style="margin:0px">
                                     <field name="bsd_dd_tang"/>
                                 </group>
                             </group>
