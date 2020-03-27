@@ -9,7 +9,7 @@
                     <button string="Xác nhận"
                             name="action_xac_nhan"
                             type="object"
-                            states="nhap"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
                             class="oe_highlight"/>
                     <button string="Hủy"
                             name="action_huy"
@@ -17,6 +17,7 @@
                             confirm="Bạn có muốn hủy giữ chỗ không?"
                             states="giu_cho,thanh_toan"
                             class="oe_highlight"/>
+                    <!--<field name="state" widget="statusbar" statusbar_visible="0"/>-->
                 </header>
                 <sheet>
                     <group>
@@ -24,12 +25,14 @@
                             <field name="bsd_ma_gctc"/>
                             <field name="bsd_ngay_gctc"/>
                             <field name="bsd_khach_hang_id" options="{'no_create':true}"/>
-                            <field name="bsd_dien_giai"/>
+
                         </group>
                         <group>
                             <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                            <field name="currency_id" invisible="1"/>
                             <field name="bsd_tien_gc"/>
-                            <field name="state" readonly="1"/>
+                            <field name="bsd_dien_giai"/>
+                            <field name="state"/>
                         </group>
                     </group>
                     <group string="MÔI GIỚI">

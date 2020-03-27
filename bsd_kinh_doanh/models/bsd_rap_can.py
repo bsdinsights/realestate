@@ -2,6 +2,8 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class BsdRapCan(models.Model):
@@ -11,17 +13,17 @@ class BsdRapCan(models.Model):
     _rec_name = 'bsd_ma_rc'
 
     bsd_ma_rc = fields.Char(string="Mã ráp căn", required=True,
-                                        readonly=True,
-                                        states={'nhap': [('readonly', False)]})
+                            readonly=True,
+                            states={'nhap': [('readonly', False)]})
     bsd_ngay_rc = fields.Datetime(string="Ngày ráp căn", required=True, default=fields.Datetime.now(),
-                                        readonly=True,
-                                        states={'nhap': [('readonly', False)]})
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_gc_tc_id = fields.Many2one('bsd.gc_tc', string="Giữ chỗ thiện chí",
                                    help="Giữ chỗ trên dự án, chưa có sản phẩm", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
-    bsd_khach_hang_id = fields.Many2one('res.partner', related="bsd_gc_tc_id.bsd_khach_hang_id")
-    bsd_du_an_id = fields.Many2one('bsd.du_an', related="bsd_gc_tc_id.bsd_du_an_id")
+    bsd_khach_hang_id = fields.Many2one('res.partner', related="bsd_gc_tc_id.bsd_khach_hang_id", store=True)
+    bsd_du_an_id = fields.Many2one('bsd.du_an', related="bsd_gc_tc_id.bsd_du_an_id", store=True)
     bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
@@ -69,3 +71,13 @@ class BsdRapCan(models.Model):
 
     def action_huy(self):
         pass
+
+    @api.model
+    def create(self,vals):
+        rap_can = self.env['bsd.rap_can'].search([('bsd_gc_tc_id', '=', vals['bsd_gc_tc_id']),
+                                                  ('state', '!=', 'huy')])
+        _logger.debug(rap_can)
+        if rap_can:
+            raise UserError("Giữ chỗ thiện chí thuộc một ráp căn khác.\n Vui lòng kiểm tra lại.")
+        res = super(BsdRapCan, self).create(vals)
+        return res
