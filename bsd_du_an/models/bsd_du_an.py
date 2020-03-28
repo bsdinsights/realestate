@@ -83,7 +83,7 @@ class BsdProject(models.Model):
                                 help="""Số ngày giữ chỗ có hiệu lực kể từ ngày tạo giữ chỗ, và giữ chỗ được tạo 
                                         trước khi có đợt mở bán""",
                                 required=True)
-    bsd_gc_smb = fields.Float(string="Giữ chổ sau mở bán (h)",
+    bsd_gc_smb = fields.Float(string="Giữ chỗ sau mở bán (h)",
                               help="""Số giờ giữ chỗ có hiệu lực kể từ thời gian tạo giữ chỗ, và giữ chỗ được tạo 
                                       sau khi có đợt mở bán""",
                               required=True)
