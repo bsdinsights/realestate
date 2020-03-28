@@ -142,7 +142,12 @@
         <field name="model">bsd.du_an</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="bsd_ma_da"/>
                 <field name="bsd_ten_da"/>
+                <field name="bsd_chu_dt_id"/>
+                <field name="bsd_loai_da"/>
+                <field name="bsd_dia_chi"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>

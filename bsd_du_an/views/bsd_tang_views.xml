@@ -39,6 +39,7 @@
                 <field name="bsd_toa_nha_id"/>
                 <field name="bsd_ma_tang"/>
                 <field name="bsd_ten_tang"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
