@@ -4,7 +4,7 @@
     <menuitem id="bsd_main_danh_muc_root" name="Danh mục"/>
 
     <menuitem id="bsd_danh_muc_menu"
-              name="Danh mục"
+              name="Địa lý"
               sequence="10"
               parent="bsd_main_danh_muc_root"/>
     <menuitem id="bsd_quoc_gia_menu_action"
@@ -88,9 +88,9 @@
 
     <menuitem id="bsd_khuyen_mai_menu_action"
               name="Chương trình khuyến mãi"
-              sequence="13"
+              sequence="16"
               action="bsd_khuyen_mai_action"
-              parent="bsd_main_danh_muc_root"/>
+              parent="bsd_chiet_khau_menu"/>
 
     <menuitem id="bsd_chiet_khau_menu"
               sequence="14"

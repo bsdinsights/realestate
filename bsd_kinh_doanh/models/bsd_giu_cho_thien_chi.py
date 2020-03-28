@@ -58,7 +58,7 @@ class BsdGiuChoThienChi(models.Model):
                               ('xac_nhan', 'Xác nhận'),
                               ('thanh_toan', 'Thanh toán'),
                               ('giu_cho', 'Giữ chỗ'),
-                              ('huy', 'Hủy')], string="Trạng thái", default="nhap")
+                              ('huy', 'Hủy')], string="Trạng thái", default="nhap", required=True, tracking=1)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
