@@ -55,9 +55,9 @@ class BsdGiuChoThienChi(models.Model):
     bsd_ngay_huy = fields.Datetime(string="Hủy ráp căn", help="Ngày hủy ráp căn", readonly=True)
     bsd_rap_can_id = fields.Many2one('bsd.rap_can', string="Ráp căn", help="Phiếu ráp căn", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'),
-                              ('giu_cho', 'Giữ chỗ'),
+                              ('xac_nhan', 'Xác nhận'),
                               ('thanh_toan', 'Thanh toán'),
-                              ('rap_can', 'Ráp căn'),
+                              ('giu_cho', 'Giữ chỗ'),
                               ('huy', 'Hủy')], string="Trạng thái", default="nhap")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
@@ -86,14 +86,14 @@ class BsdGiuChoThienChi(models.Model):
                                                   ('create_date', '>', min_time),
                                                   ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                   ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
-                                                  ('state', '=', 'giu_cho')])
+                                                  ('state', '=', 'xac_nhan')])
         if len(gc_in_day) >= self.bsd_du_an_id.bsd_gc_nv_ngay:
             raise UserError("Số lượng giữ chỗ tối đa trên một ngày của bạn đã vượt mức.\n Vui lòng kiểm tra lại")
 
     # KD.05.01 Xác nhận giữ chỗ thiện chí
     def action_xac_nhan(self):
         self.write({
-            'state': 'giu_cho',
+            'state': 'xac_nhan',
             'bsd_ngay_gctc': datetime.datetime.now(),
         })
 
@@ -105,7 +105,7 @@ class BsdGiuChoThienChi(models.Model):
 
     # KD.05.03 Tự động hủy giữ chỗ
     def auto_huy_giu_cho(self):
-        if self.state == 'giu_cho':
+        if self.state == 'xac_nhan':
             self.write({
                 'state': 'huy'
             })

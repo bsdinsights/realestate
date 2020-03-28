@@ -15,7 +15,7 @@
                             name="action_huy"
                             type="object"
                             confirm="Bạn có muốn hủy giữ chỗ không?"
-                            states="giu_cho,thanh_toan"
+                            states="xac_nhan,thanh_toan"
                             class="oe_highlight"/>
                     <!--<field name="state" widget="statusbar" statusbar_visible="0"/>-->
                 </header>

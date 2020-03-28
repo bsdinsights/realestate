@@ -39,7 +39,8 @@
                             <field name="bsd_du_an_id" options="{'no_create':true}"/>
                             <field name="bsd_unit_id"
                                    options="{'no_create':true}"
-                                   domain="[('state','=','chuan_bi'),('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
+                                   domain="[('state','in',['chuan_bi','san_sang','dat_cho','giu_cho']),
+                                            ('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
                             <field name="bsd_dien_giai"/>
                             <!--<field name="state"/>-->
                         </group>

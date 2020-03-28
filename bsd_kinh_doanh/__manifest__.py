@@ -10,6 +10,7 @@
                 'crm',
                 'bsd_du_an',
                 'bsd_danh_muc',
+                'base_automation',
     ],
     'data': [
         'security/user_groups.xml',

@@ -65,12 +65,12 @@ class BsdRapCan(models.Model):
             'bsd_nguoi_duyet_id': self.env.uid,
         })
         self.bsd_gc_tc_id.write({
-            'state': 'rap_can',
+            'state': 'giu_cho',
             'bsd_rap_can_id': self.id,
             'bsd_ngay_rc': fields.Datetime.now(),
         })
         self.bsd_unit_id.write({
-            'state': 'san_sang',
+            'state': 'giu_cho',
         })
         # KD.06.05 Tự động tạo giữ chỗ khi ráp căn
         gc = self.env['bsd.giu_cho'].create({
