@@ -46,6 +46,9 @@
             <tree>
                 <field name="bsd_ma_ck_ch"/>
                 <field name="bsd_ten_ck_ch"/>
+                <field name="bsd_tu_ngay"/>
+                <field name="bsd_den_ngay"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>

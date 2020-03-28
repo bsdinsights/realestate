@@ -37,8 +37,11 @@
         <field name="model">bsd.lai_phat_tt</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="bsd_du_an_id"/>
                 <field name="bsd_ma_lptt"/>
                 <field name="bsd_ten_lptt"/>
+                <field name="bsd_tinh_phat"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>

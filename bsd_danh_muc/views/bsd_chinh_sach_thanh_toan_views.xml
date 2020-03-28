@@ -70,8 +70,12 @@
         <field name="model">bsd.cs_tt</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="bsd_du_an_id"/>
                 <field name="bsd_ma_cstt"/>
                 <field name="bsd_ten_cstt"/>
+                <field name="bsd_tu_ngay"/>
+                <field name="bsd_den_ngay"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>

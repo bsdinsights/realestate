@@ -12,7 +12,7 @@ class BsDkbg(models.Model):
     bsd_ma_dkbg = fields.Char(string="Mã", help="Điều kiện bàn giao", required=True)
     bsd_ten_dkbg = fields.Char(string="Tên", help="Tên điều kiện bàn giao", required=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True)
-    bsd_dot_mb_id = fields.Char(string="Đợt mở bán", help="Đợt mở bán", required=True)
+    # bsd_dot_mb_id = fields.Char(string="Đợt mở bán", help="Đợt mở bán", required=True)
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu hiệu lực của điều kiện bàn giao", required=True)
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc hiệu lực của điều kiện bàn giao", required=True)
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")

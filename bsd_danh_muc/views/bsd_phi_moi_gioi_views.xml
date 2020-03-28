@@ -73,7 +73,14 @@
         <field name="model">bsd.pmg_ttc</field>
         <field name="arch" type="xml">
             <tree>
-
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_ma_phi_mg"/>
+                <field name="bsd_ten_phi_mg"/>
+                <field name="bsd_ap_dung"/>
+                <field name="bsd_tu_ngay"/>
+                <field name="bsd_den_ngay"/>
+                <field name="bsd_dieu_kien"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>

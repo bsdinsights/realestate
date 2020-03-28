@@ -11,7 +11,6 @@ class BsdKhuyenMai(models.Model):
 
     bsd_ma_km = fields.Char(string="Mã khuyến mãi", required=True)
     bsd_ten_km = fields.Char(string="Tên khuyển mãi", required=True)
-    bsd_dot_mb = fields.Char(string="Đợt mở bán", required=True)
     bsd_gia_tri = fields.Monetary(string="Giá trị", help="Giá trị (tiền) được hưởng khuyến mãi", required=True)
     bsd_dien_giai = fields.Char(string="Diễn giải")
     bsd_loai = fields.Boolean(string="Điều kiện", help="Điều kiện xét khuyến mãi", required=True, defaule=False)

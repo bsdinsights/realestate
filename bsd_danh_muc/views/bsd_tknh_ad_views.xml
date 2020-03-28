@@ -55,8 +55,13 @@
         <field name="model">bsd.tknh_ad</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="bsd_du_an_id"/>
                 <field name="bsd_ma_tknh"/>
                 <field name="bsd_ten_tknh"/>
+                <field name="bsd_da_tknh_id"/>
+                <field name="bsd_tu_ngay"/>
+                <field name="bsd_den_ngay"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>

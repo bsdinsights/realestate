@@ -22,6 +22,8 @@
         'views/bsd_giu_cho_thien_chi_views.xml',
         'views/bsd_rap_can_views.xml',
         'views/bsd_giu_cho_views.xml',
+        'views/bsd_khuyen_mai_views.xml',
+        'views/bsd_dieu_kien_ban_giao_views.xml',
         'views/bsd_menu_item_views.xml',
         'data/bsd_automation_data.xml',
     ],
