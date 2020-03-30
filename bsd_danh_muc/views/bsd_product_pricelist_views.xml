@@ -22,10 +22,10 @@
             <xpath expr="//field[@name='item_ids']" position="replace">
                   <field name="item_ids" nolabel="1" context="{'default_base':'list_price', 'default_date_start':bsd_ngay_bd, 'default_date_end':bsd_ngay_kt}" groups="product.group_product_pricelist">
                       <tree string="Pricelist Items">
-                          <field name="product_tmpl_id"/>
+                          <field name="product_tmpl_id" domain="[('bsd_du_an_id','in',[parent.bsd_du_an_id])]"/>
                           <field name="price"/>
-                          <field name="date_start" readonly="1"/>
-                          <field name="date_end" readonly="1"/>
+                          <field name="date_start"/>
+                          <field name="date_end"/>
                           <field name="base" invisible="1"/>
                           <field name="price_discount" invisible="1"/>
                           <field name="applied_on" invisible="1"/>
@@ -48,6 +48,9 @@
             </xpath>
             <xpath expr="//field[@name='date_end']" position="attributes">
                 <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_tmpl_id']" position="attributes">
+                <attribute name="domain">[('bsd_du_an_id','in',[parent.bsd_du_an_id])]</attribute>
             </xpath>
         </field>
     </record>
