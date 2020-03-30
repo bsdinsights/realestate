@@ -16,9 +16,8 @@ class ProductTemplate(models.Model):
         for each in self:
             each.name = each.bsd_ten_unit
     bsd_stt = fields.Char(string="Số thứ tự", help="Số căn hộ", required=True)
-    bsd_ten_unit = fields.Char(string="Tên căn hộ", help="Tên căn hộ bao gồm mã tòa nhà, mã tầng và số căn hộ",
-                               required=True)
-    bsd_ma_unit = fields.Char(string="Mã căn hộ", required=True,
+    bsd_ten_unit = fields.Char(string="Tên căn hộ", help="Tên căn hộ bao gồm mã tòa nhà, mã tầng và số căn hộ")
+    bsd_ma_unit = fields.Char(string="Mã căn hộ",
                               help="Mã đầy đủ của căn hộ bao gồm mã dữ án, mã tòa nhà, mã tầng và số căn hộ")
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
     bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà", required=True)
@@ -135,12 +134,12 @@ class ProductTemplate(models.Model):
     @api.depends('bsd_dt_sd', 'bsd_gt_dat')
     def _compute_bsd_tong_gtsd_dat(self):
         for each in self:
-            each.bsd_tong_gtd = each.bsd_dt_sd * each.bsd_dt_sd
+            each.bsd_tong_gtd = each.bsd_dt_sd * each.bsd_gt_dat
 
     @api.depends('bsd_tl_bt', 'bsd_gia_ban')
     def _compute_bsd_phi_bao_tri(self):
         for each in self:
-            each.bsd_phi_bt = each.bsd_tl_bt * each.bsd_gia_ban
+            each.bsd_phi_bt = each.bsd_tl_bt * each.bsd_gia_ban / 100
 
     @api.depends('bsd_gia_ban', 'bsd_tong_gtd', 'bsd_thue_suat')
     def _compute_tien_thue(self):
@@ -182,10 +181,10 @@ class ProductTemplate(models.Model):
             if not template.bsd_ma_unit:
                 template.write({
                     'bsd_ma_unit': du_an.bsd_ma_da + du_an.bsd_dd_da +
-                            toa_nha.bsd_ma_tn + du_an.bsd_dd_khu + tang.bsd_ma_tang + du_an.bsd_dd_tang
+                            toa_nha.bsd_ten_tn + du_an.bsd_dd_khu + tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_stt
                 })
             if not template.bsd_ten_unit:
                 template.write({
-                    'bsd_ten_unit': toa_nha.bsd_ma_tn + du_an.bsd_dd_khu + tang.bsd_ma_tang + du_an.bsd_dd_tang
+                    'bsd_ten_unit': toa_nha.bsd_ten_tn + du_an.bsd_dd_khu + tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_stt
                 })
         return templates

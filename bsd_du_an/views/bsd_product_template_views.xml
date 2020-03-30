@@ -16,20 +16,26 @@
                             type="object"
                             attrs="{'invisible':[('bsd_uu_tien','=','0'),('state','in',['chuan_bi','xu_ly'])]}"
                             class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
                     <group string="THÔNG TIN CHUNG">
                         <group>
-                            <field name="bsd_du_an_id" required="1" options="{'no_create':true}"/>
-                            <field name="bsd_toa_nha_id" required="1" options="{'no_create':true}"/>
-                            <field name="bsd_tang_id" required="1" options="{'no_create':true}"/>
+                            <field name="bsd_du_an_id"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_toa_nha_id"
+                                   domain="[('bsd_du_an_id','in',[bsd_du_an_id])]"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_tang_id"
+                                   domain="[('bsd_toa_nha_id','in',[bsd_toa_nha_id])]"
+                                   options="{'no_create':true}"/>
                             <field name="bsd_stt"/>
                         </group>
                         <group>
                             <field name="bsd_ma_unit"/>
                             <field name="bsd_ten_unit"/>
                             <field name="bsd_dien_giai"/>
-                            <field name="state"/>
+                            <!--<field name="state"/>-->
                         </group>
                     </group>
                     <group string="PHÂN NHÓM">
