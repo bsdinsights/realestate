@@ -12,7 +12,7 @@
                             attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
                             type="object"/>
                     <button string="Hủy"
-                            states="giu_cho,thanh_toan,bao_gia"
+                            states="giu_cho,dat_cho,bao_gia"
                             name="action_huy"
                             type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
@@ -26,10 +26,12 @@
                             <field name="bsd_du_an_id" options="{'no_create':true}"/>
                             <field name="bsd_unit_id"
                                    options="{'no_create':true}"
-                                   domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
+                                   domain="[('bsd_du_an_id', 'in',[bsd_du_an_id]),
+                                            ('state','in',['chuan_bi','san_sang','dat_cho','giu_cho'])]"/>
                         </group>
                         <group>
-                            <field name="bsd_dot_mb_id" options="{'no_create':true}"/>
+                            <field name="bsd_dot_mb_id"
+                                   options="{'no_create':true}"/>
                             <field name="bsd_bang_gia_id" options="{'no_create':true}"/>
                             <field name="bsd_tien_gc"/>
                             <fielf name="currency_id" invisible="1"/>
