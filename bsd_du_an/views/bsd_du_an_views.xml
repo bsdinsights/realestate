@@ -19,22 +19,21 @@
                                     <field name="bsd_gp_dt"/>
                                     <field name="bsd_ngay_gp"/>
                                     <field name="bsd_dia_chi"/>
-                                    <field name="state"/>
+
                                 </group>
                                 <group>
-                                    <field name="bsd_hd_coc"/>
-                                    <field name="bsd_tl_dc" attrs="{'readonly':[('bsd_hd_coc','=',False)]}"/>
                                     <field name="bsd_ngay_dkcn"/>
+                                    <field name="bsd_ngay_ttcn"/>
                                     <field name="bsd_ngay_dkbg"/>
                                     <field name="bsd_ngay_htpl"/>
                                     <field name="bsd_ngay_qsdd"/>
-                                    <field name="bsd_cho_gx"/>
-                                    <field name="bsd_ngay_ttcn"/>
                                     <field name="bsd_ngay_cpb"/>
+                                    <field name="bsd_cho_gx"/>
+                                    <field name="state"/>
                                 </group>
                             </group>
-                            <group string="Định dạng">
-                                <group style="margin:0px">
+                            <group string="ĐỊNH DẠNG MÃ CĂN HỘ">
+                                <group>
                                     <field name="bsd_dd_da"/>
                                     <field name="bsd_dd_khu"/>
                                 </group>
@@ -44,16 +43,25 @@
                             </group>
                         </page>
                         <page string="Bán hàng">
-                            <group string="PHÍ QUẢN LÝ">
+                            <group string="QUẢN LÝ &amp; BẢO TRÌ">
                                 <group>
-                                    <field name="bsd_gt_sdd"/>
-                                    <field name="bsd_tl_pbt"/>
                                     <field name="bsd_thang_pql"/>
+                                    <field name="bsd_tien_pql"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_tien_pql"/>
+                                    <field name="bsd_tl_pbt"/>
+
+                                </group>
+                            </group>
+                            <group string="GIỮ CHỖ &amp; ĐẶT CỌC">
+                                <group>
+                                    <field name="bsd_gt_sdd"/>
                                     <field name="bsd_tien_gc"/>
                                     <field name="bsd_tien_dc"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_hd_coc"/>
+                                    <field name="bsd_tl_dc" attrs="{'readonly':[('bsd_hd_coc','=',False)]}"/>
                                 </group>
                             </group>
                             <group string="HIỆU LỰC">
