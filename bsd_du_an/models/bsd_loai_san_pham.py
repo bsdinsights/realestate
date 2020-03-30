@@ -11,6 +11,10 @@ class BsdLoaiSanPham(models.Model):
 
     bsd_ten_nhom = fields.Char(string="Tên nhóm", required=True, help="Tên nhóm sản phẩm")
     bsd_ma_nhom = fields.Char(string="Mã nhóm", required=True, help="Mã nhóm sản phẩm")
+    _sql_constraints = [
+        ('bsd_ma_nhom_unique', 'unique (bsd_ma_nhom)',
+         'Mã loại sản phẩm đã tồn tại !'),
+    ]
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True, help="Tên dự án")
     bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà", help="Tên tòa nhà")

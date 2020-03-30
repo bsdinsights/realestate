@@ -11,6 +11,10 @@ class BsdBlock(models.Model):
 
     bsd_ten_tn = fields.Char(string="Tên tòa nhà", required=True, help="Tên tòa nhà")
     bsd_ma_tn = fields.Char(string="Mã tòa nhà", required=True, help="Mã tòa nhà")
+    _sql_constraints = [
+        ('bsd_ma_tn_unique', 'unique (bsd_ma_tn)',
+         'Mã tòa nhà đã tồn tại !'),
+    ]
     bsd_stt = fields.Integer(string="Số thứ tự", help="Số thứ tự sắp xếp của tòa nhà")
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
     bsd_so_tang = fields.Integer(string="Số tầng", help="Số tầng")

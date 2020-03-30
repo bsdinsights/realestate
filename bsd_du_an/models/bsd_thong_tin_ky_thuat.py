@@ -11,6 +11,10 @@ class BsdThongSoKyThuat(models.Model):
 
     bsd_ten_ttkt = fields.Char(string="Tên", required=True, help="Tên thông tin kỹ thuật sản phẩm")
     bsd_ma_ttkt = fields.Char(string="Mã", required=True, help="Mã thông tin kỹ thuật sản phẩm")
+    _sql_constraints = [
+        ('bsd_ma_ttkt_unique', 'unique (bsd_ma_ttkt)',
+         'Mã thông tin kỹ thuật đã tồn tại !'),
+    ]
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
     bsd_dien_giai_2 = fields.Char(string="Diễn giải 2", help="Diễn giải bằng tiếng Anh")
     bsd_loai_sp_id = fields.Many2one('bsd.loai_sp', string="Loại sản phẩm", required=True)

@@ -12,6 +12,10 @@ class BsdProject(models.Model):
 
     bsd_ten_da = fields.Char(string="Tên dự án", required=True, help="Tên dự án")
     bsd_ma_da = fields.Char(string="Mã dự án", required=True, help="Mã dự án")
+    _sql_constraints = [
+        ('bsd_ma_da_unique', 'unique (bsd_ma_da)',
+         'Mã dự án đã tồn tại !'),
+    ]
     bsd_chu_dt_id = fields.Many2one('res.partner', string="Chủ dự án", required=True, help="Tên chủ đầu tư của dự án")
     bsd_loai_da = fields.Selection([('chung_cu', 'Chung cư'),
                                     ('khu_ph', 'Khu phức hợp'),

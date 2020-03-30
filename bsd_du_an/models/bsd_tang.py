@@ -11,6 +11,10 @@ class BsdFloor(models.Model):
 
     bsd_ten_tang = fields.Char(string="Tên tầng", required=True, help="Tên tầng")
     bsd_ma_tang = fields.Char(string="Mã tầng", required=True, help="Mã tầng")
+    _sql_constraints = [
+        ('bsd_ma_tang_unique', 'unique (bsd_ma_tang)',
+         'Mã tầng đã tồn tại !'),
+    ]
     bsd_stt = fields.Integer(string="Số thứ tự", help="Số thứ tự sắp xếp của tầng", required=True)
     bsd_dien_giai = fields.Char(string="Diễn giải",
                                 help="Thông tin chi tiết về tòa nhà")

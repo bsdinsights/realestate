@@ -19,6 +19,10 @@ class ProductTemplate(models.Model):
     bsd_ten_unit = fields.Char(string="Tên căn hộ", help="Tên căn hộ bao gồm mã tòa nhà, mã tầng và số căn hộ")
     bsd_ma_unit = fields.Char(string="Mã căn hộ",
                               help="Mã đầy đủ của căn hộ bao gồm mã dữ án, mã tòa nhà, mã tầng và số căn hộ")
+    _sql_constraints = [
+        ('bsd_ma_unit_unique', 'unique (bsd_ma_unit)',
+         'Mã unit đã tồn tại !'),
+    ]
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True, help="Tên dự án")
     bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà", required=True, help="Tên tòa nhà")
     bsd_tang_id = fields.Many2one('bsd.tang', string="Tầng", required=True, help="Tên tầng lầu")
