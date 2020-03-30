@@ -139,9 +139,12 @@ class BsdDotMoBan(models.Model):
             _logger.debug("id tầng")
             _logger.debug(ids_tang)
             # lọc unit theo các tầng đã tìm được:
-            units = self.env['product.product'].search([('bsd_tang_id', 'in', ids_tang)])
+            units = set(self.env['product.product'].search([('bsd_tang_id', 'in', ids_tang)]))
+            # Chỉ tạo những unit chưa có trong chuẩn bị
+            exist_units = set(self.bsd_cb_ids.mapped('bsd_unit_id'))
+            no_units = units.difference(exist_units)
             # Tạo dữ liệu cho bảng unit chuẩn bị mở bán
-            for unit in units:
+            for unit in no_units:
                 self.bsd_cb_ids.create({
                     'bsd_du_an_id': unit.bsd_du_an_id.id,
                     'bsd_toa_nha_id': unit.bsd_toa_nha_id.id,
@@ -274,6 +277,28 @@ class BsdDotMoBanCB(models.Model):
     bsd_gia_ban = fields.Monetary(string="Giá bán", required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+
+    @api.model
+    def create(self, vals):
+        _logger.debug("Tạo chuẩn bị")
+        _logger.debug(vals)
+        if 'bsd_unit_id' in vals.keys() and 'bsd_dot_mb_id' in vals.keys():
+            if self.env['bsd.dot_mb_cb'].search([('bsd_unit_id', '=',vals['bsd_unit_id']),
+                                                 ('bsd_dot_mb_id', '=',vals['bsd_dot_mb_id'])]):
+                raise UserError("Đợt mở bán đã có unit")
+        rec = super(BsdDotMoBanCB, self).create(vals)
+        return rec
+
+    def write(self, vals):
+        _logger.debug("chỉnh chuẩn bị")
+        _logger.debug(vals)
+        _logger.debug(self.bsd_dot_mb_id)
+        if 'bsd_unit_id' in vals.keys():
+            if self.env['bsd.dot_mb_cb'].search([('bsd_unit_id', '=', vals['bsd_unit_id']),
+                                                 ('bsd_dot_mb_id', '=', self.bsd_dot_mb_id.id)]):
+                raise UserError("Đợt mở bán đã có unit")
+        rec = super(BsdDotMoBanCB, self).write(vals)
+        return rec
 
 
 class BsdDotMoBanUnit(models.Model):
