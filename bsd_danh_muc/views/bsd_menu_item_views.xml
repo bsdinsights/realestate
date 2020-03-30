@@ -86,12 +86,6 @@
               action="bsd_tknh_ad_action"
               parent="bsd_bank_menu"/>
 
-    <menuitem id="bsd_khuyen_mai_menu_action"
-              name="Chương trình khuyến mãi"
-              sequence="16"
-              action="bsd_khuyen_mai_action"
-              parent="bsd_chiet_khau_menu"/>
-
     <menuitem id="bsd_chiet_khau_menu"
               sequence="14"
               name="Chiết khấu"
@@ -136,6 +130,12 @@
               name="Chiết khấu thanh toán nhanh"
               sequence="15"
               action="bsd_chiet_khau_ttn_action"
+              parent="bsd_chiet_khau_menu"/>
+
+    <menuitem id="bsd_khuyen_mai_menu_action"
+              name="Chương trình khuyến mãi"
+              sequence="16"
+              action="bsd_khuyen_mai_action"
               parent="bsd_chiet_khau_menu"/>
 
     <menuitem id="bsd_lai_phat_tt_menu_action"
