@@ -85,7 +85,7 @@
                                     <field name="bsd_hh_dv"/>
                                 </group>
                             </group>
-                            <group string="GIỮ CHỖ">
+                            <group string="QUY ĐỊNH GIỮ CHỖ">
                                 <group>
                                     <field name="bsd_gc_unit_nv"/>
                                     <field name="bsd_gc_unit"/>

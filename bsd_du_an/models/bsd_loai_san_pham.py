@@ -11,10 +11,10 @@ class BsdLoaiSanPham(models.Model):
 
     bsd_ten_nhom = fields.Char(string="Tên nhóm", required=True, help="Tên nhóm sản phẩm")
     bsd_ma_nhom = fields.Char(string="Mã nhóm", required=True, help="Mã nhóm sản phẩm")
-    bsd_dien_giai = fields.Char(string="Diễn giải",help="Diễn giải")
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
-    bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà")
+    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True, help="Tên dự án")
+    bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà", help="Tên tòa nhà")
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Ngưng sử dụng')],
-                             string="Trạng thái", default='active')
+                             string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
 

@@ -17,7 +17,7 @@ class BsdThongSoKyThuat(models.Model):
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Ngưng sử dụng')],
-                             string="Trạng thái", default='active', required=True)
+                             string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
     bsd_line_ids = fields.One2many('bsd.tt_kt_ct', 'bsd_tt_kt_id', string="Bảng chi tiết")
 
 
