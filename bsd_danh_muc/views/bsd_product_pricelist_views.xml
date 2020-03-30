@@ -23,7 +23,7 @@
                   <field name="item_ids" nolabel="1" context="{'default_base':'list_price', 'default_date_start':bsd_ngay_bd, 'default_date_end':bsd_ngay_kt}" groups="product.group_product_pricelist">
                       <tree string="Pricelist Items">
                           <field name="product_tmpl_id"/>
-                          <field name="price" string="Price"/>
+                          <field name="price"/>
                           <field name="date_start" readonly="1"/>
                           <field name="date_end" readonly="1"/>
                           <field name="base" invisible="1"/>

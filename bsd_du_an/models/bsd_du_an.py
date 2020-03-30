@@ -49,7 +49,7 @@ class BsdProject(models.Model):
     bsd_gt_sdd = fields.Monetary(string="Giá trị sử dụng đất", required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-    bsd_tl_pbt = fields.Float(string="Phí bảo trì (%)", required=True)
+    bsd_tl_pbt = fields.Float(string="Phí bảo trì", required=True)
     bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý", required=True,
                                               help="Số tháng đóng phí quản lý trước đợt bàn giao tạm thời hoặc bàn giao chính thức")
     bsd_tien_pql = fields.Monetary(string="Tiền phí quản lý", required=True,
@@ -58,39 +58,43 @@ class BsdProject(models.Model):
                                        help="Tiền giữ chỗ khi mua căn hộ của dự án")
     bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", required=True,
                                        help="Tiền đặt cọc khi mua căn hộ của dự án")
-    bsd_hh_bg = fields.Integer(string="Hết hạn báo giá", required=True,
+    bsd_hh_bg = fields.Integer(string="Hiệu lực báo giá", required=True,
                                               help="Số ngày báo giá hết hiệu lực, được tính từ ngày tạo báo giá")
-    bsd_hh_pc = fields.Integer(string="Hết hạn ký phiếu cọc", required=True,
+    bsd_hh_pc = fields.Integer(string="Hạn ký phiếu cọc", required=True,
                                                   help="Số ngày phiếu cọc hết hiệu lực ký, được tính từ ngày in phiếu cọc")
-    bsd_hh_hd = fields.Integer(string="Hết hạn ký hợp đồng", required=True,
+    bsd_hh_hd = fields.Integer(string="Hạn ký hợp đồng", required=True,
                                                  help="Số ngày hợp đồng hết hiệu lực ky, được tính kể từ ngày in hợp đồng")
     bsd_cb_gc = fields.Integer(string="Cảnh báo sau giữ chỗ",
                                                   help="Số ngày cảnh báo sau khi tạo giữ chỗ")
     bsd_cb_dc = fields.Integer(string="Cảnh báo sau đặt cọc",
                                                   help="Số ngày cảnh báo sau khi tạo đặt cọc")
-    bsd_hh_qt = fields.Float(string="Hết hạn quan tâm",
+    bsd_hh_qt = fields.Float(string="Hiệu lực quan tâm(h)",
                                            help="Số giờ hiệu lực của phiếu quan tâm bất động sản")
-    bsd_gc_NVBH = fields.Integer(string="Số giữ chỗ NVBH", required=True,
-                                         help="Số lượng căn hộ tối đa mà nhân viên bán hàng được phép giữ chỗ")
-    bsd_gc_ch = fields.Integer(string="Số giữ chỗ Căn hộ", required=True,
+    bsd_gc_unit_nv = fields.Integer(string="Căn hộ/NVBH", required=True,
+                                         help="Số lượng căn hộ tối đa mà mỗi nhân viên bán hàng được thực hiện giữ chỗ")
+    bsd_gc_unit = fields.Integer(string="Giữ chỗ/Căn hộ", required=True,
                                            help="Số lượng giữ chỗ tối đa cho mỗi căn hộ")
-    bsd_gc_ngay = fields.Integer(string="Số giữ chỗ theo ngày",
-                                              help="số lượng giữ chỗ tối đa trên 1 ngày")
-    bsd_gc_td = fields.Integer(string="Số giữ chỗ NVBH/căn hộ/ngày",
-                               help="""Số lượng giữ chỗ tối đa mỗi nhân viên bán hàng được
-                                                      phép giữ chỗ theo căn hộ""")
-    bsd_huy_tmb = fields.Integer(string="Hủy giữ chỗ trước mở bán",
-                                                      help="Hủy giữ chỗ trước khi căn hộ được mở bán", required=True)
-    bsd_huy_smb = fields.Float(string="Hủy giữ chỗ sau mở bán(giờ)",
-                                                   help="Số giờ giữ chỗ sau khi căn hộ được mở bán", required=True)
+    bsd_gc_nv_ngay = fields.Integer(string="NVBH/ngày",
+                                 help="Số lượng giữ chỗ tối đa mà 1 nhân viên bán hàng được phép thực hiện trong 1 ngày")
+    bsd_gc_unit_nv_ngay = fields.Integer(string="Căn hộ/NVBH/ngày",
+                               help="""Số lượng giữ chỗ tối đa trên 1 căn hộ mà 1 nhân viên bán hàng 
+                                       được phép thực hiện trong 1 ngày""")
+    bsd_gc_tmb = fields.Integer(string="Giữ chỗ trước mở bán",
+                                help="""Số ngày giữ chỗ có hiệu lực kể từ ngày tạo giữ chỗ, và giữ chỗ được tạo 
+                                        trước khi có đợt mở bán""",
+                                required=True)
+    bsd_gc_smb = fields.Float(string="Giữ chổ sau mở bán (h)",
+                              help="""Số giờ giữ chỗ có hiệu lực kể từ thời gian tạo giữ chỗ, và giữ chỗ được tạo 
+                                      sau khi có đợt mở bán""",
+                              required=True)
     bsd_hh_nv = fields.Float(string="NVBH (%)", required=True,
-                                           help="Tỷ lệ (%) hoa hồng được hưởng của nhân viên bán hàng")
+                             help="Tỷ lệ (%) hoa hồng được hưởng của nhân viên bán hàng")
     bsd_hh_ql = fields.Float(string="Quản lý", help="Tiền hoa hồng được hương của quản lý", required=True)
     bsd_hh_dv = fields.Float(string="Dịch vụ", required=True,
-                                     help="Tiền hoa hồng được hương của nhân viên dịch vụ khách hàng")
+                             help="Tiền hoa hồng được hương của nhân viên dịch vụ khách hàng")
     state = fields.Selection([('active', 'Đang sử dụng'),
-                                       ('inactive', 'Ngưng sử dụng')],
-                                      string="Trạng thái", default='active')
+                              ('inactive', 'Ngưng sử dụng')],
+                             string="Trạng thái", default='active')
     bsd_tk_ng_ids = fields.One2many('bsd.da_tknh', 'bsd_du_an_id', string="Tài khoản ngân hàng")
     bsd_ngan_hang_ids = fields.One2many('bsd.da_nh', 'bsd_du_an_id', string="Ngân hàng")
 

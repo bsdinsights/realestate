@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_product_template_inherit">
+        <field name="name">bsd.product.template.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="bsd_du_an.bsd_product_template_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bsd_san_gd_id']" position="before">
+                <field name="bsd_dot_mb_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

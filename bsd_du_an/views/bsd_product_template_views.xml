@@ -18,80 +18,99 @@
                             class="oe_highlight"/>
                 </header>
                 <sheet>
-                    <group style="margin:0px ">
-                        <group string="Thông tin chung" style="margin:0px ">
+                    <group string="THÔNG TIN CHUNG">
+                        <group>
                             <field name="bsd_du_an_id" required="1" options="{'no_create':true}"/>
                             <field name="bsd_toa_nha_id" required="1" options="{'no_create':true}"/>
                             <field name="bsd_tang_id" required="1" options="{'no_create':true}"/>
                             <field name="bsd_stt"/>
+                        </group>
+                        <group>
                             <field name="bsd_ma_unit"/>
                             <field name="bsd_ten_unit"/>
-                            <field name="bsd_tien_dc"/>
-                            <field name="bsd_tien_gc"/>
                             <field name="bsd_dien_giai"/>
-                        </group>
-                        <group string="Phân nhóm" style="margin:0px ">
-                            <field name="bsd_loai_sp_id" required="1" options="{'no_create':true}"/>
-                            <field name="bsd_huong"/>
-                            <field name="bsd_view"/>
-                            <field name="bsd_so_pn"/>
-                            <field name="bsd_loai_bds"/>
-                            <field name="bsd_phan_loai"/>
-                            <field name="bsd_loai_unit"/>
-                            <field name="bsd_tl_tc"/>
                             <field name="state"/>
                         </group>
                     </group>
-                    <group style="margin:0px ">
-                        <group style="margin:0px">
-                            <group string="Diện tích" style="margin:0px" col="2" colspan="2">
-                                <field name="bsd_dt_cl"/>
-                                <field name="bsd_dt_xd"/>
-                                <field name="bsd_dt_sd"/>
-                                <field name="bsd_dt_tt"/>
-                                <field name="bsd_dt_sh"/>
-                            </group>
-                            <group string="Mở bán" style="margin:0px" col="2" colspan="2">
-                                <field name="bsd_dot_mb"/>
-                                <field name="bsd_san_gd_id"
-                                       domain="[('is_company', '=',)]"
-                                       options="{'no_create':true}"/>
-                                <field name="bsd_thanh_ly"/>
-                                <field name="bsd_lan_tl"/>
-                            </group>
-                            <group string="Ưu tiên" style="margin:0px " col="2" colspan="2">
-                                <field name="bsd_uu_tien"/>
-                                <field name="bsd_nguoi_duyet_id" options="{'no_create':true}"/>
-                                <field name="bsd_ngay_duyet"/>
-                                <field name="bsd_lan_duyet"/>
-                                <field name="bsd_ghi_chu" attrs="{'readonly':[('bsd_uu_tien','=','0')]}"/>
-                                <field name="bsd_nguoi_huy_id" options="{'no_create':true}"/>
-                                <field name="bsd_ngay_huy"/>
-                            </group>
+                    <group string="PHÂN NHÓM">
+                        <group>
+                            <field name="bsd_huong"/>
+                            <field name="bsd_view"/>
+                            <field name="bsd_so_pn"/>
                         </group>
-                        <group style="margin:0px ">
-                            <group string="Giá bán"  style="margin:0px " col="2" colspan="2">
-                                <field name="bsd_don_gia"/>
-                                <field name="bsd_gia_ban"/>
-                                <field name="bsd_gt_dat"/>
-                                <field name="bsd_tong_gtd"/>
-                                <field name="bsd_tl_bt"/>
-                                <field name="bsd_phi_bt"/>
-                                <field name="bsd_thue_suat"/>
-                                <field name="bsd_tien_thue"/>
-                                <field name="bsd_tong_gb"/>
-                            </group>
-                            <group string="Bàn giao" style="margin:0px " col="2" colspan="2">
-                                <field name="bsd_ngay_dkbg"/>
-                                <field name="bsd_thang_ql"/>
-                                <field name="bsd_phi_ql"/>
-                                <field name="bsd_dk_bg"/>
-                                <field name="bsd_ngay_bg"/>
-                                <field name="bsd_ngay_cn"/>
-                                <field name="bsd_ngay_hs"/>
-                                <field name="bsd_tt_vay"/>
-                                <field name="currency_id" invisible="1"/>
-                            </group>
+                        <group>
+                            <field name="bsd_loai_bds"/>
+                            <field name="bsd_phan_loai"/>
+                            <field name="bsd_loai_unit"/>
+                            <field name="bsd_loai_sp_id" options="{'no_create':true}"/>
+                        </group>
+                    </group>
+                    <group string="DIỆN TÍCH">
+                        <group>
+                            <field name="bsd_dt_cl"/>
+                            <field name="bsd_dt_xd"/>
+                            <field name="bsd_dt_sd"/>
+                        </group>
+                        <group>
+                            <field name="bsd_dt_tt"/>
+                            <field name="bsd_dt_sh"/>
+                        </group>
+                    </group>
+                    <group string="GIÁ BÁN">
+                        <group>
+                            <field name="bsd_tien_dc"/>
+                            <field name="bsd_tien_gc"/>
+                            <field name="bsd_tl_tc"/>
+                            <field name="bsd_don_gia"/>
+                            <field name="bsd_gia_ban"/>
+                            <field name="bsd_gt_dat"/>
+                        </group>
+                        <group>
+                            <field name="bsd_tong_gtd"/>
+                            <field name="bsd_tl_bt"/>
+                            <field name="bsd_phi_bt"/>
+                            <field name="bsd_thue_suat"/>
+                            <field name="bsd_tien_thue"/>
+                            <field name="bsd_tong_gb"/>
+                        </group>
+                    </group>
+                    <group string="MỞ BÁN">
+                        <group>
+                            <field name="bsd_san_gd_id"
+                                   domain="[('is_company', '=',)]"
+                                   options="{'no_create':true}"/>
+                        </group>
+                        <group>
+                            <field name="bsd_thanh_ly"/>
+                            <field name="bsd_lan_tl"/>
+                        </group>
+                    </group>
+                    <group string="BÀN GIAO">
+                        <group>
+                            <field name="bsd_ngay_dkbg"/>
+                            <field name="bsd_thang_ql"/>
+                            <field name="bsd_phi_ql"/>
+                            <field name="bsd_dk_bg"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ngay_bg"/>
+                            <field name="bsd_ngay_cn"/>
+                            <field name="bsd_ngay_hs"/>
+                            <field name="bsd_tt_vay"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="ƯU TIÊN">
+                        <group>
+                            <field name="bsd_uu_tien"/>
+                            <field name="bsd_nguoi_duyet_id" options="{'no_create':true}"/>
+                            <field name="bsd_ngay_duyet"/>
+                            <field name="bsd_lan_duyet"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ghi_chu" attrs="{'readonly':[('bsd_uu_tien','=','0')]}"/>
+                            <field name="bsd_nguoi_huy_id" options="{'no_create':true}"/>
+                            <field name="bsd_ngay_huy"/>
                         </group>
                     </group>
                 </sheet>
