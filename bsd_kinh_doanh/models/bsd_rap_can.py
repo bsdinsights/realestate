@@ -16,6 +16,10 @@ class BsdRapCan(models.Model):
     bsd_ma_rc = fields.Char(string="Mã ráp căn", required=True,
                             readonly=True,
                             states={'nhap': [('readonly', False)]})
+    _sql_constraints = [
+        ('bsd_ma_rc_unique', 'unique (bsd_ma_rc)',
+         'Mã ráp căn đã tồn tại !'),
+    ]
     bsd_ngay_rc = fields.Datetime(string="Ngày ráp căn", required=True, default=fields.Datetime.now(),
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})

@@ -11,41 +11,45 @@ class BsdRapCan(models.Model):
     _rec_name = 'bsd_ma_gc'
 
     bsd_ma_gc = fields.Char(string="Mã giữ chỗ", required=True,
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                            readonly=True,
+                            states={'nhap': [('readonly', False)]})
+    _sql_constraints = [
+        ('bsd_ma_gc_unique', 'unique (bsd_ma_gc)',
+         'Mã giữ chỗ đã tồn tại !'),
+    ]
     bsd_ngay_gc = fields.Datetime(string="Ngày giữ chỗ", required=True, default=datetime.datetime.now(),
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", required=True,
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                                        readonly=True,
+                                        states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True,
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
     bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", required=True,
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_dien_giai = fields.Char(string="Diễn giải",
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
-    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', related="bsd_unit_id.bsd_dot_mb_id",string="Đợt mở bán", store=True)
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
+    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', related="bsd_unit_id.bsd_dot_mb_id", string="Đợt mở bán", store=True)
     bsd_bang_gia_id = fields.Many2one('product.pricelist', related="bsd_dot_mb_id.bsd_bang_gia_id", store=True,
                                       string="Bảng giá")
     bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", required=True,
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_nvbh_id = fields.Many2one('res.users', string="Nhân viên BH",
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch",domain=[('is_company', '=', True)],
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]})
     bsd_ctv_id = fields.Many2one('res.partner', string="Công tác viên",domain=[('is_company', '=', False)],
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                                 readonly=True,
+                                 states={'nhap': [('readonly', False)]})
     bsd_gioi_thieu_id = fields.Many2one('res.partner', string="Giới thiệu",help="Cá nhân hoặc đơn vị giới thiệu",
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                                        readonly=True,
+                                        states={'nhap': [('readonly', False)]})
     bsd_hl_gc = fields.Datetime(string="Hạn giữ chỗ", help="Hiệu lực của giữ chỗ", compute='_compute_hl_gc', store=True)
     bsd_gc_da = fields.Boolean(string="Giữ chỗ dự án", help="""Thông tin ghi nhận Giữ chỗ được tự động tạo từ 
                                                                 giữ chỗ thiện chí hay không""", readonly=True)

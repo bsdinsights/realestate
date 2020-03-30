@@ -15,6 +15,10 @@ class BsdDotMoBan(models.Model):
     bsd_ma_dot_mb = fields.Char(string="Mã đợt mở bán", required=True,
                                 readonly=True,
                                 states={'cph': [('readonly', False)]})
+    _sql_constraints = [
+        ('bsd_ma_dot_mb_unique', 'unique (bsd_ma_dot_mb)',
+         'Mã đợt mở bán đã tồn tại !'),
+    ]
     bsd_ten_dot_mb = fields.Char(string="Tên đợt mở bán", required=True,
                                  readonly=True,
                                  states={'cph': [('readonly', False)]})

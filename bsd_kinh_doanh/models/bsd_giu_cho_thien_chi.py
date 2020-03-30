@@ -16,6 +16,10 @@ class BsdGiuChoThienChi(models.Model):
     bsd_ma_gctc = fields.Char(string="Mã giữ chỗ", required=True, help="Mã giữ chỗ thiện chí",
                               readonly=True,
                               states={'nhap': [('readonly', False)]})
+    _sql_constraints = [
+        ('bsd_ma_gctc_unique', 'unique (bsd_ma_gctc)',
+         'Mã giữ chỗ thiện chí đã tồn tại !'),
+    ]
     bsd_ngay_gctc = fields.Datetime(string="Ngày giữ chỗ", required=True, help="Ngày giữ chỗ thiện chí",
                                     readonly=True, default=datetime.datetime.now(),
                                     states={'nhap': [('readonly', False)]})
