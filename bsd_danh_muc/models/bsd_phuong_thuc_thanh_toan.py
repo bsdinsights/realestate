@@ -9,8 +9,13 @@ class BsdPttt(models.Model):
     _description = 'Phương thức thanh toán'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    bsd_ten = fields.Char(string="Tên", required=True)
-    bsd_ma = fields.Char(string="Mã", required=True)
-    bsd_dien_giai = fields.Char(string="Diễn giải")
+    bsd_ten = fields.Char(string="Tên", required=True, help="Tên phương thức thanh toán")
+    bsd_ma = fields.Char(string="Mã", required=True, help="Mã phương thức thanh toán")
+    _sql_constraints = [
+        ('bsd_ma_unique', 'unique (bsd_ma)',
+         'Mã phương thức thanh toán đã tồn tại !'),
+    ]
+    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
     state = fields.Selection([('active', "Đang sử dụng"),
-                                       ('inactive', "Không sử dụng")], string='Trạng thái', default='active')
+                              ('inactive', "Không sử dụng")], string='Trạng thái',
+                             default='active', tracking=1, help="Trạng thái")

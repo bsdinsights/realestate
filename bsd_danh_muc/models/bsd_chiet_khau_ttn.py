@@ -10,14 +10,18 @@ class BsdChietKhauTTN(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     bsd_ma_ck_ttn = fields.Char(string="Mã chiết khấu", help="Mã chiết khấu thanh toán nhanh", required=True)
+    _sql_constraints = [
+        ('bsd_ma_ck_ttn_unique', 'unique (bsd_ma_ck_ttn)',
+         'Mã chiết khấu thanh toán nhanh đã tồn tại !'),
+    ]
     bsd_ten_ck_ttn = fields.Char(string="Tên chiết khấu", help="Mã chiết khấu thanh toán nhanh", required=True)
-    bsd_dien_giai = fields.Char(string="Diễn giải")
+    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng chiết khấu chung")
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng chiết khấu chung")
 
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Ngưng sử dụng')],
-                             string="Trạng thái", default='active', required=True)
+                             string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     bsd_ct_ids = fields.One2many('bsd.ck_ttn_ct', 'bsd_ck_ttn_id', string="Chi tiết")

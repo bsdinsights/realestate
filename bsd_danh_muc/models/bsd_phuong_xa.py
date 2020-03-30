@@ -15,6 +15,11 @@ class BsdPhuongXa(models.Model):
     bsd_quan_huyen_id = fields.Many2one('bsd.quan_huyen', string="Quận huyên", required=True)
     bsd_ten = fields.Char(string="Tên phường xã", required=True)
     bsd_ma = fields.Char(string="Mã phường xã", required=True)
+    _sql_constraints = [
+        ('bsd_ma_unique', 'unique (bsd_ma)',
+         'Mã phường xã đã tồn tại !'),
+    ]
     bsd_dien_giai = fields.Char(string="Diễn giải")
     state = fields.Selection([('active', "Đang sử dụng"),
-                                       ('inactive', "Không sử dụng")], string='Trạng thái', default='active')
+                              ('inactive', "Không sử dụng")], string='Trạng thái',
+                             default='active', tracking=1, help="Trạng thái")

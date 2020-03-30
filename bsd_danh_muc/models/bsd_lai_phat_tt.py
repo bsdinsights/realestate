@@ -10,9 +10,13 @@ class BsdLaiPhatTT(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     bsd_ma_lptt = fields.Char(string="Mã", help="Mã lãi phạt thanh toán", required=True)
+    _sql_constraints = [
+        ('bsd_ma_lptt_unique', 'unique (bsd_ma_lptt)',
+         'Mã lãi phạt thanh toán đã tồn tại !'),
+    ]
     bsd_ten_lptt = fields.Char(string="Tên", help="Tên lãi phạt thanh toán", required=True)
-    bsd_dien_giai = fields.Char(string="Diễn giải")
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án")
+    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án")
     bsd_tinh_phat = fields.Selection([('htt', 'Hạn thanh toán'), ('nah', "Ngày ân hạn")],
                                      string="Tính phạt", default="htt",
                                      help="""
@@ -28,6 +32,6 @@ class BsdLaiPhatTT(models.Model):
     bsd_tl_td = fields.Float(string="Tỷ lệ phạt tối đa", help="Tỷ lệ tối đa phạt chậm thanh toán")
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Ngưng sử dụng')],
-                             string="Trạng thái", default='active', required=True)
+                             string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thải")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)

@@ -9,6 +9,10 @@ class BsdPmgTtc(models.Model):
     _description = "Bảng phí môi giới"
 
     bsd_ma_phi_mg = fields.Char(string="Mã", help="Mã phí môi giới", required=True)
+    _sql_constraints = [
+        ('bsd_ma_phi_mg_unique', 'unique (bsd_ma_phi_mg)',
+         'Mã phí môi giới đã tồn tại !'),
+    ]
     bsd_ten_phi_mg = fields.Char(string="Tên", help="Tên phí môi giới", required=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string='Dự án', help="Tên dự án", required=True)
     bsd_dien_giai = fields.Char(string="Diễn giải")
@@ -38,7 +42,8 @@ class BsdPmgTtc(models.Model):
     bsd_ty_le = fields.Float(string="Tỷ lệ (%)", help="Tỷ lệ được sử dụng để tính phí mô giới")
     bsd_tien = fields.Monetary(string="Tiền", help="Tiền phí môi giới")
     state = fields.Selection([('active', "Đang sử dụng"),
-                              ('inactive', "Không sử dụng")], string='Trạng thái', default='active')
+                              ('inactive', "Không sử dụng")], string='Trạng thái',
+                             default='active', tracking=1, help="Trạng thái")
 
     bsd_ctv_ids = fields.One2many('bsd.pmg_ctv', 'bsd_pmg_ttc_id', string="Công tác viên")
     bsd_cty_ids = fields.One2many('bsd.pmg_cty', 'bsd_pmg_ttc_id', string="Đơn vị")

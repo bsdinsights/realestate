@@ -10,6 +10,10 @@ class BsdTknhAp(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     bsd_ma_tknh = fields.Char(string="Mã", required=True)
+    _sql_constraints = [
+        ('bsd_ma_tknh_unique', 'unique (bsd_ma_tknh)',
+         'Mã tài khoản ngân hàng đang áp dụng đã tồn tại !'),
+    ]
     bsd_ten_tknh = fields.Char(string="Tên", required=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
     bsd_da_tknh_id = fields.Many2one('res.partner.bank', string="Tài khoản ngân hàng", required=True)
@@ -18,7 +22,7 @@ class BsdTknhAp(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải")
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Ngưng sử dụng')],
-                             string="Trạng thái", default='active', required=True)
+                             string="Trạng thái", default='active', required=True, help="Trạng thái", tracking=1)
     bsd_tknh_ch_ids = fields.One2many('bsd.tknh_ch', 'bsd_ma_tkad_id', string="Chi tiết")
 
     @api.onchange('bsd_du_an_id')

@@ -9,10 +9,13 @@ class BsDkbg(models.Model):
     _description = "Điều kiện bàn giao"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    bsd_ma_dkbg = fields.Char(string="Mã", help="Điều kiện bàn giao", required=True)
+    bsd_ma_dkbg = fields.Char(string="Mã", help="Mã điều kiện bàn giao", required=True)
+    _sql_constraints = [
+        ('bsd_ma_dkbg_unique', 'unique (bsd_ma_dkbg)',
+         'Mã điều kiện bàn giao đã tồn tại !'),
+    ]
     bsd_ten_dkbg = fields.Char(string="Tên", help="Tên điều kiện bàn giao", required=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True)
-    # bsd_dot_mb_id = fields.Char(string="Đợt mở bán", help="Đợt mở bán", required=True)
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu hiệu lực của điều kiện bàn giao", required=True)
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc hiệu lực của điều kiện bàn giao", required=True)
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
@@ -36,7 +39,7 @@ class BsDkbg(models.Model):
     bsd_ty_le = fields.Float(string="Tỷ lệ (%)", help="Tỷ lệ thanh toán theo đợt bàn giao")
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Ngưng sử dụng')],
-                             string="Trạng thái", default='active', required=True)
+                             string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 

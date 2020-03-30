@@ -12,9 +12,13 @@ class BsdChinhSachThanhToan(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     bsd_ma_cstt = fields.Char(string="Mã chính sách", help="Mã chính sách thanh toán", required=True)
+    _sql_constraints = [
+        ('bsd_ma_cstt_unique', 'unique (bsd_ma_cstt)',
+         'Mã chính sách thanh toán đã tồn tại !'),
+    ]
     bsd_ten_cstt = fields.Char(string="Tên chính sách", help="Tên chính sách thanh toán", required=True)
     bsd_dien_giai = fields.Char(string="Diễn giải")
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True, help="Tên dự án")
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng chính sách thanh toán")
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng chính sách thanh toán")
     bsd_ngay_tinh = fields.Selection([('ndc', 'Ngày đặt cọc'), ('nhd', 'Ngày hợp đồng')],
@@ -54,7 +58,7 @@ class BsdChinhSachThanhToan(models.Model):
 
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Ngưng sử dụng')],
-                             string="Trạng thái", default='active', required=True)
+                             string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     bsd_ct_ids = fields.One2many('bsd.cs_tt_ct', 'bsd_cs_tt_id', string="Chi tiết")
