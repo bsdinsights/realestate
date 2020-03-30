@@ -8,8 +8,8 @@
                 <sheet>
                     <notebook>
                         <page string="Thông tin chung">
-                            <group style="margin:0px">
-                                <group style="margin:0px">
+                            <group>
+                                <group>
                                     <field name="currency_id" invisible="1"/>
                                     <field name="bsd_ma_da"/>
                                     <field name="bsd_chu_dt_id"/>
@@ -21,9 +21,9 @@
                                     <field name="bsd_dia_chi"/>
                                     <field name="state"/>
                                 </group>
-                                <group style="margin:0px">
+                                <group>
                                     <field name="bsd_hd_coc"/>
-                                    <field name="bsd_tl_dc"/>
+                                    <field name="bsd_tl_dc" attrs="{'readonly':[('bsd_hd_coc','=',False)]}"/>
                                     <field name="bsd_ngay_dkcn"/>
                                     <field name="bsd_ngay_dkbg"/>
                                     <field name="bsd_ngay_htpl"/>
@@ -33,12 +33,12 @@
                                     <field name="bsd_ngay_cpb"/>
                                 </group>
                             </group>
-                            <group style="margin:0px" string="Định dạng">
+                            <group string="Định dạng">
                                 <group style="margin:0px">
                                     <field name="bsd_dd_da"/>
                                     <field name="bsd_dd_khu"/>
                                 </group>
-                                <group style="margin:0px">
+                                <group>
                                     <field name="bsd_dd_tang"/>
                                 </group>
                             </group>
@@ -57,7 +57,7 @@
                                 </group>
                             </group>
                             <group string="HIỆU LỰC">
-                                <group style="margin:0px">
+                                <group>
                                     <field name="bsd_hh_bg"/>
                                     <field name="bsd_hh_pc"/>
                                     <field name="bsd_hh_hd"/>

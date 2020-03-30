@@ -12,13 +12,11 @@
                             <field name="bsd_ma_tn"/>
                             <field name="bsd_ten_tn"/>
                             <field name="bsd_dia_chi"/>
-                            <field name="bsd_postal"/>
                         </group>
                         <group>
                             <field name="bsd_stt"/>
                             <field name="bsd_so_tang"/>
                             <field name="bsd_so_unit"/>
-                            <field name="bsd_dien_giai"/>
                             <field name="state"/>
                         </group>
                     </group>
