@@ -73,7 +73,7 @@
                             <field name="bsd_gt_dat"/>
                         </group>
                         <group>
-                            <field name="bsd_tong_gtd"/>
+                            <field name="bsd_tien_gsdd"/>
                             <field name="bsd_tl_pbt"/>
                             <field name="bsd_phi_bt"/>
                             <field name="bsd_thue_suat"/>
