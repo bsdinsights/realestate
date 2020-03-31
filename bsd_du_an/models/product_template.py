@@ -80,7 +80,7 @@ class ProductTemplate(models.Model):
     bsd_don_gia = fields.Monetary(string="Đơn giá bán/m2", help="Đơn giá bán trước thuế theo m2")
     bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán trước thuế của căn hộ")
     bsd_gt_dat = fields.Monetary(string="Giá trị đất/m2", help="Giá trị quyền sử dụng đất theo m2")
-    bsd_tong_gtd = fields.Monetary(string="Tổng GTSD đất", help="""
+    bsd_tien_gsdd = fields.Monetary(string="Tổng GTSD đất", help="""
                                                                     Tổng giá trị sử dụng đất của căn hộ được tính theo
                                                                     công thức: diện tích sử dụng(thông thủy) * giá trị
                                                                     đất/m2
@@ -137,10 +137,36 @@ class ProductTemplate(models.Model):
                               ('da_ban', 'Đã bán')], string="Tình trạng",
                              default="chuan_bi", tracking=1, help="Trạng thái")
 
+    @api.onchange('bsd_du_an_id', 'bsd_toa_nha_id')
+    def _onchange_loai_sp(self):
+        _logger.debug('bsd_du_an_id')
+        _logger.debug(self.bsd_du_an_id)
+        _logger.debug('bsd_toa_nha_id')
+        _logger.debug(self.bsd_toa_nha_id)
+        ids_loai_sp = []
+        if self.bsd_toa_nha_id:
+            ids_loai_sp = self.env['bsd.loai_sp'].search([('bsd_toa_nha_id', '=', self.bsd_toa_nha_id.id)]).ids
+        res = {}
+        if ids_loai_sp:
+            res.update({
+                'domain': {
+                    'bsd_loai_sp_id': [('id', 'in', ids_loai_sp)]
+                }
+            })
+        else:
+            res.update({
+                'domain': {
+                    'bsd_loai_sp_id': [('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                       ('bsd_toa_nha_id', '=', False)]
+                }
+            })
+        _logger.debug(res)
+        return res
+
     @api.depends('bsd_dt_sd', 'bsd_gt_dat')
     def _compute_bsd_tong_gtsd_dat(self):
         for each in self:
-            each.bsd_tong_gtd = each.bsd_dt_sd * each.bsd_gt_dat
+            each.bsd_tien_gsdd = each.bsd_dt_sd * each.bsd_gt_dat
 
     @api.depends('bsd_tl_pbt', 'bsd_gia_ban')
     def _compute_bsd_phi_bao_tri(self):

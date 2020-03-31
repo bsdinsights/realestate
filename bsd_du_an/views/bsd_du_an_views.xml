@@ -55,7 +55,7 @@
                             </group>
                             <group string="GIỮ CHỖ &amp; ĐẶT CỌC">
                                 <group>
-                                    <field name="bsd_gt_sdd"/>
+                                    <field name="bsd_qsdd_m2"/>
                                     <field name="bsd_tien_gc"/>
                                     <field name="bsd_tien_dc"/>
                                 </group>

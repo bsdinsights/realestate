@@ -49,8 +49,6 @@
                             <field name="bsd_phan_loai"/>
                             <field name="bsd_loai_unit"/>
                             <field name="bsd_loai_sp_id"
-                                   domain="['|',('bsd_toa_nha_id', 'in',[bsd_toa_nha_id]),
-                                   '&amp;',('bsd_toa_nha_id','=',False),('bsd_du_an_id', 'in',[bsd_du_an_id])]"
                                    options="{'no_create':true}"/>
                         </group>
                     </group>
