@@ -173,10 +173,10 @@ class ProductTemplate(models.Model):
         for each in self:
             each.bsd_phi_bt = each.bsd_tl_pbt * each.bsd_gia_ban / 100
 
-    @api.depends('bsd_gia_ban', 'bsd_tong_gtd', 'bsd_thue_suat')
+    @api.depends('bsd_gia_ban', 'bsd_tien_gsdd', 'bsd_thue_suat')
     def _compute_tien_thue(self):
         for each in self:
-            each.bsd_tien_thue = (each.bsd_gia_ban - each.bsd_tong_gtd) * each.bsd_thue_suat / 100
+            each.bsd_tien_thue = (each.bsd_gia_ban - each.bsd_tien_gsdd) * each.bsd_thue_suat / 100
 
     @api.depends('bsd_gia_ban', 'bsd_tien_thue', 'bsd_phi_bt')
     def _compute_bsd_tong_gia_ban(self):
