@@ -48,7 +48,10 @@
                             <field name="bsd_loai_bds"/>
                             <field name="bsd_phan_loai"/>
                             <field name="bsd_loai_unit"/>
-                            <field name="bsd_loai_sp_id" options="{'no_create':true}"/>
+                            <field name="bsd_loai_sp_id"
+                                   domain="['|',('bsd_toa_nha_id', 'in',[bsd_toa_nha_id]),
+                                   '&amp;',('bsd_toa_nha_id','=',False),('bsd_du_an_id', 'in',[bsd_du_an_id])]"
+                                   options="{'no_create':true}"/>
                         </group>
                     </group>
                     <group string="DIỆN TÍCH">
@@ -73,7 +76,7 @@
                         </group>
                         <group>
                             <field name="bsd_tong_gtd"/>
-                            <field name="bsd_tl_bt"/>
+                            <field name="bsd_tl_pbt"/>
                             <field name="bsd_phi_bt"/>
                             <field name="bsd_thue_suat"/>
                             <field name="bsd_tien_thue"/>

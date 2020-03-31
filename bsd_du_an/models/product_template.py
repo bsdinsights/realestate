@@ -86,7 +86,7 @@ class ProductTemplate(models.Model):
                                                                     đất/m2
                                                                     """,
                                    readonly=True, compute='_compute_bsd_tong_gtsd_dat', store=True)
-    bsd_tl_bt = fields.Float(string="% phí bảo trì", help="Tỷ lệ phí bảo trì")
+    bsd_tl_pbt = fields.Float(string="% phí bảo trì", help="Tỷ lệ phí bảo trì")
     bsd_phi_bt = fields.Monetary(string="Phí bảo trì", help="""
                                                                 Tổng tiền phí bảo trì được tính theo công thức:
                                                                 % phí bảo trì * giá bán trước thuế
@@ -142,10 +142,10 @@ class ProductTemplate(models.Model):
         for each in self:
             each.bsd_tong_gtd = each.bsd_dt_sd * each.bsd_gt_dat
 
-    @api.depends('bsd_tl_bt', 'bsd_gia_ban')
+    @api.depends('bsd_tl_pbt', 'bsd_gia_ban')
     def _compute_bsd_phi_bao_tri(self):
         for each in self:
-            each.bsd_phi_bt = each.bsd_tl_bt * each.bsd_gia_ban / 100
+            each.bsd_phi_bt = each.bsd_tl_pbt * each.bsd_gia_ban / 100
 
     @api.depends('bsd_gia_ban', 'bsd_tong_gtd', 'bsd_thue_suat')
     def _compute_tien_thue(self):

@@ -28,7 +28,7 @@ class BsdProject(models.Model):
     bsd_ngay_gp = fields.Date(string="Ngày cấp phép", help="Ngày cấp phép đầu tư của dự án")
     bsd_dia_chi = fields.Text(string="Địa chỉ", help="Địa chỉ của dự án")
     bsd_hd_coc = fields.Boolean(string="Có HĐ cọc?", help="Dự án có quy định làm hợp đồng cọc không?")
-    bsd_tl_dc = fields.Float(string="Tỷ lệ đặt cọc", required=True,
+    bsd_tl_dc = fields.Float(string="Tỷ lệ đặt cọc",
                              help="Tỷ lệ(%) tiền cần đặt cọc dựa trên giá trị căn hộ")
     bsd_ngay_dkcn = fields.Date(string="Ngày dự kiến cất nóc",
                                 help="""Thông tin ngày dự kiến cất nóc được sử dụng để xác định thời gian 
@@ -51,14 +51,14 @@ class BsdProject(models.Model):
                              help="Định dạng khu, tòa nhà được sử dụng để tự động tạo mã căn hộ")
     bsd_dd_tang = fields.Char(string="Định dạng tầng", required=True,
                               help="Định dạng tầng được sử dụng để tự động tạo mã căn hộ")
-    bsd_gt_sdd = fields.Monetary(string="Giá trị sử dụng đất", required=True,
-                                 help="Giá trị sử dụng đất")
+    bsd_qsdd_m2 = fields.Monetary(string="QSDĐ/ m2", required=True,
+                                 help="Giá trị quyền sử dụng đất trên m2")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-    bsd_tl_pbt = fields.Float(string="% phí bảo trì", required=True)
+    bsd_tl_pbt = fields.Float(string="% phí bảo trì", required=True, help="Tỷ lệ phí bảo trì")
     bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý", required=True,
                                    help="Số tháng đóng phí quản lý trước đợt bàn giao tạm thời hoặc bàn giao chính thức")
-    bsd_tien_pql = fields.Monetary(string="Tiền phí quản lý", required=True,
+    bsd_tien_pql = fields.Monetary(string="Phí quản lý/ tháng", required=True,
                                    help="Số tiền quản lý cần đóng mỗi tháng")
     bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", required=True,
                                   help="Tiền giữ chỗ khi mua căn hộ của dự án")
@@ -99,7 +99,7 @@ class BsdProject(models.Model):
     bsd_hh_dv = fields.Monetary(string="Dịch vụ", required=True,
                                 help="Tiền hoa hồng được hương của nhân viên dịch vụ khách hàng")
     state = fields.Selection([('active', 'Đang sử dụng'),
-                              ('inactive', 'Ngưng sử dụng')],
+                              ('inactive', 'Không sử dụng')],
                              string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
     bsd_tk_ng_ids = fields.One2many('bsd.da_tknh', 'bsd_du_an_id', string="Tài khoản ngân hàng")
     bsd_ngan_hang_ids = fields.One2many('bsd.da_nh', 'bsd_du_an_id', string="Ngân hàng")
