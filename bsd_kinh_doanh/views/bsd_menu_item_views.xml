@@ -45,6 +45,11 @@
               sequence="14"
               action="bsd_giu_cho_action"
               parent="bsd_main_kinh_doanh_root"/>
+    <menuitem id="bsd_bao_gia_menu_action"
+              name="Báo giá"
+              sequence="15"
+              action="bsd_bao_gia_action"
+              parent="bsd_main_kinh_doanh_root"/>
 
     <record id="bsd_kinh_doanh.bsd_main_kinh_doanh_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
