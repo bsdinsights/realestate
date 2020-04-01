@@ -3,9 +3,9 @@
 from odoo import models, fields, api
 
 
-class BsDkbg(models.Model):
+class BsdDkbg(models.Model):
     _name = 'bsd.dk_bg'
-    _rec_name = 'bsd_ten_dkbg'
+    _rec_name = 'bsd_ma_dkbg'
     _description = "Điều kiện bàn giao"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
@@ -34,7 +34,7 @@ class BsDkbg(models.Model):
     bsd_theo_ch = fields.Selection([('1', 'Có'), ('0', 'Không')], string="Theo căn hộ", default="0",
                                    help="Thông tin quy định điều kiện bàn giao sẽ được áp dụng cho căn hộ hay cả dự án")
     bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Tên căn hộ được áp dụng điều kiện bàn giao")
-    bsd_gia_m2 = fields.Monetary(string="Giá/m2", help="Giá/m2 theo đợt bàn giao", required=True)
+    bsd_gia_m2 = fields.Monetary(string="Giá/m2", help="Giá/m2 theo đợt bàn giao")
     bsd_tien = fields.Monetary(string="Tiền", help="Tiền thanh toán theo đợt bàn giao")
     bsd_ty_le = fields.Float(string="Tỷ lệ (%)", help="Tỷ lệ thanh toán theo đợt bàn giao")
     state = fields.Selection([('active', 'Đang sử dụng'),
