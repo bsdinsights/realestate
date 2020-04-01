@@ -87,11 +87,11 @@ class ProductTemplate(models.Model):
                                                                     """,
                                    readonly=True, compute='_compute_bsd_tong_gtsd_dat', store=True)
     bsd_tl_pbt = fields.Float(string="% phí bảo trì", help="Tỷ lệ phí bảo trì")
-    bsd_phi_bt = fields.Monetary(string="Phí bảo trì", help="""
+    bsd_tien_pbt = fields.Monetary(string="Phí bảo trì", help="""
                                                                 Tổng tiền phí bảo trì được tính theo công thức:
                                                                 % phí bảo trì * giá bán trước thuế
                                                                 """,
-                                 readonly=True, compute='_compute_bsd_phi_bao_tri', store=True)
+                                   compute='_compute_bsd_phi_bao_tri', store=True)
     bsd_thue_suat = fields.Float(string="Thuế suất", help="% thuế")
     bsd_tien_thue = fields.Monetary(string="Tiền thuế", help="""Tiền thuế của căn hộ được tính theo công thức:
                                                             (giá bán - tổng GTSD đất)* thuế suất""",
@@ -113,7 +113,7 @@ class ProductTemplate(models.Model):
                                    ('1', 'Có')], string="Tình trạng vay", default='0',
                                   help="Tình trạng vay ngân hàng của căn hộ")
     bsd_ngay_dkbg = fields.Date(string="Dự kiến bàn giao", help="Ngày dự kiến bàn giao")
-    bsd_thang_ql = fields.Integer(string="Số tháng đóng phí quản lý", help="Số tháng đóng phí quản lý")
+    bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý", help="Số tháng đóng phí quản lý")
     bsd_phi_ql = fields.Monetary(string="Phí quản lý/m2/tháng")
     bsd_dk_bg = fields.Float(string="Điều kiện bàn giao",
                              help="% thanh toán đủ điều kiện bàn giao(tối thiểu")
@@ -171,17 +171,17 @@ class ProductTemplate(models.Model):
     @api.depends('bsd_tl_pbt', 'bsd_gia_ban')
     def _compute_bsd_phi_bao_tri(self):
         for each in self:
-            each.bsd_phi_bt = each.bsd_tl_pbt * each.bsd_gia_ban / 100
+            each.bsd_tien_pbt = each.bsd_tl_pbt * each.bsd_gia_ban / 100
 
     @api.depends('bsd_gia_ban', 'bsd_tien_gsdd', 'bsd_thue_suat')
     def _compute_tien_thue(self):
         for each in self:
             each.bsd_tien_thue = (each.bsd_gia_ban - each.bsd_tien_gsdd) * each.bsd_thue_suat / 100
 
-    @api.depends('bsd_gia_ban', 'bsd_tien_thue', 'bsd_phi_bt')
+    @api.depends('bsd_gia_ban', 'bsd_tien_thue', 'bsd_tien_pbt')
     def _compute_bsd_tong_gia_ban(self):
         for each in self:
-            each.bsd_tong_gb = each.bsd_gia_ban + each.bsd_tien_thue + each.bsd_phi_bt
+            each.bsd_tong_gb = each.bsd_gia_ban + each.bsd_tien_thue + each.bsd_tien_pbt
 
     def action_uu_tien(self):
         self.write({

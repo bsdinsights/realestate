@@ -39,3 +39,4 @@ bsd_lai_phat_tt_manager, Thông tin lãi phạt thanh toán,model_bsd_lai_phat_t
 bsd_cs_tt_manager, Thông tin chính sách thanh toán,model_bsd_cs_tt,bsd_danh_muc.group_manager,1,1,1,1
 bsd_cs_tt_ct_manager, Thông tin chi tiết chính sách thanh toán,model_bsd_cs_tt_ct,bsd_danh_muc.group_manager,1,1,1,1
 
+

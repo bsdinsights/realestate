@@ -75,7 +75,7 @@
                         <group>
                             <field name="bsd_tien_gsdd"/>
                             <field name="bsd_tl_pbt"/>
-                            <field name="bsd_phi_bt"/>
+                            <field name="bsd_tien_pbt"/>
                             <field name="bsd_thue_suat"/>
                             <field name="bsd_tien_thue"/>
                             <field name="bsd_tong_gb"/>
@@ -95,7 +95,7 @@
                     <group string="BÀN GIAO">
                         <group>
                             <field name="bsd_ngay_dkbg"/>
-                            <field name="bsd_thang_ql"/>
+                            <field name="bsd_thang_pql"/>
                             <field name="bsd_phi_ql"/>
                             <field name="bsd_dk_bg"/>
                         </group>
