@@ -8,8 +8,8 @@
                 <sheet>
                     <notebook>
                         <page string="Thông tin chung">
-                            <group style="margin:0px ">
-                                <group style="margin:0px ">
+                            <group>
+                                <group>
                                     <field name="bsd_ma_cstt"/>
                                     <field name="bsd_ten_cstt"/>
                                     <field name="bsd_dien_giai"/>
@@ -17,22 +17,22 @@
                                     <field name="bsd_tu_ngay"/>
                                     <field name="bsd_den_ngay"/>
                                 </group>
-                                <group style="margin:0px ">
+                                <group>
                                     <field name="bsd_ngay_tinh"/>
                                     <field name="bsd_dk_hd"/>
-                                    <field name="bsd_lai_phat_tt_id"/>
+                                    <field name="bsd_lai_phat_tt_id" options="{'no_create':true}"/>
                                     <field name="bsd_phat_thd"/>
                                     <field name="bsd_phat_shd"/>
                                     <field name="state"/>
                                 </group>
                             </group >
-                            <group string="Thông báo" style="margin:0px ">
-                                <group style="margin:0px ">
+                            <group string="Thông báo">
+                                <group>
                                     <field name="bsd_tb_tt"/>
                                     <field name="bsd_tl_hd"/>
                                     <field name="bsd_qh_tt"/>
                                 </group>
-                                <group style="margin:0px ">
+                                <group>
                                     <field name="bsd_canh_bao1"/>
                                     <field name="bsd_canh_bao2"/>
                                     <field name="bsd_canh_bao3"/>
@@ -132,17 +132,17 @@
                     </group>
                     <group string="Đợt thanh toán" style="margin:0px ">
                         <group style="margin:0px ">
-                            <field name="bsd_loai_tt" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')]}"/>
+                            <field name="bsd_lap_lai" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')]}"/>
                             <field name="bsd_ngay_thang" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
-                                                                 'required':[('bsd_loai_tt','=','sl')]}"/>
+                                                                 'required':[('bsd_lap_lai','=','1')]}"/>
                         </group>
                         <group style="margin:0px ">
                             <field name="bsd_so_dot"
-                                   attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_loai_tt','=','md')],
-                                           'required':[('bsd_loai_tt','=','sl')]}"/>
+                                   attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_lap_lai','=','0')],
+                                           'required':[('bsd_lap_lai','=','1')]}"/>
                             <field name="bsd_ngay_gh"
                                    attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
-                                           'required':[('bsd_loai_tt','=','sl')]}"/>
+                                           'required':[('bsd_lap_lai','=','1')]}"/>
                         </group>
                     </group>
                     <group string="Bàn giao" style="margin:0px ">

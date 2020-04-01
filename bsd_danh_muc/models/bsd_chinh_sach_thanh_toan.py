@@ -11,12 +11,12 @@ class BsdChinhSachThanhToan(models.Model):
     _description = "Thông tin chính sách thanh toán"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    bsd_ma_cstt = fields.Char(string="Mã chính sách", help="Mã chính sách thanh toán", required=True)
+    bsd_ma_cstt = fields.Char(string="Mã", help="Mã chính sách thanh toán", required=True)
     _sql_constraints = [
         ('bsd_ma_cstt_unique', 'unique (bsd_ma_cstt)',
          'Mã chính sách thanh toán đã tồn tại !'),
     ]
-    bsd_ten_cstt = fields.Char(string="Tên chính sách", help="Tên chính sách thanh toán", required=True)
+    bsd_ten_cstt = fields.Char(string="Tên", help="Tên chính sách thanh toán", required=True)
     bsd_dien_giai = fields.Char(string="Diễn giải")
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True, help="Tên dự án")
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng chính sách thanh toán")
@@ -77,7 +77,7 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
                                      help="""
                                         Phương pháp tính hạn thanh toán dựa trên ngày cố định, tự động hay ngày
                                         bàn giao
-                                     """)
+                                     """, required=True, default='cd')
     bsd_ngay_cd = fields.Date(string="Ngày cố định",
                               help="Ngày thanh toán của đợt thanh toán theo cách tính: ngày cố định")
 
@@ -110,12 +110,12 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
     bsd_ngay_tbnn = fields.Integer(string="Ngày thông báo NN", help="""Số ngày được cộng thêm khi tính hạn thanh toán
                                                                         của mỗi đợt thanh toán đối với khách hàng 
                                                                         nước ngoài""")
-    bsd_loai_tt = fields.Selection([('md', 'Mặc định'), ('sl', 'Số lần')], string="Loại thanh toán",
-                                   default="md", help="Cách thanh toán theo từng đợt thanh toán")
+    bsd_lap_lai = fields.Selection([('0', 'Không'), ('1', 'Có')], string="Lặp lại",
+                                   default="0", help="Cách tính của đợt thanh toán có được lặp lại hay không")
 
     bsd_ngay_thang = fields.Integer(string="Ngày hàng tháng", help="Thanh toán vào ngày cố định của mỗi tháng")
 
-    bsd_so_dot = fields.Integer(string="Số đợt thanh toán", help="Số đợt thanh toán tự động được áp dụng")
+    bsd_so_dot = fields.Integer(string="Số đợt thanh toán", help="Số đợt thanh toán được lặp lại ")
 
     bsd_ngay_gh = fields.Integer(string="Ngày gia hạn", help="""Ngày được công thêm khi tính hạn thanh toán
                                                                 của đợt thanh toán tự động được lặp lại nhiều lần, thì
