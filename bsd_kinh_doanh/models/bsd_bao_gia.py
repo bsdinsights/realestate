@@ -69,6 +69,7 @@ class BsdBaoGia(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     bsd_dk_bg_ids = fields.One2many('bsd.bao_gia_bg', 'bsd_bao_gia_id', string="Bàn giao")
+    bsd_ltt_ids = fields.One2many('bsd.bao_gia_ltt', 'bsd_bao_gia_id', string="Lịch thanh toán")
 
     @api.depends('bsd_unit_id')
     def _compute_tien_dc(self):
@@ -126,6 +127,30 @@ class BsdBaoGia(models.Model):
         for each in self:
             each.bsd_tong_gia = each.bsd_gia_truoc_thue + each.bsd_tien_thue + each.bsd_tien_pbt
 
+    def action_xac_nhan(self):
+        pass
+
+    def action_duyet(self):
+        pass
+
+    def action_in_bg(self):
+        pass
+
+    def action_in_gc(self):
+        pass
+
+    def action_lich_tt(self):
+        pass
+
+    def action_huy(self):
+        pass
+
+    def action_ky_bg(self):
+        pass
+
+    def action_ky_gc(self):
+        pass
+
 
 class BsdBaoGiaDKBG(models.Model):
     _name = 'bsd.bao_gia_bg'
@@ -159,3 +184,12 @@ class BsdBaoGiaDKBG(models.Model):
                 each.bsd_tien_bg = each.bsd_tien
             else:
                 each.bsd_tien_bg = each.bsd_ty_le * each.bsd_bao_gia_id.bsd_gia_ban / 100
+
+
+class BsdBaoGiaLTT(models.Model):
+    _name = 'bsd.bao_gia_ltt'
+    _description = "Lịch thanh toán cho báo giá"
+
+    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", help="Bảng tính giá", required=True)
+    bsd_stt = fields.Integer(string='Số thứ tự', help="Số thứ tự đợt thanh toán")
+    bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán")

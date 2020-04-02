@@ -6,6 +6,38 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Duyệt"
+                            name="action_duyet"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="In báo giá"
+                            name="action_in_bg"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="In giữ chỗ"
+                            name="action_in_gc"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Lịch thanh toán"
+                            name="action_lich_tt"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Ký báo giá"
+                            name="action_ky_bg"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Ký giữ chỗ"
+                            name="action_ky_gc"
+                            type="object"
+                            class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
@@ -79,6 +111,14 @@
                                     <field name="bsd_tien"/>
                                     <field name="bsd_ty_le"/>
                                     <field name="bsd_tien_bg"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Lịch thanh toán">
+                            <field name="bsd_ltt_ids">
+                                <tree>
+                                    <field name="bsd_stt"/>
+                                    <field name="bsd_ngay_tt"/>
                                 </tree>
                             </field>
                         </page>
