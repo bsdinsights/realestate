@@ -12,7 +12,7 @@ class BsdBlock(models.Model):
     bsd_ten_tn = fields.Char(string="Tên tòa nhà", required=True, help="Tên tòa nhà")
     bsd_ma_tn = fields.Char(string="Mã tòa nhà", required=True, help="Mã tòa nhà")
 
-    bsd_ma_ht = fields.Char(string="Mã hệ thống", help="Tên hệ thống dùng để nhập", compute="_compute_ma_ht", store=True)
+    bsd_ma_ht = fields.Char(string="Mã hệ thống", help="Mã hệ thống dùng để nhập", compute="_compute_ma_ht", store=True)
     _sql_constraints = [
         ('bsd_ma_ht_unique', 'unique (bsd_ma_ht)',
          'Mã hệ thống đã tồn tại !'),
