@@ -48,12 +48,12 @@
                     </group>
                     <group string="DUYỆT">
                         <group>
-                            <field name="bsd_ngay_duyet" readonly="1"/>
+                            <field name="bsd_ngay_duyet_rc" readonly="1"/>
                             <field name="bsd_nguoi_duyet_id" readonly="1"/>
                             <field name="bsd_giu_cho_id" readonly="1"/>
                         </group>
                         <group>
-                            <field name="bsd_ngay_huy" readonly="1"/>
+                            <field name="bsd_ngay_huy_rc" readonly="1"/>
                             <field name="bsd_nguoi_huy_id" readonly="1"/>
                         </group>
                     </group>

@@ -47,7 +47,7 @@
                     </group>
                     <group string="RÁP CĂN">
                         <group>
-                            <field name="bsd_hl_gc"/>
+                            <field name="bsd_ngay_hh_gctc"/>
                             <field name="bsd_ngay_tt"/>
                             <field name="bsd_ngay_rc"/>
                             <field name="bsd_rap_can_id" options="{'no_create':true}"/>
@@ -55,7 +55,7 @@
                         <group>
                             <field name="bsd_ngay_ut"/>
                             <field name="bsd_het_han"/>
-                            <field name="bsd_ngay_huy"/>
+                            <field name="bsd_ngay_huy_rc"/>
                         </group>
                     </group>
                 </sheet>

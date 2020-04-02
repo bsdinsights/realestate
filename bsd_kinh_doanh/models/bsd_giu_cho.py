@@ -75,13 +75,14 @@ class BsdRapCan(models.Model):
     # R.05 Tính hạn hiệu lực giữ chỗ
     @api.depends('bsd_ngay_gc', 'bsd_du_an_id')
     def _compute_hl_gc(self):
-        if self.bsd_ngay_gc:
-            if not self.bsd_dot_mb_id:
-                days = self.bsd_du_an_id.bsd_gc_tmb or 0 if self.bsd_du_an_id else 0
-                self.bsd_ngay_hh_gc = self.bsd_ngay_gc + datetime.timedelta(days=days)
-            else:
-                hours = self.bsd_du_an_id.bsd_gc_smb or 0 if self.bsd_du_an_id else 0
-                self.bsd_ngay_hh_gc = self.bsd_ngay_gc + datetime.timedelta(hours=hours)
+        for each in self:
+            if each.bsd_ngay_gc:
+                if not each.bsd_dot_mb_id:
+                    days = each.bsd_du_an_id.bsd_gc_tmb or 0 if each.bsd_du_an_id else 0
+                    each.bsd_ngay_hh_gc = each.bsd_ngay_gc + datetime.timedelta(days=days)
+                else:
+                    hours = each.bsd_du_an_id.bsd_gc_smb or 0 if each.bsd_du_an_id else 0
+                    each.bsd_ngay_hh_gc = each.bsd_ngay_gc + datetime.timedelta(hours=hours)
 
     # KD07.01 Xác nhận giữ chỗ
     def action_xac_nhan(self):
