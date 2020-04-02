@@ -50,7 +50,7 @@ class BsdRapCan(models.Model):
     bsd_gioi_thieu_id = fields.Many2one('res.partner', string="Giới thiệu",help="Cá nhân hoặc đơn vị giới thiệu",
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
-    bsd_hl_gc = fields.Datetime(string="Hạn giữ chỗ", help="Hiệu lực của giữ chỗ", compute='_compute_hl_gc', store=True)
+    bsd_ngay_hh_gc = fields.Datetime(string="Hạn giữ chỗ", help="Hiệu lực của giữ chỗ", compute='_compute_hl_gc', store=True)
     bsd_gc_da = fields.Boolean(string="Giữ chỗ dự án", help="""Thông tin ghi nhận Giữ chỗ được tự động tạo từ 
                                                                 giữ chỗ thiện chí hay không""", readonly=True)
     bsd_gc_tc_id = fields.Many2one('bsd.gc_tc', string="Giữ chỗ thiện chí", readonly=True)
@@ -78,10 +78,10 @@ class BsdRapCan(models.Model):
         if self.bsd_ngay_gc:
             if not self.bsd_dot_mb_id:
                 days = self.bsd_du_an_id.bsd_gc_tmb or 0 if self.bsd_du_an_id else 0
-                self.bsd_hl_gc = self.bsd_ngay_gc + datetime.timedelta(days=days)
+                self.bsd_ngay_hh_gc = self.bsd_ngay_gc + datetime.timedelta(days=days)
             else:
                 hours = self.bsd_du_an_id.bsd_gc_smb or 0 if self.bsd_du_an_id else 0
-                self.bsd_hl_gc = self.bsd_ngay_gc + datetime.timedelta(hours=hours)
+                self.bsd_ngay_hh_gc = self.bsd_ngay_gc + datetime.timedelta(hours=hours)
 
     # KD07.01 Xác nhận giữ chỗ
     def action_xac_nhan(self):
