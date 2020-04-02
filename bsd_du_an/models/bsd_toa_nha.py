@@ -5,16 +5,25 @@ from odoo import models, fields, api
 
 class BsdBlock(models.Model):
     _name = "bsd.toa_nha"
-    _rec_name = 'bsd_ten_tn'
+    _rec_name = 'bsd_ma_ht'
     _description = 'Thông tin tòa nhà'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     bsd_ten_tn = fields.Char(string="Tên tòa nhà", required=True, help="Tên tòa nhà")
     bsd_ma_tn = fields.Char(string="Mã tòa nhà", required=True, help="Mã tòa nhà")
+
+    bsd_ma_ht = fields.Char(string="Mã hệ thống", help="Tên hệ thống dùng để nhập", compute="_compute_ma_ht", store=True)
     _sql_constraints = [
-        ('bsd_ma_tn_unique', 'unique (bsd_ma_tn)',
-         'Mã tòa nhà đã tồn tại !'),
+        ('bsd_ma_ht_unique', 'unique (bsd_ma_ht)',
+         'Mã hệ thống đã tồn tại !'),
     ]
+
+    @api.depends('bsd_ma_tn', 'bsd_du_an_id.bsd_ma_da')
+    def _compute_ma_ht(self):
+        for each in self:
+            ma_da = each.bsd_du_an_id.bsd_ma_da or ''
+            each.bsd_ma_ht = ma_da + '-' + each.bsd_ma_tn
+
     bsd_stt = fields.Integer(string="Số thứ tự", help="Số thứ tự sắp xếp của tòa nhà")
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
     bsd_so_tang = fields.Integer(string="Số tầng", help="Số tầng")
