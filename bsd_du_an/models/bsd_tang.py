@@ -10,7 +10,7 @@ class BsdFloor(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     bsd_ten_tang = fields.Char(string="Tên tầng", required=True, help="Tên tầng")
-    bsd_ma_tang = fields.Char(string="Mã tầng", required=True, help="Mã tầng", compute='_compute_ma_tang')
+    bsd_ma_tang = fields.Char(string="Mã tầng", required=True, help="Mã tầng", compute='_compute_ma_tang', store=True)
     _sql_constraints = [
         ('bsd_ma_tang_unique', 'unique (bsd_ma_tang)',
          'Mã tầng đã tồn tại !'),
