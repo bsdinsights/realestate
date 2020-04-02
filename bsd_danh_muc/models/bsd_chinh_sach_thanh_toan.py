@@ -89,9 +89,9 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
                                 default=False)
 
     bsd_dien_giai = fields.Char(string="Diễn giải")
-    bsd_phi_bt = fields.Boolean(string="Phí bảo trì", help="Có tính phí bảo trì trong đợt thanh toán hay không?",
+    bsd_tinh_pbt = fields.Boolean(string="Phí bảo trì", help="Có tính phí bảo trì trong đợt thanh toán hay không?",
                                 default=False)
-    bsd_phi_ql = fields.Boolean(string="Phí quản lý", help="Có tính phí quản lý trong đợt thanh toán hay không?",
+    bsd_tinh_pql = fields.Boolean(string="Phí quản lý", help="Có tính phí quản lý trong đợt thanh toán hay không?",
                                 default=False)
     bsd_tu_nc = fields.Boolean(string="Từ ngày cọc",
                                help="""Thông tin quy định: hạn thanh toán của đợt thanh toán tính

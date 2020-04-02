@@ -82,8 +82,8 @@ class ProductTemplate(models.Model):
     bsd_qsdd_m2 = fields.Monetary(string="QSDĐ/ m2", help="Giá trị quyền sử dụng đất theo m2")
     bsd_tien_gsdd = fields.Monetary(string="Giá trị QSDĐ", help="""
                                                                     Tổng giá trị sử dụng đất của căn hộ được tính theo
-                                                                    công thức: diện tích sử dụng(thông thủy) * giá trị
-                                                                    đất/m2
+                                                                    công thức: diện tích sử dụng(thông thủy) * 
+                                                                    QSDĐ/m2
                                                                     """,
                                    readonly=True, compute='_compute_bsd_tong_gtsd_dat', store=True)
     bsd_tl_pbt = fields.Float(string="% phí bảo trì", help="Tỷ lệ phí bảo trì")
@@ -94,7 +94,7 @@ class ProductTemplate(models.Model):
                                    compute='_compute_bsd_phi_bao_tri', store=True)
     bsd_thue_suat = fields.Float(string="Thuế suất", help="% thuế")
     bsd_tien_thue = fields.Monetary(string="Tiền thuế", help="""Tiền thuế của căn hộ được tính theo công thức:
-                                                            (giá bán - tổng GTSD đất)* thuế suất""",
+                                                            (giá bán - Giá trị QSDĐ)* thuế suất""",
                                     readonly=True, compute='_compute_tien_thue', store=True)
     bsd_tong_gb = fields.Monetary(string="Tổng giá bán", help="""Tổng giá bán của căn hộ tính theo công thức:
                                                                         giá bán + tiền thuế + tiền phí bảo trì""",

@@ -147,10 +147,10 @@
                     </group>
                     <group string="Bàn giao" style="margin:0px ">
                         <group style="margin:0px ">
-                            <field name="bsd_phi_bt"/>
+                            <field name="bsd_tinh_pbt"/>
                         </group>
                         <group style="margin:0px ">
-                            <field name="bsd_phi_ql"/>
+                            <field name="bsd_tinh_pql"/>
                         </group>
                     </group>
                 </sheet>
