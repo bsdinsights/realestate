@@ -12,6 +12,7 @@
                             <field name="bsd_ma_tn"/>
                             <field name="bsd_ten_tn"/>
                             <field name="bsd_dia_chi"/>
+                            <field name="bsd_ma_ht"/>
                         </group>
                         <group>
                             <field name="bsd_stt"/>
@@ -35,6 +36,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                <field name="bsd_ma_ht"/>
                 <field name="bsd_ma_tn"/>
                 <field name="bsd_ten_tn"/>
                 <field name="bsd_so_tang"/>
