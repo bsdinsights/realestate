@@ -213,10 +213,10 @@ class ProductTemplate(models.Model):
             if not template.bsd_ma_unit:
                 template.write({
                     'bsd_ma_unit': du_an.bsd_ma_da + du_an.bsd_dd_da +
-                            toa_nha.bsd_ten_tn + du_an.bsd_dd_khu + tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_stt
+                            toa_nha.bsd_ma_tn + du_an.bsd_dd_khu + tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_stt
                 })
             if not template.bsd_ten_unit:
                 template.write({
-                    'bsd_ten_unit': toa_nha.bsd_ten_tn + du_an.bsd_dd_khu + tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_stt
+                    'bsd_ten_unit': toa_nha.bsd_ma_tn + du_an.bsd_dd_khu + tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_stt
                 })
         return templates

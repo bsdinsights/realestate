@@ -9,12 +9,12 @@
                     <button string="Ưu tiên"
                             name="action_uu_tien"
                             type="object"
-                            attrs="{'invisible':[('bsd_uu_tien','=','1'),('state','in',['chuan_bi','xu_ly'])]}"
+                            attrs="{'invisible':[('bsd_uu_tien','=','1'),('state','in',['chuan_bi','san_sang'])]}"
                             class="oe_highlight"/>
                     <button string="Hủy ưu tiên"
                             name="action_huy_uu_tien"
                             type="object"
-                            attrs="{'invisible':[('bsd_uu_tien','=','0'),('state','in',['chuan_bi','xu_ly'])]}"
+                            attrs="{'invisible':[('bsd_uu_tien','=','0'),('state','in',['chuan_bi','san_sang'])]}"
                             class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
