@@ -19,9 +19,10 @@ class BsdFloor(models.Model):
     @api.depends('bsd_toa_nha_id.bsd_ma_ht')
     def _compute_ma_tang(self):
         for each in self:
-            ma_ht_toa_nha = each.bsd_toa_nha_id.bsd_ma_ht or ''
-            ten_tang = each.bsd_ten_tang or ''
-            each.bsd_ma_tang = ma_ht_toa_nha + '-' + ten_tang
+            if each.bsd_toa_nha_id and each.bsd_ten_tang:
+                du_an = each.bsd_toa_nha_id.bsd_du_an_id
+                toa_nha = each.bsd_toa_nha_id
+                each.bsd_ma_tang = du_an.bsd_ma_da + du_an.bsd_dd_da + toa_nha.bsd_ma_tn + du_an.bsd_dd_khu + each.bsd_ten_tang
 
     bsd_stt = fields.Integer(string="Số thứ tự", help="Số thứ tự sắp xếp của tầng", required=True)
     bsd_dien_giai = fields.Char(string="Diễn giải",
