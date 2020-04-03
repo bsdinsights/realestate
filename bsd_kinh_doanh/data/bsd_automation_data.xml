@@ -6,7 +6,7 @@
             <field name="model_id" ref="bsd_kinh_doanh.model_bsd_gc_tc"></field>
             <field name="trigger">on_time</field>
             <field name="filter_domain">[('state', '=','giu_cho')]</field>
-            <field name="trg_date_id" ref="bsd_kinh_doanh.field_bsd_gc_tc__bsd_hl_gc"></field>
+            <field name="trg_date_id" ref="bsd_kinh_doanh.field_bsd_gc_tc__bsd_ngay_hh_gctc"></field>
             <field name="state">code</field>
             <field name="code">
 record = model.browse(env.context['active_id'])

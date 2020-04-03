@@ -35,9 +35,9 @@ class BsdRapCan(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải",
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
-    bsd_ngay_duyet = fields.Datetime(string="Ngày duyệt")
+    bsd_ngay_duyet_rc = fields.Datetime(string="Ngày duyệt")
     bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt")
-    bsd_ngay_huy = fields.Datetime(string="Ngày hủy")
+    bsd_ngay_huy_rc = fields.Datetime(string="Ngày hủy")
     bsd_nguoi_huy_id = fields.Many2one('res.users', string="Người hủy")
     bsd_giu_cho_id = fields.Many2one('bsd.giu_cho', string="Giữ chỗ")
     state = fields.Selection([('nhap', 'Nháp'),
@@ -65,7 +65,7 @@ class BsdRapCan(models.Model):
     def action_duyet(self):
         self.write({
             'state': 'duyet',
-            'bsd_ngay_duyet': fields.Datetime.now(),
+            'bsd_ngay_duyet_rc': fields.Datetime.now(),
             'bsd_nguoi_duyet_id': self.env.uid,
         })
         self.bsd_gc_tc_id.write({
@@ -106,12 +106,12 @@ class BsdRapCan(models.Model):
             pass
         self.write({
             'state': 'huy',
-            'bsd_ngay_huy': fields.Datetime.now(),
+            'bsd_ngay_huy_rc': fields.Datetime.now(),
             'bsd_nguoi_huy_id': self.env.uid,
         })
         self.bsd_gc_tc_id.write({
             'state': 'thanh_toan',
-            'bsd_ngay_huy': fields.Datetime.now(),
+            'bsd_ngay_huy_rc': fields.Datetime.now(),
         })
         self.bsd_unit_id.write({
             'state': 'chuan_bi',

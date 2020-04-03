@@ -51,7 +51,7 @@
                     </group>
                     <group string="HIỆU LỰC">
                         <group>
-                            <field name="bsd_hl_gc"/>
+                            <field name="bsd_ngay_hh_gc"/>
                         </group>
                     </group>
                     <group string="RÁP CĂN">

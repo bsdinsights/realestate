@@ -46,7 +46,7 @@ class BsdGiuChoThienChi(models.Model):
     bsd_gioi_thieu_id = fields.Many2one('res.partner', string="Giới thiệu", help="Cá nhân hoặc đơn vị giới thiệu",
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
-    bsd_hl_gc = fields.Datetime(string="Hạn giữ chỗ", help="Hiệu lực của giữ chỗ",
+    bsd_ngay_hh_gctc = fields.Datetime(string="Hạn giữ chỗ", help="Hiệu lực của giữ chỗ",
                                 readonly=True, compute='_compute_htgc', store=True)
     bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ")
     bsd_ngay_ut = fields.Datetime(string="Ưu tiên ráp căn",
@@ -56,7 +56,7 @@ class BsdGiuChoThienChi(models.Model):
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
     bsd_ngay_rc = fields.Datetime(string="Ngày ráp căn", help="Ngày thực tế ráp căn", readonly=True)
-    bsd_ngay_huy = fields.Datetime(string="Hủy ráp căn", help="Ngày hủy ráp căn", readonly=True)
+    bsd_ngay_huy_rc = fields.Datetime(string="Hủy ráp căn", help="Ngày hủy ráp căn", readonly=True)
     bsd_rap_can_id = fields.Many2one('bsd.rap_can', string="Ráp căn", help="Phiếu ráp căn", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
@@ -69,7 +69,7 @@ class BsdGiuChoThienChi(models.Model):
     @api.depends('bsd_ngay_gctc')
     def _compute_htgc(self):
         for each in self:
-            each.bsd_hl_gc = each.bsd_ngay_gctc + datetime.timedelta(each.bsd_du_an_id.bsd_gc_tmb) + \
+            each.bsd_ngay_hh_gctc = each.bsd_ngay_gctc + datetime.timedelta(each.bsd_du_an_id.bsd_gc_tmb) + \
                              datetime.timedelta(minutes=1)
 
     @api.depends('bsd_ngay_tt')
