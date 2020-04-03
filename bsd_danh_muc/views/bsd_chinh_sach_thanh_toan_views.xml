@@ -98,7 +98,8 @@
                         <group style="margin:0px ">
                             <field name="bsd_stt"/>
                             <field name="bsd_dot_tt"/>
-                            <field name="bsd_cach_tinh" attrs="{'readonly':[('bsd_dot_cuoi', '=',True)]}"/>
+                            <field name="bsd_cach_tinh"
+                                   attrs="{'readonly':[('bsd_dot_cuoi', '=',True)],'required':[('bsd_dot_cuoi', '=',False)]}"/>
                             <field name="bsd_ngay_cd" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'cd')],
                                                               'required':[('bsd_cach_tinh', '=','cd')]}"/>
                         </group >

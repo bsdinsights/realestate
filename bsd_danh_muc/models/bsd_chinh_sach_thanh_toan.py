@@ -77,7 +77,7 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
                                      help="""
                                         Phương pháp tính hạn thanh toán dựa trên ngày cố định, tự động hay ngày
                                         bàn giao
-                                     """, required=True, default='cd')
+                                     """, default='cd')
     bsd_ngay_cd = fields.Date(string="Ngày cố định",
                               help="Ngày thanh toán của đợt thanh toán theo cách tính: ngày cố định")
 

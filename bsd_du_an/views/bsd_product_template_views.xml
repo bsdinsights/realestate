@@ -65,8 +65,8 @@
                     </group>
                     <group string="GIÁ BÁN">
                         <group>
-                            <field name="bsd_tien_dc"/>
                             <field name="bsd_tien_gc"/>
+                            <field name="bsd_tien_dc"/>
                             <field name="bsd_tl_tc"/>
                             <field name="bsd_don_gia"/>
                             <field name="bsd_gia_ban"/>

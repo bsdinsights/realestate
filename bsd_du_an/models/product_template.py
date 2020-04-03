@@ -114,7 +114,7 @@ class ProductTemplate(models.Model):
                                   help="Tình trạng vay ngân hàng của căn hộ")
     bsd_ngay_dkbg = fields.Date(string="Dự kiến bàn giao", help="Ngày dự kiến bàn giao")
     bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý", help="Số tháng đóng phí quản lý")
-    bsd_phi_ql = fields.Monetary(string="Phí quản lý/m2/tháng")
+    bsd_phi_ql = fields.Monetary(string="Phí quản lý/m2")
     bsd_dk_bg = fields.Float(string="Điều kiện bàn giao",
                              help="% thanh toán đủ điều kiện bàn giao(tối thiểu")
     bsd_ngay_bg = fields.Date(string="Ngày bàn giao",
@@ -134,7 +134,7 @@ class ProductTemplate(models.Model):
                               ('thanh_toan_dot_1', 'Thanh toán đợt 1'),
                               ('ky_thoa_thuan_coc', 'Ký thỏa thuận cọc'),
                               ('du_dieu_kien', 'Đủ điều kiện'),
-                              ('da_ban', 'Đã bán')], string="Tình trạng",
+                              ('da_ban', 'Đã bán')], string="Trạng thái",
                              default="chuan_bi", tracking=1, help="Trạng thái")
 
     @api.onchange('bsd_du_an_id', 'bsd_toa_nha_id')
