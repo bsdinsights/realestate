@@ -10,7 +10,7 @@ bsd_gc_tc_manager, Phiếu giữ chỗ thiện chí,model_bsd_gc_tc,bsd_kinh_doa
 bsd_rap_can_manager, Phiếu ráp căn,model_bsd_rap_can,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_giu_cho_manager, Phiếu giữ chỗ,model_bsd_giu_cho,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_bao_gia_manager, Bảng tính giá,model_bsd_bao_gia,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_bao_gia_bg_manager,Thông tin bàn giao cho bảng tính giá,model_bsd_bao_gia_bg,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_bao_gia_ltt_manager, Lịch thanh toán cho bảng tính giá,model_bsd_bao_gia_ltt,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_ban_giao_manager,Thông tin bàn giao cho bảng tính giá,model_bsd_ban_giao,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_lich_thanh_toan_manager, Lịch thanh toán cho bảng tính giá,model_bsd_lich_thanh_toan,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_dat_coc_manager, Phiếu đặt cọc,model_bsd_dat_coc,bsd_kinh_doanh.group_manager,1,1,1,1
 

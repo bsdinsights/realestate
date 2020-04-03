@@ -156,9 +156,9 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="bsd_bao_gia_ltt_form">
-        <field name="name">bsd.bao_gia_ltt.form</field>
-        <field name="model">bsd.bao_gia_ltt</field>
+    <record model="ir.ui.view" id="bsd_lich_thanh_toan_form">
+        <field name="name">bsd.lich_thanh_toan.form</field>
+        <field name="model">bsd.lich_thanh_toan</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
