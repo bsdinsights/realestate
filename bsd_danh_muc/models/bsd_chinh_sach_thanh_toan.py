@@ -129,4 +129,4 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
     @api.onchange('bsd_dot_cuoi')
     def _onchange_bsd_dot_cuoi(self):
         _logger.debug("debug tại đây")
-        self.bsd_cach_tinh = None
+        self.bsd_cach_tinh = False
