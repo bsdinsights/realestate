@@ -137,32 +137,6 @@ class ProductTemplate(models.Model):
                               ('da_ban', 'Đã bán')], string="Trạng thái",
                              default="chuan_bi", tracking=1, help="Trạng thái")
 
-    @api.onchange('bsd_du_an_id', 'bsd_toa_nha_id')
-    def _onchange_loai_sp(self):
-        _logger.debug('bsd_du_an_id')
-        _logger.debug(self.bsd_du_an_id)
-        _logger.debug('bsd_toa_nha_id')
-        _logger.debug(self.bsd_toa_nha_id)
-        ids_loai_sp = []
-        if self.bsd_toa_nha_id:
-            ids_loai_sp = self.env['bsd.loai_sp'].search([('bsd_toa_nha_id', '=', self.bsd_toa_nha_id.id)]).ids
-        res = {}
-        if ids_loai_sp:
-            res.update({
-                'domain': {
-                    'bsd_loai_sp_id': [('id', 'in', ids_loai_sp)]
-                }
-            })
-        else:
-            res.update({
-                'domain': {
-                    'bsd_loai_sp_id': [('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-                                       ('bsd_toa_nha_id', '=', False)]
-                }
-            })
-        _logger.debug(res)
-        return res
-
     @api.depends('bsd_dt_sd', 'bsd_qsdd_m2')
     def _compute_bsd_tong_gtsd_dat(self):
         for each in self:
