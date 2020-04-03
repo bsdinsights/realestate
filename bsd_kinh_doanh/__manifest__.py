@@ -25,6 +25,7 @@
         'views/bsd_khuyen_mai_views.xml',
         'views/bsd_bao_gia_views.xml',
         'views/bsd_dieu_kien_ban_giao_views.xml',
+        'views/bsd_dat_coc_views.xml',
         'views/bsd_menu_item_views.xml',
         'data/bsd_automation_data.xml',
     ],

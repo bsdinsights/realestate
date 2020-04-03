@@ -31,7 +31,7 @@ class BsdBaoGia(models.Model):
     bsd_bang_gia_id = fields.Many2one('product.pricelist', string="Bảng giá", help="Bảng giá bán",
                                       related="bsd_dot_mb_id.bsd_bang_gia_id", store=True)
     bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ",
-                                  related="bsd_giu_cho_id.bsd_tien_gc")
+                                  related="bsd_giu_cho_id.bsd_tien_gc", store=True)
     bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc", compute='_compute_tien_dc', store=True)
     bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Tên căn hộ",
                                   related="bsd_giu_cho_id.bsd_unit_id", store=True)
@@ -51,15 +51,15 @@ class BsdBaoGia(models.Model):
                                   compute='_compute_tien_bg', store=True)
     bsd_gia_truoc_thue = fields.Monetary(string="Giá bán trước thuế",
                                          help="""Giá bán trước thuế: bằng giá bán cộng tiền bàn giao trừ chiết khấu""",
-                                         compute='_compute_gia_truoc_thue')
+                                         compute='_compute_gia_truoc_thue', store=True)
     bsd_tien_qsdd = fields.Monetary(string="Giá trị QSDĐ",
                                     help="""Giá trị sử dụng đất: bằng QSDĐ/m2 nhân với diện tích sử dung""",
-                                    related="bsd_unit_id.bsd_tien_gsdd", store=True)
+                                    related="bsd_unit_id.bsd_tien_qsdd", store=True)
     bsd_tien_thue = fields.Monetary(string="Tiền thuế",
                                     help="""Tiền thuế: Giá bán trước thuế trừ giá trị QSDĐ, nhân với thuế suất""",
                                     compute='_compute_tien_thue', store=True)
     bsd_tien_pbt = fields.Monetary(string="Phí bảo trì", help="Phí bảo trì: bằng % phí bảo trì nhân với giá bán",
-                                   related="bsd_unit_id.bsd_tien_pbt")
+                                   related="bsd_unit_id.bsd_tien_pbt", store=True)
     bsd_tong_gia = fields.Monetary(string="Tổng giá bán",
                                    help="""Tổng giá bán: bằng Giá bán trước thuế cộng Tiền thuế cộng phí bảo trì""",
                                    compute="_compute_tong_gia", store=True)

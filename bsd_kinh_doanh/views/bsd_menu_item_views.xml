@@ -50,6 +50,11 @@
               sequence="15"
               action="bsd_bao_gia_action"
               parent="bsd_main_kinh_doanh_root"/>
+    <menuitem id="bsd_dat_coc_menu_action"
+              name="Đặt cọc"
+              sequence="16"
+              action="bsd_dat_coc_action"
+              parent="bsd_main_kinh_doanh_root"/>
 
     <record id="bsd_kinh_doanh.bsd_main_kinh_doanh_root" model="ir.ui.menu">
         <field name="action" eval="False"/>

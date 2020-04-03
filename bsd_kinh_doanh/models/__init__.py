@@ -8,4 +8,5 @@ from . import bsd_giu_cho
 from . import bsd_khuyen_mai
 from . import bsd_dieu_kien_ban_giao
 from . import bsd_bao_gia
+from . import bsd_dat_coc
 

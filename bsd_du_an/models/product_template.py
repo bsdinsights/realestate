@@ -80,7 +80,7 @@ class ProductTemplate(models.Model):
     bsd_don_gia = fields.Monetary(string="Đơn giá bán/m2", help="Đơn giá bán trước thuế theo m2")
     bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán trước thuế của căn hộ")
     bsd_qsdd_m2 = fields.Monetary(string="QSDĐ/ m2", help="Giá trị quyền sử dụng đất theo m2")
-    bsd_tien_gsdd = fields.Monetary(string="Giá trị QSDĐ", help="""
+    bsd_tien_qsdd = fields.Monetary(string="Giá trị QSDĐ", help="""
                                                                     Tổng giá trị sử dụng đất của căn hộ được tính theo
                                                                     công thức: diện tích sử dụng(thông thủy) * 
                                                                     QSDĐ/m2
@@ -140,17 +140,17 @@ class ProductTemplate(models.Model):
     @api.depends('bsd_dt_sd', 'bsd_qsdd_m2')
     def _compute_bsd_tong_gtsd_dat(self):
         for each in self:
-            each.bsd_tien_gsdd = each.bsd_dt_sd * each.bsd_qsdd_m2
+            each.bsd_tien_qsdd = each.bsd_dt_sd * each.bsd_qsdd_m2
 
     @api.depends('bsd_tl_pbt', 'bsd_gia_ban')
     def _compute_bsd_phi_bao_tri(self):
         for each in self:
             each.bsd_tien_pbt = each.bsd_tl_pbt * each.bsd_gia_ban / 100
 
-    @api.depends('bsd_gia_ban', 'bsd_tien_gsdd', 'bsd_thue_suat')
+    @api.depends('bsd_gia_ban', 'bsd_tien_qsdd', 'bsd_thue_suat')
     def _compute_tien_thue(self):
         for each in self:
-            each.bsd_tien_thue = (each.bsd_gia_ban - each.bsd_tien_gsdd) * each.bsd_thue_suat / 100
+            each.bsd_tien_thue = (each.bsd_gia_ban - each.bsd_tien_qsdd) * each.bsd_thue_suat / 100
 
     @api.depends('bsd_gia_ban', 'bsd_tien_thue', 'bsd_tien_pbt')
     def _compute_bsd_tong_gia_ban(self):
