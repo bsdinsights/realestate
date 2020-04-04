@@ -68,3 +68,29 @@ class BsdHopDongMuaBan(models.Model):
     state = fields.Selection([('nhap', 'Nháp')], string="Trạng thái", default="nhap", help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+
+    bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_hd_ban_id', string="Bàn giao", readonly=True)
+    bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_hd_ban_id', string="Lịch thanh toán", readonly=True)
+
+    @api.model
+    def create(self, vals):
+        res = super(BsdHopDongMuaBan, self).create(vals)
+        ids_bg = res.bsd_dat_coc_id.bsd_bg_ids.ids
+        ids_ltt = res.bsd_dat_coc_id.bsd_ltt_ids.ids
+        res.write({
+            'bsd_bg_ids': [(6, 0, ids_bg)],
+            'bsd_ltt_ids': [(6, 0, ids_ltt)]
+        })
+        return res
+
+
+class BsdBanGiao(models.Model):
+    _inherit = 'bsd.ban_giao'
+
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True)
+
+
+class BsdBaoGiaLTT(models.Model):
+    _inherit = 'bsd.lich_thanh_toan'
+
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True)
