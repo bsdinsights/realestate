@@ -242,6 +242,3 @@ class BsdBaoGia(models.Model):
 
     def action_ky_gc(self):
         pass
-
-
-

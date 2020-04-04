@@ -75,3 +75,14 @@ class BsdDatCoc(models.Model):
 
     bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_dat_coc_id', string="Bàn giao", readonly=True)
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_dat_coc_id', string="Lịch thanh toán", readonly=True)
+
+    @api.model
+    def create(self, vals):
+        res = super(BsdDatCoc, self).create(vals)
+        ids_bg = res.bsd_bao_gia_id.bsd_bg_ids.ids
+        ids_ltt = res.bsd_bao_gia_id.bsd_ltt_ids.ids
+        res.write({
+            'bsd_bg_ids': [(6, 0, ids_bg)],
+            'bsd_ltt_ids': [(6, 0, ids_ltt)]
+        })
+        return res
