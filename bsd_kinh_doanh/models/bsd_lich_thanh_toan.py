@@ -8,6 +8,7 @@ class BsdBaoGiaLTT(models.Model):
     _description = "Lịch thanh toán cho báo giá"
 
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", help="Bảng tính giá", required=True)
+    bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="'Đặt cọc", help="Phiếu đặt cọc", readonly=True)
     bsd_stt = fields.Integer(string='Số thứ tự', help="Số thứ tự đợt thanh toán")
     bsd_ma_dtt = fields.Char(string="Mã đợt thanh toán", help="Mã đợt thanh toán", required=True)
     bsd_ten_dtt = fields.Char(string="Tên đợt thanh toán", help="Tên đợt thanh toán", required=True)

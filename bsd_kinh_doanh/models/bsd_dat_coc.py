@@ -72,3 +72,6 @@ class BsdDatCoc(models.Model):
     state = fields.Selection([('nhap', 'Nháp')], string="Trạng thái", default="nhap", help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+
+    bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_dat_coc_id', string="Bàn giao", readonly=True)
+    bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_dat_coc_id', string="Lịch thanh toán", readonly=True)

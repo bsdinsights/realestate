@@ -70,7 +70,7 @@ class BsdBaoGia(models.Model):
     state = fields.Selection([('nhap', 'Nháp')], string="Trạng thái", default="nhap", help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-    bsd_dk_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_bao_gia_id', string="Bàn giao")
+    bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_bao_gia_id', string="Bàn giao")
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_bao_gia_id', string="Lịch thanh toán")
 
     @api.depends('bsd_unit_id')
@@ -96,10 +96,10 @@ class BsdBaoGia(models.Model):
                 lambda x: x.product_tmpl_id == each.bsd_unit_id.product_tmpl_id)
             each.bsd_gia_ban = item.fixed_price
 
-    @api.depends('bsd_dk_bg_ids.bsd_tien_bg')
+    @api.depends('bsd_bg_ids.bsd_tien_bg')
     def _compute_tien_bg(self):
         for each in self:
-            each.bsd_tien_bg = sum(each.bsd_dk_bg_ids.mapped('bsd_tien_bg'))
+            each.bsd_tien_bg = sum(each.bsd_bg_ids.mapped('bsd_tien_bg'))
 
     @api.depends('bsd_gia_ban', 'bsd_tien_ck', 'bsd_tien_bg')
     def _compute_gia_truoc_thue(self):
