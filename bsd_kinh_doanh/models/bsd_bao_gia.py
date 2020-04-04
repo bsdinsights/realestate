@@ -150,7 +150,7 @@ class BsdBaoGia(models.Model):
         res.update({
             'bsd_stt': stt,
             'bsd_ma_dtt': ma_dtt,
-            'bsd_ten_dtt': dot_tt.bsd_dot_tt,
+            'bsd_ten_dtt': 'Đợt thanh toán ' + str(stt),
             'bsd_ngay_hh_tt': ngay_hh_tt,
             'bsd_tien_dot_tt': dot_tt.bsd_tl_tt * (self.bsd_tong_gia - self.bsd_tien_pbt) / 100,
             'bsd_tinh_pql': dot_tt.bsd_tinh_pql,
