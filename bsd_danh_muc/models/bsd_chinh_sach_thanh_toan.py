@@ -57,7 +57,7 @@ class BsdChinhSachThanhToan(models.Model):
                                    help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo quá hạn thanh toán lần 5")
 
     state = fields.Selection([('active', 'Đang sử dụng'),
-                              ('inactive', 'Ngưng sử dụng')],
+                              ('inactive', 'Không sử dụng')],
                              string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
@@ -96,7 +96,7 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
     bsd_tu_nc = fields.Boolean(string="Từ ngày cọc",
                                help="""Thông tin quy định: hạn thanh toán của đợt thanh toán tính
                                 theo ngày cọc hay ngày ký hợp đồng""", default=False)
-    bsd_tiep_theo = fields.Selection([('ngay', 'Ngày'), ('thang', 'Tháng')], string="Đợt tiếp theo", default='ngay',
+    bsd_tiep_theo = fields.Selection([('ngay', 'Theo ngày'), ('thang', 'Theo tháng')], string="Đợt tiếp theo", default='ngay',
                                      help="""Cách xác định hạn thanh toán của đợt tiếp theo, được tính
                                      theo số ngày hoặc số tháng
                                      """)
@@ -117,13 +117,14 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
 
     bsd_so_dot = fields.Integer(string="Số đợt thanh toán", help="Số đợt thanh toán được lặp lại ")
 
-    bsd_ngay_gh = fields.Integer(string="Ngày gia hạn", help="""Ngày được công thêm khi tính hạn thanh toán
-                                                                của đợt thanh toán tự động được lặp lại nhiều lần, thì
-                                                                chỉ cộng ngày gia hạn vào đợt tính tự động cuối cùng
+    bsd_ngay_gh = fields.Integer(string="Ngày gia hạn", help="""Ngày được cộng thêm khi tính hạn thanh toán của đợt 
+                                                                thanh toán. Trong trường hợp đợt thanh toán tự động được
+                                                                 lặp lại nhiều lần, thì chỉ cộng ngày gia hạn vào đợt 
+                                                                 tính tự động cuối cùng.
                                                             """)
     bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="Chính sách thanh toán")
     state = fields.Selection([('active', 'Đang sử dụng'),
-                              ('inactive', 'Ngưng sử dụng')],
+                              ('inactive', 'Không sử dụng')],
                              string="Trạng thái", default='active', required=True)
 
     @api.onchange('bsd_dot_cuoi')
