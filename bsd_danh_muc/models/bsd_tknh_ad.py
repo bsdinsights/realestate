@@ -45,7 +45,7 @@ class BsdTknhCh(models.Model):
     bsd_so_tk = fields.Char(string="Số tài khoản", required=True)
     bsd_ma_tkad_id = fields.Many2one('bsd.tknh_ad', string="Tài khoản ngân hàng áp dụng", required=True)
     state = fields.Selection([('active', 'Đang sử dụng'),
-                              ('inactive', 'Ngưng sử dụng')],
+                              ('inactive', 'Không sử dụng')],
                              string="Trạng thái", default='active', required=True)
 
 

@@ -31,14 +31,14 @@ class BsdDkbg(models.Model):
                                   ('ty_le', 'Tỷ lệ')
                                   ], string="Điều kiện thanh toán", default="m2", required=True,
                                  help="Điều kiện thanh toán để được nhận bàn giao")
-    bsd_theo_ch = fields.Selection([('1', 'Có'), ('0', 'Không')], string="Theo căn hộ", default="0",
+    bsd_theo_ch = fields.Selection([('1', 'Có'), ('0', 'Không')], string="Theo căn hộ", default="0", required=True,
                                    help="Thông tin quy định điều kiện bàn giao sẽ được áp dụng cho căn hộ hay cả dự án")
     bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Tên căn hộ được áp dụng điều kiện bàn giao")
     bsd_gia_m2 = fields.Monetary(string="Giá/m2", help="Giá/m2 theo đợt bàn giao")
     bsd_tien = fields.Monetary(string="Tiền", help="Tiền thanh toán theo đợt bàn giao")
     bsd_ty_le = fields.Float(string="Tỷ lệ (%)", help="Tỷ lệ thanh toán theo đợt bàn giao")
     state = fields.Selection([('active', 'Đang sử dụng'),
-                              ('inactive', 'Ngưng sử dụng')],
+                              ('inactive', 'Không sử dụng')],
                              string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)

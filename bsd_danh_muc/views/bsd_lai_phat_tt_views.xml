@@ -50,7 +50,7 @@
         <field name="res_model">bsd.lai_phat_tt</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
-            <p>Tạo lãi phạt tối đa</p>
+            <p>Tạo lãi phạt thanh toán</p>
         </field>
     </record>
 </odoo>
