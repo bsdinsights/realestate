@@ -21,7 +21,7 @@ class BsdTknhAp(models.Model):
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng tài khoản ngân hàng", required=True)
     bsd_dien_giai = fields.Char(string="Diễn giải")
     state = fields.Selection([('active', 'Đang sử dụng'),
-                              ('inactive', 'Ngưng sử dụng')],
+                              ('inactive', 'Không sử dụng')],
                              string="Trạng thái", default='active', required=True, help="Trạng thái", tracking=1)
     bsd_tknh_ch_ids = fields.One2many('bsd.tknh_ch', 'bsd_ma_tkad_id', string="Chi tiết")
 
