@@ -114,7 +114,7 @@ class ProductTemplate(models.Model):
                                   help="Tình trạng vay ngân hàng của căn hộ")
     bsd_ngay_dkbg = fields.Date(string="Dự kiến bàn giao", help="Ngày dự kiến bàn giao")
     bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý", help="Số tháng đóng phí quản lý")
-    bsd_phi_ql = fields.Monetary(string="Phí quản lý/m2")
+    bsd_tien_pql = fields.Monetary(string="Phí quản lý/ tháng", help="Số tiền phí quản lý cần đóng mỗi tháng")
     bsd_dk_bg = fields.Float(string="Điều kiện bàn giao",
                              help="% thanh toán đủ điều kiện bàn giao(tối thiểu")
     bsd_ngay_bg = fields.Date(string="Ngày bàn giao",

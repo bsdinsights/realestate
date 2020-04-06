@@ -115,14 +115,11 @@ class BsdBaoGia(models.Model):
     def _onchange_phi(self):
         for each in self:
             if each.bsd_unit_id.bsd_thang_pql != 0:
-                each.bsd_tl_pbt = each.bsd_unit_id.bsd_thang_pql
+                each.bsd_thang_pql = each.bsd_unit_id.bsd_thang_pql
             else:
-                each.bsd_tl_pbt = each.bsd_unit_id.bsd_du_an_id.bsd_thang_pql
+                each.bsd_thang_pql = each.bsd_unit_id.bsd_du_an_id.bsd_thang_pql
 
-            if each.bsd_unit_id.bsd_thang_pql != 0:
-                each.bsd_tl_pbt = each.bsd_unit_id.bsd_thang_pql
-            else:
-                each.bsd_tl_pbt = each.bsd_unit_id.bsd_du_an_id.bsd_thang_pql
+            each.bsd_tien_pql = each.bsd_unit_id.bsd_tien_pql
 
     @api.depends('bsd_gia_truoc_thue', 'bsd_tien_thue', 'bsd_tien_pbt')
     def _compute_tong_gia(self):

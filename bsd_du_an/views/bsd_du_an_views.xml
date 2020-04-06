@@ -46,7 +46,7 @@
                             <group string="QUẢN LÝ &amp; BẢO TRÌ">
                                 <group>
                                     <field name="bsd_thang_pql"/>
-                                    <field name="bsd_tien_pql"/>
+                                    <field name="bsd_pql_m2"/>
                                 </group>
                                 <group>
                                     <field name="bsd_tl_pbt"/>

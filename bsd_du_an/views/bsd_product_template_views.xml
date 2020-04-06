@@ -99,7 +99,7 @@
                         <group>
                             <field name="bsd_ngay_dkbg"/>
                             <field name="bsd_thang_pql"/>
-                            <field name="bsd_phi_ql"/>
+                            <field name="bsd_tien_pql"/>
                             <field name="bsd_dk_bg"/>
                         </group>
                         <group>
