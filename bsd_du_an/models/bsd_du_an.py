@@ -104,6 +104,8 @@ class BsdProject(models.Model):
     bsd_tk_ng_ids = fields.One2many('bsd.da_tknh', 'bsd_du_an_id', string="Tài khoản ngân hàng")
     bsd_ngan_hang_ids = fields.One2many('bsd.da_nh', 'bsd_du_an_id', string="Ngân hàng")
 
+    bsd_unit_ids = fields.One2many('product.product', 'bsd_du_an_id', string="Danh sách căn hộ", readonly=True)
+
     @api.constrains('bsd_tl_dc')
     def _check_ty_le_coc(self):
         for record in self:
