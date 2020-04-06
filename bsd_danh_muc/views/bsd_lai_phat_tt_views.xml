@@ -46,7 +46,7 @@
         </field>
     </record>
     <record model="ir.actions.act_window" id="bsd_lai_phat_tt_action">
-        <field name="name">Lãi phạt tối đa</field>
+        <field name="name">Lãi phạt thanh toán</field>
         <field name="res_model">bsd.lai_phat_tt</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
