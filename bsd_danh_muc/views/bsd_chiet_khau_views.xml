@@ -14,11 +14,9 @@
                             <field name="bsd_du_an_id"/>
                             <field name="bsd_cach_tinh"/>
                             <field name="bsd_tu_ngay"
-                                   attrs="{'required':[('bsd_loai_ck', 'in', ['ttth'])],
-                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','mua_si','ltt','ttn'])]}"/>
+                                   attrs="{'required':[('bsd_loai_ck', 'in', ['ttth'])]}"/>
                             <field name="bsd_den_ngay"
-                                   attrs="{'required':[('bsd_loai_ck', 'in', ['ttth'])],
-                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','mua_si','ltt','ttn'])]}"/>
+                                   attrs="{'required':[('bsd_loai_ck', 'in', ['ttth'])]}"/>
                             <field name="bsd_dien_giai"/>
                         </group>
                         <group>
