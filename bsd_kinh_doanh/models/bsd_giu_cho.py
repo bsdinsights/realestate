@@ -33,7 +33,7 @@ class BsdRapCan(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải",
                                 readonly=True, help="Diễn giải",
                                 states={'nhap': [('readonly', False)]})
-    bsd_truoc_mb = fields.Boolean(string="Trước mở bán", default= False,
+    bsd_truoc_mb = fields.Boolean(string="Trước mở bán", default=False,
                                   help="Thông tin xác định Giữ chỗ được tạo trước hay sau khi unit có đợt mở bán",
                                   readonly=True, required=True)
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', related="bsd_unit_id.bsd_dot_mb_id",
@@ -166,6 +166,6 @@ class BsdRapCan(models.Model):
         res = super(BsdRapCan, self).create(vals)
         if res.bsd_unit_id.bsd_dot_mb_id:
             res.write({
-                'bsd_truoc_mb': True,
+                'bsd_truoc_mb': False,
             })
         return res
