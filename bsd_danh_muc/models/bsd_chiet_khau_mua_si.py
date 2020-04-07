@@ -20,7 +20,7 @@ class BsdChietKhauMuaSi(models.Model):
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng chiết khấu mua sỉ")
 
     state = fields.Selection([('active', 'Đang sử dụng'),
-                              ('inactive', 'Ngưng sử dụng')],
+                              ('inactive', 'Không sử dụng')],
                              string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
@@ -34,7 +34,7 @@ class BsdChietKhauMuaSiChiTiet(models.Model):
 
     bsd_ck_ms_id = fields.Many2one('bsd.ck_ms', string="Chiết khấu mua sỉ")
     bsd_chiet_khau_id = fields.Many2one('bsd.chiet_khau', string="Chiết khấu", required=True,
-                                        domain=[('bsd_loai_ck', '=', 'mua_si')])
+                                        domain=[('bsd_loai_ck', '=', 'mua_si'), ('state', '=', 'active')])
     bsd_ma_ck = fields.Char(related="bsd_chiet_khau_id.bsd_ma_ck")
     bsd_tu_ngay = fields.Date(related="bsd_chiet_khau_id.bsd_tu_ngay")
     bsd_den_ngay = fields.Date(related="bsd_chiet_khau_id.bsd_den_ngay")
