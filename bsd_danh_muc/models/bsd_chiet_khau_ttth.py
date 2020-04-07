@@ -11,7 +11,7 @@ class BsdChietKhauTTTH(models.Model):
 
     bsd_ma_ck_ttth = fields.Char(string="Mã chiết khấu", help="Mã chiết khấu thanh toán trước hạn",  required=True)
     _sql_constraints = [
-        ('bsd_ma_ck_ttth_unique', 'unique (bsd_ma_ck_tttk)',
+        ('bsd_ma_ck_ttth_unique', 'unique (bsd_ma_ck_ttth)',
          'Mã chiết khấu thanh toán trước hạn đã tồn tại !'),
     ]
     bsd_ten_ck_ttth = fields.Char(string="Tên chiết khấu", help="Tên chiết khấu thanh toán trước hạn", required=True)
