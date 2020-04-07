@@ -34,7 +34,7 @@ class BsdGiuChoThienChi(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải",
                               readonly=True,
                               states={'nhap': [('readonly', False)]})
-    bsd_nvbh_id = fields.Many2one('res.users', string="Nhân viên BH", help="Nhân viên bán hàng",
+    bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên BH", help="Nhân viên bán hàng",
                               readonly=True,
                               states={'nhap': [('readonly', False)]})
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch", domain=[('is_company', '=', True)],

@@ -38,7 +38,7 @@ class BsdRapCan(models.Model):
     bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
-    bsd_nvbh_id = fields.Many2one('res.users', string="Nhân viên BH",
+    bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên BH",
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch",domain=[('is_company', '=', True)],
