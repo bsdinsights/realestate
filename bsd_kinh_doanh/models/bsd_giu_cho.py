@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 import datetime
 
 
@@ -32,9 +33,9 @@ class BsdRapCan(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải",
                                 readonly=True, help="Diễn giải",
                                 states={'nhap': [('readonly', False)]})
-    bsd_truoc_mb = fields.Selection([('1', 'Có'), ('0', 'Không')], string="Trước mở bán", default='0',
-                                    help="Thông tin xác định Giữ chỗ được tạo trước hay sau khi unit có đợt mở bán",
-                                    readonly=True, required=True)
+    bsd_truoc_mb = fields.Boolean(string="Trước mở bán", default= False,
+                                  help="Thông tin xác định Giữ chỗ được tạo trước hay sau khi unit có đợt mở bán",
+                                  readonly=True, required=True)
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', related="bsd_unit_id.bsd_dot_mb_id",
                                     help="Đọt mở bán",
                                     string="Đợt mở bán", store=True)
@@ -68,6 +69,54 @@ class BsdRapCan(models.Model):
                               ('huy', 'Hủy')], default='nhap', string="Trạng thái", tracking=1, help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+
+    # KD.07.02 Ràng buộc số giữ chỗ theo căn hộ/ NVBH
+    @api.constrains('bsd_nvbh_id')
+    def _constrain_unit_nv(self):
+
+        gc_in_unit = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                     ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
+                                                     ('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                     ('state', 'in', ['nhap', 'giu_cho', 'dat_cho'])])
+        if len(gc_in_unit) > self.bsd_du_an_id.bsd_gc_unit_nv:
+            raise UserError("Tổng số giữ chỗ trên Căn hộ của bạn đã vượt quá quy định!")
+
+    # KD.07.03 Ràng buộc số giữ chỗ theo căn hộ
+    @api.constrains('bsd_unit_id')
+    def _constrain_unit(self):
+
+        gc_in_unit = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                     ('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                     ('state', 'in', ['nhap', 'giu_cho', 'dat_cho'])])
+        if len(gc_in_unit) > self.bsd_du_an_id.bsd_gc_unit:
+            raise UserError("Tổng số giữ chỗ trên Căn hộ đã vượt quá quy định!")
+
+    # KD.07.04 Ràng buộc số giữ chỗ theo NVBH/ngày
+    @api.constrains('bsd_nvbh_id')
+    def _constrain_nv_bh(self):
+        min_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
+        max_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.max.time())
+        gc_in_day = self.env['bsd.giu_cho'].search([('bsd_ngay_gc', '<', max_time),
+                                                   ('bsd_ngay_gc', '>', min_time),
+                                                   ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                   ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
+                                                   ('state', 'in', ['nhap', 'giu_cho', 'dat_cho'])])
+        if len(gc_in_day) >= self.bsd_du_an_id.bsd_gc_nv_ngay:
+            raise UserError("Tổng số Giữ chỗ trên một ngày của bạn đã vượt quá quy định")
+
+    # KD.07.05 Ràng buộc số giữ chỗ theo căn hộ/NVBH/ngày
+    @api.constrains('bsd_nvbh_id')
+    def _constrain_unit_nv_ngay(self):
+        min_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
+        max_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.max.time())
+        gc_in_day = self.env['bsd.giu_cho'].search([('bsd_ngay_gc', '<', max_time),
+                                                   ('bsd_ngay_gc', '>', min_time),
+                                                   ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                   ('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                   ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
+                                                   ('state', 'in', ['nhap', 'giu_cho', 'dat_cho'])])
+        if len(gc_in_day) >= self.bsd_du_an_id.bsd_gc_unit_nv_ngay:
+            raise UserError("Tổng số Giữ chỗ trong ngày theo căn hộ của bạn đã vượt quá quy định")
 
     @api.onchange('bsd_unit_id', 'bsd_du_an_id')
     def _onchange_tien_gc(self):
@@ -117,6 +166,6 @@ class BsdRapCan(models.Model):
         res = super(BsdRapCan, self).create(vals)
         if res.bsd_unit_id.bsd_dot_mb_id:
             res.write({
-                'bsd_truoc_mb': '1',
+                'bsd_truoc_mb': True,
             })
         return res
