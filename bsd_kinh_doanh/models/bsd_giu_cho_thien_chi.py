@@ -60,11 +60,15 @@ class BsdGiuChoThienChi(models.Model):
     bsd_rap_can_id = fields.Many2one('bsd.rap_can', string="Ráp căn", help="Phiếu ráp căn", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
-                              ('thanh_toan', 'Thanh toán'),
                               ('giu_cho', 'Giữ chỗ'),
-                              ('huy', 'Hủy')], string="Trạng thái", default="nhap", required=True, tracking=1)
+                              ('huy', 'Hủy')], string="Trạng thái", default="nhap", tracking=1)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+
+    bsd_thanh_toan = fields.Selection([('chua_tt', 'Chưa thanh toán'),
+                                       ('dang_tt', 'Đang thanh toán'),
+                                       ('da_tt', 'Đã thanh toán')], string="Thanh toán", default="chua_tt",
+                                      required=True)
 
     @api.depends('bsd_ngay_gctc')
     def _compute_htgc(self):

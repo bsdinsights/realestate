@@ -15,7 +15,7 @@
                             name="action_huy"
                             type="object"
                             confirm="Bạn có muốn hủy giữ chỗ không?"
-                            states="xac_nhan,thanh_toan"
+                            states="xac_nhan"
                             class="oe_highlight"/>
                     <!--<field name="state" widget="statusbar" statusbar_visible="0"/>-->
                 </header>
@@ -25,7 +25,7 @@
                             <field name="bsd_ma_gctc"/>
                             <field name="bsd_ngay_gctc"/>
                             <field name="bsd_khach_hang_id" options="{'no_create':true}"/>
-
+                            <field name="bsd_dien_giai"/>
                         </group>
                         <group>
                             <field name="bsd_du_an_id"
@@ -33,7 +33,6 @@
                                    options="{'no_create':true}"/>
                             <field name="currency_id" invisible="1"/>
                             <field name="bsd_tien_gc"/>
-                            <field name="bsd_dien_giai"/>
                             <field name="state"/>
                         </group>
                     </group>
@@ -50,12 +49,13 @@
                     <group string="RÁP CĂN">
                         <group>
                             <field name="bsd_ngay_hh_gctc"/>
+                            <field name="bsd_thanh_toan"/>
                             <field name="bsd_ngay_tt"/>
-                            <field name="bsd_ngay_rc"/>
-                            <field name="bsd_rap_can_id" options="{'no_create':true}"/>
+                            <field name="bsd_ngay_ut"/>
                         </group>
                         <group>
-                            <field name="bsd_ngay_ut"/>
+                            <field name="bsd_ngay_rc"/>
+                            <field name="bsd_rap_can_id" options="{'no_create':true}"/>
                             <field name="bsd_het_han"/>
                             <field name="bsd_ngay_huy_rc"/>
                         </group>
