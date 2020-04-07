@@ -205,6 +205,7 @@ class BsdDotMoBan(models.Model):
                 'bsd_gia_ban': pricelist_item.fixed_price,
                 'bsd_dot_mb_id': self.id
             })
+            # KD.04.06 Cập nhật tình trạng căn hộ phát hành
             if unit.state == 'chuan_bi':
                 unit.write({
                     'bsd_dot_mb_id': self.id,

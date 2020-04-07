@@ -32,6 +32,8 @@ class BsdRapCan(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
+    bsd_truoc_mb = fields.Selection([('1', 'Có'), ('0', 'Không')], string="Trước mở bán", default='0',
+                                    readonly=True, required=True)
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', related="bsd_unit_id.bsd_dot_mb_id", string="Đợt mở bán", store=True)
     bsd_bang_gia_id = fields.Many2one('product.pricelist', related="bsd_dot_mb_id.bsd_bang_gia_id", store=True,
                                       string="Bảng giá")
@@ -44,7 +46,7 @@ class BsdRapCan(models.Model):
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch",domain=[('is_company', '=', True)],
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
-    bsd_ctv_id = fields.Many2one('res.partner', string="Công tác viên",domain=[('is_company', '=', False)],
+    bsd_ctv_id = fields.Many2one('res.partner', string="Công tác viên", domain=[('is_company', '=', False)],
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
     bsd_gioi_thieu_id = fields.Many2one('res.partner', string="Giới thiệu",help="Cá nhân hoặc đơn vị giới thiệu",
@@ -104,3 +106,13 @@ class BsdRapCan(models.Model):
             self.bsd_unit_id.write({
                 'state': 'giu_cho',
             })
+
+    # R7 Ghi nhận thông tin trước mở bán
+    @api.model
+    def create(self, vals):
+        res = super(BsdRapCan, self).create(vals)
+        if res.bsd_unit_id.bsd_dot_mb_id:
+            res.write({
+                'bsd_truoc_mb': '1',
+            })
+        return res

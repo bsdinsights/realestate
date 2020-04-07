@@ -99,6 +99,7 @@ class BsdRapCan(models.Model):
                     'bsd_gc_tc_id': self.bsd_gc_tc_id.id,
                     'bsd_rap_can_id': self.id,
                     'state': 'giu_cho',
+                    'bsd_truoc_mb': '1',
         })
         # cập nhật lại field giữ chỗ cho phiếu ráp căn
         self.write({
