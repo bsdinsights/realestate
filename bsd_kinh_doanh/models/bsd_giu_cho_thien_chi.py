@@ -24,24 +24,24 @@ class BsdGiuChoThienChi(models.Model):
                                     readonly=True, default=datetime.datetime.now(),
                                     states={'nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", required=True,
-                                        readonly=True,
+                                        readonly=True, help="Khách hàng",
                                         states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True,
-                                   readonly=True,
+                                   readonly=True, help="Tên dự án",
                                    states={'nhap': [('readonly', False)]})
     bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ thiện chí",
                                   related='bsd_du_an_id.bsd_tien_gc', store=True)
     bsd_dien_giai = fields.Char(string="Diễn giải",
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                                readonly=True, help="Diễn giải",
+                                states={'nhap': [('readonly', False)]})
     bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên BH", help="Nhân viên bán hàng",
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch", domain=[('is_company', '=', True)],
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                                    readonly=True, help='Sàn giao dịch',
+                                    states={'nhap': [('readonly', False)]})
     bsd_ctv_id = fields.Many2one('res.partner', string="Cộng tác viên", domain=[('is_company', '=', False)],
-                                 readonly=True,
+                                 readonly=True, help="Cộng tác viên",
                                  states={'nhap': [('readonly', False)]})
     bsd_gioi_thieu_id = fields.Many2one('res.partner', string="Giới thiệu", help="Cá nhân hoặc đơn vị giới thiệu",
                                         readonly=True,
