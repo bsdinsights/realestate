@@ -14,7 +14,7 @@
                             type="object"
                             class="oe_highlight"
                             name="action_phat_hanh"/>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    <!--<field name="state" widget="statusbar" statusbar_visible="0"/>-->
                 </header>
                 <sheet>
                     <notebook>
@@ -52,7 +52,7 @@
                                            domain="[('bsd_toa_nha_id', 'in', [bsd_den_toa_nha_id])]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_dien_giai"/>
-                                    <!--<field name="state"/>-->
+                                    <field name="state"/>
                                 </group>
                             </group>
                         </page>
