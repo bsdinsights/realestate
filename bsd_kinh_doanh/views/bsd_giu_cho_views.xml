@@ -54,10 +54,13 @@
                     <group string="HIỆU LỰC">
                         <group>
                             <field name="bsd_ngay_hh_gc"/>
-                        </group>
-                        <group>
                             <field name="bsd_thanh_toan"/>
                             <field name="bsd_ngay_tt"/>
+                        </group>
+                        <group>
+                            <field name="bsd_stt_bg"/>
+                            <field name="bsd_ngay_hh_bg"/>
+                            <field name="bsd_het_han_bg"/>
                         </group>
                     </group>
                     <group string="RÁP CĂN">

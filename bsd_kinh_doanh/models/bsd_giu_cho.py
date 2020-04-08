@@ -79,6 +79,10 @@ class BsdRapCan(models.Model):
                                       required=True)
     bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ",
                                   readonly=True)
+    bsd_stt_bg = fields.Integer(string="STT báo giá", readonly=True, help="Số thứ tự ưu tiên làm báo giá")
+    bsd_ngay_hh_bg = fields.Datetime(string="Hạn báo giá", help="Hiệu lực được làm báo giá", readonly=True)
+    bsd_het_han_bg = fields.Boolean(string="Hết hạn báo giá", readonly=True, default=False,
+                                    help="Thông tin ghi nhận thời gian làm báo giá có bok hết hiệu lực hay chưa")
 
     # KD.07.02 Ràng buộc số giữ chỗ theo căn hộ/ NVBH
     @api.constrains('bsd_nvbh_id')
@@ -183,6 +187,10 @@ class BsdRapCan(models.Model):
         if res.bsd_unit_id.bsd_dot_mb_id:
             res.write({
                 'bsd_truoc_mb': False,
+            })
+        else:
+            res.write({
+                'bsd_truoc_mb': True,
             })
         return res
 

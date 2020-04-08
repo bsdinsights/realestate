@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+import datetime
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -52,7 +53,7 @@ class BsdDotMoBan(models.Model):
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng của đợt mở bán",
                                readonly=True, required=True,
                                states={'cph': [('readonly', False)]})
-    bsd_ngay_ph = fields.Date(string="Ngày phát hành", help="Ngày duyệt phát hành đợt mở bán",
+    bsd_ngay_ph = fields.Datetime(string="Ngày phát hành", help="Ngày duyệt phát hành đợt mở bán",
                               readonly=True,
                               states={'cph': [('readonly', False)]})
     bsd_nguoi_ph = fields.Many2one('res.users', string="Người phát hành",
@@ -252,9 +253,28 @@ class BsdDotMoBan(models.Model):
         # Cập lại lại trạng thái đợt mở bán ngày phát hình và người phát hành
         self.write({
             'state': 'ph',
-            'bsd_ngay_ph': fields.Date.today(),
+            'bsd_ngay_ph': fields.Datetime.now(),
             'bsd_nguoi_ph': self.env.uid,
         })
+        #  KD.04.08 Tính hạn báo giá  của giữ chỗ sau khi phát hành đợt mở bán
+        units_ph = self.bsd_ph_ids.mapped('bsd_unit_id')
+        for unit_ph in units_ph:
+            giu_cho_ids = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', unit_ph.id),
+                                                          ('bsd_dot_mb_id', '=', self.id),
+                                                          ('state', 'in', ['dat_cho', 'giu_cho']),
+                                                          ('bsd_thanh_toan', '=', 'da_tt')])
+            stt = 0
+            time_gc = self.bsd_du_an_id.bsd_gc_smb
+            ngay_ph = self.bsd_ngay_ph
+            _logger.debug("giu cho")
+            _logger.debug(giu_cho_ids.sorted(key='bsd_ngay_hh_gc'))
+            for giu_cho in giu_cho_ids.sorted(key='bsd_ngay_hh_gc'):
+                stt += 1
+                ngay_ph += datetime.timedelta(hours=time_gc)
+                giu_cho.write({
+                    'bsd_stt_bg': stt,
+                    'bsd_ngay_hh_bg': ngay_ph
+                })
 
 
 class BsdDotMoBanSanGiaoDich(models.Model):
