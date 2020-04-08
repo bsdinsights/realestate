@@ -3,6 +3,8 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 import datetime
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class BsdRapCan(models.Model):
@@ -180,6 +182,21 @@ class BsdRapCan(models.Model):
         res = super(BsdRapCan, self).create(vals)
         if res.bsd_unit_id.bsd_dot_mb_id:
             res.write({
-                'bsd_truoc_mb': True,
+                'bsd_truoc_mb': False,
             })
+        return res
+
+    def write(self, vals):
+        if 'bsd_unit_id' in vals:
+            _logger.debug("Chạy ở đây")
+            if self.env['product.product'].browse(vals['bsd_unit_id']).bsd_dot_mb_id:
+                vals.update({
+                    'bsd_truoc_mb': False,
+                })
+            else:
+                vals.update({
+                    'bsd_truoc_mb': True,
+                })
+            _logger.debug(vals)
+        res = super(BsdRapCan, self).write(vals)
         return res
