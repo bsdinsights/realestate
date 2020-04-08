@@ -161,6 +161,13 @@ class BsdDotMoBan(models.Model):
         else:
             # lấy tất cả unit chuẩn bị phát hành ở trạng thái chuẩn bị đặt chỗ, giữ chỗ
             units = self.bsd_cb_ids.mapped('bsd_unit_id').filtered(lambda x: x.state in ['chuan_bi', 'dat_cho', 'giu_cho'])
+            # các chuẩn bị không đúng trạng thái
+            cb_no_state = self.bsd_cb_ids.filtered(lambda c: c.bsd_unit_id not in units.ids)
+            cb_no_state.write({
+                'bsd_ly_do': 'kd_tt',
+            })
+            # các chuẩn bị đúng trạng thái
+            cb_state = self.bsd_cb_ids.filtered(lambda c: c.bsd_unit_id in units.ids)
             # lọc các unit thỏa điều kiện trường ưu tiên là không và không có đợt mở bán
             no_uu_dot_no_mb_units = units.filtered(lambda x: x.bsd_uu_tien == '0' and not x.bsd_dot_mb_id)
             _logger.debug('không uu tien ko đợt phát hành')
@@ -169,6 +176,11 @@ class BsdDotMoBan(models.Model):
             no_uu_dot_mb_units = units.filtered(lambda x: x.bsd_uu_tien == '0' and x.bsd_dot_mb_id)
             _logger.debug('không uu tien có đợt phát hành')
             _logger.debug(no_uu_dot_mb_units)
+            # các chuẩn bị đúng trạng thái, đang được ưu tiên
+            cb_uu = cb_state.filtered(lambda u: u.bsd_unit_id.bsd_uu_tien == '1')
+            cb_uu.write({
+                'bsd_ly_do': 'dd_ut',
+            })
             # lọc các unit không ưu tiên có đợt mở bán chưa phát hành
             no_ph_units = no_uu_dot_mb_units.filtered(lambda x: x.bsd_dot_mb_id.state != 'ph')
             _logger.debug('không uu tien có đợt mở bán chưa phát hành')
