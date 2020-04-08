@@ -162,12 +162,14 @@ class BsdDotMoBan(models.Model):
             # lấy tất cả unit chuẩn bị phát hành ở trạng thái chuẩn bị đặt chỗ, giữ chỗ
             units = self.bsd_cb_ids.mapped('bsd_unit_id').filtered(lambda x: x.state in ['chuan_bi', 'dat_cho', 'giu_cho'])
             # các chuẩn bị không đúng trạng thái
-            cb_no_state = self.bsd_cb_ids.filtered(lambda c: c.bsd_unit_id not in units.ids)
+            cb_no_state = self.bsd_cb_ids.filtered(lambda c: c.bsd_unit_id not in units)
+            _logger.debug("các chuẩn bị không đúng trạng thái")
+            _logger.debug(cb_no_state)
             cb_no_state.write({
                 'bsd_ly_do': 'kd_tt',
             })
             # các chuẩn bị đúng trạng thái
-            cb_state = self.bsd_cb_ids.filtered(lambda c: c.bsd_unit_id in units.ids)
+            cb_state = self.bsd_cb_ids - cb_no_state
             # lọc các unit thỏa điều kiện trường ưu tiên là không và không có đợt mở bán
             no_uu_dot_no_mb_units = units.filtered(lambda x: x.bsd_uu_tien == '0' and not x.bsd_dot_mb_id)
             _logger.debug('không uu tien ko đợt phát hành')
@@ -178,6 +180,8 @@ class BsdDotMoBan(models.Model):
             _logger.debug(no_uu_dot_mb_units)
             # các chuẩn bị đúng trạng thái, đang được ưu tiên
             cb_uu = cb_state.filtered(lambda u: u.bsd_unit_id.bsd_uu_tien == '1')
+            _logger.debug("các chuẩn bị đã ưu tiên")
+            _logger.debug(cb_uu)
             cb_uu.write({
                 'bsd_ly_do': 'dd_ut',
             })
@@ -194,6 +198,14 @@ class BsdDotMoBan(models.Model):
                                                        )
             _logger.debug('diff_mb_units')
             _logger.debug(diff_mb_units)
+            # các chuẩn bị trùng với đợt mở bán khác
+            cb_trung = (cb_state - cb_uu).filtered(lambda t: t.bsd_unit_id not in diff_mb_units
+                                                   and t.bsd_unit_id.bsd_dot_mb_id)
+            _logger.debug("các chuẩn bị trùng đợt mở bán")
+            _logger.debug(cb_trung)
+            cb_trung.write({
+                'bsd_ly_do': 'dang_mb',
+            })
             # Lấy units template
             units_template = set(no_uu_dot_no_mb_units.mapped('product_tmpl_id').ids +
                                  no_ph_units.mapped('product_tmpl_id').ids +
@@ -204,7 +216,12 @@ class BsdDotMoBan(models.Model):
             phat_hanh_units_templated = list(units_template.intersection(bang_gia_units_template))
 
             units_ph = self.env['product.product'].search([('product_tmpl_id', 'in', phat_hanh_units_templated)])
-
+            cb_no_bg = (cb_state - cb_trung - cb_uu).filtered(lambda b: b.bsd_unit_id not in units_ph)
+            cb_no_bg.write({
+                'bsd_ly_do': 'kc_bg',
+            })
+        # Xóa cb đã chuyển sang phát hành
+            self.bsd_cb_ids.filtered(lambda c: c.bsd_unit_id in units_ph).unlink()
         # Tạo dự liệu trong bảng unit phát hành trong đợt mở bán
         for unit in units_ph:
             pricelist_item = self.env['product.pricelist.item'].search([('product_tmpl_id', '=', unit.product_tmpl_id.id)],
