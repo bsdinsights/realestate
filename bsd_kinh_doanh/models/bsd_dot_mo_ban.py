@@ -221,7 +221,12 @@ class BsdDotMoBan(models.Model):
             if unit.state == 'chuan_bi':
                 unit.write({
                     'bsd_dot_mb_id': self.id,
-                    'state': 'san_sang'
+                    'state': 'san_sang',
+                })
+            elif unit.state == 'dat_cho':
+                unit.write({
+                    'bsd_dot_mb_id': self.id,
+                    'state': 'giu_cho',
                 })
             else:
                 unit.write({
@@ -290,6 +295,11 @@ class BsdDotMoBanCB(models.Model):
     bsd_gia_ban = fields.Monetary(string="Giá bán", required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+    bsd_ly_do = fields.Selection([('kc_bg', 'Không có bảng giá'),
+                                  ('dang_mb', 'Đang mở bán'),
+                                  ('dd_ut', 'Đánh dấu ưu tiên'),
+                                  ('kd_tt', 'Không đúng trạng thái')],
+                                 string="Lý do", help="Lý do căn hộ không được phát hành mở bán", readonly=True)
 
     @api.model
     def create(self, vals):
