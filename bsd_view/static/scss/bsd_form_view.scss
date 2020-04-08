@@ -1,0 +1,19 @@
+.o_form_view {
+    //Groups
+    .o_group {
+        margin: 0 0;
+        &.o_inner_group {
+            > tbody > tr > td {
+                &.o_td_label {
+                    padding: 0 0 0 15px;
+                }
+            }
+    }
+
+
+    }
+    // separators
+    .o_horizontal_separator {
+        font-weight: bold;
+    }
+}

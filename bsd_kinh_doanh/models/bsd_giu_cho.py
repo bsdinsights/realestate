@@ -33,11 +33,11 @@ class BsdRapCan(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải",
                                 readonly=True, help="Diễn giải",
                                 states={'nhap': [('readonly', False)]})
-    bsd_truoc_mb = fields.Boolean(string="Trước mở bán", default= False,
+    bsd_truoc_mb = fields.Boolean(string="Trước mở bán", default=False,
                                   help="Thông tin xác định Giữ chỗ được tạo trước hay sau khi unit có đợt mở bán",
                                   readonly=True, required=True)
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', related="bsd_unit_id.bsd_dot_mb_id",
-                                    help="Đọt mở bán",
+                                    help="Đợt mở bán",
                                     string="Đợt mở bán", store=True)
     bsd_bang_gia_id = fields.Many2one('product.pricelist', related="bsd_dot_mb_id.bsd_bang_gia_id", store=True,
                                       string="Bảng giá", help="Bảng giá bán")
@@ -69,6 +69,14 @@ class BsdRapCan(models.Model):
                               ('huy', 'Hủy')], default='nhap', string="Trạng thái", tracking=1, help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+
+    bsd_thanh_toan = fields.Selection([('chua_tt', 'Chưa thanh toán'),
+                                       ('dang_tt', 'Đang thanh toán'),
+                                       ('da_tt', 'Đã thanh toán')], string="Thanh toán", default="chua_tt",
+                                      help="Thanh toán",
+                                      required=True)
+    bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ",
+                                  readonly=True)
 
     # KD.07.02 Ràng buộc số giữ chỗ theo căn hộ/ NVBH
     @api.constrains('bsd_nvbh_id')
@@ -159,6 +167,12 @@ class BsdRapCan(models.Model):
             self.bsd_unit_id.write({
                 'state': 'giu_cho',
             })
+
+    # KD.07.07 Tự động hủy giữ chỗ quá hạn thanh toán
+    def auto_huy_gc(self):
+        self.write({
+            'state': 'huy',
+        })
 
     # R7 Ghi nhận thông tin trước mở bán
     @api.model

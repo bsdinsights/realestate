@@ -36,7 +36,7 @@
                                    options="{'no_create':true}"/>
                             <field name="bsd_bang_gia_id" options="{'no_create':true}"/>
                             <field name="bsd_tien_gc"/>
-                            <fielf name="currency_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
                             <field name="bsd_dien_giai"/>
                             <field name="state"/>
                         </group>
@@ -54,6 +54,10 @@
                     <group string="HIỆU LỰC">
                         <group>
                             <field name="bsd_ngay_hh_gc"/>
+                        </group>
+                        <group>
+                            <field name="bsd_thanh_toan"/>
+                            <field name="bsd_ngay_tt"/>
                         </group>
                     </group>
                     <group string="RÁP CĂN">
