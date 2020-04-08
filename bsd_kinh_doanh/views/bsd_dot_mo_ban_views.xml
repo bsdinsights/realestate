@@ -111,6 +111,7 @@
                                            domain="[('bsd_tang_id', 'in',[bsd_tang_id])]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_gia_ban"/>
+                                    <field name="bsd_ly_do"/>
                                     <field name="currency_id" invisible="1"/>
                                 </tree>
                                 <form>
