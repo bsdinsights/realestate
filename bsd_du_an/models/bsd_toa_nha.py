@@ -21,7 +21,7 @@ class BsdBlock(models.Model):
     @api.depends('bsd_ma_tn', 'bsd_du_an_id.bsd_ma_da')
     def _compute_ma_ht(self):
         for each in self:
-            if self.bsd_ma_tn:
+            if self.bsd_ma_tn and self.bsd_du_an_id:
                 ma_da = each.bsd_du_an_id.bsd_ma_da or ''
                 each.bsd_ma_ht = ma_da + '-' + each.bsd_ma_tn
 
