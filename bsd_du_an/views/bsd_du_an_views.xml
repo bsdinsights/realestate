@@ -94,7 +94,7 @@
                                 <group>
                                     <field name="bsd_gc_unit_nv_ngay"/>
                                     <field name="bsd_gc_tmb"/>
-                                    <field name="bsd_gc_smb"/>
+                                    <field name="bsd_gc_smb" widget="float_time"/>
                                 </group>
                             </group>
                         </page>

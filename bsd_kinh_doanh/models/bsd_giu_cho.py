@@ -165,9 +165,16 @@ class BsdRapCan(models.Model):
                 'state': 'dat_cho',
             })
         else:
+            giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                           ('bsd_stt_bg', '>', 0)])
+            stt = max(giu_cho_unit.mapped('bsd_stt_bg')) + 1
+            time_gc = self.bsd_du_an_id.bsd_gc_smb
+            ngay_hh_bg = max(giu_cho_unit.mapped('bsd_ngay_hh_bg')) + datetime.timedelta(hours=time_gc)
             self.write({
                 'state': 'giu_cho',
                 'bsd_ngay_gc': datetime.datetime.now(),
+                'bsd_stt_bg': stt,
+                'bsd_ngay_hh_bg': ngay_hh_bg,
             })
             # Cập nhật lại trạng thái unit
             self.bsd_unit_id.write({
