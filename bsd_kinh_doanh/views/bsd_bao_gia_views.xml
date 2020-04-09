@@ -8,37 +8,37 @@
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
+                            states="nhap"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Duyệt"
                             name="action_duyet"
+                            states="cho_duyet"
                             type="object"
                             class="oe_highlight"/>
                     <button string="In báo giá"
                             name="action_in_bg"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="In giữ chỗ"
-                            name="action_in_gc"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Lịch thanh toán"
-                            name="action_lich_tt"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Hủy"
-                            name="action_huy"
+                            states="da_duyet"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Ký báo giá"
                             name="action_ky_bg"
+                            states="da_duyet"
+                            attrs="{'invisible':['|',('bsd_ngay_in_bg', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
-                    <button string="Ký giữ chỗ"
-                            name="action_ky_gc"
+                    <button string="Lịch thanh toán"
+                            name="action_lich_tt"
+                            states="nhap"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"/>
+
+<!--                    <field name="state" widget="statusbar" statusbar_visible="0"/>-->
                 </header>
                 <sheet>
                     <notebook>
@@ -62,6 +62,7 @@
                                     <field name="bsd_bang_gia_id"/>
                                     <field name="bsd_tien_gc"/>
                                     <field name="bsd_tien_dc"/>
+                                    <field name="state"/>
                                 </group>
                             </group>
                             <group string="Sản phẩm">
@@ -94,6 +95,15 @@
                                 </group>
                                 <group>
                                     <field name="bsd_tien_pql"/>
+                                </group>
+                            </group>
+                            <group string="XÁC NHẬN">
+                                <group>
+                                    <field name="bsd_ngay_in_bg"/>
+                                    <field name="bsd_ngay_hh_kbg"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_ky_bg"/>
                                 </group>
                             </group>
                         </page>
