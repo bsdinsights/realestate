@@ -88,7 +88,7 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
     bsd_bg_tam = fields.Boolean(string="Bàn giao tạm", help="Có bàn giao tạm thời theo đợt thanh toán hay không?",
                                 default=False)
 
-    bsd_dien_giai = fields.Char(string="Diễn giải")
+    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
     bsd_tinh_pbt = fields.Boolean(string="Phí bảo trì", help="Có tính phí bảo trì trong đợt thanh toán hay không?",
                                 default=False)
     bsd_tinh_pql = fields.Boolean(string="Phí quản lý", help="Có tính phí quản lý trong đợt thanh toán hay không?",

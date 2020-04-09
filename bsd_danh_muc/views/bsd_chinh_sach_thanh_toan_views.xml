@@ -94,8 +94,8 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <group style="margin:0px ">
-                        <group style="margin:0px ">
+                    <group>
+                        <group>
                             <field name="bsd_stt"/>
                             <field name="bsd_dot_tt"/>
                             <field name="bsd_cach_tinh"
@@ -104,15 +104,15 @@
                             <field name="bsd_ngay_cd" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'cd')],
                                                               'required':[('bsd_cach_tinh', '=','cd')]}"/>
                         </group >
-                        <group style="margin:0px ">
+                        <group>
                             <field name="bsd_dot_cuoi"/>
                             <field name="bsd_tl_tt"/>
                             <field name="bsd_bg_tam"/>
-                            <field name="state"/>
+                            <field name="bsd_dien_giai"/>
                         </group>
                     </group>
-                    <group string="Hạn thanh toán" style="margin:0px ">
-                        <group style="margin:0px ">
+                    <group string="Hạn thanh toán">
+                        <group>
                             <field name="bsd_tu_nc" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')]}"/>
                             <field name="bsd_tiep_theo" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
                                                                 'required':[('bsd_cach_tinh', '=','td')]}"/>
@@ -120,7 +120,7 @@
                                    attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_tiep_theo','=','thang')],
                                             'required':[('bsd_tiep_theo','=','ngay')]}"/>
                         </group>
-                        <group style="margin:0px ">
+                        <group>
                             <field name="bsd_so_thang"
                                    attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_tiep_theo','=','ngay')],
                                             'required':[('bsd_tiep_theo','=','thang')]}"/>
@@ -132,13 +132,13 @@
                                             'required':[('bsd_tu_nc','=',True)]}"/>
                         </group>
                     </group>
-                    <group string="Đợt thanh toán" style="margin:0px ">
-                        <group style="margin:0px ">
+                    <group string="Đợt thanh toán">
+                        <group>
                             <field name="bsd_lap_lai" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')]}"/>
                             <field name="bsd_ngay_thang" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
                                                                  'required':[('bsd_lap_lai','=','1')]}"/>
                         </group>
-                        <group style="margin:0px ">
+                        <group>
                             <field name="bsd_so_dot"
                                    attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_lap_lai','=','0')],
                                            'required':[('bsd_lap_lai','=','1')]}"/>
@@ -147,11 +147,11 @@
                                            'required':[('bsd_lap_lai','=','1')]}"/>
                         </group>
                     </group>
-                    <group string="Bàn giao" style="margin:0px ">
-                        <group style="margin:0px ">
+                    <group string="Bàn giao">
+                        <group>
                             <field name="bsd_tinh_pbt"/>
                         </group>
-                        <group style="margin:0px ">
+                        <group>
                             <field name="bsd_tinh_pql"/>
                         </group>
                     </group>
