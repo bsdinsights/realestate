@@ -21,8 +21,9 @@ class BsdBlock(models.Model):
     @api.depends('bsd_ma_tn', 'bsd_du_an_id.bsd_ma_da')
     def _compute_ma_ht(self):
         for each in self:
-            ma_da = each.bsd_du_an_id.bsd_ma_da or ''
-            each.bsd_ma_ht = ma_da + '-' + each.bsd_ma_tn
+            if self.bsd_ma_tn:
+                ma_da = each.bsd_du_an_id.bsd_ma_da or ''
+                each.bsd_ma_ht = ma_da + '-' + each.bsd_ma_tn
 
     bsd_stt = fields.Integer(string="Số thứ tự", help="Số thứ tự sắp xếp của tòa nhà")
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
