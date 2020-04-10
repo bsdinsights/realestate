@@ -153,10 +153,53 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="bsd_ma_bao_gia"/>
+                <field name="bsd_ngay_bao_gia"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_giu_cho_id"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_unit_id"/>
+                <field name="bsd_dt_xd"/>
+                <field name="bsd_dt_sd"/>
+                <field name="bsd_tong_gia"/>
+                <field name="bsd_cs_tt_id"/>
                 <field name="state"/>
+                <field name="bsd_dot_mb_id"/>
+                <field name="bsd_ngay_in_bg"/>
+                <field name="bsd_ngay_hh_kbg"/>
+                <field name="bsd_ngay_ky_bg"/>
+                <field name="bsd_gia_ban"/>
+                <field name="bsd_tien_ck"/>
+                <field name="bsd_tien_bg"/>
+                <field name="bsd_tien_qsdd"/>
+                <field name="bsd_tien_thue"/>
+                <field name="bsd_tien_pbt"/>
+                <field name="bsd_thang_pql"/>
+                <field name="bsd_tien_pql"/>
             </tree>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_bao_gia_filter">
+        <field name="name">bsd.bao_gia.list.filter</field>
+        <field name="model">bsd.bao_gia</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_ma_bao_gia"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_unit_id"/>
+
+                <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_rap_can_filter"/>
+
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
+                    <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_bao_gia_action">
         <field name="name">Báo giá</field>
         <field name="res_model">bsd.bao_gia</field>
