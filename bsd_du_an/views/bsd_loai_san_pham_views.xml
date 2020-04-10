@@ -34,11 +34,30 @@
         <field name="model">bsd.loai_sp</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_toa_nha_id"/>
                 <field name="bsd_ma_nhom"/>
                 <field name="bsd_ten_nhom"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_loai_san_pham_filter">
+        <field name="name">bsd.loai_sp.list.filter</field>
+        <field name="model">bsd.loai_sp</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_toa_nha_id"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Tòa nhà" name="bsd_toa_nha_id" domain="[]" context="{'group_by': 'bsd_toa_nha_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_loai_san_pham_action">
         <field name="name">Loại sản phẩm</field>
         <field name="res_model">bsd.loai_sp</field>
