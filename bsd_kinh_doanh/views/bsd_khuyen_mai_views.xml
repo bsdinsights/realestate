@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_khuyen_mai_inherit_form">
+        <field name="name">bsd.khuyen_mai.inherit.form</field>
+        <field name="model">bsd.khuyen_mai</field>
+        <field name="inherit_id" ref="bsd_danh_muc.bsd_khuyen_mai_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bsd_gia_tri']" position="before">
+                <field name="bsd_dot_mb_id"/>
+            </xpath>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_khuyen_mai_inherit_tree">
+        <field name="name">bsd.khuyen_mai.inherit.tree</field>
+        <field name="model">bsd.khuyen_mai</field>
+        <field name="inherit_id" ref="bsd_danh_muc.bsd_khuyen_mai_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bsd_gia_tri']" position="before">
+                <field name="bsd_dot_mb_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

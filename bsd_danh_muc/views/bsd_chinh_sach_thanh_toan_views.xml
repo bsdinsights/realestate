@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_cs_tt_form">
+        <field name="name">bsd.cs_tt.form</field>
+        <field name="model">bsd.cs_tt</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <notebook>
+                        <page string="Thông tin chung">
+                            <group>
+                                <group>
+                                    <field name="bsd_ma_cstt"/>
+                                    <field name="bsd_ten_cstt"/>
+                                    <field name="bsd_dien_giai"/>
+                                    <field name="bsd_du_an_id"/>
+                                    <field name="bsd_tu_ngay"/>
+                                    <field name="bsd_den_ngay"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_tinh"/>
+                                    <field name="bsd_dk_hd"/>
+                                    <field name="bsd_lai_phat_tt_id" options="{'no_create':true}"/>
+                                    <field name="bsd_phat_thd"/>
+                                    <field name="bsd_phat_shd"/>
+                                    <field name="state"/>
+                                </group>
+                            </group >
+                            <group string="Thông báo">
+                                <group>
+                                    <field name="bsd_tb_tt"/>
+                                    <field name="bsd_tl_hd"/>
+                                    <field name="bsd_qh_tt"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_canh_bao1"/>
+                                    <field name="bsd_canh_bao2"/>
+                                    <field name="bsd_canh_bao3"/>
+                                    <field name="bsd_canh_bao4"/>
+                                    <field name="bsd_canh_bao5"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Đợt thanh toán">
+                            <field name="bsd_ct_ids">
+                                <tree>
+                                    <field name="bsd_stt"/>
+                                    <field name="bsd_dot_tt"/>
+                                    <field name="bsd_cach_tinh"/>
+                                    <field name="bsd_ngay_cd"/>
+                                    <field name="bsd_dot_cuoi"/>
+                                    <field name="bsd_tl_tt"/>
+                                    <field name="bsd_bg_tam"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_cs_tt_tree">
+        <field name="name">bsd.cs_tt.tree</field>
+        <field name="model">bsd.cs_tt</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_ma_cstt"/>
+                <field name="bsd_ten_cstt"/>
+                <field name="bsd_tu_ngay"/>
+                <field name="bsd_den_ngay"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_cs_tt_action">
+        <field name="name">Chính sách thanh toán</field>
+        <field name="res_model">bsd.cs_tt</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo Chính sách thanh toán</p>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_cs_tt_ct_form">
+        <field name="name">bsd.cs_tt_ct.form</field>
+        <field name="model">bsd.cs_tt_ct</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_stt"/>
+                            <field name="bsd_dot_tt"/>
+                            <field name="bsd_cach_tinh"
+                                   attrs="{'readonly':[('bsd_dot_cuoi', '=',True)],
+                                            'required':[('bsd_dot_cuoi', '=',False)]}"/>
+                            <field name="bsd_ngay_cd" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'cd')],
+                                                              'required':[('bsd_cach_tinh', '=','cd')]}"/>
+                        </group >
+                        <group>
+                            <field name="bsd_dot_cuoi"/>
+                            <field name="bsd_tl_tt"/>
+                            <field name="bsd_bg_tam"/>
+                            <field name="bsd_dien_giai"/>
+                        </group>
+                    </group>
+                    <group string="Hạn thanh toán">
+                        <group>
+                            <field name="bsd_tu_nc" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')]}"/>
+                            <field name="bsd_tiep_theo" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
+                                                                'required':[('bsd_cach_tinh', '=','td')]}"/>
+                            <field name="bsd_so_ngay"
+                                   attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_tiep_theo','=','thang')],
+                                            'required':[('bsd_tiep_theo','=','ngay')]}"/>
+                        </group>
+                        <group>
+                            <field name="bsd_so_thang"
+                                   attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_tiep_theo','=','ngay')],
+                                            'required':[('bsd_tiep_theo','=','thang')]}"/>
+                            <field name="bsd_ngay_tbvn"
+                                   attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_tu_nc','=',False)],
+                                            'required':[('bsd_tu_nc','=',True)]}"/>
+                            <field name="bsd_ngay_tbnn"
+                                   attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_tu_nc','=',False)],
+                                            'required':[('bsd_tu_nc','=',True)]}"/>
+                        </group>
+                    </group>
+                    <group string="Đợt thanh toán">
+                        <group>
+                            <field name="bsd_lap_lai" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')]}"/>
+                            <field name="bsd_ngay_thang" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
+                                                                 'required':[('bsd_lap_lai','=','1')]}"/>
+                        </group>
+                        <group>
+                            <field name="bsd_so_dot"
+                                   attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_lap_lai','=','0')],
+                                           'required':[('bsd_lap_lai','=','1')]}"/>
+                            <field name="bsd_ngay_gh"
+                                   attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
+                                           'required':[('bsd_lap_lai','=','1')]}"/>
+                        </group>
+                    </group>
+                    <group string="Bàn giao">
+                        <group>
+                            <field name="bsd_tinh_pbt"/>
+                        </group>
+                        <group>
+                            <field name="bsd_tinh_pql"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

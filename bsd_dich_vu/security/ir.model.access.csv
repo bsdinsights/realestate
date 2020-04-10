@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+bsd_hd_ban_manager, Hợp đồng mua bán,model_bsd_hd_ban,bsd_dich_vu.group_manager,1,1,1,1
+
+

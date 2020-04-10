@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_giu_cho_form">
+        <field name="name">bsd.giu_cho.form</field>
+        <field name="model">bsd.giu_cho</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            class="oe_highlight"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                            type="object"/>
+                    <button string="Hủy"
+                            states="giu_cho,dat_cho,bao_gia"
+                            name="action_huy"
+                            type="object"/>
+<!--                    <field name="state" widget="statusbar" statusbar_visible="0"/>-->
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma_gc"/>
+                            <field name="bsd_ngay_gc"/>
+                            <field name="bsd_khach_hang_id" options="{'no_create':true}"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                            <field name="bsd_unit_id"
+                                   context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_du_an_id', 'in',[bsd_du_an_id]),
+                                            ('state','in',['chuan_bi','san_sang','dat_cho','giu_cho'])]"/>
+                        </group>
+                        <group>
+                            <field name="bsd_truoc_mb"/>
+                            <field name="bsd_dot_mb_id"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_bang_gia_id" options="{'no_create':true}"/>
+                            <field name="bsd_tien_gc"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="bsd_dien_giai"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                    <group string="MÔI GIỚI">
+                        <group>
+                            <field name="bsd_nvbh_id" options="{'no_create':true}"/>
+                            <field name="bsd_san_gd_id" options="{'no_create':true}"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ctv_id" options="{'no_create':true}"/>
+                            <field name="bsd_gioi_thieu_id" options="{'no_create':true}"/>
+                        </group>
+                    </group>
+                    <group string="HIỆU LỰC">
+                        <group>
+                            <field name="bsd_ngay_hh_gc"/>
+                            <field name="bsd_thanh_toan"/>
+                            <field name="bsd_ngay_tt"/>
+                        </group>
+                        <group>
+                            <field name="bsd_stt_bg"/>
+                            <field name="bsd_ngay_hh_bg"/>
+                            <field name="bsd_het_han_bg"/>
+                        </group>
+                    </group>
+                    <group string="RÁP CĂN">
+                        <group>
+                            <field name="bsd_gc_da"/>
+                            <field name="bsd_gc_tc_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_rap_can_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_giu_cho_tree">
+        <field name="name">bsd.giu_cho.tree</field>
+        <field name="model">bsd.giu_cho</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_gc"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_giu_cho_action">
+        <field name="name">Giữ chỗ</field>
+        <field name="res_model">bsd.giu_cho</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo phiếu giữ chỗ</p>
+        </field>
+    </record>
+</odoo>

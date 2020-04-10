@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_dat_coc_form">
+        <field name="name">bsd.dat_coc.form</field>
+        <field name="model">bsd.dat_coc</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <notebook>
+                        <page string="Thông tin chung">
+                            <group>
+                                <group>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="bsd_ma_dat_coc"/>
+                                    <field name="bsd_ngay_dat_coc"/>
+                                    <field name="bsd_khach_hang_id"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_bao_gia_id"
+                                           options="{'no_create':true}"
+                                           domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id])]"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_giu_cho_id"/>
+                                    <field name="bsd_du_an_id"/>
+                                    <field name="bsd_dot_mb_id"/>
+                                    <field name="bsd_bang_gia_id"/>
+                                    <field name="bsd_tien_gc"/>
+                                    <field name="bsd_tien_dc"/>
+                                </group>
+                            </group>
+                            <group string="Sản phẩm">
+                                <group>
+                                    <field name="bsd_unit_id"
+                                           context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_dt_xd"/>
+                                    <field name="bsd_dt_sd"/>
+                                    <field name="bsd_qsdd_m2"/>
+                                    <field name="bsd_thue_id"/>
+                                    <field name="bsd_thue_suat"/>
+                                    <field name="bsd_tl_pbt"/>
+                                    <field name="bsd_cs_tt_id"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_gia_ban"/>
+                                    <field name="bsd_tien_ck"/>
+                                    <field name="bsd_tien_bg"/>
+                                    <field name="bsd_gia_truoc_thue"/>
+                                    <field name="bsd_tien_qsdd"/>
+                                    <field name="bsd_tien_thue"/>
+                                    <field name="bsd_tien_pbt"/>
+                                    <field name="bsd_tong_gia"/>
+                                </group>
+                            </group>
+                            <group string="PHÍ QUẢN LÝ">
+                                <group>
+                                    <field name="bsd_thang_pql"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_tien_pql"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Bàn giao">
+                            <field name="bsd_bg_ids">
+                                <tree editable="bottom">
+                                    <field name="bsd_dk_bg_id"
+                                           options="{'no_create':true}"
+                                           domain="[('bsd_du_an_id', '=',parent.bsd_du_an_id),
+                                                    '|',('bsd_dot_mb_id','=',parent.bsd_dot_mb_id),
+                                                        ('bsd_dot_mb_id', '=',False)]"/>
+                                    <field name="bsd_ten_dkbg"/>
+                                    <field name="bsd_dk_tt"/>
+                                    <field name="bsd_gia_m2"/>
+                                    <field name="bsd_tien"/>
+                                    <field name="bsd_ty_le"/>
+                                    <field name="bsd_tien_bg"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Lịch thanh toán">
+                            <field name="bsd_ltt_ids">
+                                <tree>
+                                    <field name="bsd_stt"/>
+                                    <field name="bsd_ma_dtt"/>
+                                    <field name="bsd_ten_dtt"/>
+                                    <field name="bsd_ngay_hh_tt"/>
+                                    <field name="bsd_tien_dot_tt"/>
+                                    <field name="bsd_tinh_pql"/>
+                                    <field name="bsd_tinh_pbt"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_dat_coc_tree">
+        <field name="name">bsd.dat_coc.tree</field>
+        <field name="model">bsd.dat_coc</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_dat_coc"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_dat_coc_action">
+        <field name="name">Đặt cọc</field>
+        <field name="res_model">bsd.dat_coc</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo phiếu đặt cọc</p>
+        </field>
+    </record>
+</odoo>

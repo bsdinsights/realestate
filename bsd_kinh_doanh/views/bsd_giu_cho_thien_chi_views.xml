@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_gc_tc_form">
+        <field name="name">bsd.gc_tc.form</field>
+        <field name="model">bsd.gc_tc</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            type="object"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"
+                            confirm="Bạn có muốn hủy giữ chỗ không?"
+                            states="xac_nhan"
+                            class="oe_highlight"/>
+                    <!--<field name="state" widget="statusbar" statusbar_visible="0"/>-->
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma_gctc"/>
+                            <field name="bsd_ngay_gctc"/>
+                            <field name="bsd_khach_hang_id" options="{'no_create':true}"/>
+                            <field name="bsd_dien_giai"/>
+                        </group>
+                        <group>
+                            <field name="bsd_du_an_id"
+                                   domain="[('bsd_unit_ids', '=', False)]"
+                                   options="{'no_create':true}"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="bsd_tien_gc"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                    <group string="MÔI GIỚI">
+                        <group>
+                            <field name="bsd_nvbh_id" options="{'no_create':true}"/>
+                            <field name="bsd_san_gd_id" options="{'no_create':true}"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ctv_id" options="{'no_create':true}"/>
+                            <field name="bsd_gioi_thieu_id" options="{'no_create':true}"/>
+                        </group>
+                    </group>
+                    <group string="RÁP CĂN">
+                        <group>
+                            <field name="bsd_ngay_hh_gctc"/>
+                            <field name="bsd_thanh_toan"/>
+                            <field name="bsd_ngay_tt"/>
+                            <field name="bsd_ngay_ut"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ngay_rc"/>
+                            <field name="bsd_rap_can_id" options="{'no_create':true}"/>
+                            <field name="bsd_het_han"/>
+                            <field name="bsd_ngay_huy_rc"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_gc_tc_tree">
+        <field name="name">bsd.gc_tc.tree</field>
+        <field name="model">bsd.gc_tc</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_gctc"/>
+                <field name="bsd_ngay_gctc"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_tien_gc"/>
+                <field name="state"/>
+                <field name="bsd_ngay_hh_gctc"/>
+                <field name="bsd_ngay_tt"/>
+                <field name="bsd_ngay_ut"/>
+                <field name="bsd_rap_can_id"/>
+                <field name="bsd_nvbh_id"/>
+                <field name="bsd_san_gd_id"/>
+                <field name="bsd_ctv_id"/>
+                <field name="bsd_gioi_thieu_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_gc_tc_filter">
+        <field name="name">bsd.gc_tc.list.filter</field>
+        <field name="model">bsd.gc_tc</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_ma_gctc"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_rap_can_id"/>
+                <field name="bsd_nvbh_id"/>
+                <field name="bsd_san_gd_id"/>
+                <field name="bsd_ctv_id"/>
+                <field name="bsd_gioi_thieu_id"/>
+
+                <filter string="Phiếu của tôi" domain="[('bsd_nvbh_id', '=', uid)]" name="my_gc_tc_filter"/>
+
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
+                    <filter string="Nhân viên" name="bsd_nvbh_id" domain="[]" context="{'group_by': 'bsd_nvbh_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_gc_tc_action">
+        <field name="name">Giữ chỗ thiện chí</field>
+        <field name="res_model">bsd.gc_tc</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo giữ chỗ thiện chí</p>
+        </field>
+    </record>
+</odoo>

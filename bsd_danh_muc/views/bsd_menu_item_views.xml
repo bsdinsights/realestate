@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!--Top menu-->
+    <menuitem id="bsd_main_danh_muc_root" name="Danh mục"/>
+
+    <menuitem id="bsd_danh_muc_menu"
+              name="Địa lý"
+              sequence="10"
+              parent="bsd_main_danh_muc_root"/>
+    <menuitem id="bsd_quoc_gia_menu_action"
+              name="Quốc gia"
+              sequence="10"
+              action="base.action_country"
+              parent="bsd_danh_muc_menu"/>
+    <menuitem id="bsd_tinh_thanh_menu_action"
+              name="Tỉnh thành"
+              sequence="11"
+              action="base.action_country_state"
+              parent="bsd_danh_muc_menu"/>
+    <menuitem id="bsd_quan_huyen_menu_action"
+              name="Quận huyện"
+              sequence="12"
+              action="bsd_quan_huyen_action"
+              parent="bsd_danh_muc_menu"/>
+    <menuitem id="bsd_phuong_xa_menu_action"
+              name="Phường xã"
+              sequence="13"
+              action="bsd_phuong_xa_action"
+              parent="bsd_danh_muc_menu"/>
+
+    <menuitem id="bsd_bank_menu"
+              name="Ngân hàng"
+              sequence="10"
+              parent="bsd_main_danh_muc_root"/>
+    <menuitem id="bsd_partner_bank_menu_action"
+              name="Tài khoản ngân hàng"
+              sequence="10"
+              action="base.action_res_partner_bank_account_form"
+              parent="bsd_bank_menu"/>
+    <menuitem id="bsd_bank_menu_action"
+              name="Ngân hàng"
+              sequence="11"
+              action="base.action_res_bank_form"
+              parent="bsd_bank_menu"/>
+    <menuitem id="bsd_currency_menu_action"
+              name="Tiền tệ"
+              sequence="12"
+              action="base.action_currency_form"
+              parent="bsd_bank_menu"/>
+
+    <menuitem id="bsd_tax_menu_action"
+              name="Thuế"
+              sequence="13"
+              action="account.action_tax_form"
+              parent="bsd_bank_menu"/>
+    <menuitem id="bsd_lai_suat_menu_action"
+              name="Lãi suất"
+              sequence="14"
+              action="bsd_lai_suat_action"
+              parent="bsd_bank_menu"/>
+    <menuitem id="bsd_dk_bg_menu_action"
+              name="Điều kiện bàn giao"
+              sequence="14"
+              parent="bsd_bank_menu"
+              action="bsd_dk_bg_action"/>
+    <menuitem id="bsd_pt_tt_menu_action"
+              name="Phương thức thanh toán"
+              sequence="14"
+              action="bsd_pt_tt_action"
+              parent="bsd_bank_menu"/>
+    <menuitem id="bsd_pmg_ttc_menu_action"
+              name="Phí môi giới"
+              sequence="11"
+              action="bsd_pmg_ttc_action"
+              parent="bsd_main_danh_muc_root"/>
+
+    <menuitem id="bsd_product_pricelist_menu_action"
+              name="Bảng giá bán"
+              sequence="12"
+              action="product.product_pricelist_action2"
+              parent="bsd_main_danh_muc_root"/>
+
+    <menuitem id="bsd_tknh_ad_menu_action"
+              name="Tài khoản ngân hàng đang áp dụng"
+              sequence="15"
+              action="bsd_tknh_ad_action"
+              parent="bsd_bank_menu"/>
+
+    <menuitem id="bsd_chiet_khau_menu"
+              sequence="14"
+              name="Chiết khấu"
+              parent="bsd_main_danh_muc_root"/>
+
+    <menuitem id="bsd_chiet_khau_menu_action"
+              name="Chiết khấu"
+              sequence="10"
+              action="bsd_chiet_khau_action"
+              parent="bsd_chiet_khau_menu"/>
+
+    <menuitem id="bsd_chiet_khau_chung_menu_action"
+              name="Chiết khấu chung"
+              sequence="11"
+              action="bsd_chiet_khau_chung_action"
+              parent="bsd_chiet_khau_menu"/>
+
+    <menuitem id="bsd_chiet_khau_mua_si_menu_action"
+              name="Chiết khấu mua sỉ"
+              sequence="12"
+              action="bsd_chiet_khau_mua_si_action"
+              parent="bsd_chiet_khau_menu"/>
+
+    <menuitem id="bsd_chiet_khau_noi_bo_menu_action"
+              name="Chiết khấu nội bộ"
+              sequence="13"
+              action="bsd_chiet_khau_noi_bo_action"
+              parent="bsd_chiet_khau_menu"/>
+
+    <menuitem id="bsd_chiet_khau_ttth_menu_action"
+              name="Chiết khấu thanh toán trước hạn"
+              sequence="14"
+              action="bsd_chiet_khau_ttth_action"
+              parent="bsd_chiet_khau_menu"/>
+    <menuitem id="bsd_chiet_khau_cstt_menu_action"
+              name="Chiết khấu theo chính sách thanh toán"
+              sequence="15"
+              action="bsd_chiet_khau_cstt_action"
+              parent="bsd_chiet_khau_menu"/>
+
+    <menuitem id="bsd_chiet_khau_ttn_menu_action"
+              name="Chiết khấu thanh toán nhanh"
+              sequence="15"
+              action="bsd_chiet_khau_ttn_action"
+              parent="bsd_chiet_khau_menu"/>
+
+    <menuitem id="bsd_khuyen_mai_menu_action"
+              name="Chương trình khuyến mãi"
+              sequence="16"
+              action="bsd_khuyen_mai_action"
+              parent="bsd_chiet_khau_menu"/>
+
+    <menuitem id="bsd_lai_phat_tt_menu_action"
+              name="Lãi phạt thanh toán"
+              sequence="15"
+              action="bsd_lai_phat_tt_action"
+              parent="bsd_main_danh_muc_root"/>
+
+    <menuitem id="bsd_cs_tt_menu_action"
+              name="Chính sách thanh toán"
+              sequence="16"
+              action="bsd_cs_tt_action"
+              parent="bsd_main_danh_muc_root"/>
+
+    <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">
+        <field name="action" eval="False"/>
+        <field name="active" eval="True"/>
+        <field name="groups_id" eval="[(6, 0, [])]"/>
+        <field name="name">Danh mục</field>
+        <field name="parent_id" eval="False"/>
+        <field name="sequence">10</field>
+        <field name="web_icon">fa fa-file,#FFFFFF,#ffaa00</field>
+    </record>
+</odoo>
