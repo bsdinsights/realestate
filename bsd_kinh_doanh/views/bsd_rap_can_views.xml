@@ -72,10 +72,43 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="bsd_ma_rc"/>
+                <field name="bsd_ngay_rc"/>
+                <field name="bsd_gc_tc_id"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_unit_id"/>
                 <field name="state"/>
+                <field name="bsd_giu_cho_id"/>
+                <field name="bsd_ngay_duyet_rc"/>
+                <field name="bsd_nguoi_duyet_id"/>
+                <field name="bsd_ngay_huy_rc"/>
+                <field name="bsd_nguoi_huy_id"/>
             </tree>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_rap_can_filter">
+        <field name="name">bsd.rap_can.list.filter</field>
+        <field name="model">bsd.rap_can</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_ma_rc"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_unit_id"/>
+                <field name="bsd_giu_cho_id"/>
+
+                <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_rap_can_filter"/>
+
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
+                    <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_rap_can_action">
         <field name="name">Ráp căn</field>
         <field name="res_model">bsd.rap_can</field>
