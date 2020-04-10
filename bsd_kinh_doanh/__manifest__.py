@@ -29,6 +29,7 @@
         'views/bsd_dat_coc_views.xml',
         'views/bsd_menu_item_views.xml',
         'data/bsd_automation_data.xml',
+        'wizards/bsd_wizard_ky_bg_views.xml',
     ],
     'application': True,
 }
