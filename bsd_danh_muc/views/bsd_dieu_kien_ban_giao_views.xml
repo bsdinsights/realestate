@@ -11,7 +11,6 @@
                             <field name="bsd_ma_dkbg"/>
                             <field name="bsd_ten_dkbg"/>
                             <field name="bsd_du_an_id"/>
-                            <!--<field name="bsd_dot_mb_id"/>-->
                             <field name="bsd_tu_ngay"/>
                             <field name="bsd_den_ngay"/>
                             <field name="bsd_dien_giai"/>
@@ -45,16 +44,35 @@
         <field name="model">bsd.dk_bg</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="bsd_du_an_id"/>
-                <!--<field name="bsd_dot_mb_id"/>-->
                 <field name="bsd_ma_dkbg"/>
                 <field name="bsd_ten_dkbg"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_loai_bg"/>
+                <field name="bsd_dk_tt"/>
                 <field name="bsd_tu_ngay"/>
                 <field name="bsd_den_ngay"/>
                 <field name="state"/>
             </tree>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_dk_bg_filter">
+        <field name="name">bsd.dk_bg.list.filter</field>
+        <field name="model">bsd.dk_bg</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="bsd_ma_dkbg"/>
+                <field name="bsd_ten_dkbg"/>
+                <field name="bsd_du_an_id"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Loại bàn giao" name="bsd_loai_bg" domain="[]" context="{'group_by': 'bsd_loai_bg'}"/>
+                    <filter string="Điều kiện thanh toán" name="bsd_dk_tt" domain="[]" context="{'group_by': 'bsd_dk_tt'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_dk_bg_action">
         <field name="name">Điều kiện bàn giao</field>
         <field name="res_model">bsd.dk_bg</field>

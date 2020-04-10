@@ -70,15 +70,34 @@
         <field name="model">bsd.cs_tt</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="bsd_du_an_id"/>
                 <field name="bsd_ma_cstt"/>
                 <field name="bsd_ten_cstt"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_ngay_tinh"/>
+                <field name="bsd_dk_hd"/>
                 <field name="bsd_tu_ngay"/>
                 <field name="bsd_den_ngay"/>
                 <field name="state"/>
             </tree>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_cs_tt_filter">
+        <field name="name">bsd.cs_tt.list.filter</field>
+        <field name="model">bsd.cs_tt</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="bsd_ma_cstt"/>
+                <field name="bsd_ten_cstt"/>
+                <field name="bsd_du_an_id"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Ngày tính" name="bsd_ngay_tinh" domain="[]" context="{'group_by': 'bsd_ngay_tinh'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_cs_tt_action">
         <field name="name">Chính sách thanh toán</field>
         <field name="res_model">bsd.cs_tt</field>

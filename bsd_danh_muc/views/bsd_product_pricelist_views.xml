@@ -54,4 +54,37 @@
             </xpath>
         </field>
     </record>
+    <record model="ir.ui.view" id="bsd_product_pricelist_inherit_tree">
+        <field name="name">bsd.product_pricelist.inherit.tree</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="bsd_ma_bg"/>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_ngay_bd"/>
+                <field name="bsd_ngay_kt"/>
+                <field name="state"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_product_pricelist_filter">
+        <field name="name">bsd.product_pricelist.list.filter</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="bsd_ma_bg"/>
+                <field name="name"/>
+                <field name="bsd_du_an_id"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
 </odoo>

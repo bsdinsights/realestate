@@ -11,7 +11,6 @@
                             <field name="currency_id" invisible="1"/>
                             <field name="bsd_ma_km"/>
                             <field name="bsd_ten_km"/>
-                            <!--<field name="bsd_dot_mb"/>-->
                             <field name="bsd_gia_tri"/>
                             <field name="bsd_tu_ngay"/>
                             <field name="bsd_den_ngay"/>
@@ -43,13 +42,25 @@
             <tree>
                 <field name="bsd_ma_km"/>
                 <field name="bsd_ten_km"/>
-                <!--<field name="bsd_dot_mb"/>-->
                 <field name="bsd_gia_tri"/>
-                <field name="bsd_ngay_hldc"/>
+                <field name="bsd_tu_ngay"/>
+                <field name="bsd_den_ngay"/>
                 <field name="state"/>
             </tree>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_khuyen_mai_filter">
+        <field name="name">bsd_khuyen_mai.list.filter</field>
+        <field name="model">bsd_khuyen_mai</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="bsd_ma_km"/>
+                <field name="bsd_ten_km"/>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_khuyen_mai_action">
         <field name="name">Chương trình khuyến mãi</field>
         <field name="res_model">bsd.khuyen_mai</field>

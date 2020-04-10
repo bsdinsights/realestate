@@ -37,6 +37,16 @@
             </tree>
         </field>
     </record>
+    <record model="ir.ui.view" id="bsd_pt_tt_filter">
+        <field name="name">bsd.pt_tt.list.filter</field>
+        <field name="model">bsd.pt_tt</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_ma"/>
+                <field name="bsd_ten"/>
+            </search>
+        </field>
+    </record>
     <record model="ir.actions.act_window" id="bsd_pt_tt_action">
         <field name="name">Phương thức thanh toán</field>
         <field name="res_model">bsd.pt_tt</field>

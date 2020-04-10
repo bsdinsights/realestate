@@ -18,5 +18,7 @@ class BsdKyBG(models.TransientModel):
     bsd_ngay_ky_bg = fields.Datetime(string="Ngày ký báo giá", required=True)
 
     def action_xac_nhan(self):
-        pass
+        self.bsd_bao_gia_id.write({
+            'bsd_ngay_ky_bg': self.bsd_ngay_ky_bg
+        })
 
