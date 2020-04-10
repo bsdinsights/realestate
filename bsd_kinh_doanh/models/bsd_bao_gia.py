@@ -283,6 +283,5 @@ class BsdBaoGia(models.Model):
 
     # KD.09.06 Ký báo giá
     def action_ky_bg(self):
-        self.write({
-            'bsd_ngay_ky_bg': datetime.datetime.now(),
-        })
+        action = self.env.ref('bsd_kinh_doanh.bsd_wizard_gym_run_action').read()[0]
+        return action
