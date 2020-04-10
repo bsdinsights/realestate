@@ -6,7 +6,34 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <!--<field name="state" widget="statusbar" statusbar_visible="0"/>-->
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            states="nhap"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="In đặt cọc"
+                            name="action_in_dc"
+                            states="dat_coc"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Upload đặt cọc"
+                            name="action_upload_dc"
+                            states="da_duyet"
+                            attrs="{'invisible':['|',('bsd_ngay_in_dc', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Ký đặt cọc"
+                            name="action_ky_dc"
+                            states="nhap"
+                            attrs="{'invisible':['|',('bsd_ngay_up_dc', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"/>
+
+<!--                    <field name="state" widget="statusbar" statusbar_visible="0"/>-->
                 </header>
                 <sheet>
                     <notebook>
@@ -35,6 +62,7 @@
                                     <field name="bsd_bang_gia_id"/>
                                     <field name="bsd_tien_gc"/>
                                     <field name="bsd_tien_dc"/>
+                                    <field name="state"/>
                                 </group>
                             </group>
                             <group string="SẢN PHẨM">

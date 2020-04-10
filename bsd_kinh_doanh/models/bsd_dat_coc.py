@@ -99,3 +99,22 @@ class BsdDatCoc(models.Model):
             'bsd_ltt_ids': [(6, 0, ids_ltt)]
         })
         return res
+
+    # KD.10.01 Xác nhận đặt cọc
+    def action_xac_nhan(self):
+        pass
+
+    # KD.10.02 In đặt cọc
+    def action_in_dc(self):
+        pass
+
+    # KD.10.03 Upload đặt cọc
+    def action_upload_dc(self):
+        pass
+
+    # KD.10.04 Ký đặt cọc
+    def action_ky_dc(self):
+        pass
+
+    def action_huy(self):
+        pass
