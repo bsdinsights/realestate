@@ -16,7 +16,7 @@ class BsdFloor(models.Model):
          'Mã tầng đã tồn tại !'),
     ]
 
-    @api.depends('bsd_toa_nha_id.bsd_ma_ht')
+    @api.depends('bsd_toa_nha_id.bsd_ma_ht', 'bsd_ten_tang')
     def _compute_ma_tang(self):
         for each in self:
             if each.bsd_toa_nha_id and each.bsd_ten_tang:
