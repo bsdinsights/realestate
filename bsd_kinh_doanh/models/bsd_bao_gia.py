@@ -1,8 +1,9 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError, UserError
-import datetime, calendar
+from odoo.exceptions import UserError
+import datetime
+import calendar
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -14,16 +15,26 @@ class BsdBaoGia(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ten_bao_gia'
 
-    bsd_ma_bao_gia = fields.Char(string="Mã bảng giá", help="Mã bảng tính giá", required=True)
+    bsd_ma_bao_gia = fields.Char(string="Mã bảng giá", help="Mã bảng tính giá", required=True,
+                                 readonly=True,
+                                 states={'nhap': [('readonly', False)]})
     _sql_constraints = [
         ('bsd_ma_bao_gia_unique', 'unique (bsd_ma_bao_gia)',
          'Mã bảng giá đã tồn tại !'),
     ]
-    bsd_ten_bao_gia = fields.Char(string="Tên bảng giá", help="Tên bảng tính giá", required=True)
+    bsd_ten_bao_gia = fields.Char(string="Tên bảng giá", help="Tên bảng tính giá", required=True,
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_ngay_bao_gia = fields.Datetime(string="Ngày", help="Ngày bảng tính giá", required=True,
-                                       default=fields.Datetime.now())
-    bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True)
-    bsd_giu_cho_id = fields.Many2one('bsd.giu_cho', string="Giữ chỗ", help="Tên giữ chỗ", required=True)
+                                       default=fields.Datetime.now(),
+                                       readonly=True,
+                                       states={'nhap': [('readonly', False)]})
+    bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,
+                                        readonly=True,
+                                        states={'nhap': [('readonly', False)]})
+    bsd_giu_cho_id = fields.Many2one('bsd.giu_cho', string="Giữ chỗ", help="Tên giữ chỗ", required=True,
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án",
                                    related="bsd_giu_cho_id.bsd_du_an_id", store=True)
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Tên đợt mở bán",
@@ -39,12 +50,16 @@ class BsdBaoGia(models.Model):
                              related="bsd_unit_id.bsd_dt_xd", store=True)
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",
                              related="bsd_unit_id.bsd_dt_sd", store=True)
-    bsd_thue_id = fields.Many2one('account.tax', string="Mã thuế", help="Mã thuế", required=True)
+    bsd_thue_id = fields.Many2one('account.tax', string="Mã thuế", help="Mã thuế", required=True,
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_qsdd_m2 = fields.Monetary(string="QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2",
                                   related="bsd_unit_id.bsd_qsdd_m2", store=True)
     bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", related="bsd_thue_id.amount", store=True)
     bsd_tl_pbt = fields.Float(string="% phí bảo trì", help="Tỷ lệ phí bảo trì", compute='_compute_tl_pbt', store=True)
-    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="CS thanh toán", help="Chính sách thanh toán", required=True)
+    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="CS thanh toán", help="Chính sách thanh toán", required=True,
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
     bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán", compute="_compute_gia_ban", store=True)
     bsd_tien_ck = fields.Monetary(string="Chiết khấu", help="Tổng tiền chiết khấu")
     bsd_tien_bg = fields.Monetary(string="Tiền bàn giao", help="Tổng tiền bàn giao",
@@ -64,14 +79,39 @@ class BsdBaoGia(models.Model):
                                    help="""Tổng giá bán: bằng Giá bán trước thuế cộng Tiền thuế cộng phí bảo trì""",
                                    compute="_compute_tong_gia", store=True)
     bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý",
-                                   help="Số tháng đóng phí quản lý trước đợt bàn giao tạm thời hoặc bàn giao chính thức")
-    bsd_tien_pql = fields.Monetary(string="Phí quản lý/ tháng", help="Số tiền phí quản lý cần đóng mỗi tháng")
+                                   help="Số tháng đóng phí quản lý trước đợt bàn giao tạm thời hoặc bàn giao chính thức",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_tien_pql = fields.Monetary(string="Phí quản lý/ tháng", help="Số tiền phí quản lý cần đóng mỗi tháng",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
 
-    state = fields.Selection([('nhap', 'Nháp')], string="Trạng thái", default="nhap", help="Trạng thái")
+    state = fields.Selection([('nhap', 'Nháp'),('cho_duyet', 'Chờ duyệt'),
+                              ('da_duyet', 'Đã duyệt'), ('dat_coc', 'Đặt cọc'),
+                              ('huy', 'Hủy')], string="Trạng thái", default="nhap", help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-    bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_bao_gia_id', string="Bàn giao")
-    bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_bao_gia_id', string="Lịch thanh toán")
+
+    bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_bao_gia_id', string="Bàn giao",
+                                 readonly=True,
+                                 states={'nhap': [('readonly', False)]})
+    bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_bao_gia_id', string="Lịch thanh toán",
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
+
+    bsd_ngay_in_bg = fields.Datetime(string="Ngày in báo giá", help="Ngày in báo giá", readonly=True)
+    bsd_ngay_hh_kbg = fields.Datetime(string="Hết hạn ký BG", help="Ngày hết hiệu lực ký báo giá", readonly=True)
+    bsd_ngay_ky_bg = fields.Datetime(string="Ngày ký báo giá", help="Ngày ký báo giá", readonly=True)
+
+    # KD.09.02 Ưu tiên báo giá theo Giữ chỗ
+    @api.constrains('bsd_giu_cho_id')
+    def _constrain_gc_tc(self):
+        if self.bsd_giu_cho_id:
+            giu_cho = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                      ('state', '=', 'giu_cho'),
+                                                      ('bsd_ngay_hh_bg', '<', self.bsd_giu_cho_id.bsd_ngay_hh_bg)])
+            if giu_cho:
+                raise UserError("Có Giữ chỗ cần được Báo giá trước .\n Vui lòng chờ đến lược của bạn!")
 
     @api.depends('bsd_unit_id')
     def _compute_tien_dc(self):
@@ -126,17 +166,24 @@ class BsdBaoGia(models.Model):
         for each in self:
             each.bsd_tong_gia = each.bsd_gia_truoc_thue + each.bsd_tien_thue + each.bsd_tien_pbt
 
+    # KD.09.03 Xác nhận báo giá
     def action_xac_nhan(self):
-        pass
+        self.write({
+            'state': 'cho_duyet',
+        })
 
+    # KD.09.04 Duyệt báo giá
     def action_duyet(self):
-        pass
+        self.write({
+            'state': 'da_duyet',
+        })
 
+    # KD.09.05 In báo giá
     def action_in_bg(self):
-        pass
-
-    def action_in_gc(self):
-        pass
+        self.write({
+            'bsd_ngay_in_bg': datetime.datetime.now(),
+            'bsd_ngay_hh_kbg': datetime.datetime.now() + datetime.timedelta(days=self.bsd_du_an_id.bsd_hh_bg)
+        })
 
     def _cb_du_lieu_dtt(self, stt, ma_dtt, dot_tt, lai_phat, ngay_hh_tt, cs_tt):
         res = {}
@@ -234,8 +281,8 @@ class BsdBaoGia(models.Model):
     def action_huy(self):
         pass
 
+    # KD.09.06 Ký báo giá
     def action_ky_bg(self):
-        pass
-
-    def action_ky_gc(self):
-        pass
+        self.write({
+            'bsd_ngay_ky_bg': datetime.datetime.now(),
+        })
