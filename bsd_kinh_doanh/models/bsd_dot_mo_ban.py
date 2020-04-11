@@ -130,7 +130,7 @@ class BsdDotMoBan(models.Model):
                                                          ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids
                 # lọc tầng đến tòa nhà cuối
                 ids_tang += self.env['bsd.tang'].search([('bsd_stt', '<=', den_tang_stt),
-                                                            ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids
+                                                            ('bsd_toa_nha_id', '=', den_toa_nha_id.id)]).ids
                 # lọc tầng các tòa nhà có số thứ tự lớn hơn tòa nhà đầu và nhỏ hơn tòa nhà cuối
                 if den_toa_nha_id.bsd_stt - tu_toa_nha_id.bsd_stt > 1:
                     ids_toa_nha = self.env['bsd.toa_nha'].search([('bsd_stt', '>', tu_toa_nha_id.bsd_stt),
