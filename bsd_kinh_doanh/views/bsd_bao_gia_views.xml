@@ -35,6 +35,7 @@
                             type="object"
                             class="oe_highlight"/>
                     <button string="Hủy"
+                            states="cho_duyet,da_duyet,dat_coc"
                             name="action_huy"
                             type="object"/>
 
