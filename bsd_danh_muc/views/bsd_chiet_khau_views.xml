@@ -62,14 +62,35 @@
         <field name="model">bsd.chiet_khau</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="bsd_du_an_id"/>
                 <field name="bsd_ma_ck"/>
                 <field name="bsd_ten_ck"/>
+                <field name="bsd_loai_ck"/>
+                <field name="bsd_cach_tinh"/>
                 <field name="bsd_tu_ngay"/>
                 <field name="bsd_den_ngay"/>
                 <field name="state"/>
             </tree>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_chiet_khau_filter">
+        <field name="name">bsd.chiet_khau.list.filter</field>
+        <field name="model">bsd.chiet_khau</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="bsd_ma_ck"/>
+                <field name="bsd_ten_ck"/>
+                <field name="bsd_du_an_id"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Loại chiết khấu" name="bsd_loai_ck" domain="[]" context="{'group_by': 'bsd_loai_ck'}"/>
+                    <filter string="Cách tính" name="bsd_cach_tinh" domain="[]" context="{'group_by': 'bsd_cach_tinh'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_chiet_khau_action">
         <field name="name">Chiết khấu</field>
         <field name="res_model">bsd.chiet_khau</field>

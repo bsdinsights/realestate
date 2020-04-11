@@ -41,10 +41,28 @@
                 <field name="bsd_ma_lptt"/>
                 <field name="bsd_ten_lptt"/>
                 <field name="bsd_tinh_phat"/>
+                <field name="bsd_an_han"/>
                 <field name="state"/>
             </tree>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_lai_phat_tt_filter">
+        <field name="name">bsd.lai_phat_tt.list.filter</field>
+        <field name="model">bsd.lai_phat_tt</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="bsd_ma_lptt"/>
+                <field name="bsd_ten_lptt"/>
+                <field name="bsd_du_an_id"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Tính phạt" name="bsd_tinh_phat" domain="[]" context="{'group_by': 'bsd_tinh_phat'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_lai_phat_tt_action">
         <field name="name">Lãi phạt thanh toán</field>
         <field name="res_model">bsd.lai_phat_tt</field>

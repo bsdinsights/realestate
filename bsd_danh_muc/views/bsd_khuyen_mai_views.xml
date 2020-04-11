@@ -52,7 +52,7 @@
 
     <record model="ir.ui.view" id="bsd_khuyen_mai_filter">
         <field name="name">bsd_khuyen_mai.list.filter</field>
-        <field name="model">bsd_khuyen_mai</field>
+        <field name="model">bsd.khuyen_mai</field>
         <field name="arch" type="xml">
             <search>
                 <field name="bsd_ma_km"/>

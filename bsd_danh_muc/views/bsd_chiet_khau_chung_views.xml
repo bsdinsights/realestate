@@ -52,6 +52,7 @@
             </tree>
         </field>
     </record>
+
     <record model="ir.actions.act_window" id="bsd_chiet_khau_chung_action">
         <field name="name">Chiết khấu chung</field>
         <field name="res_model">bsd.ck_ch</field>
