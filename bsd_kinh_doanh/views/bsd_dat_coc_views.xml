@@ -19,13 +19,13 @@
                             class="oe_highlight"/>
                     <button string="Upload đặt cọc"
                             name="action_upload_dc"
-                            states="da_duyet"
+                            states="dat_coc"
                             attrs="{'invisible':['|',('bsd_ngay_in_dc', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Ký đặt cọc"
                             name="action_ky_dc"
-                            states="nhap"
+                            states="dat_coc"
                             attrs="{'invisible':['|',('bsd_ngay_up_dc', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>

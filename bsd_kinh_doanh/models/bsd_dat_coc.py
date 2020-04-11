@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
+import datetime
 
 
 class BsdDatCoc(models.Model):
@@ -102,19 +103,27 @@ class BsdDatCoc(models.Model):
 
     # KD.10.01 Xác nhận đặt cọc
     def action_xac_nhan(self):
-        pass
+        self.write({
+            'state': 'dat_coc',
+        })
 
     # KD.10.02 In đặt cọc
     def action_in_dc(self):
-        pass
+        self.write({
+            'bsd_ngay_in_dc': datetime.datetime.now(),
+            'bsd_ngay_hh_kdc': datetime.datetime.now() + datetime.timedelta(days=self.bsd_du_an_id.bsd_hh_pc)
+        })
 
     # KD.10.03 Upload đặt cọc
     def action_upload_dc(self):
-        pass
+        self.write({
+            'bsd_ngay_up_dc': datetime.datetime.now(),
+        })
 
     # KD.10.04 Ký đặt cọc
     def action_ky_dc(self):
-        pass
+        action = self.env.ref('bsd_kinh_doanh.bsd_wizard_ky_dc_action').read()[0]
+        return action
 
     def action_huy(self):
         pass
