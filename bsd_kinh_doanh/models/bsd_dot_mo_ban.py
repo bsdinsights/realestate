@@ -271,6 +271,11 @@ class BsdDotMoBan(models.Model):
             for giu_cho in giu_cho_ids.sorted(key='bsd_ngay_hh_gc'):
                 stt += 1
                 ngay_ph += datetime.timedelta(hours=time_gc)
+                # KD.04.07 cập nhật trạng thái giữ chỗ khi phát hành
+                if giu_cho.state == 'dat_cho':
+                    giu_cho.write({
+                        'state': 'giu_cho',
+                    })
                 giu_cho.write({
                     'bsd_stt_bg': stt,
                     'bsd_ngay_hh_bg': ngay_ph
