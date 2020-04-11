@@ -70,7 +70,7 @@ class BsdDatCoc(models.Model):
     bsd_tien_pql = fields.Monetary(string="Phí quản lý/ tháng", help="Số tiền phí quản lý cần đóng mỗi tháng",
                                    related="bsd_bao_gia_id.bsd_tien_pql", store=True)
 
-    state = fields.Selection([('nhap', 'Nháp'), ('dat_coc', 'Đặt cọc')],
+    state = fields.Selection([('nhap', 'Nháp'), ('dat_coc', 'Đặt cọc'), ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
