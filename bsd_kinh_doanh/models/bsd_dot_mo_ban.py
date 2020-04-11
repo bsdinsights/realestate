@@ -161,11 +161,10 @@ class BsdDotMoBan(models.Model):
             pass
         else:
             # lấy tất cả unit chuẩn bị phát hành ở trạng thái chuẩn bị đặt chỗ, giữ chỗ
-            units = self.bsd_cb_ids.mapped('bsd_unit_id').filtered(lambda x: x.state in ['chuan_bi', 'dat_cho', 'giu_cho'])
+            units = self.bsd_cb_ids.mapped('bsd_unit_id').filtered(lambda x: x.state in ['chuan_bi', 'dat_cho',
+                                                                                         'giu_cho', 'san_sang'])
             # các chuẩn bị không đúng trạng thái
             cb_no_state = self.bsd_cb_ids.filtered(lambda c: c.bsd_unit_id not in units)
-            _logger.debug("các chuẩn bị không đúng trạng thái")
-            _logger.debug(cb_no_state)
             cb_no_state.write({
                 'bsd_ly_do': 'kd_tt',
             })
@@ -193,10 +192,10 @@ class BsdDotMoBan(models.Model):
             ph_units = no_uu_dot_mb_units.filtered(lambda x: x.bsd_dot_mb_id.state == 'ph')
             # kiểm tra các unit không trùng với đợt mở bán hiện tại đang phát hành
             diff_mb_units = ph_units.filtered(lambda x: (x.bsd_dot_mb_id.bsd_tu_ngay < self.bsd_tu_ngay
-                                                                   and x.bsd_dot_mb_id.bsd_den_ngay < self.bsd_tu_ngay)
-                                                        or (x.bsd_dot_mb_id.bsd_tu_ngay > self.bsd_den_ngay
-                                                            and x.bsd_dot_mb_id.bsd_den_ngay > self.bsd_den_ngay)
-                                                       )
+                                                         and x.bsd_dot_mb_id.bsd_den_ngay < self.bsd_tu_ngay)
+                                                            or (x.bsd_dot_mb_id.bsd_tu_ngay > self.bsd_den_ngay
+                                                                and x.bsd_dot_mb_id.bsd_den_ngay > self.bsd_den_ngay)
+                                              )
             _logger.debug('diff_mb_units')
             _logger.debug(diff_mb_units)
             # các chuẩn bị trùng với đợt mở bán khác
