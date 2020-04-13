@@ -6,6 +6,17 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            states="nhap"
+                            confirm="Bạn có muốn xác nhận hợp đồng không?"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="In hợp đồng"
+                            name="action_in_hd"
+                            states="xac_nhan"
+                            class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>

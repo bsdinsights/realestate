@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
+import datetime
 
 
 class BsdHopDongMuaBan(models.Model):
@@ -9,16 +10,26 @@ class BsdHopDongMuaBan(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma_hd_ban'
 
-    bsd_ma_hd_ban = fields.Char(string="Mã", help="Mã hợp đồng mua bán", required=True)
+    bsd_ma_hd_ban = fields.Char(string="Mã", help="Mã hợp đồng mua bán", required=True,
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
     _sql_constraints = [
         ('bsd_ma_hd_ban_unique', 'unique (bsd_ma_hd_ban)',
          'Mã hợp đồng đã tồn tại !'),
     ]
     bsd_ngay_hd_ban = fields.Datetime(string="Ngày", help="Ngày làm hợp đồng mua bán", required=True,
-                                      default=fields.Datetime.now())
-    bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True)
-    bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Tên đặt cọc", required=True)
-    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
+                                      default=fields.Datetime.now(),
+                                      readonly=True,
+                                      states={'nhap': [('readonly', False)]})
+    bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,
+                                        readonly=True,
+                                        states={'nhap': [('readonly', False)]})
+    bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Tên đặt cọc", required=True,
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
+    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', related="bsd_dat_coc_id.bsd_bao_gia_id")
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án",
                                    related="bsd_dat_coc_id.bsd_du_an_id", store=True)
@@ -81,6 +92,19 @@ class BsdHopDongMuaBan(models.Model):
                                       help="""Ngày tải lên hệ thống hợp đồng bán đã được người mua
                                              ký xác nhận""")
     bsd_ngay_ky_hdb = fields.Datetime(string="Ngày ký hợp đồng", help="Ngày ký hợp đồng mua bán", readonly=True)
+
+    # DV.01.01 - Xác nhận hợp đồng
+    def action_xac_nhan(self):
+        self.write({
+            'state': 'xac_nhan',
+        })
+
+    # KD.10.02 In đặt cọc
+    def action_in_hd(self):
+        self.write({
+            'bsd_ngay_in_hdc': datetime.datetime.now(),
+            'bsd_ngay_hh_khdb': datetime.datetime.now() + datetime.timedelta(days=self.bsd_du_an_id.bsd_hh_hd)
+        })
 
     @api.model
     def create(self, vals):
