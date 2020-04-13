@@ -61,6 +61,25 @@
                                     <field name="bsd_tien_pql"/>
                                 </group>
                             </group>
+                            <group string="XÁC NHẬN">
+                                <group>
+                                    <field name="bsd_ngay_in_hdb"/>
+                                    <field name="bsd_ngay_hh_khdb"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_up_hdb"/>
+                                    <field name="bsd_ngay_ky_hdb"/>
+                                </group>
+                            </group>
+                            <group string="ĐỒNG SỞ HỮU">
+                                <field name="bsd_dong_sh_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="bsd_dong_sh_id" options="{'no_create':true}"/>
+                                        <field name="bsd_mobile"/>
+                                        <field name="bsd_email"/>
+                                    </tree>
+                                </field>
+                            </group>
                         </page>
                         <page string="Bàn giao">
                             <field name="bsd_bg_ids">

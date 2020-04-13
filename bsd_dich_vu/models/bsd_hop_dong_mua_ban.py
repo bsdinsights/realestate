@@ -65,12 +65,22 @@ class BsdHopDongMuaBan(models.Model):
     bsd_tien_pql = fields.Monetary(string="Phí quản lý/ tháng", help="Số tiền phí quản lý cần đóng mỗi tháng",
                                    related="bsd_dat_coc_id.bsd_tien_pql", store=True)
 
-    state = fields.Selection([('nhap', 'Nháp')], string="Trạng thái", default="nhap", help="Trạng thái")
+    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
+                              ('da_ky', 'Đã ký'), ('huy', 'Hủy')], string="Trạng thái", default="nhap", help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
     bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_hd_ban_id', string="Bàn giao", readonly=True)
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_hd_ban_id', string="Lịch thanh toán", readonly=True)
+    bsd_dong_sh_ids = fields.One2many('bsd.dong_so_huu', 'bsd_hd_ban_id', string="Đồng sở hữu")
+
+    bsd_ngay_in_hdb = fields.Datetime(string="Ngày in hợp đồng", help="Ngày in hợp đồng mua bán", readonly=True)
+    bsd_ngay_hh_khdb = fields.Datetime(string="Hết hạn ký HĐ", help="Ngày hết hạn ký hợp đồng mua bán",
+                                       readonly=True)
+    bsd_ngay_up_hdb = fields.Datetime(string="Upload hợp đồng", readonly=True,
+                                      help="""Ngày tải lên hệ thống hợp đồng bán đã được người mua
+                                             ký xác nhận""")
+    bsd_ngay_ky_hdb = fields.Datetime(string="Ngày ký hợp đồng", help="Ngày ký hợp đồng mua bán", readonly=True)
 
     @api.model
     def create(self, vals):
@@ -94,3 +104,14 @@ class BsdBaoGiaLTT(models.Model):
     _inherit = 'bsd.lich_thanh_toan'
 
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True)
+
+
+class BsdDongSoHuu(models.Model):
+    _name = 'bsd.dong_so_huu'
+    _description = 'Người đồng sở hữu'
+    _rec_name = 'bsd_dong_sh_id'
+
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True)
+    bsd_dong_sh_id = fields.Many2one('res.partner', string="Đồng sở hữu", help="Người đồng sở hữu", required=True)
+    bsd_mobile = fields.Char(related='bsd_dong_sh_id.mobile')
+    bsd_email = fields.Char(related='bsd_dong_sh_id.email')
