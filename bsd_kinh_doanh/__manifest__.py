@@ -30,7 +30,7 @@
         'views/bsd_menu_item_views.xml',
         'data/bsd_automation_data.xml',
         'wizards/bsd_wizard_ky_bg_views.xml',
-        'wizards/bsd_wizard_ky_dc_views.xml',
+        'wizards/bsd_wizard_ky_hdb_views.xml',
     ],
     'application': True,
 }

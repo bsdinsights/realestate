@@ -18,6 +18,21 @@
                             type="object"
                             states="xac_nhan"
                             class="oe_highlight"/>
+                    <button string="Upload hợp đồng"
+                            name="action_upload_hdb"
+                            states="xac_nhan"
+                            attrs="{'invisible':['|',('bsd_ngay_in_hdb', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Ký hợp đồng"
+                            name="action_ky_hdb"
+                            states="xac_nhan"
+                            attrs="{'invisible':['|',('bsd_ngay_in_hdb', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>

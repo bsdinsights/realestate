@@ -101,12 +101,23 @@ class BsdHopDongMuaBan(models.Model):
             'state': 'xac_nhan',
         })
 
-    # KD.10.02 In đặt cọc
+    # DV.01.02 In hợp đồng
     def action_in_hd(self):
         self.write({
             'bsd_ngay_in_hdb': datetime.datetime.now(),
             'bsd_ngay_hh_khdb': datetime.datetime.now() + datetime.timedelta(days=self.bsd_du_an_id.bsd_hh_hd)
         })
+
+    # DV.01.03 Upload hợp đồng
+    def action_upload_hdb(self):
+        self.write({
+            'bsd_ngay_up_hdb': datetime.datetime.now(),
+        })
+
+    # DV.01.04 Ký hợp đồng
+    def action_ky_hdb(self):
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_hdb_action').read()[0]
+        return action
 
     @api.model
     def create(self, vals):

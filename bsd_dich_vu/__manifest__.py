@@ -17,6 +17,7 @@
         'security/bsd_security.xml',
         'views/bsd_hop_dong_mua_ban_views.xml',
         'views/bsd_menu_item_views.xml',
+        'wizards/bsd_wizard_ky_hdb_views.xml',
 
     ],
     'application': True,

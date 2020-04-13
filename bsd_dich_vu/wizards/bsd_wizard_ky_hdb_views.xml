@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_wizard_ky_hdb_form">
+        <field name="name">bsd.wizard.ky_hdb.form</field>
+        <field name="model">bsd.wizard.ky_hdb</field>
+        <field name="arch" type="xml">
+            <form string="Ký đặt cọc">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_hd_ban_id"/>
+
+                        </group>
+                        <group>
+                            <field name="bsd_ngay_ky_hdb"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_ky_hdb_action">
+        <field name="name">Ký hợp đồng bán</field>
+        <field name="res_model">bsd.wizard.ky_hdb</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
+</odoo>
