@@ -83,7 +83,7 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Đợt bàn giao">
+                        <page string="Điều kiện bàn giao">
                             <field name="bsd_dkbg_ids" nolabel="1">
                                 <tree editable="bottom">
                                     <field name="bsd_dk_bg_id" options="{'no_create':true}"/>

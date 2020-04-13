@@ -312,7 +312,7 @@ class BsdDotMoBanDKBG(models.Model):
     _rec_name = 'bsd_dk_bg_id'
 
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", required=True)
-    bsd_dk_bg_id = fields.Many2one('bsd.dk_bg', string="Bàn giao")
+    bsd_dk_bg_id = fields.Many2one('bsd.dk_bg', string="Điều kiện bàn giao")
     bsd_ma_dkbg = fields.Char(related="bsd_dk_bg_id.bsd_ma_dkbg")
     bsd_loai_bg = fields.Selection(related="bsd_dk_bg_id.bsd_loai_bg")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
