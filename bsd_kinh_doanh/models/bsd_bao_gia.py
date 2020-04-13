@@ -129,7 +129,7 @@ class BsdBaoGia(models.Model):
             else:
                 each.bsd_tl_pbt = each.bsd_unit_id.bsd_du_an_id.bsd_tl_pbt
 
-    @api.depends('bsd_unit_id', 'bsd_bang_gia_id')
+    @api.depends('bsd_unit_id', 'bsd_bang_gia_id.item_ids.fixed_price')
     def _compute_gia_ban(self):
         for each in self:
             item = each.bsd_bang_gia_id.item_ids.filtered(
