@@ -29,22 +29,22 @@ class BsdDotMoBan(models.Model):
     bsd_bang_gia_id = fields.Many2one('product.pricelist', string="Bảng giá",
                                       readonly=True, required=True,
                                       states={'cph': [('readonly', False)]})
-    bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="CK chung",
+    bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="CK chung", domain=[('state', '=', 'active')],
                                    readonly=True,
                                    states={'cph': [('readonly', False)]})
-    bsd_ck_nb_id = fields.Many2one('bsd.ck_nb', string="CK nội bộ",
+    bsd_ck_nb_id = fields.Many2one('bsd.ck_nb', string="CK nội bộ", domain=[('state', '=', 'active')],
                                    readonly=True,
                                    states={'cph': [('readonly', False)]})
-    bsd_ck_ms_id = fields.Many2one('bsd.ck_ms', string="CK mua sỉ",
+    bsd_ck_ms_id = fields.Many2one('bsd.ck_ms', string="CK mua sỉ", domain=[('state', '=', 'active')],
                                    readonly=True,
                                    states={'cph': [('readonly', False)]})
-    bsd_ck_ttth_id = fields.Many2one('bsd.ck_ttth', string="CK TT trước hạn",
+    bsd_ck_ttth_id = fields.Many2one('bsd.ck_ttth', string="CK TT trước hạn", domain=[('state', '=', 'active')],
                                      readonly=True,
                                      states={'cph': [('readonly', False)]})
-    bsd_ck_ttn_id = fields.Many2one('bsd.ck_ttn', string="CK TT nhanh",
+    bsd_ck_ttn_id = fields.Many2one('bsd.ck_ttn', string="CK TT nhanh", domain=[('state', '=', 'active')],
                                     readonly=True,
                                     states={'cph': [('readonly', False)]})
-    bsd_ck_cstt_id = fields.Many2one('bsd.ck_cstt', string="CK chính sách TT",
+    bsd_ck_cstt_id = fields.Many2one('bsd.ck_cstt', string="CK chính sách TT", domain=[('state', '=', 'active')],
                                      readonly=True,
                                      states={'cph': [('readonly', False)]})
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng của đợt mở bán",
@@ -54,12 +54,10 @@ class BsdDotMoBan(models.Model):
                                readonly=True, required=True,
                                states={'cph': [('readonly', False)]})
     bsd_ngay_ph = fields.Datetime(string="Ngày phát hành", help="Ngày duyệt phát hành đợt mở bán",
-                              readonly=True,
-                              states={'cph': [('readonly', False)]})
+                                  readonly=True)
     bsd_nguoi_ph = fields.Many2one('res.users', string="Người phát hành",
                                    help="Người duyệt phát hành đợt mở bán",
-                                   readonly=True,
-                                   states={'cph': [('readonly', False)]})
+                                   readonly=True)
     bsd_tu_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Từ tòa nhà",
                                         readonly=True,
                                         states={'cph': [('readonly', False)]})
@@ -321,6 +319,7 @@ class BsdDotMoBanDKBG(models.Model):
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     bsd_tien = fields.Monetary(related="bsd_dk_bg_id.bsd_tien")
     bsd_ty_le = fields.Float(related="bsd_dk_bg_id.bsd_ty_le")
+    bsd_gia_m2 = fields.Monetary(related="bsd_dk_bg_id.bsd_gia_m2")
 
 
 class BsdDotMoBanCB(models.Model):
