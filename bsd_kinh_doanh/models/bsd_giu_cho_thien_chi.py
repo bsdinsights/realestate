@@ -94,7 +94,8 @@ class BsdGiuChoThienChi(models.Model):
                                                   ('create_date', '>', min_time),
                                                   ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                   ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
-                                                  ('state', '=', 'xac_nhan')])
+                                                  ('state', '=', 'xac_nhan'),
+                                                  ('bsd_thanh_toan', 'in', ['chua_tt', 'dang_tt'])])
         if len(gc_in_day) >= self.bsd_du_an_id.bsd_gc_nv_ngay:
             raise UserError("Số lượng giữ chỗ tối đa trên một ngày của bạn đã vượt mức.\n Vui lòng kiểm tra lại")
 
@@ -113,14 +114,14 @@ class BsdGiuChoThienChi(models.Model):
 
     # KD.05.03 Tự động hủy giữ chỗ
     def auto_huy_giu_cho(self):
-        if self.state == 'xac_nhan':
+        if self.state == 'xac_nhan' and self.bsd_thanh_toan in ['chua_tt', 'dang_tt']:
             self.write({
                 'state': 'huy'
             })
 
     # KD.05.04 Tự động đánh dấu hết hạn giữ chỗ
     def auto_danh_dau_hh_gc(self):
-        if self.state == 'thanh_toan':
+        if self.state == 'xac_nhan' and self.bsd_thanh_toan == 'da_tt':
             self.write({
                 'bsd_het_han': True
             })
