@@ -2,6 +2,8 @@
 
 from odoo import models, fields, api
 import datetime
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class BsdHopDongMuaBan(models.Model):
@@ -102,7 +104,7 @@ class BsdHopDongMuaBan(models.Model):
     # KD.10.02 In đặt cọc
     def action_in_hd(self):
         self.write({
-            'bsd_ngay_in_hdc': datetime.datetime.now(),
+            'bsd_ngay_in_hdb': datetime.datetime.now(),
             'bsd_ngay_hh_khdb': datetime.datetime.now() + datetime.timedelta(days=self.bsd_du_an_id.bsd_hh_hd)
         })
 
