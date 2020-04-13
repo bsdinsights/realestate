@@ -121,7 +121,7 @@
                                     <field name="bsd_gia_m2"/>
                                     <field name="bsd_tien"/>
                                     <field name="bsd_ty_le"/>
-                                    <field name="bsd_tien_bg"/>
+                                    <field name="bsd_tien_bg" sum="Tổng tiền bàn giao"/>
                                 </tree>
                             </field>
                         </page>
