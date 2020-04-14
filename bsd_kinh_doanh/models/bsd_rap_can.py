@@ -51,6 +51,7 @@ class BsdRapCan(models.Model):
         if self.bsd_gc_tc_id:
             gc_tc = self.env['bsd.gc_tc'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                   ('state', '=', 'xac_nhan'),
+                                                  ('bsd_thanh_toan', '=', 'da_tt'),
                                                   ('bsd_ngay_ut', '<', self.bsd_gc_tc_id.bsd_ngay_ut)])
             if gc_tc:
                 raise UserError("Có Giữ chỗ thiện chí cần được Ráp căn trước .\n Vui lòng chờ đến lược của bạn!")
