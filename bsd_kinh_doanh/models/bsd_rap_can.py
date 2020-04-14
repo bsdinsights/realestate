@@ -119,7 +119,7 @@ class BsdRapCan(models.Model):
             'bsd_nguoi_huy_id': self.env.uid,
         })
         self.bsd_gc_tc_id.write({
-            'state': 'thanh_toan',
+            'state': 'xac_nhan',
             'bsd_ngay_huy_rc': fields.Datetime.now(),
         })
         self.bsd_unit_id.write({
