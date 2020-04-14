@@ -85,7 +85,9 @@ class BsdHopDongMuaBan(models.Model):
 
     bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_hd_ban_id', string="Bàn giao", readonly=True)
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_hd_ban_id', string="Lịch thanh toán", readonly=True)
-    bsd_dong_sh_ids = fields.One2many('bsd.dong_so_huu', 'bsd_hd_ban_id', string="Đồng sở hữu")
+    bsd_dong_sh_ids = fields.One2many('bsd.dong_so_huu', 'bsd_hd_ban_id', string="Đồng sở hữu",
+                                      readonly=True,
+                                      states={'nhap': [('readonly', False)]})
 
     bsd_ngay_in_hdb = fields.Datetime(string="Ngày in hợp đồng", help="Ngày in hợp đồng mua bán", readonly=True)
     bsd_ngay_hh_khdb = fields.Datetime(string="Hết hạn ký HĐ", help="Ngày hết hạn ký hợp đồng mua bán",
@@ -150,5 +152,10 @@ class BsdDongSoHuu(models.Model):
 
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True)
     bsd_dong_sh_id = fields.Many2one('res.partner', string="Đồng sở hữu", help="Người đồng sở hữu", required=True)
-    bsd_mobile = fields.Char(related='bsd_dong_sh_id.mobile')
-    bsd_email = fields.Char(related='bsd_dong_sh_id.email')
+    bsd_mobile = fields.Char(related='bsd_dong_sh_id.mobile', string="Di động")
+    bsd_email = fields.Char(related='bsd_dong_sh_id.email', string="Thư điện tử")
+    bsd_pl_dsh_id = fields.Many2one('bsd.pl_dsh', string="Phụ lục HĐ", help="Phụ lục hợp đồng thay đổi chủ sở hữu",
+                                    readonly=True)
+    bsd_lan_td = fields.Integer(string="Lần thay đổi", help="Lần thay đổi chủ sở hữu", readonly=True)
+    state = fields.Selection([('active', 'Đang hiệu lực'), ('inactive', 'Hết hiệu lực')], default='active',
+                             string="Trạng thái", required=True, readonly=True)

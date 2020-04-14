@@ -19,6 +19,7 @@
         'views/bsd_phu_luc_dong_so_huu_views.xml',
         'views/bsd_menu_item_views.xml',
         'wizards/bsd_wizard_ky_hdb_views.xml',
+        'wizards/bsd_wizard_ky_pl_dsh_views.xml',
 
     ],
     'application': True,

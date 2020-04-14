@@ -104,6 +104,9 @@
                                         <field name="bsd_dong_sh_id" options="{'no_create':true}"/>
                                         <field name="bsd_mobile"/>
                                         <field name="bsd_email"/>
+                                        <field name="bsd_pl_dsh_id"/>
+                                        <field name="bsd_lan_td"/>
+                                        <field name="state"/>
                                     </tree>
                                 </field>
                             </group>
