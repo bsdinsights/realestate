@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_pl_tti_form">
+        <field name="name">bsd.pl_tti.form</field>
+        <field name="model">bsd.pl_tti</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            states="nhap"
+                            confirm="Bạn có muốn xác nhận hợp đồng không?"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Ký phụ lục"
+                            name="action_ky_pl"
+                            states="xac_nhan"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            confirm="Bạn có chắc hủy phụ lục hợp đồng"
+                            states="xac_nhan"
+                            type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma_pl_tti"/>
+                            <field name="bsd_ngay_pl_tti"/>
+                            <field name="bsd_loai_pl"/>
+                            <field name="bsd_khach_hang_id" options="{'no_create':true}"/>
+                            <field name="bsd_hd_ban_id"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id])]"/>
+                            <field name="bsd_du_an_id"/>
+                            <field name="bsd_unit_id"/>
+                            <field name="bsd_dien_giai"/>
+                        </group>
+                        <group>
+
+                            <field name="bsd_dt_tt_id"
+                                   attrs="{'readonly':[('bsd_loai_pl','=', 'ten_ch')],
+                                           'required':[('bsd_loai_pl','=','dien_tich')]}"
+                                   domain="[('bsd_unit_id', 'in',[bsd_unit_id]),('state','=','duyet')]"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_dt_tt_tt"/>
+                            <field name="bsd_dt_tt_tk"/>
+                            <field name="bsd_dt_cl_tt"/>
+                            <field name="bsd_dt_cl"/>
+                            <field name="bsd_ten_unit_moi"
+                                   attrs="{'readonly':[('bsd_loai_pl','=', 'dien_tich')],
+                                           'required':[('bsd_loai_pl','=','ten_ch')]}"/>
+                            <field name="bsd_ten_unit_cu"/>
+                            <field name="bsd_ngay_ky_pl"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_pl_tti_tree">
+        <field name="name">bsd.pl_tti.tree</field>
+        <field name="model">bsd.pl_tti</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_pl_tti"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_pl_tti_action">
+        <field name="name">Thay đổi thông tin</field>
+        <field name="res_model">bsd.pl_tti</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo phụ lục hợp đồng thay đổi thông tin</p>
+        </field>
+    </record>
+</odoo>

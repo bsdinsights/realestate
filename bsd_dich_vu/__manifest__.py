@@ -18,6 +18,7 @@
         'views/bsd_hop_dong_mua_ban_views.xml',
         'views/bsd_phu_luc_dong_so_huu_views.xml',
         'views/bsd_dien_tich_thuc_te_views.xml',
+        'views/bsd_phu_luc_thay_doi_thong_tin_views.xml',
         'views/bsd_menu_item_views.xml',
         'wizards/bsd_wizard_ky_hdb_views.xml',
         'wizards/bsd_wizard_ky_pl_dsh_views.xml',
