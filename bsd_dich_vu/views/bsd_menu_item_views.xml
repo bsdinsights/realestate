@@ -16,6 +16,11 @@
               sequence='10'
               action='bsd_pl_dsh_action'
               parent='bsd_phu_luc_menu' />
+    <menuitem id="bsd_dt_tt_menu_action"
+              name="Diện tích thực tế"
+              sequence="12"
+              action="bsd_dt_tt_action"
+              parent="bsd_main_dich_vu_root"/>
     <record id="bsd_dich_vu.bsd_main_dich_vu_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
         <field name="active" eval="True"/>

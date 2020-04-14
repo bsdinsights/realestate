@@ -79,7 +79,8 @@ class BsdHopDongMuaBan(models.Model):
                                    related="bsd_dat_coc_id.bsd_tien_pql", store=True)
 
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
-                              ('da_ky', 'Đã ký'), ('huy', 'Hủy')], string="Trạng thái", default="nhap", help="Trạng thái")
+                              ('da_ky', 'Đã ký'), ('huy', 'Hủy')], string="Trạng thái", default="nhap",
+                             help="Trạng thái", tracking=1)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 

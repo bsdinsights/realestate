@@ -34,7 +34,7 @@ class BsdPLDSH(models.Model):
     bsd_ngay_ky_pl = fields.Datetime(string="Ngày ký phụ lục", help="Ngày ký phụ lục đồng sở hữu", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('dk_pl', 'Đã ký phụ lục'), ('huy', 'Hủy')],
-                             string="Trạng thái", help="Trạng thái", required=True, default="nhap")
+                             string="Trạng thái", help="Trạng thái", required=True, default="nhap", tracking=1)
     bsd_moi_ids = fields.One2many('bsd.pl_dsh_moi', 'bsd_pl_dsh_id', string="Đồng sở hữu mới")
     bsd_cu_ids = fields.One2many('bsd.pl_dsh_cu', 'bsd_pl_dsh_id', string="Đồng sở hữu cũ", readonly=True)
 
