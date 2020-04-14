@@ -32,7 +32,7 @@
                             <field name="bsd_ngay_rc"/>
                             <field name="bsd_gc_tc_id"
                                    options="{'no_create':true}"
-                                   domain="[('bsd_thanh_toan', '=','da_tt')]"/>
+                                   domain="[('bsd_thanh_toan', '=','da_tt'), ('state','=','xac_nhan')]"/>
                             <field name="bsd_khach_hang_id"/>
                         </group>
                         <group>
