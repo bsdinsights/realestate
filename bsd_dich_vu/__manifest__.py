@@ -22,6 +22,7 @@
         'views/bsd_menu_item_views.xml',
         'wizards/bsd_wizard_ky_hdb_views.xml',
         'wizards/bsd_wizard_ky_pl_dsh_views.xml',
+        'wizards/bsd_wizard_ky_pl_tti_views.xml',
 
     ],
     'application': True,

@@ -19,6 +19,7 @@ class BsdKyPLDSH(models.TransientModel):
 
     def action_xac_nhan(self):
         self.bsd_pl_dsh_id.write({
-            'bsd_ngay_ky_pl': self.bsd_ngay_ky_pl
+            'bsd_ngay_ky_pl': self.bsd_ngay_ky_pl,
+            'state': 'dk_pl'
         })
         self.bsd_pl_dsh_id.update_dsh()

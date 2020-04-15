@@ -61,18 +61,18 @@ class BsdPLTDTT(models.Model):
     bsd_ten_unit_cu = fields.Char(string="Tên căn hộ (cũ)", help="Tên căn hộ (cũ) trước khi được thay đổi",
                                   related='bsd_unit_id.bsd_ten_unit')
 
-    # DV.02.01 - Xác nhận phụ lục hợp đồng
+    # DV.03.01 - Xác nhận phụ lục hợp đồng
     def action_xac_nhan(self):
         self.write({
             'state': 'xac_nhan',
         })
 
-    # DV.02.02 - Ký phụ lục hợp đồng
+    # DV.03.02 - Ký phụ lục hợp đồng
     def action_ky_pl(self):
-        action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_pl_dsh_action').read()[0]
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_pl_tti_action').read()[0]
         return action
 
-    # DV.02.03 - Hủy phụ lục hợp đồng
+    # DV.03.03 - Hủy phụ lục hợp đồng
     def action_huy(self):
         self.write({
             'state': 'huy'
