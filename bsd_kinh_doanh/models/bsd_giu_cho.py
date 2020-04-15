@@ -169,7 +169,7 @@ class BsdRapCan(models.Model):
                                                            ('bsd_stt_bg', '>', 0)])
             stt = 1
             time_gc = self.bsd_du_an_id.bsd_gc_smb
-            ngay_hh_bg = self.bsd_ngay_gc + datetime.timedelta(hours=time_gc)
+            ngay_hh_bg = datetime.datetime.now() + datetime.timedelta(hours=time_gc)
             if giu_cho_unit:
                 stt = max(filter(None, giu_cho_unit.mapped('bsd_stt_bg'))) + 1
                 ngay_hh_bg = max(filter(None, giu_cho_unit.mapped('bsd_ngay_hh_bg'))) + datetime.timedelta(hours=time_gc)
