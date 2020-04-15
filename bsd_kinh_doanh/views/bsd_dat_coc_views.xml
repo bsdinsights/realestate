@@ -181,6 +181,7 @@
                 <field name="bsd_ngay_in_dc"/>
                 <field name="bsd_ngay_hh_kdc"/>
                 <field name="bsd_ngay_up_dc"/>
+                <field name="currency_id" invisible="1"/>
             </tree>
         </field>
     </record>

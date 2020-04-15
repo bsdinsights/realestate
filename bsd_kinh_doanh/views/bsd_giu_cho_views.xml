@@ -100,7 +100,7 @@
                 <field name="bsd_gc_tc_id"/>
                 <field name="bsd_bang_gia_id"/>
                 <field name="bsd_tien_gc"/>
-                <field name="state"/>
+                <field name="currency_id" invisible="1"/>
             </tree>
         </field>
     </record>

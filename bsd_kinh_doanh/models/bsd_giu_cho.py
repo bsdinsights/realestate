@@ -120,7 +120,7 @@ class BsdRapCan(models.Model):
                                                    ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                    ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
                                                    ('state', 'in', ['nhap', 'giu_cho', 'dat_cho'])])
-        if len(gc_in_day) >= self.bsd_du_an_id.bsd_gc_nv_ngay:
+        if len(gc_in_day) > self.bsd_du_an_id.bsd_gc_nv_ngay:
             raise UserError("Tổng số Giữ chỗ trên một ngày của bạn đã vượt quá quy định")
 
     # KD.07.05 Ràng buộc số giữ chỗ theo căn hộ/NVBH/ngày
@@ -134,7 +134,7 @@ class BsdRapCan(models.Model):
                                                    ('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                    ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
                                                    ('state', 'in', ['nhap', 'giu_cho', 'dat_cho'])])
-        if len(gc_in_day) >= self.bsd_du_an_id.bsd_gc_unit_nv_ngay:
+        if len(gc_in_day) > self.bsd_du_an_id.bsd_gc_unit_nv_ngay:
             raise UserError("Tổng số Giữ chỗ trong ngày theo căn hộ của bạn đã vượt quá quy định")
 
     @api.onchange('bsd_unit_id', 'bsd_du_an_id')

@@ -176,6 +176,7 @@
                 <field name="bsd_tien_pbt"/>
                 <field name="bsd_thang_pql"/>
                 <field name="bsd_tien_pql"/>
+                <field name="currency_id" invisible="1"/>
             </tree>
         </field>
     </record>
