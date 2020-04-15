@@ -30,13 +30,17 @@ class BsdPLTDTT(models.Model):
                                     states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one(string="Dự án", help="Tên dự án", related='bsd_hd_ban_id.bsd_du_an_id', store=True)
     bsd_unit_id = fields.Many2one(string="Căn hộ", help="Tên căn hộ", related='bsd_hd_ban_id.bsd_unit_id', store=True)
-    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
+    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
     bsd_ngay_ky_pl = fields.Datetime(string="Ngày ký phụ lục", help="Ngày ký phụ lục đồng sở hữu", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('dk_pl', 'Đã ký phụ lục'), ('huy', 'Hủy')],
                              string="Trạng thái", help="Trạng thái", required=True, default="nhap", tracking=1)
     bsd_loai_pl = fields.Selection([('dien_tich', 'Diện tích'), ('ten_ch', 'Tên căn hộ')], required=True,
-                                   string="Loại phụ lục", help="Loại phụ lục hợp đồng", default="dien_tich")
+                                   string="Loại phụ lục", help="Loại phụ lục hợp đồng", default="dien_tich",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
     bsd_dt_tt_id = fields.Many2one('bsd.dt_tt', string="Thay đổi diện tích",
                                    help="Phiếu cập nhật diện tích thông thủy thực tế", required=True,
                                    readonly=True,
