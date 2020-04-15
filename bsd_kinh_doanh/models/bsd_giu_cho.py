@@ -68,7 +68,8 @@ class BsdRapCan(models.Model):
                               ('dat_cho', 'Đặt chỗ'),
                               ('giu_cho', 'Giữ chỗ'),
                               ('bao_gia', 'Báo giá'),
-                              ('huy', 'Hủy')], default='nhap', string="Trạng thái", tracking=1, help="Trạng thái")
+                              ('huy', 'Hủy')], default='nhap', string="Trạng thái",
+                             tracking=1, help="Trạng thái", required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
