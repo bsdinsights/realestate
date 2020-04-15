@@ -84,10 +84,14 @@ class BsdRapCan(models.Model):
     bsd_het_han_bg = fields.Boolean(string="Hết hạn báo giá", readonly=True, default=False,
                                     help="Thông tin ghi nhận thời gian làm báo giá có bok hết hiệu lực hay chưa")
 
-    # KD.07.02 Ràng buộc số giữ chỗ theo căn hộ/ NVBH
-    @api.constrains('bsd_nvbh_id')
-    def _constrain_unit_nv(self):
+    @api.onchange('bsd_du_an_id')
+    def _onchange_unit(self):
+        self.bsd_unit_id = False
 
+    # KD.07.02 Ràng buộc số giữ chỗ theo căn hộ/ NVBH
+    @api.constrains('bsd_nvbh_id', 'bsd_unit_id')
+    def _constrain_unit_nv(self):
+        _logger.debug(" Ràng buộc số giữ chỗ theo căn hộ/ NVBH")
         gc_in_unit = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                      ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
                                                      ('bsd_unit_id', '=', self.bsd_unit_id.id),
@@ -106,7 +110,7 @@ class BsdRapCan(models.Model):
             raise UserError("Tổng số giữ chỗ trên Căn hộ đã vượt quá quy định!")
 
     # KD.07.04 Ràng buộc số giữ chỗ theo NVBH/ngày
-    @api.constrains('bsd_nvbh_id')
+    @api.constrains('bsd_nvbh_id', 'bsd_ngay_gc')
     def _constrain_nv_bh(self):
         min_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
         max_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.max.time())
@@ -119,7 +123,7 @@ class BsdRapCan(models.Model):
             raise UserError("Tổng số Giữ chỗ trên một ngày của bạn đã vượt quá quy định")
 
     # KD.07.05 Ràng buộc số giữ chỗ theo căn hộ/NVBH/ngày
-    @api.constrains('bsd_nvbh_id')
+    @api.constrains('bsd_nvbh_id', 'bsd_unit_id', 'bsd_ngay_gc')
     def _constrain_unit_nv_ngay(self):
         min_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
         max_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.max.time())
