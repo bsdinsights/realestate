@@ -166,7 +166,7 @@ class BsdRapCan(models.Model):
             })
         else:
             giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
-                                                           ('bsd_stt_bg', '>', 0)])
+                                                           ('id', '!=', self.id)])
             stt = 1
             time_gc = self.bsd_du_an_id.bsd_gc_smb
             ngay_hh_bg = datetime.datetime.now() + datetime.timedelta(hours=time_gc)
