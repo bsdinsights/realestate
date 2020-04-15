@@ -167,7 +167,9 @@ class BsdRapCan(models.Model):
         else:
             giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                            ('bsd_stt_bg', '>', 0)])
-            stt = max(filter(None, giu_cho_unit.mapped('bsd_stt_bg'))) + 1
+            stt = 1
+            if giu_cho_unit:
+                stt = max(filter(None, giu_cho_unit.mapped('bsd_stt_bg'))) + 1
             time_gc = self.bsd_du_an_id.bsd_gc_smb
             ngay_hh_bg = max(giu_cho_unit.mapped('bsd_ngay_hh_bg')) + datetime.timedelta(hours=time_gc)
             self.write({
