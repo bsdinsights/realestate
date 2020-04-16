@@ -260,23 +260,29 @@ class BsdDotMoBan(models.Model):
                                                           ('bsd_dot_mb_id', '=', self.id),
                                                           ('state', 'in', ['dat_cho', 'giu_cho']),
                                                           ('bsd_thanh_toan', '=', 'da_tt')])
-            stt = 0
-            time_gc = self.bsd_du_an_id.bsd_gc_smb
-            ngay_ph = self.bsd_ngay_ph
-            _logger.debug("giu cho")
-            _logger.debug(giu_cho_ids.sorted(key='bsd_ngay_hh_gc'))
-            for giu_cho in giu_cho_ids.sorted(key='bsd_ngay_hh_gc'):
-                stt += 1
-                ngay_ph += datetime.timedelta(hours=time_gc)
-                # KD.04.07 cập nhật trạng thái giữ chỗ khi phát hành
-                if giu_cho.state == 'dat_cho':
+            if giu_cho_ids:
+                gc = giu_cho_ids.filtered(lambda x: not x.bsd_rap_can_id).sorted('id')
+                gc_no_rc = zip(gc.mapped('id'), gc.mapped('bsd_ngay_tt'))
+                gc = giu_cho_ids.filtered(lambda x: x.bsd_rap_can_id).sorted('id')
+                gc_rc = zip(gc.mapped('id'), gc.mapped('bsd_ngay_gc'))
+                _logger.debug("sắp xếp")
+                gc_sorted = sorted(list(gc_rc) + list(gc_no_rc), key=lambda x: x[1])
+                id_gc_sorted = [g[0] for g in gc_sorted]
+                stt = 0
+                time_gc = self.bsd_du_an_id.bsd_gc_smb
+                ngay_ph = self.bsd_ngay_ph
+                for giu_cho in self.env['bsd.giu_cho'].browse(id_gc_sorted):
+                    stt += 1
+                    ngay_ph += datetime.timedelta(hours=time_gc)
+                    # KD.04.07 cập nhật trạng thái giữ chỗ khi phát hành
+                    if giu_cho.state == 'dat_cho':
+                        giu_cho.write({
+                            'state': 'giu_cho',
+                        })
                     giu_cho.write({
-                        'state': 'giu_cho',
+                        'bsd_stt_bg': stt,
+                        'bsd_ngay_hh_bg': ngay_ph
                     })
-                giu_cho.write({
-                    'bsd_stt_bg': stt,
-                    'bsd_ngay_hh_bg': ngay_ph
-                })
 
 
 class BsdDotMoBanSanGiaoDich(models.Model):
