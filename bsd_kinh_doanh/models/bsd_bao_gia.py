@@ -109,6 +109,7 @@ class BsdBaoGia(models.Model):
         if self.bsd_giu_cho_id:
             giu_cho = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                       ('state', '=', 'giu_cho'),
+                                                      ('bsd_unit_id', '=', self.bsd_unit_id.id)
                                                       ('bsd_ngay_hh_bg', '<', self.bsd_giu_cho_id.bsd_ngay_hh_bg)])
             if giu_cho:
                 raise UserError("Có Giữ chỗ cần được Báo giá trước .\n Vui lòng chờ đến lược của bạn!")
