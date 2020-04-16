@@ -17,9 +17,11 @@
 }
 .o_list_view {
     .o_list_table {
+        table-layout: auto !important;
+        // width: 100% !important;
         thead {
             > tr > th:not(.o_list_record_selector) {
-
+                max-width: 150px !important;
             }
         }
     }
