@@ -74,7 +74,7 @@ class BsdBaoGia(models.Model):
                                     help="""Tiền thuế: Giá bán trước thuế trừ giá trị QSDĐ, nhân với thuế suất""",
                                     compute='_compute_tien_thue', store=True)
     bsd_tien_pbt = fields.Monetary(string="Phí bảo trì", help="Phí bảo trì: bằng % phí bảo trì nhân với giá bán",
-                                   related="bsd_unit_id.bsd_tien_pbt", store=True)
+                                   compute="_compute_tien_pbt", store=True)
     bsd_tong_gia = fields.Monetary(string="Tổng giá bán",
                                    help="""Tổng giá bán: bằng Giá bán trước thuế cộng Tiền thuế cộng phí bảo trì""",
                                    compute="_compute_tong_gia", store=True)
@@ -109,12 +109,12 @@ class BsdBaoGia(models.Model):
         if self.bsd_giu_cho_id:
             giu_cho = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                       ('state', '=', 'giu_cho'),
-                                                      ('bsd_unit_id', '=', self.bsd_unit_id.id)
+                                                      ('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                       ('bsd_ngay_hh_bg', '<', self.bsd_giu_cho_id.bsd_ngay_hh_bg)])
             if giu_cho:
                 raise UserError("Có Giữ chỗ cần được Báo giá trước .\n Vui lòng chờ đến lược của bạn!")
 
-    @api.depends('bsd_unit_id')
+    @api.depends('bsd_unit_id.bsd_tien_dc')
     def _compute_tien_dc(self):
         for each in self:
             if each.bsd_unit_id.bsd_tien_dc != 0:
@@ -122,13 +122,18 @@ class BsdBaoGia(models.Model):
             else:
                 each.bsd_tien_dc = each.bsd_unit_id.bsd_du_an_id.bsd_tien_dc
 
-    @api.depends('bsd_unit_id')
+    @api.depends('bsd_unit_id.bsd_tl_pbt')
     def _compute_tl_pbt(self):
         for each in self:
-            if each.bsd_unit_id.bsd_tien_dc != 0:
+            if each.bsd_unit_id.bsd_tl_pbt != 0:
                 each.bsd_tl_pbt = each.bsd_unit_id.bsd_tl_pbt
             else:
                 each.bsd_tl_pbt = each.bsd_unit_id.bsd_du_an_id.bsd_tl_pbt
+
+    @api.depends('bsd_gia_ban', 'bsd_tl_pbt')
+    def _compute_tien_pbt(self):
+        for each in self:
+            each.bsd_tien_pbt = each.bsd_gia_ban * each.bsd_tl_pbt / 100
 
     @api.depends('bsd_unit_id', 'bsd_bang_gia_id.item_ids.fixed_price')
     def _compute_gia_ban(self):
