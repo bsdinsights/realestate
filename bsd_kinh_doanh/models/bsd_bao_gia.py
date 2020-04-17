@@ -86,7 +86,7 @@ class BsdBaoGia(models.Model):
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
 
-    state = fields.Selection([('nhap', 'Nháp'),('cho_duyet', 'Chờ duyệt'),
+    state = fields.Selection([('nhap', 'Nháp'), ('cho_duyet', 'Chờ duyệt'),
                               ('da_duyet', 'Đã duyệt'), ('dat_coc', 'Đặt cọc'),
                               ('huy', 'Hủy')], string="Trạng thái", default="nhap", help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
@@ -96,8 +96,7 @@ class BsdBaoGia(models.Model):
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_bao_gia_id', string="Lịch thanh toán",
-                                  readonly=True,
-                                  states={'nhap': [('readonly', False)]})
+                                  readonly=True)
 
     bsd_ngay_in_bg = fields.Datetime(string="Ngày in báo giá", help="Ngày in báo giá", readonly=True)
     bsd_ngay_hh_kbg = fields.Datetime(string="Hết hạn ký BG", help="Ngày hết hiệu lực ký báo giá", readonly=True)
@@ -219,6 +218,8 @@ class BsdBaoGia(models.Model):
         return res
 
     def action_lich_tt(self):
+        # Xóa lịch thanh toán hiện tại
+        self.bsd_ltt_ids.unlink()
         _logger.debug("Tao tu dong lich thanh toan")
 
         # hàm cộng tháng
@@ -231,58 +232,56 @@ class BsdBaoGia(models.Model):
 
         # tạo biến cục bộ
         stt = 0  # Đánh số thứ tự record đợt thanh toán
+        ngay_hh_tt = datetime.datetime.now()  # Ngày giá trị mặc đính tính ngày hết hạn thanh toán
         cs_tt = self.bsd_cs_tt_id
         dot_tt_ids = cs_tt.bsd_ct_ids
         lai_phat = cs_tt.bsd_lai_phat_tt_id
 
-        dot_cd = dot_tt_ids.filtered(lambda x: x.bsd_cach_tinh == 'cd' and not x.bsd_dot_cuoi)
-
-        if len(dot_cd) > 1:
-            raise UserError("Kiểm tra lại dữ liệu chính sách thanh toán")
-        if dot_cd:
-            stt += 1
-            ngay_hh_tt_cd = dot_cd.bsd_ngay_cd
-            self.bsd_ltt_ids.create(self._cb_du_lieu_dtt(stt, 'CD', dot_cd, lai_phat, ngay_hh_tt_cd, cs_tt))
-        # Tạo dữ liệu đợt tự động
-        dot_td = dot_tt_ids.filtered(lambda x: x.bsd_cach_tinh == 'td' and not x.bsd_dot_cuoi)
-        ngay_hh_tt_td = ngay_hh_tt_cd
-        if len(dot_td) > 1:
-            raise UserError("Kiểm tra lại dữ liệu chính sách thanh toán")
-        if dot_td:
-            list_ngay_hh_tt = []
-            if dot_td.bsd_lap_lai == '1':
-                for dot in range(0, dot_td.bsd_so_dot + 1):
+        for dot in dot_tt_ids.sorted('bsd_stt'):
+            # Tạo dữ liệu đợt cố định
+            if dot.bsd_cach_tinh == 'cd':
+                dot_cd = dot
+                stt += 1
+                # cập nhật lại ngày hết hạn thanh toán
+                ngay_hh_tt = dot_cd.bsd_ngay_cd
+                self.bsd_ltt_ids.create(self._cb_du_lieu_dtt(stt, 'CD', dot_cd, lai_phat, ngay_hh_tt, cs_tt))
+            # Tạo dữ liệu đợt tự động
+            elif dot.bsd_cach_tinh == 'td':
+                dot_td = dot
+                ngay_hh_tt_td = ngay_hh_tt
+                list_ngay_hh_tt_td = []
+                if dot_td.bsd_lap_lai == '1':
+                    for dot_i in range(0, dot_td.bsd_so_dot + 1):
+                        if dot_td.bsd_tiep_theo == 'ngay':
+                            ngay_hh_tt_td += datetime.timedelta(days=dot_td.bsd_so_ngay)
+                        else:
+                            ngay_hh_tt_td = add_months(ngay_hh_tt_td, dot_td.bsd_so_thang)
+                        list_ngay_hh_tt_td.append(ngay_hh_tt_td)
+                else:
                     if dot_td.bsd_tiep_theo == 'ngay':
                         ngay_hh_tt_td += datetime.timedelta(days=dot_td.bsd_so_ngay)
                     else:
                         ngay_hh_tt_td = add_months(ngay_hh_tt_td, dot_td.bsd_so_thang)
-                    list_ngay_hh_tt.append(ngay_hh_tt_td)
-            else:
-                if dot_td.bsd_tiep_theo == 'ngay':
-                    ngay_hh_tt_td += datetime.timedelta(days=dot_td.bsd_so_ngay)
-                else:
-                    ngay_hh_tt_td = add_months(ngay_hh_tt_td, dot_td.bsd_so_thang)
-                list_ngay_hh_tt.append(ngay_hh_tt_td)
-            for ngay_hh_tt in list_ngay_hh_tt:
+                    list_ngay_hh_tt_td.append(ngay_hh_tt_td)
+
+                # Gán lại ngày cuối cùng tự động thanh toán
+                ngay_hh_tt = list_ngay_hh_tt_td[-1]
+                for ngay in list_ngay_hh_tt_td:
+                    stt += 1
+                    self.bsd_ltt_ids.create(self._cb_du_lieu_dtt(stt, 'TD', dot_td, lai_phat, ngay, cs_tt))
+
+            # Tạo đợt thanh toán theo dự kiến bàn giao
+            elif dot.bsd_cach_tinh == 'dkbg':
+                dot_dkbg = dot
+                ngay_hh_tt_dkbg = self.bsd_unit_id.bsd_ngay_dkbg or self.bsd_unit_id.bsd_du_an_id.bsd_ngay_dkbg or False
                 stt += 1
-                self.bsd_ltt_ids.create(self._cb_du_lieu_dtt(stt, 'TD', dot_td, lai_phat, ngay_hh_tt, cs_tt))
+                self.bsd_ltt_ids.create(self._cb_du_lieu_dtt(stt, 'DKBG', dot_dkbg, lai_phat, ngay_hh_tt_dkbg, cs_tt))
 
-        # Tạo đợt thanh toán theo dự kiến bàn giao
-        dot_dkbg = dot_tt_ids.filtered(lambda x: x.bsd_cach_tinh == 'dkbg' and not x.bsd_dot_cuoi)
-        if len(dot_dkbg) > 1:
-            raise UserError("Kiểm tra lại dữ liệu chính sách thanh toán")
-        if dot_dkbg:
-            ngay_hh_tt_dkbg = self.bsd_unit_id.bsd_ngay_dkbg or self.bsd_unit_id.bsd_du_an_id.bsd_ngay_dkbg or False
-            stt += 1
-            self.bsd_ltt_ids.create(self._cb_du_lieu_dtt(stt, 'DKBG', dot_dkbg, lai_phat,ngay_hh_tt_dkbg, cs_tt))
-
-        # Tạo đợt bàn giao cuối
-        dot_cuoi = dot_tt_ids.filtered(lambda x: x.bsd_dot_cuoi)
-        if len(dot_cuoi) > 1:
-            raise UserError("Kiểm tra lại dữ liệu chính sách thanh toán")
-        if dot_cuoi:
-            stt += 1
-            self.bsd_ltt_ids.create(self._cb_du_lieu_dtt(stt, 'DBGC', dot_cuoi, lai_phat, False, cs_tt))
+            # Tạo đợt bàn giao cuối
+            else:
+                dot_cuoi = dot
+                stt += 1
+                self.bsd_ltt_ids.create(self._cb_du_lieu_dtt(stt, 'DBGC', dot_cuoi, lai_phat, False, cs_tt))
 
     def action_huy(self):
         pass
