@@ -250,8 +250,8 @@ class BsdBaoGia(models.Model):
             raise UserError("Kiểm tra lại dữ liệu chính sách thanh toán")
         if dot_td:
             list_ngay_hh_tt = []
-            if dot_td.bsd_lap_lai:
-                for dot in range(0, dot_td.bsd_so_dot):
+            if dot_td.bsd_lap_lai == '1':
+                for dot in range(0, dot_td.bsd_so_dot + 1):
                     if dot_td.bsd_tiep_theo == 'ngay':
                         ngay_hh_tt_td += datetime.timedelta(days=dot_td.bsd_so_ngay)
                     else:
