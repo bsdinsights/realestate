@@ -117,9 +117,9 @@ class BsdBaoGia(models.Model):
     def _compute_tien_dc(self):
         for each in self:
             if each.bsd_unit_id.bsd_tien_dc != 0:
-                each.bsd_tien_dc = each.bsd_unit_id.bsd_tien_dc
+                each.bsd_tien_dc = each.bsd_unit_id.bsd_tien_dc - each.bsd_tien_gc
             else:
-                each.bsd_tien_dc = each.bsd_unit_id.bsd_du_an_id.bsd_tien_dc
+                each.bsd_tien_dc = each.bsd_unit_id.bsd_du_an_id.bsd_tien_dc - each.bsd_tien_gc
 
     @api.depends('bsd_unit_id.bsd_tl_pbt')
     def _compute_tl_pbt(self):
