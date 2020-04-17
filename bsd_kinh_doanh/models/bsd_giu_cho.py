@@ -144,6 +144,8 @@ class BsdRapCan(models.Model):
                 self.bsd_tien_gc = tien_gc
             else:
                 self.bsd_tien_gc = self.bsd_du_an_id.bsd_tien_gc
+        if self.bsd_dot_mb_id:
+            self.bsd_tien_gc = 0
 
     # R.05 Tính hạn hiệu lực giữ chỗ
     @api.depends('bsd_ngay_gc', 'bsd_du_an_id')
