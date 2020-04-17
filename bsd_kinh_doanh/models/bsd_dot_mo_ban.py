@@ -275,7 +275,7 @@ class BsdDotMoBan(models.Model):
                     stt += 1
                     ngay_ph += datetime.timedelta(hours=time_gc)
                     # KD.04.07 cập nhật trạng thái giữ chỗ khi phát hành
-                    if giu_cho.state == 'dat_cho':
+                    if giu_cho.state == 'dat_cho' and giu_cho.bsd_thanh_toan == 'da_tt':
                         giu_cho.write({
                             'state': 'giu_cho',
                         })
