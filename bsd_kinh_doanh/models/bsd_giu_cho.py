@@ -83,6 +83,10 @@ class BsdRapCan(models.Model):
     bsd_ngay_hh_bg = fields.Datetime(string="Hạn báo giá", help="Hiệu lực được làm báo giá", readonly=True)
     bsd_het_han_bg = fields.Boolean(string="Hết hạn báo giá", readonly=True, default=False,
                                     help="Thông tin ghi nhận thời gian làm báo giá có bok hết hiệu lực hay chưa")
+    bsd_ngay_hh_stt = fields.Datetime(string="Hạn GC sau TT", compute="_compute_ngay_hh_stt", store=True,
+                                      help="Ngày hết hạn giữ chỗ sau khi thanh toán tiền giữ chỗ")
+    bsd_het_han_gc = fields.Boolean(string="Hết hạn giữ chỗ", readonly=True,
+                                    help="""Thông tin ghi nhận giữ chỗ bị hết hiệu lực sau khi đã thanh toán giữ chỗ""")
 
     @api.onchange('bsd_du_an_id')
     def _onchange_unit(self):
@@ -148,7 +152,7 @@ class BsdRapCan(models.Model):
             self.bsd_tien_gc = 0
 
     # R.05 Tính hạn hiệu lực giữ chỗ
-    @api.depends('bsd_ngay_gc', 'bsd_du_an_id')
+    @api.depends('bsd_ngay_gc', 'bsd_du_an_id.bsd_gc_tmb')
     def _compute_hl_gc(self):
         for each in self:
             if each.bsd_ngay_gc:
@@ -158,6 +162,13 @@ class BsdRapCan(models.Model):
                 else:
                     hours = each.bsd_du_an_id.bsd_gc_smb or 0 if each.bsd_du_an_id else 0
                     each.bsd_ngay_hh_gc = each.bsd_ngay_gc + datetime.timedelta(hours=hours)
+
+    # R.08 Tính hạn hiệu lực giữ chỗ sau thanh toán
+    @api.depends('bsd_ngay_tt', 'bsd_du_an_id.bsd_gc_tmb')
+    def _compute_ngay_hh_stt(self):
+        for each in self:
+            if each.bsd_ngay_tt:
+                each.bsd_ngay_hh_stt = each.bsd_ngay_tt + datetime.timedelta(days=each.bsd_du_an_id.bsd_gc_tmb)
 
     # KD07.01 Xác nhận giữ chỗ
     def action_xac_nhan(self):
@@ -195,6 +206,13 @@ class BsdRapCan(models.Model):
         self.write({
             'state': 'huy',
         })
+
+    # KD.07.08 Tự động đánh dấu hết hạn giữ chỗ
+    def auto_danh_dau_hh_gc(self):
+        if self.state == 'xac_nhan' and self.bsd_thanh_toan == 'da_tt' and not self.bsd_het_han_gc:
+            self.write({
+                'bsd_het_han_gc': True
+            })
 
     # R7 Ghi nhận thông tin trước mở bán
     @api.model
