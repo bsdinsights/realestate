@@ -16,7 +16,7 @@ class BsdPsCkChung(models.Model):
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng chiết khấu",
                                related="bsd_chiet_khau_id.bsd_den_ngay", store=True)
     bsd_cach_tinh = fields.Selection(related="bsd_chiet_khau_id.bsd_cach_tinh", store=True)
-    bsd_tl_tt = fields.Float(related="bsd_chiet_khau_id.bsd_tl_tt", store=True)
+    bsd_tl_ck = fields.Float(related="bsd_chiet_khau_id.bsd_tl_ck", store=True)
     bsd_tien = fields.Monetary(related="bsd_chiet_khau_id.bsd_tien_ck", string="Tiền", store=True)
     bsd_tien_ck = fields.Monetary(string="Tiền chiết khấu",
                                   compute="_compute_tien_ck", store=True,
@@ -43,10 +43,10 @@ class BsdPsCkChung(models.Model):
         })
         return res
 
-    @api.depends('bsd_cach_tinh', 'bsd_tien', 'bsd_tl_tt', 'bsd_bao_gia_id.bsd_gia_ban')
+    @api.depends('bsd_cach_tinh', 'bsd_tien', 'bsd_tl_ck', 'bsd_bao_gia_id.bsd_gia_ban')
     def _compute_tien_ck(self):
         for each in self:
             if each.bsd_cach_tinh == 'phan_tram':
-                each.bsd_tien_ck = each.bsd_tl_tt * each.bsd_bao_gia_id.bsd_gia_ban / 100
+                each.bsd_tien_ck = each.bsd_tl_ck * each.bsd_bao_gia_id.bsd_gia_ban / 100
             else:
                 each.bsd_tien_ck = each.bsd_tien
