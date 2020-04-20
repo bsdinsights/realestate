@@ -61,7 +61,7 @@ class BsdBaoGia(models.Model):
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán", compute="_compute_gia_ban", store=True)
-    bsd_tien_ck = fields.Monetary(string="Chiết khấu", help="Tổng tiền chiết khấu")
+    bsd_tien_ck = fields.Monetary(string="Chiết khấu", help="Tổng tiền chiết khấu", compute="_compute_tien_ck", store=True)
     bsd_tien_bg = fields.Monetary(string="Tiền bàn giao", help="Tổng tiền bàn giao",
                                   compute='_compute_tien_bg', store=True)
     bsd_gia_truoc_thue = fields.Monetary(string="Giá bán trước thuế",
@@ -97,6 +97,9 @@ class BsdBaoGia(models.Model):
                                  states={'nhap': [('readonly', False)]})
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_bao_gia_id', string="Lịch thanh toán",
                                   readonly=True)
+    bsd_ps_ck_ch_ids = fields.One2many('bsd.ps_ck_ch', 'bsd_bao_gia_id', string="Phát sinh chiết khấu chung",
+                                       readonly=True,
+                                       states={'nhap': [('readonly', False)]})
 
     bsd_ngay_in_bg = fields.Datetime(string="Ngày in báo giá", help="Ngày in báo giá", readonly=True)
     bsd_ngay_hh_kbg = fields.Datetime(string="Hết hạn ký BG", help="Ngày hết hiệu lực ký báo giá", readonly=True)
@@ -146,6 +149,11 @@ class BsdBaoGia(models.Model):
     def _compute_tien_bg(self):
         for each in self:
             each.bsd_tien_bg = sum(each.bsd_bg_ids.mapped('bsd_tien_bg'))
+
+    @api.depends('bsd_ps_ck_ch_ids.bsd_tien_ck')
+    def _compute_tien_ck(self):
+        for each in self:
+            each.bsd_tien_ck = sum(each.bsd_ps_ck_ch_ids.mapped('bsd_tien_ck'))
 
     @api.depends('bsd_gia_ban', 'bsd_tien_ck', 'bsd_tien_bg')
     def _compute_gia_truoc_thue(self):
@@ -301,4 +309,3 @@ class BsdBaoGia(models.Model):
             self.write({
                 'state': 'huy',
             })
-
