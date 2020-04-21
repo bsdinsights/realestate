@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <report
+        id="bsd_bao_gia_in"
+        model="bsd.bao_gia"
+        string="Báo giá"
+        report_type="qweb-html"
+        name="bsd_kinh_doanh.bsd_bao_gia_view"
+        file="bsd_kinh_doanh.bsd_bao_gia_view"
+        attachment_use="True"
+        attachment="(object.state in ('open','paid')) and
+            ('INV'+(object.number or '').replace('/','')+'.pdf')"
+    />
+    <template id="bsd_bao_gia_view">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-4">
+                                <span t-field="res_company.logo" t-options-widget="&quot;image&quot;" style="width:200px;display:inline-block"/>
+                            </div>
+                            <div class="col-4"/>
+                            <div class="col-4">
+                                <span t-field="res_company.partner_id" t-options-widget="&quot;contact&quot;"/>
+                            </div>
+                        </div>
+                        <hr/>
+                        <!-- tên phiếu báo giá-->
+                        <div class="row">
+                            <div class="col-3"/>
+                            <div class="col-6">
+                                <h2 style="text-align:center">PHIẾU TÍNH GIÁ</h2>
+                            </div>
+                          <div class="col-3"/>
+                        </div>
+                        <!--Ngày in báo giá-->
+                        <div class="row">
+                            <div class="col-6"/>
+                                <div class="col-6">
+                                    <div style="text-align:right">
+                                    <span>Ngày: </span>
+                                    <span t-field="doc.bsd_ngay_in_bg"/>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Thông tin căn hộ-->
+                        <div class="row">
+                            <table class="table table-bordered"
+                                   style="table-layout:fixed;width=1000px">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                                Căn hộ
+                                        </th>
+                                        <th>
+                                                Loại căn hộ
+                                        </th>
+                                        <th>
+                                                Diện tích tim tường
+                                        </th>
+                                        <th>
+                                                Diện tích thông thủy
+                                        </th>
+                                        <th>
+                                                Điều kiện bàn giao
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><div t-esc="doc.bsd_unit_id.bsd_ten_unit"/></td>
+                                        <td><div t-esc="doc.bsd_unit_id.bsd_loai_sp_id.bsd_ma_nhom"/></td>
+                                        <td><div t-esc="doc.bsd_dt_xd"/></td>
+                                        <td><div t-esc="doc.bsd_dt_sd"/></td>
+                                        <td><div></div></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

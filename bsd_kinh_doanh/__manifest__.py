@@ -31,6 +31,7 @@
         'data/bsd_automation_data.xml',
         'wizards/bsd_wizard_ky_bg_views.xml',
         'wizards/bsd_wizard_ky_dc_views.xml',
+        'reports/report_bsd_bao_gia_views.xml',
     ],
     'application': True,
 }

@@ -136,7 +136,7 @@
                                     <field name="bsd_den_ngay"/>
                                     <field name="bsd_cach_tinh"/>
                                     <field name="bsd_tien"/>
-                                    <field name="bsd_tl_tt"/>
+                                    <field name="bsd_tl_ck"/>
                                     <field name="bsd_tien_ck" sum="Tổng tiền chiết khấu"/>
                                 </tree>
                             </field>
