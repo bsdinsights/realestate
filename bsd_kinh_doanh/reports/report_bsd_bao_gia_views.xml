@@ -31,14 +31,21 @@
             <t t-esc="company.update_scss()"/>
             <div class="header">
                 <div class="row">
-                    <div class="col-4">
-                        <span t-field="res_company.logo" t-options-widget="&quot;image&quot;" style="width:200px;display:inline-block"/>
+                    <div class="col-3 mb4">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 100px;" alt="Logo"/>
                     </div>
-                    <div class="col-4"/>
-                    <div class="col-4">
-                        <span t-field="res_company.partner_id" t-options-widget="&quot;contact&quot;"/>
+                    <div class="col-9 text-right">
+                        <div t-field="company.partner_id"
+                        t-options='{"widget": "contact", "fields": ["address", "name","phone"],"no_marker": true}'/>
                     </div>
                 </div>
+
+                <div class="row zero_min_height">
+                    <div class="col-12">
+                        <div style="border-bottom: 1px solid black;"/>
+                    </div>
+                </div>
+
             </div>
 
             <div class="article o_report_layout_standard"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
@@ -50,13 +57,13 @@
         <template id="bsd_bao_gia_view">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
-                    <t t-call="bsd_kinh_doanh.bsd_external_layout_standard">
+                    <t t-call="web.external_layout">
                     <div class="page">
                         <!-- tên phiếu báo giá-->
                         <div class="row">
                           <div class="col-3"/>
                           <div class="col-6">
-                            <h2 style="text-align:center">PHIẾU TÍNH GIÁ</h2>
+                            <h2 style="text-align:center;margin-top: 22px">PHIẾU TÍNH GIÁ</h2>
                           </div>
                           <div class="col-3"/>
                         </div>
@@ -190,8 +197,7 @@
                                   <tr class="text-center">
                                     <td>
                                       <div>
-                                        <span t-field="doc.bsd_tl_pbt"/>
-                                        <span>% phí bảo trì</span>
+                                        <span>Phí bảo trì</span>
                                       </div>
                                     </td>
                                     <td><div t-field="doc.bsd_tien_pbt"/></td>
@@ -215,7 +221,7 @@
                         </div>
                         <!-- Điều khoản-->
                         <div class="row">
-                          <p><b><u>Điều khoản:</u></b></p>
+                          <div><b><u>Điều khoản:</u></b></div>
                         </div>
                         <div class="row">
                           <ol>
@@ -251,8 +257,8 @@
                         <!--Ký tên-->
                         <div class="row">
                           <div class="col-4 text-center">
-                            <div class="mb-5">Người lập</div>
-                            <hr class="mt-5"/>
+                            <div class="mb-5" style="margin-bottom:200px">Người lập</div>
+                            <div style="border-bottom: 1px solid black;"/>
                           </div>
                           <div class="col-4 text-center">
                             <div class="mb-5">Người duyệt</div>
