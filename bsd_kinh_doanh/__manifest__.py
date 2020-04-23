@@ -7,7 +7,6 @@
     'depends': [
                 'base',
                 'mail',
-                'crm',
                 'hr',
                 'bsd_du_an',
                 'bsd_danh_muc',
