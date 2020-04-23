@@ -9,5 +9,6 @@
     ],
     'data': [
         'views/bsd_webclient_templates.xml',
+        'views/bsd_res_company_views.xml'
     ],
 }
