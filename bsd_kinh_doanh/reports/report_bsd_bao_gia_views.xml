@@ -5,7 +5,7 @@
             id="bsd_bao_gia_in"
             model="bsd.bao_gia"
             string="Báo giá"
-            report_type="qweb-html"
+            report_type="qweb-pdf"
             name="bsd_kinh_doanh.bsd_bao_gia_view"
             file="bsd_kinh_doanh.bsd_bao_gia_view"
             attachment_use="True"
@@ -13,44 +13,55 @@
                 ('INV'+(object.number or '').replace('/','')+'.pdf')"
         />
 
+        <template id="bsd_external_layout_standard">
+            <t t-if="not o" t-set="o" t-value="doc"/>
+
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+            <t t-esc="company.update_scss()"/>
+            <div class="header">
+                <div class="row mt32 mb32">
+                    <div class="col-6">
+                        <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="width: 80px;" />
+                    </div>
+                    <div class="col-1"/>
+                    <div class="col-5 text-left" style="font-size:13px">
+                        <span t-field="company.partner_id" />
+                        <br/>
+                        <span t-field="company.partner_id.street" />
+                        <br/>
+                        <span t-field="company.partner_id.phone" />
+                        <br/>
+                    </div>
+                </div>
+            </div>
+            <div class="article o_report_layout_standard"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-call="web.address_layout"/>
+                <t t-raw="0"/>
+            </div>
+        </template>
+
         <template id="bsd_bao_gia_view">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
-                    <t t-if="not o" t-set="o" t-value="doc"/>
-                    <t t-if="not company">
-                        <!-- Multicompany -->
-                        <t t-if="company_id">
-                            <t t-set="company" t-value="company_id"/>
-                        </t>
-                        <t t-elif="o and 'company_id' in o">
-                            <t t-set="company" t-value="o.company_id.sudo()"/>
-                        </t>
-                        <t t-else="else">
-                            <t t-set="company" t-value="res_company"/>
-                        </t>
-                    </t>
-                    <t t-esc="company.update_scss()"/>
-                    <div class="article o_report_layout_standard"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
-                        <t t-call="web.address_layout"/>
-                        <t t-raw="0"/>
-                    </div>
+                    <t t-set="doc" t-value="doc.with_context(lang=lang)" />
+                    <t t-call="web.external_layout">
                     <div class="page">
-                        <div class="row">
-                            <div class="col-3 mb4">
-                                <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 80px;" alt="Logo"/>
-                            </div>
-                            <div class="col-4"/>
-                            <div class="col-5">
-                                <div><b t-field="company.partner_id.name"></b></div>
-                                <div t-field="company.partner_id.street"/>
-                                <div><span>Điện thoại: </span ><span t-field="company.partner_id.phone"/></div>
-                            </div>
-                        </div>
                         <!-- tên phiếu báo giá-->
                         <div class="row">
                           <div class="col-2"/>
                           <div class="col-6">
-                            <h2 style="text-align:center;margin-top:5px">PHIẾU TÍNH GIÁ</h2>
+                            <h2 style="text-align:center;margin-top:5px;font-size:21px">PHIẾU TÍNH GIÁ</h2>
                           </div>
                           <div class="col-4"/>
                         </div>
@@ -59,13 +70,13 @@
                           <div class="col-6"/>
                           <div class="col-6">
                             <div style="text-align:right">
-                              <span style="font-size:16px">Ngày: </span>
-                              <span t-field="doc.bsd_ngay_in_bg"/>
+                              <span style="font-size:13px">Ngày: </span>
+                              <span style="font-size:13px" t-field="doc.bsd_ngay_in_bg"/>
                             </div>
                           </div>
                         </div>
                         <!--Thông tin căn hộ-->
-                        <div class="row">
+                        <div class="row" style="font-size:13px">
                             <table class="table table-bordered"
                                    style="table-layout:fixed;border: 3px !important; border-style: solid !important; border-color: #000000 !important;" >
                               <thead>
@@ -257,8 +268,9 @@
                           </div>
                         </div>
                     </div>
-                    </t>
                 </t>
+                </t>
+            </t>
         </template>
     </data>
 </odoo>

@@ -198,6 +198,7 @@ class BsdBaoGia(models.Model):
             'bsd_ngay_in_bg': datetime.datetime.now(),
             'bsd_ngay_hh_kbg': datetime.datetime.now() + datetime.timedelta(days=self.bsd_du_an_id.bsd_hh_bg)
         })
+        self.env.ref('bsd.sale_summary_report').report_action(self, data=data)
 
     def _cb_du_lieu_dtt(self, stt, ma_dtt, dot_tt, lai_phat, ngay_hh_tt, cs_tt):
         res = {}
