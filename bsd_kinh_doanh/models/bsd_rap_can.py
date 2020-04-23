@@ -50,7 +50,8 @@ class BsdRapCan(models.Model):
     def _constrain_gc_tc(self):
         if self.bsd_gc_tc_id:
             gc_tc = self.env['bsd.gc_tc'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-                                                  ('state', '=', 'thanh_toan'),
+                                                  ('state', '=', 'xac_nhan'),
+                                                  ('bsd_thanh_toan', '=', 'da_tt'),
                                                   ('bsd_ngay_ut', '<', self.bsd_gc_tc_id.bsd_ngay_ut)])
             if gc_tc:
                 raise UserError("Có Giữ chỗ thiện chí cần được Ráp căn trước .\n Vui lòng chờ đến lược của bạn!")
@@ -86,7 +87,7 @@ class BsdRapCan(models.Model):
         })
         # KD.06.05 Tự động tạo giữ chỗ khi ráp căn
         gc = self.env['bsd.giu_cho'].create({
-                    'bsd_ma_gc': self.bsd_gc_tc_id.bsd_ma_gctc,
+                    'bsd_ma_gc': self.bsd_gc_tc_id.bsd_ma_gctc + '-' + self.bsd_ma_rc,
                     'bsd_ngay_gc': datetime.datetime.now(),
                     'bsd_khach_hang_id': self.bsd_gc_tc_id.bsd_khach_hang_id.id,
                     'bsd_du_an_id': self.bsd_gc_tc_id.bsd_du_an_id.id,
@@ -100,6 +101,8 @@ class BsdRapCan(models.Model):
                     'bsd_rap_can_id': self.id,
                     'state': 'giu_cho',
                     'bsd_truoc_mb': True,
+                    'bsd_thanh_toan': 'da_tt',
+                    'bsd_ngay_tt': self.bsd_gc_tc_id.bsd_ngay_tt,
         })
         # cập nhật lại field giữ chỗ cho phiếu ráp căn
         self.write({
@@ -119,7 +122,7 @@ class BsdRapCan(models.Model):
             'bsd_nguoi_huy_id': self.env.uid,
         })
         self.bsd_gc_tc_id.write({
-            'state': 'thanh_toan',
+            'state': 'xac_nhan',
             'bsd_ngay_huy_rc': fields.Datetime.now(),
         })
         self.bsd_unit_id.write({

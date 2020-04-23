@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
+import datetime
 
 
 class BsdDatCoc(models.Model):
@@ -69,12 +70,25 @@ class BsdDatCoc(models.Model):
     bsd_tien_pql = fields.Monetary(string="Phí quản lý/ tháng", help="Số tiền phí quản lý cần đóng mỗi tháng",
                                    related="bsd_bao_gia_id.bsd_tien_pql", store=True)
 
-    state = fields.Selection([('nhap', 'Nháp')], string="Trạng thái", default="nhap", help="Trạng thái")
+    state = fields.Selection([('nhap', 'Nháp'), ('dat_coc', 'Đặt cọc'), ('huy', 'Hủy')],
+                             string="Trạng thái", default="nhap", help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
     bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_dat_coc_id', string="Bàn giao", readonly=True)
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_dat_coc_id', string="Lịch thanh toán", readonly=True)
+
+    bsd_co_hdc = fields.Boolean(string="Hợp đòng cọc", help="Thông tin quy định có làm hợp đồng cọc hay không",
+                                related="bsd_du_an_id.bsd_hd_coc", store=True)
+    bsd_so_hdc = fields.Char(string="Số hợp đồng", help="Số hợp đồng đặt cọc")
+
+    bsd_ngay_in_dc = fields.Datetime(string="Ngày in", help="Ngày in phiếu cọc, hợp đồng cọc", readonly=True)
+    bsd_ngay_hh_kdc = fields.Datetime(string="Hết hạn ký cọc", help="Ngày hết hạn ký phiếu cọc, hợp đồng cọc",
+                                      readonly=True)
+    bsd_ngay_up_dc = fields.Datetime(string="Upload đặt cọc", readonly=True,
+                                     help="""Ngày tải lên hệ thống phiếu đặt cọc, hợp đồng cọc đã được khách hàng 
+                                             ký xác nhận""")
+    bsd_ngay_ky_dc = fields.Datetime(string="Ngày ký đặt cọc", help="Ngày ký đặt cọc", readonly=True)
 
     @api.model
     def create(self, vals):
@@ -86,3 +100,30 @@ class BsdDatCoc(models.Model):
             'bsd_ltt_ids': [(6, 0, ids_ltt)]
         })
         return res
+
+    # KD.10.01 Xác nhận đặt cọc
+    def action_xac_nhan(self):
+        self.write({
+            'state': 'dat_coc',
+        })
+
+    # KD.10.02 In đặt cọc
+    def action_in_dc(self):
+        self.write({
+            'bsd_ngay_in_dc': datetime.datetime.now(),
+            'bsd_ngay_hh_kdc': datetime.datetime.now() + datetime.timedelta(days=self.bsd_du_an_id.bsd_hh_pc)
+        })
+
+    # KD.10.03 Upload đặt cọc
+    def action_upload_dc(self):
+        self.write({
+            'bsd_ngay_up_dc': datetime.datetime.now(),
+        })
+
+    # KD.10.04 Ký đặt cọc
+    def action_ky_dc(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_wizard_ky_dc_action').read()[0]
+        return action
+
+    def action_huy(self):
+        pass

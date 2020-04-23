@@ -1,4 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 bsd_hd_ban_manager, Hợp đồng mua bán,model_bsd_hd_ban,bsd_dich_vu.group_manager,1,1,1,1
-
-
+bsd_dong_so_huu_manager, Người đồng sở hữu,model_bsd_dong_so_huu,bsd_dich_vu.group_manager,1,1,1,1
+bsd_pl_dsh_manager, Phụ lục hợp đồng đồng sở hữu,model_bsd_pl_dsh,bsd_dich_vu.group_manager,1,1,1,1
+bsd_pl_dsh_moi_manager, Đồng sở hữu mới,model_bsd_pl_dsh_moi,bsd_dich_vu.group_manager,1,1,1,1
+bsd_pl_dsh_cu_manager, Đồng sở hữu,model_bsd_pl_dsh_cu,bsd_dich_vu.group_manager,1,1,1,1
+bsd_dt_tt_manager, Diện tích thông thủy thưc tế,model_bsd_dt_tt,bsd_dich_vu.group_manager,1,1,1,1
+bsd_pl_tti_manager, Phụ lục thay đổi thông tin,model_bsd_pl_tti,bsd_dich_vu.group_manager,1,1,1,1

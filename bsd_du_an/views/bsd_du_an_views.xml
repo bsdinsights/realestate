@@ -152,13 +152,26 @@
             <tree>
                 <field name="bsd_ma_da"/>
                 <field name="bsd_ten_da"/>
-                <field name="bsd_chu_dt_id"/>
                 <field name="bsd_loai_da"/>
-                <field name="bsd_dia_chi"/>
+                <field name="bsd_loai_sd"/>
+                <field name="bsd_ngay_dkcn"/>
+                <field name="bsd_ngay_dkbg"/>
                 <field name="state"/>
             </tree>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_du_an_filter">
+        <field name="name">bsd.du_an.list.filter</field>
+        <field name="model">bsd.du_an</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_ma_da"/>
+                <field name="bsd_ten_da"/>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_du_an_action">
         <field name="name">Dự án</field>
         <field name="res_model">bsd.du_an</field>

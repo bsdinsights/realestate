@@ -29,22 +29,22 @@ class BsdDotMoBan(models.Model):
     bsd_bang_gia_id = fields.Many2one('product.pricelist', string="Bảng giá",
                                       readonly=True, required=True,
                                       states={'cph': [('readonly', False)]})
-    bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="CK chung",
+    bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="CK chung", domain=[('state', '=', 'active')],
                                    readonly=True,
                                    states={'cph': [('readonly', False)]})
-    bsd_ck_nb_id = fields.Many2one('bsd.ck_nb', string="CK nội bộ",
+    bsd_ck_nb_id = fields.Many2one('bsd.ck_nb', string="CK nội bộ", domain=[('state', '=', 'active')],
                                    readonly=True,
                                    states={'cph': [('readonly', False)]})
-    bsd_ck_ms_id = fields.Many2one('bsd.ck_ms', string="CK mua sỉ",
+    bsd_ck_ms_id = fields.Many2one('bsd.ck_ms', string="CK mua sỉ", domain=[('state', '=', 'active')],
                                    readonly=True,
                                    states={'cph': [('readonly', False)]})
-    bsd_ck_ttth_id = fields.Many2one('bsd.ck_ttth', string="CK TT trước hạn",
+    bsd_ck_ttth_id = fields.Many2one('bsd.ck_ttth', string="CK TT trước hạn", domain=[('state', '=', 'active')],
                                      readonly=True,
                                      states={'cph': [('readonly', False)]})
-    bsd_ck_ttn_id = fields.Many2one('bsd.ck_ttn', string="CK TT nhanh",
+    bsd_ck_ttn_id = fields.Many2one('bsd.ck_ttn', string="CK TT nhanh", domain=[('state', '=', 'active')],
                                     readonly=True,
                                     states={'cph': [('readonly', False)]})
-    bsd_ck_cstt_id = fields.Many2one('bsd.ck_cstt', string="CK chính sách TT",
+    bsd_ck_cstt_id = fields.Many2one('bsd.ck_cstt', string="CK chính sách TT", domain=[('state', '=', 'active')],
                                      readonly=True,
                                      states={'cph': [('readonly', False)]})
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng của đợt mở bán",
@@ -54,12 +54,10 @@ class BsdDotMoBan(models.Model):
                                readonly=True, required=True,
                                states={'cph': [('readonly', False)]})
     bsd_ngay_ph = fields.Datetime(string="Ngày phát hành", help="Ngày duyệt phát hành đợt mở bán",
-                              readonly=True,
-                              states={'cph': [('readonly', False)]})
+                                  readonly=True)
     bsd_nguoi_ph = fields.Many2one('res.users', string="Người phát hành",
                                    help="Người duyệt phát hành đợt mở bán",
-                                   readonly=True,
-                                   states={'cph': [('readonly', False)]})
+                                   readonly=True)
     bsd_tu_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Từ tòa nhà",
                                         readonly=True,
                                         states={'cph': [('readonly', False)]})
@@ -130,7 +128,7 @@ class BsdDotMoBan(models.Model):
                                                          ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids
                 # lọc tầng đến tòa nhà cuối
                 ids_tang += self.env['bsd.tang'].search([('bsd_stt', '<=', den_tang_stt),
-                                                            ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids
+                                                            ('bsd_toa_nha_id', '=', den_toa_nha_id.id)]).ids
                 # lọc tầng các tòa nhà có số thứ tự lớn hơn tòa nhà đầu và nhỏ hơn tòa nhà cuối
                 if den_toa_nha_id.bsd_stt - tu_toa_nha_id.bsd_stt > 1:
                     ids_toa_nha = self.env['bsd.toa_nha'].search([('bsd_stt', '>', tu_toa_nha_id.bsd_stt),
@@ -161,11 +159,10 @@ class BsdDotMoBan(models.Model):
             pass
         else:
             # lấy tất cả unit chuẩn bị phát hành ở trạng thái chuẩn bị đặt chỗ, giữ chỗ
-            units = self.bsd_cb_ids.mapped('bsd_unit_id').filtered(lambda x: x.state in ['chuan_bi', 'dat_cho', 'giu_cho'])
+            units = self.bsd_cb_ids.mapped('bsd_unit_id').filtered(lambda x: x.state in ['chuan_bi', 'dat_cho',
+                                                                                         'giu_cho', 'san_sang'])
             # các chuẩn bị không đúng trạng thái
             cb_no_state = self.bsd_cb_ids.filtered(lambda c: c.bsd_unit_id not in units)
-            _logger.debug("các chuẩn bị không đúng trạng thái")
-            _logger.debug(cb_no_state)
             cb_no_state.write({
                 'bsd_ly_do': 'kd_tt',
             })
@@ -193,10 +190,10 @@ class BsdDotMoBan(models.Model):
             ph_units = no_uu_dot_mb_units.filtered(lambda x: x.bsd_dot_mb_id.state == 'ph')
             # kiểm tra các unit không trùng với đợt mở bán hiện tại đang phát hành
             diff_mb_units = ph_units.filtered(lambda x: (x.bsd_dot_mb_id.bsd_tu_ngay < self.bsd_tu_ngay
-                                                                   and x.bsd_dot_mb_id.bsd_den_ngay < self.bsd_tu_ngay)
-                                                        or (x.bsd_dot_mb_id.bsd_tu_ngay > self.bsd_den_ngay
-                                                            and x.bsd_dot_mb_id.bsd_den_ngay > self.bsd_den_ngay)
-                                                       )
+                                                         and x.bsd_dot_mb_id.bsd_den_ngay < self.bsd_tu_ngay)
+                                                            or (x.bsd_dot_mb_id.bsd_tu_ngay > self.bsd_den_ngay
+                                                                and x.bsd_dot_mb_id.bsd_den_ngay > self.bsd_den_ngay)
+                                              )
             _logger.debug('diff_mb_units')
             _logger.debug(diff_mb_units)
             # các chuẩn bị trùng với đợt mở bán khác
@@ -263,18 +260,29 @@ class BsdDotMoBan(models.Model):
                                                           ('bsd_dot_mb_id', '=', self.id),
                                                           ('state', 'in', ['dat_cho', 'giu_cho']),
                                                           ('bsd_thanh_toan', '=', 'da_tt')])
-            stt = 0
-            time_gc = self.bsd_du_an_id.bsd_gc_smb
-            ngay_ph = self.bsd_ngay_ph
-            _logger.debug("giu cho")
-            _logger.debug(giu_cho_ids.sorted(key='bsd_ngay_hh_gc'))
-            for giu_cho in giu_cho_ids.sorted(key='bsd_ngay_hh_gc'):
-                stt += 1
-                ngay_ph += datetime.timedelta(hours=time_gc)
-                giu_cho.write({
-                    'bsd_stt_bg': stt,
-                    'bsd_ngay_hh_bg': ngay_ph
-                })
+            if giu_cho_ids:
+                gc = giu_cho_ids.filtered(lambda x: not x.bsd_rap_can_id).sorted('id')
+                gc_no_rc = zip(gc.mapped('id'), gc.mapped('bsd_ngay_tt'))
+                gc = giu_cho_ids.filtered(lambda x: x.bsd_rap_can_id).sorted('id')
+                gc_rc = zip(gc.mapped('id'), gc.mapped('bsd_ngay_gc'))
+                _logger.debug("sắp xếp")
+                gc_sorted = sorted(list(gc_rc) + list(gc_no_rc), key=lambda x: x[1])
+                id_gc_sorted = [g[0] for g in gc_sorted]
+                stt = 0
+                time_gc = self.bsd_du_an_id.bsd_gc_smb
+                ngay_ph = self.bsd_ngay_ph
+                for giu_cho in self.env['bsd.giu_cho'].browse(id_gc_sorted):
+                    stt += 1
+                    ngay_ph += datetime.timedelta(hours=time_gc)
+                    # KD.04.07 cập nhật trạng thái giữ chỗ khi phát hành
+                    if giu_cho.state == 'dat_cho' and giu_cho.bsd_thanh_toan == 'da_tt':
+                        giu_cho.write({
+                            'state': 'giu_cho',
+                        })
+                    giu_cho.write({
+                        'bsd_stt_bg': stt,
+                        'bsd_ngay_hh_bg': ngay_ph
+                    })
 
 
 class BsdDotMoBanSanGiaoDich(models.Model):
@@ -310,13 +318,14 @@ class BsdDotMoBanDKBG(models.Model):
     _rec_name = 'bsd_dk_bg_id'
 
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", required=True)
-    bsd_dk_bg_id = fields.Many2one('bsd.dk_bg', string="Bàn giao")
+    bsd_dk_bg_id = fields.Many2one('bsd.dk_bg', string="Điều kiện bàn giao")
     bsd_ma_dkbg = fields.Char(related="bsd_dk_bg_id.bsd_ma_dkbg")
     bsd_loai_bg = fields.Selection(related="bsd_dk_bg_id.bsd_loai_bg")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     bsd_tien = fields.Monetary(related="bsd_dk_bg_id.bsd_tien")
     bsd_ty_le = fields.Float(related="bsd_dk_bg_id.bsd_ty_le")
+    bsd_gia_m2 = fields.Monetary(related="bsd_dk_bg_id.bsd_gia_m2")
 
 
 class BsdDotMoBanCB(models.Model):

@@ -6,6 +6,33 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            states="nhap"
+                            confirm="Bạn có muốn xác nhận hợp đồng không?"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="In hợp đồng"
+                            name="action_in_hd"
+                            type="object"
+                            states="xac_nhan"
+                            class="oe_highlight"/>
+                    <button string="Upload hợp đồng"
+                            name="action_upload_hdb"
+                            states="xac_nhan"
+                            attrs="{'invisible':['|',('bsd_ngay_in_hdb', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Ký hợp đồng"
+                            name="action_ky_hdb"
+                            states="xac_nhan"
+                            attrs="{'invisible':['|',('bsd_ngay_in_hdb', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
@@ -61,6 +88,28 @@
                                     <field name="bsd_tien_pql"/>
                                 </group>
                             </group>
+                            <group string="XÁC NHẬN">
+                                <group>
+                                    <field name="bsd_ngay_in_hdb"/>
+                                    <field name="bsd_ngay_hh_khdb"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_up_hdb"/>
+                                    <field name="bsd_ngay_ky_hdb"/>
+                                </group>
+                            </group>
+                            <group string="ĐỒNG SỞ HỮU">
+                                <field name="bsd_dong_sh_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="bsd_dong_sh_id" options="{'no_create':true}"/>
+                                        <field name="bsd_mobile"/>
+                                        <field name="bsd_email"/>
+                                        <field name="bsd_pl_dsh_id"/>
+                                        <field name="bsd_lan_td"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </group>
                         </page>
                         <page string="Bàn giao">
                             <field name="bsd_bg_ids">
@@ -75,7 +124,7 @@
                                     <field name="bsd_gia_m2"/>
                                     <field name="bsd_tien"/>
                                     <field name="bsd_ty_le"/>
-                                    <field name="bsd_tien_bg"/>
+                                    <field name="bsd_tien_bg" sum="Tổng tiền bàn giao"/>
                                 </tree>
                             </field>
                         </page>
@@ -86,7 +135,7 @@
                                     <field name="bsd_ma_dtt"/>
                                     <field name="bsd_ten_dtt"/>
                                     <field name="bsd_ngay_hh_tt"/>
-                                    <field name="bsd_tien_dot_tt"/>
+                                    <field name="bsd_tien_dot_tt" sum="Tổng tiền thanh toán"/>
                                     <field name="bsd_tinh_pql"/>
                                     <field name="bsd_tinh_pbt"/>
                                 </tree>

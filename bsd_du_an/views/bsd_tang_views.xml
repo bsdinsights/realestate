@@ -35,14 +35,32 @@
         <field name="model">bsd.tang</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="bsd_ma_tang"/>
                 <field name="bsd_du_an_id"/>
                 <field name="bsd_toa_nha_id"/>
-                <field name="bsd_ma_tang"/>
                 <field name="bsd_ten_tang"/>
                 <field name="state"/>
             </tree>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_tang_filter">
+        <field name="name">bsd.tang.list.filter</field>
+        <field name="model">bsd.tang</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_ma_tang"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_toa_nha_id"/>
+
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Tòa nhà" name="bsd_toa_nha_id" domain="[]" context="{'group_by': 'bsd_toa_nha_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_tang_action">
         <field name="name">Tầng</field>
         <field name="res_model">bsd.tang</field>

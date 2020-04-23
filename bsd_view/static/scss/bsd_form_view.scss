@@ -5,7 +5,7 @@
         &.o_inner_group {
             > tbody > tr > td {
                 &.o_td_label {
-                    padding: 0 0 0 15px;
+                    padding: 0 5px 0 15px;
                 }
             }
         }
@@ -15,3 +15,33 @@
         font-weight: bold;
     }
 }
+.o_list_view {
+    .o_list_table {
+        table-layout: auto !important;
+        // width: 100% !important;
+        thead {
+            > tr > th:not(.o_list_record_selector) {
+                max-width: 150px !important;
+            }
+        }
+    }
+}
+// ------------------------------------------------------------------
+// Arial fonts
+// ------------------------------------------------------------------
+$arial-font-path: '../font';
+
+@mixin arial-font($family, $type, $weight, $style) {
+    @font-face {
+        font-family: $family;
+        src: url('#{$arial-font-path}/#{$family}/#{$family}-#{$type}.ttf') format('truetype');
+        font-weight: $weight;
+        font-style: $style;
+    }
+}
+
+@mixin arial-font-pair($family) {
+    @include arial-font('#{$family}', 'Regular', 400, normal);
+}
+
+@include arial-font-pair('Arial');

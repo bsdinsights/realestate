@@ -68,7 +68,8 @@ class BsdRapCan(models.Model):
                               ('dat_cho', 'Đặt chỗ'),
                               ('giu_cho', 'Giữ chỗ'),
                               ('bao_gia', 'Báo giá'),
-                              ('huy', 'Hủy')], default='nhap', string="Trạng thái", tracking=1, help="Trạng thái")
+                              ('huy', 'Hủy')], default='nhap', string="Trạng thái",
+                             tracking=1, help="Trạng thái", required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
@@ -77,17 +78,24 @@ class BsdRapCan(models.Model):
                                        ('da_tt', 'Đã thanh toán')], string="Thanh toán", default="chua_tt",
                                       help="Thanh toán",
                                       required=True)
-    bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ",
-                                  readonly=True)
+    bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ")
     bsd_stt_bg = fields.Integer(string="STT báo giá", readonly=True, help="Số thứ tự ưu tiên làm báo giá")
     bsd_ngay_hh_bg = fields.Datetime(string="Hạn báo giá", help="Hiệu lực được làm báo giá", readonly=True)
     bsd_het_han_bg = fields.Boolean(string="Hết hạn báo giá", readonly=True, default=False,
                                     help="Thông tin ghi nhận thời gian làm báo giá có bok hết hiệu lực hay chưa")
+    bsd_ngay_hh_stt = fields.Datetime(string="Hạn GC sau TT", compute="_compute_ngay_hh_stt", store=True,
+                                      help="Ngày hết hạn giữ chỗ sau khi thanh toán tiền giữ chỗ")
+    bsd_het_han_gc = fields.Boolean(string="Hết hạn giữ chỗ", readonly=True,
+                                    help="""Thông tin ghi nhận giữ chỗ bị hết hiệu lực sau khi đã thanh toán giữ chỗ""")
+
+    @api.onchange('bsd_du_an_id')
+    def _onchange_unit(self):
+        self.bsd_unit_id = False
 
     # KD.07.02 Ràng buộc số giữ chỗ theo căn hộ/ NVBH
-    @api.constrains('bsd_nvbh_id')
+    @api.constrains('bsd_nvbh_id', 'bsd_unit_id')
     def _constrain_unit_nv(self):
-
+        _logger.debug(" Ràng buộc số giữ chỗ theo căn hộ/ NVBH")
         gc_in_unit = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                      ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
                                                      ('bsd_unit_id', '=', self.bsd_unit_id.id),
@@ -106,7 +114,7 @@ class BsdRapCan(models.Model):
             raise UserError("Tổng số giữ chỗ trên Căn hộ đã vượt quá quy định!")
 
     # KD.07.04 Ràng buộc số giữ chỗ theo NVBH/ngày
-    @api.constrains('bsd_nvbh_id')
+    @api.constrains('bsd_nvbh_id', 'bsd_ngay_gc')
     def _constrain_nv_bh(self):
         min_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
         max_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.max.time())
@@ -115,11 +123,11 @@ class BsdRapCan(models.Model):
                                                    ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                    ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
                                                    ('state', 'in', ['nhap', 'giu_cho', 'dat_cho'])])
-        if len(gc_in_day) >= self.bsd_du_an_id.bsd_gc_nv_ngay:
+        if len(gc_in_day) > self.bsd_du_an_id.bsd_gc_nv_ngay:
             raise UserError("Tổng số Giữ chỗ trên một ngày của bạn đã vượt quá quy định")
 
     # KD.07.05 Ràng buộc số giữ chỗ theo căn hộ/NVBH/ngày
-    @api.constrains('bsd_nvbh_id')
+    @api.constrains('bsd_nvbh_id', 'bsd_unit_id', 'bsd_ngay_gc')
     def _constrain_unit_nv_ngay(self):
         min_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
         max_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.max.time())
@@ -129,7 +137,7 @@ class BsdRapCan(models.Model):
                                                    ('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                    ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
                                                    ('state', 'in', ['nhap', 'giu_cho', 'dat_cho'])])
-        if len(gc_in_day) >= self.bsd_du_an_id.bsd_gc_unit_nv_ngay:
+        if len(gc_in_day) > self.bsd_du_an_id.bsd_gc_unit_nv_ngay:
             raise UserError("Tổng số Giữ chỗ trong ngày theo căn hộ của bạn đã vượt quá quy định")
 
     @api.onchange('bsd_unit_id', 'bsd_du_an_id')
@@ -140,9 +148,11 @@ class BsdRapCan(models.Model):
                 self.bsd_tien_gc = tien_gc
             else:
                 self.bsd_tien_gc = self.bsd_du_an_id.bsd_tien_gc
+        if self.bsd_dot_mb_id:
+            self.bsd_tien_gc = 0
 
     # R.05 Tính hạn hiệu lực giữ chỗ
-    @api.depends('bsd_ngay_gc', 'bsd_du_an_id')
+    @api.depends('bsd_ngay_gc', 'bsd_du_an_id.bsd_gc_tmb')
     def _compute_hl_gc(self):
         for each in self:
             if each.bsd_ngay_gc:
@@ -152,6 +162,13 @@ class BsdRapCan(models.Model):
                 else:
                     hours = each.bsd_du_an_id.bsd_gc_smb or 0 if each.bsd_du_an_id else 0
                     each.bsd_ngay_hh_gc = each.bsd_ngay_gc + datetime.timedelta(hours=hours)
+
+    # R.08 Tính hạn hiệu lực giữ chỗ sau thanh toán
+    @api.depends('bsd_ngay_tt', 'bsd_du_an_id.bsd_gc_tmb')
+    def _compute_ngay_hh_stt(self):
+        for each in self:
+            if each.bsd_ngay_tt:
+                each.bsd_ngay_hh_stt = each.bsd_ngay_tt + datetime.timedelta(days=each.bsd_du_an_id.bsd_gc_tmb)
 
     # KD07.01 Xác nhận giữ chỗ
     def action_xac_nhan(self):
@@ -167,9 +184,12 @@ class BsdRapCan(models.Model):
         else:
             giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                            ('bsd_stt_bg', '>', 0)])
-            stt = max(giu_cho_unit.mapped('bsd_stt_bg')) + 1
+            stt = 1
             time_gc = self.bsd_du_an_id.bsd_gc_smb
-            ngay_hh_bg = max(giu_cho_unit.mapped('bsd_ngay_hh_bg')) + datetime.timedelta(hours=time_gc)
+            ngay_hh_bg = datetime.datetime.now() + datetime.timedelta(hours=time_gc)
+            if giu_cho_unit:
+                stt = max(filter(None, giu_cho_unit.mapped('bsd_stt_bg'))) + 1
+                ngay_hh_bg = max(filter(None, giu_cho_unit.mapped('bsd_ngay_hh_bg'))) + datetime.timedelta(hours=time_gc)
             self.write({
                 'state': 'giu_cho',
                 'bsd_ngay_gc': datetime.datetime.now(),
@@ -186,6 +206,13 @@ class BsdRapCan(models.Model):
         self.write({
             'state': 'huy',
         })
+
+    # KD.07.08 Tự động đánh dấu hết hạn giữ chỗ
+    def auto_danh_dau_hh_gc(self):
+        if self.state == 'xac_nhan' and self.bsd_thanh_toan == 'da_tt' and not self.bsd_het_han_gc:
+            self.write({
+                'bsd_het_han_gc': True
+            })
 
     # R7 Ghi nhận thông tin trước mở bán
     @api.model

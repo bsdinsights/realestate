@@ -43,6 +43,22 @@
             </tree>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_lai_suat_filter">
+        <field name="name">bsd.lai_suat.list.filter</field>
+        <field name="model">bsd.lai_suat</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="bsd_ma"/>
+                <field name="bsd_ten"/>
+                <field name="bsd_du_an_id"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_lai_suat_action">
         <field name="name">Lãi suất</field>
         <field name="res_model">bsd.lai_suat</field>

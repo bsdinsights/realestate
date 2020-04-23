@@ -6,7 +6,34 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            states="nhap"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="In đặt cọc"
+                            name="action_in_dc"
+                            states="dat_coc"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Upload đặt cọc"
+                            name="action_upload_dc"
+                            states="dat_coc"
+                            attrs="{'invisible':['|',('bsd_ngay_in_dc', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Ký đặt cọc"
+                            name="action_ky_dc"
+                            states="dat_coc"
+                            attrs="{'invisible':['|',('bsd_ngay_up_dc', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"/>
+
+<!--                    <field name="state" widget="statusbar" statusbar_visible="0"/>-->
                 </header>
                 <sheet>
                     <notebook>
@@ -20,18 +47,25 @@
                                            options="{'no_create':true}"/>
                                     <field name="bsd_bao_gia_id"
                                            options="{'no_create':true}"
-                                           domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id])]"/>
-                                </group>
-                                <group>
+                                           domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id]),
+                                                    ('state', '=','da_duyet'),
+                                                    ('bsd_ngay_ky_bg','!=',False)]"/>
                                     <field name="bsd_giu_cho_id"/>
                                     <field name="bsd_du_an_id"/>
+                                    <field name="bsd_dien_giai"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_co_hdc"/>
+                                    <field name="bsd_so_hdc" attrs="{'readonly':[('bsd_co_hdc','=',False)],
+                                                                     'required':[('bsd_co_hdc','=',True)]}"/>
                                     <field name="bsd_dot_mb_id"/>
                                     <field name="bsd_bang_gia_id"/>
                                     <field name="bsd_tien_gc"/>
                                     <field name="bsd_tien_dc"/>
+                                    <field name="state"/>
                                 </group>
                             </group>
-                            <group string="Sản phẩm">
+                            <group string="SẢN PHẨM">
                                 <group>
                                     <field name="bsd_unit_id"
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
@@ -61,6 +95,16 @@
                                 </group>
                                 <group>
                                     <field name="bsd_tien_pql"/>
+                                </group>
+                            </group>
+                            <group string="XÁC NHẬN">
+                                <group>
+                                    <field name="bsd_ngay_in_dc"/>
+                                    <field name="bsd_ngay_hh_kdc"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_up_dc"/>
+                                    <field name="bsd_ngay_ky_dc"/>
                                 </group>
                             </group>
                         </page>
@@ -110,7 +154,34 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="bsd_ma_dat_coc"/>
+                <field name="bsd_ngay_dat_coc"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_unit_id"/>
+                <field name="bsd_so_hdc"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_ngay_ky_dc"/>
                 <field name="state"/>
+                <field name="bsd_bao_gia_id"/>
+                <field name="bsd_giu_cho_id"/>
+                <field name="bsd_dot_mb_id"/>
+                <field name="bsd_tien_gc"/>
+                <field name="bsd_tien_dc"/>
+                <field name="bsd_dt_xd"/>
+                <field name="bsd_dt_sd"/>
+                <field name="bsd_cs_tt_id"/>
+                <field name="bsd_gia_ban"/>
+                <field name="bsd_tien_ck"/>
+                <field name="bsd_tien_bg"/>
+                <field name="bsd_tien_qsdd"/>
+                <field name="bsd_tien_thue"/>
+                <field name="bsd_tien_pbt"/>
+                <field name="bsd_tong_gia"/>
+                <field name="bsd_thang_pql"/>
+                <field name="bsd_tien_pql"/>
+                <field name="bsd_ngay_in_dc"/>
+                <field name="bsd_ngay_hh_kdc"/>
+                <field name="bsd_ngay_up_dc"/>
+                <field name="currency_id" invisible="1"/>
             </tree>
         </field>
     </record>
