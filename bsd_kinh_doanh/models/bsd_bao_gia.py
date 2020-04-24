@@ -194,11 +194,7 @@ class BsdBaoGia(models.Model):
 
     # KD.09.05 In báo giá
     def action_in_bg(self):
-        self.write({
-            'bsd_ngay_in_bg': datetime.datetime.now(),
-            'bsd_ngay_hh_kbg': datetime.datetime.now() + datetime.timedelta(days=self.bsd_du_an_id.bsd_hh_bg)
-        })
-        self.env.ref('bsd.sale_summary_report').report_action(self, data=data)
+        return self.env.ref('bsd_kinh_doanh.bsd_bao_gia_report_action').read()[0]
 
     def _cb_du_lieu_dtt(self, stt, ma_dtt, dot_tt, lai_phat, ngay_hh_tt, cs_tt):
         res = {}
