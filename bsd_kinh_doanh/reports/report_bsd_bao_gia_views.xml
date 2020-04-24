@@ -29,22 +29,6 @@
                 </t>
             </t>
             <t t-esc="company.update_scss()"/>
-            <div class="header">
-                <div class="row mt32 mb32">
-                    <div class="col-6">
-                        <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="width: 80px;" />
-                    </div>
-                    <div class="col-1"/>
-                    <div class="col-5 text-left" style="font-size:13px">
-                        <span t-field="company.partner_id" />
-                        <br/>
-                        <span t-field="company.partner_id.street" />
-                        <br/>
-                        <span t-field="company.partner_id.phone" />
-                        <br/>
-                    </div>
-                </div>
-            </div>
             <div class="article o_report_layout_standard"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
                 <t t-call="web.address_layout"/>
                 <t t-raw="0"/>
@@ -56,55 +40,72 @@
                 <t t-foreach="docs" t-as="doc">
                     <t t-set="doc" t-value="doc.with_context(lang=lang)" />
                     <t t-call="web.external_layout">
-                    <div class="page">
+                        <div class="page">
+                            <div class="row">
+                                <div class="col-7">
+                                    <img t-if="doc.company_id.logo" t-att-src="'data:image/png;base64,%s' % to_text(doc.company_id.logo)" style="width: 80px;height:80px" />
+                                </div>
+                                <div class="col-5" style="font-size:13px">
+                                    <div>
+                                        <span t-field="doc.company_id.partner_id" />
+                                        <br/>
+                                        <span t-field="doc.company_id.partner_id.street" />
+                                        <br/>
+                                        <span t-field="doc.company_id.partner_id.phone" />
+                                        <br/>
+                                    </div>
+                                </div>
+                            </div>
                         <!-- tên phiếu báo giá-->
-                        <div class="row">
-                          <div class="col-2"/>
-                          <div class="col-6">
-                            <h2 style="text-align:center;margin-top:5px;font-size:21px">PHIẾU TÍNH GIÁ</h2>
-                          </div>
-                          <div class="col-4"/>
+                        <div class="row mt5 mb10">
+                            <div class="col-12 text-center">
+                                <div style="font-size:25px">
+                                    <b>PHIẾU TÍNH GIÁ</b>
+                                </div>
+                            </div>
+
                         </div>
+
                         <!--Ngày in báo giá-->
                         <div class="row">
                           <div class="col-6"/>
                           <div class="col-6">
                             <div style="text-align:right">
-                              <span style="font-size:13px">Ngày: </span>
-                              <span style="font-size:13px" t-field="doc.bsd_ngay_in_bg"/>
+                              <span>Ngày: </span>
+                              <span t-field="doc.bsd_ngay_in_bg"/>
                             </div>
                           </div>
                         </div>
                         <!--Thông tin căn hộ-->
-                        <div class="row" style="font-size:13px">
+                        <div class="row">
                             <table class="table table-bordered"
-                                   style="table-layout:fixed;border: 3px !important; border-style: solid !important; border-color: #000000 !important;" >
+                                   style="table-layout:fixed;border: 2px !important; border-style: solid !important; border-color: #000000 !important;" >
                               <thead>
-                                  <tr class="text-center">
-                                      <th>
+                                  <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px;">
+                                      <th style="border: 1px solid black !important;">
                                             Căn hộ
                                       </th>
-                                      <th>
+                                      <th style="border: 1px solid black !important;">
                                             Loại căn hộ
                                       </th>
-                                      <th>
+                                      <th style="border: 1px solid black !important;">
                                             Diện tích tim tường
                                       </th>
-                                      <th>
+                                      <th style="border: 1px solid black !important;">
                                             Diện tích thông thủy
                                       </th>
-                                      <th>
+                                      <th style="border: 1px solid black !important;">
                                             Điều kiện bàn giao
                                       </th>
                                   </tr>
                               </thead>
                               <tbody>
-                                <tr class="text-center">
-                                  <td><div t-esc="doc.bsd_unit_id.bsd_ten_unit"/></td>
-                                  <td><div t-esc="doc.bsd_unit_id.bsd_loai_sp_id.bsd_ma_nhom"/></td>
-                                  <td><div t-esc="doc.bsd_dt_xd"/></td>
-                                  <td><div t-esc="doc.bsd_dt_sd"/></td>
-                                  <td><div></div></td>
+                                <tr class="text-center ">
+                                  <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_unit_id.bsd_ten_unit"/></td>
+                                  <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_unit_id.bsd_loai_sp_id.bsd_ma_nhom"/></td>
+                                  <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_dt_xd"/></td>
+                                  <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_dt_sd"/></td>
+                                  <td style="border: 1px solid black !important;"><div></div></td>
                                 </tr>
                               </tbody>
                             </table>
@@ -112,30 +113,32 @@
                         <!--Chi tiết giá bán-->
                         <div class="row">
                           <table class="table table-bordered"
-                                 style="border: 3px !important; border-style: solid !important; border-color: #000000 !important;">
+                                 style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
                             <thead>
-                              <tr class="text-center">
-                                <th colspan="5">CHI TIẾT GIÁ BÁN (tất cả số tiền được thể hiện bằng VNĐ)</th>
+                              <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px">
+                                <th colspan="5" style="border: 1px solid black !important;">
+                                    CHI TIẾT GIÁ BÁN (tất cả số tiền được thể hiện bằng VNĐ)
+                                </th>
                               </tr>
                               <tr>
-                                <tr class="text-center">
-                                  <th>
+                                <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px">
+                                  <th style="border: 1px solid black !important;">
                                     <div>Giá bán</div>
                                     <div>(A)</div>
                                   </th>
-                                  <th>
+                                  <th style="border: 1px solid black !important;">
                                     <div>Giá trị QSDĐ</div>
                                     <div>(Ghi chú 3)</div>
                                   </th>
-                                  <th>
+                                  <th style="border: 1px solid black !important;">
                                     <div>Tiền thuế (VAT)</div>
                                     <div>(B)</div>
                                   </th>
-                                  <th>
+                                  <th style="border: 1px solid black !important;">
                                     <div>Phí bảo trì</div>
                                     <div>(C)</div>
                                   </th>
-                                  <th>
+                                  <th style="border: 1px solid black !important;">
                                     <div>Tổng giá bán</div>
                                     <div>(A) + (B) + (C)</div>
                                   </th>
@@ -143,12 +146,12 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr class="text-center">
-                                <td><div t-field="doc.bsd_gia_ban" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
-                                <td><div t-field="doc.bsd_tien_qsdd" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
-                                <td><div t-field="doc.bsd_tien_thue" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
-                                <td><div t-field="doc.bsd_tien_pbt" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
-                                <td><div t-field="doc.bsd_tong_gia" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                              <tr class="text-center ">
+                                <td style="border: 1px solid black !important;"><div t-field="doc.bsd_gia_ban" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                <td style="border: 1px solid black !important;"><div t-field="doc.bsd_tien_qsdd" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                <td style="border: 1px solid black !important;"><div t-field="doc.bsd_tien_thue" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                <td style="border: 1px solid black !important;"><div t-field="doc.bsd_tien_pbt" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                <td style="border: 1px solid black !important;"><div t-field="doc.bsd_tong_gia" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
                               </tr>
                             </tbody>
                           </table>
@@ -156,63 +159,63 @@
                         <!-- Lịch thanh toán -->
                         <div class="row">
                           <table class="table table-bordered"
-                                 style="border: 3px !important; border-style: solid !important; border-color: #000000 !important;">
+                                 style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
                             <thead>
-                              <tr class="text-center">
-                                <th colspan="4">LỊCH THANH TOÁN</th>
+                              <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px;">
+                                <th colspan="4" style="border: 1px solid black !important;">LỊCH THANH TOÁN</th>
                               </tr>
                               <tr>
-                                <tr class="text-center">
-                                  <th>
+                                <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px;">
+                                  <th style="border: 1px solid black !important;" width="10%">
                                     <div>STT</div>
                                   </th>
-                                  <th>
+                                  <th style="border: 1px solid black !important;" width="20%">
                                     <div>Đợt thanh toán</div>
                                   </th>
-                                  <th>
+                                  <th style="border: 1px solid black !important;" width="40%">
                                     <div>Chi tiết thanh toán</div>
                                   </th>
-                                  <th>
+                                  <th style="border: 1px solid black !important;" width="30%">
                                     <div>Số tiền (VNĐ)</div>
                                   </th>
                                 </tr>
                               </tr>
                             </thead>
                             <tbody>
-                              <tr class="text-center">
-                                <td colspan="2">Đặt cọc</td>
-                                <td><div/></td>
-                                <td><div t-field="doc.bsd_du_an_id.bsd_tien_dc" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                              <tr class="text-center ">
+                                <td colspan="2" style="border: 1px solid black !important;">Đặt cọc</td>
+                                <td style="border: 1px solid black !important;"><div/></td>
+                                <td style="border: 1px solid black !important;"><div t-field="doc.bsd_du_an_id.bsd_tien_dc" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
                               </tr>
                               <t t-foreach="doc.bsd_ltt_ids.sorted(key=lambda l: l.bsd_stt)" t-as="line">
                                 <t t-if="line.bsd_tinh_pbt">
-                                  <tr class="text-center">
-                                    <td rowspan="2" style="top:50% !important"><div t-field="line.bsd_stt"/></td>
-                                    <td rowspan="2"><div t-field="line.bsd_ten_dtt"/></td>
-                                    <td><div t-field="line.bsd_cs_tt_ct_id.bsd_dien_giai"/></td>
-                                    <td><div t-field="line.bsd_tien_dot_tt"  t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                  <tr class="text-center ">
+                                    <td rowspan="2" style="border: 1px solid black !important;"><div t-field="line.bsd_stt"/></td>
+                                    <td rowspan="2" style="border: 1px solid black !important;"><div t-field="line.bsd_ten_dtt"/></td>
+                                    <td style="border: 1px solid black !important;"><div t-field="line.bsd_cs_tt_ct_id.bsd_dien_giai"/></td>
+                                    <td style="border: 1px solid black !important;"><div t-field="line.bsd_tien_dot_tt"  t-options='{"widget": "monetary", "display_currency": currency}'/></td>
                                   </tr>
-                                  <tr class="text-center">
-                                    <td>
+                                  <tr class="text-center ">
+                                    <td style="border: 1px solid black !important;">
                                       <div>
                                         <span>Phí bảo trì</span>
                                       </div>
                                     </td>
-                                    <td><div t-field="doc.bsd_tien_pbt"/></td>
+                                    <td style="border: 1px solid black !important;"><div t-field="doc.bsd_tien_pbt"/></td>
                                   </tr>
                                 </t>
                                 <t t-else="">
-                                  <tr class="text-center">
-                                    <td><div t-field="line.bsd_stt"/></td>
-                                    <td><div t-field="line.bsd_ten_dtt"/></td>
-                                    <td><div t-field="line.bsd_cs_tt_ct_id.bsd_dien_giai"/></td>
-                                    <td><div t-field="line.bsd_tien_dot_tt"  t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                  <tr class="text-center ">
+                                    <td style="border: 1px solid black !important;"><div t-field="line.bsd_stt"/></td>
+                                    <td style="border: 1px solid black !important;"><div t-field="line.bsd_ten_dtt"/></td>
+                                    <td style="border: 1px solid black !important;"><div t-field="line.bsd_cs_tt_ct_id.bsd_dien_giai"/></td>
+                                    <td style="border: 1px solid black !important;"><div t-field="line.bsd_tien_dot_tt"  t-options='{"widget": "monetary", "display_currency": currency}'/></td>
                                   </tr>
                                 </t>
                               </t>
                               <tr>
-                                <td class="text-right" colspan="3"><b>Tổng giá bán:</b></td>
-                                <td class="text-center"><div t-field="doc.bsd_tong_gia"/></td>
+                                <td class="text-right" colspan="3" style="border: 1px solid black !important;"><b>Tổng giá bán:</b></td>
+                                <td class="text-center" style="border: 1px solid black !important;"><div t-field="doc.bsd_tong_gia"/></td>
                               </tr>
                             </tbody>
                           </table>
@@ -253,17 +256,27 @@
                             </div>
                         </div>
                         <!--Ký tên-->
-                        <div class="row">
+                        <div class="row mt32" >
                           <div class="col-4 text-center">
-                            <div class="mb-5">Người lập</div>
+                              <div><b>Người lập</b></div>
+                          </div>
+                          <div class="col-4 text-center">
+                              <div><b>Người duyệt</b></div>
+
+                          </div>
+                          <div class="col-4 text-center">
+                              <div><b>Xác nhận của khách hàng</b></div>
+
+                          </div>
+                        </div>
+                        <div class="row" style="margin-top:100px">
+                          <div class="col-4 text-center">
                             <div style="border-bottom: 1px solid black;"/>
                           </div>
                           <div class="col-4 text-center">
-                            <div class="mb-5">Người duyệt</div>
                             <div style="border-bottom: 1px solid black;"/>
                           </div>
                           <div class="col-4 text-center">
-                            <div class="mb-5">Xác nhận của khách hàng</div>
                             <div style="border-bottom: 1px solid black;"/>
                           </div>
                         </div>
