@@ -109,10 +109,7 @@ class BsdDatCoc(models.Model):
 
     # KD.10.02 In đặt cọc
     def action_in_dc(self):
-        self.write({
-            'bsd_ngay_in_dc': datetime.datetime.now(),
-            'bsd_ngay_hh_kdc': datetime.datetime.now() + datetime.timedelta(days=self.bsd_du_an_id.bsd_hh_pc)
-        })
+        return self.env.ref('bsd_kinh_doanh.bsd_dat_coc_report_action').read()[0]
 
     # KD.10.03 Upload đặt cọc
     def action_upload_dc(self):

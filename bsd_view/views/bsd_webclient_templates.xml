@@ -3,6 +3,7 @@
     <template id="bsd_assets_backend" name="Bsd backend assets" inherit_id="web.assets_backend">
         <xpath expr="//link[last()]" position="after">
             <link rel="stylesheet" type="text/scss" href="/bsd_view/static/scss/bsd_form_view.scss"/>
+            <link rel="stylesheet" type="text/css" href="/bsd_view/static/scss/bsd_report_view.css"/>
         </xpath>
     </template>
 </odoo>
