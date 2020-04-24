@@ -15,7 +15,7 @@
                     </group>
                     <footer>
                         <button name="action_in" string="In" type="object" class="oe_highlight"/>
-                        <button string="Cancel" special="cancel"/>
+                        <button string="Hủy" special="cancel"/>
                     </footer>
                 </form>
             </field>
@@ -259,7 +259,6 @@
                                   <li><span>Số tài khoản            : </span></li>
                                   <li><span>Tên tài khoản           : </span></li>
                                   <li><span>Chi nhánh               : </span></li>
-                                  <li><span>Mã định danh ngân hàng  : </span></li>
                                 </ul>
                             </div>
                         </div>
