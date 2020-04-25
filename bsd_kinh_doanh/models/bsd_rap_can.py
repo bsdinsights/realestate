@@ -95,7 +95,7 @@ class BsdRapCan(models.Model):
                     'bsd_tien_gc': self.bsd_gc_tc_id.bsd_tien_gc,
                     'bsd_nvbh_id': self.bsd_gc_tc_id.bsd_nvbh_id.id,
                     'bsd_san_gd_id': self.bsd_gc_tc_id.bsd_san_gd_id.id,
-                    'bsd_gioi_thieu_id': self.bsd_gc_tc_id.bsd_gioi_thieu_id,
+                    'bsd_gioi_thieu_id': self.bsd_gc_tc_id.bsd_gioi_thieu_id.id,
                     'bsd_gc_da': True,
                     'bsd_gc_tc_id': self.bsd_gc_tc_id.id,
                     'bsd_rap_can_id': self.id,
