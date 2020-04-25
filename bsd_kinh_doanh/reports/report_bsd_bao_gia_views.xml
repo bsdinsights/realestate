@@ -76,7 +76,7 @@
                                 </div>
                             </div>
                         <!-- tên phiếu báo giá-->
-                        <div class="row mt16">
+                        <div class="row mt8">
                             <div class="col-12 text-center">
                                 <div style="font-size:25px">
                                     <b>PHIẾU TÍNH GIÁ</b>
@@ -196,10 +196,10 @@
                                   <th style="border: 1px solid black !important;" width="20%">
                                     <div>Đợt thanh toán</div>
                                   </th>
-                                  <th style="border: 1px solid black !important;" width="40%">
+                                  <th style="border: 1px solid black !important;" width="50%">
                                     <div>Chi tiết thanh toán</div>
                                   </th>
-                                  <th style="border: 1px solid black !important;" width="30%">
+                                  <th style="border: 1px solid black !important;" width="20%">
                                     <div>Số tiền (VNĐ)</div>
                                   </th>
                                 </tr>
@@ -246,7 +246,7 @@
                             </div>
                         </div>
                         <!-- Điều khoản-->
-                        <div class="row mt16">
+                        <div class="row mt8">
                             <div class="col-12">
                                 <div><b><u>Điều khoản:</u></b></div>
                             </div>
