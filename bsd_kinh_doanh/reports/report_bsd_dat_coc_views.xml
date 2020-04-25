@@ -63,7 +63,7 @@
                                             <span><b>PHIẾU ĐẶT CỌC MUA BÁN CĂN HỘ</b></span>
                                         </div>
                                     </div>
-                                    <div class="row" style="margin-top:80px">
+                                    <div class="row" style="margin-top:70px">
                                         <div class="col-12">
                                             <p><b><u>Phần 1 - Người mua</u></b></p>
                                         </div>
@@ -219,7 +219,7 @@
                                         hộ được nêu trong Phần 2 của Phiếu đặt cọc này và sẽ tuân thủ các điều khoản sau đây.</b></div>
                                 </div>
                             </div>
-                            <div class="row mt8">
+                            <div class="row mt4">
                                 <div class="col-12">
                                     <div>1. Người mua thanh toán i) Phí đặt chỗ <span t-field="doc.bsd_tien_gc"/> bằng Séc hoặc Thẻ tín dụng,
                                         hoặc ii) Đặt cọc số tiền <span t-field="doc.bsd_du_an_id.bsd_tien_dc"/>
@@ -227,7 +227,7 @@
                                         của Dự án. (Lưu ý: Phiếu đặt cọc này chỉ dành cho một căn hộ).</div>
                                 </div>
                             </div>
-                            <div class="row mt8">
+                            <div class="row mt4">
                                 <div class="col-12">
                                     <div>2. Trong vòng <span t-field="doc.bsd_du_an_id.bsd_hh_pc"/> ngày kể từ ngày in Phiếu đặt cọc này, Người mua sẽ ký Thỏa
                                         thuận đặt cọc (Hợp đồng) với Người bán để mua Căn hộ được nêu ở đây, và Người
@@ -237,7 +237,7 @@
                                         Phiếu đặt cọc này.</div>
                                 </div>
                             </div>
-                            <div class="row mt8">
+                            <div class="row mt4">
                                 <div class="col-12">
                                     <div>3. Người mua chấp nhận và đồng ý rằng Phí đặt chỗ và tiền Đặt cọc được thanh
                                         toán sẽ hoàn toàn thuộc về Chủ đầu tư mà không có bất kỳ thông báo nào (bằng
