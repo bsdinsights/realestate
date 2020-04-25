@@ -91,29 +91,30 @@
                           <div class="col-6">
                             <div style="text-align:right">
                               <span>Ngày: </span>
-                              <span t-field="doc.bsd_ngay_in_bg"/>
+                              <span t-field="doc.bsd_ngay_in_bg" t-options='{"format": "dd/MM/YYYY"}'/>
                             </div>
                           </div>
                         </div>
                         <!--Thông tin căn hộ-->
                         <div class="row">
-                            <table class="table table-bordered"
+                            <div class="col-12">
+                                <table class="table table-bordered"
                                    style="table-layout:fixed;border: 2px !important; border-style: solid !important; border-color: #000000 !important;" >
                               <thead>
                                   <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px;">
-                                      <th style="border: 1px solid black !important;">
+                                      <th width="17%" style="border: 1px solid black !important;">
                                             Căn hộ
                                       </th>
-                                      <th style="border: 1px solid black !important;">
+                                      <th width="17%" style="border: 1px solid black !important;">
                                             Loại căn hộ
                                       </th>
-                                      <th style="border: 1px solid black !important;">
+                                      <th width="22%" style="border: 1px solid black !important;">
                                             Diện tích tim tường
                                       </th>
-                                      <th style="border: 1px solid black !important;">
+                                      <th width="22%" style="border: 1px solid black !important;">
                                             Diện tích thông thủy
                                       </th>
-                                      <th style="border: 1px solid black !important;">
+                                      <th width="22%" style="border: 1px solid black !important;">
                                             Điều kiện bàn giao
                                       </th>
                                   </tr>
@@ -128,10 +129,12 @@
                                 </tr>
                               </tbody>
                             </table>
+                            </div>
                         </div>
                         <!--Chi tiết giá bán-->
                         <div class="row">
-                          <table class="table table-bordered"
+                            <div class="col-12">
+                                <table class="table table-bordered"
                                  style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
                             <thead>
                               <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px">
@@ -141,23 +144,23 @@
                               </tr>
                               <tr>
                                 <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px">
-                                  <th style="border: 1px solid black !important;">
+                                  <th width="17%" style="border: 1px solid black !important;">
                                     <div>Giá bán</div>
                                     <div>(A)</div>
                                   </th>
-                                  <th style="border: 1px solid black !important;">
+                                  <th width="17%" style="border: 1px solid black !important;">
                                     <div>Giá trị QSDĐ</div>
                                     <div>(Ghi chú 3)</div>
                                   </th>
-                                  <th style="border: 1px solid black !important;">
+                                  <th width="22%" style="border: 1px solid black !important;">
                                     <div>Tiền thuế (VAT)</div>
                                     <div>(B)</div>
                                   </th>
-                                  <th style="border: 1px solid black !important;">
+                                  <th width="22%" style="border: 1px solid black !important;">
                                     <div>Phí bảo trì</div>
                                     <div>(C)</div>
                                   </th>
-                                  <th style="border: 1px solid black !important;">
+                                  <th width="22%" style="border: 1px solid black !important;">
                                     <div>Tổng giá bán</div>
                                     <div>(A) + (B) + (C)</div>
                                   </th>
@@ -174,10 +177,12 @@
                               </tr>
                             </tbody>
                           </table>
+                            </div>
                         </div>
                         <!-- Lịch thanh toán -->
                         <div class="row">
-                          <table class="table table-bordered"
+                            <div class="col-12">
+                                <table class="table table-bordered"
                                  style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
                             <thead>
                               <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px;">
@@ -217,7 +222,7 @@
                                   <tr class="text-center ">
                                     <td style="border: 1px solid black !important;">
                                       <div>
-                                        <span>Phí bảo trì</span>
+                                         <span t-field="doc.bsd_tl_pbt"/><span>% Phí bảo trì</span>
                                       </div>
                                     </td>
                                     <td style="border: 1px solid black !important;"><div t-field="doc.bsd_tien_pbt"/></td>
@@ -238,19 +243,23 @@
                               </tr>
                             </tbody>
                           </table>
+                            </div>
                         </div>
                         <!-- Điều khoản-->
                         <div class="row">
-                          <div><b><u>Điều khoản:</u></b></div>
+                            <div class="col-12">
+                                <div><b><u>Điều khoản:</u></b></div>
+                            </div>
+
                         </div>
                         <div class="row">
-                            <div>
+                            <div class="col-12">
                                 <span>1. Phiếu tính giá này chỉ có hiệu lực đến ngày: </span>
-                                <span t-field="doc.bsd_ngay_hh_kbg"/>
+                                <span t-field="doc.bsd_ngay_hh_kbg" t-options='{"format": "dd/MM/yyyy"}'/>
                             </div>
                         </div>
                         <div class="row">
-                            <div>
+                            <div class="col-12">
                                 <span>2. Để xác nhận mua hàng, xin vui lòng ký vào phiếu tính giá này, gửi về <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/>
                                   và hoàn thành đặt cọc số tiền <span t-field="doc.bsd_tien_dc"/> bằng tiền mặt và thẻ tín dụng hoặc chuyển khoản đến tài khoản
                                   công ty dự án theo thông tin dưới đây:</span>
@@ -263,13 +272,13 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div>
+                            <div class="col-12">
                                 <span>3. Giá trị QSDĐ được ước tính bởi Chủ đầu tư và sẽ được xem xét lại bởi Cơ quan chức năng tại thời điểm bàn giao căn hộ.
                                Giá trị QSDĐ không bị tính thuế GTGT</span>
                             </div>
                         </div>
                         <div class="row">
-                            <div>
+                            <div class="col-12">
                                 <span>4. Người nước ngoài được yêu cầu có mặt tại Việt Nam để ký Hợp đồng mua bán.</span>
                             </div>
                         </div>

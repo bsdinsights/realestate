@@ -81,7 +81,7 @@
                                         <tbody>
                                             <tr style="height: 40px;">
                                                 <th style="border: 1px solid black !important;"><b>Ngày</b></th>
-                                                <td style="border: 1px solid black !important;"><span t-field="doc.bsd_ngay_in_dc"/></td>
+                                                <td style="border: 1px solid black !important;"><span t-field="doc.bsd_ngay_in_dc" t-options='{"format": "dd/MM/YYYY"}'/></td>
                                             </tr>
                                             <tr style="height: 40px;">
                                                 <th style="border: 1px solid black !important;"><b>Sàn giao dịch</b></th>
@@ -355,7 +355,7 @@
                                 <div class="col-1"/>
                                 <div class="col-5">
                                     <div>
-                                        <span>Ngày: </span><span t-field="doc.bsd_ngay_in_dc"/>
+                                        <span>Ngày: </span><span t-field="doc.bsd_ngay_in_dc" t-options='{"format": "dd/MM/YYYY"}'/>
                                     </div>
                                 </div>
                                 <div class="col-1"/>
