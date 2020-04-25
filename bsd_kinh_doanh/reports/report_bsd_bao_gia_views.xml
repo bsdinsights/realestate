@@ -76,7 +76,7 @@
                                 </div>
                             </div>
                         <!-- tên phiếu báo giá-->
-                        <div class="row mt16 mb8">
+                        <div class="row mt16">
                             <div class="col-12 text-center">
                                 <div style="font-size:25px">
                                     <b>PHIẾU TÍNH GIÁ</b>
@@ -98,23 +98,23 @@
                         <!--Thông tin căn hộ-->
                         <div class="row mt8">
                             <div class="col-12">
-                                <table class="table table-bordered"
+                                <table class="table table-bordered table-sm"
                                    style="table-layout:fixed;border: 2px !important; border-style: solid !important; border-color: #000000 !important;" >
                               <thead>
                                   <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px;">
-                                      <th width="17%" style="border: 1px solid black !important;">
+                                      <th width="19.5%" style="border: 1px solid black !important;padding-top:0px !important">
                                             Căn hộ
                                       </th>
-                                      <th width="17%" style="border: 1px solid black !important;">
+                                      <th width="19.5%" style="border: 1px solid black !important;">
                                             Loại căn hộ
                                       </th>
-                                      <th width="22%" style="border: 1px solid black !important;">
+                                      <th width="20%" style="border: 1px solid black !important;">
                                             Diện tích tim tường
                                       </th>
-                                      <th width="22%" style="border: 1px solid black !important;">
+                                      <th width="21%" style="border: 1px solid black !important;">
                                             Diện tích thông thủy
                                       </th>
-                                      <th width="22%" style="border: 1px solid black !important;">
+                                      <th width="20%" style="border: 1px solid black !important;">
                                             Điều kiện bàn giao
                                       </th>
                                   </tr>
@@ -134,7 +134,7 @@
                         <!--Chi tiết giá bán-->
                         <div class="row mt8">
                             <div class="col-12">
-                                <table class="table table-bordered"
+                                <table class="table table-bordered table-sm"
                                  style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
                             <thead>
                               <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px">
@@ -144,23 +144,23 @@
                               </tr>
                               <tr>
                                 <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px">
-                                  <th width="17%" style="border: 1px solid black !important;">
+                                  <th width="19.5%" style="border: 1px solid black !important;">
                                     <div>Giá bán</div>
                                     <div>(A)</div>
                                   </th>
-                                  <th width="17%" style="border: 1px solid black !important;">
+                                  <th width="19.5%" style="border: 1px solid black !important;">
                                     <div>Giá trị QSDĐ</div>
                                     <div>(Ghi chú 3)</div>
                                   </th>
-                                  <th width="22%" style="border: 1px solid black !important;">
+                                  <th width="20%" style="border: 1px solid black !important;">
                                     <div>Tiền thuế (VAT)</div>
                                     <div>(B)</div>
                                   </th>
-                                  <th width="22%" style="border: 1px solid black !important;">
+                                  <th width="21%" style="border: 1px solid black !important;">
                                     <div>Phí bảo trì</div>
                                     <div>(C)</div>
                                   </th>
-                                  <th width="22%" style="border: 1px solid black !important;">
+                                  <th width="20%" style="border: 1px solid black !important;">
                                     <div>Tổng giá bán</div>
                                     <div>(A) + (B) + (C)</div>
                                   </th>
@@ -182,7 +182,7 @@
                         <!-- Lịch thanh toán -->
                         <div class="row mt8">
                             <div class="col-12">
-                                <table class="table table-bordered"
+                                <table class="table table-bordered table-sm"
                                  style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
                             <thead>
                               <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px;">

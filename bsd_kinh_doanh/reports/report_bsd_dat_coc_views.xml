@@ -76,14 +76,14 @@
                                         <span> - </span>
                                         <span t-field="doc.bsd_ma_dat_coc"></span>
                                     </div>
-                                    <table class="table table-bordered"
+                                    <table class="table table-bordered table-sm"
                                            style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
                                         <tbody>
-                                            <tr style="height: 40px;">
-                                                <th style="border: 1px solid black !important;"><b>Ngày</b></th>
-                                                <td style="border: 1px solid black !important;"><span t-field="doc.bsd_ngay_in_dc" t-options='{"format": "dd/MM/YYYY"}'/></td>
+                                            <tr>
+                                                <th width="35%" style="border: 1px solid black !important;"><b>Ngày</b></th>
+                                                <td width="65%" style="border: 1px solid black !important;"><span t-field="doc.bsd_ngay_in_dc" t-options='{"format": "dd/MM/YYYY"}'/></td>
                                             </tr>
-                                            <tr style="height: 40px;">
+                                            <tr>
                                                 <th style="border: 1px solid black !important;"><b>Sàn giao dịch</b></th>
                                                 <td style="border: 1px solid black !important;"><span t-field="doc.bsd_giu_cho_id.bsd_san_gd_id.name"/></td>
                                             </tr>
@@ -94,7 +94,7 @@
                             <!-- Người mua-->
                             <div class="row mt4">
                                 <div class="col-12">
-                                    <table class="table table-bordered"
+                                    <table class="table table-bordered table-sm"
                                            style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
                                         <tr class="text-center">
                                             <td rowspan="6" width="10%"
@@ -132,14 +132,14 @@
                                 </div>
                             </div>
                             <!-- Thông tin căn hộ -->
-                            <div class="row mt16">
+                            <div class="row mt8">
                                 <div class="col-12">
                                     <p><b><u>Phần 2 - Thông tin căn hộ</u></b></p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <table class="table table-bordered"
+                                    <table class="table table-bordered table-sm"
                                            style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
                                         <tbody>
                                             <tr class="text-center">
@@ -213,13 +213,13 @@
                                 </div>
                             </div>
                             <!--=================-->
-                            <div class="row mt16">
+                            <div class="row mt8">
                                 <div class="col-12">
                                     <div><b>I/Chúng tôi, với tư cách là người mua, thực hiện đặt chỗ với ý định mua căn
                                         hộ được nêu trong Phần 2 của Phiếu đặt cọc này và sẽ tuân thủ các điều khoản sau đây.</b></div>
                                 </div>
                             </div>
-                            <div class="row mt16">
+                            <div class="row mt8">
                                 <div class="col-12">
                                     <div>1. Người mua thanh toán i) Phí đặt chỗ <span t-field="doc.bsd_tien_gc"/> bằng Séc hoặc Thẻ tín dụng,
                                         hoặc ii) Đặt cọc số tiền <span t-field="doc.bsd_du_an_id.bsd_tien_dc"/>
@@ -227,7 +227,7 @@
                                         của Dự án. (Lưu ý: Phiếu đặt cọc này chỉ dành cho một căn hộ).</div>
                                 </div>
                             </div>
-                            <div class="row mt16">
+                            <div class="row mt8">
                                 <div class="col-12">
                                     <div>2. Trong vòng <span t-field="doc.bsd_du_an_id.bsd_hh_pc"/> ngày kể từ ngày in Phiếu đặt cọc này, Người mua sẽ ký Thỏa
                                         thuận đặt cọc (Hợp đồng) với Người bán để mua Căn hộ được nêu ở đây, và Người
@@ -237,7 +237,7 @@
                                         Phiếu đặt cọc này.</div>
                                 </div>
                             </div>
-                            <div class="row mt16">
+                            <div class="row mt8">
                                 <div class="col-12">
                                     <div>3. Người mua chấp nhận và đồng ý rằng Phí đặt chỗ và tiền Đặt cọc được thanh
                                         toán sẽ hoàn toàn thuộc về Chủ đầu tư mà không có bất kỳ thông báo nào (bằng
@@ -246,19 +246,14 @@
                                 </div>
                             </div>
                             <!--Cam kết người mua-->
-                            <div class="row mt32">
-                              <div class="col-12">
-                                <div><br/></div>
-                              </div>
-                            </div>
-                            <div class="row mt32">
+                            <div class="row mt8">
                                 <div class="col-12">
                                     <p><b><u>Phần 3 - Cam kết người mua</u></b></p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <table class="table table-bordered"
+                                    <table class="table table-bordered table-sm"
                                            style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
                                         <tr>
                                             <td style="border: 1px solid black !important">
@@ -292,12 +287,17 @@
                             <!--Phần 4 điều khoản chung-->
                             <div class="row mt16">
                                 <div class="col-12">
+                                    <div><br/></div>
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-12">
                                     <p><b><u>Phần 4 - Điều khoản chung</u></b></p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <table class="table table-bordered"
+                                    <table class="table table-bordered table-sm"
                                            style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
                                         <tr>
                                             <td style="border: 1px solid black !important;vertical-align: middle;">
@@ -338,7 +338,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="row mt16">
+                            <div class="row mt8">
                                 <div class="col-12">
                                     <span>Phiếu này được in làm 03 bản, Người mua giữ 1 bản, Nhân viên bán hàng giữ 1
                                         bản, Sàn giao dịch giữ một bản. Tất cả các bản in đều có giá trị pháp lý như nhau.
@@ -351,21 +351,16 @@
                                 </div>
                             </div>
                             <div class="row mt32">
-                                <div class="col-5"/>
-                                <div class="col-1"/>
-                                <div class="col-5">
-                                    <div>
-                                        <span>Ngày: </span><span t-field="doc.bsd_ngay_in_dc" t-options='{"format": "dd/MM/YYYY"}'/>
-                                    </div>
-                                </div>
-                                <div class="col-1"/>
+                                <div class="col-12"><br/></div>
                             </div>
                             <div class="row mt32">
                                 <div class="col-5">
+                                    <div><br/></div>
                                     <div style="border-bottom: 1px solid black;"/>
                                 </div>
                                 <div class="col-1"/>
                                 <div class="col-5">
+                                    <span>Ngày: </span><span t-field="doc.bsd_ngay_in_dc" t-options='{"format": "dd/MM/YYYY"}'/>
                                     <div style="border-bottom: 1px solid black;"/>
                                 </div>
                                 <div class="col-1"/>
