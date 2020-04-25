@@ -76,7 +76,7 @@
                                 </div>
                             </div>
                         <!-- tên phiếu báo giá-->
-                        <div class="row mt5 mb10">
+                        <div class="row mt16 mb8">
                             <div class="col-12 text-center">
                                 <div style="font-size:25px">
                                     <b>PHIẾU TÍNH GIÁ</b>
@@ -96,7 +96,7 @@
                           </div>
                         </div>
                         <!--Thông tin căn hộ-->
-                        <div class="row">
+                        <div class="row mt8">
                             <div class="col-12">
                                 <table class="table table-bordered"
                                    style="table-layout:fixed;border: 2px !important; border-style: solid !important; border-color: #000000 !important;" >
@@ -132,7 +132,7 @@
                             </div>
                         </div>
                         <!--Chi tiết giá bán-->
-                        <div class="row">
+                        <div class="row mt8">
                             <div class="col-12">
                                 <table class="table table-bordered"
                                  style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
@@ -180,7 +180,7 @@
                             </div>
                         </div>
                         <!-- Lịch thanh toán -->
-                        <div class="row">
+                        <div class="row mt8">
                             <div class="col-12">
                                 <table class="table table-bordered"
                                  style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
@@ -246,7 +246,7 @@
                             </div>
                         </div>
                         <!-- Điều khoản-->
-                        <div class="row">
+                        <div class="row mt16">
                             <div class="col-12">
                                 <div><b><u>Điều khoản:</u></b></div>
                             </div>
