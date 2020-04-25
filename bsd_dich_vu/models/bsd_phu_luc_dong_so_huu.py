@@ -65,7 +65,7 @@ class BsdPLDSH(models.Model):
                     'bsd_dong_sh_id': moi.bsd_dong_sh_id.id,
                     'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
                     'bsd_pl_dsh_id': self.id,
-                    'bsd_lan_td': 0,
+                    'bsd_lan_td': 1,
                     'state': 'active',
                 })
         else:
