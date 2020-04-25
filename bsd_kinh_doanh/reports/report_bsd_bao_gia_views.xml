@@ -284,31 +284,45 @@
                         </div>
                         <!--Ký tên-->
                         <div class="row mt32" >
-                          <div class="col-4 text-center">
-                              <div><b>Người lập</b></div>
-                          </div>
-                          <div class="col-4 text-center">
-                              <div><b>Người duyệt</b></div>
-
-                          </div>
-                          <div class="col-4 text-center">
-                              <div><b>Xác nhận của khách hàng</b></div>
-
+                            <div class="col-4 text-center">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div><b>Người lập</b></div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:100px">
+                                    <div class="col-12">
+                                        <div style="border-bottom: 1px solid black;"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div><b>Người duyệt</b></div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:100px">
+                                    <div class="col-12">
+                                        <div style="border-bottom: 1px solid black;"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div><b>Xác nhận của khách hàng</b></div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:100px">
+                                    <div class="col-12">
+                                        <div style="border-bottom: 1px solid black;"/>
+                                    </div>
+                                </div>
+                            </div>
                           </div>
                         </div>
-                        <div class="row" style="margin-top:100px">
-                          <div class="col-4 text-center">
-                            <div style="border-bottom: 1px solid black;"/>
-                          </div>
-                          <div class="col-4 text-center">
-                            <div style="border-bottom: 1px solid black;"/>
-                          </div>
-                          <div class="col-4 text-center">
-                            <div style="border-bottom: 1px solid black;"/>
-                          </div>
-                        </div>
-                    </div>
-                </t>
+                    </t>
                 </t>
             </t>
         </template>
