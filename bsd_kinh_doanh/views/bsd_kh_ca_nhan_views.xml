@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_res_partner_cn_form">
+        <field name="name">bsd.res.partner.cn.form</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group string="THÔNG TIN CÁ NHÂN">
+                        <group>
+                            <field name="name"/>
+                            <field name="bsd_ngay_sinh"/>
+                            <field name="bsd_gioi_tinh"/>
+                            <field name="phone"/>
+                            <field name="mobile"/>
+                            <field name="email"/>
+                            <field name="bsd_loai_kh"/>
+                            <field name="bsd_nguoi_bh"/>
+                        </group>
+                        <group>
+                            <field name="bsd_cmnd"/>
+                            <field name="bsd_ngay_cap_cmnd"/>
+                            <field name="bsd_noi_cap_cmnd"/>
+                            <field name="bsd_ho_chieu"/>
+                            <field name="bsd_ngay_cap_hc"/>
+                            <field name="bsd_noi_cap_hc"/>
+                            <field name="bsd_mst"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                    <group string="Địa chỉ">
+                        <group>
+                            <field name="bsd_dia_chi_tt"/>
+                            <field name="bsd_quoc_gia_tt_id"/>
+                            <field name="bsd_tinh_tt_id" domain="[('country_id', 'in',[bsd_quoc_gia_tt_id])]"/>
+                            <field name="bsd_quan_tt_id" domain="[('bsd_tinh_thanh_id', 'in',[bsd_tinh_tt_id])]"/>
+                            <field name="bsd_phuong_tt_id" domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_tt_id])]"/>
+                            <field name="bsd_so_nha_tt"/>
+                        </group>
+                        <group>
+                            <field name="bsd_dia_chi_lh"/>
+                            <field name="bsd_quoc_gia_lh_id"/>
+                            <field name="bsd_tinh_lh_id" domain="[('country_id', 'in',[bsd_quoc_gia_lh_id])]"/>
+                            <field name="bsd_quan_lh_id" domain="[('bsd_tinh_thanh_id', 'in',[bsd_tinh_lh_id])]"/>
+                            <field name="bsd_phuong_lh_id" domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_lh_id])]"/>
+                            <field name="bsd_so_nha_lh"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_res_partner_cn_tree">
+        <field name="name">bsd.res.partner.cn.tree</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_res_partner_cn_filter">
+        <field name="name">bsd.res.partner.cn.filter</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_res_partner_cn_action">
+        <field name="name">Khách hàng cá nhân</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('is_company','=',False)]</field>
+        <field name="context">{'default_company_type':'person', 'default_is_company':False}</field>
+        <field name="help" type="xml">
+            <p>Tạo mới khách hàng cá nhân</p>
+        </field>
+        <field name="view_id" ref="bsd_res_partner_cn_tree"/>
+        <field name="view_ids"
+               eval="[(5, 0, 0),
+                      (0, 0, {'view_mode': 'tree', 'view_id': ref('bsd_res_partner_cn_tree')}),
+                      (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_res_partner_cn_form')})]"/>
+        <field name="search_view_id" ref="bsd_res_partner_cn_filter"/>
+    </record>
+</odoo>

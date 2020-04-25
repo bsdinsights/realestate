@@ -11,7 +11,7 @@
     <menuitem id="bsd_kh_cn_action_menu"
               name="Khách hàng cá nhân"
               sequence="10"
-              action="bsd_kh_cn_action"
+              action="bsd_res_partner_cn_action"
               parent="bsd_khach_hang_menu"/>
     <menuitem id="bsd_kh_dn_action_menu"
               name="Khách hàng doanh nghiệp"
