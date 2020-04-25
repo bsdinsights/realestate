@@ -100,33 +100,33 @@
                                             <td rowspan="6" width="10%"
                                                 style="border: 1px solid black !important;vertical-align: middle;"><b>Người mua 1</b></td>
                                             <td class="text-left" width="20%" style="border: 1px solid black !important;"><div>Họ vàn tên:</div></td>
-                                            <td width="40%" style="border: 1px solid black !important;"><div> Nguyễn Văn A</div></td>
-                                            <td class="text-left" width="15%" style="border: 1px solid black !important;"><div>Ngày sinh:</div></td>
-                                            <td width="15%" style="border: 1px solid black !important;"><div>22/2/2000</div></td>
+                                            <td width="40%" style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.name"/></div></td>
+                                            <td class="text-left" width="11%" style="border: 1px solid black !important;"><div>Ngày sinh:</div></td>
+                                            <td width="19%" style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.bsd_ngay_sinh"/></div></td>
                                         </tr>
                                         <tr class="text-center">
                                             <td class="text-left" style="border: 1px solid black !important;"><div>Hộ chiếu:</div></td>
-                                            <td style="border: 1px solid black !important;"><div> 12364512</div></td>
+                                            <td style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.bsd_ho_chieu"/></div></td>
                                             <td class="text-left" style="border: 1px solid black !important;"><div>Giới tính:</div></td>
-                                            <td style="border: 1px solid black !important;"><div>Nam</div></td>
+                                            <td style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.bsd_gioi_tinh"/></div></td>
                                         </tr>
                                         <tr class="text-center">
                                             <td class="text-left" style="border: 1px solid black !important;"><div>CMND/ CCCD</div></td>
-                                            <td style="border: 1px solid black !important;"><div> 1236451224123</div></td>
+                                            <td style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.bsd_cmnd"/></div></td>
                                             <td class="text-left" style="border: 1px solid black !important;"><div>Điện thoại:</div></td>
-                                            <td style="border: 1px solid black !important;"><div>090909200</div></td>
+                                            <td style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.phone"/></div></td>
                                         </tr>
                                         <tr class="text-center">
                                             <td class="text-left" style="border: 1px solid black !important;"><div>Email:</div></td>
-                                            <td style="border: 1px solid black !important;" colspan="3"><div>123</div></td>
+                                            <td style="border: 1px solid black !important;" colspan="3"><div><span t-field="doc.bsd_khach_hang_id.email"/></div></td>
                                         </tr>
                                         <tr class="text-center">
                                             <td class="text-left" style="border: 1px solid black !important;"><div>Địa chỉ thường chú:</div></td>
-                                            <td style="border: 1px solid black !important;" colspan="3"><div>123</div></td>
+                                            <td style="border: 1px solid black !important;" colspan="3"><div><span t-field="doc.bsd_khach_hang_id.bsd_dia_chi_tt"/></div></td>
                                         </tr>
                                         <tr class="text-center">
                                             <td class="text-left" style="border: 1px solid black !important;"><div>Địa chỉ liên hệ:</div></td>
-                                            <td style="border: 1px solid black !important;" colspan="3"><div>123</div></td>
+                                            <td style="border: 1px solid black !important;" colspan="3"><div><span t-field="doc.bsd_khach_hang_id.bsd_dia_chi_lh"/></div></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -150,7 +150,7 @@
                                                     <div>Căn hộ số</div>
                                                 </td>
                                                 <td width="30%" style="border: 1px solid black !important;">
-                                                    <div><b>123</b></div>
+                                                    <div><b><span t-field="doc.bsd_unit_id.bsd_ten_unit"/></b></div>
                                                 </td>
                                             </tr>
                                             <tr class="text-center">
@@ -161,7 +161,7 @@
                                                     <div>Loại căn hộ</div>
                                                 </td>
                                                 <td style="border: 1px solid black !important;">
-                                                    <div><b>123</b></div>
+                                                    <div><span t-field="doc.bsd_unit_id.bsd_loai_sp_id.bsd_ma_nhom"/></div>
                                                 </td>
                                             </tr>
                                             <tr class="text-center">
@@ -172,7 +172,7 @@
                                                     <div>Dự án/ Tòa nhà</div>
                                                 </td>
                                                 <td style="border: 1px solid black !important;">
-                                                    <div><b>123</b></div>
+                                                    <div><span t-field="doc.bsd_du_an_id.bsd_ten_da"/></div>
                                                 </td>
                                             </tr>
                                             <tr class="text-center">
@@ -183,7 +183,7 @@
                                                     <div>Tổng diện tích sàn</div>
                                                 </td>
                                                 <td style="border: 1px solid black !important;">
-                                                    <div><b>123</b></div>
+                                                    <div><span t-field="doc.bsd_dt_xd"/></div>
                                                 </td>
                                             </tr>
                                             <tr class="text-center">
@@ -194,7 +194,7 @@
                                                     <div>Diện tích sàn sử dụng</div>
                                                 </td>
                                                 <td style="border: 1px solid black !important;">
-                                                    <div><b>123</b></div>
+                                                    <div><span t-field="doc.bsd_dt_sd"/></div>
                                                 </td>
                                             </tr>
                                             <tr class="text-center">
@@ -205,7 +205,7 @@
                                                     <div>Tổng giá trị căn hộ (bao gồm VAT và phí bảo trì) (VNĐ)</div>
                                                 </td>
                                                 <td class="text-right" style="border: 1px solid black !important;">
-                                                    <div><b>123</b></div>
+                                                    <div><b><span t-field="doc.bsd_tong_gia" t-options='{"widget": "monetary", "display_currency": currency}'/></b></div>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -221,17 +221,18 @@
                             </div>
                             <div class="row mt16">
                                 <div class="col-12">
-                                    <div>1. Người mua thanh toán i) Phí đặt chỗ [22] bằng Séc hoặc Thẻ tín dụng,
-                                        hoặc ii) Đặt cọc số tiền [23] (Bằng chữ: [24]) cho công ty [25] để mua căn hộ
+                                    <div>1. Người mua thanh toán i) Phí đặt chỗ <span t-field="doc.bsd_tien_gc"/> bằng Séc hoặc Thẻ tín dụng,
+                                        hoặc ii) Đặt cọc số tiền <span t-field="doc.bsd_du_an_id.bsd_tien_dc"/>
+                                        (Bằng chữ: <span t-esc="tien_dat_coc_chu"/>) cho công ty <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/> mua căn hộ
                                         của Dự án. (Lưu ý: Phiếu đặt cọc này chỉ dành cho một căn hộ).</div>
                                 </div>
                             </div>
                             <div class="row mt16">
                                 <div class="col-12">
-                                    <div>2. Trong vòng [26] ngày kể từ ngày in Phiếu đặt cọc này, Người mua sẽ ký Thỏa
+                                    <div>2. Trong vòng <span t-field="doc.bsd_du_an_id.bsd_hh_pc"/> ngày kể từ ngày in Phiếu đặt cọc này, Người mua sẽ ký Thỏa
                                         thuận đặt cọc (Hợp đồng) với Người bán để mua Căn hộ được nêu ở đây, và Người
-                                        mua sẽ thanh toán cho [25] tương đương [26] Tổng giá trị căn hộ không bao gồm
-                                        phí bảo trì (trừ đi số tiền đặt cọc nếu đã thanh toán cho công ty [25]).
+                                        mua sẽ thanh toán cho <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/> tương đương <span t-esc="tl_tt"/>% Tổng giá trị căn hộ không bao gồm
+                                        phí bảo trì (trừ đi số tiền đặt cọc nếu đã thanh toán cho công ty <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/>).
                                         Chi tiết về lịch thanh toán sẽ được quy định trong Lịch thanh toán kèm theo
                                         Phiếu đặt cọc này.</div>
                                 </div>
@@ -354,7 +355,7 @@
                                 <div class="col-1"/>
                                 <div class="col-5">
                                     <div>
-                                        Ngày:
+                                        <span>Ngày: </span><span t-field="doc.bsd_ngay_in_dc"/>
                                     </div>
                                 </div>
                                 <div class="col-1"/>
@@ -375,15 +376,15 @@
                                 </div>
                                 <div class="col-1"/>
                                 <div class="col-5">
-                                    <span>công ty</span>
+                                    <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/>
                                 </div>
                                 <div class="col-1"/>
                             </div>
                             <div class="row">
                                 <div class="col-5">
-                                    <span>Họ và tên:</span><br/>
-                                    <span>Hộ chiếu:</span><br/>
-                                    <span>CMND/ CCCD:</span><br/>
+                                    <span>Họ và tên: </span><span t-field="doc.bsd_khach_hang_id.name"/><br/>
+                                    <span>Hộ chiếu: </span><span t-field="doc.bsd_khach_hang_id.bsd_ho_chieu"/><br/>
+                                    <span>CMND/ CCCD: </span><span t-field="doc.bsd_khach_hang_id.bsd_cmnd"/><br/>
                                 </div>
                             </div>
                         </div>

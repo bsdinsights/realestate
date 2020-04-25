@@ -3,6 +3,7 @@
 from odoo import api, models, fields
 import logging
 import datetime
+from num2words import num2words
 _logger = logging.getLogger(__name__)
 
 
@@ -38,8 +39,14 @@ class ReportBsdDatCoc(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
+        dat_coc = self.env['bsd.dat_coc'].browse(data['ids'])
+        tien_dat_coc_chu = num2words(dat_coc.bsd_du_an_id.bsd_tien_dc, lang='vi_VN') + ' ' + 'đồng'
+        tl_tt = dat_coc.bsd_cs_tt_id.bsd_ct_ids.filtered(lambda t: t.bsd_stt == 1)[0].bsd_tl_tt
+
         return {
             'doc_ids': data['ids'],
             'doc_model': data['model'],
-            'docs': self.env['bsd.dat_coc'].browse(data['ids']),
+            'docs': dat_coc,
+            'tien_dat_coc_chu': tien_dat_coc_chu,
+            'tl_tt': tl_tt,
         }
