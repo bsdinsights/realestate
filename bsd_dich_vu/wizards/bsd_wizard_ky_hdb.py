@@ -19,6 +19,7 @@ class BsdKyHDB(models.TransientModel):
 
     def action_xac_nhan(self):
         self.bsd_hd_ban_id.write({
-            'bsd_ngay_ky_hdb': self.bsd_ngay_ky_hdb
+            'bsd_ngay_ky_hdb': self.bsd_ngay_ky_hdb,
+            'state': 'da_ky'
         })
 
