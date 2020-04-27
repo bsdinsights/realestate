@@ -37,7 +37,7 @@ class BsdRapCan(models.Model):
                                 states={'nhap': [('readonly', False)]})
     bsd_truoc_mb = fields.Boolean(string="Trước mở bán", default=False,
                                   help="Thông tin xác định Giữ chỗ được tạo trước hay sau khi unit có đợt mở bán",
-                                  readonly=True, required=True)
+                                  readonly=True)
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', related="bsd_unit_id.bsd_dot_mb_id",
                                     help="Đợt mở bán",
                                     string="Đợt mở bán", store=True)

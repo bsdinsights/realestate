@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!--Top menu-->
+    <menuitem id="bsd_main_tai_chinh_root" name="Tài chính"/>
+
+    <!--Phiếu thu menu-->
+    <menuitem id="bsd_phieu_thu_menu_action"
+              name="Phiếu thu"
+              sequence="10"
+              action="bsd_phieu_thu_action"
+              parent="bsd_main_tai_chinh_root"/>
+
+
+    <record id="bsd_tai_chinh.bsd_main_tai_chinh_root" model="ir.ui.menu">
+        <field name="action" eval="False"/>
+        <field name="active" eval="True"/>
+        <field name="groups_id" eval="[(6, 0, [])]"/>
+        <field name="name">Tài chính</field>
+        <field name="parent_id" eval="False"/>
+        <field name="sequence">10</field>
+        <field name="web_icon">fa fa-file-text,#FFFFFF,#D2691E</field>
+    </record>
+</odoo>
