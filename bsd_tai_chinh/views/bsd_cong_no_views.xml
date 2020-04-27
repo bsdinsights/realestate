@@ -15,8 +15,8 @@
                             <field name="bsd_khach_hang_id"/>
                             <field name="bsd_du_an_id"/>
                             <field name="bsd_tien"/>
-                            <field name="bsd_tien_dtt"/>
-                            <field name="bsd_tien_ptt"/>
+                            <field name="bsd_tien_thanh_toan"/>
+                            <field name="bsd_tien_con_lai"/>
                             <field name="bsd_loai_ct"/>
                             <field name="bsd_phat_sinh"/>
                         </group>

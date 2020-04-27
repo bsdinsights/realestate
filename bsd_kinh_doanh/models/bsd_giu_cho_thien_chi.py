@@ -106,7 +106,7 @@ class BsdGiuChoThienChi(models.Model):
             'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
             'bsd_du_an_id': self.bsd_du_an_id.id,
             'bsd_tien': self.bsd_tien_gc,
-            'bsd_tien_dtt': 0,
+            'bsd_tien_thanh_toan': 0,
             'bsd_loai_ct': 'gc_tc',
             'bsd_phat_sinh': 'tang',
             'bsd_gc_tc_id': self.id,
