@@ -33,7 +33,9 @@
                             <field name="bsd_gc_tc_id"
                                    options="{'no_create':true}"
                                    domain="[('bsd_thanh_toan', '=','da_tt'), ('state','=','xac_nhan')]"/>
-                            <field name="bsd_khach_hang_id"/>
+                            <field name="bsd_khach_hang_id"
+                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                   options="{'no_create':true}"/>
                         </group>
                         <group>
                             <field name="bsd_du_an_id" options="{'no_create':true}"/>
