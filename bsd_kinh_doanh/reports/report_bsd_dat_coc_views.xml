@@ -102,7 +102,7 @@
                                             <td class="text-left" width="20%" style="border: 1px solid black !important;"><div>Họ vàn tên:</div></td>
                                             <td width="38%" style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.name"/></div></td>
                                             <td class="text-left" width="12%" style="border: 1px solid black !important;"><div>Ngày sinh:</div></td>
-                                            <td width="20%" style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.bsd_ngay_sinh"/></div></td>
+                                            <td width="20%" style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.bsd_ngay_sinh" t-options='{"format": "dd/MM/YYYY"}'/></div></td>
                                         </tr>
                                         <tr class="text-center">
                                             <td class="text-left" style="border: 1px solid black !important;"><div>Hộ chiếu:</div></td>
@@ -223,7 +223,7 @@
                                 <div class="col-12">
                                     <div>1. Người mua thanh toán i) Phí đặt chỗ <span t-field="doc.bsd_tien_gc"/> bằng Séc hoặc Thẻ tín dụng,
                                         hoặc ii) Đặt cọc số tiền <span t-field="doc.bsd_du_an_id.bsd_tien_dc"/>
-                                        (Bằng chữ: <span t-esc="tien_dat_coc_chu"/>) cho công ty <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/> mua căn hộ
+                                        (Bằng chữ: <span t-esc="tien_dat_coc_chu"/>) cho <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/> mua căn hộ
                                         của Dự án. (Lưu ý: Phiếu đặt cọc này chỉ dành cho một căn hộ).</div>
                                 </div>
                             </div>
@@ -263,7 +263,7 @@
                                         </tr>
                                         <tr>
                                             <td style="border: 1px solid black !important">
-                                                <span>2. Người mua chấp nhận và đống ý rằng Tiền đặt cọc được quy định
+                                                <span>2. Người mua chấp nhận và đồng ý rằng Tiền đặt cọc được quy định
                                                     ở Mục 1 của Phần 2 được đề cập ở phía trên sẽ không được hoàn trả
                                                     trong mọi trường hợp.</span>
                                             </td>

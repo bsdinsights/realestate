@@ -261,7 +261,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <span>2. Để xác nhận mua hàng, xin vui lòng ký vào phiếu tính giá này, gửi về <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/>
-                                  và hoàn thành đặt cọc số tiền <span t-field="doc.bsd_tien_dc"/> bằng tiền mặt và thẻ tín dụng hoặc chuyển khoản đến tài khoản
+                                  và hoàn thành đặt cọc số tiền <span t-field="doc.bsd_tien_dc"/> bằng tiền mặt, thẻ tín dụng hoặc chuyển khoản đến tài khoản
                                   công ty dự án theo thông tin dưới đây:</span>
                                 <ul>
                                   <li><span>Chủ tài khoản           : </span></li>
