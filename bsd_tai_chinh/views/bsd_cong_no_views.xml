@@ -15,7 +15,8 @@
                             <field name="bsd_khach_hang_id"/>
                             <field name="bsd_du_an_id"/>
                             <field name="bsd_tien"/>
-                            <field name="bsd_tien_pt"/>
+                            <field name="bsd_tien_dtt"/>
+                            <field name="bsd_tien_ptt"/>
                             <field name="bsd_loai_ct"/>
                             <field name="bsd_phat_sinh"/>
                         </group>
@@ -27,6 +28,7 @@
                             <field name="bsd_dot_tt_id"/>
                             <field name="bsd_phieu_thu_id"/>
                             <field name="bsd_phan_bo"/>
+                            <field name="company_id" invisible="1"/>
                             <field name="currency_id"/>
                         </group>
                     </group>

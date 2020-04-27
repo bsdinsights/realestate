@@ -99,8 +99,24 @@ class BsdGiuChoThienChi(models.Model):
         if len(gc_in_day) >= self.bsd_du_an_id.bsd_gc_nv_ngay:
             raise UserError("Số lượng giữ chỗ tối đa trên một ngày của bạn đã vượt mức.\n Vui lòng kiểm tra lại")
 
+    # KD.05.08 Theo dõi công nợ giữ chỗ thiện chí
+    def _tao_rec_cong_no(self):
+        self.env['bsd.cong_no'].create({
+            'bsd_ngay': self.bsd_ngay_gctc,
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_du_an_id': self.bsd_du_an_id.id,
+            'bsd_tien': self.bsd_tien_gc,
+            'bsd_tien_dtt': 0,
+            'bsd_loai_ct': 'gc_tc',
+            'bsd_phat_sinh': 'tang',
+            'bsd_gc_tc_id': self.id,
+            'bsd_phan_bo': 'chua_pb',
+            'state': 'da_gs',
+        })
+
     # KD.05.01 Xác nhận giữ chỗ thiện chí
     def action_xac_nhan(self):
+        self._tao_rec_cong_no()
         self.write({
             'state': 'xac_nhan',
             'bsd_ngay_gctc': datetime.datetime.now(),
@@ -118,6 +134,9 @@ class BsdGiuChoThienChi(models.Model):
             self.write({
                 'state': 'huy'
             })
+        self.env['bsd.cong_no'].search([('bsd_gc_tc_id', '=',self.id)]).write({
+            'state': 'huy',
+        })
 
     # KD.05.04 Tự động đánh dấu hết hạn giữ chỗ
     def auto_danh_dau_hh_gc(self):
