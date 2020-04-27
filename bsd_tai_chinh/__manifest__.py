@@ -17,6 +17,8 @@
         'security/ir.model.access.csv',
         'security/bsd_security.xml',
         'views/bsd_phieu_thu_views.xml',
+        'views/bsd_cong_no_views.xml',
+        'views/bsd_cong_no_ct_views.xml',
         'views/bsd_menu_item_views.xml'
     ],
     'application': True,

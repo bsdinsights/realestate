@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 bsd_phieu_thu_manager,Phiếu thu,model_bsd_phieu_thu,bsd_tai_chinh.group_manager,1,1,1,1
+bsd_cong_no_manager,Công nợ khách hàng,model_bsd_cong_no,bsd_tai_chinh.group_manager,1,1,1,1
+bsd_cong_no_ct_manager,Công nợ chứng từ khách hàng,model_bsd_cong_no_ct,bsd_tai_chinh.group_manager,1,1,1,1

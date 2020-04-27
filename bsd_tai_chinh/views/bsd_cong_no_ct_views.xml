@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_cong_no_ct_form">
+        <field name="name">bsd.cong_no_ct.form</field>
+        <field name="model">bsd.cong_no_ct</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ngay_pb"/>
+                            <field name="bsd_khach_hang_id"/>
+                            <field name="currency_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ps_tang_id"/>
+                            <field name="bsd_ps_giam_id"/>
+                            <field name="bsd_tien_pb"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>                
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_cong_no_ct_tree">
+        <field name="name">bsd.cong_no_ct.tree</field>
+        <field name="model">bsd.cong_no_ct</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ngay_pb"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_ps_tang_id"/>
+                <field name="bsd_ps_giam_id"/>
+                <field name="bsd_tien_pb"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_cong_no_ct_action">
+        <field name="name">Công nợ chứng từ</field>
+        <field name="res_model">bsd.cong_no_ct</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Công nợ khách hàng</p>
+        </field>
+    </record>
+</odoo>
