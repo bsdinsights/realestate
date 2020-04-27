@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 import datetime
 import logging
 _logger = logging.getLogger(__name__)
@@ -97,6 +98,12 @@ class BsdHopDongMuaBan(models.Model):
                                       help="""Ngày tải lên hệ thống hợp đồng bán đã được người mua
                                              ký xác nhận""")
     bsd_ngay_ky_hdb = fields.Datetime(string="Ngày ký hợp đồng", help="Ngày ký hợp đồng mua bán", readonly=True)
+
+    # DV.01.07 - Kiểm tra trùng mã đặt cọc
+    @api.constrains('bsd_dat_coc_id')
+    def _constrains_dat_coc(self):
+        if len(self.env['bsd.hd_ban'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id)])) > 1:
+            raise UserError("Phiếu đặt cọc đã được tạo hợp đồng. Xin vui lòng kiểm tra lại.")
 
     # DV.01.01 - Xác nhận hợp đồng
     def action_xac_nhan(self):
