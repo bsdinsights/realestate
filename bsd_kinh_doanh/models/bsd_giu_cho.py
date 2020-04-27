@@ -170,9 +170,25 @@ class BsdRapCan(models.Model):
             if each.bsd_ngay_tt:
                 each.bsd_ngay_hh_stt = each.bsd_ngay_tt + datetime.timedelta(days=each.bsd_du_an_id.bsd_gc_tmb)
 
+    # KD.07.09 Theo dõi công nợ giữ chỗ
+    def _tao_rec_cong_no(self):
+        self.env['bsd.cong_no'].create({
+            'bsd_ngay': self.bsd_ngay_gc,
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_du_an_id': self.bsd_du_an_id.id,
+            'bsd_tien': self.bsd_tien_gc,
+            'bsd_tien_dtt': 0,
+            'bsd_loai_ct': 'giu_cho',
+            'bsd_phat_sinh': 'tang',
+            'bsd_giu_cho_id': self.id,
+            'bsd_phan_bo': 'chua_pb',
+            'state': 'da_gs',
+        })
+
     # KD07.01 Xác nhận giữ chỗ
     def action_xac_nhan(self):
         if not self.bsd_dot_mb_id:
+            self._tao_rec_cong_no()
             self.write({
                 'state': 'dat_cho',
                 'bsd_ngay_gc': datetime.datetime.now(),
@@ -204,6 +220,9 @@ class BsdRapCan(models.Model):
     # KD.07.07 Tự động hủy giữ chỗ quá hạn thanh toán
     def auto_huy_gc(self):
         self.write({
+            'state': 'huy',
+        })
+        self.env['bsd.cong_no'].search([('bsd_giu_cho_id', '=', self.id)]).write({
             'state': 'huy',
         })
 
