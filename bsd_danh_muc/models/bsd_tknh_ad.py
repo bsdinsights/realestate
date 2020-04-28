@@ -37,6 +37,7 @@ class BsdTknhAp(models.Model):
         })
         return rec
 
+    # DM.02.01 Kiểm tra trùng thời gian tài khoản
     @api.constrains('bsd_tu_ngay', 'bsd_den_ngay', 'bsd_du_an_id')
     def _constraint_thoi_gian(self):
         _logger.debug("kiểm tra thời gian")
