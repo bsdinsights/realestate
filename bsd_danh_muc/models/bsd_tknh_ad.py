@@ -35,6 +35,7 @@ class BsdTknhAp(models.Model):
         return rec
 
 
+
 class BsdTknhCh(models.Model):
     _name = 'bsd.tknh_ch'
     _description = "Tài khoản ngân hàng đang áp dụng căn hộ"

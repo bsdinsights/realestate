@@ -13,8 +13,12 @@ class BsdBaoGiaLTT(models.Model):
     bsd_ma_dtt = fields.Char(string="Mã đợt thanh toán", help="Mã đợt thanh toán", required=True)
     bsd_ten_dtt = fields.Char(string="Tên đợt thanh toán", help="Tên đợt thanh toán", required=True)
     bsd_ngay_hh_tt = fields.Date(string="Hạn thanh toán", help="Thời hạn thanh toán của đợt thanh toán")
-    bsd_tien_dot_tt = fields.Monetary(string="Tiền thanh toán", help="Tiền thanh toán của đợt thanh toán",
+    bsd_tien_dot_tt = fields.Monetary(string="Tiền", help="Tiền thanh toán của đợt thanh toán",
                                       required=True)
+    bsd_tien_thanh_toan = fields.Monetary(string="Đã thanh toán", help="Tổng tiền đã thanh toán")
+    bsd_tien_con_lai = fields.Monetary(string="Phải thanh toán", help="Số tiền còn phải thanh toán",
+                                       compute='_compute_tien_con_lai')
+    bsd_ngay_tt = fields.Date(string="Ngày thanh toán", help="Lần thanh toán gần nhất")
     bsd_tinh_pql = fields.Boolean(string="Phí quản lý", help="Tính phí quản lý vào đợt thanh toán hay không")
     bsd_tinh_pbt = fields.Boolean(string="Phí bảo trì", help="Tính phí bảo trì vào đợt thanh toán hay không")
     bsd_ngay_ah = fields.Date(string="Ngày ân hạn", help="Ngày ân hạn thanh toán")
@@ -34,6 +38,11 @@ class BsdBaoGiaLTT(models.Model):
                                       help="Đợt thanh toán theo chính sách thanh toán")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+
+    @api.depends('bsd_tien_dot_tt', 'bsd_tien_thanh_toan')
+    def _compute_tien_con_lai(self):
+        for each in self:
+            each.bsd_tien_con_lai = each.bsd_tien_dot_tt - each.bsd_tien_thanh_toan
 
     @api.model
     def create(self, vals):
