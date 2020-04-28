@@ -75,7 +75,7 @@ class BsdDotMoBan(models.Model):
                                 states={'cph': [('readonly', False)]})
     state = fields.Selection([('cph', 'Chưa phát hành'), ('ph', 'Phát hành'),
                               ('thnb', 'Thu hồi mở bán'), ('thch', 'Thu hồi căn hộ')],
-                             string="Trạng thái", default="cph", tracking=1)
+                             string="Trạng thái", default="cph", tracking=1, required=True)
     bsd_san_gd = fields.Boolean(string="Sàn giao dịch", default=False,
                                 help="""Thông tin quy định đợt mở bán chỉ cho phép các sàn giao dịch được bán, 
                                         hay cho sàn giao dịch và chủ đầu tư đều được bán""",
