@@ -101,11 +101,27 @@ class BsdDatCoc(models.Model):
         })
         return res
 
+    # KD.10.06 Theo dõi công nợ đặt cọc
+    def _tao_rec_cong_no(self):
+        self.env['bsd.cong_no'].create({
+            'bsd_ngay': self.bsd_ngay_dat_coc,
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_du_an_id': self.bsd_du_an_id.id,
+            'bsd_tien': self.bsd_tien_dc,
+            'bsd_tien_thanh_toan': 0,
+            'bsd_loai_ct': 'dat_coc',
+            'bsd_phat_sinh': 'tang',
+            'bsd_dat_coc_id': self.id,
+            'bsd_phan_bo': 'chua_pb',
+            'state': 'da_gs',
+        })
+
     # KD.10.01 Xác nhận đặt cọc
     def action_xac_nhan(self):
         self.write({
             'state': 'dat_coc',
         })
+        self._tao_rec_cong_no()
 
     # KD.10.02 In đặt cọc
     def action_in_dc(self):
@@ -122,5 +138,6 @@ class BsdDatCoc(models.Model):
         action = self.env.ref('bsd_kinh_doanh.bsd_wizard_ky_dc_action').read()[0]
         return action
 
+    # KD.10.05 Hủy đặt cọc
     def action_huy(self):
         pass
