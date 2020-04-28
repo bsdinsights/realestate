@@ -101,7 +101,7 @@
                             </group>
                             <group string="ĐỒNG SỞ HỮU">
                                 <field name="bsd_dong_sh_ids" nolabel="1">
-                                    <tree editable="bottom">
+                                    <tree editable="top" default_order="bsd_lan_td desc">
                                         <field name="bsd_dong_sh_id" options="{'no_create':true}"/>
                                         <field name="bsd_mobile"/>
                                         <field name="bsd_email"/>
