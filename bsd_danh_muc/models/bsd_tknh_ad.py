@@ -44,25 +44,26 @@ class BsdTknhAp(models.Model):
         tk_ad = self.env['bsd.tknh_ad'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                 ('id', '!=', self.id)])
         _logger.debug(tk_ad)
-        khoang_time = [(t.bsd_tu_ngay, t.bsd_den_ngay) for t in tk_ad.sorted('bsd_tu_ngay')]
-        flag = True
-        if self.bsd_tu_ngay < self.bsd_den_ngay < khoang_time[0][0]:
-            _logger.debug("trước nhất")
-            flag = False
-        elif khoang_time[-1][1] < self.bsd_tu_ngay < self.bsd_den_ngay:
-            _logger.debug("sau nhất")
-            flag = False
-        else:
-            l = len(khoang_time)
-            for i in range(0, l-1):
-                t_first = khoang_time[i][1]
-                t_last = khoang_time[i+1][0]
-                if t_first < self.bsd_tu_ngay < self.bsd_den_ngay < t_last:
-                    _logger.debug("Nằm trong khoảng cho phep")
-                    flag = False
-        if flag:
-            raise UserError("Đã tồn tại một tài khoản ngân hàng đang được áp dụng \n "
-                            "trong khoảng thời gian được lựa chọn. Vui lòng kiểm tra lại.")
+        if tk_ad:
+            khoang_time = [(t.bsd_tu_ngay, t.bsd_den_ngay) for t in tk_ad.sorted('bsd_tu_ngay')]
+            flag = True
+            if self.bsd_tu_ngay < self.bsd_den_ngay < khoang_time[0][0]:
+                _logger.debug("trước nhất")
+                flag = False
+            elif khoang_time[-1][1] < self.bsd_tu_ngay < self.bsd_den_ngay:
+                _logger.debug("sau nhất")
+                flag = False
+            else:
+                l = len(khoang_time)
+                for i in range(0, l-1):
+                    t_first = khoang_time[i][1]
+                    t_last = khoang_time[i+1][0]
+                    if t_first < self.bsd_tu_ngay < self.bsd_den_ngay < t_last:
+                        _logger.debug("Nằm trong khoảng cho phep")
+                        flag = False
+            if flag:
+                raise UserError("Đã tồn tại một tài khoản ngân hàng đang được áp dụng \n "
+                                "trong khoảng thời gian được lựa chọn. Vui lòng kiểm tra lại.")
 
 
 class BsdTknhCh(models.Model):
