@@ -15,7 +15,7 @@
               action="bsd_cong_no_action"
               parent="bsd_main_tai_chinh_root"/>
     <menuitem id="bsd_cong_no_ct_menu_action"
-              name="Đối chiếu công nợ"
+              name="Công nợ chứng từ"
               sequence="12"
               action="bsd_cong_no_ct_action"
               parent="bsd_main_tai_chinh_root"/>

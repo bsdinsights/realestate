@@ -95,15 +95,10 @@
                 <field name="bsd_khach_hang_id"/>
                 <field name="bsd_du_an_id"/>
                 <field name="bsd_unit_id"/>
-                <field name="bsd_dot_mb_id"/>
                 <field name="bsd_ngay_hh_gc"/>
-                <field name="bsd_stt_bg"/>
+                <field name="bsd_thanh_toan"/>
                 <field name="bsd_ngay_hh_bg"/>
                 <field name="state"/>
-                <field name="bsd_thanh_toan"/>
-                <field name="bsd_gc_tc_id"/>
-                <field name="bsd_bang_gia_id"/>
-                <field name="bsd_tien_gc"/>
                 <field name="currency_id" invisible="1"/>
             </tree>
         </field>
