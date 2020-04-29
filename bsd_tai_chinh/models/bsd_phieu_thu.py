@@ -104,6 +104,8 @@ class BsdPhieuThu(models.Model):
             self._gs_pt_khac()
         elif self.bsd_loai_pt == 'gc_tc':
             self._gs_pt_gc_tc()
+        elif self.bsd_loai_pt == 'giu_cho':
+            self._gs_pt_giu_cho()
         else:
             pass
 
@@ -171,6 +173,54 @@ class BsdPhieuThu(models.Model):
             })
         else:
             tang_id.bsd_gc_tc_id.write({
+                'bsd_ngay_tt': self.bsd_ngay_pt,
+                'bsd_thanh_toan': 'dang_tt'
+            })
+
+    # TC.01.04 - Ghi số phiếu thu Giữ chỗ
+    def _gs_pt_giu_cho(self):
+        # ghi công nợ giảm
+        giam_id = self.env['bsd.cong_no'].create({
+                        'bsd_chung_tu': self.bsd_so_pt,
+                        'bsd_ngay': self.bsd_ngay_pt,
+                        'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                        'bsd_du_an_id': self.bsd_du_an_id.id,
+                        'bsd_tien': self.bsd_tien,
+                        'bsd_tien_thanh_toan': self.bsd_tien,
+                        'bsd_loai_ct': 'phieu_thu',
+                        'bsd_phat_sinh': 'giam',
+                        'bsd_phieu_thu_id': self.id,
+                        'bsd_giu_cho_id': self.bsd_giu_cho_id.id,
+                        'bsd_phan_bo': 'da_pb',
+                        'state': 'da_gs',
+        })
+        # ghi công nợ tăng
+        tang_id = self.env['bsd.cong_no'].search([('bsd_giu_cho_id', '=', self.bsd_giu_cho_id.id)], limit=1)
+
+        # tạo record trong bảng công nợ chứng từ
+        self.env['bsd.cong_no_ct'].create({
+            'bsd_ngay_pb': self.bsd_ngay_pt,
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_ps_tang_id': tang_id.id,
+            'bsd_ps_giam_id': giam_id.id,
+            'bsd_tien_pb': self.bsd_tien,
+            'state': 'hoan_thanh',
+        })
+        # Ghi nhận số tiền đã thanh toán công nợ
+        tang_id.write({
+            'bsd_tien_thanh_toan': self.bsd_tien,
+        })
+        # Cập nhật lại giữ chỗ thiện chí
+        if tang_id.bsd_tien_con_lai == 0:
+            tang_id.bsd_giu_cho_id.write({
+                'bsd_ngay_tt': self.bsd_ngay_pt,
+                'bsd_thanh_toan': 'da_tt'
+            })
+            tang_id.write({
+                'bsd_phan_bo': 'da_pb'
+            })
+        else:
+            tang_id.bsd_giu_cho_id.write({
                 'bsd_ngay_tt': self.bsd_ngay_pt,
                 'bsd_thanh_toan': 'dang_tt'
             })
