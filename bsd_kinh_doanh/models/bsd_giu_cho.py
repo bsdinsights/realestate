@@ -228,10 +228,9 @@ class BsdRapCan(models.Model):
 
     # KD.07.08 Tự động đánh dấu hết hạn giữ chỗ
     def auto_danh_dau_hh_gc(self):
-        if self.state == 'xac_nhan' and self.bsd_thanh_toan == 'da_tt' and not self.bsd_het_han_gc:
-            self.write({
-                'bsd_het_han_gc': True
-            })
+        self.write({
+            'bsd_het_han_gc': True
+        })
 
     # R7 Ghi nhận thông tin trước mở bán
     @api.model
