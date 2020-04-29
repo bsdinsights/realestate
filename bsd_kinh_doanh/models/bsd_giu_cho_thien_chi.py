@@ -21,7 +21,7 @@ class BsdGiuChoThienChi(models.Model):
          'Mã giữ chỗ thiện chí đã tồn tại !'),
     ]
     bsd_ngay_gctc = fields.Datetime(string="Ngày giữ chỗ", required=True, help="Ngày giữ chỗ thiện chí",
-                                    readonly=True, default=datetime.datetime.now(),
+                                    readonly=True, default=lambda self: fields.Datetime.now(),
                                     states={'nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", required=True,
                                         readonly=True, help="Khách hàng",

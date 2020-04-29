@@ -16,7 +16,7 @@ class BsdDatCoc(models.Model):
          'Mã đặt cọc đã tồn tại !'),
     ]
     bsd_ngay_dat_coc = fields.Datetime(string="Ngày", help="Ngày đặt cọc", required=True,
-                                       default=datetime.datetime.now())
+                                       default=lambda self: fields.Datetime.now())
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True)
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", help="Tên báo giá", required=True)
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")

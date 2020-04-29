@@ -20,7 +20,7 @@ class BsdPLTDTT(models.Model):
          'Mã phụ lục hợp đồng đã tồn tại !'),
     ]
     bsd_ngay_pl_tti = fields.Datetime(string="Ngày", help="Ngày phụ lục hợp đồng", required=True,
-                                      default=datetime.datetime.now(),
+                                      default=lambda self: fields.Datetime.now(),
                                       readonly=True,
                                       states={'nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,

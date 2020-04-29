@@ -17,7 +17,7 @@ class BsdPhieuThu(models.Model):
          'Số phiếu thu đã tồn tại !'),
     ]
     bsd_ngay_pt = fields.Datetime(string="Ngày", help="Ngày phiếu thu", required=True,
-                                  readonly=True, default=datetime.datetime.now(),
+                                  readonly=True, default=lambda self: fields.Datetime.now(),
                                   states={'nhap': [('readonly', False)]})
     bsd_loai_pt = fields.Selection([('tra_truoc', 'Trả trước'),
                                     ('gc_tc', 'Giữ chỗ thiện chí'),

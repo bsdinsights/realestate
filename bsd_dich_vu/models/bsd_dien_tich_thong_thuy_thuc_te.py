@@ -20,7 +20,7 @@ class BsdDTTTTT(models.Model):
          'Số chứng từ đã tồn tại !'),
     ]
     bsd_ngay_ct = fields.Datetime(string="Ngày cập nhật", help="Ngày cập nhật", required=True,
-                                  default=datetime.datetime.now(),
+                                  default=lambda self: fields.Datetime.now(),
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_so_lan = fields.Integer(string="Lần cập nhật", help="Lần cập nhật",

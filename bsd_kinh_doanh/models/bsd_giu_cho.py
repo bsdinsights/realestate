@@ -20,7 +20,7 @@ class BsdRapCan(models.Model):
         ('bsd_ma_gc_unique', 'unique (bsd_ma_gc)',
          'Mã giữ chỗ đã tồn tại !'),
     ]
-    bsd_ngay_gc = fields.Datetime(string="Ngày giữ chỗ", required=True, default=datetime.datetime.now(),
+    bsd_ngay_gc = fields.Datetime(string="Ngày giữ chỗ", required=True, default=lambda self: fields.Datetime.now(),
                                   readonly=True, help='Ngày giữ chỗ',
                                   states={'nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", required=True,
