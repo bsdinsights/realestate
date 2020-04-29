@@ -104,6 +104,7 @@ class BsdDatCoc(models.Model):
     # KD.10.06 Theo dõi công nợ đặt cọc
     def _tao_rec_cong_no(self):
         self.env['bsd.cong_no'].create({
+            'bsd_chung_tu': self.bsd_ma_dat_coc,
             'bsd_ngay': self.bsd_ngay_dat_coc,
             'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
             'bsd_du_an_id': self.bsd_du_an_id.id,

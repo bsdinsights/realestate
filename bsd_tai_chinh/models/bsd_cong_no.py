@@ -7,8 +7,9 @@ class BsdCongNo(models.Model):
     _name = 'bsd.cong_no'
     _description = 'Công nợ khách hàng'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _rec_name = 'bsd_khach_hang_id'
+    _rec_name = 'bsd_chung_tu'
 
+    bsd_chung_tu = fields.Char(string="Số chứng từ", readonly=True)
     bsd_ngay = fields.Date(string="Ngày", help="Ngày chứng từ")
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng")
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án")

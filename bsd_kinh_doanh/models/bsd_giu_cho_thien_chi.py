@@ -102,6 +102,7 @@ class BsdGiuChoThienChi(models.Model):
     # KD.05.08 Theo dõi công nợ giữ chỗ thiện chí
     def _tao_rec_cong_no(self):
         self.env['bsd.cong_no'].create({
+            'bsd_chung_tu': self.bsd_ma_gctc,
             'bsd_ngay': self.bsd_ngay_gctc,
             'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
             'bsd_du_an_id': self.bsd_du_an_id.id,

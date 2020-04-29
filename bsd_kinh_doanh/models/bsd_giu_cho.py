@@ -173,6 +173,7 @@ class BsdRapCan(models.Model):
     # KD.07.09 Theo dõi công nợ giữ chỗ
     def _tao_rec_cong_no(self):
         self.env['bsd.cong_no'].create({
+            'bsd_chung_tu': self.bsd_ma_gc,
             'bsd_ngay': self.bsd_ngay_gc,
             'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
             'bsd_du_an_id': self.bsd_du_an_id.id,
