@@ -90,6 +90,13 @@ class BsdDatCoc(models.Model):
                                              ký xác nhận""")
     bsd_ngay_ky_dc = fields.Datetime(string="Ngày ký đặt cọc", help="Ngày ký đặt cọc", readonly=True)
 
+    bsd_thanh_toan = fields.Selection([('chua_tt', 'Chưa thanh toán'),
+                                       ('dang_tt', 'Đang thanh toán'),
+                                       ('da_tt', 'Đã thanh toán')], string="Thanh toán", default="chua_tt",
+                                      help="Thanh toán",
+                                      required=True)
+    bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ")
+
     @api.model
     def create(self, vals):
         res = super(BsdDatCoc, self).create(vals)

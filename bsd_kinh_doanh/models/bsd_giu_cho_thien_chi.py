@@ -131,17 +131,17 @@ class BsdGiuChoThienChi(models.Model):
 
     # KD.05.03 Tự động hủy giữ chỗ
     def auto_huy_giu_cho(self):
-        if self.state == 'xac_nhan' and self.bsd_thanh_toan in ['chua_tt', 'dang_tt']:
+        if self.state == 'xac_nhan' and self.bsd_thanh_toan in ['chua_tt']:
             self.write({
                 'state': 'huy'
             })
-        self.env['bsd.cong_no'].search([('bsd_gc_tc_id', '=',self.id)]).write({
+        self.env['bsd.cong_no'].search([('bsd_gc_tc_id', '=', self.id)]).write({
             'state': 'huy',
         })
 
     # KD.05.04 Tự động đánh dấu hết hạn giữ chỗ
     def auto_danh_dau_hh_gc(self):
-        if self.state == 'xac_nhan' and self.bsd_thanh_toan == 'da_tt':
+        if self.state == 'xac_nhan' and self.bsd_thanh_toan in ['chua_tt', 'dang_tt']:
             self.write({
                 'bsd_het_han': True
             })

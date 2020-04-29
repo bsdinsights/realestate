@@ -108,6 +108,14 @@
                                     <field name="bsd_ngay_ky_dc"/>
                                 </group>
                             </group>
+                            <group string="THANH TOÁN">
+                                <group>
+                                    <field name="bsd_thanh_toan"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_tt"/>
+                                </group>
+                            </group>
                         </page>
                         <page string="Bàn giao">
                             <field name="bsd_bg_ids">
