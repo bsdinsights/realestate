@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
+import datetime
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -19,7 +20,7 @@ class BsdPLDSH(models.Model):
          'Mã phụ lục hợp đồng đã tồn tại !'),
     ]
     bsd_ngay_pl_dsh = fields.Datetime(string="Ngày", help="Ngày phụ lục hợp đồng", required=True,
-                                      default=fields.Datetime.now(),
+                                      default=datetime.datetime.now(),
                                       readonly=True,
                                       states={'nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,

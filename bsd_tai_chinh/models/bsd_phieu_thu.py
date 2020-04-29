@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
-
+import datetime
 
 class BsdPhieuThu(models.Model):
     _name = 'bsd.phieu_thu'
@@ -17,7 +17,7 @@ class BsdPhieuThu(models.Model):
          'Số phiếu thu đã tồn tại !'),
     ]
     bsd_ngay_pt = fields.Datetime(string="Ngày", help="Ngày phiếu thu", required=True,
-                                  readonly=True, default=fields.Datetime.now(),
+                                  readonly=True, default=datetime.datetime.now(),
                                   states={'nhap': [('readonly', False)]})
     bsd_loai_pt = fields.Selection([('tra_truoc', 'Trả trước'),
                                     ('gc_tc', 'Giữ chỗ thiện chí'),
@@ -210,7 +210,7 @@ class BsdPhieuThu(models.Model):
         tang_id.write({
             'bsd_tien_thanh_toan': self.bsd_tien,
         })
-        # Cập nhật lại giữ chỗ thiện chí
+        # Cập nhật lại giữ chỗ
         if tang_id.bsd_tien_con_lai == 0:
             tang_id.bsd_giu_cho_id.write({
                 'bsd_ngay_tt': self.bsd_ngay_pt,

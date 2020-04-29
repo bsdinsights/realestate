@@ -26,7 +26,7 @@ class BsdBaoGia(models.Model):
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_ngay_bao_gia = fields.Datetime(string="Ngày", help="Ngày bảng tính giá", required=True,
-                                       default=fields.Datetime.now(),
+                                       default=datetime.datetime.now(),
                                        readonly=True,
                                        states={'nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,

@@ -21,7 +21,7 @@ class BsdHopDongMuaBan(models.Model):
          'Mã hợp đồng đã tồn tại !'),
     ]
     bsd_ngay_hd_ban = fields.Datetime(string="Ngày", help="Ngày làm hợp đồng mua bán", required=True,
-                                      default=fields.Datetime.now(),
+                                      default=datetime.datetime.now(),
                                       readonly=True,
                                       states={'nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,
