@@ -6,6 +6,17 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            states="nhap"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Vào sổ"
+                            name="action_vao_so"
+                            states="da_xn"
+                            type="object"
+                            class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
@@ -24,6 +35,7 @@
                                                               'required':[('bsd_so_nk','=','ngan_hang')]}"/>
                             <field name="bsd_so_nk"/>
                             <field name="currency_id"/>
+                            <field name="company_id" invisible="1"/>
                         </group>
                         <group>
                         <field name="bsd_du_an_id"/>

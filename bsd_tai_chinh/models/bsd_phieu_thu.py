@@ -89,3 +89,52 @@ class BsdPhieuThu(models.Model):
             self.bsd_loai_hd = 'dat_coc'
         else:
             self.bsd_loai_hd = None
+
+    # TC.01.01 Xác nhận phiếu thu
+    def action_xac_nhan(self):
+        self.write({
+            'state': 'da_xn',
+        })
+
+    # Nút vào sổ
+    def action_vao_so(self):
+        if self.bsd_loai_pt == 'tra_truoc':
+            self._gs_pt_tra_trươc()
+        elif self.bsd_loai_pt == 'khac':
+            self._gs_pt_khac()
+        else:
+            pass
+
+        self.write({
+            'state': 'da_gs',
+        })
+
+    # TC.01.02 Ghi sổ phiếu thu trả trước
+    def _gs_pt_tra_trươc(self):
+        self.env['bsd.cong_no'].create({
+                'bsd_ngay': self.bsd_ngay_pt,
+                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                'bsd_du_an_id': self.bsd_du_an_id.id,
+                'bsd_tien': self.bsd_tien,
+                'bsd_tien_thanh_toan': 0,
+                'bsd_loai_ct': 'phieu_thu',
+                'bsd_phat_sinh': 'giam',
+                'bsd_phieu_thu_id': self.id,
+                'bsd_phan_bo': 'chua_pb',
+                'state': 'da_gs',
+            })
+
+    # TC.01.07 Ghi sổ phiếu thu khác
+    def _gs_pt_khac(self):
+        self.env['bsd.cong_no'].create({
+                'bsd_ngay': self.bsd_ngay_pt,
+                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                'bsd_du_an_id': self.bsd_du_an_id.id,
+                'bsd_tien': self.bsd_tien,
+                'bsd_tien_thanh_toan': 0,
+                'bsd_loai_ct': 'phieu_thu',
+                'bsd_phat_sinh': 'giam',
+                'bsd_phieu_thu_id': self.id,
+                'bsd_phan_bo': 'chua_pb',
+                'state': 'da_gs',
+            })
