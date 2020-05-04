@@ -126,6 +126,9 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Không sử dụng')],
                              string="Trạng thái", default='active', required=True)
+    bsd_gd_tt = fields.Selection([('dat_coc', 'Đặt cọc'), ('hop_dong', 'Hợp đồng')],
+                                 string="Giai đoạn thanh toán", help="Thanh toán trước hay sau làm hợp đồng",
+                                 default="dat_coc", required=True)
 
     @api.onchange('bsd_dot_cuoi')
     def _onchange_bsd_dot_cuoi(self):
