@@ -36,6 +36,7 @@
                             class="oe_highlight"/>
                     <button string="Hủy"
                             states="cho_duyet,da_duyet,dat_coc"
+                            confirm="Bạn có chắc muốn Hủy báo giá không?"
                             name="action_huy"
                             type="object"/>
 

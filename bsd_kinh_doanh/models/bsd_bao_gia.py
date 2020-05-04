@@ -302,7 +302,7 @@ class BsdBaoGia(models.Model):
     def action_huy(self):
         hop_dong = self.env['bsd.hd_ban'].search([('state', '!=', 'huy'), ('bsd_bao_gia_id', '=', self.id)])
         if hop_dong:
-            raise UserError("Đã có phát sinh Hợp đồng. Bạn không thể Báo giá")
+            raise UserError("Đã có phát sinh Hợp đồng. Bạn không thể hủy Báo giá")
         else:
             self.write({
                 'state': 'huy',
