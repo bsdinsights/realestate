@@ -19,6 +19,11 @@ class BsdBaoGiaLTT(models.Model):
     bsd_tien_thanh_toan = fields.Monetary(string="Đã thanh toán", help="Tổng tiền đã thanh toán")
     bsd_tien_con_lai = fields.Monetary(string="Phải thanh toán", help="Số tiền còn phải thanh toán",
                                        compute='_compute_tien_con_lai')
+
+    bsd_thanh_toan = fields.Selection([('chua_tt', 'Chưa thanh toán'),
+                                       ('dang_tt', 'Đang thanh toán'),
+                                       ('da_tt', 'Đã thanh toán')], string="Thanh toán", default="chua_tt",
+                                      required=True)
     bsd_ngay_tt = fields.Date(string="Ngày thanh toán", help="Lần thanh toán gần nhất")
     bsd_tinh_pql = fields.Boolean(string="Phí quản lý", help="Tính phí quản lý vào đợt thanh toán hay không")
     bsd_tinh_pbt = fields.Boolean(string="Phí bảo trì", help="Tính phí bảo trì vào đợt thanh toán hay không")

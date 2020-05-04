@@ -21,4 +21,4 @@ class BsdKyDC(models.TransientModel):
         self.bsd_dat_coc_id.write({
             'bsd_ngay_ky_dc': self.bsd_ngay_ky_dc
         })
-
+        self.bsd_dat_coc_id.tao_cong_no_dot_tt()
