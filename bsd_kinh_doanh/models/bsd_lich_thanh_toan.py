@@ -6,6 +6,7 @@ from odoo import models, fields, api
 class BsdBaoGiaLTT(models.Model):
     _name = 'bsd.lich_thanh_toan'
     _description = "Lịch thanh toán cho báo giá"
+    _rec_name = 'bsd_ten_dtt'
 
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", help="Bảng tính giá", required=True)
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="'Đặt cọc", help="Phiếu đặt cọc", readonly=True)

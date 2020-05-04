@@ -43,7 +43,7 @@ class BsdPhieuThu(models.Model):
     bsd_so_nk = fields.Selection([('tien_mat', 'Tiền mặt'), ('ngan_hang', 'Ngân hàng')], string="Sổ nhật ký",
                                  required=True,
                                  readonly=True,
-                                 states={'nhap': [('readonly', False)]})
+                                 states={'nhap': [('readonly', False)]}, default="tien_mat")
     bsd_tk_nh_id = fields.Many2one('res.partner.bank', string="Tài khoản ngân hàng",
                                    help="Số tài khoản ngân hàng của chủ sở hữu",
                                    readonly=True,
@@ -54,7 +54,9 @@ class BsdPhieuThu(models.Model):
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ")
+    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ",
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_gc_tc_id = fields.Many2one('bsd.gc_tc', string="Giữ chỗ thiện chí", help="Giữ chỗ thiện chí",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
@@ -82,7 +84,7 @@ class BsdPhieuThu(models.Model):
 
     state = fields.Selection([('nhap', 'Nháp'), ('da_xn', 'Đã xác nhận'),
                               ('da_gs', 'Đã ghi sổ'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
-                             required=True, readonly=True, default='nhap')
+                             required=True, readonly=True, default='nhap', tracking=1)
 
     @api.onchange('bsd_loai_pt')
     def _onchange_loai_sp(self):
