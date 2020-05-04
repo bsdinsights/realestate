@@ -220,6 +220,7 @@ class BsdBaoGia(models.Model):
             'bsd_cs_tt_id': cs_tt.id,
             'bsd_cs_tt_ct_id': dot_tt.id,
             'bsd_bao_gia_id': self.id,
+            'bsd_gd_tt': dot_tt.bsd_gd_tt,
         })
         return res
 
