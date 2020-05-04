@@ -146,7 +146,7 @@ class BsdDatCoc(models.Model):
         for dot_tt in self.bsd_ltt_ids.filtered(lambda d: d.bsd_gd_tt == 'dat_coc').sorted('bsd_stt'):
             if dot_tt.bsd_stt == 1:
                 self.env['bsd.cong_no'].create({
-                        'bsd_chung_tu': dot_tt.bsd_ma_dtt,
+                        'bsd_chung_tu': dot_tt.bsd_ten_dtt,
                         'bsd_ngay': dot_tt.bsd_ngay_hh_tt,
                         'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                         'bsd_du_an_id': self.bsd_du_an_id.id,
@@ -160,7 +160,7 @@ class BsdDatCoc(models.Model):
                 })
             else:
                 self.env['bsd.cong_no'].create({
-                        'bsd_chung_tu': dot_tt.bsd_ma_dtt,
+                        'bsd_chung_tu': dot_tt.bsd_ten_dtt,
                         'bsd_ngay': dot_tt.bsd_ngay_hh_tt,
                         'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                         'bsd_du_an_id': self.bsd_du_an_id.id,

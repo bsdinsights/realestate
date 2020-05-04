@@ -61,7 +61,7 @@
                             <field name="bsd_dat_coc_id"
                                    options="{'no_create':true}"
                                    domain="[('bsd_khach_hang_id','in',[bsd_khach_hang_id]),('bsd_unit_id','in',[bsd_unit_id]),
-                                            ('state','=','dat_cho')]"
+                                            ('state','=','dat_coc')]"
                                    attrs="{'required':['|',('bsd_loai_pt','=','dat_coc'),'&amp;',('bsd_loai_pt','=','dot_tt'),('bsd_loai_hd','=','dat_coc')],
                                            'invisible':['|',('bsd_loai_pt','not in',['dat_coc','dot_tt']),('bsd_loai_hd','=','hd_ban')]}"/>
                             <field name="bsd_hd_ban_id"
@@ -73,7 +73,6 @@
                             />
                             <field name="bsd_dot_tt_id"
                                    options="{'no_create':true}"
-                                   domain="['|',('bsd_dat_coc_id', 'in',[bsd_dat_coc_id]),('bsd_hd_ban_id', 'in',[bsd_hd_ban_id])]"
                                    attrs="{'required':[('bsd_loai_pt','=','dot_tt')],
                                            'invisible':[('bsd_loai_pt','!=','dot_tt')]}"
                             />

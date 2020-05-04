@@ -93,6 +93,23 @@ class BsdPhieuThu(models.Model):
         else:
             self.bsd_loai_hd = None
 
+    @api.onchange('bsd_dat_coc_id', 'bsd_hd_ban_id', 'bsd_loai_hd')
+    def _onchange_dot_tt(self):
+        res = {}
+        if self.bsd_loai_hd == 'dat_coc':
+            res.update({
+                'domain': {'bsd_dot_tt_id': [('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id),
+                                             ('bsd_dat_coc_id', '!=', False),
+                                             ('bsd_gd_tt', '=', 'dat_coc')]}
+            })
+        else:
+            res.update({
+                'domain': {'bsd_dot_tt_id': [('bsd_hd_ban_id', '=', self.bsd_hd_ban_id.id),
+                                             ('bsd_hd_ban_id', '!=', False),
+                                             ('bsd_gd_tt', '=', 'hop_dong')]}
+            })
+        return res
+
     # TC.01.01 Xác nhận phiếu thu
     def action_xac_nhan(self):
         self.write({
@@ -111,6 +128,8 @@ class BsdPhieuThu(models.Model):
             self._gs_pt_giu_cho()
         elif self.bsd_loai_pt == 'dat_coc':
             self._gs_pt_dat_coc()
+        elif self.bsd_loai_pt == 'dot_tt':
+            self._gs_pt_dot_tt()
         else:
             pass
 
@@ -277,6 +296,55 @@ class BsdPhieuThu(models.Model):
             })
         else:
             tang_id.bsd_dat_coc_id.write({
+                'bsd_ngay_tt': self.bsd_ngay_pt,
+                'bsd_thanh_toan': 'dang_tt'
+            })
+
+    # TC.01.06 Ghi sổ phiếu thu đợt thanh toán
+    def _gs_pt_dot_tt(self):
+        # ghi công nợ giảm
+        giam_id = self.env['bsd.cong_no'].create({
+                        'bsd_chung_tu': self.bsd_so_pt,
+                        'bsd_ngay': self.bsd_ngay_pt,
+                        'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                        'bsd_du_an_id': self.bsd_du_an_id.id,
+                        'bsd_tien': self.bsd_tien,
+                        'bsd_tien_thanh_toan': self.bsd_tien,
+                        'bsd_loai_ct': 'phieu_thu',
+                        'bsd_phat_sinh': 'giam',
+                        'bsd_phieu_thu_id': self.id,
+                        'bsd_dot_tt_id': self.bsd_dot_tt_id.id,
+                        'bsd_phan_bo': 'da_pb',
+                        'state': 'da_gs',
+        })
+        # ghi công nợ tăng
+        tang_id = self.env['bsd.cong_no'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)], limit=1)
+
+        # tạo record trong bảng công nợ chứng từ
+        self.env['bsd.cong_no_ct'].create({
+            'bsd_ngay_pb': self.bsd_ngay_pt,
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_ps_tang_id': tang_id.id,
+            'bsd_ps_giam_id': giam_id.id,
+            'bsd_tien_pb': self.bsd_tien,
+            'state': 'hoan_thanh',
+        })
+        # Ghi nhận số tiền đã thanh toán công nợ
+        t = tang_id.bsd_tien_thanh_toan + self.bsd_tien
+        tang_id.write({
+            'bsd_tien_thanh_toan': t,
+        })
+        # Cập nhật lại giữ chỗ
+        if tang_id.bsd_tien_con_lai == 0:
+            tang_id.bsd_dot_tt_id.write({
+                'bsd_ngay_tt': self.bsd_ngay_pt,
+                'bsd_thanh_toan': 'da_tt'
+            })
+            tang_id.write({
+                'bsd_phan_bo': 'da_pb'
+            })
+        else:
+            tang_id.bsd_dot_tt_id.write({
                 'bsd_ngay_tt': self.bsd_ngay_pt,
                 'bsd_thanh_toan': 'dang_tt'
             })
