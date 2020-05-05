@@ -99,7 +99,7 @@ class BsdDatCoc(models.Model):
 
     bsd_tien_ttc = fields.Monetary(string="Đã thanh toán cọc", help="Tiền đã thanh toán cọc",
                                    compute="_compute_tien_ttc")
-    bsd_tien_ttd = fields.Monetary(string="Đã thanh toán đợt", help="Tiền đã thanh toán theo đợt thanh toán",
+    bsd_tien_ttd = fields.Monetary(string="Đã thanh toán/ đợt", help="Tiền đã thanh toán theo đợt thanh toán",
                                    compute="_compute_tien_ttd")
 
     @api.model
@@ -202,9 +202,12 @@ class BsdDatCoc(models.Model):
     # R.14 Đã thanh toán đợt
     def _compute_tien_ttd(self):
         for each in self:
-            ltt_dc = each.bsd_ltt_ids.filtered(lambda l: l.bsd_gd_tt == 'dat_coc').ids
-            cong_no = each.env['bsd.cong_no'].search([('bsd_dat_coc_id', '=', each.id),
-                                                      ('bsd_dot_tt_id', 'in', ltt_dc)])
-            each.bsd_tien_ttd = 0
-            if cong_no:
-                each.bsd_tien_ttd = max(cong_no.mapped('bsd_tien_thanh_toan'))
+            if each.bsd_thanh_toan == 'da_tt':
+                ltt_dc = each.bsd_ltt_ids.filtered(lambda l: l.bsd_gd_tt == 'dat_coc').ids
+                cong_no = each.env['bsd.cong_no'].search([('bsd_dat_coc_id', '=', each.id),
+                                                          ('bsd_dot_tt_id', 'in', ltt_dc)])
+                each.bsd_tien_ttd = 0
+                if cong_no:
+                    each.bsd_tien_ttd = max(cong_no.mapped('bsd_tien_thanh_toan'))
+            else:
+                each.bsd_tien_ttd = 0
