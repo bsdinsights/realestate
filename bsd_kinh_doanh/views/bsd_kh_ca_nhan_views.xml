@@ -15,7 +15,7 @@
                             <field name="bsd_ngay_sinh"/>
                             <field name="bsd_gioi_tinh"/>
                             <field name="phone"/>
-                            <field name="mobile"/>
+                            <field name="mobile" required="1"/>
                             <field name="email"/>
                             <field name="bsd_loai_kh"/>
                             <field name="bsd_nguoi_bh"/>

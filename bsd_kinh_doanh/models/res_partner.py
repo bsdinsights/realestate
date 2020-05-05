@@ -40,8 +40,6 @@ class ResPartner(models.Model):
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Không sử dụng')],
                              string="Trạng thái", default='active', required=True, tracking=1)
-    mobile = fields.Char(required=True)
-
     # R.01 Ràng buộc số điện thoại là duy nhất
     _sql_constraints = [
         ('mobile_unique', 'unique (mobile)',
