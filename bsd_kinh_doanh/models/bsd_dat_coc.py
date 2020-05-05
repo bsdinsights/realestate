@@ -92,10 +92,15 @@ class BsdDatCoc(models.Model):
 
     bsd_thanh_toan = fields.Selection([('chua_tt', 'Chưa thanh toán'),
                                        ('dang_tt', 'Đang thanh toán'),
-                                       ('da_tt', 'Đã thanh toán')], string="Thanh toán", default="chua_tt",
+                                       ('da_tt', 'Đã thanh toán')], string="Thanh toán TT", default="chua_tt",
                                       help="Thanh toán",
                                       required=True)
-    bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ")
+    bsd_ngay_tt = fields.Datetime(string="Ngày TT cọc", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ")
+
+    bsd_tien_ttc = fields.Monetary(string="Đã thanh toán cọc", help="Tiền đã thanh toán cọc",
+                                   compute="_compute_tien_ttc")
+    bsd_tien_ttd = fields.Monetary(string="Đã thanh toán đợt", help="Tiền đã thanh toán theo đợt thanh toán",
+                                   compute="_compute_tien_ttd")
 
     @api.model
     def create(self, vals):
@@ -154,6 +159,7 @@ class BsdDatCoc(models.Model):
                         'bsd_tien_thanh_toan': self.bsd_tien_dc,
                         'bsd_loai_ct': 'dot_tt',
                         'bsd_phat_sinh': 'tang',
+                        'bsd_dat_coc_id': self.id,
                         'bsd_dot_tt_id': dot_tt.id,
                         'bsd_phan_bo': 'chua_pb',
                         'state': 'da_gs',
@@ -168,6 +174,7 @@ class BsdDatCoc(models.Model):
                         'bsd_tien_thanh_toan': 0,
                         'bsd_loai_ct': 'dot_tt',
                         'bsd_phat_sinh': 'tang',
+                        'bsd_dat_coc_id': self.id,
                         'bsd_dot_tt_id': dot_tt.id,
                         'bsd_phan_bo': 'chua_pb',
                         'state': 'da_gs',
@@ -181,3 +188,23 @@ class BsdDatCoc(models.Model):
     # KD.10.05 Hủy đặt cọc
     def action_huy(self):
         pass
+
+    # R.13 Đã thanh toán cọc
+    def _compute_tien_ttc(self):
+        for each in self:
+            cong_no = each.env['bsd.cong_no'].search([('bsd_dat_coc_id', '=', each.id),
+                                                      ('bsd_dot_tt_id', '=', False)], limit=1)
+            if cong_no:
+                each.bsd_tien_ttc = cong_no.bsd_tien_thanh_toan
+            else:
+                each.bsd_tien_ttc = 0
+
+    # R.14 Đã thanh toán đợt
+    def _compute_tien_ttd(self):
+        for each in self:
+            ltt_dc = each.bsd_ltt_ids.filtered(lambda l: l.bsd_gd_tt == 'dat_coc').ids
+            cong_no = each.env['bsd.cong_no'].search([('bsd_dat_coc_id', '=', each.id),
+                                                      ('bsd_dot_tt_id', 'in', ltt_dc)])
+            each.bsd_tien_ttd = 0
+            if cong_no:
+                each.bsd_tien_ttd = max(cong_no.mapped('bsd_tien_thanh_toan'))

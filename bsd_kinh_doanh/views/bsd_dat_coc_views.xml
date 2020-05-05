@@ -110,10 +110,12 @@
                             </group>
                             <group string="THANH TOÁN">
                                 <group>
+                                    <field name="bsd_tien_ttc"/>
+                                    <field name="bsd_ngay_tt"/>
                                     <field name="bsd_thanh_toan"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_ngay_tt"/>
+                                    <field name="bsd_tien_ttd"/>
                                 </group>
                             </group>
                         </page>
