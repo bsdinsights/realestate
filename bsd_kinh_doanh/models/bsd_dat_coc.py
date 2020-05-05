@@ -92,7 +92,7 @@ class BsdDatCoc(models.Model):
 
     bsd_thanh_toan = fields.Selection([('chua_tt', 'Chưa thanh toán'),
                                        ('dang_tt', 'Đang thanh toán'),
-                                       ('da_tt', 'Đã thanh toán')], string="Thanh toán TT", default="chua_tt",
+                                       ('da_tt', 'Đã thanh toán')], string="Tình trạng TT", default="chua_tt",
                                       help="Thanh toán",
                                       required=True)
     bsd_ngay_tt = fields.Datetime(string="Ngày TT cọc", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ")
