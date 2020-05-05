@@ -40,7 +40,7 @@
                             name="action_huy"
                             type="object"/>
 
-<!--                    <field name="state" widget="statusbar" statusbar_visible="0"/>-->
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
                     <notebook>
@@ -66,7 +66,6 @@
                                     <field name="bsd_bang_gia_id"/>
                                     <field name="bsd_tien_gc"/>
                                     <field name="bsd_tien_dc"/>
-                                    <field name="state"/>
                                 </group>
                             </group>
                             <group string="Sản phẩm">

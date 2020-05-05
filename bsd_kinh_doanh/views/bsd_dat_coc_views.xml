@@ -33,7 +33,7 @@
                             name="action_huy"
                             type="object"/>
 
-<!--                    <field name="state" widget="statusbar" statusbar_visible="0"/>-->
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
                     <notebook>
@@ -58,13 +58,12 @@
                                 </group>
                                 <group>
                                     <field name="bsd_co_hdc"/>
-                                    <field name="bsd_so_hdc" attrs="{'readonly':[('bsd_co_hdc','=',False)],
+                                    <field name="bsd_so_hdc" attrs="{'readonly':['|',('bsd_co_hdc','=',False),('state','!=','nhap')],
                                                                      'required':[('bsd_co_hdc','=',True)]}"/>
                                     <field name="bsd_dot_mb_id"/>
                                     <field name="bsd_bang_gia_id"/>
                                     <field name="bsd_tien_gc"/>
                                     <field name="bsd_tien_dc"/>
-                                    <field name="state"/>
                                 </group>
                             </group>
                             <group string="SẢN PHẨM">

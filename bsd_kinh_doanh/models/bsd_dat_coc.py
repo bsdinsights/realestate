@@ -10,16 +10,26 @@ class BsdDatCoc(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma_dat_coc'
 
-    bsd_ma_dat_coc = fields.Char(string="Mã đặt cọc", help="Mã đặt cọc", required=True)
+    bsd_ma_dat_coc = fields.Char(string="Mã đặt cọc", help="Mã đặt cọc", required=True,
+                                 readonly=True,
+                                 states={'nhap': [('readonly', False)]})
     _sql_constraints = [
         ('bsd_ma_dat_coc_unique', 'unique (bsd_ma_dat_coc)',
          'Mã đặt cọc đã tồn tại !'),
     ]
     bsd_ngay_dat_coc = fields.Datetime(string="Ngày", help="Ngày đặt cọc", required=True,
-                                       default=lambda self: fields.Datetime.now())
-    bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True)
-    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", help="Tên báo giá", required=True)
-    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
+                                       default=lambda self: fields.Datetime.now(),
+                                       readonly=True,
+                                       states={'nhap': [('readonly', False)]})
+    bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,
+                                        readonly=True,
+                                        states={'nhap': [('readonly', False)]})
+    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", help="Tên báo giá", required=True,
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
+    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
     bsd_giu_cho_id = fields.Many2one('bsd.giu_cho', related="bsd_bao_gia_id.bsd_giu_cho_id")
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án",
                                    related="bsd_bao_gia_id.bsd_du_an_id", store=True)
@@ -93,9 +103,9 @@ class BsdDatCoc(models.Model):
     bsd_thanh_toan = fields.Selection([('chua_tt', 'Chưa thanh toán'),
                                        ('dang_tt', 'Đang thanh toán'),
                                        ('da_tt', 'Đã thanh toán')], string="Tình trạng TT", default="chua_tt",
-                                      help="Thanh toán",
+                                      help="Thanh toán",readonly=True,
                                       required=True)
-    bsd_ngay_tt = fields.Datetime(string="Ngày TT cọc", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ")
+    bsd_ngay_tt = fields.Datetime(string="Ngày TT cọc", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ", readonly=True)
 
     bsd_tien_ttc = fields.Monetary(string="Đã thanh toán cọc", help="Tiền đã thanh toán cọc",
                                    compute="_compute_tien_ttc")
