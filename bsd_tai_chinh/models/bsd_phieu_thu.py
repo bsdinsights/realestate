@@ -87,7 +87,7 @@ class BsdPhieuThu(models.Model):
                               ('da_gs', 'Đã ghi sổ'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
                              required=True, readonly=True, default='nhap', tracking=1)
 
-    @api.onchange('bsd_loai_pt', 'bsd_gc_tc_id', 'bsd_dot_tt_id')
+    @api.onchange('bsd_loai_pt', 'bsd_gc_tc_id', 'bsd_dot_tt_id', 'bsd_dat_coc_id')
     def _onchange_tien(self):
         _logger.debug("onchange tiền")
         if self.bsd_loai_pt == 'gc_tc' and self.bsd_gc_tc_id:
