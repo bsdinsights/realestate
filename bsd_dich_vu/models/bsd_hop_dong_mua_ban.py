@@ -129,6 +129,24 @@ class BsdHopDongMuaBan(models.Model):
         action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_hdb_action').read()[0]
         return action
 
+    # DV.01.08 Theo dõi công nợ hợp đồng
+    def tao_cong_no_dot_tt(self):
+        for dot_tt in self.bsd_ltt_ids.filtered(lambda d: d.bsd_gd_tt == 'hop_dong').sorted('bsd_stt'):
+            self.env['bsd.cong_no'].create({
+                    'bsd_chung_tu': dot_tt.bsd_ten_dtt,
+                    'bsd_ngay': dot_tt.bsd_ngay_hh_tt,
+                    'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                    'bsd_du_an_id': self.bsd_du_an_id.id,
+                    'bsd_tien': dot_tt.bsd_tien_dot_tt,
+                    'bsd_tien_thanh_toan': 0,
+                    'bsd_loai_ct': 'dot_tt',
+                    'bsd_phat_sinh': 'tang',
+                    'bsd_hd_ban_id': self.id,
+                    'bsd_dot_tt_id': dot_tt.id,
+                    'bsd_phan_bo': 'chua_pb',
+                    'state': 'da_gs',
+            })
+
     @api.model
     def create(self, vals):
         res = super(BsdHopDongMuaBan, self).create(vals)

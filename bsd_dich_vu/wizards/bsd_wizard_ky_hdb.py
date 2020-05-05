@@ -22,4 +22,5 @@ class BsdKyHDB(models.TransientModel):
             'bsd_ngay_ky_hdb': self.bsd_ngay_ky_hdb,
             'state': 'da_ky'
         })
+        self.bsd_hd_ban_id.tao_cong_no_dot_tt()
 
