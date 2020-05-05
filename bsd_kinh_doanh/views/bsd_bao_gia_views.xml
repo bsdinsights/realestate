@@ -48,6 +48,7 @@
                             <group>
                                 <group>
                                     <field name="currency_id" invisible="1"/>
+                                    <field name="company_id" invisible="1"/>
                                     <field name="bsd_ma_bao_gia"/>
                                     <field name="bsd_ten_bao_gia"/>
                                     <field name="bsd_ngay_bao_gia"/>
