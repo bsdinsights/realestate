@@ -38,7 +38,6 @@
                 <field name="bsd_du_an_id"/>
                 <field name="bsd_ngay_ap_dung"/>
                 <field name="bsd_lai_suat"/>
-                <field name="bsd_dien_giai"/>
                 <field name="state"/>
             </tree>
         </field>
