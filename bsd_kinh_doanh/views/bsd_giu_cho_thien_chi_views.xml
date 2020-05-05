@@ -16,6 +16,7 @@
                             type="object"
                             confirm="Bạn có muốn hủy giữ chỗ không?"
                             states="xac_nhan"
+                            attrs="{'invisible':['|',('bsd_thanh_toan', '!=','chua_tt')]}"
                             class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
