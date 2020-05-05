@@ -100,7 +100,7 @@
                         </page>
                         <page  string="Ngân hàng">
                             <group>
-                                <group string="Ngân hàng">
+                                <group string="NGÂN HÀNG">
                                     <field name="bsd_ngan_hang_ids" nolabel="1">
                                         <tree editable="bottom">
                                             <field name="bsd_ngan_hang_id" options="{'no_create':true}"/>
@@ -109,7 +109,7 @@
                                         </tree>
                                     </field>
                                 </group>
-                                <group string="Tài khoản">
+                                <group string="TÀI KHOẢN">
                                     <field name="bsd_tk_ng_ids" nolabel="1">
                                         <tree editable="bottom">
                                             <field name="bsd_tk_nh_id"
