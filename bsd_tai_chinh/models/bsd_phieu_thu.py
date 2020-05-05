@@ -87,7 +87,7 @@ class BsdPhieuThu(models.Model):
                               ('da_gs', 'Đã ghi sổ'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
                              required=True, readonly=True, default='nhap', tracking=1)
 
-    @api.onchange('bsd_loai_pt', 'bsd_gc_tc_id', 'bsd_dot_tt_id', 'bsd_dat_coc_id')
+    @api.onchange('bsd_loai_pt', 'bsd_gc_tc_id', 'bsd_dot_tt_id', 'bsd_dat_coc_id', 'bsd_hd_ban_id')
     def _onchange_tien(self):
         _logger.debug("onchange tiền")
         if self.bsd_loai_pt == 'gc_tc' and self.bsd_gc_tc_id:
@@ -100,8 +100,14 @@ class BsdPhieuThu(models.Model):
             cong_no = self.env['bsd.cong_no'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id),
                                                       ('bsd_dot_tt_id', '=', False)], limit=1)
             self.bsd_tien = cong_no.bsd_tien_con_lai
-        if self.bsd_loai_pt == 'dot_tt' and self.bsd_dot_tt_id:
-            cong_no = self.env['bsd.cong_no'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)], limit=1)
+        if self.bsd_loai_pt == 'dot_tt' and self.bsd_dot_tt_id and self.bsd_loai_hd == 'dat_coc':
+            cong_no = self.env['bsd.cong_no'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id),
+                                                      ('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)], limit=1)
+            self.bsd_tien = cong_no.bsd_tien_con_lai
+
+        if self.bsd_loai_pt == 'dot_tt' and self.bsd_hd_ban_id and self.bsd_loai_hd == 'hd_ban':
+            cong_no = self.env['bsd.cong_no'].search([('bsd_hd_ban_id', '=', self.bsd_hd_ban_id.id),
+                                                      ('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)], limit=1)
             self.bsd_tien = cong_no.bsd_tien_con_lai
 
     @api.onchange('bsd_loai_pt')
@@ -341,7 +347,8 @@ class BsdPhieuThu(models.Model):
                         'state': 'da_gs',
         })
         # ghi công nợ tăng
-        tang_id = self.env['bsd.cong_no'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)], limit=1)
+        tang_id = self.env['bsd.cong_no'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id),
+                                                  ('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)], limit=1)
 
         # tạo record trong bảng công nợ chứng từ
         self.env['bsd.cong_no_ct'].create({
@@ -391,7 +398,8 @@ class BsdPhieuThu(models.Model):
                         'state': 'da_gs',
         })
         # ghi công nợ tăng
-        tang_id = self.env['bsd.cong_no'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)], limit=1)
+        tang_id = self.env['bsd.cong_no'].search([('bsd_hd_ban_id', '=', self.bsd_hd_ban_id.id),
+                                                  ('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)], limit=1)
 
         # tạo record trong bảng công nợ chứng từ
         self.env['bsd.cong_no_ct'].create({
