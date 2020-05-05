@@ -147,10 +147,10 @@
                             <field name="bsd_ltt_ids">
                                 <tree>
                                     <field name="bsd_stt"/>
-                                    <field name="bsd_ma_dtt"/>
                                     <field name="bsd_ten_dtt"/>
                                     <field name="bsd_ngay_hh_tt"/>
                                     <field name="bsd_tien_dot_tt" sum="Tổng tiền thanh toán"/>
+                                    <field name="bsd_tien_thanh_toan" sum="Tổng tiền đã thanh toán"/>
                                     <field name="bsd_tinh_pql"/>
                                     <field name="bsd_tinh_pbt"/>
                                 </tree>

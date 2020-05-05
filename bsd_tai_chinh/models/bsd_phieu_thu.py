@@ -129,7 +129,7 @@ class BsdPhieuThu(models.Model):
         elif self.bsd_loai_pt == 'dat_coc':
             self._gs_pt_dat_coc()
         elif self.bsd_loai_pt == 'dot_tt':
-            self._gs_pt_dot_tt()
+            self._gs_pt_dot_tt_dc()
         else:
             pass
 
@@ -301,7 +301,7 @@ class BsdPhieuThu(models.Model):
             })
 
     # TC.01.06 Ghi sổ phiếu thu đợt thanh toán
-    def _gs_pt_dot_tt(self):
+    def _gs_pt_dot_tt_dc(self):
         # ghi công nợ giảm
         giam_id = self.env['bsd.cong_no'].create({
                         'bsd_chung_tu': self.bsd_so_pt,
@@ -313,6 +313,7 @@ class BsdPhieuThu(models.Model):
                         'bsd_loai_ct': 'phieu_thu',
                         'bsd_phat_sinh': 'giam',
                         'bsd_phieu_thu_id': self.id,
+                        'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
                         'bsd_dot_tt_id': self.bsd_dot_tt_id.id,
                         'bsd_phan_bo': 'da_pb',
                         'state': 'da_gs',
