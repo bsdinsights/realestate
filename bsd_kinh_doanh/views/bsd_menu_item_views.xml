@@ -40,7 +40,7 @@
               action="bsd_giu_cho_action"
               parent="bsd_main_kinh_doanh_root"/>
     <menuitem id="bsd_bao_gia_menu_action"
-              name="Báo giá"
+              name="Bảng tính giá"
               sequence="15"
               action="bsd_bao_gia_action"
               parent="bsd_main_kinh_doanh_root"/>

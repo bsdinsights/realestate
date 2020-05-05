@@ -15,14 +15,14 @@ class BsdBaoGia(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ten_bao_gia'
 
-    bsd_ma_bao_gia = fields.Char(string="Mã bảng giá", help="Mã bảng tính giá", required=True,
+    bsd_ma_bao_gia = fields.Char(string="Mã", help="Mã bảng tính giá", required=True,
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
     _sql_constraints = [
         ('bsd_ma_bao_gia_unique', 'unique (bsd_ma_bao_gia)',
          'Mã bảng giá đã tồn tại !'),
     ]
-    bsd_ten_bao_gia = fields.Char(string="Tên bảng giá", help="Tên bảng tính giá", required=True,
+    bsd_ten_bao_gia = fields.Char(string="Tên", help="Tên bảng tính giá", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_ngay_bao_gia = fields.Datetime(string="Ngày", help="Ngày bảng tính giá", required=True,
