@@ -17,7 +17,7 @@
                             confirm="Bạn có muốn hủy giữ chỗ không?"
                             states="xac_nhan"
                             class="oe_highlight"/>
-                    <!--<field name="state" widget="statusbar" statusbar_visible="0"/>-->
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
                     <group>
@@ -27,15 +27,16 @@
                             <field name="bsd_khach_hang_id"
                                    context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
                                    options="{'no_create':true}"/>
-                            <field name="bsd_dien_giai"/>
+
                         </group>
                         <group>
                             <field name="bsd_du_an_id"
                                    domain="[('bsd_unit_ids', '=', False)]"
                                    options="{'no_create':true}"/>
                             <field name="currency_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
                             <field name="bsd_tien_gc"/>
-                            <field name="state"/>
+                            <field name="bsd_dien_giai"/>
                         </group>
                     </group>
                     <group string="MÔI GIỚI">

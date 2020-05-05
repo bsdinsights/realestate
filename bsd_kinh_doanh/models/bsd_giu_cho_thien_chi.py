@@ -35,7 +35,7 @@ class BsdGiuChoThienChi(models.Model):
                                 readonly=True, help="Diễn giải",
                                 states={'nhap': [('readonly', False)]})
     bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên BH", help="Nhân viên bán hàng",
-                                  readonly=True,
+                                  readonly=True,required=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch", domain=[('is_company', '=', True)],
                                     readonly=True, help='Sàn giao dịch',
@@ -47,8 +47,7 @@ class BsdGiuChoThienChi(models.Model):
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
     bsd_ngay_hh_gctc = fields.Datetime(string="Hạn giữ chỗ", help="Hiệu lực của giữ chỗ",
-                                readonly=True, compute='_compute_htgc', store=True)
-    bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ")
+                                       readonly=True, compute='_compute_htgc', store=True)
     bsd_ngay_ut = fields.Datetime(string="Ưu tiên ráp căn",
                                   help="Thời gian được sử dụng để xét ưu tiên khi làm phiếu ráp căn",
                                   readonly=True, compute="_compute_ngay_ut", store=True)
@@ -61,14 +60,17 @@ class BsdGiuChoThienChi(models.Model):
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
                               ('giu_cho', 'Giữ chỗ'),
-                              ('huy', 'Hủy')], string="Trạng thái", default="nhap", tracking=1, required=True)
+                              ('huy', 'Hủy')], string="Trạng thái", default="nhap", tracking=1,
+                             required=True, readonly=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
     bsd_thanh_toan = fields.Selection([('chua_tt', 'Chưa thanh toán'),
                                        ('dang_tt', 'Đang thanh toán'),
                                        ('da_tt', 'Đã thanh toán')], string="Thanh toán", default="chua_tt",
-                                      required=True)
+                                      required=True, readonly=True)
+    bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ",
+                                  readonly=True)
 
     @api.depends('bsd_ngay_gctc')
     def _compute_htgc(self):
