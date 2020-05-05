@@ -15,7 +15,7 @@
                             states="giu_cho,dat_cho,bao_gia"
                             name="action_huy"
                             type="object"/>
-<!--                    <field name="state" widget="statusbar" statusbar_visible="0"/>-->
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
                     <group>
@@ -39,8 +39,8 @@
                             <field name="bsd_bang_gia_id" options="{'no_create':true}"/>
                             <field name="bsd_tien_gc"/>
                             <field name="currency_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
                             <field name="bsd_dien_giai"/>
-                            <field name="state"/>
                         </group>
                     </group>
                     <group string="MÔI GIỚI">

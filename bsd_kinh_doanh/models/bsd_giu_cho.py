@@ -46,7 +46,7 @@ class BsdRapCan(models.Model):
     bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", required=True,
                                   readonly=True, help="Tiền giữ chỗ",
                                   states={'nhap': [('readonly', False)]})
-    bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên BH",
+    bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên BH", required=True,
                                   readonly=True, help="Nhân viên bán háng",
                                   states={'nhap': [('readonly', False)]})
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch",domain=[('is_company', '=', True)],
@@ -69,7 +69,7 @@ class BsdRapCan(models.Model):
                               ('giu_cho', 'Giữ chỗ'),
                               ('bao_gia', 'Báo giá'),
                               ('huy', 'Hủy')], default='nhap', string="Trạng thái",
-                             tracking=1, help="Trạng thái", required=True)
+                             tracking=1, help="Trạng thái", required=True, readonly=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
@@ -77,8 +77,8 @@ class BsdRapCan(models.Model):
                                        ('dang_tt', 'Đang thanh toán'),
                                        ('da_tt', 'Đã thanh toán')], string="Thanh toán", default="chua_tt",
                                       help="Thanh toán",
-                                      required=True)
-    bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ")
+                                      required=True, readonly=True)
+    bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ",readonly=True)
     bsd_stt_bg = fields.Integer(string="STT báo giá", readonly=True, help="Số thứ tự ưu tiên làm báo giá")
     bsd_ngay_hh_bg = fields.Datetime(string="Hạn báo giá", help="Hiệu lực được làm báo giá", readonly=True)
     bsd_het_han_bg = fields.Boolean(string="Hết hạn báo giá", readonly=True, default=False,
