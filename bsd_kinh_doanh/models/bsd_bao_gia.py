@@ -300,9 +300,9 @@ class BsdBaoGia(models.Model):
 
     # KD.09.07 Hủy báo giá
     def action_huy(self):
-        hop_dong = self.env['bsd.hd_ban'].search([('state', '!=', 'huy'), ('bsd_bao_gia_id', '=', self.id)])
-        if hop_dong:
-            raise UserError("Đã có phát sinh Hợp đồng. Bạn không thể hủy Báo giá")
+        dat_coc = self.env['bsd.dat_coc'].search([('state', '!=', 'huy'), ('bsd_bao_gia_id', '=', self.id)])
+        if dat_coc:
+            raise UserError("Đã có phát sinh Phiếu cọc. Bạn không thể hủy Báo giá")
         else:
             self.write({
                 'state': 'huy',
