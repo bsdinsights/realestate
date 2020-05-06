@@ -215,9 +215,10 @@ class BsdDatCoc(models.Model):
             if each.bsd_thanh_toan == 'da_tt':
                 ltt_dc = each.bsd_ltt_ids.filtered(lambda l: l.bsd_gd_tt == 'dat_coc').ids
                 cong_no = each.env['bsd.cong_no'].search([('bsd_dat_coc_id', '=', each.id),
-                                                          ('bsd_dot_tt_id', 'in', ltt_dc)])
+                                                          ('bsd_dot_tt_id', 'in', ltt_dc),
+                                                          ('bsd_loai_ct', '=', 'dot_tt')])
                 each.bsd_tien_ttd = 0
                 if cong_no:
-                    each.bsd_tien_ttd = max(cong_no.mapped('bsd_tien_thanh_toan'))
+                    each.bsd_tien_ttd = sum(cong_no.mapped('bsd_tien_thanh_toan'))
             else:
                 each.bsd_tien_ttd = 0
