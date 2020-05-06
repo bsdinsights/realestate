@@ -15,6 +15,10 @@ class ProductTemplate(models.Model):
     def _compute_name(self):
         for each in self:
             each.name = each.bsd_ma_unit
+
+    def name_get(self):
+        return [(template.id, template.bsd_ma_unit)for template in self]
+
     bsd_stt = fields.Char(string="Số thứ tự", help="Số căn hộ", required=True)
     bsd_ten_unit = fields.Char(string="Tên căn hộ", help="Tên căn hộ bao gồm mã tòa nhà, mã tầng và số căn hộ")
     bsd_ma_unit = fields.Char(string="Mã căn hộ",
