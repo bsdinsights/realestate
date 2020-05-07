@@ -166,7 +166,7 @@ class BsdDatCoc(models.Model):
                         'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                         'bsd_du_an_id': self.bsd_du_an_id.id,
                         'bsd_tien': dot_tt.bsd_tien_dot_tt,
-                        'bsd_tien_thanh_toan': self.bsd_tien_dc,
+                        'bsd_tien_thanh_toan': self.bsd_tien_dc + self.bsd_tien_gc,
                         'bsd_loai_ct': 'dot_tt',
                         'bsd_phat_sinh': 'tang',
                         'bsd_dat_coc_id': self.id,
