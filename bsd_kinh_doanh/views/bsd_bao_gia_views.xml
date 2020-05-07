@@ -68,7 +68,7 @@
                                     <field name="bsd_tien_dc"/>
                                 </group>
                             </group>
-                            <group string="Sản phẩm">
+                            <group string="SẢN PHẨM">
                                 <group>
                                     <field name="bsd_unit_id"
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
