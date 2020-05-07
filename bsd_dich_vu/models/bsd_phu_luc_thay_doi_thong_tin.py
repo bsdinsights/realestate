@@ -43,7 +43,7 @@ class BsdPLTDTT(models.Model):
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_dt_tt_id = fields.Many2one('bsd.dt_tt', string="Thay đổi diện tích",
-                                   help="Phiếu cập nhật diện tích thông thủy thực tế", required=True,
+                                   help="Phiếu cập nhật diện tích thông thủy thực tế",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_dt_tt_tt = fields.Float(string="Diện tích thực tế", help="Diện tích thông thủy thực tế",
