@@ -8,6 +8,7 @@ _logger = logging.getLogger(__name__)
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
+    bsd_ma_kh = fields.Char(string="Mã khách hàng", required=True, index=True, copy=False, default='Tạo mới')
     bsd_ngay_sinh = fields.Date(string="Ngày sinh", help="Ngày sinh")
     bsd_gioi_tinh = fields.Selection([('nam', 'Nam'), ('nu', 'Nữ')], string="Giới tính", help="Giới tính", default='nam')
     bsd_loai_kh = fields.Selection([('vn', 'Công dân Việt Nam'),
@@ -61,3 +62,11 @@ class ResPartner(models.Model):
             each.bsd_dia_chi_lh = (each.bsd_so_nha_lh or ' ') + ', ' + (each.bsd_phuong_lh_id.bsd_ten or ' ') + ', ' + \
                                   (each.bsd_quan_lh_id.bsd_ten or ' ') + ', ' + (each.bsd_tinh_lh_id.name or ' ') + ', ' + \
                                   (each.bsd_quoc_gia_lh_id.name or ' ')
+
+    @api.model
+    def create(self, vals):
+        if vals.get('bsd_ma_kh', 'Tạo mới') == 'Tạo mới' and not vals.get('is_company'):
+            vals['bsd_ma_kh'] = self.env['ir.sequence'].next_by_code('bsd.kh_cn') or '/'
+        if vals.get('bsd_ma_kh', 'Tạo mới') == 'Tạo mới' and vals.get('is_company'):
+            vals['bsd_ma_kh'] = self.env['ir.sequence'].next_by_code('bsd.kh_dn') or '/'
+        return super(ResPartner, self).create(vals)
