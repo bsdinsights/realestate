@@ -165,33 +165,13 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="bsd_ma_dat_coc"/>
-                <field name="bsd_ngay_dat_coc"/>
                 <field name="bsd_du_an_id"/>
                 <field name="bsd_unit_id"/>
-                <field name="bsd_so_hdc"/>
                 <field name="bsd_khach_hang_id"/>
+                <field name="bsd_so_hdc"/>
                 <field name="bsd_ngay_ky_dc"/>
+                <field name="bsd_thanh_toan"/>
                 <field name="state"/>
-                <field name="bsd_bao_gia_id"/>
-                <field name="bsd_giu_cho_id"/>
-                <field name="bsd_dot_mb_id"/>
-                <field name="bsd_tien_gc"/>
-                <field name="bsd_tien_dc"/>
-                <field name="bsd_dt_xd"/>
-                <field name="bsd_dt_sd"/>
-                <field name="bsd_cs_tt_id"/>
-                <field name="bsd_gia_ban"/>
-                <field name="bsd_tien_ck"/>
-                <field name="bsd_tien_bg"/>
-                <field name="bsd_tien_qsdd"/>
-                <field name="bsd_tien_thue"/>
-                <field name="bsd_tien_pbt"/>
-                <field name="bsd_tong_gia"/>
-                <field name="bsd_thang_pql"/>
-                <field name="bsd_tien_pql"/>
-                <field name="bsd_ngay_in_dc"/>
-                <field name="bsd_ngay_hh_kdc"/>
-                <field name="bsd_ngay_up_dc"/>
                 <field name="currency_id" invisible="1"/>
             </tree>
         </field>
