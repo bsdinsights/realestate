@@ -13,10 +13,9 @@ class BsdCongNo(models.Model):
     bsd_ngay = fields.Date(string="Ngày", help="Ngày chứng từ")
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng")
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án")
-    bsd_tien = fields.Monetary(string="Tiền", help="Tiền phát sinh")
-    bsd_tien_thanh_toan = fields.Monetary(string="Đã thanh toán", help="Tiền đã thanh toán")
-    bsd_tien_con_lai = fields.Monetary(string="Phải thanh toán", help="Tiền phải thanh toán",
-                                       compute="_compute_tien_con_lai", store=True)
+    bsd_ps_tang = fields.Monetary(string="Phát sinh tăng", help="Phát sinh tăng")
+    bsd_ps_giam = fields.Monetary(string="Phát sinh giảm", help="Phát sinh giảm")
+    bsd_tien = fields.Monetary(string="Tiền", help="Tiền phát sinh", compute="_compute_tien", store=True)
     bsd_loai_ct = fields.Selection([('gc_tc', 'Giữ chỗ thiện chí'), ('giu_cho', 'Giữ chỗ'),
                                     ('dat_coc', 'Đặt cọc'), ('dot_tt', 'Đợt thanh toán'),
                                     ('phieu_thu', 'Phiếu thu')], string="Loại chứng từ", help="Loại chứng từ")
@@ -34,7 +33,7 @@ class BsdCongNo(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
-    @api.depends('bsd_tien', 'bsd_tien_thanh_toan')
-    def _compute_tien_con_lai(self):
+    @api.depends('bsd_ps_tang', 'bsd_ps_giam')
+    def _compute_tien(self):
         for each in self:
-            each.bsd_tien_con_lai = each.bsd_tien - each.bsd_tien_thanh_toan
+            each.bsd_tien = each.bsd_ps_tang - each.bsd_ps_giam

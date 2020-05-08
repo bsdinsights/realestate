@@ -16,9 +16,9 @@
                                    context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
                                    options="{'no_create':true}"/>
                             <field name="bsd_du_an_id"/>
+                            <field name="bsd_ps_tang"/>
+                            <field name="bsd_ps_giam"/>
                             <field name="bsd_tien"/>
-                            <field name="bsd_tien_thanh_toan"/>
-                            <field name="bsd_tien_con_lai"/>
                             <field name="bsd_loai_ct"/>
                             <field name="bsd_phat_sinh"/>
                         </group>

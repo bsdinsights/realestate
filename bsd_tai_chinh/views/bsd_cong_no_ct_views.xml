@@ -14,12 +14,17 @@
                             <field name="bsd_ngay_pb"/>
                             <field name="bsd_khach_hang_id"
                                    context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
-                                   options="{'no_create':true}"/>                            <field name="currency_id"/>
+                                   options="{'no_create':true}"/>
+                            <field name="currency_id"/>
+                            <field name="bsd_tien_pb"/>
                         </group>
                         <group>
-                            <field name="bsd_ps_tang_id"/>
-                            <field name="bsd_ps_giam_id"/>
-                            <field name="bsd_tien_pb"/>
+                            <field name="bsd_gc_tc_id"/>
+                            <field name="bsd_giu_cho_id"/>
+                            <field name="bsd_dat_coc_id"/>
+                            <field name="bsd_hd_ban_id"/>
+                            <field name="bsd_dot_tt_id"/>
+                            <field name="bsd_phieu_thu_id"/>
                         </group>
                     </group>
                 </sheet>
@@ -38,8 +43,12 @@
             <tree>
                 <field name="bsd_ngay_pb"/>
                 <field name="bsd_khach_hang_id"/>
-                <field name="bsd_ps_tang_id"/>
-                <field name="bsd_ps_giam_id"/>
+                <field name="bsd_gc_tc_id"/>
+                <field name="bsd_giu_cho_id"/>
+                <field name="bsd_dat_coc_id"/>
+                <field name="bsd_hd_ban_id"/>
+                <field name="bsd_dot_tt_id"/>
+                <field name="bsd_phieu_thu_id"/>
                 <field name="bsd_tien_pb"/>
                 <field name="state"/>
             </tree>
