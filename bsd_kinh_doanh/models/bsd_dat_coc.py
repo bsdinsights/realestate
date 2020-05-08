@@ -1,7 +1,11 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
+import logging
 import datetime
+
+_logger = logging.getLogger(__name__)
 
 
 class BsdDatCoc(models.Model):
@@ -114,6 +118,13 @@ class BsdDatCoc(models.Model):
 
     @api.model
     def create(self, vals):
+        # KD.10.07 kiểm tra báo giá đã có đặt cọc chưa:
+        if 'bsd_bao_gia_id' in vals.keys():
+            id_bao_gia = vals['bsd_bao_gia_id']
+            dat_coc = self.env['bsd.dat_coc'].search([('bsd_bao_gia_id', '=', id_bao_gia)])
+            _logger.debug(dat_coc)
+            if dat_coc:
+                raise UserError("Bảng tính giá đã được tạo Đặt cọc. Vui lòng kiểm tra lại!")
         res = super(BsdDatCoc, self).create(vals)
         ids_bg = res.bsd_bao_gia_id.bsd_bg_ids.ids
         ids_ltt = res.bsd_bao_gia_id.bsd_ltt_ids.ids
