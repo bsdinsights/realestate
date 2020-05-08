@@ -182,9 +182,12 @@ class BsdBaoGia(models.Model):
 
     # KD.09.03 Xác nhận báo giá
     def action_xac_nhan(self):
-        self.write({
-            'state': 'cho_duyet',
-        })
+        if not self.bsd_ltt_ids:
+            raise UserError("Bảng tính giá chưa có lịch thanh toán.\n Vui lòng kiểm tra lại")
+        else:
+            self.write({
+                'state': 'cho_duyet',
+            })
 
     # KD.09.04 Duyệt báo giá
     def action_duyet(self):
