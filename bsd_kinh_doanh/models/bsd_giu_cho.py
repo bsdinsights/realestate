@@ -182,7 +182,6 @@ class BsdRapCan(models.Model):
             'bsd_loai_ct': 'giu_cho',
             'bsd_phat_sinh': 'tang',
             'bsd_giu_cho_id': self.id,
-            'bsd_phan_bo': 'chua_pb',
             'state': 'da_gs',
         })
 

@@ -113,7 +113,6 @@ class BsdGiuChoThienChi(models.Model):
             'bsd_loai_ct': 'gc_tc',
             'bsd_phat_sinh': 'tang',
             'bsd_gc_tc_id': self.id,
-            'bsd_phan_bo': 'chua_pb',
             'state': 'da_gs',
         })
 

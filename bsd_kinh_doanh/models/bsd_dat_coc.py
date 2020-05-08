@@ -214,9 +214,10 @@ class BsdDatCoc(models.Model):
     def _compute_tien_ttc(self):
         for each in self:
             cong_no = each.env['bsd.cong_no'].search([('bsd_dat_coc_id', '=', each.id),
-                                                      ('bsd_dot_tt_id', '=', False)], limit=1)
+                                                      ('bsd_dot_tt_id', '=', False),
+                                                      ('bsd_loai_ct', '=', 'phieu_thu')], limit=1)
             if cong_no:
-                each.bsd_tien_ttc = cong_no.bsd_tien_thanh_toan
+                each.bsd_tien_ttc = sum(cong_no.mapped('bsd_ps_giam'))
             else:
                 each.bsd_tien_ttc = 0
 
@@ -227,9 +228,9 @@ class BsdDatCoc(models.Model):
                 ltt_dc = each.bsd_ltt_ids.filtered(lambda l: l.bsd_gd_tt == 'dat_coc').ids
                 cong_no = each.env['bsd.cong_no'].search([('bsd_dat_coc_id', '=', each.id),
                                                           ('bsd_dot_tt_id', 'in', ltt_dc),
-                                                          ('bsd_loai_ct', '=', 'dot_tt')])
+                                                          ('bsd_loai_ct', '=', 'phieu_thu')])
                 each.bsd_tien_ttd = 0
                 if cong_no:
-                    each.bsd_tien_ttd = sum(cong_no.mapped('bsd_tien_thanh_toan'))
+                    each.bsd_tien_ttd = sum(cong_no.mapped('bsd_ps_giam'))
             else:
                 each.bsd_tien_ttd = 0
