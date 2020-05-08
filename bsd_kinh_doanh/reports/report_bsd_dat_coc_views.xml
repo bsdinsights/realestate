@@ -180,7 +180,7 @@
                                                     <div>4</div>
                                                 </td>
                                                 <td class="text-left" style="border: 1px solid black !important;">
-                                                    <div>Tổng diện tích sàn</div>
+                                                    <div>Diện tích tim tường</div>
                                                 </td>
                                                 <td style="border: 1px solid black !important;">
                                                     <div><span t-field="doc.bsd_dt_xd"/></div>
@@ -191,7 +191,7 @@
                                                     <div>5</div>
                                                 </td>
                                                 <td class="text-left" style="border: 1px solid black !important;">
-                                                    <div>Diện tích sàn sử dụng</div>
+                                                    <div>Diện tích thông thủy</div>
                                                 </td>
                                                 <td style="border: 1px solid black !important;">
                                                     <div><span t-field="doc.bsd_dt_sd"/></div>
