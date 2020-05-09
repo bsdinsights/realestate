@@ -55,9 +55,9 @@
                             <field name="bsd_ngay_hh_gctc"/>
                             <field name="bsd_thanh_toan"/>
                             <field name="bsd_ngay_tt"/>
-                            <field name="bsd_ngay_ut"/>
                         </group>
                         <group>
+                            <field name="bsd_ngay_ut"/>
                             <field name="bsd_ngay_rc"/>
                             <field name="bsd_rap_can_id" options="{'no_create':true}"/>
                             <field name="bsd_het_han"/>

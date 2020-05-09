@@ -150,7 +150,6 @@
                                     <field name="bsd_ten_dtt"/>
                                     <field name="bsd_ngay_hh_tt"/>
                                     <field name="bsd_tien_dot_tt" sum="Tổng tiền thanh toán"/>
-                                    <field name="bsd_tien_thanh_toan" sum="Tổng tiền đã thanh toán"/>
                                     <field name="bsd_tinh_pql"/>
                                     <field name="bsd_tinh_pbt"/>
                                     <field name="currency_id" invisible="1"/>
@@ -233,8 +232,7 @@
                             <field name="bsd_gd_tt"/>
                             <field name="bsd_ngay_hh_tt"/>
                             <field name="bsd_tien_dot_tt"/>
-                            <field name="bsd_tien_thanh_toan"/>
-                            <field name="bsd_tien_con_lai"/>
+                            <field name="bsd_tien_dc"/>
                             <field name="bsd_thanh_toan"/>
                             <field name="bsd_ngay_tt"/>
                             <field name="bsd_tinh_pql"/>

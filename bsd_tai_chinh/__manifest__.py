@@ -19,7 +19,11 @@
         'views/bsd_phieu_thu_views.xml',
         'views/bsd_cong_no_views.xml',
         'views/bsd_cong_no_ct_views.xml',
-        'views/bsd_menu_item_views.xml'
+        'views/bsd_menu_item_views.xml',
+        'views/bsd_giu_cho_thien_chi_views.xml',
+        'views/bsd_giu_cho_views.xml',
+        'views/bsd_dat_coc_views.xml',
+        'views/bsd_lich_thanh_toan_views.xml',
     ],
     'application': True,
 }

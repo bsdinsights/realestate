@@ -16,10 +16,7 @@ class BsdBaoGiaLTT(models.Model):
     bsd_ngay_hh_tt = fields.Date(string="Hạn thanh toán", help="Thời hạn thanh toán của đợt thanh toán")
     bsd_tien_dot_tt = fields.Monetary(string="Tiền", help="Tiền thanh toán của đợt thanh toán",
                                       required=True)
-    bsd_tien_thanh_toan = fields.Monetary(string="Đã thanh toán", help="Tổng tiền đã thanh toán")
-    bsd_tien_con_lai = fields.Monetary(string="Phải thanh toán", help="Số tiền còn phải thanh toán",
-                                       compute='_compute_tien_con_lai')
-
+    bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc", readonly=True)
     bsd_thanh_toan = fields.Selection([('chua_tt', 'Chưa thanh toán'),
                                        ('dang_tt', 'Đang thanh toán'),
                                        ('da_tt', 'Đã thanh toán')], string="Thanh toán", default="chua_tt",
@@ -49,10 +46,11 @@ class BsdBaoGiaLTT(models.Model):
                                  string="Giai đoạn thanh toán", help="Thanh toán trước hay sau làm hợp đồng",
                                  default="dat_coc", required=True)
 
-    @api.depends('bsd_tien_dot_tt', 'bsd_tien_thanh_toan')
-    def _compute_tien_con_lai(self):
+    @api.depends('bsd_tien_dot_tt', 'bsd_tien_da_tt')
+    def _compute_tien_tt(self):
         for each in self:
-            each.bsd_tien_con_lai = each.bsd_tien_dot_tt - each.bsd_tien_thanh_toan
+
+            each.bsd_tien_phai_tt = each.bsd_tien_dot_tt - each.bsd_tien_da_tt
 
     @api.model
     def create(self, vals):

@@ -111,8 +111,6 @@ class BsdDatCoc(models.Model):
                                       required=True)
     bsd_ngay_tt = fields.Datetime(string="Ngày TT cọc", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ", readonly=True)
 
-    bsd_tien_ttc = fields.Monetary(string="Đã thanh toán cọc", help="Tiền đã thanh toán cọc",
-                                   compute="_compute_tien_ttc")
     bsd_tien_ttd = fields.Monetary(string="Đã thanh toán/ đợt", help="Tiền đã thanh toán theo đợt thanh toán",
                                    compute="_compute_tien_ttd")
 
@@ -175,7 +173,7 @@ class BsdDatCoc(models.Model):
                         'bsd_ngay': dot_tt.bsd_ngay_hh_tt,
                         'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                         'bsd_du_an_id': self.bsd_du_an_id.id,
-                        'bsd_ps_tang': dot_tt.bsd_tien_dot_tt - self.bsd_tien_dc + self.bsd_tien_gc,
+                        'bsd_ps_tang': dot_tt.bsd_tien_dot_tt - (self.bsd_tien_dc + self.bsd_tien_gc),
                         'bsd_ps_giam': 0,
                         'bsd_loai_ct': 'dot_tt',
                         'bsd_phat_sinh': 'tang',
@@ -206,17 +204,6 @@ class BsdDatCoc(models.Model):
     # KD.10.05 Hủy đặt cọc
     def action_huy(self):
         pass
-
-    # R.13 Đã thanh toán cọc
-    def _compute_tien_ttc(self):
-        for each in self:
-            cong_no = each.env['bsd.cong_no'].search([('bsd_dat_coc_id', '=', each.id),
-                                                      ('bsd_dot_tt_id', '=', False),
-                                                      ('bsd_loai_ct', '=', 'phieu_thu')], limit=1)
-            if cong_no:
-                each.bsd_tien_ttc = sum(cong_no.mapped('bsd_ps_giam'))
-            else:
-                each.bsd_tien_ttc = 0
 
     # R.14 Đã thanh toán đợt
     def _compute_tien_ttd(self):
