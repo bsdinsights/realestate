@@ -141,12 +141,11 @@ class BsdDatCoc(models.Model):
             'bsd_ngay': self.bsd_ngay_dat_coc,
             'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
             'bsd_du_an_id': self.bsd_du_an_id.id,
-            'bsd_tien': self.bsd_tien_dc,
-            'bsd_tien_thanh_toan': 0,
+            'bsd_ps_tang': self.bsd_tien_dc,
+            'bsd_ps_giam': 0,
             'bsd_loai_ct': 'dat_coc',
             'bsd_phat_sinh': 'tang',
             'bsd_dat_coc_id': self.id,
-            'bsd_phan_bo': 'chua_pb',
             'state': 'da_gs',
         })
 
@@ -176,13 +175,12 @@ class BsdDatCoc(models.Model):
                         'bsd_ngay': dot_tt.bsd_ngay_hh_tt,
                         'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                         'bsd_du_an_id': self.bsd_du_an_id.id,
-                        'bsd_tien': dot_tt.bsd_tien_dot_tt,
-                        'bsd_tien_thanh_toan': self.bsd_tien_dc + self.bsd_tien_gc,
+                        'bsd_ps_tang': dot_tt.bsd_tien_dot_tt - self.bsd_tien_dc + self.bsd_tien_gc,
+                        'bsd_ps_giam': 0,
                         'bsd_loai_ct': 'dot_tt',
                         'bsd_phat_sinh': 'tang',
                         'bsd_dat_coc_id': self.id,
                         'bsd_dot_tt_id': dot_tt.id,
-                        'bsd_phan_bo': 'chua_pb',
                         'state': 'da_gs',
                 })
             else:
@@ -191,13 +189,12 @@ class BsdDatCoc(models.Model):
                         'bsd_ngay': dot_tt.bsd_ngay_hh_tt,
                         'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                         'bsd_du_an_id': self.bsd_du_an_id.id,
-                        'bsd_tien': dot_tt.bsd_tien_dot_tt,
-                        'bsd_tien_thanh_toan': 0,
+                        'bsd_ps_tang': dot_tt.bsd_tien_dot_tt,
+                        'bsd_ps_giam': 0,
                         'bsd_loai_ct': 'dot_tt',
                         'bsd_phat_sinh': 'tang',
                         'bsd_dat_coc_id': self.id,
                         'bsd_dot_tt_id': dot_tt.id,
-                        'bsd_phan_bo': 'chua_pb',
                         'state': 'da_gs',
                 })
 

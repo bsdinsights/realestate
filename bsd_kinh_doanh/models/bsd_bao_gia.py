@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_round
 import datetime
 import calendar
 import logging
@@ -205,12 +206,15 @@ class BsdBaoGia(models.Model):
             ngay_ah_cd = ngay_hh_tt + datetime.timedelta(days=lai_phat.bsd_an_han)
         else:
             ngay_ah_cd = False
+
+        tien_dot_tt = float_round(dot_tt.bsd_tl_tt * (self.bsd_tong_gia - self.bsd_tien_pbt) / 100, precision_digits=0)
+
         res.update({
             'bsd_stt': stt,
             'bsd_ma_dtt': ma_dtt,
             'bsd_ten_dtt': 'Đợt ' + str(stt),
             'bsd_ngay_hh_tt': ngay_hh_tt,
-            'bsd_tien_dot_tt': dot_tt.bsd_tl_tt * (self.bsd_tong_gia - self.bsd_tien_pbt) / 100,
+            'bsd_tien_dot_tt': tien_dot_tt,
             'bsd_tinh_pql': dot_tt.bsd_tinh_pql,
             'bsd_tinh_pbt': dot_tt.bsd_tinh_pbt,
             'bsd_ngay_ah': ngay_ah_cd,
