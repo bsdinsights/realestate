@@ -14,21 +14,28 @@ class BsdCanTru(models.Model):
 
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-    bsd_ma_kh = fields.Char(string="Mã khách hàng", help="Mã khách hàng", required=True)
-    bsd_khach_hang_id = fields.Many2one("res.partner", string="Tên khách hàng", help="Tên khách hàng", required=True)
+    bsd_ma_kh = fields.Char(string="Mã khách hàng", help="Mã khách hàng", required=True, readonly=True,
+                            states={'nhap': [('readonly', False)]})
+    bsd_khach_hang_id = fields.Many2one("res.partner", string="Tên khách hàng", help="Tên khách hàng", required=True,
+                                        readonly=True,
+                                        states={'nhap': [('readonly', False)]})
     bsd_ngay_can_tru = fields.Datetime(string="Ngày cấn trừ", help="Ngày cấn trừ", required=True,
-                                       default=lambda self: fields.Datetime.now())
+                                       default=lambda self: fields.Datetime.now(), readonly=True,
+                                       states={'nhap': [('readonly', False)]})
     bsd_tien_can_tru = fields.Monetary(string="Tiền cấn trừ", compute='_compute_tien_can_tru', store=True)
     bsd_loai_ct = fields.Selection([('phieu_thu', 'Phiếu thu')], string="Loại chứng từ", help="Loại chứng từ",
-                                   required=True)
-    bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thu", help="Phiếu thu")
+                                   required=True, readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thu", help="Phiếu thu", readonly=True,
+                                       states={'nhap': [('readonly', False)]})
     bsd_ngay_ct = fields.Datetime(string="Ngày chứng từ", help="Ngày chứng từ", related='bsd_phieu_thu_id.bsd_ngay_pt')
     bsd_tien_con_lai = fields.Monetary(related="bsd_phieu_thu_id.bsd_tien_con_lai", store=True)
     state = fields.Selection([('nhap', 'Nháp'),
                               ('can_tru', 'Cấn trừ'),
                               ('huy_ct', 'Hủy cấn trừ')], string="Trạng thái", requried=True, tracking=1,
                              default='nhap', readonly=True)
-    bsd_ct_ids = fields.One2many('bsd.can_tru_ct', 'bsd_can_tru_id', string="Chi tiết")
+    bsd_ct_ids = fields.One2many('bsd.can_tru_ct', 'bsd_can_tru_id', string="Chi tiết", readonly=True,
+                                 states={'nhap': [('readonly', False)]})
 
     # TC.04.02 So sánh tiền cấn trừ và tiền còn lại
     @api.constrains('bsd_tien_can_tru')
