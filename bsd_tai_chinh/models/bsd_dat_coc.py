@@ -23,4 +23,5 @@ class BsdDatCoc(models.Model):
             each.bsd_tien_da_tt = sum(each.bsd_ct_ids.filtered(lambda x: not x.bsd_dot_tt_id).mapped('bsd_tien_pb'))
             each.bsd_tien_phai_tt = each.bsd_tien_dc - each.bsd_tien_da_tt
 
-            each.bsd_ngay_tt = max(each.bsd_ct_ids.mapped('bsd_ngay_pb'))
+            if each.bsd_ct_ids:
+                each.bsd_ngay_tt = max(each.bsd_ct_ids.mapped('bsd_ngay_pb'))

@@ -22,4 +22,5 @@ class BsdBaoGiaLTT(models.Model):
         for each in self:
             each.bsd_tien_da_tt = sum(each.bsd_ct_ids.mapped('bsd_tien_pb'))
             each.bsd_tien_phai_tt = each.bsd_tien_dot_tt - each.bsd_tien_da_tt - each.bsd_tien_dc
-            each.bsd_ngay_tt = max(each.bsd_ct_ids.mapped('bsd_ngay_pb'))
+            if each.bsd_ct_ids:
+                each.bsd_ngay_tt = max(each.bsd_ct_ids.mapped('bsd_ngay_pb'))
