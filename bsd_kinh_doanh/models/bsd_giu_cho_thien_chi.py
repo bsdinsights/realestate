@@ -52,8 +52,7 @@ class BsdGiuChoThienChi(models.Model):
                                   help="Thời gian được sử dụng để xét ưu tiên khi làm phiếu ráp căn",
                                   readonly=True, compute="_compute_ngay_ut", store=True)
     bsd_het_han = fields.Boolean(string="Hết hạn", help="Giữ chỗ bị hết hạn sau khi thanh toán đủ",
-                                 readonly=True,
-                                 states={'nhap': [('readonly', False)]})
+                                 readonly=True)
     bsd_ngay_rc = fields.Datetime(string="Ngày ráp căn", help="Ngày thực tế ráp căn", readonly=True)
     bsd_ngay_huy_rc = fields.Datetime(string="Hủy ráp căn", help="Ngày hủy ráp căn", readonly=True)
     bsd_rap_can_id = fields.Many2one('bsd.rap_can', string="Ráp căn", help="Phiếu ráp căn", readonly=True)
