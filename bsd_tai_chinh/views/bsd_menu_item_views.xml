@@ -19,6 +19,11 @@
               sequence="12"
               action="bsd_cong_no_ct_action"
               parent="bsd_main_tai_chinh_root"/>
+    <menuitem id="bsd_can_tru_menu_action"
+              name="Cấn trừ công nợ"
+              sequence="13"
+              action="bsd_can_tru_action"
+              parent="bsd_main_tai_chinh_root"/>
 
 
     <record id="bsd_tai_chinh.bsd_main_tai_chinh_root" model="ir.ui.menu">

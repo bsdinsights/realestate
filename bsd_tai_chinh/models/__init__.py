@@ -7,3 +7,4 @@ from . import bsd_giu_cho_thien_chi
 from . import bsd_giu_cho
 from . import bsd_dat_coc
 from . import bsd_lich_thanh_toan
+from . import bsd_can_tru

@@ -76,6 +76,11 @@ class BsdPhieuThu(models.Model):
     bsd_tien = fields.Monetary(string="Tiền", help="Tiền", required=True,
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
+    bsd_tien_da_tt = fields.Monetary(string="Tiền đã thanh toán", help="Tiền đã thanh toán",
+                                     compute='_compute_tien_ct', store=True)
+    bsd_tien_con_lai = fields.Monetary(string="Tiền còn lại", help="Tiền còn lại",
+                                       compute='_compute_tien_ct', store=True)
+    bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_phieu_thu_id', string="Công nợ chứng tự", readonly=True)
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
@@ -86,6 +91,12 @@ class BsdPhieuThu(models.Model):
     state = fields.Selection([('nhap', 'Nháp'), ('da_xn', 'Đã xác nhận'),
                               ('da_gs', 'Đã ghi sổ'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
                              required=True, readonly=True, default='nhap', tracking=1)
+
+    @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien')
+    def _compute_tien_ct(self):
+        for each in self:
+            each.bsd_tien_da_tt = sum(each.bsd_ct_ids.mapped('bsd_tien_pb'))
+            each.bsd_tien_con_lai = each.bsd_tien - each.bsd_tien_da_tt
 
     @api.onchange('bsd_loai_pt', 'bsd_gc_tc_id', 'bsd_dot_tt_id', 'bsd_dat_coc_id', 'bsd_giu_cho_id')
     def _onchange_tien(self):

@@ -32,6 +32,7 @@ class BsdCongNo(models.Model):
                                  ('pt_dc', 'Phiếu thu - Đặt cọc'),
                                  ('pt_dtt', 'Phiếu thu - Đợt thanh toán')], string="Phân loại",
                                 help="Phân loại", required=True)
+    bsd_can_tru_id = fields.Many2one('bsd.can_tru', string="Cấn trừ", readonly=True)
 
     def kiem_tra_chung_tu(self):
         if self.bsd_loai == 'pt_gctc':
@@ -67,7 +68,8 @@ class BsdCongNo(models.Model):
                     'bsd_ngay_tt': self.bsd_ngay_pb
                 })
         elif self.bsd_loai == 'pt_dc':
-            cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id)])
+            cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id),
+                                                            ('bsd_dot_tt_id', '=', False)])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             _logger.debug(self.bsd_dat_coc_id.bsd_tien_dc)
             if self.bsd_dat_coc_id.bsd_tien_dc < tien:
