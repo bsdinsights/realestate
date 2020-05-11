@@ -10,7 +10,6 @@ _logger = logging.getLogger(__name__)
 class BsdBaoGiaLTT(models.Model):
     _inherit = 'bsd.lich_thanh_toan'
 
-    bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc", readonly=True)
     bsd_tien_da_tt = fields.Monetary(string="Đã thanh toán", help="Đã thanh toán",
                                      compute="_compute_tien_tt", store=True)
     bsd_tien_phai_tt = fields.Monetary(string="Phải thanh toán", help="Đã thanh toán",
