@@ -20,6 +20,6 @@ class BsdBaoGiaLTT(models.Model):
     @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien_dot_tt')
     def _compute_tien_tt(self):
         for each in self:
-            each.bsd_tien_da_tt = sum(each.bsd_ct_ids.filtered(lambda x: not x.bsd_dot_tt_id).mapped('bsd_tien_pb'))
+            each.bsd_tien_da_tt = sum(each.bsd_ct_ids.mapped('bsd_tien_pb'))
             each.bsd_tien_phai_tt = each.bsd_tien_dot_tt - each.bsd_tien_da_tt - each.bsd_tien_dc
             each.bsd_ngay_tt = max(each.bsd_ct_ids.mapped('bsd_ngay_pb'))
