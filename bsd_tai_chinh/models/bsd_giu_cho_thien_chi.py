@@ -26,3 +26,5 @@ class BsdGiuChoThienChi(models.Model):
 
             if each.bsd_ct_ids:
                 each.bsd_ngay_tt = max(each.bsd_ct_ids.mapped('bsd_ngay_pb'))
+            else:
+                each.bsd_ngay_tt = None
