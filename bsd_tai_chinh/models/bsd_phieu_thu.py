@@ -124,7 +124,8 @@ class BsdPhieuThu(models.Model):
         if self.bsd_loai_pt == 'dot_tt' and self.bsd_dot_tt_id:
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)])
             if cong_no_ct:
-                self.bsd_tien = self.bsd_dot_tt_id.bsd_tien_dot_tt - sum(cong_no_ct.mapped('bsd_tien_pb'))
+                self.bsd_tien = self.bsd_dot_tt_id.bsd_tien_dot_tt - self.bsd_dot_tt_id.bsd_tien_dc \
+                                - sum(cong_no_ct.mapped('bsd_tien_pb'))
             else:
                 self.bsd_tien = self.bsd_dot_tt_id.bsd_tien_dot_tt
 
