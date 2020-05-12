@@ -21,6 +21,7 @@
         'views/bsd_cong_no_ct_views.xml',
         'views/bsd_can_tru_views.xml',
         'views/bsd_giam_no_views.xml',
+        'views/bsd_tang_no_views.xml',
         'views/bsd_menu_item_views.xml',
         'views/bsd_giu_cho_thien_chi_views.xml',
         'views/bsd_giu_cho_views.xml',

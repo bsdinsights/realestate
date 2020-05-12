@@ -70,6 +70,8 @@
             <tree>
                 <field name="bsd_ma_kh"/>
                 <field name="bsd_khach_hang_id"/>
+                <field name="bsd_phieu_thu_id"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>

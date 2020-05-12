@@ -29,6 +29,11 @@
               sequence="14"
               action="bsd_giam_no_action"
               parent="bsd_main_tai_chinh_root"/>
+    <menuitem id="bsd_tang_no_menu_action"
+              name="Điều chỉnh tăng"
+              sequence="15"
+              action="bsd_tang_no_action"
+              parent="bsd_main_tai_chinh_root"/>
 
     <record id="bsd_tai_chinh.bsd_main_tai_chinh_root" model="ir.ui.menu">
         <field name="action" eval="False"/>

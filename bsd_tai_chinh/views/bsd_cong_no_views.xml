@@ -29,6 +29,8 @@
                             <field name="bsd_hd_ban_id"/>
                             <field name="bsd_dot_tt_id"/>
                             <field name="bsd_phieu_thu_id"/>
+                            <field name="bsd_giam_no_id"/>
+                            <field name="bsd_tang_no_id"/>
                             <field name="company_id" invisible="1"/>
                             <field name="currency_id"/>
                         </group>
@@ -59,6 +61,8 @@
                 <field name="bsd_hd_ban_id"/>
                 <field name="bsd_dot_tt_id"/>
                 <field name="bsd_phieu_thu_id"/>
+                <field name="bsd_giam_no_id"/>
+                <field name="bsd_tang_no_id"/>
                 <field name="state"/>
             </tree>
         </field>
