@@ -70,3 +70,9 @@ class ResPartner(models.Model):
         if vals.get('bsd_ma_kh', 'Tạo mới') == 'Tạo mới' and vals.get('is_company'):
             vals['bsd_ma_kh'] = self.env['ir.sequence'].next_by_code('bsd.kh_dn') or '/'
         return super(ResPartner, self).create(vals)
+
+    def name_get(self):
+        res = []
+        for partner in self:
+            res.append((partner.id, "[%s]%s" % (partner.bsd_ma_kh, partner.name)))
+        return res

@@ -37,6 +37,10 @@ class BsdCanTru(models.Model):
     bsd_ct_ids = fields.One2many('bsd.can_tru_ct', 'bsd_can_tru_id', string="Chi tiết", readonly=True,
                                  states={'nhap': [('readonly', False)]})
 
+    @api.onchange('bsd_khach_hang_id')
+    def _onchange_ma_kh(self):
+        self.bsd_ma_kh = self.bsd_khach_hang_id.bsd_ma_kh
+
     # TC.04.02 So sánh tiền cấn trừ và tiền còn lại
     @api.constrains('bsd_tien_can_tru')
     def _constrains_tien_can_tru(self):
