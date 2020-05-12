@@ -28,7 +28,7 @@
                         <group>
                             <field name="bsd_so_ct"/>
                             <field name="bsd_ngay_ct"/>
-                            <field name="bsd_loai_dc"/>
+                            <field name="bsd_loai_dc" required="1"/>
                             <field name="bsd_dien_giai"/>
                         </group>
                         <group>

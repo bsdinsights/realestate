@@ -20,18 +20,10 @@ class BsdTangNo(models.Model):
                                   default=lambda self: fields.Datetime.now(),
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
-    bsd_loai_dc = fields.Selection(selection='_method_choice', string="Loại điều chỉnh", help="Loại điều chỉnh",
-                                   required=True, readonly=True, default='khac',
+    bsd_loai_dc = fields.Selection([('khac', 'Điều chỉnh khác')], string="Loại điều chỉnh", help="Loại điều chỉnh",
+                                   required=True, default='khac',
+                                   readonly=True,
                                    states={'nhap': [('readonly', False)]})
-
-    @api.model
-    def _method_choice(self):
-        choices = [('khac', 'Điều chỉnh khác')]
-        if self.env['res.users'].has_group('base.group_system') or \
-                self.env['res.users'].has_group('bsd_real_estate.group_manager'):
-            choices += [('chuyen_tien', 'Chuyển tiền')]
-        return choices
-
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Lý do điều chỉnh",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})

@@ -44,31 +44,45 @@ class BsdChuyenTien(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
-    # TC.09.01 Xác nhận điều chỉnh giảm
+    # TC.05.01 Xác nhận chuyển tiền
     def action_xac_nhan(self):
         self.write({
             'state': 'xac_nhan',
         })
 
-    # TC.09.03 Ghi sổ điều chỉnh
+    # TC.05.03 Ghi sổ chuyển tiền
     def action_vao_so(self):
         self.write({
             'state': 'da_gs',
         })
+        # Ghi sổ công nợ chuyển tiền
         self.env['bsd.cong_no'].create({
                 'bsd_chung_tu': self.bsd_so_ct,
                 'bsd_ngay': self.bsd_ngay_ct,
-                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                'bsd_khach_hang_id': self.bsd_nguoi_chuyen_id.id,
                 'bsd_du_an_id': self.bsd_du_an_id.id,
                 'bsd_ps_giam': 0,
                 'bsd_ps_tang': self.bsd_tien,
-                'bsd_loai_ct': 'dc_tang',
+                'bsd_loai_ct': 'chuyen_tien',
                 'bsd_phat_sinh': 'tang',
-                'bsd_tang_no_id': self.id,
+                'bsd_chuyen_tien_id': self.id,
                 'state': 'da_gs',
             })
+        # Tạo phiếu điều chỉnh giảm
+        giam = self.env['bsd.giam_no'].create({
+                'bsd_so_ct': self.bsd_so_ct,
+                'bsd_ngay_ct': self.bsd_ngay_ct,
+                'bsd_loai_dc': 'chuyen_tien',
+                'bsd_dien_giai': "Chuyển tiền từ " + str(self.bsd_nguoi_chuyen_id.name),
+                'bsd_khach_hang_id': self.bsd_nguoi_nhan_id.id,
+                'bsd_du_an_id': self.bsd_du_an_id.id,
+                'bsd_tien': self.bsd_tien,
+                'state': 'xac_nhan',
+        })
+        # Tạo công nợ khách hàng
+        giam.action_vao_so()
 
-    # TC.09.02 Hủy điều chỉnh
+    # TC.05.02 Hủy chuyển tiền
     def action_huy(self):
         self.write({
             'state': 'huy',
