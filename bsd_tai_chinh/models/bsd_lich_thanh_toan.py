@@ -14,7 +14,7 @@ class BsdBaoGiaLTT(models.Model):
                                      compute="_compute_tien_tt", store=True)
     bsd_tien_phai_tt = fields.Monetary(string="Phải thanh toán", help="Đã thanh toán",
                                        compute="_compute_tien_tt", store=True)
-    bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_dat_coc_id', string="Công nợ chứng tự", readonly=True)
+    bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_dot_tt_id', string="Công nợ chứng tự", readonly=True)
     bsd_ngay_tt = fields.Datetime(compute='_compute_tien_tt', store=True)
 
     @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien_dot_tt')

@@ -111,8 +111,7 @@ class BsdDatCoc(models.Model):
                                       required=True)
     bsd_ngay_tt = fields.Datetime(string="Ngày TT cọc", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ", readonly=True)
 
-    bsd_tien_ttd = fields.Monetary(string="Đã thanh toán/ đợt", help="Tiền đã thanh toán theo đợt thanh toán",
-                                   compute="_compute_tien_ttd")
+    bsd_tien_ttd = fields.Monetary(string="Đã thanh toán/ đợt", help="Tiền đã thanh toán theo đợt thanh toán",)
 
     @api.model
     def create(self, vals):

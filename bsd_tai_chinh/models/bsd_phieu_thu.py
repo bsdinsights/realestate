@@ -235,7 +235,6 @@ class BsdPhieuThu(models.Model):
                         'bsd_loai_ct': 'phieu_thu',
                         'bsd_phat_sinh': 'giam',
                         'bsd_phieu_thu_id': self.id,
-                        'bsd_phan_bo': 'da_pb',
                         'state': 'da_gs',
         })
         # tạo record trong bảng công nợ chứng từ
@@ -262,7 +261,6 @@ class BsdPhieuThu(models.Model):
                         'bsd_loai_ct': 'phieu_thu',
                         'bsd_phat_sinh': 'giam',
                         'bsd_phieu_thu_id': self.id,
-                        'bsd_phan_bo': 'da_pb',
                         'state': 'da_gs',
         })
         # tạo record trong bảng công nợ chứng từ
@@ -289,7 +287,6 @@ class BsdPhieuThu(models.Model):
                         'bsd_loai_ct': 'phieu_thu',
                         'bsd_phat_sinh': 'giam',
                         'bsd_phieu_thu_id': self.id,
-                        'bsd_phan_bo': 'da_pb',
                         'state': 'da_gs',
         })
         # tạo record trong bảng công nợ chứng từ
