@@ -355,14 +355,16 @@ class BsdPhieuThu(models.Model):
                 bsd_tien_phai_tt = self.bsd_gc_tc_id.bsd_tien_gc - sum(cong_no_ct.mapped('bsd_tien_pb'))
             else:
                 bsd_tien_phai_tt = self.bsd_gc_tc_id.bsd_tien_gc
-        if self.bsd_tien > bsd_tien_phai_tt:
-            flag = False
+            if self.bsd_tien > bsd_tien_phai_tt:
+                flag = True
         if self.bsd_loai_pt == 'giu_cho' and self.bsd_giu_cho_id:
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_giu_cho_id', '=', self.bsd_giu_cho_id.id)])
             if cong_no_ct:
                 bsd_tien_phai_tt = self.bsd_giu_cho_id.bsd_tien_gc - sum(cong_no_ct.mapped('bsd_tien_pb'))
             else:
                 bsd_tien_phai_tt = self.bsd_giu_cho_id.bsd_tien_gc
+            if self.bsd_tien > bsd_tien_phai_tt:
+                flag = True
         if self.bsd_loai_pt == 'dat_coc' and self.bsd_dat_coc_id:
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id),
                                                             ('bsd_dot_tt_id', '=', False)])
@@ -370,15 +372,15 @@ class BsdPhieuThu(models.Model):
                 bsd_tien_phai_tt = self.bsd_dat_coc_id.bsd_tien_dc - sum(cong_no_ct.mapped('bsd_tien_pb'))
             else:
                 bsd_tien_phai_tt = self.bsd_dat_coc_id.bsd_tien_dc
-
+            if self.bsd_tien > bsd_tien_phai_tt:
+                flag = True
         if self.bsd_loai_pt == 'dot_tt' and self.bsd_dot_tt_id:
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)])
             if cong_no_ct:
                 bsd_tien_phai_tt = self.bsd_dot_tt_id.bsd_tien_dot_tt - sum(cong_no_ct.mapped('bsd_tien_pb'))
             else:
                 bsd_tien_phai_tt = self.bsd_dot_tt_id.bsd_tien_dot_tt
-
-        if self.bsd_tien > bsd_tien_phai_tt:
-            flag = True
+            if self.bsd_tien > bsd_tien_phai_tt:
+                flag = True
         if flag:
             raise UserError("Tiền phải thu vượt quá số tiền còn lại. Vui lòng kiểm tra lại!")
