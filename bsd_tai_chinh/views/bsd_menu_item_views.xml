@@ -39,6 +39,11 @@
               sequence="16"
               action="bsd_chuyen_tien_action"
               parent="bsd_main_tai_chinh_root"/>
+    <menuitem id="bsd_hoan_tien_menu_action"
+              name="Hoàn tiền"
+              sequence="17"
+              action="bsd_hoan_tien_action"
+              parent="bsd_main_tai_chinh_root"/>
 
     <record id="bsd_tai_chinh.bsd_main_tai_chinh_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
