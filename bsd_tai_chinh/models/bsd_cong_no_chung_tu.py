@@ -22,6 +22,7 @@ class BsdCongNo(models.Model):
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng")
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán")
     bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thu", help="Phiếu thu")
+    bsd_hoan_tien_id = fields.Many2one('bsd.hoan_tien', string="Hoàn tiền", help="Hoàn tiền")
 
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
@@ -30,7 +31,8 @@ class BsdCongNo(models.Model):
     bsd_loai = fields.Selection([('pt_gctc', 'Phiếu thu - Giữ chỗ thiện chí'),
                                  ('pt_gc', 'Phiếu thu - Giữ chỗ'),
                                  ('pt_dc', 'Phiếu thu - Đặt cọc'),
-                                 ('pt_dtt', 'Phiếu thu - Đợt thanh toán')], string="Phân loại",
+                                 ('pt_dtt', 'Phiếu thu - Đợt thanh toán'),
+                                 ('pt_ht', 'Phiếu thu - Hoàn tiền')], string="Phân loại",
                                 help="Phân loại", required=True)
     bsd_can_tru_id = fields.Many2one('bsd.can_tru', string="Cấn trừ", readonly=True)
 
