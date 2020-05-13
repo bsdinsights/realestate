@@ -104,31 +104,20 @@ class BsdPhieuThu(models.Model):
     def _onchange_tien(self):
         _logger.debug("onchange tiền")
         if self.bsd_loai_pt == 'gc_tc' and self.bsd_gc_tc_id:
-            cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_gc_tc_id', '=', self.bsd_gc_tc_id.id)])
-            if cong_no_ct:
-                self.bsd_tien = self.bsd_gc_tc_id.bsd_tien_gc - sum(cong_no_ct.mapped('bsd_tien_pb'))
-            else:
-                self.bsd_tien = self.bsd_gc_tc_id.bsd_tien_gc
+            gc_tc = self.env['bsd.gc_tc'].search([('id', '=', self.bsd_gc_tc_id.id)])
+            self.bsd_tien = gc_tc.bsd_tien_phai_tt
+
         if self.bsd_loai_pt == 'giu_cho' and self.bsd_giu_cho_id:
-            cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_giu_cho_id', '=', self.bsd_giu_cho_id.id)])
-            if cong_no_ct:
-                self.bsd_tien = self.bsd_giu_cho_id.bsd_tien_gc - sum(cong_no_ct.mapped('bsd_tien_pb'))
-            else:
-                self.bsd_tien = self.bsd_giu_cho_id.bsd_tien_gc
+            giu_cho = self.env['bsd.giu_cho'].search([('id', '=', self.bsd_giu_cho_id.id)])
+            self.bsd_tien = giu_cho.bsd_tien_phai_tt
+
         if self.bsd_loai_pt == 'dat_coc' and self.bsd_dat_coc_id:
-            cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id),
-                                                            ('bsd_dot_tt_id', '=', False)])
-            if cong_no_ct:
-                self.bsd_tien = self.bsd_dat_coc_id.bsd_tien_dc - sum(cong_no_ct.mapped('bsd_tien_pb'))
-            else:
-                self.bsd_tien = self.bsd_dat_coc_id.bsd_tien_dc
+            dat_coc = self.env['bsd.dat_coc'].search([('id', '=', self.bsd_dat_coc_id.id)])
+            self.bsd_tien = dat_coc.bsd_tien_phai_tt
+
         if self.bsd_loai_pt == 'dot_tt' and self.bsd_dot_tt_id:
-            cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)])
-            if cong_no_ct:
-                self.bsd_tien = self.bsd_dot_tt_id.bsd_tien_dot_tt - self.bsd_dot_tt_id.bsd_tien_dc \
-                                - sum(cong_no_ct.mapped('bsd_tien_pb'))
-            else:
-                self.bsd_tien = self.bsd_dot_tt_id.bsd_tien_dot_tt
+            dot_tt = self.env['bsd.lich_thanh_toan'].search([('id', '=', self.bsd_dot_tt_id.id)])
+            self.bsd_tien = dot_tt.bsd_tien_phai_tt
 
     @api.onchange('bsd_loai_pt')
     def _onchange_loai_sp(self):
