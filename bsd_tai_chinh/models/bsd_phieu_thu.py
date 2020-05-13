@@ -95,6 +95,7 @@ class BsdPhieuThu(models.Model):
 
     @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien')
     def _compute_tien_ct(self):
+        _logger.debug("Tính toán lại tiền phiếu thu")
         for each in self:
             each.bsd_tien_da_tt = sum(each.bsd_ct_ids.mapped('bsd_tien_pb'))
             each.bsd_tien_con_lai = each.bsd_tien - each.bsd_tien_da_tt

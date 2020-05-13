@@ -69,7 +69,7 @@ class BsdHoanTien(models.Model):
             })
         # tạo record trong bảng công nợ chứng từ
         self.env['bsd.cong_no_ct'].create({
-            'bsd_ngay_pb': self.bsd_ngay_pt,
+            'bsd_ngay_pb': self.bsd_ngay_ct,
             'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
             'bsd_phieu_thu_id': self.bsd_phieu_thu_id.id,
             'bsd_hoan_tien_id': self.id,
