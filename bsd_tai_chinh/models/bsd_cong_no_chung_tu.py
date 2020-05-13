@@ -6,7 +6,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class BsdCongNo(models.Model):
+class BsdCongNoCT(models.Model):
     _name = 'bsd.cong_no_ct'
     _description = 'Công nợ chứng từ'
     _inherit = ['mail.thread', 'mail.activity.mixin']
@@ -67,8 +67,14 @@ class BsdCongNo(models.Model):
             if self.bsd_dot_tt_id.bsd_tien_dot_tt < tien:
                 raise UserError("Không thể thực hiện thanh toán dư")
 
+        elif self.bsd_loai == 'pt_ht':
+            cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_phieu_thu_id', '=', self.bsd_phieu_thu_id.id)])
+            tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
+            if self.bsd_phieu_thu_id.bsd_tien < tien:
+                raise UserError("Không thể thực hiện thanh toán dư")
+
     @api.model
     def create(self, vals):
-        rec = super(BsdCongNo, self).create(vals)
+        rec = super(BsdCongNoCT, self).create(vals)
         rec.kiem_tra_chung_tu()
         return rec

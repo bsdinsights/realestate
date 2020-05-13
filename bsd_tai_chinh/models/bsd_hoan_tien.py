@@ -54,21 +54,31 @@ class BsdHoanTien(models.Model):
         self.write({
             'state': 'da_gs',
         })
-        # Ghi sổ công nợ chuyển tiền
+        # Ghi sổ công nợ hoàn tiền
         self.env['bsd.cong_no'].create({
                 'bsd_chung_tu': self.bsd_so_ct,
                 'bsd_ngay': self.bsd_ngay_ct,
-                'bsd_khach_hang_id': self.bsd_nguoi_chuyen_id.id,
+                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                 'bsd_du_an_id': self.bsd_du_an_id.id,
                 'bsd_ps_giam': 0,
                 'bsd_ps_tang': self.bsd_tien,
-                'bsd_loai_ct': 'chuyen_tien',
+                'bsd_loai_ct': 'hoan_tien',
                 'bsd_phat_sinh': 'tang',
-                'bsd_chuyen_tien_id': self.id,
+                'bsd_hoan_tien_id': self.id,
                 'state': 'da_gs',
             })
+        # tạo record trong bảng công nợ chứng từ
+        self.env['bsd.cong_no_ct'].create({
+            'bsd_ngay_pb': self.bsd_ngay_pt,
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_phieu_thu_id': self.bsd_phieu_thu_id.id,
+            'bsd_hoan_tien_id': self.id,
+            'bsd_tien_pb': self.bsd_tien,
+            'bsd_loai': 'pt_ht',
+            'state': 'hoan_thanh'
+        })
 
-    # TC.05.02 Hủy hoàn tiền
+    # TC.07.02 Hủy hoàn tiền
     def action_huy(self):
         self.write({
             'state': 'huy',
