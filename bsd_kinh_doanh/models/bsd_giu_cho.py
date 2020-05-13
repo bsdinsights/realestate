@@ -222,9 +222,6 @@ class BsdRapCan(models.Model):
         self.write({
             'state': 'huy',
         })
-        self.env['bsd.cong_no'].search([('bsd_giu_cho_id', '=', self.id)]).write({
-            'state': 'huy',
-        })
 
     # KD.07.08 Tự động đánh dấu hết hạn giữ chỗ
     def auto_danh_dau_hh_gc(self):
