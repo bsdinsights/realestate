@@ -1,6 +1,9 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class BsdHoanTien(models.Model):
@@ -34,14 +37,24 @@ class BsdHoanTien(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
+    bsd_loai = fields.Selection([('phieu_thu', 'Phiếu thu')], string="Loại", help="Loại hoàn tiền", required=True,
+                                default='phieu_thu',
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
     bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thu", help="Phiếu thu", required=True,
                                        readonly=True,
                                        states={'nhap': [('readonly', False)]})
+    bsd_tien_con_lai = fields.Monetary(related="bsd_phieu_thu_id.bsd_tien_con_lai")
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('da_gs', 'Đã ghi sổ'), ('huy', 'Hủy')], string="Trạng thái", tracking=1,
                              required=True, default='nhap')
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+
+    @api.constrains('bsd_tien')
+    def _constrains_tien(self):
+        if self.bsd_tien > self.bsd_tien_con_lai:
+            raise UserError("Tiền hoàn lại vượt quá số tiền còn lại. Vui lòng kiểm tra lại!")
 
     # TC.07.01 Xác nhận hoàn tiền
     def action_xac_nhan(self):

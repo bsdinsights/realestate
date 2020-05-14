@@ -30,7 +30,7 @@
                             <field name="bsd_khach_hang_id"
                                    context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
                                    options="{'no_create':true}"/>
-                            <field name="bsd_pt_tt_id"/>
+                            <field name="bsd_pt_tt_id" options="{'no_create':true}"/>
                             <field name="bsd_so_nk"/>
                             <field name="bsd_tk_nh_id" attrs="{'invisible':[('bsd_so_nk','!=','ngan_hang')],
                                                               'required':[('bsd_so_nk','=','ngan_hang')]}"/>
@@ -44,7 +44,7 @@
                                    context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                    options="{'no_create':true}"
                                    domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"
-                                   attrs="{'readonly':[('bsd_loai_pt','not in',['giu_cho','dat_coc','dot_tt'])],
+                                   attrs="{'invisible':[('bsd_loai_pt','not in',['giu_cho','dat_coc','dot_tt'])],
                                            'required':[('bsd_loai_pt','in',['giu_cho','dat_coc','dot_tt'])]}"/>
                             <field name="bsd_gc_tc_id"
                                    options="{'no_create':true}"

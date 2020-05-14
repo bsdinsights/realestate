@@ -32,6 +32,7 @@
                         <group>
                             <field name="bsd_loai_ct"/>
                             <field name="bsd_phieu_thu_id"
+                                   options="{'no_create':true}"
                                    domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id]),
                                             ('bsd_loai_pt', 'in', ['tra_truoc','khac']),
                                             ('state', '=', 'da_gs')]"/>
