@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<templates xml:space="preserve">
+    <div t-name="bsd_sale_chart.reconciliation">
+        <div class="o_form_view">
+            <div class="o_form_sheet_bg"/>
+        </div>
+    </div>
+    <t t-name="bsd_sale_chart.sale_chart">
+        <div class="o_form_view">
+            <div class="o_form_view">
+                <div class="o_form_sheet_bg">
+                    <div class="clearfix position_relative o_form_sheet">
+                        <div class="o_group">
+                            <table class="o_group o_inner_group o_group_col_6">
+                                <tbody>
+                                    <tr class="create_du_an_id">
+                                        <td class="o_td_label"><label class="o_form_label">Dự án</label></td>
+                                        <td class="o_td_field"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="o_group o_inner_group o_group_col_5">
+                                <tbody>
+                                    <tr class="create_dot_mb_id">
+                                        <td class="o_td_label"><label class="o_form_label">Đợt mở bán</label></td>
+                                        <td class="o_td_field"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn btn-primary oe_right" id="search">Tìm</button>
+                    </div>
+                </div>
+                <div>
+                    <span>Thịnh</span>
+                </div>
+            </div>
+        </div>
+        <!--<div class="row">-->
+            <!--<div class="col-3">-->
+                <!--<div>-->
+                    <!--<span>Dự án:</span>-->
+                    <!--<select id="chon_du_an"></select>-->
+                <!--</div>-->
+
+            <!--</div>-->
+            <!--<div>-->
+                <!--<label for="chon-du-an">Dự án:</label>-->
+            <!--</div>-->
+        <!--</div>-->
+
+    </t>
+</templates>
