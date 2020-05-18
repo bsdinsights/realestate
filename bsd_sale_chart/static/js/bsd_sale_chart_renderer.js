@@ -15,6 +15,9 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
         events: {
             'click #search' : '_onSearch',
         },
+        custom_events: _.extend({}, FieldManagerMixin.custom_events,{
+            'field_changed': '_onFieldChange',
+        }),
         /**
          * @override
          */
@@ -63,10 +66,18 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
         /**
          * @private
          */
-        _onSearch: function(){
+        _onSearch: function(event){
             console.log("on search in ")
             this.trigger_up('search')
-         },
+        },
+        _onFieldChange: function(event){
+            event.stopPropagation();
+            var fieldName = event.target.name;
+            if (fieldName === 'bsd_du_an_id'){
+                var bsd_du_an_id = event.data.changes.bsd_du_an_id;
+                this.trigger_up('change_du_an', {'data':bsd_du_an_id})
+            }
+        },
     /**
      * @private
      * @param {integer} partnerID

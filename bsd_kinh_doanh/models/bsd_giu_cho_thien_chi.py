@@ -71,6 +71,9 @@ class BsdGiuChoThienChi(models.Model):
     bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ",
                                   readonly=True)
 
+    bsd_kh_moi_id = fields.Many2one('res.partner', string="KH chuyển nhượng", help="Người được chuyển nhượng giữ chỗ",
+                                    tracking=2, readonly=True)
+
     @api.depends('bsd_ngay_gctc')
     def _compute_htgc(self):
         for each in self:
@@ -142,3 +145,20 @@ class BsdGiuChoThienChi(models.Model):
             self.write({
                 'bsd_het_han': True
             })
+
+    @api.model
+    def create(self, vals):
+        res = super(BsdGiuChoThienChi, self).create(vals)
+        # R11 Chuyển nhượng khách hàng
+        res.write({
+            'bsd_kh_moi_id': res.bsd_khach_hang_id.id
+        })
+        return res
+
+    def write(self, vals):
+        if 'bsd_khach_hang_id' in vals:
+            vals.update({
+                'bsd_kh_moi_id': vals['bsd_khach_hang_id']
+            })
+        res = super(BsdGiuChoThienChi, self).write(vals)
+        return res

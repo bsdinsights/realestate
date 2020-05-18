@@ -7,7 +7,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class BsdRapCan(models.Model):
+class BsdGiuCho(models.Model):
     _name = 'bsd.giu_cho'
     _description = "Thông tin giữ chỗ"
     _inherit = ['mail.thread', 'mail.activity.mixin']
@@ -87,6 +87,11 @@ class BsdRapCan(models.Model):
                                       help="Ngày hết hạn giữ chỗ sau khi thanh toán tiền giữ chỗ")
     bsd_het_han_gc = fields.Boolean(string="Hết hạn giữ chỗ", readonly=True,
                                     help="""Thông tin ghi nhận giữ chỗ bị hết hiệu lực sau khi đã thanh toán giữ chỗ""")
+
+    bsd_kh_moi_id = fields.Many2one('res.partner', string="KH chuyển nhượng", help="Người được chuyển nhượng giữ chỗ",
+                                    tracking=2, readonly=True)
+
+    # R11. khách hàng chuyển nhượng
 
     @api.onchange('bsd_du_an_id')
     def _onchange_unit(self):
@@ -232,7 +237,7 @@ class BsdRapCan(models.Model):
     # R7 Ghi nhận thông tin trước mở bán
     @api.model
     def create(self, vals):
-        res = super(BsdRapCan, self).create(vals)
+        res = super(BsdGiuCho, self).create(vals)
         if res.bsd_unit_id.bsd_dot_mb_id:
             res.write({
                 'bsd_truoc_mb': False,
@@ -241,11 +246,14 @@ class BsdRapCan(models.Model):
             res.write({
                 'bsd_truoc_mb': True,
             })
+        # R11 Chuyển nhượng khách hàng
+        res.write({
+            'bsd_kh_moi_id': res.bsd_khach_hang_id.id
+        })
         return res
 
     def write(self, vals):
         if 'bsd_unit_id' in vals:
-            _logger.debug("Chạy ở đây")
             if self.env['product.product'].browse(vals['bsd_unit_id']).bsd_dot_mb_id:
                 vals.update({
                     'bsd_truoc_mb': False,
@@ -255,5 +263,9 @@ class BsdRapCan(models.Model):
                     'bsd_truoc_mb': True,
                 })
             _logger.debug(vals)
-        res = super(BsdRapCan, self).write(vals)
+        if 'bsd_khach_hang_id' in vals:
+            vals.update({
+                'bsd_kh_moi_id': vals['bsd_khach_hang_id']
+            })
+        res = super(BsdGiuCho, self).write(vals)
         return res

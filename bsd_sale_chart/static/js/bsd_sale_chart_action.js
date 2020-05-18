@@ -9,7 +9,8 @@ odoo.define('bsd_sale_chart.SaleChartAction', function(require){
     var SaleChartAction = AbstractAction.extend({
         hasControlPanel: true,
         custom_events:{
-            search : '_onAction',
+            search : '_onSearch',
+            change_du_an: '_onAction'
         },
         contentTemplate: 'bsd_sale_chart.reconciliation',
         config: _.extend({}, AbstractAction.prototype.config,{

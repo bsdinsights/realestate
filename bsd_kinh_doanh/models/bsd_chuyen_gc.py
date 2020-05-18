@@ -53,21 +53,33 @@ class BsdChuyenGiuCho(models.Model):
                               ('da_duyet', 'Đã duyệt'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
                              required=True, default='nhap', tracking=1)
 
+    # KD.05.07.01 Xác nhận phiếu chuyển tên khách hàng giữ chỗ
     def action_xac_nhan(self):
         self.write({
             'state': 'xac_nhan',
         })
 
+    # KD.05.07.02 Duyệt chuyển tên khách hàng giữ chỗ
     def action_duyet(self):
         self.write({
             'state': 'da_duyet',
         })
+        if self.bsd_loai_gc == 'gc_tc' and self.bsd_gc_tc_id:
+            self.bsd_gc_tc_id.write({
+                'bsd_kh_moi_id': self.bsd_kh_moi_id.id,
+            })
+        if self.bsd_loai_gc == 'gc_tc' and self.bsd_gc_tc_id:
+            self.bsd_gc_tc_id.write({
+                'bsd_kh_moi_id': self.bsd_kh_moi_id.id,
+            })
 
+    # KD.05.07.03 Từ chối yêu cầu chuyển tên khách hàng giữ chỗ
     def action_khong_duyet(self):
         _logger.debug("không duyệt")
         action = self.env.ref('bsd_kinh_doanh.bsd_wizard_chuyen_gc_action').read()[0]
         return action
 
+    # KD.05.07.04 Hủy chuyển tên khách hàng giữ chỗ
     def action_huy(self):
         self.write({
             'state': 'huy'

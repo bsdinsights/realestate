@@ -76,6 +76,11 @@
                             <field name="bsd_rap_can_id"/>
                         </group>
                     </group>
+                    <group string="CHUYỂN NHƯỢNG">
+                        <group>
+                            <field name="bsd_kh_moi_id"/>
+                        </group>
+                    </group>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
