@@ -89,7 +89,7 @@ class BsdRapCan(models.Model):
         gc = self.env['bsd.giu_cho'].create({
                     'bsd_ma_gc': self.bsd_gc_tc_id.bsd_ma_gctc + '-' + self.bsd_ma_rc,
                     'bsd_ngay_gc': datetime.datetime.now(),
-                    'bsd_khach_hang_id': self.bsd_gc_tc_id.bsd_khach_hang_id.id,
+                    'bsd_khach_hang_id': self.bsd_gc_tc_id.bsd_kh_moi_id.id,
                     'bsd_du_an_id': self.bsd_gc_tc_id.bsd_du_an_id.id,
                     'bsd_unit_id': self.bsd_unit_id.id,
                     'bsd_tien_gc': self.bsd_gc_tc_id.bsd_tien_gc,

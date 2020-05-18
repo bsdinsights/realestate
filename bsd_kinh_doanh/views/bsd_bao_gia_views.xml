@@ -57,7 +57,7 @@
                                            options="{'no_create':true}"/>
                                     <field name="bsd_giu_cho_id"
                                            options="{'no_create':true}"
-                                           domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id]),
+                                           domain="[('bsd_kh_moi_id', 'in', [bsd_khach_hang_id]),
                                                     ('state', '=','giu_cho')]"/>
                                 </group>
                                 <group>
