@@ -49,6 +49,11 @@
               sequence="16"
               action="bsd_dat_coc_action"
               parent="bsd_main_kinh_doanh_root"/>
+    <menuitem id="bsd_chuyen_gc_menu_action"
+              name="Chuyển giữ chỗ"
+              sequence="13"
+              action="bsd_chuyen_gc_action"
+              parent="bsd_main_kinh_doanh_root"/>
 
     <record id="bsd_kinh_doanh.bsd_main_kinh_doanh_root" model="ir.ui.menu">
         <field name="action" eval="False"/>
