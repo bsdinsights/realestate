@@ -91,8 +91,10 @@ class BsdGiuCho(models.Model):
     bsd_kh_moi_id = fields.Many2one('res.partner', string="KH chuyển nhượng", help="Người được chuyển nhượng giữ chỗ",
                                     tracking=2, readonly=True)
 
-    # R11. khách hàng chuyển nhượng
+    bsd_tien_gctc = fields.Monetary(string="Tiền GCTC", help="Tiền giữ chỗ thiện chí đã thanh toán",
+                                    readonly=True, default=0)
 
+    # R11. khách hàng chuyển nhượng
     @api.onchange('bsd_du_an_id')
     def _onchange_unit(self):
         self.bsd_unit_id = False

@@ -18,11 +18,11 @@ class BsdGiuCho(models.Model):
     bsd_ngay_tt = fields.Datetime(compute='_compute_tien_tt', store=True)
     bsd_thanh_toan = fields.Selection(compute='_compute_tien_tt', store=True)
 
-    @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien_gc')
+    @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien_gc', 'bsd_tien_gctc')
     def _compute_tien_tt(self):
         for each in self:
             each.bsd_tien_da_tt = sum(each.bsd_ct_ids.mapped('bsd_tien_pb'))
-            each.bsd_tien_phai_tt = each.bsd_tien_gc - each.bsd_tien_da_tt
+            each.bsd_tien_phai_tt = each.bsd_tien_gc - each.bsd_tien_da_tt - each.bsd_tien_gctc
 
             if each.bsd_tien_phai_tt == 0:
                 each.bsd_thanh_toan = 'da_tt'
