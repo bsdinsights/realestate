@@ -416,4 +416,4 @@ class BsdDotMoBanUnit(models.Model):
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     state = fields.Selection([('phat_hanh', 'Phát hành'), ('thu_hoi', 'Thu hồi')], string="Trạng thái",
                              required="True", default='phat_hanh', help="Tráng thái")
-    # bsd_them_unit_id = fields.Many2one(string)
+    bsd_thu_hoi_id = fields.Many2one('bsd.thu_hoi', string="Thu hồi", help="Thu hồi", readonly=True)
