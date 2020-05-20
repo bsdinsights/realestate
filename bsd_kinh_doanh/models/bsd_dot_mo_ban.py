@@ -74,7 +74,7 @@ class BsdDotMoBan(models.Model):
                                 readonly=True,
                                 states={'cph': [('readonly', False)]})
     state = fields.Selection([('cph', 'Chưa phát hành'), ('ph', 'Phát hành'),
-                              ('thnb', 'Thu hồi mở bán'), ('thch', 'Thu hồi căn hộ')],
+                              ('thmb', 'Thu hồi mở bán'), ('thch', 'Thu hồi căn hộ')],
                              string="Trạng thái", default="cph", tracking=1, required=True)
     bsd_san_gd = fields.Boolean(string="Sàn giao dịch", default=False,
                                 help="""Thông tin quy định đợt mở bán chỉ cho phép các sàn giao dịch được bán, 
@@ -95,7 +95,11 @@ class BsdDotMoBan(models.Model):
                                  states={'cph': [('readonly', False)]})
     bsd_ph_ids = fields.One2many('bsd.dot_mb_unit', 'bsd_dot_mb_id', string="Phát hành unit",
                                  readonly=True,
+                                 domain=[('state', '=', 'phat_hanh')],
                                  states={'cph': [('readonly', False)]})
+    bsd_th_ids = fields.One2many('bsd.dot_mb_unit', 'bsd_dot_mb_id', string="Thu hồi unit",
+                                 readonly=True,
+                                 domain=[('state', '=', 'thu_hoi')])
 
     def action_loc_unit(self):
         # gán giá trị biến nội hàm
@@ -153,6 +157,7 @@ class BsdDotMoBan(models.Model):
                     'bsd_dot_mb_id': self.id
                 })
 
+    # Phát hành
     def action_phat_hanh(self):
         # kiểm tra trạng thái record
         if self.state != 'cph':
@@ -284,6 +289,32 @@ class BsdDotMoBan(models.Model):
                         'bsd_ngay_hh_bg': ngay_ph
                     })
 
+    # Thu hồi toàn bộ đợt mở bán
+    def action_thu_hoi(self):
+        _logger.debug('Thu hồi đợt mơt bán')
+        # Kiểm tra trạng thái record
+        if self.state != 'ph':
+            pass
+        else:
+            dk = self.bsd_ph_ids.filtered(lambda p: p.bsd_unit_id.state != 'san_sang')
+            _logger.debug(dk)
+            if dk:
+                raise UserError('Đợt mở bán đang có giao dịch. Vui lòng kiểm tra lại!')
+            # chuyển trạng thái đợt phát hành
+            self.write({
+                'state': 'thmb',
+            })
+            # chuyển unit từ tab phát hành sang thu hồi
+            self.bsd_ph_ids.write({
+                'state': 'thu_hoi',
+            })
+            # chuyển trạng thái unit từ sẵn sàng về chuẩn bị
+            _logger.debug(self.bsd_th_ids)
+            self.bsd_th_ids.mapped('bsd_unit_id').write({
+                'state': 'chuan_bi',
+                'bsd_dot_mb_id': False
+            })
+
 
 class BsdDotMoBanSanGiaoDich(models.Model):
     _name = 'bsd.dot_mb_sgd'
@@ -383,3 +414,6 @@ class BsdDotMoBanUnit(models.Model):
     bsd_gia_ban = fields.Monetary(string="Giá bán", required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+    state = fields.Selection([('phat_hanh', 'Phát hành'), ('thu_hoi', 'Thu hồi')], string="Trạng thái",
+                             required="True", default='phat_hanh', help="Tráng thái")
+    # bsd_them_unit_id = fields.Many2one(string)
