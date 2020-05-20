@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_them_unit_form">
+        <field name="name">bsd.them_unit.form</field>
+        <field name="model">bsd.them_unit</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Chuẩn bị"
+                            name="action_chuan_bi"
+                            class="oe_highlight"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                            type="object"/>
+                    <button string="Phát hành"
+                            name="action_phat_hanh"
+                            class="oe_highlight"
+                            states="cph"
+                            confirm="Bạn có muốn Phát hành thêm không?"
+                            type="object"/>
+                    <button string="Không duyệt"
+                            name="action_khong_duyet"
+                            confirm="Bạn có muốn Từ Chối yêu cầu không?"
+                            type="object"
+                            states="cph"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap','cph'])]}"
+                            confirm="Bạn có muốn Hủy yêu cầu không?"
+                            type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <notebook>
+                        <page string="Thông tin chung">
+                            <group>
+                                <group>
+                                    <field name="bsd_ma_tu"/>
+                                    <field name="bsd_ngay_tu"/>
+                                    <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                                    <field name="bsd_dot_mb_id"
+                                           domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"
+                                           options="{'no_create':true}"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_bang_gia_id"/>
+                                    <field name="bsd_ngay_duyet"/>
+                                    <field name="bsd_nguoi_duyet"/>
+                                    <field name="bsd_dien_giai"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Chuẩn bị">
+                            <field name="bsd_cb_ids" context="{'default_bsd_du_an_id': bsd_du_an_id}">
+                                <tree editable="bottom">
+                                    <field name="bsd_du_an_id"/>
+                                    <field name="bsd_toa_nha_id"
+                                           domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
+                                    <field name="bsd_tang_id" domain="[('bsd_toa_nha_id', 'in',[bsd_toa_nha_id])]"/>
+                                    <field name="bsd_unit_id"
+                                           context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                           domain="[('bsd_tang_id', 'in',[bsd_tang_id])]"/>
+                                    <field name="bsd_gia_ban"/>
+                                    <field name="bsd_ly_do"/>
+                                    <field name="bsd_them_unit_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Phát hành">
+                            <field name="bsd_ph_ids">
+                                <tree>
+                                    <field name="bsd_du_an_id"/>
+                                    <field name="bsd_toa_nha_id"/>
+                                    <field name="bsd_tang_id"/>
+                                    <field name="bsd_unit_id"/>
+                                    <field name="bsd_gia_ban"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_them_unit_tree">
+        <field name="name">bsd.them_unit.tree</field>
+        <field name="model">bsd.them_unit</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_tu"/>
+                <field name="bsd_ngay_tu"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_dot_mb_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_them_unit_filter">
+        <field name="name">bsd.them_unit.list.filter</field>
+        <field name="model">bsd.them_unit</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_ma_tu"/>
+                <field name="bsd_dot_mb_id"/>
+                <field name="bsd_du_an_id"/>
+
+                <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="bsd_my_them_unit_filter"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Đợt mở bán" name="bsd_dot_mb_id" domain="[]" context="{'group_by': 'bsd_dot_mb_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_them_unit_action">
+        <field name="name">Thêm căn hộ đợt mở bán</field>
+        <field name="res_model">bsd.them_unit</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo phiếu thu hồi</p>
+        </field>
+    </record>
+</odoo>

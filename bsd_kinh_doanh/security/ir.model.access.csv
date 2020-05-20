@@ -16,3 +16,5 @@ bsd_lich_thanh_toan_manager, Lịch thanh toán cho bảng tính giá,model_bsd_
 bsd_dat_coc_manager, Phiếu đặt cọc,model_bsd_dat_coc,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_chuyen_gc_manager, Phiếu chuyển tên khách hàng giữ chỗ,model_bsd_chuyen_gc,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_thu_hoi_manager, Thu hồi căn hộ của đợt mở bán,model_bsd_thu_hoi,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_them_unit_manager, Thêm căn hộ của đợt mở bán,model_bsd_them_unit,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_them_unit_cb_manager, Thêm căn hộ của đợt mở bán chi tiết,model_bsd_them_unit_cb,bsd_kinh_doanh.group_manager,1,1,1,1

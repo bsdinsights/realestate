@@ -383,8 +383,8 @@ class BsdDotMoBanCB(models.Model):
         _logger.debug("Tạo chuẩn bị")
         _logger.debug(vals)
         if 'bsd_unit_id' in vals.keys() and 'bsd_dot_mb_id' in vals.keys():
-            if self.env['bsd.dot_mb_cb'].search([('bsd_unit_id', '=',vals['bsd_unit_id']),
-                                                 ('bsd_dot_mb_id', '=',vals['bsd_dot_mb_id'])]):
+            if self.env['bsd.dot_mb_cb'].search([('bsd_unit_id', '=', vals['bsd_unit_id']),
+                                                 ('bsd_dot_mb_id', '=', vals['bsd_dot_mb_id'])]):
                 raise UserError("Đợt mở bán đã có unit")
         rec = super(BsdDotMoBanCB, self).create(vals)
         return rec
@@ -417,3 +417,4 @@ class BsdDotMoBanUnit(models.Model):
     state = fields.Selection([('phat_hanh', 'Phát hành'), ('thu_hoi', 'Thu hồi')], string="Trạng thái",
                              required="True", default='phat_hanh', help="Tráng thái")
     bsd_thu_hoi_id = fields.Many2one('bsd.thu_hoi', string="Thu hồi", help="Thu hồi", readonly=True)
+    bsd_them_unit_id = fields.Many2one('bsd.them_unit', string="Thêm căn hộ", help="Thêm căn hộ", readonly=True)

@@ -15,3 +15,5 @@ from . import bsd_phat_sinh_ck_chung
 from . import res_partner
 from . import bsd_chuyen_gc
 from . import bsd_thu_hoi
+from . import bsd_them_unit
+

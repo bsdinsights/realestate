@@ -34,6 +34,11 @@
                   sequence="11"
                   action="bsd_thu_hoi_action"
                   parent="bsd_dot_mb_menu"/>
+        <menuitem id="bsd_them_unit_menu_action"
+                  name="Thêm căn hộ"
+                  sequence="12"
+                  action="bsd_them_unit_action"
+                  parent="bsd_dot_mb_menu"/>
 
     <menuitem id="bsd_gc_tc_menu_action"
               name="Giữ chỗ thiện chí"
