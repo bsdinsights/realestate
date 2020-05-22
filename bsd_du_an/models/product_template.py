@@ -30,8 +30,10 @@ class ProductTemplate(models.Model):
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True, help="Tên dự án")
     bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà", required=True, help="Tên tòa nhà")
     bsd_tang_id = fields.Many2one('bsd.tang', string="Tầng", required=True, help="Tên tầng lầu")
-    bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc của căn hộ", required=True)
-    bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ của căn hộ")
+    bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc của căn hộ",
+                                  related="bsd_du_an_id.bsd_tien_dc", store=True)
+    bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ của căn hộ",
+                                  related="bsd_du_an_id.bsd_tien_gc", store=True)
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Thông tin về căn hộ")
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch",
                                     help="Sàn giao dịch đang bán(căn hộ) theo đợt mở bán")
@@ -83,14 +85,16 @@ class ProductTemplate(models.Model):
     bsd_dt_sh = fields.Float(string="Diện tích sổ hồng", help="Diện tích sổ hồng")
     bsd_don_gia = fields.Monetary(string="Đơn giá bán/m2", help="Đơn giá bán trước thuế theo m2")
     bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán trước thuế của căn hộ")
-    bsd_qsdd_m2 = fields.Monetary(string="QSDĐ/ m2", help="Giá trị quyền sử dụng đất theo m2")
+    bsd_qsdd_m2 = fields.Monetary(string="QSDĐ/ m2", help="Giá trị quyền sử dụng đất theo m2",
+                                  related="bsd_du_an_id.bsd_qsdd_m2", store=True)
     bsd_tien_qsdd = fields.Monetary(string="Giá trị QSDĐ", help="""
                                                                     Tổng giá trị sử dụng đất của căn hộ được tính theo
                                                                     công thức: diện tích sử dụng(thông thủy) * 
                                                                     QSDĐ/m2
                                                                     """,
                                    readonly=True, compute='_compute_bsd_tong_gtsd_dat', store=True)
-    bsd_tl_pbt = fields.Float(string="% phí bảo trì", help="Tỷ lệ phí bảo trì")
+    bsd_tl_pbt = fields.Float(string="% phí bảo trì", help="Tỷ lệ phí bảo trì",
+                              related="bsd_du_an_id.bsd_tl_pbt", store=True)
     bsd_tien_pbt = fields.Monetary(string="Phí bảo trì", help="""
                                                                 Tổng tiền phí bảo trì được tính theo công thức:
                                                                 % phí bảo trì * giá bán trước thuế
