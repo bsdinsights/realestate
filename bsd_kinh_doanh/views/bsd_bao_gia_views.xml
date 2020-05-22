@@ -100,12 +100,13 @@
                                     <field name="bsd_tien_pql"/>
                                 </group>
                             </group>
-                            <group string="XÁC NHẬN">
+                            <group string="HIỆU LỰC">
                                 <group>
                                     <field name="bsd_ngay_in_bg"/>
                                     <field name="bsd_ngay_hh_kbg"/>
                                 </group>
                                 <group>
+                                    <field name="bsd_ngay_hl_bg"/>
                                     <field name="bsd_ngay_ky_bg"/>
                                 </group>
                             </group>

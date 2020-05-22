@@ -106,6 +106,16 @@ class BsdBaoGia(models.Model):
     bsd_ngay_hh_kbg = fields.Datetime(string="Hết hạn ký BG", help="Ngày hết hiệu lực ký báo giá", readonly=True)
     bsd_ngay_ky_bg = fields.Datetime(string="Ngày ký báo giá", help="Ngày ký báo giá", readonly=True)
 
+    bsd_ngay_hl_bg = fields.Datetime(string="Hiệu lực báo giá", help="Hiệu lực bảng tính giá",
+                                     compute="_compute_ngay_hl", store=True)
+
+    # R.33 Hiệu lực báo giá
+    @api.depends('bsd_ngay_bao_gia')
+    def _compute_ngay_hl(self):
+        for each in self:
+            so_ngay = datetime.timedelta(days=each.bsd_du_an_id.bsd_hh_bg)
+            each.bsd_ngay_hl_bg = each.bsd_ngay_bao_gia + so_ngay
+
     # KD.09.02 Ưu tiên báo giá theo Giữ chỗ
     @api.constrains('bsd_giu_cho_id')
     def _constrain_gc_tc(self):
