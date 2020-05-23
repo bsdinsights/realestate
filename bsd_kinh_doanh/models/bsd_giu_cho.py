@@ -179,7 +179,7 @@ class BsdGiuCho(models.Model):
 
     # KD.07.09 Theo dõi công nợ giữ chỗ
     def _tao_rec_cong_no(self):
-        if self.bsd_giu_cho_id.bsd_truoc_mb and not self.bsd_giu_cho_id.bsd_gc_da:
+        if self.bsd_truoc_mb and not self.bsd_gc_da:
             self.env['bsd.cong_no'].create({
                 'bsd_chung_tu': self.bsd_ma_gc,
                 'bsd_ngay': self.bsd_ngay_gc,
@@ -273,7 +273,71 @@ class BsdGiuCho(models.Model):
         res = super(BsdGiuCho, self).write(vals)
         return res
 
-    # KD.07.06 Hủy giữ chỗ
+    # KD.07.06 Hủy giữ chỗ đã thanh toán
     def action_huy(self):
-        pass
+        # Kiểm tra giữ chỗ đã làm báo giá chưa
+        bao_gia = self.env['bsd.bao_gia'].search([('bsd_giu_cho_id', '=', self.id),
+                                                  ('state', 'not in', ['huy'])])
+        if bao_gia:
+            raise UserError("Bạn cần hủy Bảng tính giá trước khi hủy giữ chỗ")
 
+        # Hủy giữ chỗ sau mở bán
+        if self.bsd_thanh_toan == 'da_tt' and not self.bsd_truoc_mb:
+            self.write({'state': 'huy'})
+            giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                      ('state', 'not in', ['huy', 'nhap'])])
+            if not giu_cho:
+                self.bsd_unit_id.write({
+                    'state': 'san_sang',
+                })
+            elif not giu_cho.filtered(lambda g: g.state == 'giu_cho'):
+                self.bsd_unit_id.write({
+                    'state': 'dat_cho'
+                })
+        # Hủy giữ chỗ từ giữ chỗ thiện chí
+        if self.bsd_thanh_toan == 'da_tt' and self.bsd_gc_da:
+            giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                      ('state', 'not in', ['huy', 'nhap'])])
+            if not self.bsd_dot_mb_id:
+                if not giu_cho:
+                    self.bsd_unit_id.write({
+                        'state': 'chuan_bi',
+                    })
+                elif not giu_cho.filtered(lambda g: g.state == 'giu_cho'):
+                    self.bsd_unit_id.write({
+                        'state': 'dat_cho'
+                    })
+            else:
+                if not giu_cho:
+                    self.bsd_unit_id.write({
+                        'state': 'san_sang',
+                    })
+                elif not giu_cho.filtered(lambda g: g.state == 'giu_cho'):
+                    self.bsd_unit_id.write({
+                        'state': 'dat_cho'
+                    })
+
+    # KD.07.06 Hủy giữ chỗ chưa thanh toán
+    def action_huy_chua_tt(self):
+        # cập nhật trạng thái giữ chỗ
+        self.write({
+            'state': 'huy',
+        })
+        self.env['bsd.cong_no'].search([('bsd_giu_cho_id', '=', self.id)], limit=1).write({
+            'state': 'huy'
+        })
+        # cập nhật căn hộ trên phiếu giữ chỗ
+        if not self.bsd_dot_mb_id:
+            giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                      ('state', 'not in', ['huy', 'nhap'])])
+            if not giu_cho:
+                self.bsd_unit_id.write({
+                    'state': 'chuan_bi',
+                })
+        else:
+            giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                      ('state', 'not in', ['huy', 'nhap'])])
+            if not giu_cho:
+                self.bsd_unit_id.write({
+                    'state': 'san_sang',
+                })

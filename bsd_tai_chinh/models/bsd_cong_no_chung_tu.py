@@ -54,8 +54,12 @@ class BsdCongNoCT(models.Model):
             if self.bsd_giu_cho_id.bsd_truoc_mb and not self.bsd_giu_cho_id.bsd_gc_da:
                 if self.bsd_giu_cho_id.bsd_tien_gc == tien:
                     self.bsd_giu_cho_id.write({
-                        'state': 'giu_cho'
+                        'state': 'giu_cho',
                     })
+                    if self.bsd_giu_cho_id.bsd_unit_id.state == 'dat_cho':
+                        self.bsd_giu_cho_id.bsd_unit_id.write({
+                            'state': 'giu_cho',
+                        })
 
         elif self.bsd_loai == 'pt_dc':
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id),
