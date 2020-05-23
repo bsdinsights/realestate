@@ -68,8 +68,8 @@ class BsdChuyenGiuCho(models.Model):
             self.bsd_gc_tc_id.write({
                 'bsd_kh_moi_id': self.bsd_kh_moi_id.id,
             })
-        if self.bsd_loai_gc == 'gc_tc' and self.bsd_gc_tc_id:
-            self.bsd_gc_tc_id.write({
+        if self.bsd_loai_gc == 'giu_cho' and self.bsd_giu_cho_id:
+            self.bsd_giu_cho_id.write({
                 'bsd_kh_moi_id': self.bsd_kh_moi_id.id,
             })
 
