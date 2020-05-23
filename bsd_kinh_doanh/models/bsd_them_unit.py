@@ -16,6 +16,10 @@ class BsdThuHoi(models.Model):
     bsd_ma_tu = fields.Char(string="Mã", help="Mã phiếu", required=True,
                             readonly=True,
                             states={'nhap': [('readonly', False)]})
+    _sql_constraints = [
+        ('bsd_ma_tu_unique', 'unique (bsd_ma_tu)',
+         'Mã Phiếu thêm unit đã tồn tại !'),
+    ]
     bsd_ngay_tu = fields.Date(string="Ngày", help="Ngày thực hiện", required=True,
                               readonly=True,
                               states={'nhap': [('readonly', False)]})
@@ -37,7 +41,7 @@ class BsdThuHoi(models.Model):
                               ('ph', 'Phát hành'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
                              tracking=1, required=True, default='nhap')
     bsd_cb_ids = fields.One2many('bsd.them_unit_cb', 'bsd_them_unit_id', string="Chuẩn bị")
-    bsd_ph_ids = fields.One2many('bsd.dot_mb_unit', 'bsd_them_unit_id', string="Phát hành")
+    bsd_ph_ids = fields.One2many('bsd.dot_mb_unit', 'bsd_them_unit_id', string="Phát hành", readonly=True)
 
     # KD.04.05.01 - Chuẩn bị căn hộ
     def action_chuan_bi(self):
@@ -49,6 +53,10 @@ class BsdThuHoi(models.Model):
 
     # KD.04.05.02 - Phát hành thêm căn hộ
     def action_phat_hanh(self):
+        # kiểm tra đợt mở bán
+        if self.bsd_dot_mb_id.state != 'ph' or self.bsd_dot_mb_id.bsd_den_ngay > datetime.date.today():
+            raise UserError("Vui lòng kiểm tra lại thông tin đợt mở bán!")
+
         # kiểm tra trạng thái record
         if self.state != 'cph':
             pass

@@ -16,6 +16,10 @@ class BsdThuHoi(models.Model):
     bsd_ma_th = fields.Char(string="Mã", help="Mã đợt thu hồi căn hộ", required=True,
                             readonly=True,
                             states={'nhap': [('readonly', False)]})
+    _sql_constraints = [
+        ('bsd_ma_th_unique', 'unique (bsd_ma_th)',
+         'Mã thu hồi đã tồn tại !'),
+    ]
     bsd_ngay_th = fields.Date(string="Ngày", help="Ngày trên phiếu thu hồi căn hộ", required=True,
                               readonly=True, default = lambda self: fields.Date.today(),
                               states={'nhap': [('readonly', False)]})

@@ -20,6 +20,6 @@ class BsdKyBG(models.TransientModel):
     def action_xac_nhan(self):
         self.bsd_them_unit_id.write({
             'bsd_ly_do_khong_duyet': self.bsd_ly_do,
-            'state': 'huy',
+            'state': 'nhap',
         })
 
