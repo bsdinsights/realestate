@@ -179,18 +179,19 @@ class BsdGiuCho(models.Model):
 
     # KD.07.09 Theo dõi công nợ giữ chỗ
     def _tao_rec_cong_no(self):
-        self.env['bsd.cong_no'].create({
-            'bsd_chung_tu': self.bsd_ma_gc,
-            'bsd_ngay': self.bsd_ngay_gc,
-            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-            'bsd_du_an_id': self.bsd_du_an_id.id,
-            'bsd_ps_tang': self.bsd_tien_gc,
-            'bsd_ps_giam': 0,
-            'bsd_loai_ct': 'giu_cho',
-            'bsd_phat_sinh': 'tang',
-            'bsd_giu_cho_id': self.id,
-            'state': 'da_gs',
-        })
+        if self.bsd_giu_cho_id.bsd_truoc_mb and not self.bsd_giu_cho_id.bsd_gc_da:
+            self.env['bsd.cong_no'].create({
+                'bsd_chung_tu': self.bsd_ma_gc,
+                'bsd_ngay': self.bsd_ngay_gc,
+                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                'bsd_du_an_id': self.bsd_du_an_id.id,
+                'bsd_ps_tang': self.bsd_tien_gc,
+                'bsd_ps_giam': 0,
+                'bsd_loai_ct': 'giu_cho',
+                'bsd_phat_sinh': 'tang',
+                'bsd_giu_cho_id': self.id,
+                'state': 'da_gs',
+            })
 
     # KD07.01 Xác nhận giữ chỗ
     def action_xac_nhan(self):

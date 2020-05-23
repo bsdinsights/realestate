@@ -50,6 +50,12 @@ class BsdCongNoCT(models.Model):
             _logger.debug(self.bsd_giu_cho_id.bsd_tien_gc)
             if self.bsd_giu_cho_id.bsd_tien_gc < tien:
                 raise UserError("Không thể thực hiện thanh toán dư")
+            # Kiểm tra nếu là giữ chỗ trước mở bán nếu thanh toán đủ thì chuyển trạng thái sang giữ chỗ
+            if self.bsd_giu_cho_id.bsd_truoc_mb and not self.bsd_giu_cho_id.bsd_gc_da:
+                if self.bsd_giu_cho_id.bsd_tien_gc == tien:
+                    self.bsd_giu_cho_id.write({
+                        'state': 'giu_cho'
+                    })
 
         elif self.bsd_loai == 'pt_dc':
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id),
