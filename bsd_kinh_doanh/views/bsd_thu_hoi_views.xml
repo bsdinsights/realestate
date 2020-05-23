@@ -24,6 +24,7 @@
                             type="object"
                             states="xac_nhan"/>
                     <button string="Hủy"
+                            states="xac_nhan"
                             name="action_huy"
                             confirm="Bạn có muốn Hủy yêu cầu không?"
                             type="object"/>
@@ -37,10 +38,10 @@
                             <field name="bsd_ly_do"/>
                         </group>
                         <group>
-                            <field name="bsd_du_an_id" option="{'no_create':true}"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
                             <field name="bsd_dot_mb_id"
-                                   domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"
-                                   option="{'no_create':true}"/>
+                                   domain="[('bsd_du_an_id', 'in', [bsd_du_an_id]),('state', '=','ph')]"
+                                   options="{'no_create':true}"/>
                             <field name="bsd_ngay_duyet"/>
                             <field name="bsd_nguoi_duyet"/>
                         </group>
@@ -49,7 +50,8 @@
                            domain="[('bsd_dot_mb_id', '=', bsd_dot_mb_id),
                                     ('state', '=', 'san_sang')]"
                            context="{'tree_view_ref': 'bsd_du_an.bsd_product_template_tree',
-                                     'search_view_ref': 'bsd_du_an.bsd_product_template_filter'}">
+                                     'search_view_ref': 'bsd_du_an.bsd_product_template_filter',
+                                     'form_view_ref': 'bsd_du_an.bsd_product_template_form}">
                         <tree>
                             <field name="bsd_du_an_id"/>
                             <field name="bsd_toa_nha_id"/>

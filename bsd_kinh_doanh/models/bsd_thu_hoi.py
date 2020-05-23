@@ -17,7 +17,7 @@ class BsdThuHoi(models.Model):
                             readonly=True,
                             states={'nhap': [('readonly', False)]})
     bsd_ngay_th = fields.Date(string="Ngày", help="Ngày trên phiếu thu hồi căn hộ", required=True,
-                              readonly=True,
+                              readonly=True, default = lambda self: fields.Date.today(),
                               states={'nhap': [('readonly', False)]})
     bsd_ly_do = fields.Char(string="Lý do thu hồi", help="Lý do thu hồi", required=True,
                             readonly=True,
@@ -65,7 +65,7 @@ class BsdThuHoi(models.Model):
             'bsd_dot_mb_id': False,
         })
         # cập nhật căn hộ phát hành
-        ph = self.bsd_dot_mb_id.bsd_ph_ids.filtered(lambda p: p.bsd_unit_id in [self.bsd_unit_ids])
+        ph = self.bsd_dot_mb_id.bsd_ph_ids.filtered(lambda p: p.bsd_unit_id.id in self.bsd_unit_ids.ids)
         _logger.debug("phát hành")
         _logger.debug(ph)
         ph.write({
