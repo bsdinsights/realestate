@@ -12,6 +12,9 @@
                             attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
                             type="object"/>
                     <button string="Hủy"
+                            type="object"
+                            attrs="{'invisible': [('state','not in',['huy']),('bsd_thanh_toan','!=', 'chua_tt')]}"/>
+                    <button string="Hủy"
                             states="giu_cho,dat_cho,bao_gia"
                             name="action_huy"
                             type="object"/>

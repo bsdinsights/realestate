@@ -271,3 +271,8 @@ class BsdGiuCho(models.Model):
             })
         res = super(BsdGiuCho, self).write(vals)
         return res
+
+    # KD.07.06 Hủy giữ chỗ
+    def action_huy(self):
+        pass
+
