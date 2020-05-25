@@ -28,6 +28,7 @@
         'views/bsd_dieu_kien_ban_giao_views.xml',
         'views/bsd_dat_coc_views.xml',
         'views/bsd_chuyen_gc_views.xml',
+        'views/bsd_huy_gc_views.xml',
         'views/bsd_thu_hoi_views.xml',
         'views/bsd_them_unit_views.xml',
         'views/bsd_menu_item_views.xml',

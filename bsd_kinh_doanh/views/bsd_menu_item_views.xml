@@ -39,22 +39,36 @@
                   sequence="12"
                   action="bsd_them_unit_action"
                   parent="bsd_dot_mb_menu"/>
-
-    <menuitem id="bsd_gc_tc_menu_action"
-              name="Giữ chỗ thiện chí"
-              sequence="12"
-              action="bsd_gc_tc_action"
-              parent="bsd_main_kinh_doanh_root"/>
-    <menuitem id="bsd_rap_can_menu_action"
-              name="Ráp căn"
-              sequence="13"
-              action="bsd_rap_can_action"
-              parent="bsd_main_kinh_doanh_root"/>
-    <menuitem id="bsd_giu_cho_menu_action"
+    <menuitem id="bsd_giu_cho_menu"
               name="Giữ chỗ"
-              sequence="14"
-              action="bsd_giu_cho_action"
+              sequence="12"
               parent="bsd_main_kinh_doanh_root"/>
+        <menuitem id="bsd_gc_tc_menu_action"
+                  name="Giữ chỗ thiện chí"
+                  sequence="102"
+                  action="bsd_gc_tc_action"
+                  parent="bsd_giu_cho_menu"/>
+        <menuitem id="bsd_rap_can_menu_action"
+                  name="Ráp căn"
+                  sequence="103"
+                  action="bsd_rap_can_action"
+                  parent="bsd_giu_cho_menu"/>
+        <menuitem id="bsd_giu_cho_menu_action"
+                  name="Giữ chỗ"
+                  sequence="104"
+                  action="bsd_giu_cho_action"
+                  parent="bsd_giu_cho_menu"/>
+        <menuitem id="bsd_chuyen_gc_menu_action"
+                  name="Chuyển giữ chỗ"
+                  sequence="105"
+                  action="bsd_chuyen_gc_action"
+                  parent="bsd_giu_cho_menu"/>
+        <menuitem id="bsd_huy_gc_menu_action"
+                  name="Hủy giữ chỗ"
+                  sequence="106"
+                  action="bsd_huy_gc_action"
+                  parent="bsd_giu_cho_menu"/>
+
     <menuitem id="bsd_bao_gia_menu_action"
               name="Bảng tính giá"
               sequence="15"
@@ -64,11 +78,6 @@
               name="Đặt cọc"
               sequence="16"
               action="bsd_dat_coc_action"
-              parent="bsd_main_kinh_doanh_root"/>
-    <menuitem id="bsd_chuyen_gc_menu_action"
-              name="Chuyển giữ chỗ"
-              sequence="13"
-              action="bsd_chuyen_gc_action"
               parent="bsd_main_kinh_doanh_root"/>
 
     <record id="bsd_kinh_doanh.bsd_main_kinh_doanh_root" model="ir.ui.menu">
