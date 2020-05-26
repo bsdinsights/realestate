@@ -27,14 +27,14 @@ class BsdRapCan(models.Model):
                                    help="Giữ chỗ trên dự án, chưa có sản phẩm", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
-    bsd_khach_hang_id = fields.Many2one('res.partner', related="bsd_gc_tc_id.bsd_khach_hang_id", store=True)
+    bsd_khach_hang_id = fields.Many2one('res.partner', related="bsd_gc_tc_id.bsd_kh_moi_id", store=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', related="bsd_gc_tc_id.bsd_du_an_id", store=True)
     bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", required=True,
-                                        readonly=True,
-                                        states={'nhap': [('readonly', False)]})
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_dien_giai = fields.Char(string="Diễn giải",
-                                        readonly=True,
-                                        states={'nhap': [('readonly', False)]})
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
     bsd_ngay_duyet_rc = fields.Datetime(string="Ngày duyệt")
     bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt")
     bsd_ngay_huy_rc = fields.Datetime(string="Ngày hủy")

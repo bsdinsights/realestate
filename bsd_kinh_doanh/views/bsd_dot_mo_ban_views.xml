@@ -181,6 +181,7 @@
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_gia_ban"/>
+                                    <field name="bsd_thu_hoi_id"/>
                                     <field name="state"/>
                                     <field name="currency_id" invisible="1"/>
                                 </tree>
@@ -191,6 +192,7 @@
                                                 <field name="bsd_du_an_id"/>
                                                 <field name="bsd_toa_nha_id"/>
                                                 <field name="bsd_tang_id"/>
+                                                <field name="bsd_thu_hoi_id"/>
                                             </group>
                                             <group>
                                                 <field name="bsd_unit_id"
