@@ -68,6 +68,7 @@ class BsdGiuCho(models.Model):
                               ('dat_cho', 'Đặt chỗ'),
                               ('giu_cho', 'Giữ chỗ'),
                               ('bao_gia', 'Báo giá'),
+                              ('dong', 'Đóng'),
                               ('huy', 'Hủy')], default='nhap', string="Trạng thái",
                              tracking=1, help="Trạng thái", required=True, readonly=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
