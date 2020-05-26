@@ -165,7 +165,7 @@ class BsdDotMoBan(models.Model):
         else:
             # lấy tất cả unit chuẩn bị phát hành ở trạng thái chuẩn bị đặt chỗ, giữ chỗ
             units = self.bsd_cb_ids.mapped('bsd_unit_id').filtered(lambda x: x.state in ['chuan_bi', 'dat_cho',
-                                                                                         'giu_cho', 'san_sang'])
+                                                                                         'giu_cho'])
             # các chuẩn bị không đúng trạng thái
             cb_no_state = self.bsd_cb_ids.filtered(lambda c: c.bsd_unit_id not in units)
             cb_no_state.write({
@@ -242,11 +242,6 @@ class BsdDotMoBan(models.Model):
                 unit.write({
                     'bsd_dot_mb_id': self.id,
                     'state': 'san_sang',
-                })
-            elif unit.state == 'dat_cho':
-                unit.write({
-                    'bsd_dot_mb_id': self.id,
-                    'state': 'giu_cho',
                 })
             else:
                 unit.write({

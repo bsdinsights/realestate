@@ -63,7 +63,7 @@ class BsdThuHoi(models.Model):
         else:
             # lấy tất cả unit chuẩn bị phát hành ở trạng thái chuẩn bị đặt chỗ, giữ chỗ
             units = self.bsd_cb_ids.mapped('bsd_unit_id').filtered(lambda x: x.state in ['chuan_bi', 'dat_cho',
-                                                                                         'giu_cho', 'san_sang'])
+                                                                                         'giu_cho'])
             _logger.debug("phát hành")
             units_dang_ph = self.bsd_dot_mb_id.bsd_ph_ids.mapped('bsd_unit_id')
             units = units - units_dang_ph
@@ -146,11 +146,6 @@ class BsdThuHoi(models.Model):
                     'bsd_dot_mb_id': self.bsd_dot_mb_id.id,
                     'state': 'san_sang',
                 })
-            elif unit.state == 'dat_cho':
-                unit.write({
-                    'bsd_dot_mb_id': self.bsd_dot_mb_id.id,
-                    'state': 'giu_cho',
-                })
             else:
                 unit.write({
                     'bsd_dot_mb_id': self.bsd_dot_mb_id.id,
@@ -166,7 +161,7 @@ class BsdThuHoi(models.Model):
         for unit_ph in units_ph:
             giu_cho_ids = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', unit_ph.id),
                                                           ('bsd_dot_mb_id', '=', self.id),
-                                                          ('state', 'in', ['dat_cho', 'giu_cho']),
+                                                          ('state', 'in', ['giu_cho']),
                                                           ('bsd_thanh_toan', '=', 'da_tt')])
             if giu_cho_ids:
                 gc = giu_cho_ids.filtered(lambda x: not x.bsd_rap_can_id).sorted('id')
@@ -182,11 +177,11 @@ class BsdThuHoi(models.Model):
                 for giu_cho in self.env['bsd.giu_cho'].browse(id_gc_sorted):
                     stt += 1
                     ngay_ph += datetime.timedelta(hours=time_gc)
-                    # KD.04.07 cập nhật trạng thái giữ chỗ khi phát hành
-                    if giu_cho.state == 'dat_cho' and giu_cho.bsd_thanh_toan == 'da_tt':
-                        giu_cho.write({
-                            'state': 'giu_cho',
-                        })
+                    # # KD.04.07 cập nhật trạng thái giữ chỗ khi phát hành
+                    # if giu_cho.state == 'dat_cho' and giu_cho.bsd_thanh_toan == 'da_tt':
+                    #     giu_cho.write({
+                    #         'state': 'giu_cho',
+                    #     })
                     giu_cho.write({
                         'bsd_stt_bg': stt,
                         'bsd_ngay_hh_bg': ngay_ph
