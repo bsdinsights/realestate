@@ -297,6 +297,9 @@ class BsdGiuCho(models.Model):
                 })
         # Hủy giữ chỗ từ giữ chỗ thiện chí
         if self.bsd_thanh_toan == 'da_tt' and self.bsd_gc_da:
+            # Hủy giữ chỗ và ráp căn của giữ chỗ
+            self.write({'state': 'huy'})
+            self.bsd_rap_can_id.write({'state': 'huy'})
             giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                       ('state', 'not in', ['huy', 'nhap'])])
             if not self.bsd_dot_mb_id:
