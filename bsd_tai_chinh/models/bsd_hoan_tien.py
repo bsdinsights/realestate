@@ -37,13 +37,23 @@ class BsdHoanTien(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_loai = fields.Selection([('phieu_thu', 'Phiếu thu')], string="Loại", help="Loại hoàn tiền", required=True,
+    bsd_loai = fields.Selection(selection='_method_choice', string="Loại", help="Loại hoàn tiền",
                                 default='phieu_thu',
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
+
+    @api.model
+    def _method_choice(self):
+        choices = [('phieu_thu', 'Phiếu thu')]
+        if self.env['res.users'].has_group('base.group_system'):
+            choices += [('dc_giam', 'Điều chỉnh giảm')]
+        return choices
+
     bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thu", help="Phiếu thu", required=True,
                                        readonly=True,
                                        states={'nhap': [('readonly', False)]})
+
+    bsd_giam_no_id = fields.Many2one('bsd.giam_no', string="Điều chỉnh giảm", help="Điều chỉnh giảm", readonly=1)
     bsd_tien_con_lai = fields.Monetary(related="bsd_phieu_thu_id.bsd_tien_con_lai")
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('da_gs', 'Đã ghi sổ'), ('huy', 'Hủy')], string="Trạng thái", tracking=1,
@@ -81,15 +91,26 @@ class BsdHoanTien(models.Model):
                 'state': 'da_gs',
             })
         # tạo record trong bảng công nợ chứng từ
-        self.env['bsd.cong_no_ct'].create({
-            'bsd_ngay_pb': self.bsd_ngay_ct,
-            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-            'bsd_phieu_thu_id': self.bsd_phieu_thu_id.id,
-            'bsd_hoan_tien_id': self.id,
-            'bsd_tien_pb': self.bsd_tien,
-            'bsd_loai': 'pt_ht',
-            'state': 'hoan_thanh'
-        })
+        if self.bsd_loai == 'phieu_thu':
+            self.env['bsd.cong_no_ct'].create({
+                'bsd_ngay_pb': self.bsd_ngay_ct,
+                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                'bsd_phieu_thu_id': self.bsd_phieu_thu_id.id,
+                'bsd_hoan_tien_id': self.id,
+                'bsd_tien_pb': self.bsd_tien,
+                'bsd_loai': 'pt_ht',
+                'state': 'hoan_thanh'
+            })
+        elif self.bsd_loai == 'dc_giam':
+            self.env['bsd.cong_no_ct'].create({
+                'bsd_ngay_pb': self.bsd_ngay_ct,
+                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                'bsd_giam_no_id': self.bsd_giam_no_id.id,
+                'bsd_hoan_tien_id': self.id,
+                'bsd_tien_pb': self.bsd_tien,
+                'bsd_loai': 'giam_ht',
+                'state': 'hoan_thanh'
+            })
 
     # TC.07.02 Hủy hoàn tiền
     def action_huy(self):

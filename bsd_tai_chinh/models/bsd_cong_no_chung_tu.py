@@ -32,7 +32,10 @@ class BsdCongNoCT(models.Model):
                                  ('pt_gc', 'Phiếu thu - Giữ chỗ'),
                                  ('pt_dc', 'Phiếu thu - Đặt cọc'),
                                  ('pt_dtt', 'Phiếu thu - Đợt thanh toán'),
-                                 ('pt_ht', 'Phiếu thu - Hoàn tiền')], string="Phân loại",
+                                 ('pt_ht', 'Phiếu thu - Hoàn tiền'),
+                                 ('giam_ht', 'Điều chỉnh giảm - Hoàn tiền'),
+                                 ('giam_gctc', 'Điều chỉnh giảm - Giữ chỗ thiện chí'),
+                                 ('giam_gc', 'Điều chỉnh giảm - Giữ chỗ')], string="Phân loại",
                                 help="Phân loại", required=True)
     bsd_can_tru_id = fields.Many2one('bsd.can_tru', string="Cấn trừ", readonly=True)
 

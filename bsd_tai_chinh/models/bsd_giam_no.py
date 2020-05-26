@@ -27,8 +27,7 @@ class BsdGiamNo(models.Model):
     @api.model
     def _method_choice(self):
         choices = [('khac', 'Điều chỉnh khác')]
-        if self.env['res.users'].has_group('base.group_system') or \
-                self.env['res.users'].has_group('bsd_real_estate.group_manager'):
+        if self.env['res.users'].has_group('base.group_system'):
             choices += [('chuyen_tien', 'Chuyển tiền')]
         return choices
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Lý do điều chỉnh",
