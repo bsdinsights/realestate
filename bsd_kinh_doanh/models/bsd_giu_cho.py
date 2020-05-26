@@ -94,6 +94,7 @@ class BsdGiuCho(models.Model):
 
     bsd_tien_gctc = fields.Monetary(string="Tiền GCTC", help="Tiền giữ chỗ thiện chí đã thanh toán",
                                     readonly=True, default=0)
+    bsd_huy_gc_id = fields.Many2one('bsd.huy_gc', string="Hủy giữ chỗ", help="Mã phiếu hủy giữ chỗ", readonly=1)
 
     # R11. khách hàng chuyển nhượng
     @api.onchange('bsd_du_an_id')

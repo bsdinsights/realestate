@@ -18,8 +18,8 @@
                             states="xac_nhan"
                             confirm="Bạn có muốn Duyệt yêu cầu không?"
                             type="object"/>
-                    <button string="Hoàn tiền"
-                            name="action_hoan_tien"
+                    <button string="Không duyệt"
+                            name="action_khong_duyet"
                             confirm="Bạn có muốn Từ Chối yêu cầu không?"
                             type="object"
                             states="xac_nhan"/>
@@ -49,14 +49,14 @@
                                            'required':[('bsd_loai_gc', '=', 'giu_cho')]}"/>
                             <field name="bsd_gc_tc_id"
                                    domain="[('bsd_du_an_id','=',bsd_du_an_id),('bsd_kh_moi_id', '=',bsd_khach_hang_id),
-                                            ('bsd_thanh_toan','=','da_tt'),('bsd_rap_can_id','=', False)]"
+                                            ('bsd_thanh_toan','!=','chua_tt')]"
                                    options="{'no_create':true}"
                                    attrs="{'invisible':[('bsd_loai_gc', '!=','gc_tc')],
                                            'required':[('bsd_loai_gc', '=', 'gc_tc')]}"
                             />
                             <field name="bsd_giu_cho_id"
                                    domain="[('bsd_du_an_id','=',bsd_du_an_id),('bsd_kh_moi_id', '=',bsd_khach_hang_id),
-                                            ('bsd_thanh_toan','=','da_tt')]"
+                                            ('bsd_thanh_toan','!=','chua_tt'),('bsd_truoc_mb','=',True)]"
                                    options="{'no_create':true}"
                                    attrs="{'invisible':[('bsd_loai_gc', '!=','giu_cho')],
                                            'required':[('bsd_loai_gc', '=', 'giu_cho')]}"
