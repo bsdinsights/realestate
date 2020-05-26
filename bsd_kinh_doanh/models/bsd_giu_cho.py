@@ -38,9 +38,9 @@ class BsdGiuCho(models.Model):
     bsd_truoc_mb = fields.Boolean(string="Trước mở bán", default=False,
                                   help="Thông tin xác định Giữ chỗ được tạo trước hay sau khi unit có đợt mở bán",
                                   readonly=True)
-    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', related="bsd_unit_id.bsd_dot_mb_id",
-                                    help="Đợt mở bán",
-                                    string="Đợt mở bán", store=True)
+    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', help="Đợt mở bán", string="Đợt mở bán",
+                                    readonly=True,states={'nhap': [('readonly', False)]})
+
     bsd_bang_gia_id = fields.Many2one('product.pricelist', related="bsd_dot_mb_id.bsd_bang_gia_id", store=True,
                                       string="Bảng giá", help="Bảng giá bán")
     bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", required=True,
@@ -151,11 +151,13 @@ class BsdGiuCho(models.Model):
     @api.onchange('bsd_unit_id', 'bsd_du_an_id')
     def _onchange_tien_gc(self):
         if self.bsd_unit_id:
+            self.bsd_dot_mb_id = self.bsd_unit_id.bsd_dot_mb_id
             tien_gc = self.bsd_unit_id.bsd_tien_gc
             if tien_gc != 0:
                 self.bsd_tien_gc = tien_gc
             else:
                 self.bsd_tien_gc = self.bsd_du_an_id.bsd_tien_gc
+
         if self.bsd_dot_mb_id:
             self.bsd_tien_gc = 0
 
@@ -245,6 +247,7 @@ class BsdGiuCho(models.Model):
         if res.bsd_unit_id.bsd_dot_mb_id:
             res.write({
                 'bsd_truoc_mb': False,
+                'bsd_dot_mb_id': res.bsd_unit_id.bsd_dot_mb_id.id
             })
         else:
             res.write({
