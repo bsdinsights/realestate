@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <templates xml:space="preserve">
-    <div t-name="bsd_sale_chart.reconciliation">
+    <div t-name="bsd_sale_chart.gio_hang">
         <div class="o_form_view">
             <div class="o_form_sheet_bg"/>
         </div>
     </div>
-    <t t-name="bsd_sale_chart.sale_chart">
+    <t t-name="bsd_sale_chart.data_filter">
         <div class="o_form_view">
             <div class="o_form_view">
                 <div class="o_form_sheet_bg">
@@ -32,23 +32,15 @@
                         <button class="btn btn-primary oe_right" id="search">Tìm</button>
                     </div>
                 </div>
-                <div>
-                    <span>Thịnh</span>
+                <div id="chart">
                 </div>
             </div>
         </div>
-        <!--<div class="row">-->
-            <!--<div class="col-3">-->
-                <!--<div>-->
-                    <!--<span>Dự án:</span>-->
-                    <!--<select id="chon_du_an"></select>-->
-                <!--</div>-->
+    </t>
 
-            <!--</div>-->
-            <!--<div>-->
-                <!--<label for="chon-du-an">Dự án:</label>-->
-            <!--</div>-->
-        <!--</div>-->
-
+    <t t-name="bsd_sale_chart.chart">
+        <t t-foreach="data" t-as="data">
+            <div t-esc="data[1]"/>
+        </t>
     </t>
 </templates>

@@ -54,7 +54,7 @@ class BsdThuHoi(models.Model):
     # KD.04.05.02 - Phát hành thêm căn hộ
     def action_phat_hanh(self):
         # kiểm tra đợt mở bán
-        if self.bsd_dot_mb_id.state != 'ph' or self.bsd_dot_mb_id.bsd_den_ngay > datetime.date.today():
+        if self.bsd_dot_mb_id.state != 'ph' or self.bsd_dot_mb_id.bsd_den_ngay < datetime.date.today():
             raise UserError("Vui lòng kiểm tra lại thông tin đợt mở bán!")
 
         # kiểm tra trạng thái record

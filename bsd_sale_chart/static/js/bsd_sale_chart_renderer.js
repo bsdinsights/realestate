@@ -11,7 +11,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
     var _t = core._t;
 
     var SaleChartRenderer = Widget.extend(FieldManagerMixin, {
-        template: 'bsd_sale_chart.sale_chart',
+        template: 'bsd_sale_chart.data_filter',
         events: {
             'click #search' : '_onSearch',
         },
@@ -26,14 +26,19 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             console.log(state)
             this._super(parent);
             this.model = model;
-            this._initialState = state
+            this._initialState = state;
+            this.filter = {
+                bsd_du_an_id: null,
+                bsd_dot_mb_id: null
+            };
+
          },
         /**
          * @override
          */
         start: function () {
             var self = this;
-            var def1 = this._makePartnerRecord(16, 'Sundihome 6').then(function (recordID) {
+            var def1 = this._makeRecord().then(function (recordID) {
                 self.fields = {
                     bsd_du_an_id : new relational_fields.FieldMany2One(self,
                         'bsd_du_an_id',
@@ -41,6 +46,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                             mode: 'edit',
                             attrs: {
                                 placeholder: _t('Chọn dự án'),
+                                can_create: false,
                             }
                         }
                     ),
@@ -50,6 +56,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                             mode: 'edit',
                             attrs: {
                                 placeholder: _t('Chọn đợt mở bán'),
+                                can_create: false,
                             }
                         }
                     )
@@ -67,8 +74,32 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          * @private
          */
         _onSearch: function(event){
-            console.log("on search in ")
-            this.trigger_up('search')
+            var self = this
+            var temp = [];
+            console.log("on search in action")
+            console.log(event)
+            console.log(self.filter)
+            var $chart = self.$('#chart').empty();
+            self._rpc({
+                    model: 'bsd.sale_chart.widget',
+                    method: 'action_search',
+                    args: [self.filter],
+                    context: self.context,
+            }).then(function (data){
+                var group_toa = _.groupBy(data, function(data) { return data[0]});
+                console.log(group_toa)
+                _.each(group_toa, function(item,index,group_toa){
+                    var t = _.groupBy(item, function(item){ return item[2]})
+                    console.log(index)
+                    console.log(t)
+                    var k = {};
+                    k[index] = t
+                    temp.push(k)
+                });
+                console.log(temp)
+                var $svg = $(qweb.render("bsd_sale_chart.chart", {'data': data}));
+                $chart.append($svg)
+            })
         },
         _onFieldChange: function(event){
             event.stopPropagation();
@@ -77,14 +108,35 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 var bsd_du_an_id = event.data.changes.bsd_du_an_id;
                 this.trigger_up('change_du_an', {'data':bsd_du_an_id})
             }
+            if (fieldName === 'bsd_dot_mb_id'){
+                var bsd_dot_mb_id = event.data.changes.bsd_dot_mb_id;
+                this.trigger_up('change_dot_mb', {'data':bsd_dot_mb_id})
+            }
+        },
+
+        update: function(dataChange){
+            console.log("update in rendder");
+            console.log(dataChange);
+            var t = null;
+            var self = this;
+            if (dataChange.field === 'bsd_dot_mb_id'){
+                this._makeRecord(dataChange).then(function (recordID) {
+                    self.filter.bsd_dot_mb_id = dataChange.data.id
+                    self.fields.bsd_dot_mb_id.reset(self.model.get(recordID));
+                });
+            };
+            if (dataChange.field === 'bsd_du_an_id'){
+                this._makeRecord(dataChange).then(function (recordID) {
+                    self.filter.bsd_du_an_id = dataChange.data.id
+                    self.fields.bsd_du_an_id.reset(self.model.get(recordID));
+                });
+            };
         },
     /**
      * @private
-     * @param {integer} partnerID
-     * @param {string} partnerName
      * @returns {string} local id of the dataPoint
      */
-        _makePartnerRecord: function (partnerID, partnerName) {
+        _makeRecord: function (data = null) {
             var field = [{
                     relation: 'bsd.du_an',
                     type: 'many2one',
@@ -96,17 +148,16 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     name: 'bsd_dot_mb_id',
                 },
             ];
-            if (partnerID) {
-                field.value = [partnerID, partnerName];
-            }
-            return this.model.makeRecord('bsd.sale_chart.widget', field, {
-                partner_id: {
-                    domain: [],
-                    options: {
-                        no_open: true
-                    }
+            if (data != null){
+                if (data.field === 'bsd_dot_mb_id'){
+                    field[1].value = [data.data.id, data.data.display_name];
                 }
-            });
+                if (data.field === 'bsd_du_an_id'){
+                    field[0].value = [data.data.id, data.data.display_name];
+                }
+            }
+            return this.model.makeRecord('bsd.sale_chart.widget', field, {});
+
         },
     });
     return {
