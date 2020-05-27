@@ -14,6 +14,8 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
         template: 'bsd_sale_chart.data_filter',
         events: {
             'click #search' : '_onSearch',
+            'click .bsd_header_toa': '_onCollapseToa',
+            'click .bsd_header_tang': '_onCollapseTang',
         },
         custom_events: _.extend({}, FieldManagerMixin.custom_events,{
             'field_changed': '_onFieldChange',
@@ -76,9 +78,9 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
         _onSearch: function(event){
             var self = this
             var temp = [];
-            console.log("on search in action")
-            console.log(event)
-            console.log(self.filter)
+//            console.log("on search in action")
+//            console.log(event)
+//            console.log(self.filter)
             var $chart = self.$('#chart').empty();
             self._rpc({
                     model: 'bsd.sale_chart.widget',
@@ -89,18 +91,54 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 var group_toa = _.groupBy(data, function(data) { return data[0]});
                 console.log(group_toa)
                 _.each(group_toa, function(item,index,group_toa){
-                    var t = _.groupBy(item, function(item){ return item[2]})
-                    console.log(index)
-                    console.log(t)
-                    var k = {};
-                    k[index] = t
-                    temp.push(k)
+                    var toa = {};
+                    toa.headerToa = [item[0][0],item[0][1]]
+                    var group_tang = _.groupBy(item, function(item){ return item[2]})
+                    var k = [];
+                    _.each(group_tang, function(item,index,group_tang){
+                        var tang ={};
+                        tang.headerTang=[item[0][2],item[0][3]]
+                        tang.detailTang=item
+                        k.push(tang)
+                    })
+                    toa.detailToa= k
+                    temp.push(toa)
                 });
                 console.log(temp)
-                var $svg = $(qweb.render("bsd_sale_chart.chart", {'data': data}));
+                var $svg = $(qweb.render("bsd_sale_chart.chart", {'data': temp}));
                 $chart.append($svg)
             })
         },
+        /**
+         * @private
+         */
+        _onCollapseToa: function(event){
+            console.log("click on collapse")
+            var t =$(event.target).parent().find(".collapse")
+            if (!t.hasClass("show")){
+                console.log("show")
+                $(event.target).find("i").removeClass("fa-search-plus").addClass("fa-search-minus")
+            }
+            else{
+                console.log("hide")
+                $(event.target).find("i").removeClass("fa-search-minus").addClass("fa-search-plus")
+            }
+         },
+        /**
+         * @private
+         */
+        _onCollapseTang: function(event){
+            console.log("click on collapse")
+            var t =$(event.target).parent().find(".collapse")
+            if (!t.hasClass("show")){
+                console.log("show")
+                $(event.target).find("i").removeClass("fa-plus").addClass("fa-minus")
+            }
+            else{
+                console.log("hide")
+                $(event.target).find("i").removeClass("fa-minus").addClass("fa-plus")
+            }
+         },
         _onFieldChange: function(event){
             event.stopPropagation();
             var fieldName = event.target.name;

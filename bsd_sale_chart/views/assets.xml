@@ -6,5 +6,8 @@
             <script type="text/javascript" src="/bsd_sale_chart/static/js/bsd_sale_chart_model.js"></script>
             <script type="text/javascript" src="/bsd_sale_chart/static/js/bsd_sale_chart_renderer.js"></script>
         </xpath>
+        <xpath expr="//link[last()]" position="after">
+            <link rel="stylesheet" type="text/scss" href="/bsd_sale_chart/static/scss/bsd_sale_chart_views.scss"/>
+        </xpath>
     </template>
 </odoo>

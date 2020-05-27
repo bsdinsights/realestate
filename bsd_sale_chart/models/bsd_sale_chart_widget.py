@@ -20,7 +20,7 @@ class BsdSaleChartWidget(models.AbstractModel):
         self.env.cr.execute(
             """
                 SELECT 
-                    toa.id,toa.bsd_ma_ht,
+                    toa.id,toa.bsd_ten_tn,
                     tang.id,tang.bsd_ma_tang,
                     unit.id,unit.name,unit.state  
                 FROM 
@@ -32,7 +32,7 @@ class BsdSaleChartWidget(models.AbstractModel):
                 WHERE 
                     (toa.bsd_du_an_id = %s)
                 ORDER BY
-                    toa.id, tang.id, unit.id
+                    toa.id, tang.bsd_stt, unit.bsd_stt
             """,
             (data['bsd_du_an_id'],))
         item_ids = [x for x in self.env.cr.fetchall()]

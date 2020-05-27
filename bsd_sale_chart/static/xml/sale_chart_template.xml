@@ -39,8 +39,50 @@
     </t>
 
     <t t-name="bsd_sale_chart.chart">
-        <t t-foreach="data" t-as="data">
-            <div t-esc="data[1]"/>
+        <t t-foreach="data" t-as="toa">
+            <div class="card">
+                <t t-set="href" t-value="'#collapseToa'+ toa.headerToa[0]"/>
+                <t t-set="hrefId" t-value="'collapseToa'+ toa.headerToa[0]"/>
+                <div class="card-header bsd_header_toa" data-toggle="collapse" t-attf-href="{{href}}">
+                    <i class="fa fa-search-plus"></i>
+                    <a class="card-link" >
+                        <span t-esc="toa.headerToa[1]"/>
+                    </a>
+                </div>
+                <div t-attf-id="{{hrefId}}" class="collapse">
+                    <t t-foreach="toa.detailToa" t-as="tang">
+                        <div class="card">
+                            <t t-set="hrefTang" t-value="'#collapseTang'+ tang.headerTang[0]"/>
+                            <t t-set="hrefIdTang" t-value="'collapseTang'+ tang.headerTang[0]"/>
+                            <div class="card-header bsd_header_tang" data-toggle="collapse" t-attf-data-target="{{hrefTang}}">
+                                <i class="fa fa-plus"></i>
+                                <a class="card-link">
+                                    <span t-esc="tang.headerTang[1]"/>
+                                </a>
+                            </div>
+                            <div t-attf-id="{{hrefIdTang}}" class="collapse">
+                                <div class="container-fluid mt-2">
+                                    <div class="row">
+                                        <t t-foreach="tang.detailTang" t-as="unit">
+                                            <div class="col-auto mb-2">
+                                                <div t-attf-class="card {{unit[6]}}" style="width: 12rem;">
+                                                    <div class="card-body text-center">
+                                                        <h5 class="card-title"><span t-esc="unit[5]"/></h5>
+                                                        <div>Giữ chỗ</div>
+                                                        <div>Giá bán</div>
+                                                        <div>Quan tâm BĐS</div>
+                                                        <a href="#" class="card-link">Tạo giữ chỗ</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
         </t>
     </t>
 </templates>
