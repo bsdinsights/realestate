@@ -48,6 +48,44 @@
                     <a class="card-link" >
                         <span t-esc="toa.headerToa[1]"/>
                     </a>
+                    <div class="d-inline-flex flex-row ml-4">
+                        <div style="width:20px;height:20px;font-size:16px" class="chuan_bi d-flex justify-content-center ml-2">
+                            <div t-esc="toa.state.chuan_bi"></div>
+                        </div>
+                        <div style="width:20px;height:20px;font-size:16px" class="san_sang d-flex justify-content-center ml-2">
+                            <div t-esc="toa.state.san_sang"></div>
+                        </div>
+                        <div style="width:20px;height:20px;font-size:16px" class="dat_cho d-flex justify-content-center ml-2">
+                            <div t-esc="toa.state.dat_cho"></div>
+                        </div>
+                        <div style="width:20px;height:20px;font-size:16px" class="giu_cho d-flex justify-content-center ml-2">
+                            <div t-esc="toa.state.giu_cho"></div>
+                        </div>
+                        <div style="width:20px;height:20px;font-size:16px" class="dat_coc d-flex justify-content-center ml-2">
+                            <div t-esc="toa.state.dat_coc"></div>
+                        </div>
+                        <div style="width:20px;height:20px;font-size:16px" class="chuyen_coc d-flex justify-content-center ml-2">
+                            <div t-esc="toa.state.chuyen_coc"></div>
+                        </div>
+                        <div style="width:20px;height:20px;font-size:16px" class="da_thu_coc d-flex justify-content-center ml-2">
+                            <div t-esc="toa.state.da_thu_coc"></div>
+                        </div>
+                        <div style="width:20px;height:20px;font-size:16px" class="hoan_tat_dat_coc d-flex justify-content-center ml-2">
+                            <div t-esc="toa.state.hoan_tat_dat_coc"></div>
+                        </div>
+                        <div style="width:20px;height:20px;font-size:16px" class="thanh_toan_dot_1 d-flex justify-content-center ml-2">
+                            <div t-esc="toa.state.thanh_toan_dot_1"></div>
+                        </div>
+                        <div style="width:20px;height:20px;font-size:16px" class="ky_thoa_thuan_coc d-flex justify-content-center ml-2">
+                            <div t-esc="toa.state.ky_thoa_thuan_coc"></div>
+                        </div>
+                        <div style="width:20px;height:20px;font-size:16px" class="du_dieu_kien d-flex justify-content-center ml-2">
+                            <div t-esc="toa.state.du_dieu_kien"></div>
+                        </div>
+                        <div style="width:20px;height:20px;font-size:16px" class="da_ban d-flex justify-content-center ml-2">
+                            <div t-esc="toa.state.da_ban"></div>
+                        </div>
+                    </div>
                 </div>
                 <div t-attf-id="{{hrefId}}" class="collapse">
                     <t t-foreach="toa.detailToa" t-as="tang">
@@ -65,11 +103,11 @@
                                     <div class="row">
                                         <t t-foreach="tang.detailTang" t-as="unit">
                                             <div class="col-auto mb-2">
-                                                <div t-attf-class="card {{unit[6]}}" style="width: 12rem;">
+                                                <div t-attf-class="card {{unit[6]}}" style="width: 200px;">
                                                     <div class="card-body text-center">
                                                         <h5 class="card-title"><span t-esc="unit[5]"/></h5>
-                                                        <div>Giữ chỗ</div>
-                                                        <div>Giá bán</div>
+                                                        <div>Giữ chỗ:<span t-esc="unit[7]"/></div>
+                                                        <div>Giá bán: <span t-esc="unit[8]"/><span>đ</span></div>
                                                         <div>Quan tâm BĐS</div>
                                                         <a href="#" class="card-link">Tạo giữ chỗ</a>
                                                     </div>
