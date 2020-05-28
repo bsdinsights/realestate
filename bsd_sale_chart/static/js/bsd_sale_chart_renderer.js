@@ -77,7 +77,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          */
         _onSearch: function(event){
             var self = this
-            var temp = [];
+            var data_show = [];
 //            console.log("on search in action")
 //            console.log(event)
 //            console.log(self.filter)
@@ -125,7 +125,21 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                         var tang ={};
                         tang.headerTang=[item[0][2],item[0][3]]
                         tang.detailTang=item
-                        tang.state =_.countBy(item,function(item){
+                        tang.state={
+                            chuan_bi:0,
+                            san_sang:0,
+                            dat_cho:0,
+                            giu_cho:0,
+                            dat_coc:0,
+                            chuyen_coc:0,
+                            da_thu_coc:0,
+                            hoan_tat_dat_coc:0,
+                            thanh_toan_dot_1:0,
+                            ky_thoa_thuan_coc:0,
+                            du_dieu_kien:0,
+                            da_ban:0,
+                        }
+                        var countState =_.countBy(item,function(item){
                             if (item[6] == 'chuan_bi') {return 'chuan_bi'}
                             if (item[6] == 'san_sang') {return 'san_sang'}
                             if (item[6] == 'dat_cho') {return 'dat_cho'}
@@ -139,13 +153,23 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                             if (item[6] == 'du_dieu_kien') {return 'du_dieu_kien'}
                             if (item[6] == 'da_ban') {return 'da_ban'}
                         })
+                        if (countState){
+                            Object.assign(tang.state, countState);
+                            toa.state = Object.keys(toa.state).reduce(function(s,a) {
+                                  s[a] = toa.state[a] + tang.state[a];
+                                  return s;
+                                }, {})
+                            console.log("toa state")
+                            console.log(toa.state)
+                        }
                         k.push(tang)
                     })
                     toa.detailToa= k
-                    temp.push(toa)
+                    data_show.push(toa)
+
                 });
-                console.log(temp)
-                var $svg = $(qweb.render("bsd_sale_chart.chart", {'data': temp}));
+                console.log(data_show)
+                var $svg = $(qweb.render("bsd_sale_chart.chart", {'data': data_show}));
                 $chart.append($svg)
             })
         },

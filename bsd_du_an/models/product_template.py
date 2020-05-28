@@ -139,7 +139,7 @@ class ProductTemplate(models.Model):
                               ('ky_thoa_thuan_coc', 'Ký thỏa thuận cọc'),
                               ('du_dieu_kien', 'Đủ điều kiện'),
                               ('da_ban', 'Đã bán')], string="Trạng thái",
-                             default="chuan_bi", tracking=1, help="Trạng thái")
+                             default="chuan_bi", tracking=1, help="Trạng thái",required=True)
 
     @api.onchange('bsd_du_an_id')
     def _onchange_du_an(self):
