@@ -24,8 +24,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          * @override
          */
          init: function(parent, model, state){
-            console.log("init trong renderer")
-            console.log(state)
             this._super(parent);
             this.model = model;
             this._initialState = state;
@@ -66,8 +64,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 self.fields.bsd_du_an_id.appendTo(self.$('.create_du_an_id .o_td_field'))
                 self.fields.bsd_dot_mb_id.appendTo(self.$('.create_dot_mb_id .o_td_field'))
             });
-            console.log("start in renderer")
-            console.log(def1)
             var def2 = this._super.apply(this, arguments);
             return Promise.all([def1, def2]);
         },
@@ -101,7 +97,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     }
                 })
                 var group_toa = _.groupBy(data, function(data_filter) { return data_filter[0]});
-                console.log(group_toa)
                 _.each(group_toa, function(item,index,group_toa){
                     var toa = {};
                     toa.headerToa = [item[0][0],item[0][1]]
@@ -159,8 +154,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                                   s[a] = toa.state[a] + tang.state[a];
                                   return s;
                                 }, {})
-                            console.log("toa state")
-                            console.log(toa.state)
                         }
                         k.push(tang)
                     })
@@ -168,7 +161,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     data_show.push(toa)
 
                 });
-                console.log(data_show)
                 var $svg = $(qweb.render("bsd_sale_chart.chart", {'data': data_show}));
                 $chart.append($svg)
             })
