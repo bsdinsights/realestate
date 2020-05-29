@@ -16,10 +16,10 @@ class BsdGiamNo(models.Model):
         ('bsd_so_ct_unique', 'unique (bsd_so_ct)',
          'Số chứng từ giảm nợ đã tồn tại !'),
     ]
-    bsd_ngay_ct = fields.Datetime(string="Ngày", help="Ngày chứng từ", required=True,
-                                  default=lambda self: fields.Datetime.now(),
-                                  readonly=True,
-                                  states={'nhap': [('readonly', False)]})
+    bsd_ngay_ct = fields.Date(string="Ngày", help="Ngày chứng từ", required=True,
+                              default=lambda self: fields.Date.today(),
+                              readonly=True,
+                              states={'nhap': [('readonly', False)]})
     bsd_loai_dc = fields.Selection(selection='_method_choice', string="Loại điều chỉnh", help="Loại điều chỉnh",
                                    readonly=True, default='khac',
                                    states={'nhap': [('readonly', False)]})
@@ -47,6 +47,18 @@ class BsdGiamNo(models.Model):
     bsd_tien = fields.Monetary(string="Tiền", help="Tiền điều chỉnh", required=True,
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
+    bsd_tien_da_tt = fields.Monetary(string="Tiền đã thanh toán", help="Tiền đã thanh toán",
+                                     compute='_compute_tien_ct', store=True)
+    bsd_tien_con_lai = fields.Monetary(string="Tiền còn lại", help="Tiền còn lại",
+                                       compute='_compute_tien_ct', store=True)
+    bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_giam_no_id', string="Công nợ chứng tự", readonly=True)
+
+    @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien')
+    def _compute_tien_ct(self):
+        for each in self:
+            each.bsd_tien_da_tt = sum(each.bsd_ct_ids.mapped('bsd_tien_pb'))
+            each.bsd_tien_con_lai = each.bsd_tien - each.bsd_tien_da_tt
+
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('da_gs', 'Đã ghi sổ'), ('huy', 'Hủy')], string="Trạng thái", tracking=1,
                              required=True, default='nhap')

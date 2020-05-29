@@ -1,6 +1,7 @@
 # -*- conding:utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -65,10 +66,14 @@ class BsdChuyenGiuCho(models.Model):
             'state': 'da_duyet',
         })
         if self.bsd_loai_gc == 'gc_tc' and self.bsd_gc_tc_id:
+            if self.bsd_gc_tc_id.bsd_thanh_toan != 'da_tt' and self.bsd_gc_tc_id.state not in ['nhap', 'dong', 'huy']:
+                raise UserError("Phiếu giữ chỗ thiện chí chưa thanh toán đủ. Vui lòng kiểm tra lại")
             self.bsd_gc_tc_id.write({
                 'bsd_kh_moi_id': self.bsd_kh_moi_id.id,
             })
         if self.bsd_loai_gc == 'giu_cho' and self.bsd_giu_cho_id:
+            if self.bsd_giu_cho_id.bsd_thanh_toan != 'da_tt' and self.bsd_giu_cho_id.state not in ['nhap', 'dong', 'huy']:
+                raise UserError("Phiếu giữ chỗ chưa thanh toán đủ. Vui lòng kiểm tra lại")
             self.bsd_giu_cho_id.write({
                 'bsd_kh_moi_id': self.bsd_kh_moi_id.id,
             })

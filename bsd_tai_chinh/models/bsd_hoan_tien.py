@@ -49,17 +49,27 @@ class BsdHoanTien(models.Model):
             choices += [('dc_giam', 'Điều chỉnh giảm')]
         return choices
 
-    bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thu", help="Phiếu thu", required=True,
+    bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thu", help="Phiếu thu",
                                        readonly=True,
                                        states={'nhap': [('readonly', False)]})
 
-    bsd_giam_no_id = fields.Many2one('bsd.giam_no', string="Điều chỉnh giảm", help="Điều chỉnh giảm", readonly=1)
-    bsd_tien_con_lai = fields.Monetary(related="bsd_phieu_thu_id.bsd_tien_con_lai")
+    bsd_giam_no_id = fields.Many2one('bsd.giam_no', string="Điều chỉnh giảm", help="Điều chỉnh giảm",)
+    bsd_tien_con_lai = fields.Monetary(string="Tiền còn lại", help="Tiền còn lại",
+                                       compute='_compute_tien_cl', store=True)
+
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('da_gs', 'Đã ghi sổ'), ('huy', 'Hủy')], string="Trạng thái", tracking=1,
                              required=True, default='nhap')
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+
+    @api.depends('bsd_giam_no_id', 'bsd_phieu_thu_id', 'bsd_loai')
+    def _compute_tien_cl(self):
+        for each in self:
+            if each.bsd_loai == 'phieu_thu':
+                each.bsd_tien_con_lai = each.bsd_phieu_thu_id.bsd_tien_con_lai
+            if each.bsd_loai == 'dc_giam':
+                each.bsd_tien_con_lai = each.bsd_giam_no_id.bsd_tien_con_lai
 
     @api.constrains('bsd_tien')
     def _constrains_tien(self):
