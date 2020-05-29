@@ -16,6 +16,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             'click #search' : '_onSearch',
             'click .bsd_header_toa': '_onCollapseToa',
             'click .bsd_header_tang': '_onCollapseTang',
+            'hover .bsd_unit': '_hoverUnit'
         },
         custom_events: _.extend({}, FieldManagerMixin.custom_events,{
             'field_changed': '_onFieldChange',
@@ -191,6 +192,12 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 console.log("hide")
                 $(event.target).find("i").removeClass("fa-minus").addClass("fa-plus")
             }
+         },
+        /**
+         * @private
+         */
+         _hoverUnit: function(event){
+            console.log("hover trên unit")
          },
         _onFieldChange: function(event){
             event.stopPropagation();
