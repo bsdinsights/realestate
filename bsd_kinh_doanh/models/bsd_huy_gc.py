@@ -114,7 +114,7 @@ class BsdHuyGC(models.Model):
                 if self.bsd_gc_tc_id.bsd_rap_can_id.state not in ['huy', 'nhap']:
                     raise UserError("Giữ chỗ thiện chí đã ráp căn. Vui lòng kiểm tra lại!")
             self.bsd_gc_tc_id.write({
-                'state': 'huy',
+                'state': 'dong',
                 'bsd_huy_gc_id': self.id
             })
         # Cập nhật trạng thái phiếu hủy
