@@ -159,10 +159,11 @@ class BsdThuHoi(models.Model):
         #  KD.04.08 Tính hạn báo giá  của giữ chỗ sau khi phát hành đợt mở bán
         units_ph = self.bsd_ph_ids.mapped('bsd_unit_id')
         for unit_ph in units_ph:
-            giu_cho_ids = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', unit_ph.id),
-                                                          ('bsd_dot_mb_id', '=', self.id),
-                                                          ('state', 'in', ['giu_cho']),
-                                                          ('bsd_thanh_toan', '=', 'da_tt')])
+            # cập nhật đợt mở bán cho giữ chỗ
+            giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', unit_ph.id)])
+            giu_cho_unit.write({'bsd_dot_mb_id': self.id})
+            # lọc các giữ chỗ của unit đã thanh toán
+            giu_cho_ids = giu_cho_unit.filtered(lambda g: g.state == 'giu_cho' and g.bsd_thanh_toan == 'da_tt')
             if giu_cho_ids:
                 gc = giu_cho_ids.filtered(lambda x: not x.bsd_rap_can_id).sorted('id')
                 gc_no_rc = zip(gc.mapped('id'), gc.mapped('bsd_ngay_tt'))

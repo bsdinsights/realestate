@@ -175,23 +175,16 @@ class BsdDotMoBan(models.Model):
             cb_state = self.bsd_cb_ids - cb_no_state
             # lọc các unit thỏa điều kiện trường ưu tiên là không và không có đợt mở bán
             no_uu_dot_no_mb_units = units.filtered(lambda x: x.bsd_uu_tien == '0' and not x.bsd_dot_mb_id)
-            _logger.debug('không uu tien ko đợt phát hành')
-            _logger.debug(no_uu_dot_no_mb_units)
             # lọc các unit thỏa điều kiện trường ưu tiên là không và có đợt mở bán
             no_uu_dot_mb_units = units.filtered(lambda x: x.bsd_uu_tien == '0' and x.bsd_dot_mb_id)
-            _logger.debug('không uu tien có đợt phát hành')
-            _logger.debug(no_uu_dot_mb_units)
+
             # các chuẩn bị đúng trạng thái, đang được ưu tiên
             cb_uu = cb_state.filtered(lambda u: u.bsd_unit_id.bsd_uu_tien == '1')
-            _logger.debug("các chuẩn bị đã ưu tiên")
-            _logger.debug(cb_uu)
             cb_uu.write({
                 'bsd_ly_do': 'dd_ut',
             })
             # lọc các unit không ưu tiên có đợt mở bán chưa phát hành
             no_ph_units = no_uu_dot_mb_units.filtered(lambda x: x.bsd_dot_mb_id.state != 'ph')
-            _logger.debug('không uu tien có đợt mở bán chưa phát hành')
-            _logger.debug(no_ph_units)
             ph_units = no_uu_dot_mb_units.filtered(lambda x: x.bsd_dot_mb_id.state == 'ph')
             # kiểm tra các unit không trùng với đợt mở bán hiện tại đang phát hành
             diff_mb_units = ph_units.filtered(lambda x: (x.bsd_dot_mb_id.bsd_tu_ngay < self.bsd_tu_ngay
@@ -199,13 +192,9 @@ class BsdDotMoBan(models.Model):
                                                             or (x.bsd_dot_mb_id.bsd_tu_ngay > self.bsd_den_ngay
                                                                 and x.bsd_dot_mb_id.bsd_den_ngay > self.bsd_den_ngay)
                                               )
-            _logger.debug('diff_mb_units')
-            _logger.debug(diff_mb_units)
             # các chuẩn bị trùng với đợt mở bán khác
             cb_trung = (cb_state - cb_uu).filtered(lambda t: t.bsd_unit_id not in diff_mb_units
                                                    and t.bsd_unit_id.bsd_dot_mb_id)
-            _logger.debug("các chuẩn bị trùng đợt mở bán")
-            _logger.debug(cb_trung)
             cb_trung.write({
                 'bsd_ly_do': 'dang_mb',
             })
@@ -256,11 +245,11 @@ class BsdDotMoBan(models.Model):
         #  KD.04.08 Tính hạn báo giá  của giữ chỗ sau khi phát hành đợt mở bán
         units_ph = self.bsd_ph_ids.mapped('bsd_unit_id')
         for unit_ph in units_ph:
-            giu_cho_ids = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', unit_ph.id),
-                                                          ('state', 'in', ['giu_cho']),
-                                                          ('bsd_thanh_toan', '=', 'da_tt')])
             # cập nhật đợt mở bán cho giữ chỗ
-            giu_cho_ids.write({'bsd_dot_mb_id': self.id})
+            giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', unit_ph.id)])
+            giu_cho_unit.write({'bsd_dot_mb_id': self.id})
+            # lọc các giữ chỗ của unit đã thanh toán
+            giu_cho_ids = giu_cho_unit.filtered(lambda g: g.state == 'giu_cho' and g.bsd_thanh_toan == 'da_tt')
             if giu_cho_ids:
                 gc = giu_cho_ids.filtered(lambda x: not x.bsd_rap_can_id).sorted('id')
                 gc_no_rc = zip(gc.mapped('id'), gc.mapped('bsd_ngay_tt'))
