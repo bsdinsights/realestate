@@ -169,15 +169,12 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          * @private
          */
         _onCollapseToa: function(event){
-            console.log("click on collapse")
-            var t =$(event.target).parent().find(".collapse")
+            var t =$(event.currentTarget).parent().find(".collapse")
             if (!t.hasClass("show")){
-                console.log("show")
-                $(event.target).find("i").removeClass("fa-search-plus").addClass("fa-search-minus")
+                $(event.currentTarget).find("i").removeClass("fa-search-plus").addClass("fa-search-minus")
             }
             else{
-                console.log("hide")
-                $(event.target).find("i").removeClass("fa-search-minus").addClass("fa-search-plus")
+                $(event.currentTarget).find("i").removeClass("fa-search-minus").addClass("fa-search-plus")
             }
          },
         /**

@@ -2,11 +2,37 @@
     font-size: 1.5rem;
     background: #00008B;
     color: #FFF;
+    .bsd_state{
+        border-radius: 4px;
+        color: #FFF !important;
+    }
 }
 .bsd_header_tang{
     font-size: 1.25rem;
     margin-left: 1rem;
     background: #D3D3D3;
+    .bsd_title{
+        color: #666666 !important;
+    }
+    .bsd_state{
+        border-radius: 4px;
+        color: #FFF !important;
+    }
+}
+.bsd_unit{
+    color: #FFF !important;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    width: 160px;
+    height:100px;
+    .bsd_title{
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    .bsd_gia{
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
 }
 .chuan_bi{
     background: #FFC000;
