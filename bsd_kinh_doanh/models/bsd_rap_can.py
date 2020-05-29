@@ -27,7 +27,8 @@ class BsdRapCan(models.Model):
                                    help="Giữ chỗ trên dự án, chưa có sản phẩm", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
-    bsd_khach_hang_id = fields.Many2one('res.partner', related="bsd_gc_tc_id.bsd_kh_moi_id", store=True)
+    bsd_khach_hang_id = fields.Many2one('res.partner', related="bsd_gc_tc_id.bsd_kh_moi_id",
+                                        string="Khách hàng", store=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', related="bsd_gc_tc_id.bsd_du_an_id", store=True)
     bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", required=True,
                                   readonly=True,
