@@ -3,7 +3,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
     var Widget = require('web.Widget');
     var FieldManagerMixin = require('web.FieldManagerMixin');
     var relational_fields = require('web.relational_fields');
-    var basis_fields = require('web.basic_fields');
+    var basic_fields = require('web.basic_fields');
     var core = require('web.core');
     var time = require('web.time');
     var session = require('web.session');
@@ -16,7 +16,13 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             'click #search' : '_onSearch',
             'click .bsd_header_toa': '_onCollapseToa',
             'click .bsd_header_tang': '_onCollapseTang',
-            'hover .bsd_unit': '_hoverUnit'
+            'change .create_tu_gia .o_td_field': '_onChangeTuGia',
+            'change .create_den_gia .o_td_field': '_onChangeDenGia',
+            'change .create_tu_dt .o_td_field': '_onChangeTuDt',
+            'change .create_den_dt .o_td_field': '_onChangeDenDt',
+            'change .create_unit .o_td_field': '_onChangeUnit',
+            'change .create_view .o_td_field': '_onChangeView',
+            'change .create_huong .o_td_field': '_onChangeHuong',
         },
         custom_events: _.extend({}, FieldManagerMixin.custom_events,{
             'field_changed': '_onFieldChange',
@@ -30,7 +36,14 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             this._initialState = state;
             this.filter = {
                 bsd_du_an_id: null,
-                bsd_dot_mb_id: null
+                bsd_dot_mb_id: null,
+                bsd_unit: null,
+                bsd_view: null,
+                bsd_huong: null,
+                bsd_tu_gia: null,
+                bsd_den_gia: null,
+                bsd_tu_dt: null,
+                bsd_den_dt: null,
             };
 
          },
@@ -60,10 +73,81 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                                 can_create: false,
                             }
                         }
+                    ),
+                    bsd_unit : new basic_fields.FieldChar(self,
+                        'bsd_unit',
+                        self.model.get(recordID), {
+                            mode: 'edit',
+                            attrs: {
+                                placeholder: _t('Chọn căn hộ')
+                            }
+                        }
+                    ),
+                    bsd_view : new relational_fields.FieldSelection(self,
+                        'bsd_view',
+                        self.model.get(recordID), {
+                            mode: 'edit',
+                            attrs: {
+                            }
+                        }
+                    ),
+                    bsd_huong : new relational_fields.FieldSelection(self,
+                        'bsd_huong',
+                        self.model.get(recordID), {
+                            mode: 'edit',
+                            attrs: {
+                            }
+                        }
+                    ),
+                    bsd_tu_gia : new basic_fields.FieldFloat(self,
+                        'bsd_tu_gia',
+                        self.model.get(recordID), {
+                            mode: 'edit',
+                            attrs: {
+                                placeholder: _t('Nhập giá từ')
+                            },
+                            currency: 1,
+                        }
+                    ),
+                    bsd_den_gia : new basic_fields.FieldFloat(self,
+                        'bsd_den_gia',
+                        self.model.get(recordID), {
+                            mode: 'edit',
+                            attrs: {
+                                placeholder: _t('Nhập giá đến')
+                            }
+                        }
+                    ),
+                    bsd_tu_dt : new basic_fields.FieldFloat(self,
+                        'bsd_tu_dt',
+                        self.model.get(recordID), {
+                            mode: 'edit',
+                            attrs: {
+                                placeholder: _t('Nhập diện tích từ')
+                            }
+                        }
+                    ),
+                    bsd_den_dt : new basic_fields.FieldFloat(self,
+                        'bsd_den_dt',
+                        self.model.get(recordID), {
+                            mode: 'edit',
+                            attrs: {
+                                placeholder: _t('Nhập diện tích đến')
+                            }
+                        }
                     )
                 };
                 self.fields.bsd_du_an_id.appendTo(self.$('.create_du_an_id .o_td_field'))
                 self.fields.bsd_dot_mb_id.appendTo(self.$('.create_dot_mb_id .o_td_field'))
+
+                self.fields.bsd_view.appendTo(self.$('.create_view .o_td_field'))
+                self.fields.bsd_huong.appendTo(self.$('.create_huong .o_td_field'))
+                self.fields.bsd_tu_gia.appendTo(self.$('.create_tu_gia .o_td_field'))
+                self.fields.bsd_den_gia.appendTo(self.$('.create_den_gia .o_td_field'))
+                self.fields.bsd_tu_dt.appendTo(self.$('.create_tu_dt .o_td_field'))
+                self.fields.bsd_den_dt.appendTo(self.$('.create_den_dt .o_td_field'))
+                self.fields.bsd_unit.appendTo(self.$('.create_unit .o_td_field'))
+
             });
             var def2 = this._super.apply(this, arguments);
             return Promise.all([def1, def2]);
@@ -182,32 +266,155 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          * @private
          */
         _onCollapseTang: function(event){
-            console.log("click on collapse")
-            var t =$(event.target).parent().find(".collapse")
+            var t =$(event.currentTarget).parent().find(".collapse")
             if (!t.hasClass("show")){
                 console.log("show")
-                $(event.target).find("i").removeClass("fa-plus").addClass("fa-minus")
+                $(event.currentTarget).find("i").removeClass("fa-plus").addClass("fa-minus")
             }
             else{
                 console.log("hide")
-                $(event.target).find("i").removeClass("fa-minus").addClass("fa-plus")
+                $(event.currentTarget).find("i").removeClass("fa-minus").addClass("fa-plus")
             }
          },
         /**
          * @private
          */
          _hoverUnit: function(event){
+
             console.log("hover trên unit")
+            console.log($(event.currentTarget))
+            $(event.currentTarget).tooltip({
+               content: "<strong>Hi!</strong>",
+               track:true
+            })
          },
+        /**
+         * @private giá từ thay đổi
+         */
+         _onChangeTuGia: function(event){
+            event.stopPropagation();
+            console.log("Giá từ thay đổi")
+            var temp = $(event.currentTarget).find('.o_input')[0].value
+            console.log(temp)
+            if (temp){
+                this.filter.bsd_tu_gia =  parseInt(temp)
+            }
+            else {
+                this.filter.bsd_tu_gia =  null
+            }
+
+         },
+        /**
+         * @private giá đến thay đổi
+         */
+         _onChangeDenGia: function(event){
+            event.stopPropagation();
+            console.log("Giá từ thay đổi")
+            var temp = $(event.currentTarget).find('.o_input')[0].value
+            console.log(temp)
+            if (temp){
+                this.filter.bsd_den_gia =  parseInt(temp)
+            }
+            else {
+                this.filter.bsd_den_gia =  null
+            }
+
+         },
+        /**
+         * @private diện tích từ thay đổi
+         */
+         _onChangeTuDt: function(event){
+            event.stopPropagation();
+            console.log("Diện tích từ thay đổi")
+            var temp = $(event.currentTarget).find('.o_input')[0].value
+            console.log(temp)
+            if (temp){
+                this.filter.bsd_tu_dt =  parseInt(temp)
+            }
+            else {
+                this.filter.bsd_tu_dt =  null
+            }
+
+         },
+        /**
+         * @private Diện tích đến thay đổi
+         */
+         _onChangeDenDt: function(event){
+            event.stopPropagation();
+            console.log("Diện tích thay đổi")
+            var temp = $(event.currentTarget).find('.o_input')[0].value
+            console.log(temp)
+            if (temp){
+                this.filter.bsd_den_dt =  parseInt(temp)
+            }
+            else {
+                this.filter.bsd_den_dt =  null
+            }
+
+         },
+        /**
+         * @private Lấy giá trị khi thay đổi tên căn hộ
+         */
+         _onChangeUnit: function(event){
+            event.stopPropagation();
+            console.log("Căn hộ thay đổi")
+            var temp = $(event.currentTarget).find('.o_input')[0].value
+            console.log(temp)
+            if (temp){
+                this.filter.bsd_unit =  temp
+            }
+            else {
+                this.filter.bsd_unit =  null
+            }
+
+         },
+        /**
+         * @private Lấy giá trị khi thay đổi view căn hộ
+         */
+         _onChangeView: function(event){
+            event.stopPropagation();
+            console.log("View thay đổi")
+            var temp = $(event.currentTarget).find('.o_input')[0].value
+            console.log(temp)
+            if (temp !== 'false'){
+                this.filter.bsd_view =  temp
+            }
+            else {
+                this.filter.bsd_view =  null
+            }
+
+         },
+        /**
+         * @private Lấy giá trị khi thay đổi hướng căn hộ
+         */
+         _onChangeHuong: function(event){
+            event.stopPropagation();
+            console.log("Hướng thay đổi")
+            var temp = $(event.currentTarget).find('.o_input')[0].value
+            console.log(temp)
+            console.log(typeof temp)
+            if (temp !== 'false'){
+                this.filter.bsd_huong =  temp
+            }
+            else {
+                this.filter.bsd_huong =  null
+            }
+
+         },
+
         _onFieldChange: function(event){
             event.stopPropagation();
+            console.log("onchange field")
+            console.log(event)
             var fieldName = event.target.name;
             if (fieldName === 'bsd_du_an_id'){
                 var bsd_du_an_id = event.data.changes.bsd_du_an_id;
+                this.filter.bsd_du_an_id = bsd_du_an_id.id
                 this.trigger_up('change_du_an', {'data':bsd_du_an_id})
             }
-            if (fieldName === 'bsd_dot_mb_id'){
+            else if (fieldName === 'bsd_dot_mb_id'){
                 var bsd_dot_mb_id = event.data.changes.bsd_dot_mb_id;
+                this.filter.bsd_dot_mb_id = bsd_dot_mb_id.id
                 this.trigger_up('change_dot_mb', {'data':bsd_dot_mb_id})
             }
         },
@@ -219,14 +426,14 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             var self = this;
             if (dataChange.field === 'bsd_dot_mb_id'){
                 this._makeRecord(dataChange).then(function (recordID) {
-                    self.filter.bsd_dot_mb_id = dataChange.data.id
+
                     self.fields.bsd_dot_mb_id.reset(self.model.get(recordID));
                 });
             };
             if (dataChange.field === 'bsd_du_an_id'){
                 this._makeRecord(dataChange).then(function (recordID) {
-                    self.filter.bsd_du_an_id = dataChange.data.id
                     self.fields.bsd_du_an_id.reset(self.model.get(recordID));
+                    self.fields.bsd_dot_mb_id.reset(self.model.get(recordID));
                 });
             };
         },
@@ -235,6 +442,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
      * @returns {string} local id of the dataPoint
      */
         _makeRecord: function (data = null) {
+            var self = this
             var field = [{
                     relation: 'bsd.du_an',
                     type: 'many2one',
@@ -244,6 +452,52 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     relation: 'bsd.dot_mb',
                     type: 'many2one',
                     name: 'bsd_dot_mb_id',
+                    domain: [['bsd_du_an_id', '=', self.filter.bsd_du_an_id]]
+                },
+                {
+                    type: 'char',
+                    name: 'bsd_unit',
+                },
+                 {
+                    type: 'selection',
+                    name: 'bsd_view',
+                    selection: [[1, 'Phố'],
+                                 [2, 'Hồ bơi'],
+                                 [3, 'Công viên'],
+                                 [4, 'Mặt tiền'],
+                                 [5, 'Bãi biển/sông/hồ/núi'],
+                                 [6, 'Rừng'],
+                                 [7, 'Cao tốc'],
+                                 [8, 'Hồ'],
+                                 [9, 'Biển']]
+                },
+                 {
+                    type: 'selection',
+                    name: 'bsd_huong',
+                    selection:[[1, 'Đông'],
+                                  [2, 'Tây'],
+                                  [3, 'Nam'],
+                                  [4, 'Bắc'],
+                                  [5, 'Đông nam'],
+                                  [6, 'Đông bắc'],
+                                  [7, 'Tây nam'],
+                                  [8, 'Tây bắc']]
+                },
+                {
+                    type: 'float',
+                    name: 'bsd_tu_gia',
+                },
+                {
+                    type: 'float',
+                    name: 'bsd_den_gia',
+                },
+                {
+                    type: 'float',
+                    name: 'bsd_tu_dt',
+                },
+                {
+                    type: 'float',
+                    name: 'bsd_den_dt',
                 },
             ];
             if (data != null){
@@ -252,6 +506,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 }
                 if (data.field === 'bsd_du_an_id'){
                     field[0].value = [data.data.id, data.data.display_name];
+                    field[1].domain = [['bsd_du_an_id', '=', data.data.id]]
                 }
             }
             return this.model.makeRecord('bsd.sale_chart.widget', field, {});

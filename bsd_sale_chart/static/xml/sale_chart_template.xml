@@ -11,20 +11,84 @@
             <div class="o_form_view">
                 <div class="o_form_sheet_bg">
                     <div class="clearfix position_relative o_form_sheet">
-                        <div class="o_group">
-                            <table class="o_group o_inner_group o_group_col_6">
+                        <div class="row">
+                            <table class="col-sm-3 o_group">
                                 <tbody>
                                     <tr class="create_du_an_id">
-                                        <td class="o_td_label"><label class="o_form_label">Dự án</label></td>
-                                        <td class="o_td_field"></td>
+                                        <td class="o_td_label" width="40%"><label class="o_form_label">Dự án</label></td>
+                                        <td class="o_td_field" width="60%"></td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <table class="o_group o_inner_group o_group_col_5">
+                            <table class="col-sm-3 o_group">
                                 <tbody>
                                     <tr class="create_dot_mb_id">
-                                        <td class="o_td_label"><label class="o_form_label">Đợt mở bán</label></td>
-                                        <td class="o_td_field"></td>
+                                        <td class="o_td_label" width="40%"><label class="o_form_label">Đợt mở bán</label></td>
+                                        <td class="o_td_field" width="60%"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="col-sm-3 o_group">
+                                <tbody>
+                                    <tr class="create_unit">
+                                        <td class="o_td_label" width="40%"><label class="o_form_label">Mã căn hộ</label></td>
+                                        <td class="o_td_field" width="60%"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="col-sm-3 o_group">
+                                <tbody>
+                                    <tr class="create_view">
+                                        <td class="o_td_label" width="40%"><label class="o_form_label">View</label></td>
+                                        <td class="o_td_field" width="60%"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <table class="col-sm-3 o_group">
+                                <tbody>
+                                    <tr class="create_tu_gia">
+                                        <td class="o_td_label" width="40%"><label class="o_form_label">Giá từ</label></td>
+                                        <td width="55%"><span class="o_td_field" ></span></td>
+                                        <td width="5%"><span>đ</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="col-sm-3 o_group">
+                                <tbody>
+                                    <tr class="create_den_gia">
+                                        <td class="o_td_label" width="40%"><label class="o_form_label">Đến</label></td>
+                                        <td width="55%"><span class="o_td_field" ></span></td>
+                                        <td width="5%"><span>đ</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="col-sm-3 o_group">
+                                <tbody>
+                                    <tr class="create_tu_dt">
+                                        <td class="o_td_label" width="40%"><label class="o_form_label">Diện tích từ</label></td>
+                                        <td width="55%"><span class="o_td_field" ></span></td>
+                                        <td width="5%"><span>m2</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="col-sm-3 o_group">
+                                <tbody>
+                                    <tr class="create_den_dt">
+                                        <td class="o_td_label" width="40%"><label class="o_form_label">Đến</label></td>
+                                        <td width="55%"><span class="o_td_field" ></span></td>
+                                        <td width="5%"><span>m2</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <table class="o_group col-6">
+                                <tbody>
+                                    <tr class="create_huong">
+                                        <td class="o_td_label" width="40%"><label class="o_form_label">Hướng</label></td>
+                                        <td width="60%"><span class="o_td_field" ></span></td>
                                     </tr>
                                 </tbody>
                             </table>

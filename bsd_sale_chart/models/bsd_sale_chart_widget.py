@@ -10,13 +10,53 @@ class BsdSaleChartWidget(models.AbstractModel):
     _name = 'bsd.sale_chart.widget'
     _description = 'Sale chart widget'
 
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án")
-    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán")
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án")
+    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Đợt mở bán")
+    bsd_unit = fields.Char(string='Mã căn hộ', help="Mã căn hộ")
+    bsd_tu_gia = fields.Float(string="Giá từ", help="Giá từ")
+    bsd_den_gia = fields.Float(string="Giá đến", help="Giá đến")
+    bsd_tu_dt = fields.Float(string="Từ diện tích")
+    bsd_den_dt = fields.Float(string="Đến diện tích")
+    bsd_view = fields.Selection([('1', 'Phố'),
+                                 ('2', 'Hồ bơi'),
+                                 ('3', 'Công viên'),
+                                 ('4', 'Mặt tiền'),
+                                 ('5', 'Bãi biển/sông/hồ/núi'),
+                                 ('6', 'Rừng'),
+                                 ('7', 'Cao tốc'),
+                                 ('8', 'Hồ'),
+                                 ('9', 'Biển')], string="View", help="Góc nhìn của căn hộ")
+    bsd_huong = fields.Selection([('1', 'Đông'),
+                                  ('2', 'Tây'),
+                                  ('3', 'Nam'),
+                                  ('4', 'Bắc'),
+                                  ('5', 'Đông nam'),
+                                  ('6', 'Đông bắc'),
+                                  ('7', 'Tây nam'),
+                                  ('8', 'Tây bắc')], string="Hướng", help="Hướng nhà")
 
     @api.model
     def action_search(self, data):
         if not data['bsd_du_an_id']:
             raise UserError("Vui lòng điền trường dự án")
+        where = ' WHERE (toa.bsd_du_an_id = {0}) '.format(data['bsd_du_an_id'])
+        if data['bsd_dot_mb_id']:
+            where += 'AND (unit.bsd_dot_mb_id = {0}) '.format(data['bsd_dot_mb_id'])
+        if data['bsd_unit']:
+            where += "AND (unit.bsd_ten_unit LIKE '{0}%') ".format(data['bsd_unit'])
+        if data['bsd_view']:
+            where += "AND (unit.bsd_view = '{0}') ".format(data['bsd_view'])
+        if data['bsd_huong']:
+            where += "AND (unit.bsd_huong = '{0}') ".format(data['bsd_huong'])
+        if data['bsd_tu_gia']:
+            where += 'AND (price.chot_gia >= {0}) '.format(data['bsd_tu_gia'])
+        if data['bsd_den_gia']:
+            where += 'AND (price.chot_gia <= {0}) '.format(data['bsd_den_gia'])
+        if data['bsd_tu_dt']:
+            where += 'AND (unit.bsd_dt_sd >= {0}) '.format(data['bsd_tu_dt'])
+        if data['bsd_den_dt']:
+            where += 'AND (unit.bsd_dt_sd <= {0}) '.format(data['bsd_den_dt'])
+        _logger.debug(where)
         self.env.cr.execute(
             """
         WITH price AS (WITH max_pricelist AS (SELECT item.id,item.product_tmpl_id,item.fixed_price 
@@ -51,7 +91,8 @@ class BsdSaleChartWidget(models.AbstractModel):
                     unit.name,
                     unit.state, 
                     giu_cho.so_giu_cho_unit,
-                    price.chot_gia AS gia_ban
+                    price.chot_gia AS gia_ban,
+                    unit.bsd_dt_sd AS dien_tich
                 FROM bsd_toa_nha AS toa
                 LEFT JOIN bsd_tang AS tang 
                     ON toa.id = tang.bsd_toa_nha_id
@@ -62,12 +103,8 @@ class BsdSaleChartWidget(models.AbstractModel):
                                             LEFT JOIN product_product AS unit ON unit.id = giu_cho.bsd_unit_id
                                             GROUP BY unit.product_tmpl_id) AS giu_cho ON giu_cho.product_tmpl_id = unit.id
                 LEFT JOIN price ON price.unit_id = unit.id
-                WHERE 
-                    (toa.bsd_du_an_id = %s)
-                ORDER BY
-                    toa.id, tang.bsd_stt, unit.bsd_stt
-            """,
-            (data['bsd_du_an_id'],))
+                """ + where + "ORDER BY toa.id, tang.bsd_stt, unit.bsd_stt")
+
         item_ids = [x for x in self.env.cr.fetchall()]
         return item_ids
 
