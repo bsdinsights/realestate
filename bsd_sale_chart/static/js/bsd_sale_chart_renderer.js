@@ -453,21 +453,34 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             console.log(event)
             var fieldName = event.target.name;
             if (fieldName === 'bsd_du_an_id'){
-                var bsd_du_an_id = event.data.changes.bsd_du_an_id;
-                this.filter.bsd_du_an_id = bsd_du_an_id.id
-                this.trigger_up('change_du_an', {'data':bsd_du_an_id})
+                if (event.data.changes.bsd_du_an_id !== false){
+                    var bsd_du_an_id = event.data.changes.bsd_du_an_id;
+                    this.filter.bsd_du_an_id = bsd_du_an_id.id
+                    this.trigger_up('change_du_an', {'data':bsd_du_an_id})
+                }
+                else {
+                    var bsd_du_an_id = event.data.changes.bsd_du_an_id;
+                    this.filter.bsd_du_an_id = null
+                    this.trigger_up('change_du_an', {'data':bsd_du_an_id})
+                }
             }
             else if (fieldName === 'bsd_dot_mb_id'){
-                var bsd_dot_mb_id = event.data.changes.bsd_dot_mb_id;
-                this.filter.bsd_dot_mb_id = bsd_dot_mb_id.id
-                this.trigger_up('change_dot_mb', {'data':bsd_dot_mb_id})
+                if (event.data.changes.bsd_dot_mb_id !== false){
+                    var bsd_dot_mb_id = event.data.changes.bsd_dot_mb_id;
+                    this.filter.bsd_dot_mb_id = bsd_dot_mb_id.id
+                    this.trigger_up('change_dot_mb', {'data':bsd_dot_mb_id})
+                }
+                else {
+                    var bsd_dot_mb_id = event.data.changes.bsd_dot_mb_id;
+                    this.filter.bsd_dot_mb_id = null
+                    this.trigger_up('change_dot_mb', {'data':bsd_dot_mb_id})
+                }
             }
         },
 
         update: function(dataChange){
             console.log("update in rendder");
             console.log(dataChange);
-            var t = null;
             var self = this;
             if (dataChange.field === 'bsd_dot_mb_id'){
                 this._makeRecord(dataChange).then(function (recordID) {
@@ -545,7 +558,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     name: 'bsd_den_dt',
                 },
             ];
-            if (data != null){
+            if (data != null && data.data !== false){
                 if (data.field === 'bsd_dot_mb_id'){
                     field[1].value = [data.data.id, data.data.display_name];
                 }
