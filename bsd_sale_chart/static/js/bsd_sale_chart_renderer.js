@@ -9,6 +9,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
     var session = require('web.session');
     var qweb = core.qweb;
     var _t = core._t;
+    var ActionManager = require('web.ActionManager')
 
     var SaleChartRenderer = Widget.extend(FieldManagerMixin, {
         template: 'bsd_sale_chart.data_filter',
@@ -16,13 +17,14 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             'click #search' : '_onSearch',
             'click .bsd_header_toa': '_onCollapseToa',
             'click .bsd_header_tang': '_onCollapseTang',
-            'change .create_tu_gia .o_td_field': '_onChangeTuGia',
-            'change .create_den_gia .o_td_field': '_onChangeDenGia',
-            'change .create_tu_dt .o_td_field': '_onChangeTuDt',
-            'change .create_den_dt .o_td_field': '_onChangeDenDt',
+            'keyup .create_tu_gia .o_td_field .o_input': '_onChangeTuGia',
+            'keyup .create_den_gia .o_td_field .o_input': '_onChangeDenGia',
+            'keyup .create_tu_dt .o_td_field .o_input': '_onChangeTuDt',
+            'keyup .create_den_dt .o_td_field .o_input': '_onChangeDenDt',
             'change .create_unit .o_td_field': '_onChangeUnit',
             'change .create_view .o_td_field': '_onChangeView',
             'change .create_huong .o_td_field': '_onChangeHuong',
+            'click .bsd_unit': '_showUnit'
         },
         custom_events: _.extend({}, FieldManagerMixin.custom_events,{
             'field_changed': '_onFieldChange',
@@ -288,16 +290,21 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                track:true
             })
          },
+
+         _formatCurrency: function(money){
+            money = money.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+            return money;
+         },
         /**
          * @private giá từ thay đổi
          */
          _onChangeTuGia: function(event){
             event.stopPropagation();
             console.log("Giá từ thay đổi")
-            var temp = $(event.currentTarget).find('.o_input')[0].value
-            console.log(temp)
+            var temp = $(event.currentTarget).val()
             if (temp){
-                this.filter.bsd_tu_gia =  parseInt(temp)
+                this.filter.bsd_tu_gia =  Number(temp.replace(/[^0-9.-]+/g,""));
+                $(event.currentTarget).val(this._formatCurrency(this.filter.bsd_tu_gia))
             }
             else {
                 this.filter.bsd_tu_gia =  null
@@ -309,11 +316,12 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          */
          _onChangeDenGia: function(event){
             event.stopPropagation();
-            console.log("Giá từ thay đổi")
-            var temp = $(event.currentTarget).find('.o_input')[0].value
+            console.log("Giá đến thay đổi")
+            var temp = $(event.currentTarget).val()
             console.log(temp)
             if (temp){
-                this.filter.bsd_den_gia =  parseInt(temp)
+                this.filter.bsd_den_gia =  Number(temp.replace(/[^0-9.-]+/g,""));
+                $(event.currentTarget).val(this._formatCurrency(this.filter.bsd_den_gia))
             }
             else {
                 this.filter.bsd_den_gia =  null
@@ -326,7 +334,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          _onChangeTuDt: function(event){
             event.stopPropagation();
             console.log("Diện tích từ thay đổi")
-            var temp = $(event.currentTarget).find('.o_input')[0].value
+            var temp = $(event.currentTarget).val()
             console.log(temp)
             if (temp){
                 this.filter.bsd_tu_dt =  parseInt(temp)
@@ -342,7 +350,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          _onChangeDenDt: function(event){
             event.stopPropagation();
             console.log("Diện tích thay đổi")
-            var temp = $(event.currentTarget).find('.o_input')[0].value
+            var temp = $(event.currentTarget).val()
             console.log(temp)
             if (temp){
                 this.filter.bsd_den_dt =  parseInt(temp)
@@ -402,6 +410,43 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
 
          },
 
+        /**
+         * Loads an action from the database given its ID.
+         *
+         * @todo: turn this in a service (DataManager)
+         * @private
+         * @param {integer|string} action's ID or xml ID
+         * @param {Object} context
+         * @returns {Promise<Object>} resolved with the description of the action
+         */
+        _loadAction: function (actionID, context) {
+            var self = this;
+            return new Promise(function (resolve, reject) {
+                self.trigger_up('load_action', {
+                    actionID: actionID,
+                    context: context,
+                    on_success: resolve,
+                });
+            });
+        },
+        /**
+         * @private Show thông tin căn hộ
+         */
+         _showUnit: function(event){
+            var self = this
+            event.stopPropagation();
+            var res_id = parseInt($(event.currentTarget).attr('id'))
+            this._loadAction('bsd_sale_chart.bsd_product_template_gio_hang_action').then(function(action){
+                action.res_id = res_id
+                self.do_action(action)
+
+            })
+//            this.do_action('bsd_sale_chart.bsd_product_template_gio_hang_action')
+         },
+
+        /**
+         * @private Thay đổi dự án đợt mở bán
+         */
         _onFieldChange: function(event){
             event.stopPropagation();
             console.log("onchange field")
