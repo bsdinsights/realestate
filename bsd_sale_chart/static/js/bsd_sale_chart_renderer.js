@@ -9,7 +9,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
     var session = require('web.session');
     var qweb = core.qweb;
     var _t = core._t;
-    var ActionManager = require('web.ActionManager')
 
     var SaleChartRenderer = Widget.extend(FieldManagerMixin, {
         template: 'bsd_sale_chart.data_filter',
@@ -24,7 +23,10 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             'change .create_unit .o_td_field': '_onChangeUnit',
             'change .create_view .o_td_field': '_onChangeView',
             'change .create_huong .o_td_field': '_onChangeHuong',
-            'click .bsd_unit': '_showUnit'
+            'dblclick .bsd_unit': '_showUnit',
+//            'mouseover .bsd_unit .bsd_title': '_hoverTooltip',
+//            'mouseout .bsd_unit': '_outTooltip',
+            'click .bsd_unit': '_clickTooltip'
         },
         custom_events: _.extend({}, FieldManagerMixin.custom_events,{
             'field_changed': '_onFieldChange',
@@ -279,18 +281,8 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             }
          },
         /**
-         * @private
+         * @private hiển thị field tiền
          */
-         _hoverUnit: function(event){
-
-            console.log("hover trên unit")
-            console.log($(event.currentTarget))
-            $(event.currentTarget).tooltip({
-               content: "<strong>Hi!</strong>",
-               track:true
-            })
-         },
-
          _formatCurrency: function(money){
             money = money.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
             return money;
@@ -434,7 +426,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          */
          _showUnit: function(event){
             var self = this
-            event.stopPropagation();
             var res_id = parseInt($(event.currentTarget).attr('id'))
             this._loadAction('bsd_sale_chart.bsd_product_template_gio_hang_action').then(function(action){
                 action.res_id = res_id
@@ -443,7 +434,51 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             })
 //            this.do_action('bsd_sale_chart.bsd_product_template_gio_hang_action')
          },
+        /**
+         * @private Show tooltip
+         */
+         _hoverTooltip: function(event){
+            event.stopPropagation();
+            console.log("hover")
+            console.log(event)
+            console.log($(event.currentTarget))
+            $(event.currentTarget).tooltip({
+                title: "<h1><strong>HTML</strong> inside <code>the</code> <em>tooltip</em></h1>",
+                delay: {show:0, hide:0},
+                placement: "top",
+                trigger: "hover"
+            }).tooltip("show")
+         },
+         _outTooltip: function(event){
+            event.stopPropagation();
+            console.log("out")
+            console.log(event)
+            console.log($(event.currentTarget))
+            if ($(event.currentTarget).get(0) === $(event.target).get(0)){
+                $(event.currentTarget).tooltip({
+                    title: "<p>thịnh đã tới đây rui nhé</p>",
+                    delay: {show:0, hide:0},
+                    placement: "top",
+                    html: true,
+                    trigger: "click"
+            }).tooltip("hide")
+            }
 
+         },
+         _clickTooltip: function(event){
+            event.stopPropagation()
+            console.log("click unit")
+            console.log($(event.currentTarget))
+            console.log($(event.target))
+            $(event.currentTarget).tooltip({
+                title: "<p>thịnh đã tới đây rui nhé</p>",
+                delay: {show:0, hide:0},
+                selector: '.bsd_title',
+                placement: "top",
+                trigger: "click focus"
+            }).tooltip("show")
+            console.log("đã chạy")
+         },
         /**
          * @private Thay đổi dự án đợt mở bán
          */
