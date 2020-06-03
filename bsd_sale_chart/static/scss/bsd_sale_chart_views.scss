@@ -109,3 +109,12 @@
     font-size:13px;
     min-width:20px;
 }
+.bsd_giu_cho{
+    color: 'blue' ;
+    text-decoration: underline;
+    pointer-events: none;
+    cursor: default;
+    &:hover {
+        color:#fff;
+    }
+}

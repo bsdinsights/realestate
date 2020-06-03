@@ -26,7 +26,8 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             'dblclick .bsd_unit': '_showUnit',
 //            'mouseover .bsd_unit .bsd_title': '_hoverTooltip',
 //            'mouseout .bsd_unit': '_outTooltip',
-            'click .bsd_unit': '_clickTooltip'
+            'click .bsd_unit': '_clickTooltip',
+            'click .tooltip': '_clickGiuCho'
         },
         custom_events: _.extend({}, FieldManagerMixin.custom_events,{
             'field_changed': '_onFieldChange',
@@ -471,14 +472,30 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             console.log($(event.currentTarget))
             console.log($(event.target))
             $(event.currentTarget).tooltip({
-                title: "<p>thịnh đã tới đây rui nhé</p>",
+                title: '<div><a href="#" class="bsd_giu_cho">Giữ chỗ</a></div>',
                 delay: {show:0, hide:0},
                 selector: '.bsd_title',
                 placement: "top",
-                trigger: "click focus"
+                trigger: "click focus",
+                container: "#chart"
             }).tooltip("show")
             console.log("đã chạy")
          },
+
+         _clickGiuCho: function(event){
+            event.stopPropagation()
+            console.log("tạo giữ chỗ")
+            var self = this
+            this.do_action({
+                name: "Tạo giữ chỗ",
+                res_model: 'bsd.giu_cho',
+                views: [[false, 'form']],
+                type: 'ir.actions.act_window',
+                view_mode: "form",
+                target: "new"
+            })
+         },
+
         /**
          * @private Thay đổi dự án đợt mở bán
          */
