@@ -12,6 +12,7 @@
     'data': [
         'views/assets.xml',
         'views/sale_chart_views.xml',
+        'views/bsd_giu_cho_views.xml',
         'views/bsd_unit_views.xml'
     ],
     'qweb': ['static/xml/*.xml'],

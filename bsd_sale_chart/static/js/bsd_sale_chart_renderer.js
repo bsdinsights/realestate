@@ -185,6 +185,9 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     if (item[8] !== null){
                         item[8] = format_curency(item[8])
                     }
+                    if (item[10] === null){
+                        item[10] = ''
+                    }
                 })
                 var group_toa = _.groupBy(self.data, function(item) { return item[0]});
                 _.each(group_toa, function(item,index,group_toa){
@@ -450,8 +453,9 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 template: `<div class="tooltip" role="tooltip">
                                 <div class="arrow"></div>
                                 <div class="tooltip-inner bsd_tooltip_title"></div>
-                                <div class="bsd_tooltip_action">
-                                    <span class="bsd_giu_cho">Giữ chỗ</span>
+                                <div class="bsd_tooltip_action" id=${data_unit[11]}>
+                                    <span class="bsd_quan_tam">Quan tâm</span>
+                                    <span class="bsd_giu_cho ml-4">Giữ chỗ</span>
                                     <span class="bsd_bao_gia ml-4">Bảng tính giá</span>
                                 </div>
                             </div>
@@ -472,17 +476,18 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          _clickGiuCho: function(event){
             event.stopPropagation()
             console.log("tạo giữ chỗ")
-            console.log(event)
-            console.log($(event.currentTarget))
-            console.log($(event.target))
             var self = this
-            this.do_action({
-                name: "Tạo giữ chỗ",
-                res_model: 'bsd.giu_cho',
-                views: [[false, 'form']],
-                type: 'ir.actions.act_window',
-                view_mode: "form",
-                target: "new"
+            var unit_id = parseInt($(event.currentTarget).parent().attr('id'))
+            console.log($(event.currentTarget))
+            console.log(unit_id)
+            this._loadAction('bsd_sale_chart.bsd_giu_cho_action').then(function(action){
+                console.log(action.context)
+                console.log(typeof action.context)
+                console.log(action)
+                action.context={default_bsd_du_an_id:self.filter.bsd_du_an_id,
+                                default_bsd_unit_id:unit_id}
+                console.log(action.context)
+                self.do_action(action)
             })
          },
         /**

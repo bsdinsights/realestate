@@ -111,13 +111,21 @@
 }
 .bsd_tooltip_action {
     background-color: black;
+    .bsd_quan_tam{
+        color: #4169E1 ;
+        cursor: pointer;
+        text-decoration: underline;
+        &:hover {
+            color:#fff;
+        }
+    };
     .bsd_giu_cho{
         color: #4169E1 ;
         cursor: pointer;
         text-decoration: underline;
         &:hover {
             color:#fff;
-    }
+        }
     };
     .bsd_bao_gia{
         color: #4169E1 ;
@@ -125,6 +133,6 @@
         text-decoration: underline;
         &:hover {
             color:#fff;
-    }
+        }
     };
 }

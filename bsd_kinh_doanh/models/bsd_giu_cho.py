@@ -96,10 +96,10 @@ class BsdGiuCho(models.Model):
                                     readonly=True, default=0)
     bsd_huy_gc_id = fields.Many2one('bsd.huy_gc', string="Hủy giữ chỗ", help="Mã phiếu hủy giữ chỗ", readonly=1)
 
-    # R11. khách hàng chuyển nhượng
-    @api.onchange('bsd_du_an_id')
-    def _onchange_unit(self):
-        self.bsd_unit_id = False
+    # # R11. khách hàng chuyển nhượng
+    # @api.onchange('bsd_du_an_id')
+    # def _onchange_unit(self):
+    #     self.bsd_unit_id = False
 
     # KD.07.02 Ràng buộc số giữ chỗ theo căn hộ/ NVBH
     @api.constrains('bsd_nvbh_id', 'bsd_unit_id')
