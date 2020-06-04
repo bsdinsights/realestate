@@ -92,7 +92,8 @@ class BsdSaleChartWidget(models.AbstractModel):
                     unit.state, 
                     giu_cho.so_giu_cho_unit,
                     price.chot_gia AS gia_ban,
-                    unit.bsd_dt_sd AS dien_tich
+                    unit.bsd_dt_sd AS dien_tich,
+                    loai.bsd_ten_nhom AS loai
                 FROM bsd_toa_nha AS toa
                 LEFT JOIN bsd_tang AS tang 
                     ON toa.id = tang.bsd_toa_nha_id
@@ -103,6 +104,8 @@ class BsdSaleChartWidget(models.AbstractModel):
                                             LEFT JOIN product_product AS unit ON unit.id = giu_cho.bsd_unit_id
                                             GROUP BY unit.product_tmpl_id) AS giu_cho ON giu_cho.product_tmpl_id = unit.id
                 LEFT JOIN price ON price.unit_id = unit.id
+                LEFT JOIN bsd_loai_sp AS loai
+                    ON loai.id = unit.bsd_loai_sp_id
                 """ + where + "ORDER BY toa.id, tang.bsd_stt, unit.bsd_stt")
 
         item_ids = [x for x in self.env.cr.fetchall()]

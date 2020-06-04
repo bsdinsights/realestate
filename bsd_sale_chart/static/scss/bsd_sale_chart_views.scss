@@ -109,12 +109,22 @@
     font-size:13px;
     min-width:20px;
 }
-.bsd_giu_cho{
-    color: 'blue' ;
-    text-decoration: underline;
-    pointer-events: none;
-    cursor: default;
-    &:hover {
-        color:#fff;
+.bsd_tooltip_action {
+    background-color: black;
+    .bsd_giu_cho{
+        color: #4169E1 ;
+        cursor: pointer;
+        text-decoration: underline;
+        &:hover {
+            color:#fff;
     }
+    };
+    .bsd_bao_gia{
+        color: #4169E1 ;
+        cursor: pointer;
+        text-decoration: underline;
+        &:hover {
+            color:#fff;
+    }
+    };
 }

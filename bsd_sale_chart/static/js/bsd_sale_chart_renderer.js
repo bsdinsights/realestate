@@ -24,10 +24,9 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             'change .create_view .o_td_field': '_onChangeView',
             'change .create_huong .o_td_field': '_onChangeHuong',
             'dblclick .bsd_unit': '_showUnit',
-//            'mouseover .bsd_unit .bsd_title': '_hoverTooltip',
-//            'mouseout .bsd_unit': '_outTooltip',
             'click .bsd_unit': '_clickTooltip',
-            'click .tooltip': '_clickGiuCho'
+            'click .tooltip .bsd_giu_cho': '_clickGiuCho',
+            'click .tooltip .bsd_bao_gia': '_clickBaoGia',
         },
         custom_events: _.extend({}, FieldManagerMixin.custom_events,{
             'field_changed': '_onFieldChange',
@@ -39,6 +38,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             this._super(parent);
             this.model = model;
             this._initialState = state;
+            this.data = [],
             this.filter = {
                 bsd_du_an_id: null,
                 bsd_dot_mb_id: null,
@@ -178,7 +178,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                         money = money.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
                         return money;
                 });
-                var data_filter = _.each(data, function(item,index,data){
+                self.data= _.each(data, function(item,index,data){
                     if (item[7] === null){
                         item[7] = 0
                     }
@@ -186,7 +186,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                         item[8] = format_curency(item[8])
                     }
                 })
-                var group_toa = _.groupBy(data, function(data_filter) { return data_filter[0]});
+                var group_toa = _.groupBy(self.data, function(item) { return item[0]});
                 _.each(group_toa, function(item,index,group_toa){
                     var toa = {};
                     toa.headerToa = [item[0][0],item[0][1]]
@@ -427,9 +427,9 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          */
          _showUnit: function(event){
             var self = this
-            var res_id = parseInt($(event.currentTarget).attr('id'))
+            var unit_id = parseInt($(event.currentTarget).attr('id'))
             this._loadAction('bsd_sale_chart.bsd_product_template_gio_hang_action').then(function(action){
-                action.res_id = res_id
+                action.res_id = unit_id
                 self.do_action(action)
 
             })
@@ -438,41 +438,26 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
         /**
          * @private Show tooltip
          */
-         _hoverTooltip: function(event){
-            event.stopPropagation();
-            console.log("hover")
-            console.log(event)
-            console.log($(event.currentTarget))
-            $(event.currentTarget).tooltip({
-                title: "<h1><strong>HTML</strong> inside <code>the</code> <em>tooltip</em></h1>",
-                delay: {show:0, hide:0},
-                placement: "top",
-                trigger: "hover"
-            }).tooltip("show")
-         },
-         _outTooltip: function(event){
-            event.stopPropagation();
-            console.log("out")
-            console.log(event)
-            console.log($(event.currentTarget))
-            if ($(event.currentTarget).get(0) === $(event.target).get(0)){
-                $(event.currentTarget).tooltip({
-                    title: "<p>thịnh đã tới đây rui nhé</p>",
-                    delay: {show:0, hide:0},
-                    placement: "top",
-                    html: true,
-                    trigger: "click"
-            }).tooltip("hide")
-            }
-
-         },
          _clickTooltip: function(event){
             event.stopPropagation()
             console.log("click unit")
             console.log($(event.currentTarget))
             console.log($(event.target))
+            var unit_id = parseInt($(event.currentTarget).attr('id'))
+            var data_unit = _.find(this.data, function(item){return item[4] === unit_id})
+            console.log(data_unit)
             $(event.currentTarget).tooltip({
-                title: '<div><a href="#" class="bsd_giu_cho">Giữ chỗ</a></div>',
+                template: `<div class="tooltip" role="tooltip">
+                                <div class="arrow"></div>
+                                <div class="tooltip-inner bsd_tooltip_title"></div>
+                                <div class="bsd_tooltip_action">
+                                    <span class="bsd_giu_cho">Giữ chỗ</span>
+                                    <span class="bsd_bao_gia ml-4">Bảng tính giá</span>
+                                </div>
+                            </div>
+                           </div>`,
+                title: `<div>Diện tích sử dụng: ${data_unit[9]} m2</div>
+                        <div>Loại căn hộ: ${data_unit[10]} </div>`,
                 delay: {show:0, hide:0},
                 selector: '.bsd_title',
                 placement: "top",
@@ -481,10 +466,15 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             }).tooltip("show")
             console.log("đã chạy")
          },
-
+        /**
+         * @private tạo giữ chỗ
+         */
          _clickGiuCho: function(event){
             event.stopPropagation()
             console.log("tạo giữ chỗ")
+            console.log(event)
+            console.log($(event.currentTarget))
+            console.log($(event.target))
             var self = this
             this.do_action({
                 name: "Tạo giữ chỗ",
@@ -495,7 +485,22 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 target: "new"
             })
          },
-
+        /**
+         * @private tạo giữ chỗ
+         */
+         _clickBaoGia: function(event){
+            event.stopPropagation()
+            console.log("tạo báo giá")
+            var self = this
+            this.do_action({
+                name: "Tạo báo giá",
+                res_model: 'bsd.bao_gia',
+                views: [[false, 'form']],
+                type: 'ir.actions.act_window',
+                view_mode: "form",
+                target: "new"
+            })
+         },
         /**
          * @private Thay đổi dự án đợt mở bán
          */
