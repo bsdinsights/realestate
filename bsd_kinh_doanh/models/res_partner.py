@@ -13,7 +13,6 @@ class ResPartner(models.Model):
     bsd_ma_kh = fields.Char(string="Mã khách hàng", required=True, index=True, copy=False, default='Tạo mới')
     bsd_ngay_sinh = fields.Date(string="Ngày sinh", help="Ngày sinh")
     bsd_gioi_tinh = fields.Selection([('nam', 'Nam'), ('nu', 'Nữ')], string="Giới tính", help="Giới tính", default='nam')
-    email = fields.Char(string="Email")
     bsd_loai_kh = fields.Selection([('vn', 'Việt Nam'),
                                     ('nc', 'Người nước ngoài')], string="Quốc tịch",
                                    help="Khách hàng là công dân Việt Nam hay Người nước ngoài",

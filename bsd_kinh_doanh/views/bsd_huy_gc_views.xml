@@ -45,18 +45,20 @@
                             <field name="bsd_unit_id"
                                    context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                    options="{'no_create':true}"
+                                   domain="[('bsd_du_an_id','=',bsd_du_an_id),('bsd_kh_moi_id', '=',bsd_khach_hang_id)]"
                                    attrs="{'invisible':[('bsd_loai_gc', '!=','giu_cho')],
                                            'required':[('bsd_loai_gc', '=', 'giu_cho')]}"/>
                             <field name="bsd_gc_tc_id"
                                    domain="[('bsd_du_an_id','=',bsd_du_an_id),('bsd_kh_moi_id', '=',bsd_khach_hang_id),
-                                            ('bsd_thanh_toan','!=','chua_tt')]"
+                                            ('bsd_thanh_toan','!=','chua_tt'),('state','in', ['xac_nhan'])]"
                                    options="{'no_create':true}"
                                    attrs="{'invisible':[('bsd_loai_gc', '!=','gc_tc')],
                                            'required':[('bsd_loai_gc', '=', 'gc_tc')]}"
                             />
                             <field name="bsd_giu_cho_id"
                                    domain="[('bsd_du_an_id','=',bsd_du_an_id),('bsd_kh_moi_id', '=',bsd_khach_hang_id),
-                                            ('bsd_thanh_toan','!=','chua_tt'),('bsd_truoc_mb','=',True)]"
+                                            ('bsd_thanh_toan','!=','chua_tt'),('bsd_truoc_mb','=',True),
+                                            ('bsd_unit_id', '=',bsd_unit_id), ('state' , 'not in', ['nhap','dong','huy'])]"
                                    options="{'no_create':true}"
                                    attrs="{'invisible':[('bsd_loai_gc', '!=','giu_cho')],
                                            'required':[('bsd_loai_gc', '=', 'giu_cho')]}"

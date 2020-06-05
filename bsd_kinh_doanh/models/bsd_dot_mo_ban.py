@@ -245,7 +245,7 @@ class BsdDotMoBan(models.Model):
         #  KD.04.08 Tính hạn báo giá  của giữ chỗ sau khi phát hành đợt mở bán
         units_ph = self.bsd_ph_ids.mapped('bsd_unit_id')
         for unit_ph in units_ph:
-            # cập nhật đợt mở bán cho giữ chỗ
+            # KD.04.09 cập nhật đợt mở bán cho giữ chỗ
             giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', unit_ph.id)])
             giu_cho_unit.write({'bsd_dot_mb_id': self.id})
             # lọc các giữ chỗ của unit đã thanh toán

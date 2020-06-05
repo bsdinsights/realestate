@@ -2,6 +2,8 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class BsdHuyGC(models.Model):
@@ -13,10 +15,14 @@ class BsdHuyGC(models.Model):
     bsd_ma_huy_gc = fields.Char(string="Mã", help="Mã phiếu hủy", required=True,
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_ngay_huy_gc = fields.Date(string="Ngày", help="Ngày hủy", required=True,
-                                  default=lambda self: fields.Date.today(),
-                                  readonly=True,
-                                  states={'nhap': [('readonly', False)]})
+    _sql_constraints = [
+        ('bsd_ma_huy_gc_unique', 'unique (bsd_ma_huy_gc)',
+         'Mã hủy giữ chỗ đã tồn tại !'),
+    ]
+    bsd_ngay_huy_gc = fields.Datetime(string="Ngày", help="Ngày hủy", required=True,
+                                      default=lambda self: fields.Datetime.now(),
+                                      readonly=True,
+                                      states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án",required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
@@ -65,12 +71,18 @@ class BsdHuyGC(models.Model):
             self.write({
                 'state': 'xac_nhan',
             })
+        if self.bsd_loai_gc == 'giu_cho':
+            # Kiểm tra giữ chỗ đã làm báo giá chưa
+            bao_gia = self.env['bsd.bao_gia'].search([('bsd_giu_cho_id', '=', self.bsd_giu_cho_id.id),
+                                                      ('state', 'not in', ['huy'])])
+            if bao_gia:
+                raise UserError("Bạn cần hủy Bảng tính giá trước khi đóng giữ chỗ")
 
     # KD.14.02 Duyệt hủy giữ chỗ
     def action_duyet(self):
         if self.bsd_loai_gc == 'giu_cho':
             # Kiểm tra giữ chỗ đã làm báo giá chưa
-            bao_gia = self.env['bsd.bao_gia'].search([('bsd_giu_cho_id', '=', self.id),
+            bao_gia = self.env['bsd.bao_gia'].search([('bsd_giu_cho_id', '=', self.bsd_giu_cho_id.id),
                                                       ('state', 'not in', ['huy'])])
             if bao_gia:
                 raise UserError("Bạn cần hủy Bảng tính giá trước khi đóng giữ chỗ")
@@ -88,7 +100,10 @@ class BsdHuyGC(models.Model):
                     self.bsd_giu_cho_id.bsd_rap_can_id.write({'state': 'huy'})
                 # Cập nhật trạng thái unit
                 giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
-                                                          ('state', 'not in', ['huy', 'nhap'])])
+                                                          ('state', 'not in', ['huy', 'nhap', 'dong']),
+                                                          ('id', '!=', self.id)])
+                _logger.debug("duyệt hủy giữ chỗ")
+                _logger.debug(giu_cho)
                 if not self.bsd_unit_id.bsd_dot_mb_id:
                     if not giu_cho:
                         self.bsd_unit_id.write({
@@ -146,6 +161,7 @@ class BsdHuyGC(models.Model):
                             'bsd_dien_giai': 'Hủy giữ chỗ thiện chí [' + self.bsd_gc_tc_id.bsd_ma_gctc + ']',
                             'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                             'bsd_du_an_id': self.bsd_du_an_id.id,
+                            'bsd_unit_id': self.bsd_unit_id.id,
                             'bsd_tien': self.bsd_tien,
                             'state': 'nhap',
             })
