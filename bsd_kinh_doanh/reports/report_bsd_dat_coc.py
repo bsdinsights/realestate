@@ -16,7 +16,8 @@ class BsdWizardReportDatCoc(models.TransientModel):
         return dc
 
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", default=_get_dc, readonly=True)
-    bsd_mau_in = fields.Selection([('bsd_mau_in_dat_coc_chuan', 'Mẫu in chuẩn')], string="Mẫu in", required=True,
+    bsd_mau_in = fields.Selection([('bsd_mau_in_dat_coc_chuan', 'Phiếu đặt cọc'),
+                                   ('bsd_mau_in_dat_coc_chuan_html', 'Phiếu đặt cọc (html)')], string="Mẫu in", required=True,
                                   default='bsd_mau_in_dat_coc_chuan')
 
     def action_in(self):

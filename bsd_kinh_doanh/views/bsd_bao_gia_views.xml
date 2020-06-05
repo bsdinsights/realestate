@@ -68,6 +68,16 @@
                                     <field name="bsd_tien_dc"/>
                                 </group>
                             </group>
+                            <group string="MÔI GIỚI">
+                                <group>
+                                    <field name="bsd_nvbh_id" options="{'no_create':true}"/>
+                                    <field name="bsd_san_gd_id" options="{'no_create':true}"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ctv_id" options="{'no_create':true}"/>
+                                    <field name="bsd_gioi_thieu_id" options="{'no_create':true}"/>
+                                </group>
+                            </group>
                             <group string="SẢN PHẨM">
                                 <group>
                                     <field name="bsd_unit_id"

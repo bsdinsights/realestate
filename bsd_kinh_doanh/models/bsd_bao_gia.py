@@ -23,7 +23,7 @@ class BsdBaoGia(models.Model):
         ('bsd_ma_bao_gia_unique', 'unique (bsd_ma_bao_gia)',
          'Mã bảng giá đã tồn tại !'),
     ]
-    bsd_ten_bao_gia = fields.Char(string="Tên", help="Tên bảng tính giá", required=True,
+    bsd_ten_bao_gia = fields.Char(string="Tiêu đề", help="Tên bảng tính giá", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_ngay_bao_gia = fields.Datetime(string="Ngày", help="Ngày bảng tính giá", required=True,
@@ -45,25 +45,42 @@ class BsdBaoGia(models.Model):
     bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ",
                                   related="bsd_giu_cho_id.bsd_tien_gc", store=True)
     bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc", compute='_compute_tien_dc', store=True)
+
+    def _get_nhan_vien(self):
+        return self.env['hr.employee'].search([('user_id', '=', self.env.uid)])
+
+    bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên BH", help="Nhân viên bán hàng",
+                                  readonly=True, required=True, default=_get_nhan_vien,
+                                  states={'nhap': [('readonly', False)]})
+    bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch", domain=[('is_company', '=', True)],
+                                    readonly=True, help="Sàn giao dịch",
+                                    states={'nhap': [('readonly', False)]})
+    bsd_ctv_id = fields.Many2one('res.partner', string="Công tác viên", domain=[('is_company', '=', False)],
+                                 readonly=True, help="Cộng tác viên",
+                                 states={'nhap': [('readonly', False)]})
+    bsd_gioi_thieu_id = fields.Many2one('res.partner', string="Giới thiệu", help="Cá nhân hoặc đơn vị giới thiệu",
+                                        readonly=True,
+                                        states={'nhap': [('readonly', False)]})
+
     bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Tên căn hộ",
                                   related="bsd_giu_cho_id.bsd_unit_id", store=True)
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích tim tường",
                              related="bsd_unit_id.bsd_dt_xd", store=True)
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",
                              related="bsd_unit_id.bsd_dt_sd", store=True)
-    bsd_thue_id = fields.Many2one('account.tax', string="Mã thuế", help="Mã thuế", required=True,
+    bsd_thue_id = fields.Many2one('account.tax', string="Thuế", help="Thuế", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
-    bsd_qsdd_m2 = fields.Monetary(string="QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2",
+    bsd_qsdd_m2 = fields.Monetary(string="Giá trị QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2",
                                   related="bsd_unit_id.bsd_qsdd_m2", store=True)
-    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", related="bsd_thue_id.amount", store=True)
-    bsd_tl_pbt = fields.Float(string="% phí bảo trì", help="Tỷ lệ phí bảo trì", compute='_compute_tl_pbt', store=True)
+    bsd_thue_suat = fields.Float(string="Thuế suất (%)", help="Thuế suất", related="bsd_thue_id.amount", store=True)
+    bsd_tl_pbt = fields.Float(string="Phí bảo trì (%)", help="Tỷ lệ phí bảo trì", compute='_compute_tl_pbt', store=True)
     bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="CS thanh toán", help="Chính sách thanh toán", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán", compute="_compute_gia_ban", store=True)
     bsd_tien_ck = fields.Monetary(string="Chiết khấu", help="Tổng tiền chiết khấu", compute="_compute_tien_ck", store=True)
-    bsd_tien_bg = fields.Monetary(string="Tiền bàn giao", help="Tổng tiền bàn giao",
+    bsd_tien_bg = fields.Monetary(string="Giá trị ĐKBG", help="Tổng tiền bàn giao",
                                   compute='_compute_tien_bg', store=True)
     bsd_gia_truoc_thue = fields.Monetary(string="Giá bán trước thuế",
                                          help="""Giá bán trước thuế: bằng giá bán cộng tiền bàn giao trừ chiết khấu""",
@@ -83,7 +100,7 @@ class BsdBaoGia(models.Model):
                                    help="Số tháng đóng phí quản lý trước đợt bàn giao tạm thời hoặc bàn giao chính thức",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_tien_pql = fields.Monetary(string="Phí quản lý/ tháng", help="Số tiền phí quản lý cần đóng mỗi tháng",
+    bsd_tien_pql = fields.Monetary(string="Phí quản lý", help="Số tiền phí quản lý",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
 

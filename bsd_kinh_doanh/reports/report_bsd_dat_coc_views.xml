@@ -27,8 +27,14 @@
                     target="new"/>
         <report id="bsd_mau_in_dat_coc_chuan"
                 model="bsd.dat_coc.report.wizard"
-                string="Mẫu in chuẩn"
+                string="Phiếu đặt cọc"
                 report_type="qweb-pdf"
+                name="bsd_kinh_doanh.bsd_dat_coc_view"
+                menu="False"/>
+        <report id="bsd_mau_in_dat_coc_chuan_html"
+                model="bsd.dat_coc.report.wizard"
+                string="Phiếu đặt cọc (html)"
+                report_type="qweb-html"
                 name="bsd_kinh_doanh.bsd_dat_coc_view"
                 menu="False"/>
         <template id="bsd_dat_coc_view">

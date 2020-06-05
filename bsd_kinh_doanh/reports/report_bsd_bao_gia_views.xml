@@ -27,8 +27,14 @@
                     target="new"/>
         <report id="bsd_mau_in_bao_gia_chuan"
                 model="bsd.bao_gia.report.wizard"
-                string="Mẫu in chuẩn"
+                string="Bảng tính giá"
                 report_type="qweb-pdf"
+                name="bsd_kinh_doanh.bsd_bao_gia_view"
+                menu="False"/>
+        <report id="bsd_mau_in_bao_gia_chuan_html"
+                model="bsd.bao_gia.report.wizard"
+                string="Bảng tính giá (html)"
+                report_type="qweb-html"
                 name="bsd_kinh_doanh.bsd_bao_gia_view"
                 menu="False"/>
 

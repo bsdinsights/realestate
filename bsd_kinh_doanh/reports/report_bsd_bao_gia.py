@@ -15,7 +15,8 @@ class BsdWizardReportBaoGia(models.TransientModel):
         return bg
 
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", default=_get_bg, readonly=True)
-    bsd_mau_in = fields.Selection([('bsd_mau_in_bao_gia_chuan', 'Mẫu in chuẩn')], string="Mẫu in", required=True,
+    bsd_mau_in = fields.Selection([('bsd_mau_in_bao_gia_chuan', 'Bảng tính giá'),
+                                   ('bsd_mau_in_bao_gia_chuan_html', 'Bảng tính giá (html)')], string="Mẫu in", required=True,
                                   default='bsd_mau_in_bao_gia_chuan')
 
     def action_in(self):
