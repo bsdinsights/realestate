@@ -210,9 +210,12 @@ class BsdGiuCho(models.Model):
                 'bsd_ngay_gc': datetime.datetime.now(),
             })
             # Cập nhật lại trạng thái unit
-            self.bsd_unit_id.write({
-                'state': 'dat_cho',
-            })
+            if self.bsd_unit_id.state == 'giu_cho':
+                pass
+            else:
+                self.bsd_unit_id.write({
+                    'state': 'dat_cho',
+                })
         else:
             giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                            ('bsd_stt_bg', '>', 0)])
@@ -353,3 +356,10 @@ class BsdGiuCho(models.Model):
                 self.bsd_unit_id.write({
                     'state': 'san_sang',
                 })
+
+    # KD.07.10 Tự động tính Hạn báo giá của Giữ chỗ thanh toán sau mở bán
+    def tinh_lai_hbg(self):
+        if not self.bsd_dot_mb_id:
+            pass
+        else:
+            pass

@@ -203,6 +203,7 @@ class BsdHuyGC(models.Model):
                             'bsd_loai_dc': 'huy_gc',
                             'bsd_dien_giai': 'Hủy giữ chỗ [' + self.bsd_giu_cho_id.bsd_ma_gc + ']',
                             'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                            'bsd_unit_id': self.bsd_unit_id.id,
                             'bsd_du_an_id': self.bsd_du_an_id.id,
                             'bsd_tien': self.bsd_tien,
                             'state': 'nhap',

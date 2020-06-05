@@ -59,6 +59,8 @@ class BsdCongNoCT(models.Model):
                     self.bsd_giu_cho_id.write({
                         'state': 'giu_cho',
                     })
+                    # Tính lại hạn báo giá
+                    self.bsd_giu_cho_id.tinh_lai_hbg()
                     if self.bsd_giu_cho_id.bsd_unit_id.state == 'dat_cho':
                         self.bsd_giu_cho_id.bsd_unit_id.write({
                             'state': 'giu_cho',
