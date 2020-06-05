@@ -46,8 +46,12 @@ class BsdGiuCho(models.Model):
     bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", required=True,
                                   readonly=True, help="Tiền giữ chỗ",
                                   states={'nhap': [('readonly', False)]})
-    bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên BH", required=True,
-                                  readonly=True, help="Nhân viên bán háng",
+
+    def _get_nhan_vien(self):
+        return self.env['hr.employee'].search([('user_id', '=', self.env.uid)])
+
+    bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên BH", help="Nhân viên bán hàng",
+                                  readonly=True, required=True, default=_get_nhan_vien,
                                   states={'nhap': [('readonly', False)]})
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch",domain=[('is_company', '=', True)],
                                     readonly=True, help="Sàn giao dịch",

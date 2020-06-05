@@ -12,7 +12,9 @@
                     <group string="THÔNG TIN CÁ NHÂN">
                         <group>
                             <field name="bsd_ma_kh"/>
-                            <field name="name"/>
+                            <field name="bsd_ho_tl" required="1"/>
+                            <field name="bsd_ten" required="1"/>
+                            <field name="name" string="Họ và tên"/>
                             <field name="bsd_ngay_sinh"/>
                             <field name="bsd_gioi_tinh"/>
                             <field name="phone"/>
@@ -36,18 +38,25 @@
                     <group string="Địa chỉ">
                         <group>
                             <field name="bsd_dia_chi_tt"/>
-                            <field name="bsd_quoc_gia_tt_id"/>
-                            <field name="bsd_tinh_tt_id" domain="[('country_id', 'in',[bsd_quoc_gia_tt_id])]"/>
-                            <field name="bsd_quan_tt_id" domain="[('bsd_tinh_thanh_id', 'in',[bsd_tinh_tt_id])]"/>
-                            <field name="bsd_phuong_tt_id" domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_tt_id])]"/>
+                            <field name="bsd_quoc_gia_tt_id" options="{'no_create':true}"/>
+                            <field name="bsd_tinh_tt_id" domain="[('country_id', 'in',[bsd_quoc_gia_tt_id])]"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_quan_tt_id" domain="[('bsd_tinh_thanh_id', 'in',[bsd_tinh_tt_id])]"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_phuong_tt_id" domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_tt_id])]"
+                                   options="{'no_create':true}"/>
                             <field name="bsd_so_nha_tt"/>
+                            <field name="bsd_cung_dc"/>
                         </group>
                         <group>
                             <field name="bsd_dia_chi_lh"/>
-                            <field name="bsd_quoc_gia_lh_id"/>
-                            <field name="bsd_tinh_lh_id" domain="[('country_id', 'in',[bsd_quoc_gia_lh_id])]"/>
-                            <field name="bsd_quan_lh_id" domain="[('bsd_tinh_thanh_id', 'in',[bsd_tinh_lh_id])]"/>
-                            <field name="bsd_phuong_lh_id" domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_lh_id])]"/>
+                            <field name="bsd_quoc_gia_lh_id" options="{'no_create':true}"/>
+                            <field name="bsd_tinh_lh_id" domain="[('country_id', 'in',[bsd_quoc_gia_lh_id])]"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_quan_lh_id" domain="[('bsd_tinh_thanh_id', 'in',[bsd_tinh_lh_id])]"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_phuong_lh_id" domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_lh_id])]"
+                                   options="{'no_create':true}"/>
                             <field name="bsd_so_nha_lh"/>
                         </group>
                     </group>
