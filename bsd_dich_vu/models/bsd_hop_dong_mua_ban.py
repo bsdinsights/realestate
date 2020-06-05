@@ -46,12 +46,12 @@ class BsdHopDongMuaBan(models.Model):
                              related="bsd_dat_coc_id.bsd_dt_xd", store=True)
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",
                              related="bsd_dat_coc_id.bsd_dt_sd", store=True)
-    bsd_thue_id = fields.Many2one('account.tax', string="Mã thuế", help="Mã thuế",
+    bsd_thue_id = fields.Many2one('account.tax', string="Thuế", help="Thuế",
                                   related="bsd_dat_coc_id.bsd_thue_id", store=True)
-    bsd_qsdd_m2 = fields.Monetary(string="QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2",
+    bsd_qsdd_m2 = fields.Monetary(string="Giá trị QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2",
                                   related="bsd_dat_coc_id.bsd_qsdd_m2", store=True)
-    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", related="bsd_dat_coc_id.bsd_thue_suat", store=True)
-    bsd_tl_pbt = fields.Float(string="% phí bảo trì", help="Tỷ lệ phí bảo trì",
+    bsd_thue_suat = fields.Float(string="Thuế suất (%)", help="Thuế suất", related="bsd_dat_coc_id.bsd_thue_suat", store=True)
+    bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bt (%)", help="Tỷ lệ phí bảo trì",
                               related="bsd_dat_coc_id.bsd_tl_pbt", store=True)
     bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="CS thanh toán", help="Chính sách thanh toán",
                                    related="bsd_dat_coc_id.bsd_cs_tt_id", store=True)
@@ -74,9 +74,9 @@ class BsdHopDongMuaBan(models.Model):
     bsd_tong_gia = fields.Monetary(string="Tổng giá bán",
                                    help="""Tổng giá bán: bằng Giá bán trước thuế cộng Tiền thuế cộng phí bảo trì""",
                                    related="bsd_dat_coc_id.bsd_tong_gia", store=True)
-    bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý",related="bsd_dat_coc_id.bsd_thang_pql", store=True,
+    bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý", related="bsd_dat_coc_id.bsd_thang_pql", store=True,
                                    help="Số tháng đóng phí quản lý trước đợt bàn giao tạm thời hoặc bàn giao chính thức")
-    bsd_tien_pql = fields.Monetary(string="Phí quản lý/ tháng", help="Số tiền phí quản lý cần đóng mỗi tháng",
+    bsd_tien_pql = fields.Monetary(string="Phí quản lý", help="Số tiền phí quản lý cần đóng",
                                    related="bsd_dat_coc_id.bsd_tien_pql", store=True)
 
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),

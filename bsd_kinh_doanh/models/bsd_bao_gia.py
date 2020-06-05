@@ -74,7 +74,7 @@ class BsdBaoGia(models.Model):
     bsd_qsdd_m2 = fields.Monetary(string="Giá trị QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2",
                                   related="bsd_unit_id.bsd_qsdd_m2", store=True)
     bsd_thue_suat = fields.Float(string="Thuế suất (%)", help="Thuế suất", related="bsd_thue_id.amount", store=True)
-    bsd_tl_pbt = fields.Float(string="Phí bảo trì (%)", help="Tỷ lệ phí bảo trì", compute='_compute_tl_pbt', store=True)
+    bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bt (%)", help="Tỷ lệ phí bảo trì", compute='_compute_tl_pbt', store=True)
     bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="CS thanh toán", help="Chính sách thanh toán", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
