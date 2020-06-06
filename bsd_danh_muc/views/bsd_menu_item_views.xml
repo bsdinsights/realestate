@@ -153,6 +153,11 @@
                   sequence="105"
                   action="bsd_pmg_ttc_action"
                   parent="bsd_ban_hang_menu"/>
+    <menuitem id="bsd_ma_bo_cn_menu_action"
+              name="Mã bộ chứng từ"
+              sequence="14"
+              action="bsd_ma_bo_cn_action"
+              parent="bsd_main_danh_muc_root"/>
 
 
 

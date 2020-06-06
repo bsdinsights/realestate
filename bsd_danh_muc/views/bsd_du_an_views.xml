@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_du_an_inherit_form">
+        <field name="name">bsd.du_an.form</field>
+        <field name="model">bsd.du_an</field>
+        <field name="inherit_id" ref="bsd_du_an.bsd_du_an_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[last()]" position="after">
+                <page string="Bộ chứng từ">
+                    <field name="bsd_ma_bo_cn_ids">
+                        <tree>
+                            <field name="bsd_loai_cn"/>
+                            <field name="bsd_ma_cn"/>
+                            <field name="bsd_so_tt"/>
+                            <field name="state"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -32,6 +32,6 @@ class BsdLaiPhatTT(models.Model):
     bsd_tl_td = fields.Float(string="Tỷ lệ phạt tối đa", help="Tỷ lệ tối đa phạt chậm thanh toán")
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Không sử dụng')],
-                             string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thải")
+                             string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
