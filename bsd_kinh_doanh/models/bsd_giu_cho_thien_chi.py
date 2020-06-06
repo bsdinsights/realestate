@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import datetime
 import logging
@@ -13,9 +13,8 @@ class BsdGiuChoThienChi(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma_gctc'
 
-    bsd_ma_gctc = fields.Char(string="Mã giữ chỗ", required=True, help="Mã giữ chỗ thiện chí",
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+    bsd_ma_gctc = fields.Char(string="Mã giữ chỗ", help="Mã giữ chỗ thiện chí",
+                              required=True, readonly=True, copy=False, default='/')
     _sql_constraints = [
         ('bsd_ma_gctc_unique', 'unique (bsd_ma_gctc)',
          'Mã giữ chỗ thiện chí đã tồn tại !'),
@@ -154,6 +153,14 @@ class BsdGiuChoThienChi(models.Model):
 
     @api.model
     def create(self, vals):
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
+        _logger.debug("Tạo giữ chỗ")
+        _logger.debug(sequence)
+        if not sequence:
+            raise UserError(_('Dự án chưa có mã giữ chỗ thiện chí'))
+        vals['bsd_ma_gctc'] = sequence.next_by_id()
         res = super(BsdGiuChoThienChi, self).create(vals)
         # R11 Chuyển nhượng khách hàng
         res.write({

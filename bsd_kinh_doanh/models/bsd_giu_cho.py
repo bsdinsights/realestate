@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import datetime
 import logging
@@ -13,9 +13,7 @@ class BsdGiuCho(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma_gc'
 
-    bsd_ma_gc = fields.Char(string="Mã giữ chỗ", required=True,
-                            readonly=True, help="Mã giữ chỗ",
-                            states={'nhap': [('readonly', False)]})
+    bsd_ma_gc = fields.Char(string="Mã giữ chỗ", required=True, readonly=True, copy=False, default='/')
     _sql_constraints = [
         ('bsd_ma_gc_unique', 'unique (bsd_ma_gc)',
          'Mã giữ chỗ đã tồn tại !'),
@@ -251,6 +249,14 @@ class BsdGiuCho(models.Model):
     # R7 Ghi nhận thông tin trước mở bán
     @api.model
     def create(self, vals):
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
+        _logger.debug("Tạo giữ chỗ")
+        _logger.debug(sequence)
+        if not sequence:
+            raise UserError(_('Please define a sequence on your journal.'))
+        vals['bsd_ma_gc'] = sequence.next_by_id()
         res = super(BsdGiuCho, self).create(vals)
         if res.bsd_unit_id.bsd_dot_mb_id:
             res.write({

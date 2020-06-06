@@ -7,7 +7,8 @@
         <field name="arch" type="xml">
             <xpath expr="//page[last()]" position="after">
                 <page string="Bộ chứng từ">
-                    <field name="bsd_ma_bo_cn_ids">
+                    <field name="id" invisible="1"/>
+                    <field name="bsd_ma_bo_cn_ids" domain="['|',('bsd_du_an_id', '=', False), ('bsd_du_an_id', '=', id)]">
                         <tree>
                             <field name="bsd_loai_cn"/>
                             <field name="bsd_ma_cn"/>

@@ -27,6 +27,10 @@ class BsdMaBoChungTu(models.Model):
                                     ('bsd.kh_dn', 'Khách hàng doanh nghiệp')],
                                    string="Loại chứng từ", help="Loại chứng từ được đặt mã", required=True)
     bsd_ma_cn = fields.Char(string="Mã chứng từ", help="Mã tiền tố của chứng từ", required=True)
+    _sql_constraints = [
+        ('bsd_ma_cn_unique', 'unique (bsd_ma_cn)',
+         'Mã tiền tố chứng từ đã tồn tại !'),
+    ]
     bsd_sl_ky_tu = fields.Integer(string="Độ dài chuỗi", help="Độ dài chuổi ký tự sinh tự động của hệ thống",
                                   required=True)
     bsd_ma_tt_id = fields.Many2one('ir.sequence', string="Mã trình tự", help="Mã của trình tự", required=True)

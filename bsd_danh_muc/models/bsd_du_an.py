@@ -13,6 +13,7 @@ class BsdDuAn(models.Model):
             ma_cn = self.bsd_ma_bo_cn_ids.filtered(lambda m: m.bsd_loai_cn == loai_cn)
             if ma_cn:
                 return ma_cn[0].bsd_ma_tt_id
-            else: return False
+            else:
+                return False
         else:
             return False
