@@ -50,8 +50,9 @@ class BsdHopDongMuaBan(models.Model):
                                   related="bsd_dat_coc_id.bsd_thue_id", store=True)
     bsd_qsdd_m2 = fields.Monetary(string="Giá trị QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2",
                                   related="bsd_dat_coc_id.bsd_qsdd_m2", store=True)
-    bsd_thue_suat = fields.Float(string="Thuế suất (%)", help="Thuế suất", related="bsd_dat_coc_id.bsd_thue_suat", store=True)
-    bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bt (%)", help="Tỷ lệ phí bảo trì",
+    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", related="bsd_dat_coc_id.bsd_thue_suat",
+                                 store=True, digits=(12, 2))
+    bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì",
                               related="bsd_dat_coc_id.bsd_tl_pbt", store=True)
     bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="CS thanh toán", help="Chính sách thanh toán",
                                    related="bsd_dat_coc_id.bsd_cs_tt_id", store=True)
