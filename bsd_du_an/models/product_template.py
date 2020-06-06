@@ -72,10 +72,10 @@ class ProductTemplate(models.Model):
                                       ('2', 'Căn hộ nhiều tầng'),
                                       ('3', 'Siêu thị/cửa hàng'),
                                       ('4', 'Penthouse')], string="Loại căn hộ", help="Loại căn hộ")
-    bsd_tl_tc = fields.Float(string="% Tiền cọc",
-                             help="% thanh toán tối thiểu để ký thỏa thuận đặt cọc")
-    bsd_dt_cl = fields.Float(string="Chênh lệch (%)",
-                             help="% Chênh lệch giữa diện tích xây dựng và diện tích sử dụng")
+    bsd_tl_tc = fields.Float(string="Tỷ lệ Tiền cọc",
+                             help="Tỷ lệ thanh toán tối thiểu để ký thỏa thuận đặt cọc")
+    bsd_dt_cl = fields.Float(string="Chênh lệch (+/-)",
+                             help="Tỷ lệ chênh lệch giữa diện tích xây dựng và diện tích sử dụng")
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng",
                              help="Diện tích tim tường")
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế")
@@ -90,13 +90,13 @@ class ProductTemplate(models.Model):
                                                                     QSDĐ/m2
                                                                     """,
                                    readonly=True, compute='_compute_bsd_tong_gtsd_dat', store=True)
-    bsd_tl_pbt = fields.Float(string="% phí bảo trì", help="Tỷ lệ phí bảo trì")
+    bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì")
     bsd_tien_pbt = fields.Monetary(string="Phí bảo trì", help="""
                                                                 Tổng tiền phí bảo trì được tính theo công thức:
-                                                                % phí bảo trì * giá bán trước thuế
+                                                                Tỷ lệ phí bảo trì * giá bán trước thuế
                                                                 """,
                                    compute='_compute_bsd_phi_bao_tri', store=True)
-    bsd_thue_suat = fields.Float(string="Thuế suất", help="% thuế")
+    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất")
     bsd_tien_thue = fields.Monetary(string="Tiền thuế", help="""Tiền thuế của căn hộ được tính theo công thức:
                                                             (giá bán - Giá trị QSDĐ)* thuế suất""",
                                     readonly=True, compute='_compute_tien_thue', store=True)

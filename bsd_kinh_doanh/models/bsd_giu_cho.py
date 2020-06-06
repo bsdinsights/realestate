@@ -210,7 +210,7 @@ class BsdGiuCho(models.Model):
                 'bsd_ngay_gc': datetime.datetime.now(),
             })
             # Cập nhật lại trạng thái unit
-            if self.bsd_unit_id.state == 'giu_cho':
+            if self.bsd_unit_id.state in ['giu_cho', 'dat_cho']:
                 pass
             else:
                 self.bsd_unit_id.write({

@@ -83,7 +83,13 @@
                                     <field name="bsd_unit_id"
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                            options="{'no_create':true}"/>
-                                    <field name="bsd_dt_xd"/>
+                                    <label for="bsd_dt_xd"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <div class="col">
+                                            <field name="bsd_dt_xd" class="mr-1"/>
+                                            <span>m2</span>
+                                        </div>
+                                    </div>
                                     <field name="bsd_dt_sd"/>
                                     <field name="bsd_qsdd_m2"/>
                                     <field name="bsd_thue_id" options="{'no_create':true}"/>
