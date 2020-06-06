@@ -33,3 +33,9 @@ class BsdBlock(models.Model):
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Ngưng sử dụng')],
                              string="Trạng thái", default='active', tracking=1, help="Trạng thái")
+
+    def name_get(self):
+        res = []
+        for toa in self:
+            res.append((toa.id, toa.bsd_ten_tn))
+        return res

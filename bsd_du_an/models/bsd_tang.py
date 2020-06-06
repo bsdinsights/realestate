@@ -35,3 +35,8 @@ class BsdFloor(models.Model):
                               ('inactive', 'Ngưng sử dụng')],
                              string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
 
+    def name_get(self):
+        res = []
+        for toa in self:
+            res.append((toa.id, toa.bsd_ten_tang))
+        return res

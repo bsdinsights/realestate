@@ -71,7 +71,7 @@ class ProductTemplate(models.Model):
     bsd_loai_unit = fields.Selection([('1', 'Căn hộ'),
                                       ('2', 'Căn hộ nhiều tầng'),
                                       ('3', 'Siêu thị/cửa hàng'),
-                                      ('4', 'Penthouse')], string="Loại căn hộ", help="Loại căn hộ")
+                                      ('4', 'Penthouse')], string="Loại sản phẩm", help="Loại sản phẩm")
     bsd_tl_tc = fields.Float(string="Tỷ lệ Tiền cọc",
                              help="Tỷ lệ thanh toán tối thiểu để ký thỏa thuận đặt cọc")
     bsd_dt_cl = fields.Float(string="Chênh lệch (+/-)",
@@ -89,7 +89,7 @@ class ProductTemplate(models.Model):
                                                                     công thức: diện tích sử dụng(thông thủy) * 
                                                                     QSDĐ/m2
                                                                     """,
-                                   readonly=True, compute='_compute_bsd_tong_gtsd_dat', store=True)
+                                    readonly=True, compute='_compute_bsd_tong_gtsd_dat', store=True)
     bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì")
     bsd_tien_pbt = fields.Monetary(string="Phí bảo trì", help="""
                                                                 Tổng tiền phí bảo trì được tính theo công thức:
@@ -116,9 +116,11 @@ class ProductTemplate(models.Model):
     bsd_tt_vay = fields.Selection([('0', 'Không'),
                                    ('1', 'Có')], string="Tình trạng vay", default='0',
                                   help="Tình trạng vay ngân hàng của căn hộ")
-    bsd_ngay_dkbg = fields.Date(string="Dự kiến bàn giao", help="Ngày dự kiến bàn giao")
+    bsd_ngay_dkbg = fields.Date(string="Ngày DKBG", help="Ngày dự kiến bàn giao")
     bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý", help="Số tháng đóng phí quản lý")
-    bsd_tien_pql = fields.Monetary(string="Phí quản lý/ tháng", help="Số tiền phí quản lý cần đóng mỗi tháng")
+    bsd_don_gia_pql = fields.Monetary(string="Đơn giá PQL", help="Đơn giá Phí quản lý m2/tháng", required=True)
+    bsd_tien_pql = fields.Monetary(string="Phí quản lý", help="Số tiền phí quản lý",
+                                   compute="_compute_tien_pql", store=True)
     bsd_dk_bg = fields.Float(string="Điều kiện bàn giao",
                              help="% thanh toán đủ điều kiện bàn giao(tối thiểu")
     bsd_ngay_bg = fields.Date(string="Ngày bàn giao",
@@ -139,14 +141,19 @@ class ProductTemplate(models.Model):
                               ('ky_thoa_thuan_coc', 'Ký thỏa thuận cọc'),
                               ('du_dieu_kien', 'Đủ điều kiện'),
                               ('da_ban', 'Đã bán')], string="Trạng thái",
-                             default="chuan_bi", tracking=1, help="Trạng thái",required=True)
+                             default="chuan_bi", tracking=1, help="Trạng thái", required=True)
 
-    @api.onchange('bsd_du_an_id')
+    @api.onchange('bsd_du_an_id', 'bsd_thang_pql')
     def _onchange_du_an(self):
         self.bsd_tien_gc = self.bsd_du_an_id.bsd_tien_gc
         self.bsd_tien_dc = self.bsd_du_an_id.bsd_tien_dc
         self.bsd_qsdd_m2 = self.bsd_du_an_id.bsd_qsdd_m2
         self.bsd_tl_pbt = self.bsd_du_an_id.bsd_tl_pbt
+
+    @api.depends('bsd_don_gia_pql', 'bsd_dt_sd', 'bsd_thang_pql')
+    def _compute_tien_pql(self):
+        for each in self:
+            each.bsd_tien_pql = each.bsd_don_gia_pql * each.bsd_dt_sd * each.bsd_thang_pql
 
     @api.depends('bsd_dt_sd', 'bsd_qsdd_m2')
     def _compute_bsd_tong_gtsd_dat(self):
