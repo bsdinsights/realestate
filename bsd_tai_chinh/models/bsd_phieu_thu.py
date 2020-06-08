@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
@@ -12,9 +12,8 @@ class BsdPhieuThu(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_so_pt'
 
-    bsd_so_pt = fields.Char(string="Số phiếu thu", help="Số phiếu thu", required=True,
-                            readonly=True,
-                            states={'nhap': [('readonly', False)]})
+    bsd_so_pt = fields.Char(string="Số phiếu thu", help="Số phiếu thu", required=True, readonly=True, copy=False,
+                            default='/')
     _sql_constraints = [
         ('bsd_so_pt_unique', 'unique (bsd_so_pt)',
          'Số phiếu thu đã tồn tại !'),
@@ -375,3 +374,13 @@ class BsdPhieuThu(models.Model):
                 flag = True
         if flag:
             raise UserError("Tiền phải thu vượt quá số tiền còn lại. Vui lòng kiểm tra lại!")
+
+    @api.model
+    def create(self, vals):
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
+        if not sequence:
+            raise UserError(_('Dự án chưa có mã phiếu thu'))
+        vals['bsd_so_pt'] = sequence.next_by_id()
+        return super(BsdPhieuThu, self).create(vals)

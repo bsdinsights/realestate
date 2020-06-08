@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_round
 import datetime
@@ -16,9 +16,8 @@ class BsdBaoGia(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ten_bao_gia'
 
-    bsd_ma_bao_gia = fields.Char(string="Mã", help="Mã bảng tính giá", required=True,
-                                 readonly=True,
-                                 states={'nhap': [('readonly', False)]})
+    bsd_ma_bao_gia = fields.Char(string="Mã", help="Mã bảng tính giá", required=True, readonly=True, copy=False,
+                                 default='/')
     _sql_constraints = [
         ('bsd_ma_bao_gia_unique', 'unique (bsd_ma_bao_gia)',
          'Mã bảng giá đã tồn tại !'),
@@ -343,3 +342,14 @@ class BsdBaoGia(models.Model):
             self.write({
                 'state': 'huy',
             })
+
+    @api.model
+    def create(self, vals):
+        sequence = False
+        if 'bsd_giu_cho_id' in vals:
+            giu_cho = self.env['bsd.giu_cho'].browse(vals['bsd_giu_cho_id'])
+            sequence = giu_cho.bsd_du_an_id.get_ma_bo_cn(loai_cn=self._name)
+        if not sequence:
+            raise UserError(_('Dự án chưa có mã phiếu báo giá'))
+        vals['bsd_ma_bao_gia'] = sequence.next_by_id()
+        return super(BsdBaoGia, self).create(vals)

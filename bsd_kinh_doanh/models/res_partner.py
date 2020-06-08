@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -10,7 +11,11 @@ class ResPartner(models.Model):
 
     bsd_ho_tl = fields.Char(string="Họ và tên lót", help="Họ và tên lót")
     bsd_ten = fields.Char(string="Tên", help="Tên khách hàng")
-    bsd_ma_kh = fields.Char(string="Mã khách hàng", required=True, index=True, copy=False, default='/')
+    bsd_ma_kh = fields.Char(string="Mã khách hàng", required=True, readonly=True, copy=False, default='/')
+    _sql_constraints = [
+        ('bsd_ma_kh_unique', 'unique (bsd_ma_kh)',
+         'Mã khách hàng đã tồn tại !'),
+    ]
     bsd_ngay_sinh = fields.Date(string="Ngày sinh", help="Ngày sinh")
     bsd_gioi_tinh = fields.Selection([('nam', 'Nam'), ('nu', 'Nữ')], string="Giới tính", help="Giới tính", default='nam')
     bsd_loai_kh = fields.Selection([('vn', 'Việt Nam'),
@@ -91,10 +96,15 @@ class ResPartner(models.Model):
     @api.model
     def create(self, vals):
         _logger.debug(vals)
+        sequence = False
         if vals.get('bsd_ma_kh', '/') == '/' and not vals.get('is_company'):
+            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.kh_cn')], limit=1).bsd_ma_tt_id
             vals['bsd_ma_kh'] = self.env['ir.sequence'].next_by_code('bsd.kh_cn') or '/'
         if vals.get('bsd_ma_kh', '/') == '/' and vals.get('is_company'):
-            vals['bsd_ma_kh'] = self.env['ir.sequence'].next_by_code('bsd.kh_dn') or '/'
+            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.kh_dn')], limit=1).bsd_ma_tt_id
+        if not sequence:
+            raise UserError(_('Danh mục mã chưa khai báo mã khách hàng'))
+        vals['bsd_ma_kh'] = sequence.next_by_id()
         return super(ResPartner, self).create(vals)
 
     def name_get(self):

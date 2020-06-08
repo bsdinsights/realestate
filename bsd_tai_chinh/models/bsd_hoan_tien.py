@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
@@ -12,9 +12,8 @@ class BsdHoanTien(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_so_ct'
 
-    bsd_so_ct = fields.Char(string="Số", help="Số chứng từ", required=True,
-                            readonly=True,
-                            states={'nhap': [('readonly', False)]})
+    bsd_so_ct = fields.Char(string="Số", help="Số chứng từ", required=True, readonly=True, copy=False,
+                            default='/')
     _sql_constraints = [
         ('bsd_so_ct_unique', 'unique (bsd_so_ct)',
          'Số chứng từ hoàn tiền đã tồn tại !'),
@@ -127,3 +126,13 @@ class BsdHoanTien(models.Model):
         self.write({
             'state': 'huy',
         })
+
+    @api.model
+    def create(self, vals):
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
+        if not sequence:
+            raise UserError(_('Dự án chưa có mã phiếu hoàn tiền'))
+        vals['bsd_so_ct'] = sequence.next_by_id()
+        return super(BsdHoanTien, self).create(vals)

@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import datetime
 import logging
@@ -13,9 +13,8 @@ class BsdHopDongMuaBan(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma_hd_ban'
 
-    bsd_ma_hd_ban = fields.Char(string="Mã", help="Mã hợp đồng mua bán", required=True,
-                                readonly=True,
-                                states={'nhap': [('readonly', False)]})
+    bsd_ma_hd_ban = fields.Char(string="Mã", help="Mã hợp đồng mua bán", required=True, readonly=True, copy=False,
+                                default='/')
     _sql_constraints = [
         ('bsd_ma_hd_ban_unique', 'unique (bsd_ma_hd_ban)',
          'Mã hợp đồng đã tồn tại !'),
@@ -149,6 +148,13 @@ class BsdHopDongMuaBan(models.Model):
 
     @api.model
     def create(self, vals):
+        sequence = False
+        if 'bsd_dat_coc_id' in vals:
+            dat_coc = self.env['bsd.dat_coc'].browse(vals['bsd_dat_coc_id'])
+            sequence = dat_coc.bsd_du_an_id.get_ma_bo_cn(loai_cn=self._name)
+        if not sequence:
+            raise UserError(_('Dự án chưa có mã hợp đồng'))
+        vals['bsd_ma_hd_ban'] = sequence.next_by_id()
         res = super(BsdHopDongMuaBan, self).create(vals)
         ids_bg = res.bsd_dat_coc_id.bsd_bg_ids.ids
         ids_ltt = res.bsd_dat_coc_id.bsd_ltt_ids.ids

@@ -17,7 +17,7 @@ class BsdMaBoChungTu(models.Model):
                                     ('bsd.giu_cho', 'Giữ chỗ'),
                                     ('bsd.bao_gia', 'Bảng tính giá'),
                                     ('bsd.dat_coc', 'Đặt cọc'),
-                                    ('bsd.hop_dong', 'Hợp đồng'),
+                                    ('bsd.hd_ban', 'Hợp đồng'),
                                     ('bsd.phieu_thu', 'Phiếu thu'),
                                     ('bsd.hoan_tien', 'Hoàn tiền'),
                                     ('bsd.giam_no', 'Điều chỉnh giảm'),

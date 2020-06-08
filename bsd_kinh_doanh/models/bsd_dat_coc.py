@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import logging
 import datetime
@@ -14,9 +14,8 @@ class BsdDatCoc(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma_dat_coc'
 
-    bsd_ma_dat_coc = fields.Char(string="Mã đặt cọc", help="Mã đặt cọc", required=True,
-                                 readonly=True,
-                                 states={'nhap': [('readonly', False)]})
+    bsd_ma_dat_coc = fields.Char(string="Mã đặt cọc", help="Mã đặt cọc", required=True, readonly=True, copy=False,
+                                 default='/')
     _sql_constraints = [
         ('bsd_ma_dat_coc_unique', 'unique (bsd_ma_dat_coc)',
          'Mã đặt cọc đã tồn tại !'),
@@ -123,6 +122,13 @@ class BsdDatCoc(models.Model):
             _logger.debug(dat_coc)
             if dat_coc:
                 raise UserError("Bảng tính giá đã được tạo Đặt cọc. Vui lòng kiểm tra lại!")
+        sequence = False
+        if 'bsd_bao_gia_id' in vals:
+            bao_gia = self.env['bsd.bao_gia'].browse(vals['bsd_bao_gia_id'])
+            sequence = bao_gia.bsd_du_an_id.get_ma_bo_cn(loai_cn=self._name)
+        if not sequence:
+            raise UserError(_('Dự án chưa có mã phiếu đặt cọc'))
+        vals['bsd_ma_dat_coc'] = sequence.next_by_id()
         res = super(BsdDatCoc, self).create(vals)
         ids_bg = res.bsd_bao_gia_id.bsd_bg_ids.ids
         ids_ltt = res.bsd_bao_gia_id.bsd_ltt_ids.ids
