@@ -27,10 +27,14 @@
                         <group>
                             <field name="bsd_cmnd"/>
                             <field name="bsd_ngay_cap_cmnd"/>
-                            <field name="bsd_noi_cap_cmnd"/>
+                            <field name="bsd_noi_cap_cmnd"
+                                   options="{'no_create':true}"
+                                   domain="[('country_id', '=', %(base.vn)d)]"/>
                             <field name="bsd_ho_chieu"/>
                             <field name="bsd_ngay_cap_hc"/>
-                            <field name="bsd_noi_cap_hc"/>
+                            <field name="bsd_noi_cap_hc"
+                                   options="{'no_create':true}"
+                                   domain="[('country_id', '=', %(base.vn)d)]"/>
                             <field name="bsd_mst"/>
                             <!--<field name="state"/>-->
                         </group>
@@ -75,14 +79,13 @@
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="bsd_ma_kh"/>
                 <field name="name"/>
-                <field name="bsd_ngay_sinh"/>
                 <field name="bsd_gioi_tinh"/>
                 <field name="bsd_cmnd"/>
                 <field name="bsd_ho_chieu"/>
-                <field name="phone"/>
                 <field name="mobile"/>
-                <field name="email"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
