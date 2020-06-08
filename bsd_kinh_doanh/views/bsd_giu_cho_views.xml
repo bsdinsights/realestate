@@ -41,7 +41,7 @@
                         <group>
                             <field name="bsd_truoc_mb"/>
                             <field name="bsd_dot_mb_id"
-                                   readonly="1"
+                                   attrs="{'readonly':1}"
                                    options="{'no_create':true}"/>
                             <field name="bsd_bang_gia_id" options="{'no_create':true}"/>
                             <field name="bsd_tien_gc"/>

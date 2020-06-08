@@ -252,10 +252,8 @@ class BsdGiuCho(models.Model):
         if 'bsd_du_an_id' in vals:
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
-        _logger.debug("Tạo giữ chỗ")
-        _logger.debug(sequence)
         if not sequence:
-            raise UserError(_('Please define a sequence on your journal.'))
+            raise UserError(_('Dự án chưa có mã phiếu giữ chỗ'))
         vals['bsd_ma_gc'] = sequence.next_by_id()
         res = super(BsdGiuCho, self).create(vals)
         if res.bsd_unit_id.bsd_dot_mb_id:

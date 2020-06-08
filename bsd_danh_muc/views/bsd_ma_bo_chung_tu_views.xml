@@ -40,6 +40,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="bsd_ten_cn"/>
+                <field name="bsd_ma_cn"/>
                 <field name="bsd_du_an_id"/>
                 <field name="bsd_loai_cn"/>
                 <field name="state"/>

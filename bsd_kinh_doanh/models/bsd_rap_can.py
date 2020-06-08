@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import datetime
 import logging
@@ -13,9 +13,7 @@ class BsdRapCan(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma_rc'
 
-    bsd_ma_rc = fields.Char(string="Mã ráp căn", required=True,
-                            readonly=True,
-                            states={'nhap': [('readonly', False)]})
+    bsd_ma_rc = fields.Char(string="Mã ráp căn", required=True, readonly=True, copy=False, default='/')
     _sql_constraints = [
         ('bsd_ma_rc_unique', 'unique (bsd_ma_rc)',
          'Mã ráp căn đã tồn tại !'),
@@ -137,6 +135,14 @@ class BsdRapCan(models.Model):
         _logger.debug(rap_can)
         if rap_can:
             raise UserError("Giữ chỗ thiện chí thuộc một ráp căn khác.\n Vui lòng kiểm tra lại.")
+        # Sinh mã tự động cho phiếu ráp căn
+        sequence = False
+        if 'bsd_unit_id' in vals:
+            unit = self.env['product.template'].browse(vals['bsd_unit_id'])
+            sequence = unit.bsd_du_an_id.get_ma_bo_cn(loai_cn=self._name)
+        if not sequence:
+            raise UserError(_('Dự án chưa có mã phiếu ráp căn'))
+        vals['bsd_ma_rc'] = sequence.next_by_id()
         res = super(BsdRapCan, self).create(vals)
         return res
 

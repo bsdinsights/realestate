@@ -11,7 +11,7 @@
                 <sheet>
                     <group string="THÔNG TIN CÁ NHÂN">
                         <group>
-                            <field name="bsd_ma_kh"/>
+                            <field name="bsd_ma_kh" readonly="1"/>
                             <field name="bsd_ho_tl" required="1"/>
                             <field name="bsd_ten" required="1"/>
                             <field name="name" string="Họ và tên"/>

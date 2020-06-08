@@ -10,7 +10,7 @@ class ResPartner(models.Model):
 
     bsd_ho_tl = fields.Char(string="Họ và tên lót", help="Họ và tên lót")
     bsd_ten = fields.Char(string="Tên", help="Tên khách hàng")
-    bsd_ma_kh = fields.Char(string="Mã khách hàng", required=True, index=True, copy=False, default='Tạo mới')
+    bsd_ma_kh = fields.Char(string="Mã khách hàng", required=True, index=True, copy=False, default='/')
     bsd_ngay_sinh = fields.Date(string="Ngày sinh", help="Ngày sinh")
     bsd_gioi_tinh = fields.Selection([('nam', 'Nam'), ('nu', 'Nữ')], string="Giới tính", help="Giới tính", default='nam')
     bsd_loai_kh = fields.Selection([('vn', 'Việt Nam'),
@@ -20,7 +20,7 @@ class ResPartner(models.Model):
     bsd_nguoi_bh = fields.Boolean(string="Người bảo hộ", help="Khách hàng có người bảo hộ")
     bsd_cmnd = fields.Char(string="CMND/ CCCD", help="Số CMND/ CCCD")
     bsd_ngay_cap_cmnd = fields.Date(string="Ngày cấp CMND", help="Ngày cấp CMND/ CCCD")
-    bsd_noi_cap_cmnd = fields.Char(string="Nơi cấp CMND", help="Nơi cấp CMND/ CCCD")
+    bsd_noi_cap_cmnd = fields.Many2one('res.country.state', string="Nơi cấp CMND", help="Nơi cấp CMND")
     bsd_ho_chieu = fields.Char(string="Hộ chiếu", help="Số hộ chiếu")
     bsd_ngay_cap_hc = fields.Date(string="Ngày cấp hộ chiếu", help="Ngày cấp hộ chiếu")
     bsd_noi_cap_hc = fields.Char(string="Nơi cấp hộ chiếu", help="Nơi cấp hộ chiếu")
@@ -91,9 +91,9 @@ class ResPartner(models.Model):
     @api.model
     def create(self, vals):
         _logger.debug(vals)
-        if vals.get('bsd_ma_kh', 'Tạo mới') == 'Tạo mới' and not vals.get('is_company'):
+        if vals.get('bsd_ma_kh', '/') == '/' and not vals.get('is_company'):
             vals['bsd_ma_kh'] = self.env['ir.sequence'].next_by_code('bsd.kh_cn') or '/'
-        if vals.get('bsd_ma_kh', 'Tạo mới') == 'Tạo mới' and vals.get('is_company'):
+        if vals.get('bsd_ma_kh', '/') == '/' and vals.get('is_company'):
             vals['bsd_ma_kh'] = self.env['ir.sequence'].next_by_code('bsd.kh_dn') or '/'
         return super(ResPartner, self).create(vals)
 
