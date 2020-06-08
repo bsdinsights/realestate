@@ -261,7 +261,6 @@ class BsdGiuCho(models.Model):
         if res.bsd_unit_id.bsd_dot_mb_id:
             res.write({
                 'bsd_truoc_mb': False,
-                'bsd_dot_mb_id': res.bsd_unit_id.bsd_dot_mb_id.id
             })
         else:
             res.write({
