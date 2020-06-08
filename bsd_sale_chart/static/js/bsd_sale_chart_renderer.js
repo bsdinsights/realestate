@@ -264,10 +264,10 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
         _onCollapseToa: function(event){
             var t =$(event.currentTarget).parent().find(".collapse")
             if (!t.hasClass("show")){
-                $(event.currentTarget).find("i").removeClass("fa-search-plus").addClass("fa-search-minus")
+                $(event.currentTarget).find("i").removeClass("fa-plus-circle").addClass("fa-minus-circle")
             }
             else{
-                $(event.currentTarget).find("i").removeClass("fa-search-minus").addClass("fa-search-plus")
+                $(event.currentTarget).find("i").removeClass("fa-minus-circle").addClass("fa-plus-circle")
             }
          },
         /**
@@ -277,11 +277,11 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             var t =$(event.currentTarget).parent().find(".collapse")
             if (!t.hasClass("show")){
                 console.log("show")
-                $(event.currentTarget).find("i").removeClass("fa-plus").addClass("fa-minus")
+                $(event.currentTarget).find("i").removeClass("fa-chevron-circle-right").addClass("fa-chevron-circle-down")
             }
             else{
                 console.log("hide")
-                $(event.currentTarget).find("i").removeClass("fa-minus").addClass("fa-plus")
+                $(event.currentTarget).find("i").removeClass("fa-chevron-circle-down").addClass("fa-chevron-circle-right")
             }
          },
         /**

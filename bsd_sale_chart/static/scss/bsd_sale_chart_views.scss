@@ -6,6 +6,15 @@
         border-radius: 4px;
         color: #FFF !important;
     }
+    > i {
+        pointer-events:none;
+    }
+    > a {
+        pointer-events:none;
+    }
+    > div {
+        pointer-events:none;
+    }
 }
 .bsd_header_tang{
     font-size: 1.25rem;
@@ -35,6 +44,9 @@
     }
     .bsd_inner_unit{
         margin:5px;
+    }
+    > div {
+        pointer-events:none;
     }
 }
 .chuan_bi{
