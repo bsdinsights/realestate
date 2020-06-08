@@ -98,6 +98,8 @@ class BsdGiuCho(models.Model):
                                     readonly=True, default=0)
     bsd_huy_gc_id = fields.Many2one('bsd.huy_gc', string="Hủy giữ chỗ", help="Mã phiếu hủy giữ chỗ", readonly=1)
 
+    bsd_so_bao_gia = fields.Integer(string="# Báo giá", compute='_compute_bao_gia')
+
     # # R11. khách hàng chuyển nhượng
     # @api.onchange('bsd_du_an_id')
     # def _onchange_unit(self):
@@ -367,3 +369,55 @@ class BsdGiuCho(models.Model):
             pass
         else:
             pass
+
+    # KD.07.11 Tạo Bảng tính giá từ màn hình Giữ chỗ
+    def action_tao_bao_gia(self):
+        context = {
+            'default_bsd_ten_bao_gia': 'Bảng tính giá căn hộ' + self.bsd_unit_id.name,
+            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'default_bsd_giu_cho_id': self.id,
+            'default_bsd_nvbh_id': self.bsd_nvbh_id.id,
+            'default_bsd_san_gd_id': self.bsd_san_gd_id.id,
+            'default_bsd_ctv_id': self.bsd_ctv_id.id,
+            'default_bsd_gioi_thieu_id': self.bsd_gioi_thieu_id.id,
+        }
+        return {
+            "name": "Tạo báo giá",
+            "res_model": 'bsd.bao_gia',
+            "view": [[False, 'form']],
+            "type": 'ir.actions.act_window',
+            "view_mode": "form",
+            "context": context,
+            "target": "new"
+        }
+
+    def _compute_bao_gia(self):
+        for each in self:
+            bao_gia = self.env['bsd.bao_gia'].search([('bsd_giu_cho_id', '=', self.id)])
+            each.bsd_so_bao_gia = len(bao_gia)
+
+    def action_view_bao_gia(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_bao_gia_action').read()[0]
+
+        bao_gia = self.env['bsd.bao_gia'].search([('bsd_giu_cho_id', '=', self.id)])
+        if len(bao_gia) > 1:
+            action['domain'] = [('id', 'in', bao_gia.ids)]
+        elif bao_gia:
+            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_bao_gia_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = bao_gia.id
+        # Prepare the context.
+        context = {
+            'default_bsd_ten_bao_gia': 'Bảng tính giá căn hộ' + self.bsd_unit_id.name,
+            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'default_bsd_giu_cho_id': self.id,
+            'default_bsd_nvbh_id': self.bsd_nvbh_id.id,
+            'default_bsd_san_gd_id': self.bsd_san_gd_id.id,
+            'default_bsd_ctv_id': self.bsd_ctv_id.id,
+            'default_bsd_gioi_thieu_id': self.bsd_gioi_thieu_id.id,
+        }
+        action['context'] = context
+        return action
