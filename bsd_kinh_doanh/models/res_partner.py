@@ -28,7 +28,7 @@ class ResPartner(models.Model):
     bsd_noi_cap_cmnd = fields.Many2one('res.country.state', string="Nơi cấp CMND", help="Nơi cấp CMND")
     bsd_ho_chieu = fields.Char(string="Hộ chiếu", help="Số hộ chiếu")
     bsd_ngay_cap_hc = fields.Date(string="Ngày cấp hộ chiếu", help="Ngày cấp hộ chiếu")
-    bsd_noi_cap_hc = fields.Many2one('res.country.state', string="Nơi cấp CMND", help="Nơi cấp CMND")
+    bsd_noi_cap_hc = fields.Many2one('res.country.state', string="Nơi cấp hộ chiếu", help="Nơi cấp hộ chiếu")
     bsd_mst = fields.Char(string="Mã số thuế", help="Mã số thuế khách hàng")
     bsd_dia_chi_tt = fields.Char(string="Địa chỉ thường chú", help="Địa chỉ thường chú",
                                  compute="_compute_dia_chi_tt", store=True)
