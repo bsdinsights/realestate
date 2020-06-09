@@ -5,7 +5,7 @@ from odoo import models, fields, api
 
 class BsdLoaiSanPham(models.Model):
     _name = "bsd.loai_sp"
-    _rec_name = 'bsd_ten_nhom'
+    _rec_name = 'bsd_ma_nhom'
     _description = 'Thông tin loại sản phẩm'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
@@ -22,3 +22,8 @@ class BsdLoaiSanPham(models.Model):
                               ('inactive', 'Ngưng sử dụng')],
                              string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
 
+    def name_get(self):
+        res = []
+        for loai in self:
+            res.append((loai.id, loai.bsd_ten_nhom))
+        return res
