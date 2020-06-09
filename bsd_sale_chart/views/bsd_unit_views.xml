@@ -48,28 +48,54 @@
                             </group>
                             <group string="DIỆN TÍCH">
                                 <group>
-                                    <field name="bsd_dt_cl" readonly="1"/>
-                                    <field name="bsd_dt_xd" readonly="1"/>
-                                    <field name="bsd_dt_sd" readonly="1"/>
+                                    <label for="bsd_dt_cl"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_dt_cl" class="mr-1" readonly="1"/>
+                                        <span>%</span>
+                                    </div>
+                                    <label for="bsd_dt_xd"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_dt_xd" class="mr-1" readonly="1"/>
+                                        <span>m2</span>
+                                    </div>
+                                    <label for="bsd_dt_sd"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_dt_sd" class="mr-1" readonly="1"/>
+                                        <span>m2</span>
+                                    </div>
                                 </group>
                                 <group>
-                                    <field name="bsd_dt_tt" readonly="1"/>
-                                    <field name="bsd_dt_sh" readonly="1"/>
+                                    <label for="bsd_dt_tt"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_dt_tt" class="mr-1" readonly="1"/>
+                                        <span>m2</span>
+                                    </div>
+                                    <label for="bsd_dt_sh"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_dt_sh" class="mr-1" readonly="1"/>
+                                        <span>m2</span>
+                                    </div>
                                 </group>
                             </group>
                             <group string="BÀN GIAO">
                                 <group>
                                     <field name="bsd_ngay_dkbg" readonly="1"/>
                                     <field name="bsd_thang_pql" readonly="1"/>
+                                    <field name="bsd_don_gia_pql" readonly="1"/>
                                     <field name="bsd_tien_pql" readonly="1"/>
-                                    <field name="bsd_dk_bg" readonly="1"/>
+                                    <label for="bsd_dk_bg"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_dk_bg" class="mr-1" readonly="1"/>
+                                        <span>%</span>
+                                    </div>
                                 </group>
                                 <group>
-                                    <field name="bsd_ngay_bg" readonly="1"/>
-                                    <field name="bsd_ngay_cn" readonly="1"/>
                                     <field name="bsd_ngay_hs" readonly="1"/>
                                     <field name="bsd_tt_vay" readonly="1"/>
+                                    <field name="bsd_ngay_cn" readonly="1"/>
+                                    <field name="bsd_ngay_bg" readonly="1"/>
                                     <field name="currency_id" invisible="1"/>
+                                    <field name="company_id" invisible="1"/>
                                 </group>
                             </group>
                             <group string="ƯU TIÊN">
@@ -98,7 +124,7 @@
                 </sheet>
                 <footer>
                     <button string="Quan tâm" name="action_quan_tam" type="object" class="oe_highlight"/>
-                    <button string="Giữ chỗ" name="action_quan_tam" type="object" class="oe_highlight"/>
+                    <button string="Giữ chỗ" name="action_giu_cho" type="object" class="oe_highlight"/>
                     <button string="Báo giá" name="action_quan_tam" type="object" class="oe_highlight"/>
                 </footer>
             </form>

@@ -115,3 +115,19 @@ class BsdSaleChartWidget(models.AbstractModel):
         return item_ids
 
 
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
+
+    def action_giu_cho(self):
+        product = self.env['product.product'].search([('product_tmpl_id', '=', self.id)], limit=1)
+        context = {
+            'default_bsd_unit_id': product.id,
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+        }
+        action = self.env.ref('bsd_sale_chart.bsd_giu_cho_action').read()[0]
+        action['context'] = context
+        _logger.debug(action)
+        return action
+
+    def action_quan_tam(self):
+        pass

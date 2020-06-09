@@ -433,6 +433,8 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             var unit_id = parseInt($(event.currentTarget).attr('id'))
             this._loadAction('bsd_sale_chart.bsd_product_template_gio_hang_action').then(function(action){
                 action.res_id = unit_id
+                action.flags={'mode': 'readonly'}
+                console.log(action)
                 self.do_action(action)
 
             })
