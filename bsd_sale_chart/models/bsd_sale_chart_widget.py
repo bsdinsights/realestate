@@ -102,7 +102,8 @@ class BsdSaleChartWidget(models.AbstractModel):
                     ON tang.id = unit.bsd_tang_id
                 LEFT JOIN (SELECT unit.product_tmpl_id,COUNT(*) AS so_giu_cho_unit 
                                             FROM bsd_giu_cho AS giu_cho
-                                            LEFT JOIN product_product AS unit ON unit.id = giu_cho.bsd_unit_id
+                                            LEFT JOIN product_product AS unit 
+                                                ON unit.id = giu_cho.bsd_unit_id AND giu_cho.state IN ('dat_cho','giu_cho')
                                             GROUP BY unit.product_tmpl_id) AS giu_cho ON giu_cho.product_tmpl_id = unit.id
                 LEFT JOIN price ON price.unit_id = unit.id
                 LEFT JOIN bsd_loai_sp AS loai

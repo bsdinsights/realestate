@@ -30,6 +30,7 @@ class BsdGiuCho(models.Model):
     bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", required=True,
                                   readonly=True, help="Tên căn hộ",
                                   states={'nhap': [('readonly', False)]})
+    bsd_product_tmpl_id = fields.Many2one(related='bsd_unit_id.product_tmpl_id', store=True)
     bsd_dien_giai = fields.Char(string="Diễn giải",
                                 readonly=True, help="Diễn giải",
                                 states={'nhap': [('readonly', False)]})
