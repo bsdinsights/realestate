@@ -12,10 +12,8 @@ odoo.define('bsd_sale_chart.SaleChartModel', function (require) {
     var SaleChartModel = BasicModel.extend({
         init: function (parent, options) {
             this._super.apply(this, arguments);
-            console.log("init tai model")
         },
         search: function(){
-            console.log("search in model")
         }
 
     });

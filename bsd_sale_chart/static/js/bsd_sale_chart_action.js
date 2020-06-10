@@ -18,7 +18,6 @@ odoo.define('bsd_sale_chart.SaleChartAction', function(require){
             Model: SaleChartModel.SaleChartModel,
         }),
         init: function(parent,params){
-            console.log("Init trong action")
             this._super.apply(this, arguments);
             this.model = new this.config.Model(this, {
                 modelName: "bsd.sale_chart.widget"
@@ -39,8 +38,6 @@ odoo.define('bsd_sale_chart.SaleChartAction', function(require){
 
         _onAction: function(event){
             var self = this;
-            console.log("on action")
-            console.log(event)
             if (event.name === 'change_du_an'){
                 event.data.field = 'bsd_du_an_id',
                 self.renderer.update(event.data)

@@ -164,9 +164,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
         _onSearch: function(event){
             var self = this
             var data_show = [];
-//            console.log("on search in action")
-//            console.log(event)
-//            console.log(self.filter)
             var $chart = self.$('#chart').empty();
             self._rpc({
                     model: 'bsd.sale_chart.widget',
@@ -276,11 +273,9 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
         _onCollapseTang: function(event){
             var t =$(event.currentTarget).parent().find(".collapse")
             if (!t.hasClass("show")){
-                console.log("show")
                 $(event.currentTarget).find("i").removeClass("fa-chevron-circle-right").addClass("fa-chevron-circle-down")
             }
             else{
-                console.log("hide")
                 $(event.currentTarget).find("i").removeClass("fa-chevron-circle-down").addClass("fa-chevron-circle-right")
             }
          },
@@ -296,7 +291,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          */
          _onChangeTuGia: function(event){
             event.stopPropagation();
-            console.log("Giá từ thay đổi")
             var temp = $(event.currentTarget).val()
             if (temp){
                 this.filter.bsd_tu_gia =  Number(temp.replace(/[^0-9.-]+/g,""));
@@ -312,9 +306,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          */
          _onChangeDenGia: function(event){
             event.stopPropagation();
-            console.log("Giá đến thay đổi")
             var temp = $(event.currentTarget).val()
-            console.log(temp)
             if (temp){
                 this.filter.bsd_den_gia =  Number(temp.replace(/[^0-9.-]+/g,""));
                 $(event.currentTarget).val(this._formatCurrency(this.filter.bsd_den_gia))
@@ -329,9 +321,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          */
          _onChangeTuDt: function(event){
             event.stopPropagation();
-            console.log("Diện tích từ thay đổi")
             var temp = $(event.currentTarget).val()
-            console.log(temp)
             if (temp){
                 this.filter.bsd_tu_dt =  parseInt(temp)
             }
@@ -345,9 +335,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          */
          _onChangeDenDt: function(event){
             event.stopPropagation();
-            console.log("Diện tích thay đổi")
             var temp = $(event.currentTarget).val()
-            console.log(temp)
             if (temp){
                 this.filter.bsd_den_dt =  parseInt(temp)
             }
@@ -361,9 +349,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          */
          _onChangeUnit: function(event){
             event.stopPropagation();
-            console.log("Căn hộ thay đổi")
             var temp = $(event.currentTarget).find('.o_input')[0].value
-            console.log(temp)
             if (temp){
                 this.filter.bsd_unit =  temp
             }
@@ -377,9 +363,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          */
          _onChangeView: function(event){
             event.stopPropagation();
-            console.log("View thay đổi")
             var temp = $(event.currentTarget).find('.o_input')[0].value
-            console.log(temp)
             if (temp !== 'false'){
                 this.filter.bsd_view =  temp
             }
@@ -393,10 +377,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          */
          _onChangeHuong: function(event){
             event.stopPropagation();
-            console.log("Hướng thay đổi")
             var temp = $(event.currentTarget).find('.o_input')[0].value
-            console.log(temp)
-            console.log(typeof temp)
             if (temp !== 'false'){
                 this.filter.bsd_huong =  temp
             }
@@ -434,7 +415,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             this._loadAction('bsd_sale_chart.bsd_product_template_gio_hang_action').then(function(action){
                 action.res_id = unit_id
                 action.flags={'mode': 'readonly'}
-                console.log(action)
                 self.do_action(action)
 
             })
@@ -445,12 +425,8 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          */
          _clickTooltip: function(event){
             event.stopPropagation()
-            console.log("click unit")
-            console.log($(event.currentTarget))
-            console.log($(event.target))
             var unit_id = parseInt($(event.currentTarget).attr('id'))
             var data_unit = _.find(this.data, function(item){return item[4] === unit_id})
-            console.log(data_unit)
             $(event.currentTarget).tooltip({
                 template: `<div class="tooltip" role="tooltip">
                                 <div class="arrow"></div>
@@ -470,25 +446,17 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 trigger: "click focus",
                 container: "#chart"
             }).tooltip("show")
-            console.log("đã chạy")
          },
         /**
          * @private tạo giữ chỗ
          */
          _clickGiuCho: function(event){
             event.stopPropagation()
-            console.log("tạo giữ chỗ")
             var self = this
             var unit_id = parseInt($(event.currentTarget).parent().attr('id'))
-            console.log($(event.currentTarget))
-            console.log(unit_id)
             this._loadAction('bsd_sale_chart.bsd_giu_cho_action').then(function(action){
-                console.log(action.context)
-                console.log(typeof action.context)
-                console.log(action)
                 action.context={default_bsd_du_an_id:self.filter.bsd_du_an_id,
                                 default_bsd_unit_id:unit_id}
-                console.log(action.context)
                 self.do_action(action)
             })
          },
@@ -497,7 +465,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          */
          _clickBaoGia: function(event){
             event.stopPropagation()
-            console.log("tạo báo giá")
             var self = this
             this.do_action({
                 name: "Tạo báo giá",
@@ -513,8 +480,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          */
         _onFieldChange: function(event){
             event.stopPropagation();
-            console.log("onchange field")
-            console.log(event)
             var fieldName = event.target.name;
             if (fieldName === 'bsd_du_an_id'){
                 if (event.data.changes.bsd_du_an_id !== false){
@@ -543,8 +508,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
         },
 
         update: function(dataChange){
-            console.log("update in rendder");
-            console.log(dataChange);
             var self = this;
             if (dataChange.field === 'bsd_dot_mb_id'){
                 this._makeRecord(dataChange).then(function (recordID) {
