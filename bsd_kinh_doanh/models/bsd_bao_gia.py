@@ -126,6 +126,14 @@ class BsdBaoGia(models.Model):
     bsd_ngay_hl_bg = fields.Datetime(string="Hiệu lực báo giá", help="Hiệu lực bảng tính giá",
                                      compute="_compute_ngay_hl", store=True)
 
+    bsd_dsh_ids = fields.Many2many('res.partner', string="Đồng sở hữu",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_pt_tt_id = fields.Many2one('bsd.pt_tt', string="Phương thức thanh toán", help="Phương thức thanh toán",
+                                   required=True,
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+
     # R.33 Hiệu lực báo giá
     @api.depends('bsd_ngay_bao_gia')
     def _compute_ngay_hl(self):

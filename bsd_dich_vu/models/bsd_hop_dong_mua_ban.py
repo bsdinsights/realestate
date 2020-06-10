@@ -32,7 +32,7 @@ class BsdHopDongMuaBan(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', related="bsd_dat_coc_id.bsd_bao_gia_id")
+    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', related="bsd_dat_coc_id.bsd_bao_gia_id", store=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án",
                                    related="bsd_dat_coc_id.bsd_du_an_id", store=True)
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Tên đợt mở bán",
@@ -99,6 +99,19 @@ class BsdHopDongMuaBan(models.Model):
                                              ký xác nhận""")
     bsd_ngay_ky_hdb = fields.Datetime(string="Ngày ký hợp đồng", help="Ngày ký hợp đồng mua bán", readonly=True)
 
+    # Cập nhật đồng sở hữu từ báo giá
+    @api.onchange('bsd_dat_coc_id')
+    def _onchange_dat_coc(self):
+        for each in self:
+            lines = [(5, 0, 0)]
+            for line in each.bsd_dat_coc_id.bsd_bao_gia_id.bsd_dsh_ids:
+                vals = {
+                    'bsd_dong_sh_id': line.id,
+                    'bsd_lan_td': 0
+                }
+                lines.append((0, 0, vals))
+            each.bsd_dong_sh_ids = lines
+
     # DV.01.07 - Kiểm tra trùng mã đặt cọc
     @api.constrains('bsd_dat_coc_id')
     def _constrains_dat_coc(self):
@@ -160,8 +173,15 @@ class BsdHopDongMuaBan(models.Model):
         ids_ltt = res.bsd_dat_coc_id.bsd_ltt_ids.ids
         res.write({
             'bsd_bg_ids': [(6, 0, ids_bg)],
-            'bsd_ltt_ids': [(6, 0, ids_ltt)]
+            'bsd_ltt_ids': [(6, 0, ids_ltt)],
         })
+        # # Cập nhật đồng sở hữu từ báo giá
+        # for dsh in dsh_ids:
+        #     self.env['bsd.dong_so_huu'].create({
+        #         'bsd_hd_ban_id': res.id,
+        #         'bsd_dong_sh_id': dsh.id,
+        #         'bsd_lan_td': 0
+        #     })
         return res
 
 
@@ -185,7 +205,7 @@ class BsdDongSoHuu(models.Model):
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True)
     bsd_dong_sh_id = fields.Many2one('res.partner', string="Đồng sở hữu", help="Người đồng sở hữu", required=True)
     bsd_mobile = fields.Char(related='bsd_dong_sh_id.mobile', string="Di động")
-    bsd_email = fields.Char(related='bsd_dong_sh_id.email', string="Thư điện tử")
+    bsd_email = fields.Char(related='bsd_dong_sh_id.email', string="Email")
     bsd_pl_dsh_id = fields.Many2one('bsd.pl_dsh', string="Phụ lục HĐ", help="Phụ lục hợp đồng thay đổi chủ sở hữu",
                                     readonly=True)
     bsd_lan_td = fields.Integer(string="Lần thay đổi", help="Lần thay đổi chủ sở hữu", readonly=True)

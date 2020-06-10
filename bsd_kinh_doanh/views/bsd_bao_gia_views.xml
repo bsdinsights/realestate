@@ -66,6 +66,7 @@
                                     <field name="bsd_bang_gia_id"/>
                                     <field name="bsd_tien_gc"/>
                                     <field name="bsd_tien_dc"/>
+                                    <field name="bsd_pt_tt_id" options="{'no_create':true}"/>
                                 </group>
                             </group>
                             <group string="MÔI GIỚI">
@@ -189,6 +190,16 @@
                                     <field name="bsd_tinh_pbt"/>
                                     <field name="currency_id" invisible="1"/>
                                     <field name="company_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Đồng sở hữu">
+                            <field name="bsd_dsh_ids">
+                                <tree editable="bottom">
+                                    <field name="bsd_ma_kh"/>
+                                    <field name="name" string="Đồng sở hữu"/>
+                                    <field name="mobile"/>
+                                    <field name="email" string="Email"/>
                                 </tree>
                             </field>
                         </page>
