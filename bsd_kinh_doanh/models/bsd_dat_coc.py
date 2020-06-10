@@ -4,6 +4,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import logging
 import datetime
+import calendar
 
 _logger = logging.getLogger(__name__)
 
@@ -224,3 +225,43 @@ class BsdDatCoc(models.Model):
                     each.bsd_tien_ttd = sum(cong_no.mapped('bsd_ps_giam'))
             else:
                 each.bsd_tien_ttd = 0
+
+    # KD.10.07 Tính lại hạn thanh toán khi ký cọc
+    def tinh_lai_han_tt(self):
+        # Kiểm tra ngày ngày tính chính sách thanh toán theo ngày ký đặt cọc hay không
+        if self.bsd_cs_tt_id.bsd_ngay_tinh != 'ndc':
+            pass
+
+        # hàm cộng tháng
+        def add_months(sourcedate, months):
+            month = sourcedate.month - 1 + months
+            year = sourcedate.year + month // 12
+            month = month % 12 + 1
+            day = min(sourcedate.day, calendar.monthrange(year, month)[1])
+            return datetime.date(year, month, day)
+        # ngày ký đặt cọc:
+        ngay_ky_dc = self.bsd_ngay_ky_dc
+        ltts = self.bsd_ltt_ids.sorted('bsd_stt')
+        # kiểm tra cách tính của đợt thanh toán đầu tiên
+        if ltts[0].bsd_cs_tt_ct_id.bsd_cach_tinh != 'td':
+            pass
+        else:
+            ngay_hh_tt_dot = ngay_ky_dc
+            for dot in ltts:
+                lai_phat = dot.bsd_cs_tt_id.bsd_lai_phat_tt_id
+                cs_tt_ct_id = dot.bsd_cs_tt_ct_id  # lấy lại cách sinh lịch thanh toán
+                # Kiểm tra khi gặp đợt không phải tự động sẽ dừng vòng for
+                if cs_tt_ct_id.bsd_cach_tinh != 'td':
+                    break
+
+                if cs_tt_ct_id.bsd_tiep_theo == 'ngay':
+                    ngay_hh_tt_dot += datetime.timedelta(days=cs_tt_ct_id.bsd_so_ngay)
+                else:
+                    ngay_hh_tt_dot = add_months(ngay_hh_tt_dot, cs_tt_ct_id.bsd_so_thang)
+
+                ngay_an_han = ngay_hh_tt_dot + datetime.timedelta(days=lai_phat.bsd_an_han)
+
+                dot.write({
+                    'bsd_ngay_hh_tt': ngay_hh_tt_dot,
+                    'bsd_ngay_ah': ngay_an_han,
+                })
