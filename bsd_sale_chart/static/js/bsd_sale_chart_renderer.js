@@ -342,7 +342,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             else {
                 this.filter.bsd_den_dt =  null
             }
-
          },
         /**
          * @private Lấy giá trị khi thay đổi tên căn hộ
@@ -384,9 +383,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             else {
                 this.filter.bsd_huong =  null
             }
-
          },
-
         /**
          * Loads an action from the database given its ID.
          *
@@ -427,7 +424,18 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             event.stopPropagation()
             var unit_id = parseInt($(event.currentTarget).attr('id'))
             var data_unit = _.find(this.data, function(item){return item[4] === unit_id})
-            $(event.currentTarget).tooltip({
+            this._rpc({
+                model: 'bsd.giu_cho',
+                method: 'search_read',
+                fields: ['bsd_ma_gc', 'bsd_khach_hang_id', 'bsd_stt_bg', 'bsd_ngay_hh_bg', 'state'],
+                domain: [['state', 'in', ['dat_cho','giu_cho']], ['bsd_unit_id', '=', unit_id]]
+            }).then(function(giu_cho){
+                console.log("lấy thông tin giữ chỗ")
+                console.log(giu_cho)
+                var title = `<div>Diện tích sử dụng: ${data_unit[9]} m2</div>
+                             <div>Loại căn hộ: ${data_unit[10]} </div>
+                             <hr style="color:#fff"/>`
+                $(event.currentTarget).tooltip({
                 template: `<div class="tooltip" role="tooltip">
                                 <div class="arrow"></div>
                                 <div class="tooltip-inner bsd_tooltip_title"></div>
@@ -438,14 +446,16 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                                 </div>
                             </div>
                            </div>`,
-                title: `<div>Diện tích sử dụng: ${data_unit[9]} m2</div>
-                        <div>Loại căn hộ: ${data_unit[10]} </div>`,
+                title: title,
                 delay: {show:0, hide:0},
                 selector: '.bsd_title',
                 placement: "top",
                 trigger: "click focus",
                 container: "#chart"
             }).tooltip("show")
+            })
+
+
          },
         /**
          * @private tạo giữ chỗ
