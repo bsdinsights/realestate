@@ -85,13 +85,11 @@ class BsdProject(models.Model):
     bsd_gc_unit_nv_ngay = fields.Integer(string="Căn hộ/NVBH/ngày",
                                          help="""Số lượng giữ chỗ tối đa trên 1 căn hộ mà 1 nhân viên bán hàng 
                                                 được phép thực hiện trong 1 ngày""")
-    bsd_gc_tmb = fields.Integer(string="Giữ chỗ trước mở bán",
-                                help="""Số ngày giữ chỗ có hiệu lực kể từ ngày tạo giữ chỗ, và giữ chỗ được tạo 
-                                        trước khi có đợt mở bán""",
+    bsd_gc_tmb = fields.Integer(string="Giữ chỗ dài hạn",
+                                help="""Thời gian hiệu lực giữ chỗ dài hạn""",
                                 required=True)
-    bsd_gc_smb = fields.Float(string="Giữ chỗ sau mở bán (h)",
-                              help="""Số giờ giữ chỗ có hiệu lực kể từ thời gian tạo giữ chỗ, và giữ chỗ được tạo 
-                                      sau khi có đợt mở bán""",
+    bsd_gc_smb = fields.Float(string="Giữ chỗ ngắn hạn(h)",
+                              help="""Thời gian hiệu lực giữ chỗ ngắn hạn""",
                               required=True)
     bsd_hh_nv = fields.Float(string="Hoa hồng NVBH", required=True,
                              help="Tỷ lệ (%) hoa hồng được hưởng của nhân viên bán hàng")
