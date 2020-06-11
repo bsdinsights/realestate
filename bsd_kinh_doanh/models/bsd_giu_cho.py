@@ -168,16 +168,12 @@ class BsdGiuCho(models.Model):
             self.bsd_tien_gc = 0
 
     # R.05 Tính hạn hiệu lực giữ chỗ
-    @api.depends('bsd_ngay_gc', 'bsd_du_an_id.bsd_gc_tmb')
+    @api.depends('bsd_ngay_gc', 'bsd_du_an_id.bsd_gc_smb')
     def _compute_hl_gc(self):
         for each in self:
             if each.bsd_ngay_gc:
-                if not each.bsd_dot_mb_id:
-                    days = each.bsd_du_an_id.bsd_gc_tmb or 0 if each.bsd_du_an_id else 0
-                    each.bsd_ngay_hh_gc = each.bsd_ngay_gc + datetime.timedelta(days=days)
-                else:
-                    hours = each.bsd_du_an_id.bsd_gc_smb or 0 if each.bsd_du_an_id else 0
-                    each.bsd_ngay_hh_gc = each.bsd_ngay_gc + datetime.timedelta(hours=hours)
+                hours = each.bsd_du_an_id.bsd_gc_smb or 0 if each.bsd_du_an_id else 0
+                each.bsd_ngay_hh_gc = each.bsd_ngay_gc + datetime.timedelta(hours=hours)
 
     # R.08 Tính hạn hiệu lực giữ chỗ sau thanh toán
     @api.depends('bsd_ngay_tt', 'bsd_du_an_id.bsd_gc_tmb')
