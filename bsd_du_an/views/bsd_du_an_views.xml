@@ -105,8 +105,16 @@
                                 </group>
                                 <group>
                                     <field name="bsd_gc_unit_nv_ngay"/>
-                                    <field name="bsd_gc_tmb"/>
-                                    <field name="bsd_gc_smb" widget="float_time"/>
+                                    <label for="bsd_gc_tmb"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_gc_tmb" class="mr-1"/>
+                                        <span>ngày</span>
+                                    </div>
+                                    <label for="bsd_gc_smb"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_gc_smb" class="mr-1" widget="float_time"/>
+                                        <span>giờ</span>
+                                    </div>
                                 </group>
                             </group>
                         </page>
