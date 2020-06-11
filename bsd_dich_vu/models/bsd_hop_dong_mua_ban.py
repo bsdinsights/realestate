@@ -211,3 +211,17 @@ class BsdDongSoHuu(models.Model):
     bsd_lan_td = fields.Integer(string="Lần thay đổi", help="Lần thay đổi chủ sở hữu", readonly=True)
     state = fields.Selection([('active', 'Đang hiệu lực'), ('inactive', 'Hết hiệu lực')], default='active',
                              string="Trạng thái", required=True, readonly=True)
+
+
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+
+    bsd_hd_ban_ids = fields.One2many('bsd.hd_ban', 'bsd_khach_hang_id', string="Danh sách hợp đồng",
+                                     domain=[('state', '!=', 'nhap')])
+
+    bsd_sl_hd_ban = fields.Integer(string="# Hợp đồng", compute="_compute_sl_hd", store=True)
+
+    @api.depends('bsd_hd_ban_ids', 'bsd_hd_ban_ids.state')
+    def _compute_sl_hd(self):
+        for each in self:
+            each.bsd_sl_hd_ban = len(each.bsd_hd_ban_ids)

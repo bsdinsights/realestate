@@ -91,6 +91,64 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="bsd_res_partner_cn_kanban">
+        <field name="name">bsd.res.partner.cn.kanban</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+                <kanban class="o_res_partner_kanban">
+                    <field name="id"/>
+                    <field name="color"/>
+                    <field name="display_name"/>
+                    <field name="email"/>
+                    <field name="is_company"/>
+                    <field name="phone"/>
+                    <field name="mobile"/>
+                    <field name="image_128"/>
+                    <field name="parent_id"/>
+                    <field name="type"/>
+                    <field name="bsd_dia_chi_lh"/>
+                    <field name="bsd_sl_giu_cho"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
+                                <t t-if="!record.is_company.raw_value">
+                                    <t t-if="record.type.raw_value === 'delivery'" t-set="placeholder" t-value="'/base/static/img/truck.png'"/>
+                                    <t t-elif="record.type.raw_value === 'invoice'" t-set="placeholder" t-value="'/base/static/img/money.png'"/>
+                                    <t t-else="" t-set="placeholder" t-value="'/base/static/img/avatar_grey.png'"/>
+                                    <div class="o_kanban_image_fill_left d-none d-md-block" t-attf-style="background-image:url('#{kanban_image('res.partner', 'image_128', record.id.raw_value,  placeholder)}')">
+                                        <img class="o_kanban_image_inner_pic" t-if="record.parent_id.raw_value" t-att-alt="record.parent_id.value" t-att-src="kanban_image('res.partner', 'image_128', record.parent_id.raw_value)"/>
+                                    </div>
+                                    <div class="o_kanban_image rounded-circle d-md-none" t-attf-style="background-image:url('#{kanban_image('res.partner', 'image_128', record.id.raw_value,  placeholder)}')">
+                                        <img class="o_kanban_image_inner_pic" t-if="record.parent_id.raw_value" t-att-alt="record.parent_id.value" t-att-src="kanban_image('res.partner', 'image_128', record.parent_id.raw_value)"/>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <t t-set="placeholder" t-value="'/base/static/img/company_image.png'"/>
+                                    <div class="o_kanban_image_fill_left o_kanban_image_full" t-attf-style="background-image: url(#{kanban_image('res.partner', 'image_128', record.id.raw_value, placeholder)})" role="img"/>
+                                </t>
+                                <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title oe_partner_heading"><field name="name"/></strong>
+                                    <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
+                                    <div><span>Mã:</span><field name="bsd_ma_kh"/></div>
+                                    <ul>
+                                        <li t-if="record.mobile.raw_value" class="o_text_overflow"><field name="mobile"/></li>
+                                        <li t-if="record.email.raw_value" class="o_text_overflow"><field name="email"/></li>
+                                        <li t-if="record.bsd_dia_chi_lh.raw_value" class="o_text_overflow"><field name="bsd_dia_chi_lh"/></li>
+                                        <li name="tien_ich">
+                                            <span class="badge badge-pill" modifiers="{}">
+                                                <i class="fa fa-fw fa-usd" aria-label="Giữ chỗ" role="img" title="Giữ chỗ" modifiers="{}"></i>
+                                                <field name="bsd_sl_giu_cho"/>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+        </field>
+    </record>
+
     <record model="ir.ui.view" id="bsd_res_partner_cn_filter">
         <field name="name">bsd.res.partner.cn.filter</field>
         <field name="model">res.partner</field>
@@ -104,7 +162,7 @@
     <record model="ir.actions.act_window" id="bsd_res_partner_cn_action">
         <field name="name">Khách hàng cá nhân</field>
         <field name="res_model">res.partner</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">kanban,tree,form</field>
         <field name="domain">[('is_company','=',False)]</field>
         <field name="context">{'default_company_type':'person', 'default_is_company':False}</field>
         <field name="help" type="xml">
@@ -113,6 +171,7 @@
         <field name="view_id" ref="bsd_res_partner_cn_tree"/>
         <field name="view_ids"
                eval="[(5, 0, 0),
+                      (0, 0, {'view_mode': 'kanban', 'view_id': ref('bsd_res_partner_cn_kanban')}),
                       (0, 0, {'view_mode': 'tree', 'view_id': ref('bsd_res_partner_cn_tree')}),
                       (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_res_partner_cn_form')})]"/>
         <field name="search_view_id" ref="bsd_res_partner_cn_filter"/>

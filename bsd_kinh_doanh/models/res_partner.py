@@ -50,6 +50,16 @@ class ResPartner(models.Model):
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Không sử dụng')],
                              string="Trạng thái", default='active', required=True, tracking=1)
+
+    bsd_giu_cho_ids = fields.One2many('bsd.giu_cho', 'bsd_kh_moi_id', string="Danh sách giữ chỗ", domain=[('state', '!=', 'nhap')])
+
+    bsd_sl_giu_cho = fields.Integer(string="# Giữ chỗ", compute="_compute_sl_gc", store=True)
+
+    @api.depends('bsd_giu_cho_ids', 'bsd_giu_cho_ids.state')
+    def _compute_sl_gc(self):
+        for each in self:
+            each.bsd_sl_giu_cho = len(each.bsd_giu_cho_ids)
+
     # R.01 Ràng buộc số điện thoại là duy nhất
     _sql_constraints = [
         ('mobile_unique', 'unique (mobile)',

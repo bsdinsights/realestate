@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_res_partner_cn_kanban_inherit">
+        <field name="name">bsd.res.partner.cn.kanban.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="bsd_kinh_doanh.bsd_res_partner_cn_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='email']" position="after">
+                <field name="bsd_sl_hd_ban"/>
+            </xpath>
+            <xpath expr="//li[@name='tien_ich']" position="inside">
+                <span class="badge badge-pill" modifiers="{}">
+                    <i class="fa fa-fw fa-edit" aria-label="Hợp đồng" role="img" title="Hợp đồng" modifiers="{}"></i>
+                    <field name="bsd_sl_hd_ban"/>
+                </span>
+            </xpath>
+        </field>
+    </record>
+</odoo>
