@@ -85,7 +85,7 @@ class BsdProject(models.Model):
     bsd_gc_unit_nv_ngay = fields.Integer(string="Căn hộ/NVBH/ngày",
                                          help="""Số lượng giữ chỗ tối đa trên 1 căn hộ mà 1 nhân viên bán hàng 
                                                 được phép thực hiện trong 1 ngày""")
-    bsd_gc_tmb = fields.Integer(string="Giữ chỗ dài hạn",
+    bsd_gc_tmb = fields.Integer(string="Giữ chỗ dài hạn (ngày)",
                                 help="""Thời gian hiệu lực giữ chỗ dài hạn""",
                                 required=True)
     bsd_gc_smb = fields.Float(string="Giữ chỗ ngắn hạn(h)",
