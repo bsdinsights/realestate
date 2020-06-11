@@ -129,7 +129,7 @@ class BsdRapCan(models.Model):
 
     # KD.06.06 Ràng buộc giữ chỗ thiện chí khi ráp căn
     @api.model
-    def create(self,vals):
+    def create(self, vals):
         rap_can = self.env['bsd.rap_can'].search([('bsd_gc_tc_id', '=', vals['bsd_gc_tc_id']),
                                                   ('state', '!=', 'huy')])
         _logger.debug(rap_can)
@@ -138,8 +138,8 @@ class BsdRapCan(models.Model):
         # Sinh mã tự động cho phiếu ráp căn
         sequence = False
         if 'bsd_unit_id' in vals:
-            unit = self.env['product.template'].browse(vals['bsd_unit_id'])
-            sequence = unit.bsd_du_an_id.get_ma_bo_cn(loai_cn=self._name)
+            unit = self.env['product.product'].browse(vals['bsd_unit_id'])
+            sequence = unit.product_tmpl_id.bsd_du_an_id.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
             raise UserError(_('Dự án chưa có mã phiếu ráp căn'))
         vals['bsd_ma_rc'] = sequence.next_by_id()
