@@ -161,7 +161,7 @@ class BsdThuHoi(models.Model):
         for unit_ph in units_ph:
             # cập nhật đợt mở bán cho giữ chỗ
             giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', unit_ph.id)])
-            giu_cho_unit.write({'bsd_dot_mb_id': self.id})
+            giu_cho_unit.write({'bsd_dot_mb_id': self.bsd_dot_mb_id.id})
             # lọc các giữ chỗ của unit đã thanh toán
             giu_cho_ids = giu_cho_unit.filtered(lambda g: g.state == 'giu_cho' and g.bsd_thanh_toan == 'da_tt')
             if giu_cho_ids:
@@ -174,7 +174,7 @@ class BsdThuHoi(models.Model):
                 id_gc_sorted = [g[0] for g in gc_sorted]
                 stt = 0
                 time_gc = self.bsd_du_an_id.bsd_gc_smb
-                ngay_ph = self.bsd_ngay_ph
+                ngay_ph = self.bsd_dot_mb_id.bsd_ngay_ph
                 for giu_cho in self.env['bsd.giu_cho'].browse(id_gc_sorted):
                     stt += 1
                     ngay_ph += datetime.timedelta(hours=time_gc)

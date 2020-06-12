@@ -434,7 +434,15 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 console.log(giu_cho)
                 var title = `<div>Diện tích sử dụng: ${data_unit[9]} m2</div>
                              <div>Loại căn hộ: ${data_unit[10]} </div>
-                             <hr style="color:#fff"/>`
+                             <table class="table table-bordered table-sm">
+                                <thead>
+                                    <tr>
+                                        <td>Mã giữ chỗ</td>
+                                        <td>Khách hàng</td>
+                                        <td>Số thứ tự </td>
+                                    </tr>
+                                </thead>
+                             </table>`
                 $(event.currentTarget).tooltip({
                 template: `<div class="tooltip" role="tooltip">
                                 <div class="arrow"></div>
