@@ -13,9 +13,7 @@ class BsdDotMoBan(models.Model):
     _rec_name = 'bsd_ten_dot_mb'
     _description = 'Thông tin đợt mở bán'
 
-    bsd_ma_dot_mb = fields.Char(string="Mã đợt mở bán", required=True,
-                                readonly=True,
-                                states={'cph': [('readonly', False)]})
+    bsd_ma_dot_mb = fields.Char(string="Mã đợt mở bán", required=True, readonly=True, copy=False, default='/')
     _sql_constraints = [
         ('bsd_ma_dot_mb_unique', 'unique (bsd_ma_dot_mb)',
          'Mã đợt mở bán đã tồn tại !'),
@@ -74,8 +72,8 @@ class BsdDotMoBan(models.Model):
                                 readonly=True,
                                 states={'cph': [('readonly', False)]})
     state = fields.Selection([('cph', 'Chưa phát hành'), ('ph', 'Phát hành'),
-                              ('thnb', 'Thu hồi mở bán'), ('thch', 'Thu hồi căn hộ')],
-                             string="Trạng thái", default="cph", tracking=1)
+                              ('thmb', 'Thu hồi mở bán'), ('thch', 'Thu hồi căn hộ')],
+                             string="Trạng thái", default="cph", tracking=1, required=True)
     bsd_san_gd = fields.Boolean(string="Sàn giao dịch", default=False,
                                 help="""Thông tin quy định đợt mở bán chỉ cho phép các sàn giao dịch được bán, 
                                         hay cho sàn giao dịch và chủ đầu tư đều được bán""",
@@ -95,7 +93,11 @@ class BsdDotMoBan(models.Model):
                                  states={'cph': [('readonly', False)]})
     bsd_ph_ids = fields.One2many('bsd.dot_mb_unit', 'bsd_dot_mb_id', string="Phát hành unit",
                                  readonly=True,
+                                 domain=[('state', '=', 'phat_hanh')],
                                  states={'cph': [('readonly', False)]})
+    bsd_th_ids = fields.One2many('bsd.dot_mb_unit', 'bsd_dot_mb_id', string="Thu hồi unit",
+                                 readonly=True,
+                                 domain=[('state', '=', 'thu_hoi')])
 
     def action_loc_unit(self):
         # gán giá trị biến nội hàm
@@ -153,6 +155,7 @@ class BsdDotMoBan(models.Model):
                     'bsd_dot_mb_id': self.id
                 })
 
+    # Phát hành
     def action_phat_hanh(self):
         # kiểm tra trạng thái record
         if self.state != 'cph':
@@ -160,7 +163,7 @@ class BsdDotMoBan(models.Model):
         else:
             # lấy tất cả unit chuẩn bị phát hành ở trạng thái chuẩn bị đặt chỗ, giữ chỗ
             units = self.bsd_cb_ids.mapped('bsd_unit_id').filtered(lambda x: x.state in ['chuan_bi', 'dat_cho',
-                                                                                         'giu_cho', 'san_sang'])
+                                                                                         'giu_cho'])
             # các chuẩn bị không đúng trạng thái
             cb_no_state = self.bsd_cb_ids.filtered(lambda c: c.bsd_unit_id not in units)
             cb_no_state.write({
@@ -170,23 +173,16 @@ class BsdDotMoBan(models.Model):
             cb_state = self.bsd_cb_ids - cb_no_state
             # lọc các unit thỏa điều kiện trường ưu tiên là không và không có đợt mở bán
             no_uu_dot_no_mb_units = units.filtered(lambda x: x.bsd_uu_tien == '0' and not x.bsd_dot_mb_id)
-            _logger.debug('không uu tien ko đợt phát hành')
-            _logger.debug(no_uu_dot_no_mb_units)
             # lọc các unit thỏa điều kiện trường ưu tiên là không và có đợt mở bán
             no_uu_dot_mb_units = units.filtered(lambda x: x.bsd_uu_tien == '0' and x.bsd_dot_mb_id)
-            _logger.debug('không uu tien có đợt phát hành')
-            _logger.debug(no_uu_dot_mb_units)
+
             # các chuẩn bị đúng trạng thái, đang được ưu tiên
             cb_uu = cb_state.filtered(lambda u: u.bsd_unit_id.bsd_uu_tien == '1')
-            _logger.debug("các chuẩn bị đã ưu tiên")
-            _logger.debug(cb_uu)
             cb_uu.write({
                 'bsd_ly_do': 'dd_ut',
             })
             # lọc các unit không ưu tiên có đợt mở bán chưa phát hành
             no_ph_units = no_uu_dot_mb_units.filtered(lambda x: x.bsd_dot_mb_id.state != 'ph')
-            _logger.debug('không uu tien có đợt mở bán chưa phát hành')
-            _logger.debug(no_ph_units)
             ph_units = no_uu_dot_mb_units.filtered(lambda x: x.bsd_dot_mb_id.state == 'ph')
             # kiểm tra các unit không trùng với đợt mở bán hiện tại đang phát hành
             diff_mb_units = ph_units.filtered(lambda x: (x.bsd_dot_mb_id.bsd_tu_ngay < self.bsd_tu_ngay
@@ -194,13 +190,9 @@ class BsdDotMoBan(models.Model):
                                                             or (x.bsd_dot_mb_id.bsd_tu_ngay > self.bsd_den_ngay
                                                                 and x.bsd_dot_mb_id.bsd_den_ngay > self.bsd_den_ngay)
                                               )
-            _logger.debug('diff_mb_units')
-            _logger.debug(diff_mb_units)
             # các chuẩn bị trùng với đợt mở bán khác
             cb_trung = (cb_state - cb_uu).filtered(lambda t: t.bsd_unit_id not in diff_mb_units
                                                    and t.bsd_unit_id.bsd_dot_mb_id)
-            _logger.debug("các chuẩn bị trùng đợt mở bán")
-            _logger.debug(cb_trung)
             cb_trung.write({
                 'bsd_ly_do': 'dang_mb',
             })
@@ -238,11 +230,6 @@ class BsdDotMoBan(models.Model):
                     'bsd_dot_mb_id': self.id,
                     'state': 'san_sang',
                 })
-            elif unit.state == 'dat_cho':
-                unit.write({
-                    'bsd_dot_mb_id': self.id,
-                    'state': 'giu_cho',
-                })
             else:
                 unit.write({
                     'bsd_dot_mb_id': self.id,
@@ -256,10 +243,11 @@ class BsdDotMoBan(models.Model):
         #  KD.04.08 Tính hạn báo giá  của giữ chỗ sau khi phát hành đợt mở bán
         units_ph = self.bsd_ph_ids.mapped('bsd_unit_id')
         for unit_ph in units_ph:
-            giu_cho_ids = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', unit_ph.id),
-                                                          ('bsd_dot_mb_id', '=', self.id),
-                                                          ('state', 'in', ['dat_cho', 'giu_cho']),
-                                                          ('bsd_thanh_toan', '=', 'da_tt')])
+            # KD.04.09 cập nhật đợt mở bán cho giữ chỗ
+            giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', unit_ph.id)])
+            giu_cho_unit.write({'bsd_dot_mb_id': self.id})
+            # lọc các giữ chỗ của unit đã thanh toán
+            giu_cho_ids = giu_cho_unit.filtered(lambda g: g.state == 'giu_cho' and g.bsd_thanh_toan == 'da_tt')
             if giu_cho_ids:
                 gc = giu_cho_ids.filtered(lambda x: not x.bsd_rap_can_id).sorted('id')
                 gc_no_rc = zip(gc.mapped('id'), gc.mapped('bsd_ngay_tt'))
@@ -275,14 +263,51 @@ class BsdDotMoBan(models.Model):
                     stt += 1
                     ngay_ph += datetime.timedelta(hours=time_gc)
                     # KD.04.07 cập nhật trạng thái giữ chỗ khi phát hành
-                    if giu_cho.state == 'dat_cho' and giu_cho.bsd_thanh_toan == 'da_tt':
-                        giu_cho.write({
-                            'state': 'giu_cho',
-                        })
+                    # if giu_cho.state == 'dat_cho' and giu_cho.bsd_thanh_toan == 'da_tt':
+                    #     giu_cho.write({
+                    #         'state': 'giu_cho',
+                    #     })
                     giu_cho.write({
                         'bsd_stt_bg': stt,
                         'bsd_ngay_hh_bg': ngay_ph
                     })
+
+    # Thu hồi toàn bộ đợt mở bán
+    def action_thu_hoi(self):
+        _logger.debug('Thu hồi đợt mơt bán')
+        # Kiểm tra trạng thái record
+        if self.state != 'ph':
+            pass
+        else:
+            dk = self.bsd_ph_ids.filtered(lambda p: p.bsd_unit_id.state != 'san_sang')
+            _logger.debug(dk)
+            if dk:
+                raise UserError('Đợt mở bán đang có giao dịch. Vui lòng kiểm tra lại!')
+            # chuyển trạng thái đợt phát hành
+            self.write({
+                'state': 'thmb',
+            })
+            # chuyển unit từ tab phát hành sang thu hồi
+            self.bsd_ph_ids.write({
+                'state': 'thu_hoi',
+            })
+            # chuyển trạng thái unit từ sẵn sàng về chuẩn bị
+            _logger.debug(self.bsd_th_ids)
+            self.bsd_th_ids.mapped('bsd_unit_id').write({
+                'state': 'chuan_bi',
+                'bsd_dot_mb_id': False
+            })
+
+    @api.model
+    def create(self, vals):
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
+        if not sequence:
+            raise UserError(_('Dự án chưa có mã đợt mở bán'))
+        vals['bsd_ma_dot_mb'] = sequence.next_by_id()
+        res = super(BsdDotMoBan, self).create(vals)
+        return res
 
 
 class BsdDotMoBanSanGiaoDich(models.Model):
@@ -352,8 +377,8 @@ class BsdDotMoBanCB(models.Model):
         _logger.debug("Tạo chuẩn bị")
         _logger.debug(vals)
         if 'bsd_unit_id' in vals.keys() and 'bsd_dot_mb_id' in vals.keys():
-            if self.env['bsd.dot_mb_cb'].search([('bsd_unit_id', '=',vals['bsd_unit_id']),
-                                                 ('bsd_dot_mb_id', '=',vals['bsd_dot_mb_id'])]):
+            if self.env['bsd.dot_mb_cb'].search([('bsd_unit_id', '=', vals['bsd_unit_id']),
+                                                 ('bsd_dot_mb_id', '=', vals['bsd_dot_mb_id'])]):
                 raise UserError("Đợt mở bán đã có unit")
         rec = super(BsdDotMoBanCB, self).create(vals)
         return rec
@@ -383,3 +408,7 @@ class BsdDotMoBanUnit(models.Model):
     bsd_gia_ban = fields.Monetary(string="Giá bán", required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+    state = fields.Selection([('phat_hanh', 'Phát hành'), ('thu_hoi', 'Thu hồi')], string="Trạng thái",
+                             required="True", default='phat_hanh', help="Tráng thái")
+    bsd_thu_hoi_id = fields.Many2one('bsd.thu_hoi', string="Thu hồi", help="Thu hồi", readonly=True)
+    bsd_them_unit_id = fields.Many2one('bsd.them_unit', string="Thêm căn hộ", help="Thêm căn hộ", readonly=True)

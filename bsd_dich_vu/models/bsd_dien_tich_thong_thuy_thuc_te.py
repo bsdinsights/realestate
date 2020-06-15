@@ -3,6 +3,7 @@
 from odoo import models, fields, api
 from odoo.tools.float_utils import float_round
 from odoo.exceptions import UserError
+import datetime
 
 
 class BsdDTTTTT(models.Model):
@@ -19,7 +20,7 @@ class BsdDTTTTT(models.Model):
          'Số chứng từ đã tồn tại !'),
     ]
     bsd_ngay_ct = fields.Datetime(string="Ngày cập nhật", help="Ngày cập nhật", required=True,
-                                  default=fields.Datetime.now(),
+                                  default=lambda self: fields.Datetime.now(),
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_so_lan = fields.Integer(string="Lần cập nhật", help="Lần cập nhật",

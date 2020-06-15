@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
+import datetime
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -19,7 +20,7 @@ class BsdPLDSH(models.Model):
          'Mã phụ lục hợp đồng đã tồn tại !'),
     ]
     bsd_ngay_pl_dsh = fields.Datetime(string="Ngày", help="Ngày phụ lục hợp đồng", required=True,
-                                      default=fields.Datetime.now(),
+                                      default=lambda self: fields.Datetime.now(),
                                       readonly=True,
                                       states={'nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,
@@ -30,12 +31,16 @@ class BsdPLDSH(models.Model):
                                     states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one(string="Dự án", help="Tên dự án", related='bsd_hd_ban_id.bsd_du_an_id', store=True)
     bsd_unit_id = fields.Many2one(string="Căn hộ", help="Tên căn hộ", related='bsd_hd_ban_id.bsd_unit_id', store=True)
-    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
+    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
     bsd_ngay_ky_pl = fields.Datetime(string="Ngày ký phụ lục", help="Ngày ký phụ lục đồng sở hữu", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('dk_pl', 'Đã ký phụ lục'), ('huy', 'Hủy')],
                              string="Trạng thái", help="Trạng thái", required=True, default="nhap", tracking=1)
-    bsd_moi_ids = fields.One2many('bsd.pl_dsh_moi', 'bsd_pl_dsh_id', string="Đồng sở hữu mới")
+    bsd_moi_ids = fields.One2many('bsd.pl_dsh_moi', 'bsd_pl_dsh_id', string="Đồng sở hữu mới",
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_cu_ids = fields.One2many('bsd.pl_dsh_cu', 'bsd_pl_dsh_id', string="Đồng sở hữu cũ", readonly=True)
 
     # DV.02.01 - Xác nhận phụ lục hợp đồng
@@ -65,7 +70,7 @@ class BsdPLDSH(models.Model):
                     'bsd_dong_sh_id': moi.bsd_dong_sh_id.id,
                     'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
                     'bsd_pl_dsh_id': self.id,
-                    'bsd_lan_td': 0,
+                    'bsd_lan_td': 1,
                     'state': 'active',
                 })
         else:

@@ -57,29 +57,61 @@
                     </group>
                     <group string="DIỆN TÍCH">
                         <group>
-                            <field name="bsd_dt_cl"/>
-                            <field name="bsd_dt_xd"/>
-                            <field name="bsd_dt_sd"/>
+                            <label for="bsd_dt_cl"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_dt_cl" class="mr-1"/>
+                                <span>%</span>
+                            </div>
+                            <label for="bsd_dt_xd"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_dt_xd" class="mr-1"/>
+                                <span>m2</span>
+                            </div>
+                            <label for="bsd_dt_sd"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_dt_sd" class="mr-1"/>
+                                <span>m2</span>
+                            </div>
                         </group>
                         <group>
-                            <field name="bsd_dt_tt"/>
-                            <field name="bsd_dt_sh"/>
+                            <label for="bsd_dt_tt"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_dt_tt" class="mr-1"/>
+                                <span>m2</span>
+                            </div>
+                            <label for="bsd_dt_sh"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_dt_sh" class="mr-1"/>
+                                <span>m2</span>
+                            </div>
                         </group>
                     </group>
                     <group string="GIÁ BÁN">
                         <group>
                             <field name="bsd_tien_gc"/>
                             <field name="bsd_tien_dc"/>
-                            <field name="bsd_tl_tc"/>
+                            <label for="bsd_tl_tc"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_tl_tc" class="mr-1"/>
+                                <span>%</span>
+                            </div>
                             <field name="bsd_don_gia"/>
                             <field name="bsd_gia_ban"/>
                             <field name="bsd_qsdd_m2"/>
                         </group>
                         <group>
                             <field name="bsd_tien_qsdd"/>
-                            <field name="bsd_tl_pbt"/>
+                            <label for="bsd_tl_pbt"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_tl_pbt" class="mr-1"/>
+                                <span>%</span>
+                            </div>
                             <field name="bsd_tien_pbt"/>
-                            <field name="bsd_thue_suat"/>
+                            <label for="bsd_thue_suat"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_thue_suat" class="mr-1"/>
+                                <span>%</span>
+                            </div>
                             <field name="bsd_tien_thue"/>
                             <field name="bsd_tong_gb"/>
                         </group>
@@ -99,15 +131,21 @@
                         <group>
                             <field name="bsd_ngay_dkbg" readonly="1"/>
                             <field name="bsd_thang_pql"/>
+                            <field name="bsd_don_gia_pql"/>
                             <field name="bsd_tien_pql"/>
-                            <field name="bsd_dk_bg"/>
+                            <label for="bsd_dk_bg"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_dk_bg" class="mr-1"/>
+                                <span>%</span>
+                            </div>
                         </group>
                         <group>
-                            <field name="bsd_ngay_bg" readonly="1"/>
-                            <field name="bsd_ngay_cn" readonly="1"/>
                             <field name="bsd_ngay_hs"/>
                             <field name="bsd_tt_vay"/>
+                            <field name="bsd_ngay_cn" readonly="1"/>
+                            <field name="bsd_ngay_bg" readonly="1"/>
                             <field name="currency_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
                         </group>
                     </group>
                     <group string="ƯU TIÊN">

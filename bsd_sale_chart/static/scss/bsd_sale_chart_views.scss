@@ -1,0 +1,150 @@
+.bsd_header_toa{
+    font-size: 1.5rem;
+    background: #00008B;
+    color: #FFF;
+    .bsd_state{
+        border-radius: 4px;
+        color: #FFF !important;
+    }
+    > i {
+        pointer-events:none;
+    }
+    > a {
+        pointer-events:none;
+    }
+    > div {
+        pointer-events:none;
+    }
+}
+.bsd_header_tang{
+    font-size: 1.25rem;
+    margin-left: 1rem;
+    background: #D3D3D3;
+    .bsd_title{
+        color: #666666 !important;
+    }
+    .bsd_state{
+        border-radius: 4px;
+        color: #FFF !important;
+    }
+}
+.bsd_unit{
+    color: #FFF !important;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    width: 160px;
+    height:100px;
+    .bsd_title{
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    .bsd_gia{
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+    .bsd_inner_unit{
+        margin:5px;
+    }
+    > div {
+        pointer-events:none;
+    }
+}
+.chuan_bi{
+    background: #FFC000;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+}
+.san_sang{
+    background: #00B050;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+}
+.dat_cho{
+    background: #00d1d4;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+}
+.giu_cho{
+    background: #00B0F0;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+}
+.dat_coc{
+    background: #339966;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+}
+.chuyen_coc{
+    background: #7030A0;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+}
+.da_thu_coc{
+    background: #ED7D31;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+}
+.hoan_tat_dat_coc{
+    background: #FFFFFF;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+}
+.thanh_toan_dot_1{
+    background: #FFFFFF;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+}
+.ky_thoa_thuan_coc{
+    background: #FFFFFF;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+}
+.du_dieu_kien{
+    background: #FFFFFF;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+}
+.da_ban{
+    background: #FFFFFF;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+}
+.bsd_tooltip_action {
+    background-color: black;
+    .bsd_quan_tam{
+        color: #4169E1 ;
+        cursor: pointer;
+        text-decoration: underline;
+        &:hover {
+            color:#fff;
+        }
+    };
+    .bsd_giu_cho{
+        color: #4169E1 ;
+        cursor: pointer;
+        text-decoration: underline;
+        &:hover {
+            color:#fff;
+        }
+    };
+    .bsd_bao_gia{
+        color: #4169E1 ;
+        cursor: pointer;
+        text-decoration: underline;
+        &:hover {
+            color:#fff;
+        }
+    };
+}

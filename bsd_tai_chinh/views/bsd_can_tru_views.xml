@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_can_tru_form">
+        <field name="name">bsd.can_tru.form</field>
+        <field name="model">bsd.can_tru</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Cấn trừ"
+                            name="action_can_tru"
+                            type="object"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                            class="oe_highlight"
+                    />
+                    <button string="Hủy cấn trừ"
+                            name="action_huy_can_tru"
+                            type="object"
+                            states="can_tru"
+                    />
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_khach_hang_id"
+                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_ma_kh"/>
+                            <field name="bsd_ngay_can_tru"/>
+                            <field name="bsd_tien_can_tru"/>
+                        </group>
+                        <group>
+                            <field name="bsd_loai_ct"/>
+                            <field name="bsd_phieu_thu_id"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id]),
+                                            ('bsd_loai_pt', 'in', ['tra_truoc','khac']),
+                                            ('state', '=', 'da_gs')]"/>
+                            <field name="bsd_ngay_ct"/>
+                            <field name="bsd_tien_con_lai"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <button string="Load" name="action_load" type="object" class="oe_right oe_highlight"/>
+                    <field name="bsd_ct_ids" nolabel="1" >
+                        <tree editable="top" create="false" delete="false">
+                            <field name="bsd_loai_ct"/>
+                            <field name="bsd_so_ct"/>
+                            <field name="bsd_ngay_ct"/>
+                            <field name="bsd_tien"/>
+                            <field name="bsd_tien_phai_tt"/>
+                            <field name="bsd_tien_can_tru"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </tree>
+                    </field>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_can_tru_tree">
+        <field name="name">bsd.can_tru.tree</field>
+        <field name="model">bsd.can_tru</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_ma_kh" readonly="1"/>
+                <field name="bsd_phieu_thu_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_can_tru_action">
+        <field name="name">Cấn trừ công nợ</field>
+        <field name="res_model">bsd.can_tru</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Cấn trừ công nợ khách hàng</p>
+        </field>
+    </record>
+</odoo>

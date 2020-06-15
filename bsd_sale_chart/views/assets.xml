@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="bsd_real_estate_org_chart_assets" inherit_id="web.assets_backend">
+        <xpath expr="script[last()]" position="after">
+            <script type="text/javascript" src="/bsd_sale_chart/static/js/bsd_sale_chart_action.js"></script>
+            <script type="text/javascript" src="/bsd_sale_chart/static/js/bsd_sale_chart_model.js"></script>
+            <script type="text/javascript" src="/bsd_sale_chart/static/js/bsd_sale_chart_renderer.js"></script>
+        </xpath>
+        <xpath expr="//link[last()]" position="after">
+            <link rel="stylesheet" type="text/scss" href="/bsd_sale_chart/static/scss/bsd_sale_chart_views.scss"/>
+        </xpath>
+    </template>
+</odoo>

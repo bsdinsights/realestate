@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.module.category" id="module_bsd_tai_chinh">
+        <field name="name">Tài chính</field>
+        <field name="description">Phân quyền truy cập cho</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_user" model="res.groups">
+        <field name="name">Nhân viên</field>
+        <field name="implied_ids" eval="[(4,ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_bsd_tai_chinh"/>
+    </record>
+
+    <record id="group_manager" model="res.groups">
+        <field name="name">Quản lý</field>
+        <field name="implied_ids" eval="[(4,ref('bsd_tai_chinh.group_user'))]"/>
+        <field name="category_id" ref="module_bsd_tai_chinh"/>
+    </record>
+</odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_dat_coc_form_inherit">
+        <field name="name">bsd.dat_coc.form.inherit</field>
+        <field name="model">bsd.dat_coc</field>
+        <field name="inherit_id" ref="bsd_kinh_doanh.bsd_dat_coc_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bsd_ngay_tt']" position="after">
+                <field name="bsd_tien_da_tt"/>
+                <field name="bsd_tien_phai_tt"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

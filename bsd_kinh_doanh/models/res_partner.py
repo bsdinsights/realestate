@@ -1,0 +1,124 @@
+# -*- coding:utf-8 -*-
+
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
+import logging
+_logger = logging.getLogger(__name__)
+
+
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+
+    bsd_ho_tl = fields.Char(string="Họ và tên lót", help="Họ và tên lót")
+    bsd_ten = fields.Char(string="Tên", help="Tên khách hàng")
+    bsd_ma_kh = fields.Char(string="Mã khách hàng", required=True, readonly=True, copy=False, default='/')
+    _sql_constraints = [
+        ('bsd_ma_kh_unique', 'unique (bsd_ma_kh)',
+         'Mã khách hàng đã tồn tại !'),
+    ]
+    bsd_ngay_sinh = fields.Date(string="Ngày sinh", help="Ngày sinh")
+    bsd_gioi_tinh = fields.Selection([('nam', 'Nam'), ('nu', 'Nữ')], string="Giới tính", help="Giới tính", default='nam')
+    bsd_loai_kh = fields.Selection([('vn', 'Việt Nam'),
+                                    ('nc', 'Người nước ngoài')], string="Quốc tịch",
+                                   help="Khách hàng là công dân Việt Nam hay Người nước ngoài",
+                                   required=True, default='vn')
+    bsd_nguoi_bh = fields.Boolean(string="Người bảo hộ", help="Khách hàng có người bảo hộ")
+    bsd_cmnd = fields.Char(string="CMND/ CCCD", help="Số CMND/ CCCD")
+    bsd_ngay_cap_cmnd = fields.Date(string="Ngày cấp CMND", help="Ngày cấp CMND/ CCCD")
+    bsd_noi_cap_cmnd = fields.Many2one('res.country.state', string="Nơi cấp CMND", help="Nơi cấp CMND")
+    bsd_ho_chieu = fields.Char(string="Hộ chiếu", help="Số hộ chiếu")
+    bsd_ngay_cap_hc = fields.Date(string="Ngày cấp hộ chiếu", help="Ngày cấp hộ chiếu")
+    bsd_noi_cap_hc = fields.Many2one('res.country.state', string="Nơi cấp hộ chiếu", help="Nơi cấp hộ chiếu")
+    bsd_mst = fields.Char(string="Mã số thuế", help="Mã số thuế khách hàng")
+    bsd_dia_chi_tt = fields.Char(string="Địa chỉ thường trú", help="Địa chỉ thường trú",
+                                 compute="_compute_dia_chi_tt", store=True)
+    bsd_quoc_gia_tt_id = fields.Many2one('res.country', string="Quốc gia", help="Tên quốc gia")
+    bsd_tinh_tt_id = fields.Many2one('res.country.state', string="Tỉnh/ Thành", help="Tên tỉnh thành, thành phố")
+    bsd_quan_tt_id = fields.Many2one('bsd.quan_huyen', string="Quận/ Huyện", help="Tên quận huyện")
+    bsd_phuong_tt_id = fields.Many2one('bsd.phuong_xa', string="Phường/ Xã", help="Tên phường xã")
+    bsd_so_nha_tt = fields.Char(string="Số nhà", help="Số nhà, tên đường")
+    bsd_dia_chi_lh = fields.Char(string="Địa chỉ liên hệ", help="Địa chỉ liên hệ",
+                                 compute="_compute_dia_chi_lh", store=True)
+    bsd_quoc_gia_lh_id = fields.Many2one('res.country', string="Quốc gia", help="Tên quốc gia")
+    bsd_tinh_lh_id = fields.Many2one('res.country.state', string="Tỉnh/ Thành", help="Tên tỉnh thành, thành phố")
+    bsd_quan_lh_id = fields.Many2one('bsd.quan_huyen', string="Quận/ Huyện", help="Tên quận huyện")
+    bsd_phuong_lh_id = fields.Many2one('bsd.phuong_xa', string="Phường/ Xã", help="Tên phường xã")
+    bsd_so_nha_lh = fields.Char(string="Số nhà", help="Số nhà, tên đường")
+
+    bsd_cung_dc = fields.Boolean(string="Đây là địa chỉ liên hệ", help="Đây là địa chỉ liên hệ")
+
+    state = fields.Selection([('active', 'Đang sử dụng'),
+                              ('inactive', 'Không sử dụng')],
+                             string="Trạng thái", default='active', required=True, tracking=1)
+
+    bsd_giu_cho_ids = fields.One2many('bsd.giu_cho', 'bsd_kh_moi_id', string="Danh sách giữ chỗ", domain=[('state', '!=', 'nhap')])
+
+    bsd_sl_giu_cho = fields.Integer(string="# Giữ chỗ", compute="_compute_sl_gc", store=True)
+
+    @api.depends('bsd_giu_cho_ids', 'bsd_giu_cho_ids.state')
+    def _compute_sl_gc(self):
+        for each in self:
+            each.bsd_sl_giu_cho = len(each.bsd_giu_cho_ids)
+
+    # R.01 Ràng buộc số điện thoại là duy nhất
+    _sql_constraints = [
+        ('mobile_unique', 'unique (mobile)',
+         'Số điện thoại đã tồn tại !'),
+    ]
+
+    # R.10 tên khách hàng
+    @api.onchange('bsd_ho_tl', 'bsd_ten')
+    def _onchange_ten(self):
+        self.name = (self.bsd_ho_tl or "") + " " + (self.bsd_ten or "")
+
+    # R.11 Load địa chỉ
+    @api.onchange('bsd_cung_dc')
+    def _onchange_dc(self):
+        if self.bsd_cung_dc :
+            self.bsd_quoc_gia_lh_id = self.bsd_quoc_gia_tt_id
+            self.bsd_tinh_lh_id = self.bsd_tinh_tt_id
+            self.bsd_quan_lh_id = self.bsd_quan_tt_id
+            self.bsd_phuong_lh_id = self.bsd_phuong_tt_id
+            self.bsd_so_nha_lh = self.bsd_so_nha_tt
+        else:
+            self.bsd_quoc_gia_lh_id = False
+            self.bsd_tinh_lh_id = False
+            self.bsd_quan_lh_id = False
+            self.bsd_phuong_lh_id = False
+            self.bsd_so_nha_lh = False
+
+    # R.02 Tạo thông tin địa chỉ thường chú
+    @api.depends('bsd_quoc_gia_tt_id', 'bsd_tinh_tt_id', 'bsd_quan_tt_id', 'bsd_phuong_tt_id', 'bsd_so_nha_tt')
+    def _compute_dia_chi_tt(self):
+        for each in self:
+            each.bsd_dia_chi_tt = (each.bsd_so_nha_tt or ' ') + ', ' + (each.bsd_phuong_tt_id.bsd_ten or ' ') + ', ' + \
+                                  (each.bsd_quan_tt_id.bsd_ten or ' ') + ', ' + (each.bsd_tinh_tt_id.name or ' ') + ', ' + \
+                                  (each.bsd_quoc_gia_tt_id.name or ' ')
+
+    # R.03 Tạo thông tin địa chỉ liên hệ
+    @api.depends('bsd_quoc_gia_lh_id', 'bsd_tinh_lh_id', 'bsd_quan_lh_id', 'bsd_phuong_lh_id', 'bsd_so_nha_lh')
+    def _compute_dia_chi_lh(self):
+        for each in self:
+            each.bsd_dia_chi_lh = (each.bsd_so_nha_lh or ' ') + ', ' + (each.bsd_phuong_lh_id.bsd_ten or ' ') + ', ' + \
+                                  (each.bsd_quan_lh_id.bsd_ten or ' ') + ', ' + (each.bsd_tinh_lh_id.name or ' ') + ', ' + \
+                                  (each.bsd_quoc_gia_lh_id.name or ' ')
+
+    @api.model
+    def create(self, vals):
+        _logger.debug(vals)
+        sequence = False
+        if vals.get('bsd_ma_kh', '/') == '/' and not vals.get('is_company'):
+            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.kh_cn')], limit=1).bsd_ma_tt_id
+            vals['bsd_ma_kh'] = self.env['ir.sequence'].next_by_code('bsd.kh_cn') or '/'
+        if vals.get('bsd_ma_kh', '/') == '/' and vals.get('is_company'):
+            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.kh_dn')], limit=1).bsd_ma_tt_id
+        if not sequence:
+            raise UserError(_('Danh mục mã chưa khai báo mã khách hàng'))
+        vals['bsd_ma_kh'] = sequence.next_by_id()
+        return super(ResPartner, self).create(vals)
+
+    def name_get(self):
+        res = []
+        for partner in self:
+            res.append((partner.id, "[%s]%s" % (partner.bsd_ma_kh, partner.name)))
+        return res

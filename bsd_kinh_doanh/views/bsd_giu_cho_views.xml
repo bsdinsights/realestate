@@ -12,17 +12,49 @@
                             attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
                             type="object"/>
                     <button string="Hủy"
-                            states="giu_cho,dat_cho,bao_gia"
+                            type="object"
+                            name="action_huy_chua_tt"
+                            confirm="Bạn có muốn hủy Giữ chỗ này không?"
+                            attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),('bsd_thanh_toan','!=', 'chua_tt')]}"/>
+                    <button string="Tính giá"
+                            confirm="Bạn có muốn tạo Bảng tính giá không?"
+                            type="object"
+                            name="action_tao_bao_gia"
+                            attrs="{'invisible': ['|',('state','not in',['giu_cho']),('bsd_dot_mb_id','=', False)]}"/>
+                    <button string="Hủy"
+                            attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),('bsd_gc_da','=',False)]}"
                             name="action_huy"
+                            confirm="Bạn có muốn hủy Giữ chỗ này không?"
                             type="object"/>
-<!--                    <field name="state" widget="statusbar" statusbar_visible="0"/>-->
+                    <button string="Hủy"
+                            attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),('bsd_truoc_mb','=',True)]}"
+                            name="action_huy"
+                            confirm="Bạn có muốn hủy Giữ chỗ này không?"
+                            type="object"/>
+                    <button string="Đề nghị hủy"
+                            attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),
+                                                    '|',('bsd_thanh_toan','=', 'chua_tt'),
+                                                    '|',('bsd_truoc_mb','=',False),('bsd_gc_da', '=', True)]}"
+                            name="action_de_nghi_huy"
+                            type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_bao_gia" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_bao_gia', '=', 0)]}">
+                            <field name="bsd_so_bao_gia" widget="statinfo" string="Báo giá"/>
+                        </button>
+                        <button name="action_view_huy_gc" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_huy_gc', '=', 0)]}">
+                            <field name="bsd_so_huy_gc" widget="statinfo" string="Đề nghị hủy"/>
+                        </button>
+                    </div>
                     <group>
                         <group>
                             <field name="bsd_ma_gc"/>
                             <field name="bsd_ngay_gc"/>
-                            <field name="bsd_khach_hang_id" options="{'no_create':true}"/>
+                            <field name="bsd_khach_hang_id"
+                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                   options="{'no_create':true}"/>
                             <field name="bsd_du_an_id" options="{'no_create':true}"/>
                             <field name="bsd_unit_id"
                                    context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
@@ -33,12 +65,14 @@
                         <group>
                             <field name="bsd_truoc_mb"/>
                             <field name="bsd_dot_mb_id"
+                                   attrs="{'readonly':1}"
                                    options="{'no_create':true}"/>
+                            <field name="bsd_dot_mb_id" invisible="1"/>
                             <field name="bsd_bang_gia_id" options="{'no_create':true}"/>
                             <field name="bsd_tien_gc"/>
                             <field name="currency_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
                             <field name="bsd_dien_giai"/>
-                            <field name="state"/>
                         </group>
                     </group>
                     <group string="MÔI GIỚI">
@@ -56,10 +90,10 @@
                             <field name="bsd_ngay_hh_gc"/>
                             <field name="bsd_thanh_toan"/>
                             <field name="bsd_ngay_tt"/>
-                            <field name="bsd_ngay_hh_stt"/>
-                            <field name="bsd_het_han_gc"/>
                         </group>
                         <group>
+                            <field name="bsd_ngay_hh_stt"/>
+                            <field name="bsd_het_han_gc"/>
                             <field name="bsd_stt_bg"/>
                             <field name="bsd_ngay_hh_bg"/>
                             <field name="bsd_het_han_bg"/>
@@ -72,6 +106,12 @@
                         </group>
                         <group>
                             <field name="bsd_rap_can_id"/>
+                            <field name="bsd_tien_gctc" attrs="{'invisible':[('bsd_gc_da', '=',False)]}"/>
+                        </group>
+                    </group>
+                    <group string="CHUYỂN NHƯỢNG">
+                        <group>
+                            <field name="bsd_kh_moi_id"/>
                         </group>
                     </group>
                 </sheet>
@@ -89,19 +129,13 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="bsd_ma_gc"/>
-                <field name="bsd_ngay_gc"/>
                 <field name="bsd_khach_hang_id"/>
                 <field name="bsd_du_an_id"/>
                 <field name="bsd_unit_id"/>
-                <field name="bsd_dot_mb_id"/>
                 <field name="bsd_ngay_hh_gc"/>
                 <field name="bsd_stt_bg"/>
                 <field name="bsd_ngay_hh_bg"/>
                 <field name="state"/>
-                <field name="bsd_thanh_toan"/>
-                <field name="bsd_gc_tc_id"/>
-                <field name="bsd_bang_gia_id"/>
-                <field name="bsd_tien_gc"/>
                 <field name="currency_id" invisible="1"/>
             </tree>
         </field>

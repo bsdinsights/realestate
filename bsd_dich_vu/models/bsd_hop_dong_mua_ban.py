@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 import datetime
 import logging
 _logger = logging.getLogger(__name__)
@@ -12,15 +13,14 @@ class BsdHopDongMuaBan(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma_hd_ban'
 
-    bsd_ma_hd_ban = fields.Char(string="Mã", help="Mã hợp đồng mua bán", required=True,
-                                readonly=True,
-                                states={'nhap': [('readonly', False)]})
+    bsd_ma_hd_ban = fields.Char(string="Mã", help="Mã hợp đồng mua bán", required=True, readonly=True, copy=False,
+                                default='/')
     _sql_constraints = [
         ('bsd_ma_hd_ban_unique', 'unique (bsd_ma_hd_ban)',
          'Mã hợp đồng đã tồn tại !'),
     ]
     bsd_ngay_hd_ban = fields.Datetime(string="Ngày", help="Ngày làm hợp đồng mua bán", required=True,
-                                      default=fields.Datetime.now(),
+                                      default=lambda self: fields.Datetime.now(),
                                       readonly=True,
                                       states={'nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,
@@ -32,7 +32,7 @@ class BsdHopDongMuaBan(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', related="bsd_dat_coc_id.bsd_bao_gia_id")
+    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', related="bsd_dat_coc_id.bsd_bao_gia_id", store=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án",
                                    related="bsd_dat_coc_id.bsd_du_an_id", store=True)
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Tên đợt mở bán",
@@ -45,12 +45,13 @@ class BsdHopDongMuaBan(models.Model):
                              related="bsd_dat_coc_id.bsd_dt_xd", store=True)
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",
                              related="bsd_dat_coc_id.bsd_dt_sd", store=True)
-    bsd_thue_id = fields.Many2one('account.tax', string="Mã thuế", help="Mã thuế",
+    bsd_thue_id = fields.Many2one('account.tax', string="Thuế", help="Thuế",
                                   related="bsd_dat_coc_id.bsd_thue_id", store=True)
-    bsd_qsdd_m2 = fields.Monetary(string="QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2",
+    bsd_qsdd_m2 = fields.Monetary(string="Giá trị QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2",
                                   related="bsd_dat_coc_id.bsd_qsdd_m2", store=True)
-    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", related="bsd_dat_coc_id.bsd_thue_suat", store=True)
-    bsd_tl_pbt = fields.Float(string="% phí bảo trì", help="Tỷ lệ phí bảo trì",
+    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", related="bsd_dat_coc_id.bsd_thue_suat",
+                                 store=True, digits=(12, 2))
+    bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì",
                               related="bsd_dat_coc_id.bsd_tl_pbt", store=True)
     bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="CS thanh toán", help="Chính sách thanh toán",
                                    related="bsd_dat_coc_id.bsd_cs_tt_id", store=True)
@@ -73,9 +74,9 @@ class BsdHopDongMuaBan(models.Model):
     bsd_tong_gia = fields.Monetary(string="Tổng giá bán",
                                    help="""Tổng giá bán: bằng Giá bán trước thuế cộng Tiền thuế cộng phí bảo trì""",
                                    related="bsd_dat_coc_id.bsd_tong_gia", store=True)
-    bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý",related="bsd_dat_coc_id.bsd_thang_pql", store=True,
+    bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý", related="bsd_dat_coc_id.bsd_thang_pql", store=True,
                                    help="Số tháng đóng phí quản lý trước đợt bàn giao tạm thời hoặc bàn giao chính thức")
-    bsd_tien_pql = fields.Monetary(string="Phí quản lý/ tháng", help="Số tiền phí quản lý cần đóng mỗi tháng",
+    bsd_tien_pql = fields.Monetary(string="Phí quản lý", help="Số tiền phí quản lý cần đóng",
                                    related="bsd_dat_coc_id.bsd_tien_pql", store=True)
 
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
@@ -97,6 +98,25 @@ class BsdHopDongMuaBan(models.Model):
                                       help="""Ngày tải lên hệ thống hợp đồng bán đã được người mua
                                              ký xác nhận""")
     bsd_ngay_ky_hdb = fields.Datetime(string="Ngày ký hợp đồng", help="Ngày ký hợp đồng mua bán", readonly=True)
+
+    # Cập nhật đồng sở hữu từ báo giá
+    @api.onchange('bsd_dat_coc_id')
+    def _onchange_dat_coc(self):
+        for each in self:
+            lines = [(5, 0, 0)]
+            for line in each.bsd_dat_coc_id.bsd_bao_gia_id.bsd_dsh_ids:
+                vals = {
+                    'bsd_dong_sh_id': line.id,
+                    'bsd_lan_td': 0
+                }
+                lines.append((0, 0, vals))
+            each.bsd_dong_sh_ids = lines
+
+    # DV.01.07 - Kiểm tra trùng mã đặt cọc
+    @api.constrains('bsd_dat_coc_id')
+    def _constrains_dat_coc(self):
+        if len(self.env['bsd.hd_ban'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id)])) > 1:
+            raise UserError("Phiếu đặt cọc đã được tạo hợp đồng. Xin vui lòng kiểm tra lại.")
 
     # DV.01.01 - Xác nhận hợp đồng
     def action_xac_nhan(self):
@@ -122,15 +142,46 @@ class BsdHopDongMuaBan(models.Model):
         action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_hdb_action').read()[0]
         return action
 
+    # DV.01.08 Theo dõi công nợ hợp đồng
+    def tao_cong_no_dot_tt(self):
+        for dot_tt in self.bsd_ltt_ids.filtered(lambda d: d.bsd_gd_tt == 'hop_dong').sorted('bsd_stt'):
+            self.env['bsd.cong_no'].create({
+                    'bsd_chung_tu': dot_tt.bsd_ten_dtt,
+                    'bsd_ngay': dot_tt.bsd_ngay_hh_tt,
+                    'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                    'bsd_du_an_id': self.bsd_du_an_id.id,
+                    'bsd_ps_tang': dot_tt.bsd_tien_dot_tt,
+                    'bsd_ps_giam': 0,
+                    'bsd_loai_ct': 'dot_tt',
+                    'bsd_phat_sinh': 'tang',
+                    'bsd_hd_ban_id': self.id,
+                    'bsd_dot_tt_id': dot_tt.id,
+                    'state': 'da_gs',
+            })
+
     @api.model
     def create(self, vals):
+        sequence = False
+        if 'bsd_dat_coc_id' in vals:
+            dat_coc = self.env['bsd.dat_coc'].browse(vals['bsd_dat_coc_id'])
+            sequence = dat_coc.bsd_du_an_id.get_ma_bo_cn(loai_cn=self._name)
+        if not sequence:
+            raise UserError(_('Dự án chưa có mã hợp đồng'))
+        vals['bsd_ma_hd_ban'] = sequence.next_by_id()
         res = super(BsdHopDongMuaBan, self).create(vals)
         ids_bg = res.bsd_dat_coc_id.bsd_bg_ids.ids
         ids_ltt = res.bsd_dat_coc_id.bsd_ltt_ids.ids
         res.write({
             'bsd_bg_ids': [(6, 0, ids_bg)],
-            'bsd_ltt_ids': [(6, 0, ids_ltt)]
+            'bsd_ltt_ids': [(6, 0, ids_ltt)],
         })
+        # # Cập nhật đồng sở hữu từ báo giá
+        # for dsh in dsh_ids:
+        #     self.env['bsd.dong_so_huu'].create({
+        #         'bsd_hd_ban_id': res.id,
+        #         'bsd_dong_sh_id': dsh.id,
+        #         'bsd_lan_td': 0
+        #     })
         return res
 
 
@@ -154,9 +205,23 @@ class BsdDongSoHuu(models.Model):
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True)
     bsd_dong_sh_id = fields.Many2one('res.partner', string="Đồng sở hữu", help="Người đồng sở hữu", required=True)
     bsd_mobile = fields.Char(related='bsd_dong_sh_id.mobile', string="Di động")
-    bsd_email = fields.Char(related='bsd_dong_sh_id.email', string="Thư điện tử")
+    bsd_email = fields.Char(related='bsd_dong_sh_id.email', string="Email")
     bsd_pl_dsh_id = fields.Many2one('bsd.pl_dsh', string="Phụ lục HĐ", help="Phụ lục hợp đồng thay đổi chủ sở hữu",
                                     readonly=True)
     bsd_lan_td = fields.Integer(string="Lần thay đổi", help="Lần thay đổi chủ sở hữu", readonly=True)
     state = fields.Selection([('active', 'Đang hiệu lực'), ('inactive', 'Hết hiệu lực')], default='active',
                              string="Trạng thái", required=True, readonly=True)
+
+
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+
+    bsd_hd_ban_ids = fields.One2many('bsd.hd_ban', 'bsd_khach_hang_id', string="Danh sách hợp đồng",
+                                     domain=[('state', '!=', 'nhap')])
+
+    bsd_sl_hd_ban = fields.Integer(string="# Hợp đồng", compute="_compute_sl_hd", store=True)
+
+    @api.depends('bsd_hd_ban_ids', 'bsd_hd_ban_ids.state')
+    def _compute_sl_hd(self):
+        for each in self:
+            each.bsd_sl_hd_ban = len(each.bsd_hd_ban_ids)

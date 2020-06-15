@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_huy_gc_form">
+        <field name="name">bsd.huy_gc.form</field>
+        <field name="model">bsd.huy_gc</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            class="oe_highlight"
+                            confirm="Bạn có muốn Xác nhận yêu cầu không?"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                            type="object"/>
+                    <button string="Duyệt"
+                            name="action_duyet"
+                            class="oe_highlight"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn Duyệt yêu cầu không?"
+                            type="object"/>
+                    <button string="Không duyệt"
+                            name="action_khong_duyet"
+                            confirm="Bạn có muốn Từ Chối yêu cầu không?"
+                            type="object"
+                            states="xac_nhan"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn Hủy yêu cầu không?"
+                            type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma_huy_gc"/>
+                            <field name="bsd_ngay_huy_gc"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                            <field name="bsd_khach_hang_id"
+                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_loai_gc"/>
+                        </group>
+                        <group>
+                            <field name="bsd_unit_id"
+                                   context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_du_an_id','=',bsd_du_an_id)]"
+                                   attrs="{'invisible':[('bsd_loai_gc', '!=','giu_cho')],
+                                           'required':[('bsd_loai_gc', '=', 'giu_cho')]}"/>
+                            <field name="bsd_gc_tc_id"
+                                   domain="[('bsd_du_an_id','=',bsd_du_an_id),('bsd_kh_moi_id', '=',bsd_khach_hang_id),
+                                            ('bsd_thanh_toan','!=','chua_tt'),('state','in', ['xac_nhan'])]"
+                                   options="{'no_create':true}"
+                                   attrs="{'invisible':[('bsd_loai_gc', '!=','gc_tc')],
+                                           'required':[('bsd_loai_gc', '=', 'gc_tc')]}"
+                            />
+                            <field name="bsd_giu_cho_id"
+                                   domain="[('bsd_du_an_id','=',bsd_du_an_id),('bsd_kh_moi_id', '=',bsd_khach_hang_id),
+                                            ('bsd_thanh_toan','!=','chua_tt'),('bsd_truoc_mb','=',True),
+                                            ('bsd_unit_id', '=',bsd_unit_id), ('state' , 'not in', ['nhap','dong','huy'])]"
+                                   options="{'no_create':true}"
+                                   attrs="{'invisible':[('bsd_loai_gc', '!=','giu_cho')],
+                                           'required':[('bsd_loai_gc', '=', 'giu_cho')]}"
+                            />
+                            <field name="bsd_tien"/>
+                            <field name="bsd_tien_da_tt"/>
+                            <field name="bsd_hoan_tien"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_huy_gc_tree">
+        <field name="name">bsd.huy_gc.tree</field>
+        <field name="model">bsd.huy_gc</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_huy_gc"/>
+                <field name="bsd_ngay_huy_gc"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_loai_gc"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_huy_gc_filter">
+        <field name="name">bsd.huy_gc.list.filter</field>
+        <field name="model">bsd.huy_gc</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_ma_huy_gc"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_du_an_id"/>
+
+                <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="bsd_my_huy_gc_filter"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_huy_gc_action">
+        <field name="name">Đề nghị hủy giữ chỗ</field>
+        <field name="res_model">bsd.huy_gc</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo đề nghị hủy giữ chỗ</p>
+        </field>
+    </record>
+</odoo>

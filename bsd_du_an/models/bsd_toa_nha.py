@@ -21,7 +21,7 @@ class BsdBlock(models.Model):
     @api.depends('bsd_ma_tn', 'bsd_du_an_id.bsd_ma_da')
     def _compute_ma_ht(self):
         for each in self:
-            if self.bsd_ma_tn and self.bsd_du_an_id:
+            if each.bsd_ma_tn and each.bsd_du_an_id:
                 ma_da = each.bsd_du_an_id.bsd_ma_da or ''
                 each.bsd_ma_ht = ma_da + '-' + each.bsd_ma_tn
 
@@ -33,3 +33,9 @@ class BsdBlock(models.Model):
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Ngưng sử dụng')],
                              string="Trạng thái", default='active', tracking=1, help="Trạng thái")
+
+    def name_get(self):
+        res = []
+        for toa in self:
+            res.append((toa.id, toa.bsd_ten_tn))
+        return res

@@ -51,6 +51,7 @@
             </xpath>
             <xpath expr="//field[@name='product_tmpl_id']" position="attributes">
                 <attribute name="domain">[('bsd_du_an_id','in',[parent.bsd_du_an_id])]</attribute>
+                <attribute name="context">{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}</attribute>
             </xpath>
         </field>
     </record>

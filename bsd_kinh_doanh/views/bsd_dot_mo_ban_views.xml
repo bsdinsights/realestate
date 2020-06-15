@@ -14,7 +14,11 @@
                             type="object"
                             class="oe_highlight"
                             name="action_phat_hanh"/>
-                    <!--<field name="state" widget="statusbar" statusbar_visible="0"/>-->
+                    <button string="Thu hồi"
+                            type="object"
+                            states="ph"
+                            name="action_thu_hoi"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
                     <notebook>
@@ -52,7 +56,6 @@
                                            domain="[('bsd_toa_nha_id', 'in', [bsd_den_toa_nha_id])]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_dien_giai"/>
-                                    <field name="state"/>
                                 </group>
                             </group>
                         </page>
@@ -97,7 +100,8 @@
                             </field>
                         </page>
                         <page string="Chuẩn bị">
-                            <field name="bsd_cb_ids" nolabel="1" context="{'default_bsd_du_an_id':bsd_du_an_id}">
+                            <field name="bsd_cb_ids" nolabel="1"
+                                   context="{'default_bsd_du_an_id':bsd_du_an_id}">
                                 <tree editable="bottom">
                                     <field name="bsd_du_an_id"
                                            options="{'no_create':true}"/>
@@ -144,6 +148,7 @@
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_gia_ban"/>
+                                    <field name="state"/>
                                     <field name="currency_id" invisible="1"/>
                                 </tree>
                                 <form>
@@ -158,6 +163,42 @@
                                                 <field name="bsd_unit_id"
                                                        context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"/>
                                                 <field name="bsd_gia_ban"/>
+                                                <field name="state"/>
+                                                <field name="currency_id"/>
+                                            </group>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Thu hồi">
+                            <field name="bsd_th_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                                    <field name="bsd_toa_nha_id" options="{'no_create':true}"/>
+                                    <field name="bsd_tang_id" options="{'no_create':true}"/>
+                                    <field name="bsd_unit_id"
+                                           context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_gia_ban"/>
+                                    <field name="bsd_thu_hoi_id"/>
+                                    <field name="state"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </tree>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="bsd_du_an_id"/>
+                                                <field name="bsd_toa_nha_id"/>
+                                                <field name="bsd_tang_id"/>
+                                                <field name="bsd_thu_hoi_id"/>
+                                            </group>
+                                            <group>
+                                                <field name="bsd_unit_id"
+                                                       context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"/>
+                                                <field name="bsd_gia_ban"/>
+                                                <field name="state"/>
                                                 <field name="currency_id"/>
                                             </group>
                                         </group>

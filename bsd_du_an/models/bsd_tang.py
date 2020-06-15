@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class BsdFloor(models.Model):
@@ -23,7 +25,7 @@ class BsdFloor(models.Model):
                 du_an = each.bsd_toa_nha_id.bsd_du_an_id
                 toa_nha = each.bsd_toa_nha_id
                 each.bsd_ma_tang = du_an.bsd_ma_da + du_an.bsd_dd_da + toa_nha.bsd_ma_tn + du_an.bsd_dd_khu + each.bsd_ten_tang
-
+                _logger.debug(each.bsd_ma_tang)
     bsd_stt = fields.Integer(string="Số thứ tự", help="Số thứ tự sắp xếp của tầng", required=True)
     bsd_dien_giai = fields.Char(string="Diễn giải",
                                 help="Thông tin chi tiết về tòa nhà")
@@ -33,3 +35,8 @@ class BsdFloor(models.Model):
                               ('inactive', 'Ngưng sử dụng')],
                              string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
 
+    def name_get(self):
+        res = []
+        for toa in self:
+            res.append((toa.id, toa.bsd_ten_tang))
+        return res

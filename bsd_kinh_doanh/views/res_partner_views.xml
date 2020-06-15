@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.actions.act_window" id="bsd_kh_cn_action">
-        <field name="name">Khách hàng cá nhân</field>
-        <field name="res_model">res.partner</field>
-        <field name="view_mode">kanban,tree,form</field>
-        <field name="domain">[('is_company','=',False)]</field>
-        <field name="help" type="xml">
-            <p>Tạo mới khách hàng cá nhân</p>
-        </field>
-        <field name="context">{'default_company_type':'person', 'default_is_company':False}</field>
-    </record>
+    <!--<record model="ir.actions.act_window" id="bsd_kh_cn_action">-->
+        <!--<field name="name">Khách hàng cá nhân</field>-->
+        <!--<field name="res_model">res.partner</field>-->
+        <!--<field name="view_mode">kanban,tree,form</field>-->
+        <!--<field name="domain">[('is_company','=',False)]</field>-->
+        <!--<field name="help" type="xml">-->
+            <!--<p>Tạo mới khách hàng cá nhân</p>-->
+        <!--</field>-->
+        <!--<field name="context">{'default_company_type':'person', 'default_is_company':False}</field>-->
+    <!--</record>-->
 
     <record model="ir.actions.act_window" id="bsd_kh_dn_action">
         <field name="name">Khách hàng doanh nghiệp</field>

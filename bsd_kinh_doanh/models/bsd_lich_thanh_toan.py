@@ -6,6 +6,7 @@ from odoo import models, fields, api
 class BsdBaoGiaLTT(models.Model):
     _name = 'bsd.lich_thanh_toan'
     _description = "Lịch thanh toán cho báo giá"
+    _rec_name = 'bsd_ten_dtt'
 
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", help="Bảng tính giá", required=True)
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="'Đặt cọc", help="Phiếu đặt cọc", readonly=True)
@@ -13,8 +14,14 @@ class BsdBaoGiaLTT(models.Model):
     bsd_ma_dtt = fields.Char(string="Mã đợt thanh toán", help="Mã đợt thanh toán", required=True)
     bsd_ten_dtt = fields.Char(string="Tên đợt thanh toán", help="Tên đợt thanh toán", required=True)
     bsd_ngay_hh_tt = fields.Date(string="Hạn thanh toán", help="Thời hạn thanh toán của đợt thanh toán")
-    bsd_tien_dot_tt = fields.Monetary(string="Tiền thanh toán", help="Tiền thanh toán của đợt thanh toán",
+    bsd_tien_dot_tt = fields.Monetary(string="Tiền", help="Tiền thanh toán của đợt thanh toán",
                                       required=True)
+    bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc", readonly=True)
+    bsd_thanh_toan = fields.Selection([('chua_tt', 'Chưa thanh toán'),
+                                       ('dang_tt', 'Đang thanh toán'),
+                                       ('da_tt', 'Đã thanh toán')], string="Thanh toán", default="chua_tt",
+                                      required=True)
+    bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Lần thanh toán gần nhất")
     bsd_tinh_pql = fields.Boolean(string="Phí quản lý", help="Tính phí quản lý vào đợt thanh toán hay không")
     bsd_tinh_pbt = fields.Boolean(string="Phí bảo trì", help="Tính phí bảo trì vào đợt thanh toán hay không")
     bsd_ngay_ah = fields.Date(string="Ngày ân hạn", help="Ngày ân hạn thanh toán")
@@ -34,6 +41,16 @@ class BsdBaoGiaLTT(models.Model):
                                       help="Đợt thanh toán theo chính sách thanh toán")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+
+    bsd_gd_tt = fields.Selection([('dat_coc', 'Đặt cọc'), ('hop_dong', 'Hợp đồng')],
+                                 string="Giai đoạn thanh toán", help="Thanh toán trước hay sau làm hợp đồng",
+                                 default="dat_coc", required=True)
+
+    @api.depends('bsd_tien_dot_tt', 'bsd_tien_da_tt')
+    def _compute_tien_tt(self):
+        for each in self:
+
+            each.bsd_tien_phai_tt = each.bsd_tien_dot_tt - each.bsd_tien_da_tt
 
     @api.model
     def create(self, vals):

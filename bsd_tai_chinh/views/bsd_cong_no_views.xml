@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_cong_no_form">
+        <field name="name">bsd.cong_no.form</field>
+        <field name="model">bsd.cong_no</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ngay"/>
+                            <field name="bsd_khach_hang_id"
+                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_du_an_id"/>
+                            <field name="bsd_ps_tang"/>
+                            <field name="bsd_ps_giam"/>
+                            <field name="bsd_tien"/>
+                            <field name="bsd_loai_ct"/>
+                            <field name="bsd_phat_sinh"/>
+                        </group>
+                        <group>
+                            <field name="bsd_gc_tc_id"/>
+                            <field name="bsd_giu_cho_id"/>
+                            <field name="bsd_dat_coc_id"/>
+                            <field name="bsd_hd_ban_id"/>
+                            <field name="bsd_dot_tt_id"/>
+                            <field name="bsd_phieu_thu_id"/>
+                            <field name="bsd_giam_no_id"/>
+                            <field name="bsd_tang_no_id"/>
+                            <field name="bsd_chuyen_tien_id"/>
+                            <field name="bsd_hoan_tien_id"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_cong_no_tree">
+        <field name="name">bsd.cong_no.tree</field>
+        <field name="model">bsd.cong_no</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ngay"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_tien"/>
+                <field name="bsd_loai_ct"/>
+                <field name="bsd_phat_sinh"/>
+                <field name="bsd_gc_tc_id"/>
+                <field name="bsd_giu_cho_id"/>
+                <field name="bsd_dat_coc_id"/>
+                <field name="bsd_hd_ban_id"/>
+                <field name="bsd_dot_tt_id"/>
+                <field name="bsd_phieu_thu_id"/>
+                <field name="bsd_giam_no_id"/>
+                <field name="bsd_tang_no_id"/>
+                <field name="bsd_chuyen_tien_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_cong_no_action">
+        <field name="name">Công nợ khách hàng</field>
+        <field name="res_model">bsd.cong_no</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Công nợ khách hàng</p>
+        </field>
+    </record>
+</odoo>

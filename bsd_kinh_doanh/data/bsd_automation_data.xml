@@ -5,7 +5,7 @@
             <field name="name">Hủy giữ chỗ thiện chí</field>
             <field name="model_id" ref="bsd_kinh_doanh.model_bsd_gc_tc"></field>
             <field name="trigger">on_time</field>
-            <field name="filter_domain">[('state', '=','xac_nhan'),('bsd_thanh_toan','in',['chua_tt','dang_tt'])]</field>
+            <field name="filter_domain">[('state', '=','xac_nhan'),('bsd_thanh_toan','in',['chua_tt'])]</field>
             <field name="trg_date_id" ref="bsd_kinh_doanh.field_bsd_gc_tc__bsd_ngay_hh_gctc"></field>
             <field name="state">code</field>
             <field name="code">
@@ -18,7 +18,7 @@ record.auto_huy_giu_cho()
             <field name="name">Hết hạn giữ chỗ thiện chí</field>
             <field name="model_id" ref="bsd_kinh_doanh.model_bsd_gc_tc"></field>
             <field name="trigger">on_time</field>
-            <field name="filter_domain">[('state','=','xac_nhan'),('bsd_ngay_ut','!=',False),('bsd_thanh_toan','in',['da_tt']),('bsd_het_han','=',False)]</field>
+            <field name="filter_domain">[('state','=','xac_nhan'),('bsd_ngay_ut','!=',False),('bsd_thanh_toan','in',['da_tt','dang_tt']),('bsd_het_han','=',False)]</field>
             <field name="trg_date_id" ref="bsd_kinh_doanh.field_bsd_gc_tc__bsd_ngay_ut"></field>
             <field name="state">code</field>
             <field name="code">

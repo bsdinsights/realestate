@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
+import datetime
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -19,7 +20,7 @@ class BsdPLTDTT(models.Model):
          'Mã phụ lục hợp đồng đã tồn tại !'),
     ]
     bsd_ngay_pl_tti = fields.Datetime(string="Ngày", help="Ngày phụ lục hợp đồng", required=True,
-                                      default=fields.Datetime.now(),
+                                      default=lambda self: fields.Datetime.now(),
                                       readonly=True,
                                       states={'nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,
@@ -42,7 +43,7 @@ class BsdPLTDTT(models.Model):
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_dt_tt_id = fields.Many2one('bsd.dt_tt', string="Thay đổi diện tích",
-                                   help="Phiếu cập nhật diện tích thông thủy thực tế", required=True,
+                                   help="Phiếu cập nhật diện tích thông thủy thực tế",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_dt_tt_tt = fields.Float(string="Diện tích thực tế", help="Diện tích thông thủy thực tế",

@@ -1,26 +1,24 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import datetime
 import logging
 _logger = logging.getLogger(__name__)
 
 
-class BsdRapCan(models.Model):
+class BsdGiuCho(models.Model):
     _name = 'bsd.giu_cho'
     _description = "Thông tin giữ chỗ"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma_gc'
 
-    bsd_ma_gc = fields.Char(string="Mã giữ chỗ", required=True,
-                            readonly=True, help="Mã giữ chỗ",
-                            states={'nhap': [('readonly', False)]})
+    bsd_ma_gc = fields.Char(string="Mã giữ chỗ", required=True, readonly=True, copy=False, default='/')
     _sql_constraints = [
         ('bsd_ma_gc_unique', 'unique (bsd_ma_gc)',
          'Mã giữ chỗ đã tồn tại !'),
     ]
-    bsd_ngay_gc = fields.Datetime(string="Ngày giữ chỗ", required=True, default=datetime.datetime.now(),
+    bsd_ngay_gc = fields.Datetime(string="Ngày giữ chỗ", required=True, default=lambda self: fields.Datetime.now(),
                                   readonly=True, help='Ngày giữ chỗ',
                                   states={'nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", required=True,
@@ -32,30 +30,35 @@ class BsdRapCan(models.Model):
     bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", required=True,
                                   readonly=True, help="Tên căn hộ",
                                   states={'nhap': [('readonly', False)]})
+    bsd_product_tmpl_id = fields.Many2one(related='bsd_unit_id.product_tmpl_id', store=True)
     bsd_dien_giai = fields.Char(string="Diễn giải",
                                 readonly=True, help="Diễn giải",
                                 states={'nhap': [('readonly', False)]})
     bsd_truoc_mb = fields.Boolean(string="Trước mở bán", default=False,
                                   help="Thông tin xác định Giữ chỗ được tạo trước hay sau khi unit có đợt mở bán",
-                                  readonly=True, required=True)
-    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', related="bsd_unit_id.bsd_dot_mb_id",
-                                    help="Đợt mở bán",
-                                    string="Đợt mở bán", store=True)
+                                  readonly=True)
+    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', help="Đợt mở bán", string="Đợt mở bán",
+                                    readonly=True,states={'nhap': [('readonly', False)]})
+
     bsd_bang_gia_id = fields.Many2one('product.pricelist', related="bsd_dot_mb_id.bsd_bang_gia_id", store=True,
                                       string="Bảng giá", help="Bảng giá bán")
     bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", required=True,
                                   readonly=True, help="Tiền giữ chỗ",
                                   states={'nhap': [('readonly', False)]})
-    bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên BH",
-                                  readonly=True, help="Nhân viên bán háng",
+
+    def _get_nhan_vien(self):
+        return self.env['hr.employee'].search([('user_id', '=', self.env.uid)])
+
+    bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên BH", help="Nhân viên bán hàng",
+                                  readonly=True, required=True, default=_get_nhan_vien,
                                   states={'nhap': [('readonly', False)]})
-    bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch",domain=[('is_company', '=', True)],
+    bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch", domain=[('is_company', '=', True)],
                                     readonly=True, help="Sàn giao dịch",
                                     states={'nhap': [('readonly', False)]})
     bsd_ctv_id = fields.Many2one('res.partner', string="Công tác viên", domain=[('is_company', '=', False)],
                                  readonly=True, help="Cộng tác viên",
                                  states={'nhap': [('readonly', False)]})
-    bsd_gioi_thieu_id = fields.Many2one('res.partner', string="Giới thiệu",help="Cá nhân hoặc đơn vị giới thiệu",
+    bsd_gioi_thieu_id = fields.Many2one('res.partner', string="Giới thiệu", help="Cá nhân hoặc đơn vị giới thiệu",
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
     bsd_ngay_hh_gc = fields.Datetime(string="Hạn giữ chỗ", help="Hiệu lực của giữ chỗ", compute='_compute_hl_gc', store=True)
@@ -68,8 +71,9 @@ class BsdRapCan(models.Model):
                               ('dat_cho', 'Đặt chỗ'),
                               ('giu_cho', 'Giữ chỗ'),
                               ('bao_gia', 'Báo giá'),
+                              ('dong', 'Đóng'),
                               ('huy', 'Hủy')], default='nhap', string="Trạng thái",
-                             tracking=1, help="Trạng thái", required=True)
+                             tracking=1, help="Trạng thái", required=True, readonly=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
@@ -77,8 +81,8 @@ class BsdRapCan(models.Model):
                                        ('dang_tt', 'Đang thanh toán'),
                                        ('da_tt', 'Đã thanh toán')], string="Thanh toán", default="chua_tt",
                                       help="Thanh toán",
-                                      required=True)
-    bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ")
+                                      required=True, readonly=True)
+    bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ",readonly=True)
     bsd_stt_bg = fields.Integer(string="STT báo giá", readonly=True, help="Số thứ tự ưu tiên làm báo giá")
     bsd_ngay_hh_bg = fields.Datetime(string="Hạn báo giá", help="Hiệu lực được làm báo giá", readonly=True)
     bsd_het_han_bg = fields.Boolean(string="Hết hạn báo giá", readonly=True, default=False,
@@ -88,9 +92,20 @@ class BsdRapCan(models.Model):
     bsd_het_han_gc = fields.Boolean(string="Hết hạn giữ chỗ", readonly=True,
                                     help="""Thông tin ghi nhận giữ chỗ bị hết hiệu lực sau khi đã thanh toán giữ chỗ""")
 
-    @api.onchange('bsd_du_an_id')
-    def _onchange_unit(self):
-        self.bsd_unit_id = False
+    bsd_kh_moi_id = fields.Many2one('res.partner', string="KH chuyển nhượng", help="Người được chuyển nhượng giữ chỗ",
+                                    tracking=2, readonly=True)
+
+    bsd_tien_gctc = fields.Monetary(string="Tiền GCTC", help="Tiền giữ chỗ thiện chí đã thanh toán",
+                                    readonly=True, default=0)
+    bsd_huy_gc_id = fields.Many2one('bsd.huy_gc', string="Hủy giữ chỗ", help="Mã phiếu hủy giữ chỗ", readonly=1)
+
+    bsd_so_bao_gia = fields.Integer(string="# Báo giá", compute='_compute_bao_gia')
+    bsd_so_huy_gc = fields.Integer(string="# Hủy giữ chỗ", compute='_compute_huy_gc')
+
+    # # R11. khách hàng chuyển nhượng
+    # @api.onchange('bsd_du_an_id')
+    # def _onchange_unit(self):
+    #     self.bsd_unit_id = False
 
     # KD.07.02 Ràng buộc số giữ chỗ theo căn hộ/ NVBH
     @api.constrains('bsd_nvbh_id', 'bsd_unit_id')
@@ -143,25 +158,23 @@ class BsdRapCan(models.Model):
     @api.onchange('bsd_unit_id', 'bsd_du_an_id')
     def _onchange_tien_gc(self):
         if self.bsd_unit_id:
+            self.bsd_dot_mb_id = self.bsd_unit_id.bsd_dot_mb_id
             tien_gc = self.bsd_unit_id.bsd_tien_gc
             if tien_gc != 0:
                 self.bsd_tien_gc = tien_gc
             else:
                 self.bsd_tien_gc = self.bsd_du_an_id.bsd_tien_gc
+
         if self.bsd_dot_mb_id:
             self.bsd_tien_gc = 0
 
     # R.05 Tính hạn hiệu lực giữ chỗ
-    @api.depends('bsd_ngay_gc', 'bsd_du_an_id.bsd_gc_tmb')
+    @api.depends('bsd_ngay_gc', 'bsd_du_an_id.bsd_gc_smb')
     def _compute_hl_gc(self):
         for each in self:
             if each.bsd_ngay_gc:
-                if not each.bsd_dot_mb_id:
-                    days = each.bsd_du_an_id.bsd_gc_tmb or 0 if each.bsd_du_an_id else 0
-                    each.bsd_ngay_hh_gc = each.bsd_ngay_gc + datetime.timedelta(days=days)
-                else:
-                    hours = each.bsd_du_an_id.bsd_gc_smb or 0 if each.bsd_du_an_id else 0
-                    each.bsd_ngay_hh_gc = each.bsd_ngay_gc + datetime.timedelta(hours=hours)
+                hours = each.bsd_du_an_id.bsd_gc_smb or 0 if each.bsd_du_an_id else 0
+                each.bsd_ngay_hh_gc = each.bsd_ngay_gc + datetime.timedelta(hours=hours)
 
     # R.08 Tính hạn hiệu lực giữ chỗ sau thanh toán
     @api.depends('bsd_ngay_tt', 'bsd_du_an_id.bsd_gc_tmb')
@@ -170,17 +183,37 @@ class BsdRapCan(models.Model):
             if each.bsd_ngay_tt:
                 each.bsd_ngay_hh_stt = each.bsd_ngay_tt + datetime.timedelta(days=each.bsd_du_an_id.bsd_gc_tmb)
 
+    # KD.07.09 Theo dõi công nợ giữ chỗ
+    def _tao_rec_cong_no(self):
+        if self.bsd_truoc_mb and not self.bsd_gc_da:
+            self.env['bsd.cong_no'].create({
+                'bsd_chung_tu': self.bsd_ma_gc,
+                'bsd_ngay': self.bsd_ngay_gc,
+                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                'bsd_du_an_id': self.bsd_du_an_id.id,
+                'bsd_ps_tang': self.bsd_tien_gc,
+                'bsd_ps_giam': 0,
+                'bsd_loai_ct': 'giu_cho',
+                'bsd_phat_sinh': 'tang',
+                'bsd_giu_cho_id': self.id,
+                'state': 'da_gs',
+            })
+
     # KD07.01 Xác nhận giữ chỗ
     def action_xac_nhan(self):
         if not self.bsd_dot_mb_id:
+            self._tao_rec_cong_no()
             self.write({
                 'state': 'dat_cho',
                 'bsd_ngay_gc': datetime.datetime.now(),
             })
             # Cập nhật lại trạng thái unit
-            self.bsd_unit_id.write({
-                'state': 'dat_cho',
-            })
+            if self.bsd_unit_id.state in ['giu_cho', 'dat_cho']:
+                pass
+            else:
+                self.bsd_unit_id.write({
+                    'state': 'dat_cho',
+                })
         else:
             giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                            ('bsd_stt_bg', '>', 0)])
@@ -209,15 +242,20 @@ class BsdRapCan(models.Model):
 
     # KD.07.08 Tự động đánh dấu hết hạn giữ chỗ
     def auto_danh_dau_hh_gc(self):
-        if self.state == 'xac_nhan' and self.bsd_thanh_toan == 'da_tt' and not self.bsd_het_han_gc:
-            self.write({
-                'bsd_het_han_gc': True
-            })
+        self.write({
+            'bsd_het_han_gc': True
+        })
 
     # R7 Ghi nhận thông tin trước mở bán
     @api.model
     def create(self, vals):
-        res = super(BsdRapCan, self).create(vals)
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
+        if not sequence:
+            raise UserError(_('Dự án chưa có mã phiếu giữ chỗ'))
+        vals['bsd_ma_gc'] = sequence.next_by_id()
+        res = super(BsdGiuCho, self).create(vals)
         if res.bsd_unit_id.bsd_dot_mb_id:
             res.write({
                 'bsd_truoc_mb': False,
@@ -226,11 +264,14 @@ class BsdRapCan(models.Model):
             res.write({
                 'bsd_truoc_mb': True,
             })
+        # R11 Chuyển nhượng khách hàng
+        res.write({
+            'bsd_kh_moi_id': res.bsd_khach_hang_id.id
+        })
         return res
 
     def write(self, vals):
         if 'bsd_unit_id' in vals:
-            _logger.debug("Chạy ở đây")
             if self.env['product.product'].browse(vals['bsd_unit_id']).bsd_dot_mb_id:
                 vals.update({
                     'bsd_truoc_mb': False,
@@ -240,5 +281,187 @@ class BsdRapCan(models.Model):
                     'bsd_truoc_mb': True,
                 })
             _logger.debug(vals)
-        res = super(BsdRapCan, self).write(vals)
+        if 'bsd_khach_hang_id' in vals:
+            vals.update({
+                'bsd_kh_moi_id': vals['bsd_khach_hang_id']
+            })
+        res = super(BsdGiuCho, self).write(vals)
         return res
+
+    # KD.07.06 Hủy giữ chỗ đã thanh toán
+    def action_huy(self):
+        # Kiểm tra giữ chỗ đã làm báo giá chưa
+        bao_gia = self.env['bsd.bao_gia'].search([('bsd_giu_cho_id', '=', self.id),
+                                                  ('state', 'not in', ['huy'])])
+        if bao_gia:
+            raise UserError("Bạn cần hủy Bảng tính giá trước khi hủy giữ chỗ")
+
+        # Hủy giữ chỗ sau mở bán
+        if self.bsd_thanh_toan == 'da_tt' and not self.bsd_truoc_mb:
+            self.write({'state': 'huy'})
+            giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                      ('state', 'not in', ['huy', 'nhap'])])
+            if not giu_cho:
+                self.bsd_unit_id.write({
+                    'state': 'san_sang',
+                })
+            elif not giu_cho.filtered(lambda g: g.state == 'giu_cho'):
+                self.bsd_unit_id.write({
+                    'state': 'dat_cho'
+                })
+        # Hủy giữ chỗ từ giữ chỗ thiện chí
+        if self.bsd_thanh_toan == 'da_tt' and self.bsd_gc_da:
+            # Hủy giữ chỗ và ráp căn của giữ chỗ
+            self.write({'state': 'huy'})
+            self.bsd_rap_can_id.write({'state': 'huy'})
+            giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                      ('state', 'not in', ['huy', 'nhap'])])
+            if not self.bsd_dot_mb_id:
+                if not giu_cho:
+                    self.bsd_unit_id.write({
+                        'state': 'chuan_bi',
+                    })
+                elif not giu_cho.filtered(lambda g: g.state == 'giu_cho'):
+                    self.bsd_unit_id.write({
+                        'state': 'dat_cho'
+                    })
+            else:
+                if not giu_cho:
+                    self.bsd_unit_id.write({
+                        'state': 'san_sang',
+                    })
+                elif not giu_cho.filtered(lambda g: g.state == 'giu_cho'):
+                    self.bsd_unit_id.write({
+                        'state': 'dat_cho'
+                    })
+
+    # KD.07.06 Hủy giữ chỗ chưa thanh toán
+    def action_huy_chua_tt(self):
+        # cập nhật trạng thái giữ chỗ
+        self.write({
+            'state': 'huy',
+        })
+        self.env['bsd.cong_no'].search([('bsd_giu_cho_id', '=', self.id)], limit=1).write({
+            'state': 'huy'
+        })
+        # cập nhật căn hộ trên phiếu giữ chỗ
+        if not self.bsd_dot_mb_id:
+            giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                      ('state', 'not in', ['huy', 'nhap'])])
+            if not giu_cho:
+                self.bsd_unit_id.write({
+                    'state': 'chuan_bi',
+                })
+        else:
+            giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                      ('state', 'not in', ['huy', 'nhap'])])
+            if not giu_cho:
+                self.bsd_unit_id.write({
+                    'state': 'san_sang',
+                })
+
+    # KD.07.10 Tự động tính Hạn báo giá của Giữ chỗ thanh toán sau mở bán
+    def tinh_lai_hbg(self):
+        if not self.bsd_dot_mb_id:
+            pass
+        else:
+            pass
+
+    # KD.07.11 Tạo Bảng tính giá từ màn hình Giữ chỗ
+    def action_tao_bao_gia(self):
+        context = {
+            'default_bsd_ten_bao_gia': 'Bảng tính giá căn hộ' + self.bsd_unit_id.name,
+            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'default_bsd_giu_cho_id': self.id,
+            'default_bsd_nvbh_id': self.bsd_nvbh_id.id,
+            'default_bsd_san_gd_id': self.bsd_san_gd_id.id,
+            'default_bsd_ctv_id': self.bsd_ctv_id.id,
+            'default_bsd_gioi_thieu_id': self.bsd_gioi_thieu_id.id,
+        }
+        return {
+            "name": "Tạo báo giá",
+            "res_model": 'bsd.bao_gia',
+            "view": [[False, 'form']],
+            "type": 'ir.actions.act_window',
+            "view_mode": "form",
+            "context": context,
+            "target": "new"
+        }
+
+    def _compute_bao_gia(self):
+        for each in self:
+            bao_gia = self.env['bsd.bao_gia'].search([('bsd_giu_cho_id', '=', self.id)])
+            each.bsd_so_bao_gia = len(bao_gia)
+
+    def _compute_huy_gc(self):
+        for each in self:
+            huy_gc = self.env['bsd.huy_gc'].search([('bsd_giu_cho_id', '=', self.id)])
+            each.bsd_so_huy_gc = len(huy_gc)
+
+    def action_view_bao_gia(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_bao_gia_action').read()[0]
+
+        bao_gia = self.env['bsd.bao_gia'].search([('bsd_giu_cho_id', '=', self.id)])
+        if len(bao_gia) > 1:
+            action['domain'] = [('id', 'in', bao_gia.ids)]
+        elif bao_gia:
+            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_bao_gia_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = bao_gia.id
+        # Prepare the context.
+        context = {
+            'default_bsd_ten_bao_gia': 'Bảng tính giá căn hộ' + self.bsd_unit_id.name,
+            'default_bsd_khach_hang_id': self.bsd_kh_moi_id.id,
+            'default_bsd_giu_cho_id': self.id,
+            'default_bsd_nvbh_id': self.bsd_nvbh_id.id,
+            'default_bsd_san_gd_id': self.bsd_san_gd_id.id,
+            'default_bsd_ctv_id': self.bsd_ctv_id.id,
+            'default_bsd_gioi_thieu_id': self.bsd_gioi_thieu_id.id,
+        }
+        action['context'] = context
+        return action
+
+    def action_view_huy_gc(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_huy_gc_action').read()[0]
+
+        huy_gc = self.env['bsd.huy_gc'].search([('bsd_giu_cho_id', '=', self.id)])
+        if len(huy_gc) > 1:
+            action['domain'] = [('id', 'in', huy_gc.ids)]
+        elif huy_gc:
+            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_huy_gc_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = huy_gc.id
+        # Prepare the context.
+        context = {
+            'default_bsd_khach_hang_id': self.bsd_kh_moi_id.id,
+            'default_bsd_giu_cho_id': self.id,
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_loai_gc': 'giu_cho'
+        }
+        action['context'] = context
+        return action
+
+    # KD.07.13 Tạo đề nghị hủy giữ chỗ từ màn hình Giữ chỗ
+    def action_de_nghi_huy(self):
+        context = {
+            'default_bsd_khach_hang_id': self.bsd_kh_moi_id.id,
+            'default_bsd_giu_cho_id': self.id,
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_loai_gc': 'giu_cho',
+            'default_bsd_unit_id': self.bsd_unit_id.id,
+        }
+        return {
+            "name": "Tạo đề nghị hủy",
+            "res_model": 'bsd.huy_gc',
+            "view": [[False, 'form']],
+            "type": 'ir.actions.act_window',
+            "view_mode": "form",
+            "context": context,
+            "target": "new"
+        }

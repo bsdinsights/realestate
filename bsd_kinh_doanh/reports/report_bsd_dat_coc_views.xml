@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="bsd_dat_coc_report_wizard_form">
+            <field name="name">bsd.dat_coc.report.wizard.form</field>
+            <field name="model">bsd.dat_coc.report.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="In đặt cọc">
+                    <group>
+                        <group>
+                            <field name="bsd_mau_in"/>
+                            <field name="bsd_dat_coc_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_in" string="In" type="object" class="oe_highlight"/>
+                        <button string="Hủy" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <act_window id="bsd_dat_coc_report_action"
+                    name="Chọn mẫu in đặt cọc"
+                    res_model="bsd.dat_coc.report.wizard"
+                    view_mode="form"
+                    target="new"/>
+        <report id="bsd_mau_in_dat_coc_chuan"
+                model="bsd.dat_coc.report.wizard"
+                string="Phiếu đặt cọc"
+                report_type="qweb-pdf"
+                name="bsd_kinh_doanh.bsd_dat_coc_view"
+                menu="False"/>
+        <report id="bsd_mau_in_dat_coc_chuan_html"
+                model="bsd.dat_coc.report.wizard"
+                string="Phiếu đặt cọc (html)"
+                report_type="qweb-html"
+                name="bsd_kinh_doanh.bsd_dat_coc_view"
+                menu="False"/>
+        <template id="bsd_dat_coc_view">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="doc" t-value="doc.with_context(lang=lang)" />
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div>
+                                        <b><span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/></b>
+                                        <br/>
+                                        <span/>
+                                        <br/>
+                                        <b><span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.street"/></b>
+                                        <br/>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                   <div class="text-right">
+                                        <img  t-if="doc.bsd_du_an_id.bsd_chu_dt_id.company_id.logo"
+                                              t-att-src="'data:image/png;base64,%s' % to_text(doc.bsd_du_an_id.bsd_chu_dt_id.company_id.logo)"
+                                              style="width: 80px;height:80px" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-7">
+                                    <div class="row">
+                                        <div class="col-12" style="font-size:20px">
+                                            <span><b>PHIẾU ĐẶT CỌC MUA BÁN CĂN HỘ</b></span>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:70px">
+                                        <div class="col-12">
+                                            <p><b><u>Phần 1 - Người mua</u></b></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div>
+                                        <span><b>Phiếu số: </b></span>
+                                        <span t-field="doc.bsd_unit_id.name"></span>
+                                        <span> - </span>
+                                        <span t-field="doc.bsd_ma_dat_coc"></span>
+                                    </div>
+                                    <table class="table table-bordered table-sm"
+                                           style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
+                                        <tbody>
+                                            <tr>
+                                                <th width="35%" style="border: 1px solid black !important;"><b>Ngày</b></th>
+                                                <td width="65%" style="border: 1px solid black !important;"><span t-field="doc.bsd_ngay_in_dc" t-options='{"format": "dd/MM/YYYY"}'/></td>
+                                            </tr>
+                                            <tr>
+                                                <th style="border: 1px solid black !important;"><b>Sàn giao dịch</b></th>
+                                                <td style="border: 1px solid black !important;"><span t-field="doc.bsd_giu_cho_id.bsd_san_gd_id.name"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- Người mua-->
+                            <div class="row mt4">
+                                <div class="col-12">
+                                    <table class="table table-bordered table-sm"
+                                           style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
+                                        <tr class="text-center">
+                                            <td rowspan="6" width="10%"
+                                                style="border: 1px solid black !important;vertical-align: middle;"><b>Người mua 1</b></td>
+                                            <td class="text-left" width="20%" style="border: 1px solid black !important;"><div>Họ vàn tên:</div></td>
+                                            <td width="38%" style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.name"/></div></td>
+                                            <td class="text-left" width="12%" style="border: 1px solid black !important;"><div>Ngày sinh:</div></td>
+                                            <td width="20%" style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.bsd_ngay_sinh" t-options='{"format": "dd/MM/YYYY"}'/></div></td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="text-left" style="border: 1px solid black !important;"><div>Hộ chiếu:</div></td>
+                                            <td style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.bsd_ho_chieu"/></div></td>
+                                            <td class="text-left" style="border: 1px solid black !important;"><div>Giới tính:</div></td>
+                                            <td style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.bsd_gioi_tinh"/></div></td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="text-left" style="border: 1px solid black !important;"><div>CMND/ CCCD</div></td>
+                                            <td style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.bsd_cmnd"/></div></td>
+                                            <td class="text-left" style="border: 1px solid black !important;"><div>Điện thoại:</div></td>
+                                            <td style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.phone"/></div></td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="text-left" style="border: 1px solid black !important;"><div>Email:</div></td>
+                                            <td style="border: 1px solid black !important;" colspan="3"><div><span t-field="doc.bsd_khach_hang_id.email"/></div></td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="text-left" style="border: 1px solid black !important;"><div>Địa chỉ thường chú:</div></td>
+                                            <td style="border: 1px solid black !important;" colspan="3"><div><span t-field="doc.bsd_khach_hang_id.bsd_dia_chi_tt"/></div></td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="text-left" style="border: 1px solid black !important;"><div>Địa chỉ liên hệ:</div></td>
+                                            <td style="border: 1px solid black !important;" colspan="3"><div><span t-field="doc.bsd_khach_hang_id.bsd_dia_chi_lh"/></div></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- Thông tin căn hộ -->
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <p><b><u>Phần 2 - Thông tin căn hộ</u></b></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <table class="table table-bordered table-sm"
+                                           style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
+                                        <tbody>
+                                            <tr class="text-center">
+                                                <td width="10%" style="border: 1px solid black !important;">
+                                                    <div>1</div>
+                                                </td>
+                                                <td width="58%" class="text-left" style="border: 1px solid black !important;">
+                                                    <div>Căn hộ số</div>
+                                                </td>
+                                                <td width="32%" style="border: 1px solid black !important;">
+                                                    <div><b><span t-field="doc.bsd_unit_id.bsd_ten_unit"/></b></div>
+                                                </td>
+                                            </tr>
+                                            <tr class="text-center">
+                                                <td style="border: 1px solid black !important;">
+                                                    <div>2</div>
+                                                </td>
+                                                <td class="text-left" style="border: 1px solid black !important;">
+                                                    <div>Loại căn hộ</div>
+                                                </td>
+                                                <td style="border: 1px solid black !important;">
+                                                    <div><span t-field="doc.bsd_unit_id.bsd_loai_sp_id.bsd_ma_nhom"/></div>
+                                                </td>
+                                            </tr>
+                                            <tr class="text-center">
+                                                <td style="border: 1px solid black !important;">
+                                                    <div>3</div>
+                                                </td>
+                                                <td class="text-left" style="border: 1px solid black !important;">
+                                                    <div>Dự án/ Tòa nhà</div>
+                                                </td>
+                                                <td style="border: 1px solid black !important;">
+                                                    <div><span t-field="doc.bsd_du_an_id.bsd_ten_da"/></div>
+                                                </td>
+                                            </tr>
+                                            <tr class="text-center">
+                                                <td style="border: 1px solid black !important;">
+                                                    <div>4</div>
+                                                </td>
+                                                <td class="text-left" style="border: 1px solid black !important;">
+                                                    <div>Diện tích tim tường</div>
+                                                </td>
+                                                <td style="border: 1px solid black !important;">
+                                                    <div><span t-field="doc.bsd_dt_xd"/></div>
+                                                </td>
+                                            </tr>
+                                            <tr class="text-center">
+                                                <td style="border: 1px solid black !important;">
+                                                    <div>5</div>
+                                                </td>
+                                                <td class="text-left" style="border: 1px solid black !important;">
+                                                    <div>Diện tích thông thủy</div>
+                                                </td>
+                                                <td style="border: 1px solid black !important;">
+                                                    <div><span t-field="doc.bsd_dt_sd"/></div>
+                                                </td>
+                                            </tr>
+                                            <tr class="text-center">
+                                                <td style="border: 1px solid black !important;">
+                                                    <div>6</div>
+                                                </td>
+                                                <td class="text-left" style="border: 1px solid black !important;">
+                                                    <div>Tổng giá trị căn hộ (bao gồm VAT và phí bảo trì) (VNĐ)</div>
+                                                </td>
+                                                <td class="text-right" style="border: 1px solid black !important;">
+                                                    <div><b><span t-field="doc.bsd_tong_gia" t-options='{"widget": "monetary", "display_currency": currency}'/></b></div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--=================-->
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <div><b>I/Chúng tôi, với tư cách là người mua, thực hiện đặt chỗ với ý định mua căn
+                                        hộ được nêu trong Phần 2 của Phiếu đặt cọc này và sẽ tuân thủ các điều khoản sau đây.</b></div>
+                                </div>
+                            </div>
+                            <div class="row mt4">
+                                <div class="col-12">
+                                    <div>1. Người mua thanh toán i) Phí đặt chỗ <span t-field="doc.bsd_tien_gc"/> bằng Séc hoặc Thẻ tín dụng,
+                                        hoặc ii) Đặt cọc số tiền <span t-field="doc.bsd_du_an_id.bsd_tien_dc"/>
+                                        (Bằng chữ: <span t-esc="tien_dat_coc_chu"/>) cho <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/> mua căn hộ
+                                        của Dự án. (Lưu ý: Phiếu đặt cọc này chỉ dành cho một căn hộ).</div>
+                                </div>
+                            </div>
+                            <div class="row mt4">
+                                <div class="col-12">
+                                    <div>2. Trong vòng <span t-field="doc.bsd_du_an_id.bsd_hh_pc"/> ngày kể từ ngày in Phiếu đặt cọc này, Người mua sẽ ký Thỏa
+                                        thuận đặt cọc (Hợp đồng) với Người bán để mua Căn hộ được nêu ở đây, và Người
+                                        mua sẽ thanh toán cho <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/> tương đương <span t-esc="tl_tt"/>% Tổng giá trị căn hộ không bao gồm
+                                        phí bảo trì (trừ đi số tiền đặt cọc nếu đã thanh toán cho công ty <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/>).
+                                        Chi tiết về lịch thanh toán sẽ được quy định trong Lịch thanh toán kèm theo
+                                        Phiếu đặt cọc này.</div>
+                                </div>
+                            </div>
+                            <div class="row mt4">
+                                <div class="col-12">
+                                    <div>3. Người mua chấp nhận và đồng ý rằng Phí đặt chỗ và tiền Đặt cọc được thanh
+                                        toán sẽ hoàn toàn thuộc về Chủ đầu tư mà không có bất kỳ thông báo nào (bằng
+                                        lời nói hoặc văn bản) từ Chủ đầu tư, nếu Người mua không thực hiện thanh toán
+                                        đợt 1 như quy định tại Mục 2 ở trên và không ký hợp đồng vì bất kỳ lý do gì.)</div>
+                                </div>
+                            </div>
+                            <!--Cam kết người mua-->
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <p><b><u>Phần 3 - Cam kết người mua</u></b></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <table class="table table-bordered table-sm"
+                                           style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
+                                        <tr>
+                                            <td style="border: 1px solid black !important">
+                                                <span>1. Người mua đã đọc Phiếu đặt cọc và đồng ý với tất cả các điều khoản
+                                                    được ghi trên Phiếu đặt cọc.</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black !important">
+                                                <span>2. Người mua chấp nhận và đồng ý rằng Tiền đặt cọc được quy định
+                                                    ở Mục 1 của Phần 2 được đề cập ở phía trên sẽ không được hoàn trả
+                                                    trong mọi trường hợp.</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black !important">
+                                                <span>3. Người mua đồng ý với các chi tiết về Tổng giá bán căn hộ và
+                                                    lịch thanh toán của Tổng giá bán căn hộ sẽ tuân theo Phiếu tính giá
+                                                    được đính kèm như một phần của Phiếu đặt cọc này.</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black !important">
+                                                <span>4. Người mua đồng ý với bản thiết kế của căn hộ theo "Bản vẽ thiết
+                                                    kế nội thất" được đính kèm.</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--Phần 4 điều khoản chung-->
+                            <div class="row mt16">
+                                <div class="col-12">
+                                    <div><br/></div>
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-12">
+                                    <p><b><u>Phần 4 - Điều khoản chung</u></b></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <table class="table table-bordered table-sm"
+                                           style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
+                                        <tr>
+                                            <td style="border: 1px solid black !important;vertical-align: middle;">
+                                                <span>1. "Bản vẽ thiết kế nội thất" và "Phiếu tính giá" là một phần đính
+                                                    kèm liên đới của phiếu đặt cọc này.</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black !important;vertical-align: middle;">
+                                                <span>2. Phiếu này sẽ được coi là hợp pháp và hiệu lực khi có đầy đủ chữ
+                                                    ký và tên đầy đủ của Người mua, cùng với chữ ký của đại diện được ủy
+                                                    quyền của Chủ đầu tư và Chủ đầu tư xác nhận nhận đầy đủ tiền đặt cọc
+                                                    của Người mua cho Chủ đầu tư.</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black !important;vertical-align: middle;">
+                                                <span>3. Hợp đồng sẽ được lập theo thông tin được đưa ra theo phiếu đặt
+                                                    cọc này. Không được thêm hoặc xóa thông tin Người mua sau khi Phiếu
+                                                    đặt cọc này được ký và có hiệu lực.</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black !important;vertical-align: middle;">
+                                                <span>4. Một khi Phiếu đặt cọc được ký và có hiệu lực, căn hộ trên Phiếu
+                                                    đặt cọc được xem là đã được Người mua chọn và KHÔNG cho phép thay đổi
+                                                    căn hộ.</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black !important;vertical-align: middle;">
+                                                <span>5. Trong trường hợp Tiền đặt cọc được thanh toán bằng hình thức
+                                                    Chuyển tiền bằng điện hoặc Thẻ tín dụng, việc đặt chỗ sẽ có hiệu lực
+                                                    khi Nhân viên bán hàng nhận đủ tổng số tiền thanh toán đã được ghi
+                                                    trên Séc hoặc Phiếu chuyển tiền.</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <span>Phiếu này được in làm 03 bản, Người mua giữ 1 bản, Nhân viên bán hàng giữ 1
+                                        bản, Sàn giao dịch giữ một bản. Tất cả các bản in đều có giá trị pháp lý như nhau.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-12">
+                                    <span><b>Người ký kết</b></span>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-12"><br/></div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-5">
+                                    <div><br/></div>
+                                    <div style="border-bottom: 1px solid black;"/>
+                                </div>
+                                <div class="col-1"/>
+                                <div class="col-5">
+                                    <span>Ngày: </span><span t-field="doc.bsd_ngay_in_dc" t-options='{"format": "dd/MM/YYYY"}'/>
+                                    <div style="border-bottom: 1px solid black;"/>
+                                </div>
+                                <div class="col-1"/>
+                            </div>
+                            <div class="row">
+                                <div class="col-5">
+                                    <span>Người mua 1</span>
+                                </div>
+                                <div class="col-1"/>
+                                <div class="col-5">
+                                    <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/>
+                                </div>
+                                <div class="col-1"/>
+                            </div>
+                            <div class="row">
+                                <div class="col-5">
+                                    <span>Họ và tên: </span><span t-field="doc.bsd_khach_hang_id.name"/><br/>
+                                    <span>Hộ chiếu: </span><span t-field="doc.bsd_khach_hang_id.bsd_ho_chieu"/><br/>
+                                    <span>CMND/ CCCD: </span><span t-field="doc.bsd_khach_hang_id.bsd_cmnd"/><br/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

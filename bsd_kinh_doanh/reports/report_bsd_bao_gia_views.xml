@@ -1,130 +1,172 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
-        <report
-            id="bsd_bao_gia_in"
-            model="bsd.bao_gia"
-            string="Báo giá"
-            report_type="qweb-html"
-            name="bsd_kinh_doanh.bsd_bao_gia_view"
-            file="bsd_kinh_doanh.bsd_bao_gia_view"
-            attachment_use="True"
-            attachment="(object.state in ('open','paid')) and
-                ('INV'+(object.number or '').replace('/','')+'.pdf')"
-        />
+        <record model="ir.ui.view" id="bsd_bao_gia_report_wizard_form">
+            <field name="name">bsd.bao_gia.report.wizard.form</field>
+            <field name="model">bsd.bao_gia.report.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="In báo giá">
+                    <group>
+                        <group>
+                            <field name="bsd_mau_in"/>
+                            <field name="bsd_bao_gia_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_in" string="In" type="object" class="oe_highlight"/>
+                        <button string="Hủy" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <act_window id="bsd_bao_gia_report_action"
+                    name="Chọn mẫu in báo giá"
+                    res_model="bsd.bao_gia.report.wizard"
+                    view_mode="form"
+                    target="new"/>
+        <report id="bsd_mau_in_bao_gia_chuan"
+                model="bsd.bao_gia.report.wizard"
+                string="Bảng tính giá"
+                report_type="qweb-pdf"
+                name="bsd_kinh_doanh.bsd_bao_gia_view"
+                menu="False"/>
+        <report id="bsd_mau_in_bao_gia_chuan_html"
+                model="bsd.bao_gia.report.wizard"
+                string="Bảng tính giá (html)"
+                report_type="qweb-html"
+                name="bsd_kinh_doanh.bsd_bao_gia_view"
+                menu="False"/>
+
+        <template id="bsd_external_layout_standard">
+            <t t-if="not o" t-set="o" t-value="doc"/>
+
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+            <t t-esc="company.update_scss()"/>
+            <div class="article o_report_layout_standard"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-call="web.address_layout"/>
+                <t t-raw="0"/>
+            </div>
+        </template>
 
         <template id="bsd_bao_gia_view">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
-                    <t t-if="not o" t-set="o" t-value="doc"/>
-                    <t t-if="not company">
-                        <!-- Multicompany -->
-                        <t t-if="company_id">
-                            <t t-set="company" t-value="company_id"/>
-                        </t>
-                        <t t-elif="o and 'company_id' in o">
-                            <t t-set="company" t-value="o.company_id.sudo()"/>
-                        </t>
-                        <t t-else="else">
-                            <t t-set="company" t-value="res_company"/>
-                        </t>
-                    </t>
-                    <t t-esc="company.update_scss()"/>
-                    <div class="article o_report_layout_standard"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
-                        <t t-call="web.address_layout"/>
-                        <t t-raw="0"/>
-                    </div>
-                    <div class="page">
-                        <div class="row">
-                            <div class="col-3 mb4">
-                                <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 80px;" alt="Logo"/>
+                    <t t-set="doc" t-value="doc.with_context(lang=lang)" />
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="row">
+                                <div class="col-7">
+                                    <img t-if="doc.company_id.logo" t-att-src="'data:image/png;base64,%s' % to_text(doc.company_id.logo)" style="width: 80px;height:80px" />
+                                </div>
+                                <div class="col-5" style="font-size:13px">
+                                    <div>
+                                        <span t-field="doc.company_id.partner_id" />
+                                        <br/>
+                                        <span t-field="doc.company_id.partner_id.street" />
+                                        <br/>
+                                        <span t-field="doc.company_id.partner_id.phone" />
+                                        <br/>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-4"/>
-                            <div class="col-5">
-                                <div><b t-field="company.partner_id.name"></b></div>
-                                <div t-field="company.partner_id.street"/>
-                                <div><span>Điện thoại: </span ><span t-field="company.partner_id.phone"/></div>
-                            </div>
-                        </div>
                         <!-- tên phiếu báo giá-->
-                        <div class="row">
-                          <div class="col-2"/>
-                          <div class="col-6">
-                            <h2 style="text-align:center;margin-top:5px">PHIẾU TÍNH GIÁ</h2>
-                          </div>
-                          <div class="col-4"/>
+                        <div class="row mt8">
+                            <div class="col-12 text-center">
+                                <div style="font-size:25px">
+                                    <b>PHIẾU TÍNH GIÁ</b>
+                                </div>
+                            </div>
+
                         </div>
+
                         <!--Ngày in báo giá-->
                         <div class="row">
                           <div class="col-6"/>
                           <div class="col-6">
                             <div style="text-align:right">
-                              <span style="font-size:16px">Ngày: </span>
-                              <span t-field="doc.bsd_ngay_in_bg"/>
+                              <span>Ngày: </span>
+                              <span t-field="doc.bsd_ngay_in_bg" t-options='{"format": "dd/MM/YYYY"}'/>
                             </div>
                           </div>
                         </div>
                         <!--Thông tin căn hộ-->
-                        <div class="row">
-                            <table class="table table-bordered"
-                                   style="table-layout:fixed;border: 3px !important; border-style: solid !important; border-color: #000000 !important;" >
+                        <div class="row mt8">
+                            <div class="col-12">
+                                <table class="table table-bordered table-sm"
+                                   style="table-layout:fixed;border: 2px !important; border-style: solid !important; border-color: #000000 !important;" >
                               <thead>
-                                  <tr class="text-center">
-                                      <th>
+                                  <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px;">
+                                      <th width="19.5%" style="border: 1px solid black !important;padding-top:0px !important">
                                             Căn hộ
                                       </th>
-                                      <th>
+                                      <th width="19.5%" style="border: 1px solid black !important;">
                                             Loại căn hộ
                                       </th>
-                                      <th>
+                                      <th width="20%" style="border: 1px solid black !important;">
                                             Diện tích tim tường
                                       </th>
-                                      <th>
+                                      <th width="21%" style="border: 1px solid black !important;">
                                             Diện tích thông thủy
                                       </th>
-                                      <th>
+                                      <th width="20%" style="border: 1px solid black !important;">
                                             Điều kiện bàn giao
                                       </th>
                                   </tr>
                               </thead>
                               <tbody>
-                                <tr class="text-center">
-                                  <td><div t-esc="doc.bsd_unit_id.bsd_ten_unit"/></td>
-                                  <td><div t-esc="doc.bsd_unit_id.bsd_loai_sp_id.bsd_ma_nhom"/></td>
-                                  <td><div t-esc="doc.bsd_dt_xd"/></td>
-                                  <td><div t-esc="doc.bsd_dt_sd"/></td>
-                                  <td><div></div></td>
+                                <tr class="text-center ">
+                                  <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_unit_id.bsd_ten_unit"/></td>
+                                  <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_unit_id.bsd_loai_sp_id.bsd_ma_nhom"/></td>
+                                  <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_dt_xd"/></td>
+                                  <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_dt_sd"/></td>
+                                  <td style="border: 1px solid black !important;"><div></div></td>
                                 </tr>
                               </tbody>
                             </table>
+                            </div>
                         </div>
                         <!--Chi tiết giá bán-->
-                        <div class="row">
-                          <table class="table table-bordered"
-                                 style="border: 3px !important; border-style: solid !important; border-color: #000000 !important;">
+                        <div class="row mt8">
+                            <div class="col-12">
+                                <table class="table table-bordered table-sm"
+                                 style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
                             <thead>
-                              <tr class="text-center">
-                                <th colspan="5">CHI TIẾT GIÁ BÁN (tất cả số tiền được thể hiện bằng VNĐ)</th>
+                              <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px">
+                                <th colspan="5" style="border: 1px solid black !important;">
+                                    CHI TIẾT GIÁ BÁN (tất cả số tiền được thể hiện bằng VNĐ)
+                                </th>
                               </tr>
                               <tr>
-                                <tr class="text-center">
-                                  <th>
+                                <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px">
+                                  <th width="19.5%" style="border: 1px solid black !important;">
                                     <div>Giá bán</div>
                                     <div>(A)</div>
                                   </th>
-                                  <th>
+                                  <th width="19.5%" style="border: 1px solid black !important;">
                                     <div>Giá trị QSDĐ</div>
                                     <div>(Ghi chú 3)</div>
                                   </th>
-                                  <th>
+                                  <th width="20%" style="border: 1px solid black !important;">
                                     <div>Tiền thuế (VAT)</div>
                                     <div>(B)</div>
                                   </th>
-                                  <th>
+                                  <th width="21%" style="border: 1px solid black !important;">
                                     <div>Phí bảo trì</div>
                                     <div>(C)</div>
                                   </th>
-                                  <th>
+                                  <th width="20%" style="border: 1px solid black !important;">
                                     <div>Tổng giá bán</div>
                                     <div>(A) + (B) + (C)</div>
                                   </th>
@@ -132,133 +174,170 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr class="text-center">
-                                <td><div t-field="doc.bsd_gia_ban" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
-                                <td><div t-field="doc.bsd_tien_qsdd" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
-                                <td><div t-field="doc.bsd_tien_thue" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
-                                <td><div t-field="doc.bsd_tien_pbt" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
-                                <td><div t-field="doc.bsd_tong_gia" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                              <tr class="text-center ">
+                                <td style="border: 1px solid black !important;"><div t-field="doc.bsd_gia_ban" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                <td style="border: 1px solid black !important;"><div t-field="doc.bsd_tien_qsdd" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                <td style="border: 1px solid black !important;"><div t-field="doc.bsd_tien_thue" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                <td style="border: 1px solid black !important;"><div t-field="doc.bsd_tien_pbt" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                <td style="border: 1px solid black !important;"><div t-field="doc.bsd_tong_gia" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
                               </tr>
                             </tbody>
                           </table>
+                            </div>
                         </div>
                         <!-- Lịch thanh toán -->
-                        <div class="row">
-                          <table class="table table-bordered"
-                                 style="border: 3px !important; border-style: solid !important; border-color: #000000 !important;">
+                        <div class="row mt8">
+                            <div class="col-12">
+                                <table class="table table-bordered table-sm"
+                                 style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
                             <thead>
-                              <tr class="text-center">
-                                <th colspan="4">LỊCH THANH TOÁN</th>
+                              <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px;">
+                                <th colspan="4" style="border: 1px solid black !important;">LỊCH THANH TOÁN</th>
                               </tr>
                               <tr>
-                                <tr class="text-center">
-                                  <th>
+                                <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px;">
+                                  <th style="border: 1px solid black !important;" width="10%">
                                     <div>STT</div>
                                   </th>
-                                  <th>
+                                  <th style="border: 1px solid black !important;" width="20%">
                                     <div>Đợt thanh toán</div>
                                   </th>
-                                  <th>
+                                  <th style="border: 1px solid black !important;" width="50%">
                                     <div>Chi tiết thanh toán</div>
                                   </th>
-                                  <th>
+                                  <th style="border: 1px solid black !important;" width="20%">
                                     <div>Số tiền (VNĐ)</div>
                                   </th>
                                 </tr>
                               </tr>
                             </thead>
                             <tbody>
-                              <tr class="text-center">
-                                <td colspan="2">Đặt cọc</td>
-                                <td><div/></td>
-                                <td><div t-field="doc.bsd_du_an_id.bsd_tien_dc" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                              <tr class="text-center ">
+                                <td colspan="2" style="border: 1px solid black !important;">Đặt cọc</td>
+                                <td style="border: 1px solid black !important;"><div/></td>
+                                <td style="border: 1px solid black !important;"><div t-field="doc.bsd_du_an_id.bsd_tien_dc" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
                               </tr>
                               <t t-foreach="doc.bsd_ltt_ids.sorted(key=lambda l: l.bsd_stt)" t-as="line">
-                                <t t-if="line.bsd_tinh_pbt">
-                                  <tr class="text-center">
-                                    <td rowspan="2" style="top:50% !important"><div t-field="line.bsd_stt"/></td>
-                                    <td rowspan="2"><div t-field="line.bsd_ten_dtt"/></td>
-                                    <td><div t-field="line.bsd_cs_tt_ct_id.bsd_dien_giai"/></td>
-                                    <td><div t-field="line.bsd_tien_dot_tt"  t-options='{"widget": "monetary", "display_currency": currency}'/></td>
-                                  </tr>
-                                  <tr class="text-center">
-                                    <td>
-                                      <div>
-                                        <span>Phí bảo trì</span>
-                                      </div>
-                                    </td>
-                                    <td><div t-field="doc.bsd_tien_pbt"/></td>
-                                  </tr>
+                                  <t t-if="line.bsd_tinh_pql">
+                                      <t t-set="tien_tt" t-value="line.bsd_tien_dot_tt - (doc.bsd_tien_pql * doc.bsd_thang_pql)"/>
+                                  </t>
+                                  <t t-else="">
+                                      <t t-set="tien_tt" t-value="line.bsd_tien_dot_tt"/>
+                                  </t>
+                                  <t t-if="line.bsd_tinh_pbt">
+                                      <tr class="text-center ">
+                                          <td rowspan="2" style="border: 1px solid black !important;"><div t-field="line.bsd_stt"/></td>
+                                          <td rowspan="2" style="border: 1px solid black !important;"><div t-field="line.bsd_ten_dtt"/></td>
+                                          <td style="border: 1px solid black !important;"><div t-field="line.bsd_cs_tt_ct_id.bsd_dien_giai"/></td>
+                                          <td style="border: 1px solid black !important;"><div t-esc="tien_tt - doc.bsd_tien_pbt"
+                                                                                             t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                      </tr>
+                                      <tr class="text-center ">
+                                          <td style="border: 1px solid black !important;">
+                                              <div>
+                                                 <span t-field="doc.bsd_tl_pbt"/><span>% Phí bảo trì</span>
+                                              </div>
+                                          </td>
+                                          <td style="border: 1px solid black !important;"><div t-field="doc.bsd_tien_pbt"/></td>
+                                      </tr>
                                 </t>
-                                <t t-else="">
-                                  <tr class="text-center">
-                                    <td><div t-field="line.bsd_stt"/></td>
-                                    <td><div t-field="line.bsd_ten_dtt"/></td>
-                                    <td><div t-field="line.bsd_cs_tt_ct_id.bsd_dien_giai"/></td>
-                                    <td><div t-field="line.bsd_tien_dot_tt"  t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                  <t t-else="">
+                                  <tr class="text-center ">
+                                    <td style="border: 1px solid black !important;"><div t-field="line.bsd_stt"/></td>
+                                    <td style="border: 1px solid black !important;"><div t-field="line.bsd_ten_dtt"/></td>
+                                    <td style="border: 1px solid black !important;"><div t-field="line.bsd_cs_tt_ct_id.bsd_dien_giai"/></td>
+                                    <td style="border: 1px solid black !important;"><div t-esc="tien_tt"  t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
                                   </tr>
                                 </t>
                               </t>
                               <tr>
-                                <td class="text-right" colspan="3"><b>Tổng giá bán:</b></td>
-                                <td class="text-center"><div t-field="doc.bsd_tong_gia"/></td>
+                                <td class="text-right" colspan="3" style="border: 1px solid black !important;"><b>Tổng giá bán:</b></td>
+                                <td class="text-center" style="border: 1px solid black !important;"><div t-field="doc.bsd_tong_gia"/></td>
                               </tr>
                             </tbody>
                           </table>
+                            </div>
                         </div>
                         <!-- Điều khoản-->
-                        <div class="row">
-                          <div><b><u>Điều khoản:</u></b></div>
+                        <div class="row mt8">
+                            <div class="col-12">
+                                <div><b><u>Điều khoản:</u></b></div>
+                            </div>
+
                         </div>
                         <div class="row">
-                            <div>
+                            <div class="col-12">
                                 <span>1. Phiếu tính giá này chỉ có hiệu lực đến ngày: </span>
-                                <span t-field="doc.bsd_ngay_hh_kbg"/>
+                                <span t-field="doc.bsd_ngay_hh_kbg" t-options='{"format": "dd/MM/yyyy"}'/>
                             </div>
                         </div>
                         <div class="row">
-                            <div>
+                            <div class="col-12">
                                 <span>2. Để xác nhận mua hàng, xin vui lòng ký vào phiếu tính giá này, gửi về <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/>
-                                  và hoàn thành đặt cọc số tiền <span t-field="doc.bsd_tien_dc"/> bằng tiền mặt và thẻ tính dụng hoặc chuyển khoản đến tài khoản
+                                  và hoàn thành đặt cọc số tiền <span t-field="doc.bsd_tien_dc"/> bằng tiền mặt, thẻ tín dụng hoặc chuyển khoản đến tài khoản
                                   công ty dự án theo thông tin dưới đây:</span>
                                 <ul>
                                   <li><span>Chủ tài khoản           : </span></li>
                                   <li><span>Số tài khoản            : </span></li>
                                   <li><span>Tên tài khoản           : </span></li>
                                   <li><span>Chi nhánh               : </span></li>
-                                  <li><span>Mã định danh ngân hàng  : </span></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="row">
-                            <div>
+                            <div class="col-12">
                                 <span>3. Giá trị QSDĐ được ước tính bởi Chủ đầu tư và sẽ được xem xét lại bởi Cơ quan chức năng tại thời điểm bàn giao căn hộ.
                                Giá trị QSDĐ không bị tính thuế GTGT</span>
                             </div>
                         </div>
                         <div class="row">
-                            <div>
+                            <div class="col-12">
                                 <span>4. Người nước ngoài được yêu cầu có mặt tại Việt Nam để ký Hợp đồng mua bán.</span>
                             </div>
                         </div>
                         <!--Ký tên-->
-                        <div class="row">
-                          <div class="col-4 text-center">
-                            <div class="mb-5">Người lập</div>
-                            <div style="border-bottom: 1px solid black;"/>
-                          </div>
-                          <div class="col-4 text-center">
-                            <div class="mb-5">Người duyệt</div>
-                            <div style="border-bottom: 1px solid black;"/>
-                          </div>
-                          <div class="col-4 text-center">
-                            <div class="mb-5">Xác nhận của khách hàng</div>
-                            <div style="border-bottom: 1px solid black;"/>
+                        <div class="row mt32" >
+                            <div class="col-4 text-center">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div><b>Người lập</b></div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:100px">
+                                    <div class="col-12">
+                                        <div style="border-bottom: 1px solid black;"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div><b>Người duyệt</b></div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:100px">
+                                    <div class="col-12">
+                                        <div style="border-bottom: 1px solid black;"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div><b>Xác nhận của khách hàng</b></div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:100px">
+                                    <div class="col-12">
+                                        <div style="border-bottom: 1px solid black;"/>
+                                    </div>
+                                </div>
+                            </div>
                           </div>
                         </div>
-                    </div>
                     </t>
                 </t>
+            </t>
         </template>
     </data>
 </odoo>

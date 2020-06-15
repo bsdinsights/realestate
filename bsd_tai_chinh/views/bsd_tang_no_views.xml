@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_tang_no_form">
+        <field name="name">bsd.tang_no.form</field>
+        <field name="model">bsd.tang_no</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            type="object"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                            class="oe_highlight"/>
+                    <button string="Vào sổ"
+                            name="action_vao_so"
+                            type="object"
+                            states="xac_nhan"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"
+                            confirm="Bạn có muốn Hủy chứng từ không?"
+                            states="xac_nhan"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_so_ct"/>
+                            <field name="bsd_ngay_ct"/>
+                            <field name="bsd_loai_dc" required="1"/>
+                            <field name="bsd_dien_giai"/>
+                        </group>
+                        <group>
+                            <field name="bsd_khach_hang_id"
+                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                            <field name="bsd_unit_id"
+                                   context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
+                            <field name="bsd_tien"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_tang_no_tree">
+        <field name="name">bsd.tang_no.tree</field>
+        <field name="model">bsd.tang_no</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_so_ct"/>
+                <field name="bsd_ngay_ct"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_unit_id"/>
+                <field name="bsd_tien"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_tang_no_action">
+        <field name="name">Điều chỉnh tăng</field>
+        <field name="res_model">bsd.tang_no</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Điều chỉnh tăng công nợ khách hàng</p>
+        </field>
+    </record>
+</odoo>
