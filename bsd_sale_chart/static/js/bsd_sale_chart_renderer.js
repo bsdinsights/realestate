@@ -431,7 +431,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 model: 'bsd.giu_cho',
                 method: 'search_read',
                 fields: ['bsd_ma_gc', 'bsd_khach_hang_id', 'bsd_stt_bg', 'bsd_ngay_hh_bg', 'state', 'bsd_nvbh_id'],
-                domain: [['state', 'in', ['dat_cho','giu_cho']], ['bsd_unit_id', '=', unit_id]]
+                domain: [['state', 'in', ['dat_cho','giu_cho']], ['bsd_unit_id', '=', data_unit[11]]]
             }).then(function(giu_cho){
                 if (_.isEmpty(giu_cho)){
                     data.giu_cho = null
