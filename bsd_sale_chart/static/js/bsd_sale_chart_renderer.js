@@ -424,25 +424,24 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             event.stopPropagation()
             var unit_id = parseInt($(event.currentTarget).attr('id'))
             var data_unit = _.find(this.data, function(item){return item[4] === unit_id})
+            var data = {}
+            data.dien_tich = data_unit[9]
+            data.loai_ch = data_unit[10]
             this._rpc({
                 model: 'bsd.giu_cho',
                 method: 'search_read',
-                fields: ['bsd_ma_gc', 'bsd_khach_hang_id', 'bsd_stt_bg', 'bsd_ngay_hh_bg', 'state'],
+                fields: ['bsd_ma_gc', 'bsd_khach_hang_id', 'bsd_stt_bg', 'bsd_ngay_hh_bg', 'state', 'bsd_nvbh_id'],
                 domain: [['state', 'in', ['dat_cho','giu_cho']], ['bsd_unit_id', '=', unit_id]]
             }).then(function(giu_cho){
+                if (_.isEmpty(giu_cho)){
+                    data.giu_cho = null
+                }
+                else {
+                    data.giu_cho = giu_cho
+                }
                 console.log("lấy thông tin giữ chỗ")
                 console.log(giu_cho)
-                var title = `<div>Diện tích sử dụng: ${data_unit[9]} m2</div>
-                             <div>Loại căn hộ: ${data_unit[10]} </div>
-                             <table class="table table-bordered table-sm">
-                                <thead>
-                                    <tr>
-                                        <td>Mã giữ chỗ</td>
-                                        <td>Khách hàng</td>
-                                        <td>Số thứ tự </td>
-                                    </tr>
-                                </thead>
-                             </table>`
+                var title = qweb.render('bsd_sale_chart.tooltip', {'data':data})
                 $(event.currentTarget).tooltip({
                 template: `<div class="tooltip" role="tooltip">
                                 <div class="arrow"></div>
