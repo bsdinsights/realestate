@@ -437,6 +437,11 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     data.giu_cho = null
                 }
                 else {
+                    _.each(giu_cho, function(item,index,giu_cho){
+                        if (item.bsd_ngay_hh_bg === false){
+                            item.bsd_ngay_hh_bg = ''
+                        }
+                    })
                     data.giu_cho = giu_cho
                 }
                 console.log("lấy thông tin giữ chỗ")
