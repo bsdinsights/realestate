@@ -15,16 +15,27 @@
                             type="object"
                             name="action_huy_chua_tt"
                             confirm="Bạn có muốn hủy Giữ chỗ này không?"
-                            attrs="{'invisible': ['|',('state','in',['huy','nhap']),('bsd_thanh_toan','!=', 'chua_tt')]}"/>
+                            attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),('bsd_thanh_toan','!=', 'chua_tt')]}"/>
                     <button string="Tính giá"
                             confirm="Bạn có muốn tạo Bảng tính giá không?"
                             type="object"
                             name="action_tao_bao_gia"
                             attrs="{'invisible': ['|',('state','not in',['giu_cho']),('bsd_dot_mb_id','=', False)]}"/>
                     <button string="Hủy"
-                            attrs="{'invisible': ['|',('state','in',['huy','nhap']),('bsd_thanh_toan','!=', 'da_tt')]}"
+                            attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),('bsd_gc_da','=',False)]}"
                             name="action_huy"
                             confirm="Bạn có muốn hủy Giữ chỗ này không?"
+                            type="object"/>
+                    <button string="Hủy"
+                            attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),('bsd_truoc_mb','=',True)]}"
+                            name="action_huy"
+                            confirm="Bạn có muốn hủy Giữ chỗ này không?"
+                            type="object"/>
+                    <button string="Đề nghị hủy"
+                            attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),
+                                                    '|',('bsd_thanh_toan','=', 'chua_tt'),
+                                                    '|',('bsd_truoc_mb','=',False),('bsd_gc_da', '=', True)]}"
+                            name="action_de_nghi_huy"
                             type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
@@ -32,6 +43,9 @@
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_bao_gia" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_bao_gia', '=', 0)]}">
                             <field name="bsd_so_bao_gia" widget="statinfo" string="Báo giá"/>
+                        </button>
+                        <button name="action_view_huy_gc" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_huy_gc', '=', 0)]}">
+                            <field name="bsd_so_huy_gc" widget="statinfo" string="Đề nghị hủy"/>
                         </button>
                     </div>
                     <group>

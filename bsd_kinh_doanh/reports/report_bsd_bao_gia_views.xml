@@ -218,29 +218,35 @@
                                 <td style="border: 1px solid black !important;"><div t-field="doc.bsd_du_an_id.bsd_tien_dc" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
                               </tr>
                               <t t-foreach="doc.bsd_ltt_ids.sorted(key=lambda l: l.bsd_stt)" t-as="line">
-                                <t t-if="line.bsd_tinh_pbt">
-                                  <tr class="text-center ">
-                                    <td rowspan="2" style="border: 1px solid black !important;"><div t-field="line.bsd_stt"/></td>
-                                    <td rowspan="2" style="border: 1px solid black !important;"><div t-field="line.bsd_ten_dtt"/></td>
-                                    <td style="border: 1px solid black !important;"><div t-field="line.bsd_cs_tt_ct_id.bsd_dien_giai"/></td>
-                                    <t t-set="tien_dtt_co_phi" t-value="'line.bsd_tien_dot_tt' - 'doc.bsd_tien_pbt'"/>
-                                    <td style="border: 1px solid black !important;"><div t-field="tien_dtt_co_phi"  t-options='{"widget": "monetary", "display_currency": currency}'/></td>
-                                  </tr>
-                                  <tr class="text-center ">
-                                    <td style="border: 1px solid black !important;">
-                                      <div>
-                                         <span t-field="doc.bsd_tl_pbt"/><span>% Phí bảo trì</span>
-                                      </div>
-                                    </td>
-                                    <td style="border: 1px solid black !important;"><div t-field="doc.bsd_tien_pbt"/></td>
-                                  </tr>
+                                  <t t-if="line.bsd_tinh_pql">
+                                      <t t-set="tien_tt" t-value="line.bsd_tien_dot_tt - (doc.bsd_tien_pql * doc.bsd_thang_pql)"/>
+                                  </t>
+                                  <t t-else="">
+                                      <t t-set="tien_tt" t-value="line.bsd_tien_dot_tt"/>
+                                  </t>
+                                  <t t-if="line.bsd_tinh_pbt">
+                                      <tr class="text-center ">
+                                          <td rowspan="2" style="border: 1px solid black !important;"><div t-field="line.bsd_stt"/></td>
+                                          <td rowspan="2" style="border: 1px solid black !important;"><div t-field="line.bsd_ten_dtt"/></td>
+                                          <td style="border: 1px solid black !important;"><div t-field="line.bsd_cs_tt_ct_id.bsd_dien_giai"/></td>
+                                          <td style="border: 1px solid black !important;"><div t-esc="tien_tt - doc.bsd_tien_pbt"
+                                                                                             t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                      </tr>
+                                      <tr class="text-center ">
+                                          <td style="border: 1px solid black !important;">
+                                              <div>
+                                                 <span t-field="doc.bsd_tl_pbt"/><span>% Phí bảo trì</span>
+                                              </div>
+                                          </td>
+                                          <td style="border: 1px solid black !important;"><div t-field="doc.bsd_tien_pbt"/></td>
+                                      </tr>
                                 </t>
-                                <t t-else="">
+                                  <t t-else="">
                                   <tr class="text-center ">
                                     <td style="border: 1px solid black !important;"><div t-field="line.bsd_stt"/></td>
                                     <td style="border: 1px solid black !important;"><div t-field="line.bsd_ten_dtt"/></td>
                                     <td style="border: 1px solid black !important;"><div t-field="line.bsd_cs_tt_ct_id.bsd_dien_giai"/></td>
-                                    <td style="border: 1px solid black !important;"><div t-field="line.bsd_tien_dot_tt"  t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                    <td style="border: 1px solid black !important;"><div t-esc="tien_tt"  t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
                                   </tr>
                                 </t>
                               </t>
