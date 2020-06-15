@@ -36,6 +36,7 @@ class BsdDatCoc(models.Model):
     bsd_san_gd_id = fields.Many2one(related="bsd_bao_gia_id.bsd_san_gd_id", store=True)
     bsd_ctv_id = fields.Many2one(related="bsd_bao_gia_id.bsd_ctv_id", store=True)
     bsd_gioi_thieu_id = fields.Many2one(related="bsd_bao_gia_id.bsd_gioi_thieu_id", store=True)
+    bsd_pt_tt_id = fields.Many2one(related="bsd_bao_gia_id.bsd_pt_tt_id", store=True)
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
