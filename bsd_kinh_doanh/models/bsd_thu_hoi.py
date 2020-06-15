@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import datetime
 import logging
@@ -13,15 +13,13 @@ class BsdThuHoi(models.Model):
     _rec_name = 'bsd_ma_th'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    bsd_ma_th = fields.Char(string="Mã", help="Mã đợt thu hồi căn hộ", required=True,
-                            readonly=True,
-                            states={'nhap': [('readonly', False)]})
+    bsd_ma_th = fields.Char(string="Mã", required=True, readonly=True, copy=False, default='/')
     _sql_constraints = [
         ('bsd_ma_th_unique', 'unique (bsd_ma_th)',
          'Mã thu hồi đã tồn tại !'),
     ]
     bsd_ngay_th = fields.Date(string="Ngày", help="Ngày trên phiếu thu hồi căn hộ", required=True,
-                              readonly=True, default = lambda self: fields.Date.today(),
+                              readonly=True, default=lambda self: fields.Date.today(),
                               states={'nhap': [('readonly', False)]})
     bsd_ly_do = fields.Char(string="Lý do thu hồi", help="Lý do thu hồi", required=True,
                             readonly=True,
@@ -88,6 +86,16 @@ class BsdThuHoi(models.Model):
             'state': 'huy',
         })
 
+    @api.model
+    def create(self, vals):
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
+        if not sequence:
+            raise UserError(_('Dự án chưa có mã phiếu thu hồi căn hộ đợt mở bán'))
+        vals['bsd_ma_th'] = sequence.next_by_id()
+        res = super(BsdThuHoi, self).create(vals)
+        return res
 
 
 

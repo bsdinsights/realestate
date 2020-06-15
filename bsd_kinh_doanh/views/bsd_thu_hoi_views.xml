@@ -41,8 +41,8 @@
                             <field name="bsd_du_an_id" options="{'no_create':true}"/>
                             <field name="bsd_dot_mb_id"
                                    domain="[('bsd_du_an_id', 'in', [bsd_du_an_id]),('state', '=','ph'),
-                                            ('bsd_tu_ngay', '&lt;', context_today().strftime('%%Y-%%m-%%d')),
-                                            ('bsd_den_ngay', '&gt;', context_today().strftime('%%Y-%%m-%%d'))]"
+                                            ('bsd_tu_ngay', '&lt;=', context_today().strftime('%%Y-%%m-%%d')),
+                                            ('bsd_den_ngay', '&gt;=', context_today().strftime('%%Y-%%m-%%d'))]"
                                    options="{'no_create':true}"/>
                             <field name="bsd_ngay_duyet"/>
                             <field name="bsd_nguoi_duyet"/>

@@ -23,6 +23,10 @@ class BsdMaBoChungTu(models.Model):
                                     ('bsd.giam_no', 'Điều chỉnh giảm'),
                                     ('bsd.tang_no', 'Điều chỉnh tăng'),
                                     ('bsd.chuyen_tien', 'Chuyển tiền'),
+                                    ('bsd.huy_gc', 'Hủy giữ chỗ'),
+                                    ('bsd.dot_mb', 'Mã đợt mở bán'),
+                                    ('bsd.them_unit', 'Mã thêm căn hộ vào đợt mở bán'),
+                                    ('bsd.thu_hoi', 'Mã thu hồi căn hộ'),
                                     ('bsd.kh_cn', 'Khách hàng cá nhân'),
                                     ('bsd.kh_dn', 'Khách hàng doanh nghiệp')],
                                    string="Loại chứng từ", help="Loại chứng từ được đặt mã", required=True)

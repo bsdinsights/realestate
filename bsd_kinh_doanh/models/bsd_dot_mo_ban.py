@@ -13,9 +13,7 @@ class BsdDotMoBan(models.Model):
     _rec_name = 'bsd_ten_dot_mb'
     _description = 'Thông tin đợt mở bán'
 
-    bsd_ma_dot_mb = fields.Char(string="Mã đợt mở bán", required=True,
-                                readonly=True,
-                                states={'cph': [('readonly', False)]})
+    bsd_ma_dot_mb = fields.Char(string="Mã đợt mở bán", required=True, readonly=True, copy=False, default='/')
     _sql_constraints = [
         ('bsd_ma_dot_mb_unique', 'unique (bsd_ma_dot_mb)',
          'Mã đợt mở bán đã tồn tại !'),
@@ -299,6 +297,17 @@ class BsdDotMoBan(models.Model):
                 'state': 'chuan_bi',
                 'bsd_dot_mb_id': False
             })
+
+    @api.model
+    def create(self, vals):
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
+        if not sequence:
+            raise UserError(_('Dự án chưa có mã đợt mở bán'))
+        vals['bsd_ma_dot_mb'] = sequence.next_by_id()
+        res = super(BsdDotMoBan, self).create(vals)
+        return res
 
 
 class BsdDotMoBanSanGiaoDich(models.Model):
