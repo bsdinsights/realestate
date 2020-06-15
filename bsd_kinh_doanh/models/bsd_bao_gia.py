@@ -399,7 +399,7 @@ class BsdBaoGia(models.Model):
             action['res_id'] = dat_coc.id
         # Prepare the context.
         context = {
-            'default_bsd_khach_hang_id': self.bsd_kh_moi_id.id,
+            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
             'default_bsd_bao_gia_id': self.id,
         }
         action['context'] = context
