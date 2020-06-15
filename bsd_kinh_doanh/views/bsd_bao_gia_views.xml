@@ -194,7 +194,7 @@
                             </field>
                         </page>
                         <page string="Đồng sở hữu">
-                            <field name="bsd_dsh_ids">
+                            <field name="bsd_dsh_ids" context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}">
                                 <tree editable="bottom">
                                     <field name="bsd_ma_kh"/>
                                     <field name="name" string="Đồng sở hữu"/>
