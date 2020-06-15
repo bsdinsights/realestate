@@ -39,10 +39,18 @@
                             confirm="Bạn có chắc muốn Hủy báo giá không?"
                             name="action_huy"
                             type="object"/>
-
+                    <button string="Đặt cọc"
+                            type="object"
+                            name="action_tao_dat_coc"
+                            attrs="{'invisible': ['|',('state','not in',['da_duyet']),('bsd_ngay_ky_bg','=', False)]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
+                   <div class="oe_button_box" name="button_box">
+                        <button name="action_view_dat_coc" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_dat_coc', '=', 0)]}">
+                            <field name="bsd_so_dat_coc" widget="statinfo" string="Đặt cọc"/>
+                        </button>
+                    </div>
                     <notebook>
                         <page string="Thông tin chung">
                             <group>

@@ -31,6 +31,11 @@ class BsdDatCoc(models.Model):
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", help="Tên báo giá", required=True,
                                      readonly=True,
                                      states={'nhap': [('readonly', False)]})
+
+    bsd_nvbh_id = fields.Many2one(related="bsd_bao_gia_id.bsd_nvbh_id", store=True)
+    bsd_san_gd_id = fields.Many2one(related="bsd_bao_gia_id.bsd_san_gd_id", store=True)
+    bsd_ctv_id = fields.Many2one(related="bsd_bao_gia_id.bsd_ctv_id", store=True)
+    bsd_gioi_thieu_id = fields.Many2one(related="bsd_bao_gia_id.bsd_gioi_thieu_id", store=True)
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})

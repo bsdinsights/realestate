@@ -31,6 +31,7 @@
                             class="oe_highlight"/>
                     <button string="Hủy"
                             name="action_huy"
+                            states="dat_coc"
                             type="object"/>
 
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
@@ -64,6 +65,16 @@
                                     <field name="bsd_bang_gia_id"/>
                                     <field name="bsd_tien_gc"/>
                                     <field name="bsd_tien_dc"/>
+                                </group>
+                            </group>
+                            <group string="MÔI GIỚI">
+                                <group>
+                                    <field name="bsd_nvbh_id" options="{'no_create':true}"/>
+                                    <field name="bsd_san_gd_id" options="{'no_create':true}"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ctv_id" options="{'no_create':true}"/>
+                                    <field name="bsd_gioi_thieu_id" options="{'no_create':true}"/>
                                 </group>
                             </group>
                             <group string="SẢN PHẨM">

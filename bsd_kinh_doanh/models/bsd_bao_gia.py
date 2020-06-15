@@ -133,6 +133,7 @@ class BsdBaoGia(models.Model):
                                    required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
+    bsd_so_dat_coc = fields.Integer(string="# Đặt cọc", compute='_compute_dat_coc')
 
     # R.33 Hiệu lực báo giá
     @api.depends('bsd_ngay_bao_gia')
@@ -361,3 +362,45 @@ class BsdBaoGia(models.Model):
             raise UserError(_('Dự án chưa có mã phiếu báo giá'))
         vals['bsd_ma_bao_gia'] = sequence.next_by_id()
         return super(BsdBaoGia, self).create(vals)
+
+    # KD.09.09 Tạo Bảng tính giá từ màn hình Giữ chỗ
+    def action_tao_dat_coc(self):
+        context = {
+            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'default_bsd_bao_gia_id': self.id,
+        }
+        return {
+            "name": "Tạo đặt cọc",
+            "res_model": 'bsd.dat_coc',
+            "view": [[False, 'form']],
+            "type": 'ir.actions.act_window',
+            "view_mode": "form",
+            "context": context,
+            "target": "new"
+        }
+
+    def _compute_dat_coc(self):
+        for each in self:
+            dat_coc = self.env['bsd.dat_coc'].search([('bsd_bao_gia_id', '=', self.id)])
+            each.bsd_so_dat_coc = len(dat_coc)
+
+    def action_view_dat_coc(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_dat_coc_action').read()[0]
+
+        dat_coc = self.env['bsd.dat_coc'].search([('bsd_bao_gia_id', '=', self.id)])
+        if len(dat_coc) > 1:
+            action['domain'] = [('id', 'in', dat_coc.ids)]
+        elif dat_coc:
+            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_dat_coc_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = dat_coc.id
+        # Prepare the context.
+        context = {
+            'default_bsd_khach_hang_id': self.bsd_kh_moi_id.id,
+            'default_bsd_bao_gia_id': self.id,
+        }
+        action['context'] = context
+        return action
