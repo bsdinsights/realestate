@@ -99,6 +99,61 @@ class BsdDotMoBan(models.Model):
                                  readonly=True,
                                  domain=[('state', '=', 'thu_hoi')])
 
+    bsd_so_thu_hoi_ch = fields.Integer(string="# Thu hồi căn hộ", compute='_compute_thu_hoi_ch')
+    bsd_so_them_ch = fields.Integer(string="# Thêm căn hộ", compute='_compute_them_ch')
+
+    def _compute_thu_hoi_ch(self):
+        for each in self:
+            thu_hoi = self.env['bsd.thu_hoi'].search([('bsd_dot_mb_id', '=', self.id)])
+            each.bsd_so_thu_hoi_ch = len(thu_hoi)
+
+    def _compute_them_ch(self):
+        for each in self:
+            them_unit = self.env['bsd.them_unit'].search([('bsd_dot_mb_id', '=', self.id)])
+            each.bsd_so_them_ch = len(them_unit)
+
+    def action_view_thu_hoi_ch(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_thu_hoi_action').read()[0]
+
+        thu_hoi = self.env['bsd.thu_hoi'].search([('bsd_dot_mb_id', '=', self.id)])
+        if len(thu_hoi) > 1:
+            action['domain'] = [('id', 'in', thu_hoi.ids)]
+        elif thu_hoi:
+            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_thu_hoi_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = thu_hoi.id
+        # Prepare the context.
+        context = {
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_dot_mb_id': self.id,
+        }
+        action['context'] = context
+        return action
+
+    def action_view_them_ch(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_them_unit_action').read()[0]
+
+        them_unit = self.env['bsd.them_unit'].search([('bsd_dot_mb_id', '=', self.id)])
+        if len(them_unit) > 1:
+            action['domain'] = [('id', 'in', them_unit.ids)]
+        elif them_unit:
+            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_them_unit_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = them_unit.id
+        # Prepare the context.
+        context = {
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_dot_mb_id': self.id,
+        }
+        action['context'] = context
+        return action
+
     def action_loc_unit(self):
         # gán giá trị biến nội hàm
         tu_toa_nha_id = self.bsd_tu_toa_nha_id
@@ -297,6 +352,38 @@ class BsdDotMoBan(models.Model):
                 'state': 'chuan_bi',
                 'bsd_dot_mb_id': False
             })
+
+    # Thu hồi căn hộ trong đợt mở bán
+    def action_thu_hoi_can_ho(self):
+        context = {
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_dot_mb_id': self.id,
+        }
+        return {
+            "name": "Tạo phiếu thu hồi căn hộ",
+            "res_model": 'bsd.thu_hoi',
+            "view": [[False, 'form']],
+            "type": 'ir.actions.act_window',
+            "view_mode": "form",
+            "context": context,
+            "target": "new"
+        }
+
+    # Thêm căn hộ trong đợt mở bán
+    def action_them_can_ho(self):
+        context = {
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_dot_mb_id': self.id,
+        }
+        return {
+            "name": "Tạo phiếu thêm căn hộ",
+            "res_model": 'bsd.them_unit',
+            "view": [[False, 'form']],
+            "type": 'ir.actions.act_window',
+            "view_mode": "form",
+            "context": context,
+            "target": "new"
+        }
 
     @api.model
     def create(self, vals):
