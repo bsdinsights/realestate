@@ -355,19 +355,13 @@ class BsdDotMoBan(models.Model):
 
     # Thu hồi căn hộ trong đợt mở bán
     def action_thu_hoi_can_ho(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_thu_hoi_action_pop_up').read()[0]
         context = {
             'default_bsd_du_an_id': self.bsd_du_an_id.id,
             'default_bsd_dot_mb_id': self.id,
         }
-        return {
-            "name": "Tạo phiếu thu hồi căn hộ",
-            "res_model": 'bsd.thu_hoi',
-            "view": [[False, 'form']],
-            "type": 'ir.actions.act_window',
-            "view_mode": "form",
-            "context": context,
-            "target": "new"
-        }
+        action['context'] = context
+        return action
 
     # Thêm căn hộ trong đợt mở bán
     def action_them_can_ho(self):

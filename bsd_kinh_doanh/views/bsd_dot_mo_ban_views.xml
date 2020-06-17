@@ -33,10 +33,10 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_thu_hoi_ch" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_thu_hoi_ch', '=', 0)]}">
-                            <field name="bsd_so_thu_hoi_ch" widget="statinfo" string="Phiếu thu hồi cb"/>
+                            <field name="bsd_so_thu_hoi_ch" widget="statinfo" string="Thu hồi căn hộ"/>
                         </button>
                         <button name="action_view_them_ch" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_them_ch', '=', 0)]}">
-                            <field name="bsd_so_them_ch" widget="statinfo" string="Phiếu thêm cb"/>
+                            <field name="bsd_so_them_ch" widget="statinfo" string="Thêm căn hộ"/>
                         </button>
                     </div>
                     <notebook>

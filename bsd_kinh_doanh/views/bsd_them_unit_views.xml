@@ -141,13 +141,12 @@
             </search>
         </field>
     </record>
-
     <record model="ir.actions.act_window" id="bsd_them_unit_action">
         <field name="name">Thêm căn hộ đợt mở bán</field>
         <field name="res_model">bsd.them_unit</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
-            <p>Tạo phiếu thu hồi</p>
+            <p>Tạo phiếu thêm căn hộ</p>
         </field>
     </record>
 </odoo>

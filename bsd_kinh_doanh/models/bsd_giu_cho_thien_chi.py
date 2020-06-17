@@ -84,11 +84,12 @@ class BsdGiuChoThienChi(models.Model):
         for each in self:
             each.bsd_ngay_hh_gctc = each.bsd_ngay_gctc + datetime.timedelta(hours=each.bsd_du_an_id.bsd_gc_smb)
 
+    # KD.05.05 Tính lại ngày ưu tiên làm ráp căn
     @api.depends('bsd_ngay_tt')
     def _compute_ngay_ut(self):
         for each in self:
             if each.bsd_ngay_tt:
-                each.bsd_ngay_ut = each.bsd_ngay_tt + datetime.timedelta(hours=each.bsd_du_an_id.bsd_gc_smb)
+                each.bsd_ngay_ut = each.bsd_ngay_tt + datetime.timedelta(days=each.bsd_du_an_id.bsd_gc_tmb)
             else:
                 each.bsd_ngay_ut = False
 
