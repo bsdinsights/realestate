@@ -210,6 +210,7 @@
         <field name="name">Unit</field>
         <field name="res_model">product.template</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'group_by':'bsd_du_an_id'}</field>
         <field name="help" type="xml">
             <p>Tạo mới unit</p>
         </field>

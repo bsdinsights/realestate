@@ -5,10 +5,37 @@
         <field name="model">bsd.khuyen_mai</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            class="oe_highlight"
+                            confirm="Bạn có muốn Xác nhận yêu cầu không?"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                            type="object"/>
+                    <button string="Duyệt"
+                            name="action_duyet"
+                            class="oe_highlight"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn Duyệt yêu cầu không?"
+                            type="object"/>
+                    <button string="Không duyệt"
+                            name="action_khong_duyet"
+                            class="oe_highlight"
+                            states="xac_nhan"
+                            type="object"
+                            confirm="Bạn có muốn Từ chối yêu cầu không?"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            states="xac_nhan,duyet"
+                            confirm="Bạn có muốn Hủy yêu cầu không?"
+                            type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
                             <field name="currency_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
                             <field name="bsd_ma_km"/>
                             <field name="bsd_ten_km"/>
                             <field name="bsd_gia_tri"/>
@@ -22,8 +49,6 @@
                             <field name="bsd_tl_tt" attrs="{'required':[('bsd_loai', '=', True)],
                                                                 'readonly':[('bsd_loai', '=', False)]}"/>
                             <field name="bsd_ngay_hldc"/>
-                            <field name="state"/>
-
                         </group>
                     </group>
                 </sheet>
