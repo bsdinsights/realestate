@@ -135,6 +135,11 @@ class BsdBaoGia(models.Model):
                                    states={'nhap': [('readonly', False)]})
     bsd_so_dat_coc = fields.Integer(string="# Đặt cọc", compute='_compute_dat_coc')
 
+    bsd_km_ids = fields.One2many('bsd.bao_gia_km', 'bsd_bao_gia_id', string="Danh sách khuyến mãi",
+                                 help="Danh sách khuyến mãi",
+                                 readonly=True,
+                                 states={'nhap': [('readonly', False)]})
+
     # R.33 Hiệu lực báo giá
     @api.depends('bsd_ngay_bao_gia')
     def _compute_ngay_hl(self):
@@ -404,3 +409,18 @@ class BsdBaoGia(models.Model):
         }
         action['context'] = context
         return action
+
+
+class BsdBaoGiaKhuyenMai(models.Model):
+    _name = 'bsd.bao_gia_km'
+    _description = "Thông tin chương trình khuyến mãi cho bảng tính giá"
+    _rec_name = 'bsd_khuyen_mai_id'
+
+    bsd_khuyen_mai_id = fields.Many2one('bsd.khuyen_mai', string="Khuyến mãi")
+    bsd_ma_km = fields.Char(related='bsd_khuyen_mai_id.bsd_ma_km')
+    bsd_tu_ngay = fields.Date(related='bsd_khuyen_mai_id.bsd_tu_ngay')
+    bsd_den_ngay = fields.Date(related='bsd_khuyen_mai_id.bsd_den_ngay')
+    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", required=True)
+    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán")
+    bsd_ngay_hldc = fields.Date(related='bsd_khuyen_mai_id.bsd_ngay_hldc')
+    bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc")

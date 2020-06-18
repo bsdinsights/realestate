@@ -114,11 +114,13 @@ class BsdDatCoc(models.Model):
     bsd_thanh_toan = fields.Selection([('chua_tt', 'Chưa thanh toán'),
                                        ('dang_tt', 'Đang thanh toán'),
                                        ('da_tt', 'Đã thanh toán')], string="Tình trạng TT", default="chua_tt",
-                                      help="Thanh toán",readonly=True,
+                                      help="Thanh toán", readonly=True,
                                       required=True)
     bsd_ngay_tt = fields.Datetime(string="Ngày TT cọc", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ", readonly=True)
 
     bsd_tien_ttd = fields.Monetary(string="Đã thanh toán/ đợt", help="Tiền đã thanh toán theo đợt thanh toán",)
+    bsd_km_ids = fields.One2many('bsd.bao_gia_km', 'bsd_dat_coc_id', string="Danh sách khuyến mãi",
+                                 help="Danh sách khuyến mãi", readonly=True,)
 
     @api.model
     def create(self, vals):
@@ -139,9 +141,11 @@ class BsdDatCoc(models.Model):
         res = super(BsdDatCoc, self).create(vals)
         ids_bg = res.bsd_bao_gia_id.bsd_bg_ids.ids
         ids_ltt = res.bsd_bao_gia_id.bsd_ltt_ids.ids
+        ids_km = res.bsd_bao_gia_id.bsd_km_ids.ids
         res.write({
             'bsd_bg_ids': [(6, 0, ids_bg)],
-            'bsd_ltt_ids': [(6, 0, ids_ltt)]
+            'bsd_ltt_ids': [(6, 0, ids_ltt)],
+            'bsd_km_ids': [(6, 0, ids_km)]
         })
         return res
 
