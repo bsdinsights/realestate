@@ -37,6 +37,7 @@
         'views/bsd_menu_item_views.xml',
         'views/bsd_res_country_views.xml',
         'wizards/bsd_wizard_khong_duyet_khuyen_mai_views.xml',
+        'wizards/bsd_wizard_khong_duyet_chiet_khau_views.xml',
     ],
     'application': True,
 }
