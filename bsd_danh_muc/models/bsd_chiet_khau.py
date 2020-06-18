@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class BsdChietKhau(models.Model):
@@ -102,3 +103,39 @@ class BsdChietKhau(models.Model):
         self.write({
             'state': 'huy',
         })
+
+    @api.model
+    def create(self, vals):
+        domain = []
+        if 'bsd_loai_ck' in vals:
+            domain.append(('bsd_loai_ck', '=', vals['bsd_loai_ck']))
+        if 'bsd_du_an_id' in vals:
+            domain.append(('bsd_du_an_id', '=', vals['bsd_du_an_id']))
+        if 'bsd_cach_tinh' in vals:
+            domain.append(('bsd_cach_tinh', '=', vals['bsd_cach_tinh']))
+        if 'bsd_tien_ck' in vals:
+            domain.append(('bsd_tien_ck', '=', vals['bsd_tien_ck']))
+        if 'bsd_tl_ck' in vals:
+            domain.append(('bsd_tl_ck', '=', vals['bsd_tl_ck']))
+        if 'bsd_tu_ngay' in vals:
+            domain.append(('bsd_tu_ngay', '=', vals['bsd_tu_ngay']))
+        if 'bsd_den_ngay' in vals:
+            domain.append(('bsd_den_ngay', '=', vals['bsd_den_ngay']))
+        if 'bsd_cung_tang' in vals:
+            domain.append(('bsd_cung_tang', '=', vals['bsd_cung_tang']))
+        if 'bsd_sl_tu' in vals:
+            domain.append(('bsd_sl_tu', '=', vals['bsd_sl_tu']))
+        if 'bsd_sl_den' in vals:
+            domain.append(('bsd_sl_den', '=', vals['bsd_sl_den']))
+        if 'bsd_cs_tt_id' in vals:
+            domain.append(('bsd_cs_tt_id', '=', vals['bsd_cs_tt_id']))
+        if 'bsd_ngay_tt' in vals:
+            domain.append(('bsd_ngay_tt', '=', vals['bsd_ngay_tt']))
+        if 'bsd_tl_tt' in vals:
+            domain.append(('bsd_tl_tt', '=', vals['bsd_tl_tt']))
+
+        chiet_khau = self.env['bsd.chiet_khau'].search(domain)
+        if chiet_khau:
+            raise UserError("Đã tồn tại chiết khấu. Vui lòng kiểm tra lại!")
+
+        return super(BsdChietKhau, self).create(vals)
