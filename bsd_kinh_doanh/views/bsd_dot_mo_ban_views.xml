@@ -95,12 +95,16 @@
                             </field>
                         </page>
                         <page string="Khuyến mãi">
-                            <field name="bsd_km_ids" nolabel="1">
+                            <field name="id" invisible="1"/>
+                            <field name="bsd_km_ids" nolabel="1" context="{'default_bsd_dot_mb_id':id}">
                                 <tree editable="bottom">
-                                    <field name="bsd_khuyen_mai_id" options="{'no_create':true}"/>
+                                    <field name="bsd_khuyen_mai_id"
+                                           domain="[('bsd_dot_mb_id', '=', bsd_dot_mb_id),('state','=','duyet')]"
+                                           options="{'no_create':true}"/>
                                     <field name="bsd_ma_km"/>
                                     <field name="bsd_tu_ngay"/>
                                     <field name="bsd_den_ngay"/>
+                                    <field name="bsd_dot_mb_id" invisible="1"/>
                                 </tree>
                             </field>
                         </page>
