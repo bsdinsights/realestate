@@ -6,6 +6,11 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_unit" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_sl_unit', '=', 0)]}">
+                            <field name="bsd_sl_unit" widget="statinfo" string="Căn hộ"/>
+                        </button>
+                    </div>
                     <notebook>
                         <page string="Thông tin chung">
                             <group>

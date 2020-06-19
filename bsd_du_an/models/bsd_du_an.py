@@ -102,7 +102,8 @@ class BsdProject(models.Model):
     bsd_tk_ng_ids = fields.One2many('bsd.da_tknh', 'bsd_du_an_id', string="Tài khoản ngân hàng")
     bsd_ngan_hang_ids = fields.One2many('bsd.da_nh', 'bsd_du_an_id', string="Ngân hàng")
 
-    bsd_unit_ids = fields.One2many('product.product', 'bsd_du_an_id', string="Danh sách căn hộ", readonly=True)
+    bsd_unit_ids = fields.One2many('product.template', 'bsd_du_an_id', string="Danh sách căn hộ", readonly=True)
+    bsd_sl_unit = fields.Integer(string="# Căn hộ", compute="_compute_sl_unit")
 
     @api.constrains('bsd_tl_dc')
     def _check_ty_le_coc(self):
@@ -145,6 +146,16 @@ class BsdProject(models.Model):
         for record in self:
             if record.bsd_cb_dc > 100 or record.bsd_cb_dc < 0:
                 raise ValidationError("Cảnh báo sau đặt cọc nằm trong khoảng 0 đến 100")
+
+    @api.depends('bsd_unit_ids')
+    def _compute_sl_unit(self):
+        for each in self:
+            each.bsd_sl_unit = len(each.bsd_unit_ids)
+
+    def action_view_unit(self):
+        action = self.env.ref('bsd_du_an.bsd_product_template_action').read()[0]
+        action["context"] = {'group_by': 'bsd_toa_nha_id'}
+        return action
 
 
 class BsdDuanNganHang(models.Model):
