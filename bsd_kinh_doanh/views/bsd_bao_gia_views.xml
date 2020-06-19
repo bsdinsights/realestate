@@ -46,7 +46,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
-                   <div class="oe_button_box" name="button_box">
+                    <div class="oe_button_box" name="button_box">
                         <button name="action_view_dat_coc" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_dat_coc', '=', 0)]}">
                             <field name="bsd_so_dat_coc" widget="statinfo" string="Đặt cọc"/>
                         </button>
@@ -224,6 +224,72 @@
                                     <field name="bsd_bao_gia_id" invisible="1"/>
                                     <field name="bsd_dot_mb_id" invisible="1"/>
                                 </tree>
+                            </field>
+                        </page>
+                        <page string="Chiết khấu đặc biệt">
+                            <field name="id" invisible="1"/>
+                            <field name="bsd_ck_db_ids" context="{'default_bsd_bao_gia_id':id}">
+                                <tree>
+                                    <field name="bsd_ma_ck_db"/>
+                                    <field name="bsd_ten_ck_db"/>
+                                    <field name="bsd_cach_tinh"/>
+                                    <field name="bsd_tien"/>
+                                    <field name="bsd_tl_ck"/>
+                                    <field name="bsd_tien_ck"/>
+                                    <field name="state"/>
+                                    <button string="Xác nhận"
+                                            name="action_xac_nhan"
+                                            class="oe_highlight"
+                                            confirm="Bạn có muốn Xác nhận yêu cầu không?"
+                                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                                            type="object"/>
+                                    <button string="Duyệt"
+                                            name="action_duyet"
+                                            class="oe_highlight"
+                                            states="xac_nhan"
+                                            confirm="Bạn có muốn Duyệt yêu cầu không?"
+                                            type="object"/>
+                                    <button string="Không duyệt"
+                                            name="action_khong_duyet"
+                                            states="xac_nhan"
+                                            type="object"
+                                            confirm="Bạn có muốn Từ chối yêu cầu không?"/>
+                                </tree>
+                                <form>
+                                    <header>
+                                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                                    </header>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="currency_id" invisible="1"/>
+                                                <field name="company_id" invisible="1"/>
+                                                <field name="bsd_ma_ck_db"/>
+                                                <field name="bsd_ten_ck_db"/>
+                                                <field name="bsd_cach_tinh"/>
+                                                <field name="bsd_tien"
+                                                       attrs="{'required':[('bsd_cach_tinh', 'in', ['tien'])],
+                                                               'readonly':['|',('bsd_cach_tinh', 'in', ['phan_tram']),('state','!=','nhap')]}"/>
+                                                <field name="bsd_tl_ck"
+                                                       attrs="{'required':[('bsd_cach_tinh', 'in', ['phan_tram'])],
+                                                               'readonly':['|',('bsd_cach_tinh', 'in', ['tien']),('state','!=','nhap')]}"/>
+                                                <field name="bsd_dien_giai"/>
+                                                <field name="bsd_bao_gia_id"/>
+                                                <field name="bsd_khach_hang_id"/>
+                                            </group>
+                                            <group>
+                                                <field name="bsd_du_an_id"/>
+                                                <field name="bsd_unit_id"/>
+                                                <field name="bsd_dot_mb_id"/>
+                                                <field name="bsd_cs_tt_id"/>
+                                                <field name="bsd_tien_dc"/>
+                                                <field name="bsd_tien_gc"/>
+                                                <field name="bsd_ngay_duyet"/>
+                                                <field name="bsd_nguoi_duyet_id"/>
+                                            </group>
+                                        </group>
+                                    </sheet>
+                                </form>
                             </field>
                         </page>
                     </notebook>

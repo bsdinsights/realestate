@@ -98,7 +98,7 @@ class BsdChietKhau(models.Model):
         action = self.env.ref('bsd_danh_muc.bsd_wizard_chiet_khau_action').read()[0]
         return action
 
-    # DM.12.03 Hủy chiết khấu
+    # DM.13.03 Hủy chiết khấu
     def action_huy(self):
         self.write({
             'state': 'huy',

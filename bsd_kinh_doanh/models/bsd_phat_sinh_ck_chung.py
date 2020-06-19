@@ -5,7 +5,7 @@ from odoo import models, fields, api
 
 class BsdPsCkChung(models.Model):
     _name = 'bsd.ps_ck_ch'
-    _description = 'Thông tin tiền chiết khấu chung'
+    _description = 'Thông tin tiền chiết khấu'
 
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", help="Tên báo giá")
     bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="Chiết khấu chung", required=True)

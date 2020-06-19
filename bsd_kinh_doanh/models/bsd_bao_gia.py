@@ -115,7 +115,7 @@ class BsdBaoGia(models.Model):
                                  states={'nhap': [('readonly', False)]})
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_bao_gia_id', string="Lịch thanh toán",
                                   readonly=True)
-    bsd_ps_ck_ch_ids = fields.One2many('bsd.ps_ck_ch', 'bsd_bao_gia_id', string="Phát sinh chiết khấu chung",
+    bsd_ps_ck_ch_ids = fields.One2many('bsd.ps_ck_ch', 'bsd_bao_gia_id', string="Phát sinh chiết khấu",
                                        readonly=True,
                                        states={'nhap': [('readonly', False)]})
 
@@ -139,6 +139,9 @@ class BsdBaoGia(models.Model):
                                  help="Danh sách khuyến mãi",
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
+    bsd_ck_db_ids = fields.One2many('bsd.ck_db', 'bsd_bao_gia_id', string="Danh sách chiết khấu đặt biệt",
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]})
 
     # R.33 Hiệu lực báo giá
     @api.depends('bsd_ngay_bao_gia')
