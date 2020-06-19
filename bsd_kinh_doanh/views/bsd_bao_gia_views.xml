@@ -238,19 +238,17 @@
                                     <field name="bsd_tl_ck"/>
                                     <field name="bsd_tien_ck"/>
                                     <field name="state"/>
-                                    <button string="Xác nhận"
+                                    <button icon="fa-pencil"
                                             name="action_xac_nhan"
-                                            class="oe_highlight"
                                             confirm="Bạn có muốn Xác nhận yêu cầu không?"
                                             attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
                                             type="object"/>
-                                    <button string="Duyệt"
+                                    <button icon="fa-check-square-o"
                                             name="action_duyet"
-                                            class="oe_highlight"
                                             states="xac_nhan"
                                             confirm="Bạn có muốn Duyệt yêu cầu không?"
                                             type="object"/>
-                                    <button string="Không duyệt"
+                                    <button icon="fa-times-circle-o"
                                             name="action_khong_duyet"
                                             states="xac_nhan"
                                             type="object"
