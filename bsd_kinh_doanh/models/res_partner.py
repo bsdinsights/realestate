@@ -60,6 +60,26 @@ class ResPartner(models.Model):
         for each in self:
             each.bsd_sl_giu_cho = len(each.bsd_giu_cho_ids)
 
+    def action_view_giu_cho(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_giu_cho_action').read()[0]
+
+        giu_cho = self.env['bsd.giu_cho'].search([('bsd_kh_moi_id', '=', self.id)])
+        if len(giu_cho) > 1:
+            action['domain'] = [('id', 'in', giu_cho.ids)]
+        elif giu_cho:
+            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_giu_cho_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = giu_cho.id
+        # Prepare the context.
+        context = {
+            'default_bsd_khach_hang_id': self.id,
+        }
+        action['context'] = context
+        return action
+
     # R.01 Ràng buộc số điện thoại là duy nhất
     _sql_constraints = [
         ('mobile_unique', 'unique (mobile)',

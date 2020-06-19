@@ -225,3 +225,23 @@ class ResPartner(models.Model):
     def _compute_sl_hd(self):
         for each in self:
             each.bsd_sl_hd_ban = len(each.bsd_hd_ban_ids)
+
+    def action_view_hd_ban(self):
+        action = self.env.ref('bsd_dich_vu.bsd_hd_ban_action').read()[0]
+
+        hd_ban = self.env['bsd.hd_ban'].search([('bsd_khach_hang_id', '=', self.id)])
+        if len(hd_ban) > 1:
+            action['domain'] = [('id', 'in', hd_ban.ids)]
+        elif hd_ban:
+            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_hd_ban_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = hd_ban.id
+        # Prepare the context.
+        context = {
+            'default_bsd_khach_hang_id': self.id,
+        }
+        action['context'] = context
+        return action
