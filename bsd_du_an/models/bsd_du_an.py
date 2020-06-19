@@ -155,6 +155,7 @@ class BsdProject(models.Model):
     def action_view_unit(self):
         action = self.env.ref('bsd_du_an.bsd_product_template_action').read()[0]
         action["context"] = {'group_by': 'bsd_toa_nha_id'}
+        action["domain"] = [('bsd_du_an_id', '=', self.id)]
         return action
 
 
