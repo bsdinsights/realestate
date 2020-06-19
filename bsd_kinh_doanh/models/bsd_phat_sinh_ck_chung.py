@@ -21,7 +21,7 @@ class BsdPsCkChung(models.Model):
     bsd_tien_ck = fields.Monetary(string="Tiền chiết khấu",
                                   compute="_compute_tien_ck", store=True,
                                   help="Tiền bàn giao theo chiết khấu")
-
+    bsd_loai_ck = fields.Selection(related="bsd_chiet_khau_id.bsd_loai_ck", store=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 

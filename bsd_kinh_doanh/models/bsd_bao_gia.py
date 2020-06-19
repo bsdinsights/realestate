@@ -195,10 +195,11 @@ class BsdBaoGia(models.Model):
         for each in self:
             each.bsd_tien_bg = sum(each.bsd_bg_ids.mapped('bsd_tien_bg'))
 
-    @api.depends('bsd_ps_ck_ch_ids.bsd_tien_ck')
+    @api.depends('bsd_ps_ck_ch_ids.bsd_tien_ck', 'bsd_ck_db_ids.bsd_tien_ck')
     def _compute_tien_ck(self):
         for each in self:
-            each.bsd_tien_ck = sum(each.bsd_ps_ck_ch_ids.mapped('bsd_tien_ck'))
+            tien_ck_db = sum(each.bsd_ck_db_ids.filtered(lambda t: t.state == 'duyet').mapped('bsd_tien_ck'))
+            each.bsd_tien_ck = sum(each.bsd_ps_ck_ch_ids.mapped('bsd_tien_ck')) + tien_ck_db
 
     @api.depends('bsd_gia_ban', 'bsd_tien_ck', 'bsd_tien_bg')
     def _compute_gia_truoc_thue(self):
