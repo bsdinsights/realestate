@@ -64,12 +64,12 @@ class BsdProject(models.Model):
                                   help="Tiền giữ chỗ khi mua căn hộ của dự án")
     bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", required=True,
                                   help="Tiền đặt cọc khi mua căn hộ của dự án")
-    bsd_hh_bg = fields.Integer(string="Hiệu lực báo giá", required=True,
+    bsd_hh_bg = fields.Integer(string="Hiệu lực bảng tính giá", required=True,
                                help="Số ngày báo giá hết hiệu lực, được tính từ ngày tạo báo giá")
     bsd_hh_pc = fields.Integer(string="Hạn ký phiếu cọc", required=True,
                                help="Số ngày phiếu cọc hết hiệu lực ký, được tính từ ngày in phiếu cọc")
     bsd_hh_hd = fields.Integer(string="Hạn ký hợp đồng", required=True,
-                               help="Số ngày hợp đồng hết hiệu lực ky, được tính kể từ ngày in hợp đồng")
+                               help="Số ngày hợp đồng hết hiệu lực ký, được tính kể từ ngày in hợp đồng")
     bsd_cb_gc = fields.Integer(string="Cảnh báo sau giữ chỗ",
                                help="Số ngày cảnh báo sau khi tạo giữ chỗ")
     bsd_cb_dc = fields.Integer(string="Cảnh báo sau đặt cọc",
