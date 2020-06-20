@@ -177,6 +177,8 @@
                                     <field name="bsd_loai_ck"/>
                                     <field name="bsd_bao_gia_id" invisible="1"/>
                                     <field name="bsd_ck_ch_id" invisible="1"/>
+                                    <field name="bsd_ck_cstt_id" invisible="1"/>
+                                    <field name="bsd_ck_nb_id" invisible="1"/>
                                     <field name="bsd_chiet_khau_id"/>
                                     <field name="bsd_ten_ck"/>
                                     <field name="bsd_tu_ngay"/>

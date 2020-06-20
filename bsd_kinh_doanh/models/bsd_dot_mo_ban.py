@@ -27,22 +27,22 @@ class BsdDotMoBan(models.Model):
     bsd_bang_gia_id = fields.Many2one('product.pricelist', string="Bảng giá",
                                       readonly=True, required=True,
                                       states={'cph': [('readonly', False)]})
-    bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="CK chung", domain=[('state', '=', 'active')],
+    bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="CK chung", domain=[('state', '=', 'duyet')],
                                    readonly=True,
                                    states={'cph': [('readonly', False)]})
-    bsd_ck_nb_id = fields.Many2one('bsd.ck_nb', string="CK nội bộ", domain=[('state', '=', 'active')],
+    bsd_ck_nb_id = fields.Many2one('bsd.ck_nb', string="CK nội bộ", domain=[('state', '=', 'duyet')],
                                    readonly=True,
                                    states={'cph': [('readonly', False)]})
-    bsd_ck_ms_id = fields.Many2one('bsd.ck_ms', string="CK mua sỉ", domain=[('state', '=', 'active')],
+    bsd_ck_ms_id = fields.Many2one('bsd.ck_ms', string="CK mua sỉ", domain=[('state', '=', 'duyet')],
                                    readonly=True,
                                    states={'cph': [('readonly', False)]})
-    bsd_ck_ttth_id = fields.Many2one('bsd.ck_ttth', string="CK TT trước hạn", domain=[('state', '=', 'active')],
+    bsd_ck_ttth_id = fields.Many2one('bsd.ck_ttth', string="CK TT trước hạn", domain=[('state', '=', 'duyet')],
                                      readonly=True,
                                      states={'cph': [('readonly', False)]})
-    bsd_ck_ttn_id = fields.Many2one('bsd.ck_ttn', string="CK TT nhanh", domain=[('state', '=', 'active')],
+    bsd_ck_ttn_id = fields.Many2one('bsd.ck_ttn', string="CK TT nhanh", domain=[('state', '=', 'duyet')],
                                     readonly=True,
                                     states={'cph': [('readonly', False)]})
-    bsd_ck_cstt_id = fields.Many2one('bsd.ck_cstt', string="CK chính sách TT", domain=[('state', '=', 'active')],
+    bsd_ck_cstt_id = fields.Many2one('bsd.ck_cstt', string="CK chính sách TT", domain=[('state', '=', 'duyet')],
                                      readonly=True,
                                      states={'cph': [('readonly', False)]})
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng của đợt mở bán",

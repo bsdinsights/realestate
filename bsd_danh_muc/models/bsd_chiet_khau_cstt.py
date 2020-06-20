@@ -65,6 +65,7 @@ class BsdChietKhauCSTT(models.Model):
             'state': 'huy',
         })
 
+
 class BsdChietKhauCSTTChiTiet(models.Model):
     _name = 'bsd.ck_cstt_ct'
     _description = "Thông tin chiết khấu chính sách thanh toán chi tiết"
@@ -72,7 +73,7 @@ class BsdChietKhauCSTTChiTiet(models.Model):
 
     bsd_ck_cstt_id = fields.Many2one('bsd.ck_cstt', string="Chiết khấu CSTT")
     bsd_chiet_khau_id = fields.Many2one('bsd.chiet_khau', string="Chiết khấu", required=True, help="Chiết khấu",
-                                        domain=[('bsd_loai_ck', '=', 'ltt'), ('state', '=', 'active')])
+                                        domain=[('bsd_loai_ck', '=', 'ltt'), ('state', '=', 'duyet')])
     bsd_ma_ck = fields.Char(related="bsd_chiet_khau_id.bsd_ma_ck")
     bsd_tu_ngay = fields.Date(related="bsd_chiet_khau_id.bsd_tu_ngay")
     bsd_den_ngay = fields.Date(related="bsd_chiet_khau_id.bsd_den_ngay")
