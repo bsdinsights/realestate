@@ -41,7 +41,7 @@ class BsdPsCkChung(models.Model):
         self.bsd_ck_nb_id = self.bsd_bao_gia_id.bsd_dot_mb_id.bsd_ck_nb_id
         self.bsd_cs_tt_id = self.bsd_bao_gia_id.bsd_cs_tt_id
 
-    @api.onchange('bsd_ck_ch_id', 'bsd_loai_ck', 'bsd_ck_cstt_id', 'bsd_ck_nb_id', '')
+    @api.onchange('bsd_ck_ch_id', 'bsd_loai_ck', 'bsd_ck_cstt_id', 'bsd_ck_nb_id', 'bsd_cs_tt_id')
     def _onchange_ck(self):
         res = {}
         list_id = []
@@ -53,7 +53,7 @@ class BsdPsCkChung(models.Model):
                         .mapped('bsd_chiet_khau_id').ids
         if self.bsd_loai_ck == 'ltt' and self.bsd_ck_cstt_id:
             list_id = self.env['bsd.ck_cstt_ct'].search([('bsd_ck_cstt_id', '=', self.bsd_ck_cstt_id.id)])\
-                        .mapped('bsd_chiet_khau_id').ids
+                        .mapped('bsd_chiet_khau_id').filtered(lambda c: c.bsd_cs_tt_id == self.bsd_cs_tt_id).ids
         res.update({
             'domain': {
                 'bsd_chiet_khau_id': [('id', 'in', list_id)]
