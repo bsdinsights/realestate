@@ -5,6 +5,32 @@
         <field name="model">bsd.ck_ch</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            class="oe_highlight"
+                            confirm="Bạn có muốn Xác nhận yêu cầu không?"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                            type="object"/>
+                    <button string="Duyệt"
+                            name="action_duyet"
+                            class="oe_highlight"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn Duyệt yêu cầu không?"
+                            type="object"/>
+                    <button string="Không duyệt"
+                            name="action_khong_duyet"
+                            class="oe_highlight"
+                            states="xac_nhan"
+                            type="object"
+                            confirm="Bạn có muốn Từ chối yêu cầu không?"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            states="xac_nhan,duyet"
+                            confirm="Bạn có muốn Hủy yêu cầu không?"
+                            type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
@@ -15,7 +41,6 @@
                         <group>
                             <field name="bsd_tu_ngay"/>
                             <field name="bsd_den_ngay"/>
-                            <field name="state"/>
                         </group>
                         <field name="bsd_ct_ids" nolabel="1">
                             <tree editable="bottom">

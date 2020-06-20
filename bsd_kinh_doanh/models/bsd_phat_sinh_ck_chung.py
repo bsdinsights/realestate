@@ -8,7 +8,7 @@ class BsdPsCkChung(models.Model):
     _description = 'Thông tin tiền chiết khấu'
 
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", help="Tên báo giá")
-    bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="Chiết khấu chung", required=True)
+    bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="Chiết khấu chung")
     bsd_chiet_khau_id = fields.Many2one('bsd.chiet_khau', string="Mã chiết khấu", help="Mã chiết khấu", required=True)
     bsd_ten_ck = fields.Char(related="bsd_chiet_khau_id.bsd_ten_ck", store=True)
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng chiết khấu",
