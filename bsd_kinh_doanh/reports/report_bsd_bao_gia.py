@@ -26,10 +26,11 @@ class BsdWizardReportBaoGia(models.TransientModel):
             'ids': self.bsd_bao_gia_id.ids,
             'model': self.bsd_bao_gia_id._name,
         }
-        self.bsd_bao_gia_id.write({
-            'bsd_ngay_in_bg': datetime.datetime.now(),
-            'bsd_ngay_hh_kbg': datetime.datetime.now() + datetime.timedelta(days=self.bsd_bao_gia_id.bsd_du_an_id.bsd_hh_bg)
-        })
+        if not self.bsd_bao_gia_id.bsd_ngay_in_bg:
+            self.bsd_bao_gia_id.write({
+                'bsd_ngay_in_bg': datetime.datetime.now(),
+                'bsd_ngay_hh_kbg': datetime.datetime.now() + datetime.timedelta(days=self.bsd_bao_gia_id.bsd_du_an_id.bsd_hh_bg)
+            })
         ref_id = 'bsd_kinh_doanh.' + self.bsd_mau_in
         return self.env.ref(ref_id).report_action(self, data=data)
 
