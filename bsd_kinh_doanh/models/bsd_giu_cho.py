@@ -99,8 +99,7 @@ class BsdGiuCho(models.Model):
                                     readonly=True, default=0)
     bsd_huy_gc_id = fields.Many2one('bsd.huy_gc', string="Hủy giữ chỗ", help="Mã phiếu hủy giữ chỗ", readonly=1)
 
-    bsd_so_bao_gia = fields.Integer(string="# Báo giá", compute=''
-                                                                '')
+    bsd_so_bao_gia = fields.Integer(string="# Báo giá", compute='_compute_bao_gia')
     bsd_so_huy_gc = fields.Integer(string="# Hủy giữ chỗ", compute='_compute_huy_gc')
 
     # # R11. khách hàng chuyển nhượng
