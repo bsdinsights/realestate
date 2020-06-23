@@ -43,15 +43,12 @@ class BsdTknhAp(models.Model):
         _logger.debug("kiểm tra thời gian")
         tk_ad = self.env['bsd.tknh_ad'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                 ('id', '!=', self.id)])
-        _logger.debug(tk_ad)
         if tk_ad:
             khoang_time = [(t.bsd_tu_ngay, t.bsd_den_ngay) for t in tk_ad.sorted('bsd_tu_ngay')]
             flag = True
             if self.bsd_tu_ngay < self.bsd_den_ngay < khoang_time[0][0]:
-                _logger.debug("trước nhất")
                 flag = False
             elif khoang_time[-1][1] < self.bsd_tu_ngay < self.bsd_den_ngay:
-                _logger.debug("sau nhất")
                 flag = False
             else:
                 l = len(khoang_time)

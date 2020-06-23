@@ -18,5 +18,6 @@ from . import bsd_thu_hoi
 from . import bsd_them_unit
 from . import bsd_huy_gc
 from . import bsd_chiet_khau_dac_biet
+from . import bsd_chiet_khau_chung
 
 
