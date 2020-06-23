@@ -28,7 +28,7 @@ class BsdChietKhauChung(models.Model):
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng chiết khấu chung",
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án")
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True)
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
                               ('duyet', 'Duyệt'),

@@ -10,4 +10,54 @@
             </xpath>
         </field>
     </record>
+    <record model="ir.ui.view" id="bsd_ck_nb_form">
+        <field name="name">bsd.ck_nb.form</field>
+        <field name="model">bsd.ck_nb</field>
+        <field name="inherit_id" ref="bsd_danh_muc.bsd_chiet_khau_noi_bo_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bsd_du_an_id']" position="after">
+                <field name="bsd_dot_mb_id"/>
+            </xpath>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_ck_ms_form">
+        <field name="name">bsd.ck_ms.form</field>
+        <field name="model">bsd.ck_ms</field>
+        <field name="inherit_id" ref="bsd_danh_muc.bsd_chiet_khau_mua_si_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bsd_du_an_id']" position="after">
+                <field name="bsd_dot_mb_id"/>
+            </xpath>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_ck_cstt_form">
+        <field name="name">bsd.ck_cstt.form</field>
+        <field name="model">bsd.ck_cstt</field>
+        <field name="inherit_id" ref="bsd_danh_muc.bsd_chiet_khau_cstt_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bsd_du_an_id']" position="after">
+                <field name="bsd_dot_mb_id"/>
+            </xpath>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_ck_ttn_form">
+        <field name="name">bsd.ck_ttn.form</field>
+        <field name="model">bsd.ck_ttn</field>
+        <field name="inherit_id" ref="bsd_danh_muc.bsd_chiet_khau_ttn_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bsd_du_an_id']" position="after">
+                <field name="bsd_dot_mb_id"/>
+            </xpath>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_ck_ttth_form">
+        <field name="name">bsd.ck_ttth.form</field>
+        <field name="model">bsd.ck_ttth</field>
+        <field name="inherit_id" ref="bsd_danh_muc.bsd_chiet_khau_ttth_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bsd_du_an_id']" position="after">
+                <field name="bsd_dot_mb_id"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>
