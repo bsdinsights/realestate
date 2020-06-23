@@ -12,3 +12,4 @@ from . import bsd_giam_no
 from . import bsd_tang_no
 from . import bsd_chuyen_tien
 from . import bsd_hoan_tien
+from . import bsd_phat_sinh_giao_dich_chiet_khau
