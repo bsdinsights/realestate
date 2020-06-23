@@ -2,6 +2,8 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class BsdChietKhau(models.Model):
@@ -104,38 +106,93 @@ class BsdChietKhau(models.Model):
             'state': 'huy',
         })
 
-    @api.model
-    def create(self, vals):
-        domain = []
-        if 'bsd_loai_ck' in vals:
-            domain.append(('bsd_loai_ck', '=', vals['bsd_loai_ck']))
-        if 'bsd_du_an_id' in vals:
-            domain.append(('bsd_du_an_id', '=', vals['bsd_du_an_id']))
-        if 'bsd_cach_tinh' in vals:
-            domain.append(('bsd_cach_tinh', '=', vals['bsd_cach_tinh']))
-        if 'bsd_tien_ck' in vals:
-            domain.append(('bsd_tien_ck', '=', vals['bsd_tien_ck']))
-        if 'bsd_tl_ck' in vals:
-            domain.append(('bsd_tl_ck', '=', vals['bsd_tl_ck']))
-        if 'bsd_tu_ngay' in vals:
-            domain.append(('bsd_tu_ngay', '=', vals['bsd_tu_ngay']))
-        if 'bsd_den_ngay' in vals:
-            domain.append(('bsd_den_ngay', '=', vals['bsd_den_ngay']))
-        if 'bsd_cung_tang' in vals:
-            domain.append(('bsd_cung_tang', '=', vals['bsd_cung_tang']))
-        if 'bsd_sl_tu' in vals:
-            domain.append(('bsd_sl_tu', '=', vals['bsd_sl_tu']))
-        if 'bsd_sl_den' in vals:
-            domain.append(('bsd_sl_den', '=', vals['bsd_sl_den']))
-        if 'bsd_cs_tt_id' in vals:
-            domain.append(('bsd_cs_tt_id', '=', vals['bsd_cs_tt_id']))
-        if 'bsd_ngay_tt' in vals:
-            domain.append(('bsd_ngay_tt', '=', vals['bsd_ngay_tt']))
-        if 'bsd_tl_tt' in vals:
-            domain.append(('bsd_tl_tt', '=', vals['bsd_tl_tt']))
+    @api.constrains('bsd_loai_ck', 'bsd_tu_ngay', 'bsd_den_ngay', 'bsd_sl_tu', 'bsd_sl_den')
+    def constrains_ck(self):
+        # DM.13.07 Kiểm tra điều kiện trùng chiếu khấu mua sỉ
+        if self.bsd_loai_ck == 'mua_si':
+            mua_si = self.env['bsd.chiet_khau'].search([('bsd_loai_ck', '=', 'mua_si'),
+                                                        ('id', '!=', self.id)])
+            if mua_si:
+                khoang_time = [(t.bsd_tu_ngay, t.bsd_den_ngay) for t in mua_si.sorted('bsd_tu_ngay')]
+                flag_time = True
+                if self.bsd_tu_ngay < self.bsd_den_ngay < khoang_time[0][0]:
+                    flag_time = False
+                elif khoang_time[-1][1] < self.bsd_tu_ngay < self.bsd_den_ngay:
+                    flag_time = False
+                else:
+                    le = len(khoang_time)
+                    for i in range(0, le - 1):
+                        t_first = khoang_time[i][1]
+                        t_last = khoang_time[i + 1][0]
+                        if t_first < self.bsd_tu_ngay < self.bsd_den_ngay < t_last:
+                            _logger.debug("Nằm trong khoảng cho phep")
+                            flag_time = False
+                if flag_time:
+                    raise UserError("Đã tồn tại chiết khấu này. Vui lòng kiểm tra lại")
 
-        chiet_khau = self.env['bsd.chiet_khau'].search(domain)
-        if chiet_khau:
-            raise UserError("Đã tồn tại chiết khấu. Vui lòng kiểm tra lại!")
+                so_luong = [(t.bsd_sl_tu, t.bsd_sl_den) for t in mua_si.sorted('bsd_sl_tu')]
+                flag_sl = True
+                if self.bsd_sl_tu < self.bsd_sl_den < so_luong[0][0]:
+                    flag_sl = False
+                elif so_luong[-1][1] < self.bsd_sl_tu < self.bsd_sl_den:
+                    flag_sl = False
+                else:
+                    le = len(so_luong)
+                    for i in range(0, le - 1):
+                        t_first = so_luong[i][1]
+                        t_last = so_luong[i + 1][0]
+                        if t_first < self.bsd_sl_tu < self.bsd_sl_den < t_last:
+                            _logger.debug("Nằm trong khoảng cho phep")
+                            flag_sl = False
+                if flag_sl:
+                    raise UserError("Đã tồn tại chiết khấu mua sỉ. Vui lòng kiểm tra lại")
 
-        return super(BsdChietKhau, self).create(vals)
+        # DM.13.08 Kiểm tra điều kiện trùng lịch thanh toán
+        if self.bsd_loai_ck == 'ltt':
+            lich_tt = self.env['bsd.chiet_khau'].search([('bsd_loai_ck', '=', 'ltt'),
+                                                         ('id', '!=', self.id)])
+            if lich_tt:
+                raise UserError("Chính sách thanh toán đã có chiết khấu")
+
+        # DM.13.09 Kiểm tra điều kiện trùng chiết khấu thanh toán trước hạn
+        if self.bsd_loai_ck == 'ttth':
+            ttth = self.env['bsd.chiet_khau'].search([('bsd_loai_ck', '=', 'ttth'),
+                                                      ('id', '!=', self.id)])
+            if ttth:
+                khoang_time = [(t.bsd_tu_ngay, t.bsd_den_ngay) for t in ttth.sorted('bsd_tu_ngay')]
+                flag_time = True
+                if self.bsd_tu_ngay < self.bsd_den_ngay < khoang_time[0][0]:
+                    flag_time = False
+                elif khoang_time[-1][1] < self.bsd_tu_ngay < self.bsd_den_ngay:
+                    flag_time = False
+                else:
+                    le = len(khoang_time)
+                    for i in range(0, le - 1):
+                        t_first = khoang_time[i][1]
+                        t_last = khoang_time[i + 1][0]
+                        if t_first < self.bsd_tu_ngay < self.bsd_den_ngay < t_last:
+                            _logger.debug("Nằm trong khoảng cho phep")
+                            flag_time = False
+                if flag_time:
+                    raise UserError("Đã tồn tại chiết khấu này. Vui lòng kiểm tra lại")
+        # DM.13.10 Kiểm tra điều kiện trùng chiết khấu thanh toán nhanh
+        if self.bsd_loai_ck == 'ttn':
+            ttn = self.env['bsd.chiet_khau'].search([('bsd_loai_ck', '=', 'ttn'),
+                                                     ('id', '!=', self.id)])
+            if ttn:
+                khoang_time = [(t.bsd_tu_ngay, t.bsd_den_ngay) for t in ttn.sorted('bsd_tu_ngay')]
+                flag_time = True
+                if self.bsd_tu_ngay < self.bsd_den_ngay < khoang_time[0][0]:
+                    flag_time = False
+                elif khoang_time[-1][1] < self.bsd_tu_ngay < self.bsd_den_ngay:
+                    flag_time = False
+                else:
+                    le = len(khoang_time)
+                    for i in range(0, le - 1):
+                        t_first = khoang_time[i][1]
+                        t_last = khoang_time[i + 1][0]
+                        if t_first < self.bsd_tu_ngay < self.bsd_den_ngay < t_last:
+                            _logger.debug("Nằm trong khoảng cho phep")
+                            flag_time = False
+                if flag_time:
+                    raise UserError("Đã tồn tại chiết khấu này. Vui lòng kiểm tra lại")
