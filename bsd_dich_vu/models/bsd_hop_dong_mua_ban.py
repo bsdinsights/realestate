@@ -99,6 +99,14 @@ class BsdHopDongMuaBan(models.Model):
                                              ký xác nhận""")
     bsd_ngay_ky_hdb = fields.Datetime(string="Ngày ký hợp đồng", help="Ngày ký hợp đồng mua bán", readonly=True)
 
+    bsd_km_ids = fields.One2many('bsd.bao_gia_km', 'bsd_dat_coc_id', string="Danh sách khuyến mãi",
+                                 help="Danh sách khuyến mãi", readonly=True,)
+
+    bsd_ps_ck_ids = fields.One2many('bsd.ps_ck', 'bsd_hd_ban_id', string="Phát sinh chiết khấu",
+                                    readonly=True)
+    bsd_ck_db_ids = fields.One2many('bsd.ck_db', 'bsd_hd_ban_id', string="Danh sách chiết khấu đặt biệt",
+                                    readonly=True)
+
     # Cập nhật đồng sở hữu từ báo giá
     @api.onchange('bsd_dat_coc_id')
     def _onchange_dat_coc(self):
@@ -169,11 +177,17 @@ class BsdHopDongMuaBan(models.Model):
             raise UserError(_('Dự án chưa có mã hợp đồng'))
         vals['bsd_ma_hd_ban'] = sequence.next_by_id()
         res = super(BsdHopDongMuaBan, self).create(vals)
-        ids_bg = res.bsd_dat_coc_id.bsd_bg_ids.ids
-        ids_ltt = res.bsd_dat_coc_id.bsd_ltt_ids.ids
+        ids_bg = res.bsd_bao_gia_id.bsd_bg_ids.ids
+        ids_ltt = res.bsd_bao_gia_id.bsd_ltt_ids.ids
+        ids_km = res.bsd_bao_gia_id.bsd_km_ids.ids
+        ids_ck = res.bsd_bao_gia_id.bsd_ps_ck_ids.ids
+        ids_db = res.bsd_bao_gia_id.bsd_ck_db_ids.ids
         res.write({
             'bsd_bg_ids': [(6, 0, ids_bg)],
             'bsd_ltt_ids': [(6, 0, ids_ltt)],
+            'bsd_km_ids': [(6, 0, ids_km)],
+            'bsd_ps_ck_ids': [(6, 0, ids_ck)],
+            'bsd_ck_db_ids': [(6, 0, ids_db)]
         })
         # # Cập nhật đồng sở hữu từ báo giá
         # for dsh in dsh_ids:
@@ -195,6 +209,25 @@ class BsdBaoGiaLTT(models.Model):
     _inherit = 'bsd.lich_thanh_toan'
 
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True)
+
+
+class BsdKhuyenMai(models.Model):
+    _inherit = 'bsd.khuyen_mai'
+
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True)
+
+
+class BsdPsCk(models.Model):
+    _inherit = 'bsd.ps_ck'
+
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True)
+
+
+class BsdCkDb(models.Model):
+    _inherit = 'bsd.ck_db'
+
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True)
+
 
 
 class BsdDongSoHuu(models.Model):
