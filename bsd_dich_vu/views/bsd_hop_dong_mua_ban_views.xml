@@ -176,7 +176,7 @@
                             </field>
                         </page>
                         <page string="Lịch thanh toán">
-                            <field name="bsd_ltt_ids">
+                            <field name="bsd_ltt_ids" nolabel="1">
                                 <tree>
                                     <field name="bsd_stt"/>
                                     <field name="bsd_ten_dtt"/>

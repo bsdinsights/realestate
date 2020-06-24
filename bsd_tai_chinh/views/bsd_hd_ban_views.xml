@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_hd_ban_form_inherit">
+        <field name="name">bsd.hd_ban.form.inherit</field>
+        <field name="model">bsd.hd_ban</field>
+        <field name="inherit_id" ref="bsd_dich_vu.bsd_hd_ban_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bsd_ltt_ids']" position="before">
+                <label for="bsd_tl_tt_hd"/>
+                <field name="bsd_tl_tt_hd"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

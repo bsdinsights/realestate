@@ -23,7 +23,8 @@ class BsdPhatSinhGiaoDichChietKhau(models.Model):
                                     ('mua_si', 'Mua sỉ'),
                                     ('ltt', 'Lịch thanh toán'),
                                     ('ttth', 'Thanh toán trước hạn'),
-                                    ('ttn', 'Thanh toán nhanh')], string="Loại chiết khấu",
+                                    ('ttn', 'Thanh toán nhanh'),
+                                    ('dac_biet', 'Đặc biệt')], string="Loại chiết khấu",
                                    default='chung', required=True, help="Loại chiết khấu")
     bsd_ltt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán", help="Đợt thanh toán")
     bsd_sn_th = fields.Integer(string="Số ngày trước hạn", help="Số ngày dùng để tính thanh toán trước hạn")

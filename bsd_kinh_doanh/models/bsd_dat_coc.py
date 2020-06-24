@@ -283,3 +283,31 @@ class BsdDatCoc(models.Model):
                     'bsd_ngay_hh_tt': ngay_hh_tt_dot,
                     'bsd_ngay_ah': ngay_an_han,
                 })
+
+    # KD.10.08 Tự động cập nhật giao dịch chiết khấu
+    def tao_gd_chiet_khau(self):
+        # Lấy chiết khấu chung, nội bộ, lịch thanh toán
+        for gd_ck in self.bsd_ps_ck_ids:
+            ck = gd_ck.bsd_chiet_khau_id
+            self.env['bsd.ps_gd_ck'].create({
+                'bsd_ma_ck': ck.bsd_ma_ck,
+                'bsd_ten_ck': ck.bsd_ten_ck,
+                'bsd_dat_coc_id': self.id,
+                'bsd_unit_id': self.bsd_unit_id.id,
+                'bsd_loai_ck': ck.bsd_loai_ck,
+                'bsd_tl_ck': ck.bsd_tl_ck,
+                'bsd_tien': ck.bsd_tien_ck,
+                'bsd_tien_ck': gd_ck.bsd_tien_ck,
+            })
+        # Lấy chiết khấu đặt biệt
+        for ck_db in self.bsd_ck_db_ids:
+            self.env['bsd.ps_gd_ck'].create({
+                'bsd_ma_ck': ck_db.bsd_ma_ck_db,
+                'bsd_ten_ck': ck_db.bsd_ten_ck_db,
+                'bsd_dat_coc_id': self.id,
+                'bsd_unit_id': self.bsd_unit_id.id,
+                'bsd_loai_ck': 'dac_biet',
+                'bsd_tl_ck': ck_db.bsd_tl_ck,
+                'bsd_tien': ck_db.bsd_tien,
+                'bsd_tien_ck': ck_db.bsd_tien_ck,
+            })

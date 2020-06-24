@@ -30,6 +30,7 @@
         'views/bsd_giu_cho_views.xml',
         'views/bsd_dat_coc_views.xml',
         'views/bsd_lich_thanh_toan_views.xml',
+        'views/bsd_hd_ban_views.xml',
     ],
     'application': True,
 }

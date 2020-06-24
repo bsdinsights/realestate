@@ -49,7 +49,6 @@ class BsdBaoGiaLTT(models.Model):
     @api.depends('bsd_tien_dot_tt', 'bsd_tien_da_tt')
     def _compute_tien_tt(self):
         for each in self:
-
             each.bsd_tien_phai_tt = each.bsd_tien_dot_tt - each.bsd_tien_da_tt
 
     @api.model
