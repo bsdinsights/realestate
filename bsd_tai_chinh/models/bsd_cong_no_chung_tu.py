@@ -50,7 +50,6 @@ class BsdCongNoCT(models.Model):
         elif self.bsd_loai == 'pt_gc':
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_giu_cho_id', '=', self.bsd_giu_cho_id.id)])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
-            _logger.debug(self.bsd_giu_cho_id.bsd_tien_gc)
             if self.bsd_giu_cho_id.bsd_tien_gc < tien:
                 raise UserError("Không thể thực hiện thanh toán dư")
             # Kiểm tra nếu là giữ chỗ trước mở bán nếu thanh toán đủ thì chuyển trạng thái sang giữ chỗ
@@ -70,18 +69,18 @@ class BsdCongNoCT(models.Model):
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id),
                                                             ('bsd_dot_tt_id', '=', False)])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
-            _logger.debug(self.bsd_dat_coc_id.bsd_tien_dc)
             if self.bsd_dat_coc_id.bsd_tien_dc < tien:
                 raise UserError("Không thể thực hiện thanh toán dư")
 
         elif self.bsd_loai == 'pt_dtt':
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
-            _logger.debug("Đợt thanh toán")
-            _logger.debug(self.bsd_dot_tt_id.bsd_tien_dot_tt)
             if self.bsd_dot_tt_id.bsd_tien_dot_tt < tien:
                 raise UserError("Không thể thực hiện thanh toán dư")
-
+            if self.bsd_dot_tt_id.bsd_tien_dot_tt == tien:
+                # Kiểm tra điều kiện đợt tt có giai đoạn hợp đồng
+                if self.bsd_dot_tt_id.bsd_hd_ban_id and self.bsd_dot_tt_id.bsd_gd_tt == 'hop_dong':
+                    self.bsd_dot_tt_id.tao_ck_ttth()
         elif self.bsd_loai == 'pt_ht':
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_phieu_thu_id', '=', self.bsd_phieu_thu_id.id)])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))

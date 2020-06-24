@@ -49,12 +49,24 @@
                                     <field name="bsd_bang_gia_id"
                                            domain="[('bsd_du_an_id', 'in', [bsd_du_an_id])]"
                                            options="{'no_create':true}"/>
-                                    <field name="bsd_ck_ch_id" options="{'no_create':true}"/>
-                                    <field name="bsd_ck_nb_id" options="{'no_create':true}"/>
-                                    <field name="bsd_ck_ms_id" options="{'no_create':true}"/>
-                                    <field name="bsd_ck_ttth_id" options="{'no_create':true}"/>
-                                    <field name="bsd_ck_ttn_id" options="{'no_create':true}"/>
-                                    <field name="bsd_ck_cstt_id" options="{'no_create':true}"/>
+                                    <field name="bsd_ck_ch_id"
+                                           domain="[('bsd_dot_mb_id', '=', False),('state', '=', 'duyet')]"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_ck_nb_id"
+                                           domain="[('bsd_dot_mb_id', '=', False),('state', '=', 'duyet')]"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_ck_ms_id"
+                                           domain="[('bsd_dot_mb_id', '=', False),('state', '=', 'duyet')]"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_ck_ttth_id"
+                                           domain="[('bsd_dot_mb_id', '=', False),('state', '=', 'duyet')]"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_ck_ttn_id"
+                                           domain="[('bsd_dot_mb_id', '=', False),('state', '=', 'duyet')]"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_ck_cstt_id"
+                                           domain="[('bsd_dot_mb_id', '=', False),('state', '=', 'duyet')]"
+                                           options="{'no_create':true}"/>
                                 </group>
                                 <group>
                                     <field name="bsd_tu_ngay"/>
