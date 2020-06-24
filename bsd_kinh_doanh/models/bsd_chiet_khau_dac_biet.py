@@ -35,6 +35,7 @@ class BsdChietKhauDacBiet(models.Model):
                              states={'nhap': [('readonly', False)]})
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Nội dung về yêu cầu chiết khấu đặc biệt")
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", required=True)
+    bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Tên Đặt cọc", readonly=True)
     bsd_khach_hang_id = fields.Many2one(related="bsd_bao_gia_id.bsd_khach_hang_id", store=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án",
                                    related="bsd_bao_gia_id.bsd_du_an_id", store=True)

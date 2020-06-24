@@ -11,7 +11,7 @@ from . import bsd_bao_gia
 from . import bsd_dat_coc
 from . import bsd_ban_giao
 from . import bsd_lich_thanh_toan
-from . import bsd_phat_sinh_ck_chung
+from . import bsd_phat_sinh_ck
 from . import res_partner
 from . import bsd_chuyen_gc
 from . import bsd_thu_hoi

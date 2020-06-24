@@ -5,16 +5,17 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class BsdPsCkChung(models.Model):
-    _name = 'bsd.ps_ck_ch'
-    _description = 'Thông tin tiền chiết khấu'
+class BsdPsCk(models.Model):
+    _name = 'bsd.ps_ck'
+    _description = 'Thông tin phát sinh chiết khấu thương mại'
     _rec_name = 'bsd_chiet_khau_id'
 
     bsd_loai_ck = fields.Selection([('chung', 'Chung'),
                                     ('noi_bo', 'Nội bộ'),
                                     ('ltt', 'Lịch thanh toán')], string="Loại chiết khấu",
                                    default='chung', required=True, help="Loại chiết khấu")
-    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", help="Tên báo giá")
+    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", help="Tên báo giá", required=True)
+    bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Tên Đặt cọc", readonly=True)
     bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="Chiết khấu chung")
     bsd_ck_nb_id = fields.Many2one('bsd.ck_nb', string="Chiết khấu nội bộ")
     bsd_ck_cstt_id = fields.Many2one('bsd.ck_cstt', string="Chiết khấu CSTT")

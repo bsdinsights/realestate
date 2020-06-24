@@ -172,7 +172,7 @@
                             </field>
                         </page>
                         <page string="Chiết khấu">
-                            <field name="bsd_ps_ck_ch_ids">
+                            <field name="bsd_ps_ck_ids">
                                 <tree editable="bottom">
                                     <field name="bsd_loai_ck"/>
                                     <field name="bsd_bao_gia_id" invisible="1"/>
