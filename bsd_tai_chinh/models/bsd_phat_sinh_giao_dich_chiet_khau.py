@@ -11,7 +11,7 @@ class BsdPhatSinhGiaoDichChietKhau(models.Model):
 
     bsd_ma_ck = fields.Char(string="Mã chiết khấu", required=True, help="Mã chiết khấu")
     _sql_constraints = [
-        ('bsd_ma_ck_unique', 'unique (bsd_ma_ck)',
+        ('bsd_ma_ck_unique', 'check(1=1)',
          'Mã chiết khấu đã tồn tại !'),
     ]
     bsd_ten_ck = fields.Char(string="Tên chiết khấu", required=True, help="Tên chiết khấu")

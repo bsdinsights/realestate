@@ -290,7 +290,7 @@ class BsdDatCoc(models.Model):
         for gd_ck in self.bsd_ps_ck_ids:
             ck = gd_ck.bsd_chiet_khau_id
             self.env['bsd.ps_gd_ck'].create({
-                'bsd_ma_ck': ck.bsd_ma_ck + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
+                'bsd_ma_ck': ck.bsd_ma_ck,
                 'bsd_ten_ck': ck.bsd_ten_ck,
                 'bsd_dat_coc_id': self.id,
                 'bsd_unit_id': self.bsd_unit_id.id,
@@ -302,7 +302,7 @@ class BsdDatCoc(models.Model):
         # Lấy chiết khấu đặt biệt
         for ck_db in self.bsd_ck_db_ids:
             self.env['bsd.ps_gd_ck'].create({
-                'bsd_ma_ck': ck_db.bsd_ma_ck_db + datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
+                'bsd_ma_ck': ck_db.bsd_ma_ck_db,
                 'bsd_ten_ck': ck_db.bsd_ten_ck_db,
                 'bsd_dat_coc_id': self.id,
                 'bsd_unit_id': self.bsd_unit_id.id,
