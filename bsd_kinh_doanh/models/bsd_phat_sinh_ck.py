@@ -12,6 +12,7 @@ class BsdPsCk(models.Model):
 
     bsd_loai_ck = fields.Selection([('chung', 'Chung'),
                                     ('noi_bo', 'Nội bộ'),
+                                    ('mua_si', 'Mua sỉ'),
                                     ('ltt', 'Lịch thanh toán')], string="Loại chiết khấu",
                                    default='chung', required=True, help="Loại chiết khấu")
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", help="Tên báo giá", required=True)
@@ -63,10 +64,12 @@ class BsdPsCk(models.Model):
         _logger.debug(res)
         return res
 
-    @api.depends('bsd_cach_tinh', 'bsd_tien', 'bsd_tl_ck', 'bsd_bao_gia_id.bsd_gia_ban')
+    # R.31
+    @api.depends('bsd_cach_tinh', 'bsd_tien', 'bsd_tl_ck', 'bsd_bao_gia_id.bsd_gia_ban', 'bsd_bao_gia_id.bsd_tien_bg')
     def _compute_tien_ck(self):
         for each in self:
             if each.bsd_cach_tinh == 'phan_tram':
-                each.bsd_tien_ck = each.bsd_tl_ck * each.bsd_bao_gia_id.bsd_gia_ban / 100
+                each.bsd_tien_ck = each.bsd_tl_ck * \
+                                   (each.bsd_bao_gia_id.bsd_gia_ban + each.bsd_bao_gia_id.bsd_tien_bg) / 100
             else:
                 each.bsd_tien_ck = each.bsd_tien

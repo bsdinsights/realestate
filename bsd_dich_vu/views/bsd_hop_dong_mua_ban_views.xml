@@ -30,6 +30,11 @@
                             attrs="{'invisible':['|',('bsd_ngay_in_hdb', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
+                    <button string="Chiết khấu mua sỉ"
+                        name="action_ck_ms"
+                        type="object"
+                        states="da_ky"
+                        class="oe_highlight"/>
                     <button string="Hủy"
                             name="action_huy"
                             type="object"/>

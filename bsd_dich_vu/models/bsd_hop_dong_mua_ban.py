@@ -107,6 +107,47 @@ class BsdHopDongMuaBan(models.Model):
     bsd_ck_db_ids = fields.One2many('bsd.ck_db', 'bsd_hd_ban_id', string="Danh sách chiết khấu đặt biệt",
                                     readonly=True)
 
+    # DV.01.11 - Theo dõi chiết khấu mua sỉ (nút nhấn wizard)
+    def action_ck_ms(self):
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_ms_hdb_action').read()[0]
+        return action
+
+    # DV.01.11 - Theo dõi chiết khấu mua sỉ
+    def tao_ck_ms(self, chiet_khau):
+        pass
+        # # Tạo dữ liệu trong bảng chiết khấu
+        # self.bsd_ps_ck_ids.create({
+        #     'bsd_loai_ck': 'mua_si',
+        #     'bsd_chiet_khau_id': chiet_khau.id,
+        #     'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
+        #     'bsd_bao_gia_id': self.bsd_bao_gia_id.id,
+        #     'bsd_hd_ban_id': self.id,
+        # })
+        # Tính lại tiền các đợt chưa thanh toán
+        # dot_da_tt = self.bsd_ltt_ids.filtered(lambda x: x.bsd_gd_tt == 'dat_coc' or x.bsd_thanh_toan in ['da_tt', 'dang_tt'])
+        # _logger.debug(dot_da_tt)
+        # tong_tien_phai_tt = self.bsd_tong_gia - sum(dot_da_tt.mapped('bsd_tien_dot_tt'))
+        # _logger.debug(tong_tien_phai_tt)
+        # dot_phai_tt = self.bsd_ltt_ids.filtered(lambda x: x.bsd_thanh_toan == 'chua_tt' and x.bsd_gd_tt == 'hop_dong')
+        # _logger.debug(dot_phai_tt)
+        # tl_con_tt = sum(dot_phai_tt.mapped('bsd_cs_tt_ct_id').mapped('bsd_tl_tt'))
+        # _logger.debug(tl_con_tt)
+        # for dot in dot_phai_tt:
+        #     dot.bsd_tien_dot_tt = tong_tien_phai_tt * dot.bsd_cs_tt_ct_id.bsd_tl_tt / tl_con_tt
+        #     _logger.debug(dot.bsd_tien_dot_tt)
+        # so_dot_tt = len(dot_phai_tt)
+        # tien_dot = (tong_tien_phai_tt / so_dot_tt) % 1000
+        # tien_dot_cuoi = tong_tien_phai_tt - (tien_dot * (so_dot_tt -1))
+        # list_tien = []
+        # for t in range(0, so_dot_tt - 1):
+        #     list_tien.append(tien_dot)
+        # list_tien.append(tien_dot_cuoi)
+        # _logger.debug(list_tien)
+        # for i in range(0, so_dot_tt):
+        #     dot_phai_tt[i].bsd_tien_dot_tt = dot_phai_tt[i].bsd_tien_dot_tt - list_tien[i]
+        #     _logger.debug(dot_phai_tt[i].bsd_tien_dot_tt)
+        # raise UserError("lỗi")
+
     # Cập nhật đồng sở hữu từ báo giá
     @api.onchange('bsd_dat_coc_id')
     def _onchange_dat_coc(self):
