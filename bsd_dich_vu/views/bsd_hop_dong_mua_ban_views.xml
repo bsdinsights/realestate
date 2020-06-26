@@ -184,6 +184,8 @@
                                     <field name="bsd_tien_dot_tt" sum="Tổng tiền thanh toán"/>
                                     <field name="bsd_tinh_pql"/>
                                     <field name="bsd_tinh_pbt"/>
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="currency_id" invisible="1"/>
                                 </tree>
                             </field>
                         </page>

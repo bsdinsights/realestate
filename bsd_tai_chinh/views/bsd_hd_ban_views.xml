@@ -6,8 +6,11 @@
         <field name="inherit_id" ref="bsd_dich_vu.bsd_hd_ban_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='bsd_ltt_ids']" position="before">
-                <label for="bsd_tl_tt_hd"/>
-                <field name="bsd_tl_tt_hd"/>
+                <div class="o_row no-gutters d-flex">
+                    <label for="bsd_tl_tt_hd"/>
+                    <field name="bsd_tl_tt_hd" class="mr-1"/>
+                    <span>%</span>
+                </div>
             </xpath>
         </field>
     </record>

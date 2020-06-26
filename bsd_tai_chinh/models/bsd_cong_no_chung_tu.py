@@ -81,6 +81,8 @@ class BsdCongNoCT(models.Model):
                 # Kiểm tra điều kiện đợt tt có giai đoạn hợp đồng
                 if self.bsd_dot_tt_id.bsd_hd_ban_id and self.bsd_dot_tt_id.bsd_gd_tt == 'hop_dong':
                     self.bsd_dot_tt_id.tao_ck_ttth()
+                if self.bsd_dot_tt_id.bsd_hd_ban_id:
+                    self.bsd_dot_tt_id.tao_ck_ttn()
         elif self.bsd_loai == 'pt_ht':
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_phieu_thu_id', '=', self.bsd_phieu_thu_id.id)])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))

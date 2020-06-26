@@ -44,7 +44,7 @@ class BsdBaoGiaLTT(models.Model):
         if not dot_mb.bsd_ck_ttth_id:
             return
         if not self.bsd_ngay_hh_tt:
-            raise UserError("Chưa có hạn thanh toán")
+            return
         # Kiểm tra ngày thanh toán có trước ngày hết hạn hay không
         if self.bsd_ngay_tt.date() >= self.bsd_ngay_hh_tt:
             return
@@ -52,7 +52,6 @@ class BsdBaoGiaLTT(models.Model):
         ck_ttth = dot_mb.bsd_ck_ttth_id.bsd_ct_ids.filtered(lambda c: c.bsd_tu_ngay < self.bsd_ngay_tt.date() < c.bsd_den_ngay)
         if not ck_ttth:
             return
-
         if len(ck_ttth) > 1:
             raise UserError("Tìm thấy nhiều hơn 1 chiết khấu. Vui lòng kiểm tra lại")
         so_ngay_th = (self.bsd_ngay_hh_tt - self.bsd_ngay_tt.date()).days
@@ -76,5 +75,42 @@ class BsdBaoGiaLTT(models.Model):
             'bsd_tien_dot_tt': self.bsd_tien_dot_tt,
             'bsd_tl_ck': ck_ttth.bsd_chiet_khau_id.bsd_tl_ck,
             'bsd_tien': ck_ttth.bsd_chiet_khau_id.bsd_tien_ck,
+            'bsd_tien_ck': tien_ck,
+        })
+
+    # DV.01.09 Theo dõi chiết khấu thanh toán nhanh
+    def tao_ck_ttn(self):
+        # Lấy thông tin đợt mở bán của hợp đồng
+        dot_mb = self.bsd_hd_ban_id.bsd_dot_mb_id
+        # Kiểm tra hợp đồng có đọt mở bán có áp dụng chiết khấu nhanh hay không
+        if not dot_mb.bsd_ck_ttn_id:
+            return
+        # Lấy Item chiết khấu thanh toán nhanh
+        ck_ttn = dot_mb.bsd_ck_ttn_id.bsd_ct_ids.\
+            filtered(lambda c: c.bsd_tu_ngay < self.bsd_ngay_tt.date() < c.bsd_den_ngay)
+        if not ck_ttn:
+            return
+        if len(ck_ttn) > 1:
+            raise UserError("Tìm thấy nhiều hơn 1 chiết khấu. Vui lòng kiểm tra lại")
+        # Kiểm tra tỷ lệ thanh toán của hợp đồng
+        if self.bsd_hd_ban_id.bsd_tl_tt_hd < ck_ttn.bsd_chiet_khau_id.bsd_tl_tt:
+            return
+        if ck_ttn.bsd_chiet_khau_id.bsd_cach_tinh == 'tien':
+            tien_ck = ck_ttn.bsd_chiet_khau_id.bsd_tien_ck
+        else:
+            tien_ck = ck_ttn.bsd_chiet_khau_id.bsd_tl_ck / 100 * self.bsd_hd_ban_id.bsd_gia_truoc_thue
+        # Tạo Giao dich chiết khấu
+        _logger.debug(self.bsd_ngay_tt.date())
+        _logger.debug(ck_ttn)
+        _logger.debug(ck_ttn.bsd_chiet_khau_id.bsd_ma_ck)
+        self.env['bsd.ps_gd_ck'].create({
+            'bsd_ma_ck': ck_ttn.bsd_chiet_khau_id.bsd_ma_ck,
+            'bsd_ten_ck': ck_ttn.bsd_chiet_khau_id.bsd_ten_ck,
+            'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
+            'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
+            'bsd_unit_id': self.bsd_hd_ban_id.bsd_unit_id.id,
+            'bsd_loai_ck': 'ttn',
+            'bsd_tl_ck': ck_ttn.bsd_chiet_khau_id.bsd_tl_ck,
+            'bsd_tien': ck_ttn.bsd_chiet_khau_id.bsd_tien_ck,
             'bsd_tien_ck': tien_ck,
         })
