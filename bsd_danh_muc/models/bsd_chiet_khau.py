@@ -112,8 +112,10 @@ class BsdChietKhau(models.Model):
         if self.bsd_loai_ck == 'mua_si':
             mua_si = self.env['bsd.chiet_khau'].search([('bsd_loai_ck', '=', 'mua_si'),
                                                         ('id', '!=', self.id)])
-            if mua_si:
-                khoang_time = [(t.bsd_tu_ngay, t.bsd_den_ngay) for t in mua_si.sorted('bsd_tu_ngay')]
+            mua_si_time = mua_si.filtered(lambda m: not (m.bsd_sl_den < self.bsd_sl_tu < self.bsd_sl_den
+                                                         or self.bsd_sl_tu < self.bsd_sl_den < m.bsd_sl_tu))
+            if mua_si_time:
+                khoang_time = [(t.bsd_tu_ngay, t.bsd_den_ngay) for t in mua_si_time.sorted('bsd_tu_ngay')]
                 flag_time = True
                 if self.bsd_tu_ngay < self.bsd_den_ngay < khoang_time[0][0]:
                     flag_time = False
@@ -129,8 +131,10 @@ class BsdChietKhau(models.Model):
                             flag_time = False
                 if flag_time:
                     raise UserError("Đã tồn tại chiết khấu này. Vui lòng kiểm tra lại")
-
-                so_luong = [(t.bsd_sl_tu, t.bsd_sl_den) for t in mua_si.sorted('bsd_sl_tu')]
+            mua_si_sl = mua_si.filtered(lambda m: not (m.bsd_den_ngay < self.bsd_tu_ngay < self.bsd_den_ngay
+                                                       or self.bsd_tu_ngay < self.bsd_den_ngay < m.bsd_tu_ngay))
+            if mua_si_sl:
+                so_luong = [(t.bsd_sl_tu, t.bsd_sl_den) for t in mua_si_sl.sorted('bsd_sl_tu')]
                 flag_sl = True
                 if self.bsd_sl_tu < self.bsd_sl_den < so_luong[0][0]:
                     flag_sl = False
