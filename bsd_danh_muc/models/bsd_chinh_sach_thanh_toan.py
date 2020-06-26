@@ -42,9 +42,9 @@ class BsdChinhSachThanhToan(models.Model):
     bsd_tb_tt = fields.Integer(string="Thông báo thanh toán",
                                help="Số ngày (trước khi đến hạn thanh toán) để gửi thông tin thanh toán")
 
-    bsd_tl_hd = fields.Integer(string="Thanh lý hợp đồng",
+    bsd_tl_hd = fields.Integer(string="Số ngày trễ",
                                help="Tổng số ngày trễ tối đa để thanh lý hợp đồng")
-    bsd_qh_tt = fields.Integer(string="Quá hạn thanh toán", help="Số ngày trễ tối đa của mỗi đợt thanh toán")
+    bsd_qh_tt = fields.Integer(string="Số ngày trễ/ Đợt", help="Số ngày trễ tối đa của mỗi đợt thanh toán")
     bsd_canh_bao1 = fields.Integer(string="Cảnh báo 1",
                                    help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo quá hạn thanh toán lần 1")
     bsd_canh_bao2 = fields.Integer(string="Cảnh báo 2",

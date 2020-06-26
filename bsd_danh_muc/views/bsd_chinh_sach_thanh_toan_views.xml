@@ -19,10 +19,22 @@
                                 </group>
                                 <group>
                                     <field name="bsd_ngay_tinh"/>
-                                    <field name="bsd_dk_hd"/>
+                                    <label for="bsd_dk_hd"/>
+                                    <div class="o_row d-flex no-gutters">
+                                        <field name="bsd_dk_hd" class="mr-1"/>
+                                        <span>%</span>
+                                    </div>
                                     <field name="bsd_lai_phat_tt_id" options="{'no_create':true}"/>
-                                    <field name="bsd_phat_thd"/>
-                                    <field name="bsd_phat_shd"/>
+                                    <label for="bsd_phat_thd"/>
+                                    <div class="o_row d-flex no-gutters">
+                                        <field name="bsd_phat_thd" class="mr-1"/>
+                                        <span>%</span>
+                                    </div>
+                                    <label for="bsd_phat_thd"/>
+                                    <div class="o_row d-flex no-gutters">
+                                        <field name="bsd_phat_thd" class="mr-1"/>
+                                        <span>%</span>
+                                    </div>
                                     <field name="state"/>
                                 </group>
                             </group >
