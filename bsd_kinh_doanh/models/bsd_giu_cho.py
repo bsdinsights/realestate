@@ -92,7 +92,7 @@ class BsdGiuCho(models.Model):
     bsd_het_han_gc = fields.Boolean(string="Hết hạn giữ chỗ", readonly=True,
                                     help="""Thông tin ghi nhận giữ chỗ bị hết hiệu lực sau khi đã thanh toán giữ chỗ""")
 
-    bsd_kh_moi_id = fields.Many2one('res.partner', string="KH chuyển nhượng", help="Người được chuyển nhượng giữ chỗ",
+    bsd_kh_moi_id = fields.Many2one('res.partner', string="KH chuyển tên", help="Người được chuyển tên giữ chỗ",
                                     tracking=2, readonly=True)
 
     bsd_tien_gctc = fields.Monetary(string="Tiền GCTC", help="Tiền giữ chỗ thiện chí đã thanh toán",

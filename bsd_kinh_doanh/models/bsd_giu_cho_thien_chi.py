@@ -75,7 +75,7 @@ class BsdGiuChoThienChi(models.Model):
     bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ",
                                   readonly=True)
 
-    bsd_kh_moi_id = fields.Many2one('res.partner', string="KH chuyển nhượng", help="Người được chuyển nhượng giữ chỗ",
+    bsd_kh_moi_id = fields.Many2one('res.partner', string="KH chuyển tên", help="Người được chuyển tên giữ chỗ",
                                     tracking=2, readonly=True)
     bsd_huy_gc_id = fields.Many2one('bsd.huy_gc', string="Hủy giữ chỗ", help="Mã phiếu hủy giữ chỗ thiện chí", readonly=1)
 

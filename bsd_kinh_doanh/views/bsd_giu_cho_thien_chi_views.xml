@@ -64,7 +64,7 @@
                             <field name="bsd_ngay_huy_rc"/>
                         </group>
                     </group>
-                    <group string="CHUYỂN NHƯỢNG">
+                    <group string="CHUYỂN TÊN">
                         <group>
                             <field name="bsd_kh_moi_id"/>
                         </group>
