@@ -74,7 +74,6 @@
                                     <field name="bsd_bang_gia_id"/>
                                     <field name="bsd_tien_gc"/>
                                     <field name="bsd_tien_dc"/>
-                                    <field name="bsd_pt_tt_id" options="{'no_create':true}"/>
                                 </group>
                             </group>
                             <group string="MÔI GIỚI">

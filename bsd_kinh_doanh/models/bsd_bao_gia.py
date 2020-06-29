@@ -129,10 +129,6 @@ class BsdBaoGia(models.Model):
     bsd_dsh_ids = fields.Many2many('res.partner', string="Đồng sở hữu",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_pt_tt_id = fields.Many2one('bsd.pt_tt', string="Phương thức thanh toán", help="Phương thức thanh toán",
-                                   required=True,
-                                   readonly=True,
-                                   states={'nhap': [('readonly', False)]})
     bsd_so_dat_coc = fields.Integer(string="# Đặt cọc", compute='_compute_dat_coc')
 
     bsd_km_ids = fields.One2many('bsd.bao_gia_km', 'bsd_bao_gia_id', string="Danh sách khuyến mãi",
