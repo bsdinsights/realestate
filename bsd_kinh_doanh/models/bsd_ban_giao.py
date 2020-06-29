@@ -22,6 +22,23 @@ class BsdBanGiao(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
+    @api.onchange('bsd_bao_gia_id')
+    def _onchange_dk_bg(self):
+        res = {}
+        list_id = []
+        if self.bsd_bao_gia_id.bsd_dot_mb_id:
+            # Lấy các điều kiện bàn giao trong đợt mở bán
+            dk_bg = self.bsd_bao_gia_id.bsd_dot_mb_id.bsd_dkbg_ids.mapped('bsd_dk_bg_id')
+            # Lọc các điều kiện bàn giao có nhóm sản phẩm trùng với unit trong bảng tính giá
+            list_id = dk_bg.filtered(
+                lambda d: d.bsd_loai_sp_id == self.bsd_bao_gia_id.bsd_unit_id.bsd_loai_sp_id).ids
+        res.update({
+            'domain': {
+                'bsd_dk_bg_id': [('id', 'in', list_id)]
+            }
+        })
+        return res
+
     @api.constrains('bsd_tien_bg')
     def _check_tien_bg(self):
         for record in self:

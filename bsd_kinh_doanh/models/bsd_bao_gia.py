@@ -104,8 +104,7 @@ class BsdBaoGia(models.Model):
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
 
-    state = fields.Selection([('nhap', 'Nháp'), ('cho_duyet', 'Chờ duyệt'),
-                              ('da_duyet', 'Đã duyệt'), ('dat_coc', 'Đặt cọc'),
+    state = fields.Selection([('nhap', 'Nháp'), ('da_duyet', 'Xác nhận'), ('dat_coc', 'Đặt cọc'),
                               ('huy', 'Hủy')], string="Trạng thái", default="nhap", help="Trạng thái", required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
@@ -119,11 +118,11 @@ class BsdBaoGia(models.Model):
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
 
-    bsd_ngay_in_bg = fields.Datetime(string="Ngày in báo giá", help="Ngày in báo giá", readonly=True)
-    bsd_ngay_hh_kbg = fields.Datetime(string="Hết hạn ký BG", help="Ngày hết hiệu lực ký báo giá", readonly=True)
-    bsd_ngay_ky_bg = fields.Datetime(string="Ngày ký báo giá", help="Ngày ký báo giá", readonly=True)
+    bsd_ngay_in_bg = fields.Datetime(string="Ngày in BTG", help="Ngày in báo giá", readonly=True)
+    bsd_ngay_hh_kbg = fields.Datetime(string="Hết hạn ký BTG", help="Ngày hết hiệu lực ký báo giá", readonly=True)
+    bsd_ngay_ky_bg = fields.Datetime(string="Ngày ký BTG", help="Ngày ký báo giá", readonly=True)
 
-    bsd_ngay_hl_bg = fields.Datetime(string="Hiệu lực báo giá", help="Hiệu lực bảng tính giá",
+    bsd_ngay_hl_bg = fields.Datetime(string="Hiệu lực BTG", help="Hiệu lực bảng tính giá",
                                      compute="_compute_ngay_hl", store=True)
 
     bsd_dsh_ids = fields.Many2many('res.partner', string="Đồng sở hữu",
