@@ -96,14 +96,17 @@ class BsdProject(models.Model):
     bsd_hh_ql = fields.Monetary(string="Quản lý", help="Tiền hoa hồng được hương của quản lý", required=True)
     bsd_hh_dv = fields.Monetary(string="Dịch vụ", required=True,
                                 help="Tiền hoa hồng được hương của nhân viên dịch vụ khách hàng")
-    state = fields.Selection([('active', 'Đang sử dụng'),
-                              ('inactive', 'Không sử dụng')],
-                             string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
+    state = fields.Selection([('nhap', 'Nháp'),
+                              ('phat_hanh', 'Phát hành')],
+                             string="Trạng thái", default='nhap', required=True, tracking=1, help="Trạng thái")
     bsd_tk_ng_ids = fields.One2many('bsd.da_tknh', 'bsd_du_an_id', string="Tài khoản ngân hàng")
-    bsd_ngan_hang_ids = fields.One2many('bsd.da_nh', 'bsd_du_an_id', string="Ngân hàng")
+    bsd_nh_tt_ids = fields.One2many('bsd.da_nh', 'bsd_du_an_id', string="Ngân hàng tài trợ")
+    bsd_nh_cv_ids = fields.One2many('bsd.da_nh_vay', 'bsd_du_an_id', string="Ngân hàng cho vay")
 
     bsd_unit_ids = fields.One2many('product.template', 'bsd_du_an_id', string="Danh sách căn hộ", readonly=True)
     bsd_sl_unit = fields.Integer(string="# Căn hộ", compute="_compute_sl_unit")
+
+    bsd_tong_dt = fields.Float(string="Tổng diện tích", help="Tổng diện tích dự án", digits=(14,0))
 
     @api.constrains('bsd_tl_dc')
     def _check_ty_le_coc(self):
@@ -159,9 +162,22 @@ class BsdProject(models.Model):
         return action
 
 
-class BsdDuanNganHang(models.Model):
+class BsdDuanNganHangTaiTro(models.Model):
     _name = 'bsd.da_nh'
     _description = "Bảng Ngân hàng của dự án"
+    _rec_name = "bsd_ngan_hang_id"
+
+    bsd_ngan_hang_id = fields.Many2one('res.bank', string="Ngân hàng", required=True)
+    bsd_ma_nh = fields.Char(related="bsd_ngan_hang_id.bic", string="Mã")
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án")
+    state = fields.Selection([('active', 'Đang sử dụng'),
+                              ('inactive', 'Ngưng sử dụng')],
+                             string="Trạng thái", default='active')
+
+
+class BsdDuanNganHangChoVay(models.Model):
+    _name = 'bsd.da_nh_vay'
+    _description = "Bảng Ngân hàng cho vay của dự án"
     _rec_name = "bsd_ngan_hang_id"
 
     bsd_ngan_hang_id = fields.Many2one('res.bank', string="Ngân hàng", required=True)
