@@ -415,7 +415,10 @@ class BsdDotMoBanKhuyenMai(models.Model):
     bsd_ma_km = fields.Char(related='bsd_khuyen_mai_id.bsd_ma_km')
     bsd_tu_ngay = fields.Date(related='bsd_khuyen_mai_id.bsd_tu_ngay')
     bsd_den_ngay = fields.Date(related='bsd_khuyen_mai_id.bsd_den_ngay')
+    bsd_gia_tri = fields.Monetary(related='bsd_khuyen_mai_id.bsd_gia_tri')
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", required=True)
+    company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
+    currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
 
 class BsdDotMoBanDKBG(models.Model):
