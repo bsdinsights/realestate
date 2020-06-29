@@ -5,9 +5,30 @@
         <field name="model">bsd.ps_gd_ck</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button string="Hoàn tiền"
+                            name="action_hoan_tien"
+                            type="object"
+                            confirm="Bạn có muốn tạo phiếu Hoàn tiền cho giao dịch này không?"
+                            attrs="{'invisible':['|',('state','!=','xac_nhan'),('bsd_loai_ck','not in',['ttth','ttn'])]}"
+                            class="oe_highlight"/>
+                    <button string="Điều chỉnh giảm"
+                            name="action_dc_giam"
+                            type="object"
+                            confirm="Bạn có muốn tạo phiếu Điều chỉnh giảm công nợ cho giao dịch này không?"
+                            attrs="{'invisible':['|',('state','!=','xac_nhan'),('bsd_loai_ck','not in',['ttth','ttn'])]}"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"
+                            confirm="Bạn có muốn Hủy giao dịch chiết khấu này không?"
+                            states="xac_nhan"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
+                            <field name="bsd_ma_ht"/>
                             <field name="bsd_ma_ck"/>
                             <field name="bsd_ten_ck"/>
                             <field name="bsd_dat_coc_id"/>

@@ -43,7 +43,7 @@ class BsdHoanTien(models.Model):
 
     @api.model
     def _method_choice(self):
-        choices = [('phieu_thu', 'Phiếu thu')]
+        choices = [('phieu_thu', 'Phiếu thu'), ('gd_ck', 'Giao dịch chiết khấu')]
         if self.env['res.users'].has_group('base.group_system'):
             choices += [('dc_giam', 'Điều chỉnh giảm')]
         return choices
@@ -51,10 +51,12 @@ class BsdHoanTien(models.Model):
     bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thu", help="Phiếu thu",
                                        readonly=True,
                                        states={'nhap': [('readonly', False)]})
-
+    bsd_ps_gd_ck_id = fields.Many2one('bsd.ps_gd_ck', string="Giao dịch chiết khấu", help="Giao dịch chiết khấu",
+                                      readonly=True,
+                                      states={'nhap': [('readonly', False)]})
     bsd_giam_no_id = fields.Many2one('bsd.giam_no', string="Điều chỉnh giảm", help="Điều chỉnh giảm",)
-    bsd_tien_con_lai = fields.Monetary(string="Tiền còn lại", help="Tiền còn lại",
-                                       compute='_compute_tien_cl', store=True)
+    # bsd_tien_con_lai = fields.Monetary(string="Tiền còn lại", help="Tiền còn lại",
+    #                                    compute='_compute_tien_cl', store=True)
 
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('da_gs', 'Đã ghi sổ'), ('huy', 'Hủy')], string="Trạng thái", tracking=1,
@@ -62,13 +64,15 @@ class BsdHoanTien(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
-    @api.depends('bsd_giam_no_id', 'bsd_phieu_thu_id', 'bsd_loai')
-    def _compute_tien_cl(self):
-        for each in self:
-            if each.bsd_loai == 'phieu_thu':
-                each.bsd_tien_con_lai = each.bsd_phieu_thu_id.bsd_tien_con_lai
-            if each.bsd_loai == 'dc_giam':
-                each.bsd_tien_con_lai = each.bsd_giam_no_id.bsd_tien_con_lai
+    # @api.depends('bsd_giam_no_id', 'bsd_phieu_thu_id', 'bsd_loai', 'bsd_ps_gd_ck_id')
+    # def _compute_tien_cl(self):
+    #     for each in self:
+    #         if each.bsd_loai == 'phieu_thu':
+    #             each.bsd_tien_con_lai = each.bsd_phieu_thu_id.bsd_tien_con_lai
+    #         if each.bsd_loai == 'dc_giam':
+    #             each.bsd_tien_con_lai = each.bsd_giam_no_id.bsd_tien_con_lai
+    #         if each.bsd_loai == 'gd_ck':
+    #             each.bsd_tien_con_lai = each.bsd_ps_gd_ck_id.bsd_tien_ck
 
     @api.constrains('bsd_tien')
     def _constrains_tien(self):

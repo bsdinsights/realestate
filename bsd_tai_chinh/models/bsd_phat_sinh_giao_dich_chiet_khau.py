@@ -9,6 +9,12 @@ class BsdPhatSinhGiaoDichChietKhau(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Ghi nhận phát sinh chiết khấu giao dịch'
 
+    bsd_ma_ht = fields.Char(string="Mã hệ thống", required=True, help="Mã hệ thống")
+    _sql_constraints = [
+        ('bsd_ma_ht_unique', 'unique (bsd_ma_ht)',
+         'Mã hệ thống đã tồn tại !'),
+    ]
+
     bsd_ma_ck = fields.Char(string="Mã chiết khấu", required=True, help="Mã chiết khấu")
     _sql_constraints = [
         ('bsd_ma_ck_unique', 'check(1=1)',
@@ -34,3 +40,53 @@ class BsdPhatSinhGiaoDichChietKhau(models.Model):
     bsd_tien_ck = fields.Monetary(string="Tiền chiết khấu", help="Tiền chiết khấu")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+    state = fields.Selection([('xac_nhan', 'Xác nhận'),
+                              ('hoan_tien', 'Hoàn tiền'),
+                              ('dc_giam', 'Điều chỉnh giảm'),
+                              ('huy', 'Hủy')], string="Trạng thái",
+                             default='xac_nhan', tracking=1, help="Trạng thái", required=True)
+
+    # TC.15.01 Hoàn tiền chiết khấu
+    def action_hoan_tien(self):
+        loai_ck = ""
+        if self.bsd_loai_ck == 'ttth':
+            loai_ck = "thanh toán trước hạn"
+        elif self.bsd_loai_ck == 'ttn':
+            loai_ck = "thanh toán nhanh"
+        self.env['bsd.hoan_tien'].create({
+            'bsd_ngay_ct': fields.Datetime.now(),
+            'bsd_khach_hang_id': self.bsd_hd_ban_id.bsd_khach_hang_id.id,
+            'bsd_du_an_id': self.bsd_hd_ban_id.bsd_du_an_id.id,
+            'bsd_loai': 'gd_ck',
+            'bsd_ps_gd_ck_id': self.id,
+            'bsd_tien': self.bsd_tien_ck,
+            'bsd_dien_giai': "Chiết khấu" + " " + loai_ck
+        })
+        self.write({
+            'state': 'hoan_tien'
+        })
+
+    # TC.15.02 Điều chỉnh giảm công nợ chiết khấu
+    def action_dc_giam(self):
+        loai_ck = ""
+        if self.bsd_loai_ck == 'ttth':
+            loai_ck = "thanh toán trước hạn"
+        elif self.bsd_loai_ck == 'ttn':
+            loai_ck = "thanh toán nhanh"
+        self.env['bsd.giam_no'].create({
+            'bsd_ngay_ct': fields.Datetime.now(),
+            'bsd_khach_hang_id': self.bsd_hd_ban_id.bsd_khach_hang_id.id,
+            'bsd_du_an_id': self.bsd_hd_ban_id.bsd_du_an_id.id,
+            'bsd_loai_dc': 'gd_ck',
+            'bsd_tien': self.bsd_tien_ck,
+            'bsd_dien_giai': "Chiết khấu" + " " + loai_ck + " " + self.bsd_ma_ht
+        })
+        self.write({
+            'state': 'dc_giam'
+        })
+
+    # TC.15.03 Hủy chiết khấu
+    def action_huy(self):
+        self.write({
+            'state': 'huy'
+        })
