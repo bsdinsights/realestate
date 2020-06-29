@@ -77,6 +77,7 @@ class BsdChietKhau(models.Model):
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
                               ('duyet', 'Duyệt'),
+                              ('het_han', 'Hết hạn'),
                               ('huy', 'Hủy')],
                              string="Trạng thái", default='nhap', readonly=1, required=True, tracking=1, help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)

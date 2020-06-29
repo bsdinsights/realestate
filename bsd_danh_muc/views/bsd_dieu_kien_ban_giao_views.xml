@@ -18,7 +18,7 @@
                         <group>
                             <field name="bsd_loai_bg"/>
                             <field name="bsd_dk_tt"/>
-                            <field name="bsd_loai_sp_id"/>
+                            <field name="bsd_loai_sp_id" domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"/>
                             <field name="bsd_theo_sp"/>
                             <field name="bsd_unit_id" attrs="{'required':[('bsd_theo_sp', '=', '1')],
                                                                 'readonly':[('bsd_theo_sp', '=', '0')]}"/>

@@ -19,12 +19,11 @@ class BsdDkbg(models.Model):
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu hiệu lực của điều kiện bàn giao", required=True)
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc hiệu lực của điều kiện bàn giao", required=True)
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
-    bsd_loai_bg = fields.Selection([('hoan_thien', 'Bàn giao hoàn thiện'),
-                                    ('tho', 'Bàn giao thô'),
-                                    ('co_ban', 'Bàn giao cơ bản'),
-                                    ('noi_that', 'Bàn giao có nội thất'),
-                                    ('khac', 'Bàn giao khác'),
-                                    ('tuy_chon', 'Bàn giao tùy chọn')], string="Loại bàn giao",
+    bsd_loai_bg = fields.Selection([('tho', 'Bàn giao thô'),
+                                    ('co_ban', 'Bàn giao hoàn thiện cơ bản'),
+                                    ('hoan_thien', 'Bàn giao hoàn thiện'),
+                                    ('noi_that', 'Bàn giao hoàn thiện mặt ngoài và thô bên trong'),
+                                    ('bo_sung', 'Bàn giao bổ sung')], string="Loại bàn giao",
                                    help="Tình trạng của căn hộ khi bàn giao")
     bsd_dk_tt = fields.Selection([('m2', 'Giá/m2'),
                                   ('tien', 'Tiền'),
