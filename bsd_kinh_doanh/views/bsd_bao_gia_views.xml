@@ -12,19 +12,14 @@
                             attrs="{'invisible': ['|',('id', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
-                    <button string="Duyệt"
-                            name="action_duyet"
-                            states="cho_duyet"
-                            type="object"
-                            class="oe_highlight"/>
                     <button string="In bảng giá"
                             name="action_in_bg"
-                            states="da_duyet"
+                            states="xac_nhan"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Ký bảng giá"
                             name="action_ky_bg"
-                            states="da_duyet"
+                            states="xac_nhan"
                             attrs="{'invisible':['|',('bsd_ngay_in_bg', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
@@ -35,14 +30,14 @@
                             type="object"
                             class="oe_highlight"/>
                     <button string="Hủy"
-                            states="cho_duyet,da_duyet,dat_coc"
+                            states="xac_nhan"
                             confirm="Bạn có chắc muốn Hủy báo giá không?"
                             name="action_huy"
                             type="object"/>
                     <button string="Đặt cọc"
                             type="object"
                             name="action_tao_dat_coc"
-                            attrs="{'invisible': ['|',('state','not in',['da_duyet']),('bsd_ngay_ky_bg','=', False)]}"/>
+                            attrs="{'invisible': ['|',('state','not in',['xac_nhan']),('bsd_ngay_ky_bg','=', False)]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>

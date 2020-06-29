@@ -104,7 +104,7 @@ class BsdBaoGia(models.Model):
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
 
-    state = fields.Selection([('nhap', 'Nháp'), ('da_duyet', 'Xác nhận'), ('dat_coc', 'Đặt cọc'),
+    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'), ('da_ky', 'Đã ký'),
                               ('huy', 'Hủy')], string="Trạng thái", default="nhap", help="Trạng thái", required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
@@ -231,10 +231,10 @@ class BsdBaoGia(models.Model):
             })
 
     # KD.09.04 Duyệt báo giá
-    def action_duyet(self):
-        self.write({
-            'state': 'da_duyet',
-        })
+    # def action_duyet(self):
+    #     self.write({
+    #         'state': 'da_duyet',
+    #     })
 
     # KD.09.05 In báo giá
     def action_in_bg(self):

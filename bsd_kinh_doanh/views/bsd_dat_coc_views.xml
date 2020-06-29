@@ -51,7 +51,7 @@
                                     <field name="bsd_bao_gia_id"
                                            options="{'no_create':true}"
                                            domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id]),
-                                                    ('state', '=','da_duyet'),
+                                                    ('state', '=','da_ky'),
                                                     ('bsd_ngay_ky_bg','!=',False)]"/>
                                     <field name="bsd_giu_cho_id"/>
                                     <field name="bsd_du_an_id"/>
