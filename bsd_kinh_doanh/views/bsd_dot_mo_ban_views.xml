@@ -127,6 +127,7 @@
                                     <field name="bsd_dk_bg_id" options="{'no_create':true}"/>
                                     <field name="bsd_ma_dkbg"/>
                                     <field name="bsd_loai_bg"/>
+                                    <field name="bsd_loai_sp_id"/>
                                     <field name="bsd_tien"/>
                                     <field name="bsd_ty_le"/>
                                     <field name="bsd_gia_m2"/>

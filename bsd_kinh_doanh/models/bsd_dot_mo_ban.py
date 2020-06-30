@@ -430,6 +430,7 @@ class BsdDotMoBanDKBG(models.Model):
     bsd_dk_bg_id = fields.Many2one('bsd.dk_bg', string="Điều kiện bàn giao")
     bsd_ma_dkbg = fields.Char(related="bsd_dk_bg_id.bsd_ma_dkbg")
     bsd_loai_bg = fields.Selection(related="bsd_dk_bg_id.bsd_loai_bg")
+    bsd_loai_sp_id = fields.Many2one(related="bsd_dk_bg_id.bsd_loai_sp_id")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     bsd_tien = fields.Monetary(related="bsd_dk_bg_id.bsd_tien")
