@@ -119,11 +119,9 @@ class BsdDatCoc(models.Model):
 
     bsd_tien_ttd = fields.Monetary(string="Đã thanh toán/ đợt", help="Tiền đã thanh toán theo đợt thanh toán",)
     bsd_km_ids = fields.One2many('bsd.bao_gia_km', 'bsd_dat_coc_id', string="Danh sách khuyến mãi",
-                                 help="Danh sách khuyến mãi", readonly=True,)
-    bsd_ps_ck_ids = fields.One2many('bsd.ps_ck', 'bsd_dat_coc_id', string="Phát sinh chiết khấu",
-                                    readonly=True)
-    bsd_ck_db_ids = fields.One2many('bsd.ck_db', 'bsd_dat_coc_id', string="Danh sách chiết khấu đặt biệt",
-                                    readonly=True)
+                                 help="Danh sách khuyến mãi")
+    bsd_ps_ck_ids = fields.One2many('bsd.ps_ck', 'bsd_dat_coc_id', string="Phát sinh chiết khấu")
+    bsd_ck_db_ids = fields.One2many('bsd.ck_db', 'bsd_dat_coc_id', string="Danh sách chiết khấu đặt biệt")
 
     @api.model
     def create(self, vals):
