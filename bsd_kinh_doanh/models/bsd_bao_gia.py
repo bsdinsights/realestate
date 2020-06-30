@@ -451,3 +451,20 @@ class BsdBaoGiaKhuyenMai(models.Model):
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+
+    @api.onchange('bsd_dot_mb_id')
+    def _onchange_dot_mb(self):
+        res = {}
+        list_id = []
+        if self.bsd_dot_mb_id:
+            # Lấy các điều kiện bàn giao trong đợt mở bán
+            khuyen_mai = self.bsd_dot_mb_id.bsd_km_ids.mapped('bsd_khuyen_mai_id')
+            # Lọc các điều kiện bàn giao có nhóm sản phẩm trùng với unit trong bảng tính giá
+            list_id = khuyen_mai.filtered(
+                lambda d: d.state == 'duyet' and d.bsd_loai == False).ids
+        res.update({
+            'domain': {
+                'bsd_khuyen_mai_id': [('id', 'in', list_id)]
+            }
+        })
+        return res

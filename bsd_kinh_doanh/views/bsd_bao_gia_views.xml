@@ -180,7 +180,6 @@
                             <field name="bsd_km_ids" nolabel="1" context="{'default_bsd_dot_mb_id':bsd_dot_mb_id}">
                                 <tree editable="bottom">
                                     <field name="bsd_khuyen_mai_id"
-                                           domain="[('bsd_dot_mb_id', '=', bsd_dot_mb_id),('state','=','duyet'),('bsd_loai','=',False)]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_ma_km"/>
                                     <field name="bsd_tu_ngay"/>

@@ -39,12 +39,6 @@ class BsdBanGiao(models.Model):
         })
         return res
 
-    @api.constrains('bsd_tien_bg')
-    def _check_tien_bg(self):
-        for record in self:
-            if record.bsd_tien_bg <= 0:
-                raise ValidationError("Kiểm tra lại trường tiền bàn giao")
-
     @api.depends('bsd_dk_tt', 'bsd_gia_m2', 'bsd_tien', 'bsd_ty_le')
     def _compute_tien_bg(self):
         for each in self:

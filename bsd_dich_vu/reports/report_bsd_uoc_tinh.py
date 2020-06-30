@@ -17,6 +17,14 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
         hd_ban = self.env['bsd.hd_ban'].browse(data['ids'])
         # lấy thông tin khách khách hàng
         khach_hang = hd_ban.bsd_khach_hang_id
+        # lấy đợt mở bán
+        dot_mb = hd_ban.bsd_dot_mb_id
+        if dot_mb.bsd_ck_ttth_id:
+            ttth = dot_mb.bsd_ck_ttth_id.bsd_ct_ids.\
+                filtered(lambda c: c.bsd_tu_ngay < data['bsd_ngay_ut'] < c.bsd_den_ngay)
+        if dot_mb.bsd_ck_ttn_id:
+            ck_ttn = dot_mb.bsd_ck_ttn_id.bsd_ct_ids.\
+                filtered(lambda c: c.bsd_tu_ngay < data['bsd_ngay_ut'] < c.bsd_den_ngay)
         res['khach_hang'] = {
             'name': khach_hang.name,
             'cmnd': khach_hang.bsd_cmnd,
@@ -26,13 +34,9 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
             'so_can_ho': hd_ban.bsd_unit_id.bsd_ten_unit,
             'hop_dong': hd_ban.bsd_unit_id.bsd_ma_unit + " - " + hd_ban.bsd_ma_hd_ban,
         }
-        dot_mb = hd_ban.bsd_dot_mb_id
-        if dot_mb.bsd_ck_ttth_id:
-            ttth = dot_mb.bsd_ck_ttth_id.bsd_ct_ids.\
-                filtered(lambda c: c.bsd_tu_ngay < data['bsd_ngay_ut'] < c.bsd_den_ngay)
-        if dot_mb.bsd_ck_ttn_id:
-            ck_ttn = dot_mb.bsd_ck_ttn_id.bsd_ct_ids.\
-                filtered(lambda c: c.bsd_tu_ngay < data['bsd_ngay_ut'] < c.bsd_den_ngay)
+        res['ck_ttth'] = {
+
+        }
         res['doc_ids'] = data['ids']
         res['doc_model'] = data['model']
         res['bsd_ngay_ut'] = data['bsd_ngay_ut']
