@@ -37,7 +37,7 @@
                     <button string="Đặt cọc"
                             type="object"
                             name="action_tao_dat_coc"
-                            attrs="{'invisible': ['|',('state','not in',['xac_nhan']),('bsd_ngay_ky_bg','=', False)]}"/>
+                            attrs="{'invisible': ['|',('state','not in',['da_ky']),('bsd_ngay_ky_bg','=', False)]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
@@ -89,7 +89,9 @@
                                            options="{'no_create':true}"
                                            readonly="1"
                                     />
-                                    <field name="bsd_unit_id" invisible="1"/>
+                                    <field name="bsd_unit_id"
+                                           context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                           invisible="1"/>
                                     <label for="bsd_dt_xd"/>
                                     <div class="o_row no-gutters d-flex">
                                         <div class="col">

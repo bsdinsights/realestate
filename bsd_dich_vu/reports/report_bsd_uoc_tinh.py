@@ -41,4 +41,5 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
         res['doc_model'] = data['model']
         res['bsd_ngay_ut'] = data['bsd_ngay_ut']
         res['bsd_tien_ut'] = data['bsd_tien_ut']
+
         return res
