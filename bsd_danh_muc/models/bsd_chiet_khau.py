@@ -112,7 +112,8 @@ class BsdChietKhau(models.Model):
         # DM.13.07 Kiểm tra điều kiện trùng chiếu khấu mua sỉ
         if self.bsd_loai_ck == 'mua_si':
             mua_si = self.env['bsd.chiet_khau'].search([('bsd_loai_ck', '=', 'mua_si'),
-                                                        ('id', '!=', self.id)])
+                                                        ('id', '!=', self.id),
+                                                        ('state', '!=', 'huy')])
             mua_si_time = mua_si.filtered(lambda m: not (m.bsd_sl_den < self.bsd_sl_tu < self.bsd_sl_den
                                                          or self.bsd_sl_tu < self.bsd_sl_den < m.bsd_sl_tu))
             if mua_si_time:
@@ -155,14 +156,16 @@ class BsdChietKhau(models.Model):
         # DM.13.08 Kiểm tra điều kiện trùng lịch thanh toán
         if self.bsd_loai_ck == 'ltt':
             lich_tt = self.env['bsd.chiet_khau'].search([('bsd_loai_ck', '=', 'ltt'),
-                                                         ('id', '!=', self.id)])
+                                                         ('id', '!=', self.id),
+                                                         ('state', '!=', 'huy')])
             if lich_tt:
                 raise UserError("Chính sách thanh toán đã có chiết khấu")
 
         # DM.13.09 Kiểm tra điều kiện trùng chiết khấu thanh toán trước hạn
         if self.bsd_loai_ck == 'ttth':
             ttth = self.env['bsd.chiet_khau'].search([('bsd_loai_ck', '=', 'ttth'),
-                                                      ('id', '!=', self.id)])
+                                                      ('id', '!=', self.id),
+                                                      ('state', '!=', 'huy')])
             if ttth:
                 khoang_time = [(t.bsd_tu_ngay, t.bsd_den_ngay) for t in ttth.sorted('bsd_tu_ngay')]
                 flag_time = True
