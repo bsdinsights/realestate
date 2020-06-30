@@ -230,7 +230,7 @@ class BsdBaoGia(models.Model):
             raise UserError("Bảng tính giá chưa có lịch thanh toán.\n Vui lòng kiểm tra lại")
         else:
             self.write({
-                'state': 'cho_duyet',
+                'state': 'xac_nhan',
             })
 
     # KD.09.04 Duyệt báo giá
@@ -440,7 +440,7 @@ class BsdBaoGiaKhuyenMai(models.Model):
     _description = "Thông tin chương trình khuyến mãi cho bảng tính giá"
     _rec_name = 'bsd_khuyen_mai_id'
 
-    bsd_khuyen_mai_id = fields.Many2one('bsd.khuyen_mai', string="Khuyến mãi")
+    bsd_khuyen_mai_id = fields.Many2one('bsd.khuyen_mai', string="Khuyến mãi", required=True)
     bsd_ma_km = fields.Char(related='bsd_khuyen_mai_id.bsd_ma_km')
     bsd_tu_ngay = fields.Date(related='bsd_khuyen_mai_id.bsd_tu_ngay')
     bsd_den_ngay = fields.Date(related='bsd_khuyen_mai_id.bsd_den_ngay')
@@ -461,7 +461,7 @@ class BsdBaoGiaKhuyenMai(models.Model):
             khuyen_mai = self.bsd_dot_mb_id.bsd_km_ids.mapped('bsd_khuyen_mai_id')
             # Lọc các điều kiện bàn giao có nhóm sản phẩm trùng với unit trong bảng tính giá
             list_id = khuyen_mai.filtered(
-                lambda d: d.state == 'duyet' and d.bsd_loai == False).ids
+                lambda d: d.state == 'duyet' and not d.bsd_loai).ids
         res.update({
             'domain': {
                 'bsd_khuyen_mai_id': [('id', 'in', list_id)]
