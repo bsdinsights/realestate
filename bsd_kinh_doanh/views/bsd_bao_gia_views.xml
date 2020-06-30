@@ -182,6 +182,7 @@
                                     <field name="bsd_tu_ngay"/>
                                     <field name="bsd_den_ngay"/>
                                     <field name="bsd_ngay_hldc"/>
+                                    <field name="bsd_gia_tri"/>
                                     <field name="bsd_bao_gia_id" invisible="1"/>
                                     <field name="bsd_dot_mb_id" invisible="1"/>
                                 </tree>
