@@ -36,9 +36,8 @@ class BsdBaoGia(models.Model):
                                      readonly=True,
                                      states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án",
-                                   related="bsd_giu_cho_id.bsd_du_an_id", store=True)
-    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Tên đợt mở bán",
-                                    related="bsd_giu_cho_id.bsd_dot_mb_id", store=True)
+                                   related="bsd_unit_id.bsd_du_an_id", store=True)
+    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Tên đợt mở bán")
     bsd_bang_gia_id = fields.Many2one('product.pricelist', string="Bảng giá", help="Bảng giá bán",
                                       related="bsd_dot_mb_id.bsd_bang_gia_id", store=True)
     bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ",
@@ -61,8 +60,7 @@ class BsdBaoGia(models.Model):
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
 
-    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Tên căn hộ",
-                                  related="bsd_giu_cho_id.bsd_unit_id", store=True)
+    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Tên căn hộ")
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích tim tường",
                              related="bsd_unit_id.bsd_dt_xd", store=True)
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",
@@ -205,6 +203,11 @@ class BsdBaoGia(models.Model):
     def _compute_tien_thue(self):
         for each in self:
             each.bsd_tien_thue = (each.bsd_gia_truoc_thue - each.bsd_tien_qsdd) * each.bsd_thue_suat / 100
+
+    @api.onchange('bsd_giu_cho_id')
+    def _onchange_giu_cho(self):
+        self.bsd_unit_id = self.bsd_giu_cho_id.bsd_unit_id
+        self.bsd_dot_mb_id = self.bsd_giu_cho_id.bsd_dot_mb_id
 
     @api.onchange('bsd_unit_id')
     def _onchange_phi(self):
