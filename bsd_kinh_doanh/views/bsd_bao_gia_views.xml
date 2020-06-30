@@ -217,8 +217,10 @@
                                     <field name="bsd_tu_ngay"/>
                                     <field name="bsd_den_ngay"/>
                                     <field name="bsd_cach_tinh"/>
-                                    <field name="bsd_tien"/>
-                                    <field name="bsd_tl_ck"/>
+                                    <field name="bsd_tien" readonly="1"/>
+                                    <field name="bsd_tl_ck" readonly="1"/>
+                                    <field name="bsd_tien" invisible="1"/>
+                                    <field name="bsd_tl_ck" invisible="1"/>
                                     <field name="bsd_tien_ck" sum="Tổng tiền chiết khấu"/>
                                 </tree>
                             </field>
