@@ -74,10 +74,10 @@ class BsdHoanTien(models.Model):
     #         if each.bsd_loai == 'gd_ck':
     #             each.bsd_tien_con_lai = each.bsd_ps_gd_ck_id.bsd_tien_ck
 
-    @api.constrains('bsd_tien')
-    def _constrains_tien(self):
-        if self.bsd_tien > self.bsd_tien_con_lai:
-            raise UserError("Tiền hoàn lại vượt quá số tiền còn lại. Vui lòng kiểm tra lại!")
+    # @api.constrains('bsd_tien')
+    # def _constrains_tien(self):
+    #     if self.bsd_tien > self.bsd_tien_con_lai:
+    #         raise UserError("Tiền hoàn lại vượt quá số tiền còn lại. Vui lòng kiểm tra lại!")
 
     # TC.07.01 Xác nhận hoàn tiền
     def action_xac_nhan(self):

@@ -46,6 +46,7 @@ class BsdHuyGC(models.Model):
     bsd_hoan_tien = fields.Boolean(string="Hoàn tiền", help="Hoàn tiền",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
+    bsd_tien_ht = fields.Monetary(string="Số tiền hoàn", help="Số tiền hoàn")
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('duyet', 'Duyệt'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
                              tracking=1, default="nhap", required=True)
@@ -188,7 +189,7 @@ class BsdHuyGC(models.Model):
                     'bsd_du_an_id': self.bsd_du_an_id.id,
                     'bsd_loai': 'dc_giam',
                     'bsd_giam_no_id': giam_no.id,
-                    'bsd_tien': self.bsd_tien_da_tt,
+                    'bsd_tien': self.bsd_tien_ht,
                     'bsd_dien_giai': 'Hoàn tiền cho đề nghị hủy ' + self.bsd_ma_huy_gc,
                     'state': 'nhap',
                 })
@@ -231,7 +232,7 @@ class BsdHuyGC(models.Model):
                     'bsd_du_an_id': self.bsd_du_an_id.id,
                     'bsd_loai': 'dc_giam',
                     'bsd_giam_no_id': giam_no.id,
-                    'bsd_tien': self.bsd_tien_da_tt,
+                    'bsd_tien': self.bsd_tien_ht,
                     'bsd_dien_giai': 'Hoàn tiền cho đề nghị hủy ' + self.bsd_ma_huy_gc,
                     'state': 'nhap',
                 })
