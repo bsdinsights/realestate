@@ -33,7 +33,11 @@
                     <button string="Chiết khấu mua sỉ"
                         name="action_ck_ms"
                         type="object"
-                        states="da_ky"
+                        states="nhap"
+                        class="oe_highlight"/>
+                    <button string="Ước tính"
+                        name="action_uoc_tinh_ck"
+                        type="object"
                         class="oe_highlight"/>
                     <button string="Hủy"
                             name="action_huy"

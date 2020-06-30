@@ -25,7 +25,8 @@
         'wizards/bsd_wizard_ky_pl_dsh_views.xml',
         'wizards/bsd_wizard_ky_pl_tti_views.xml',
         'wizards/bsd_wizard_ms_hdb_views.xml',
-
+        'wizards/bsd_wizard_uoc_tinh_ck_tt_views.xml',
+        'reports/report_bsd_uoc_tinh_views.xml'
     ],
     'application': True,
 }

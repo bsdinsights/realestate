@@ -14,8 +14,16 @@ class BsdMsHDB(models.TransientModel):
         hdb = self.env['bsd.hd_ban'].browse(self._context.get('active_ids', []))
         return hdb
 
-    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng bán", default=_get_hdb, readonly=True)
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", default=_get_hdb, readonly=True)
+    bsd_khach_hang_id = fields.Many2one(related='bsd_hd_ban_id.bsd_khach_hang_id', store=True)
+    bsd_tong_gia = fields.Monetary(related='bsd_hd_ban_id.bsd_tong_gia', store=True)
     bsd_chiet_khau_id = fields.Many2one('bsd.chiet_khau', string="Chiết khấu mua sỉ")
+    bsd_tien_ck = fields.Monetary(related="bsd_chiet_khau_id.bsd_tien_ck", store=True)
+    bsd_tl_ck = fields.Float(related="bsd_chiet_khau_id.bsd_tl_ck", store=True)
+    bsd_hd_ban_ids = fields.Many2many('bsd.hd_ban', string="Hợp đồng")
+    bsd_tong_ck = fields.Monetary(string="Tổng chiết khấu")
+    company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
+    currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
     @api.onchange('bsd_hd_ban_id')
     def _onchange_hd_ban(self):

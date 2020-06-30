@@ -145,6 +145,11 @@ class BsdHopDongMuaBan(models.Model):
 
         raise UserError("lỗi")
 
+    # DV.01.12 - Ước tính chiết khấu thanh toán
+    def action_uoc_tinh_ck(self):
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_uoc_tinh_ck_tt_action').read()[0]
+        return action
+
     # Cập nhật đồng sở hữu từ báo giá
     @api.onchange('bsd_dat_coc_id')
     def _onchange_dat_coc(self):
