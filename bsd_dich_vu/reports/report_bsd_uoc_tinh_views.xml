@@ -201,7 +201,9 @@
                                             <tr style="background-color:#EBEBEB !important;font-size:17px">
                                                 <td class="text-right" colspan="7">
                                                     <b>Tổng tiền:</b></td>
-                                                <td class="text-right" colspan="2"><span t-esc="tong_tien_ck" t-options='{"widget": "monetary", "display_currency": currency_id}'/></td>
+                                                <td class="text-right" colspan="2">
+                                                    <span t-esc="tong_tien_ck" t-options='{"widget": "monetary", "display_currency": currency_id}'/>
+                                                </td>
                                             </tr>
                                         </tbody>
                                       </table>
