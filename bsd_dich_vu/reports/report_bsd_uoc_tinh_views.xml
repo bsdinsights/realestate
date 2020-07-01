@@ -195,12 +195,7 @@
                                                 <td class="text-right" colspan="7">
                                                     <b>Tổng tiền chiết khấu thanh toán nhanh:</b></td>
                                                 <td class="text-right" colspan="2">
-                                                    <t t-if="ck_ttn">
-                                                        <span t-esc="ck_ttn['bsd_tong_ck']" t-options='{"widget": "monetary", "display_currency": currency_id}'/>
-                                                    </t>
-                                                    <t t-else="else">
-                                                        <span t-esc="0" t-options='{"widget": "monetary", "display_currency": currency_id}'/>
-                                                    </t>
+                                                    <span t-esc="tong_tien_ck_ttn" t-options='{"widget": "monetary", "display_currency": currency_id}'/>
                                                 </td>
                                             </tr>
                                             <tr style="background-color:#EBEBEB !important;font-size:17px">

@@ -115,6 +115,7 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
         doc['bsd_tien_ut'] = data['bsd_tien_ut']
         doc['bsd_tl_ck_ttth'] = ck_ttth.bsd_tl_ck if ck_ttth else 0
         doc['currency_id'] = currency_id
+        doc['tong_tien_ck_ttn'] = doc['ck_ttn']['bsd_tong_ck'] if doc['ck_ttn']else 0
         doc['tong_tien_ck_ttth'] = tong_tien_ck_ttth
         doc['tong_tien_ck'] = tong_tien_ck_ttth + doc['ck_ttn']['bsd_tong_ck'] if doc['ck_ttn']else 0
         _logger.debug(doc)
