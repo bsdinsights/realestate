@@ -23,6 +23,8 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
         # lấy đợt mở bán
         dot_mb = hd_ban.bsd_dot_mb_id
         ngay_ut = datetime.datetime.strptime(data['bsd_ngay_ut'], '%Y-%m-%d').date()
+        ck_ttth = False
+        ck_ttn = False
         if dot_mb.bsd_ck_ttth_id:
             item_ttth = dot_mb.bsd_ck_ttth_id.bsd_ct_ids.\
                 filtered(lambda c: c.bsd_tu_ngay < ngay_ut < c.bsd_den_ngay)
@@ -60,8 +62,9 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
                 'bsd_tong_ck': hd_ban.bsd_gia_truoc_thue * ck_ttn.bsd_tl_ck / 100
             }
         # Kiểm tra điều kiện thanh toán nhanh
-        if data['bsd_tien_ut'] < doc['ck_ttn']['bsd_gia_truoc_thue'] * doc['ck_ttn']['bsd_tl_tt'] / 100:
-            doc['ck_ttn']['bsd_tong_ck'] = 0
+        if doc['ck_ttn']:
+            if data['bsd_tien_ut'] < doc['ck_ttn']['bsd_gia_truoc_thue'] * doc['ck_ttn']['bsd_tl_tt'] / 100:
+                doc['ck_ttn']['bsd_tong_ck'] = 0
         # dữ liệu thanh toán trước hạn theo từng đợt
         doc['ck_ttth'] = []
         tong_tien_ck_ttth = 0
@@ -113,6 +116,6 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
         doc['bsd_tl_ck_ttth'] = ck_ttth.bsd_tl_ck if ck_ttth else 0
         doc['currency_id'] = currency_id
         doc['tong_tien_ck_ttth'] = tong_tien_ck_ttth
-        doc['tong_tien_ck'] = tong_tien_ck_ttth + doc['ck_ttn']['bsd_tong_ck'] if doc['ck_ttn']['bsd_tong_ck'] else 0
+        doc['tong_tien_ck'] = tong_tien_ck_ttth + doc['ck_ttn']['bsd_tong_ck'] if doc['ck_ttn']else 0
         _logger.debug(doc)
         return doc

@@ -133,16 +133,18 @@
                                                 <td width="13%">Chiết khấu(%/số tiền)</td>
                                                 <td width="13%">Tổng tiền chiết khấu</td>
                                             </tr>
-                                            <tr class="text-right">
-                                                <td class="text-left">1</td>
-                                                <td class="text-left"><span t-esc="ck_ttn['bsd_ten_ck']"/> </td>
-                                                <td><span t-esc="ck_ttn['bsd_tu_ngay']"/> </td>
-                                                <td><span t-esc="ck_ttn['bsd_den_ngay']"/> </td>
-                                                <td><span t-esc="ck_ttn['bsd_gia_truoc_thue']" t-options='{"widget": "monetary", "display_currency": currency_id}'/> </td>
-                                                <td><span t-esc="ck_ttn['bsd_tl_tt']"/> </td>
-                                                <td><span t-esc="ck_ttn['bsd_tl_ck']"/> </td>
-                                                <td><span t-esc="ck_ttn['bsd_tong_ck']" t-options='{"widget": "monetary", "display_currency": currency_id}'/> </td>
-                                            </tr>
+                                            <t t-if="ck_ttn">
+                                                <tr class="text-right">
+                                                    <td class="text-left">1</td>
+                                                    <td class="text-left"><span t-esc="ck_ttn['bsd_ten_ck']"/> </td>
+                                                    <td><span t-esc="ck_ttn['bsd_tu_ngay']"/> </td>
+                                                    <td><span t-esc="ck_ttn['bsd_den_ngay']"/> </td>
+                                                    <td><span t-esc="ck_ttn['bsd_gia_truoc_thue']" t-options='{"widget": "monetary", "display_currency": currency_id}'/> </td>
+                                                    <td><span t-esc="ck_ttn['bsd_tl_tt']"/> </td>
+                                                    <td><span t-esc="ck_ttn['bsd_tl_ck']"/> </td>
+                                                    <td><span t-esc="ck_ttn['bsd_tong_ck']" t-options='{"widget": "monetary", "display_currency": currency_id}'/> </td>
+                                                </tr>
+                                            </t>
                                         </tbody>
                                       </table>
                                 </div>
