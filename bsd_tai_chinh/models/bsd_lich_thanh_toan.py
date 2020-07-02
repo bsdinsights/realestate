@@ -37,7 +37,7 @@ class BsdBaoGiaLTT(models.Model):
                 each.bsd_ngay_tt = None
 
     # DV.01.09 Theo dõi chiết khấu thanh toán trước hạn
-    def tao_ck_ttth(self):
+    def tao_ck_ttth(self, ngay_tt, tien_tt):
         # Lấy thông tin đợt mở bán của hợp đồng
         dot_mb = self.bsd_hd_ban_id.bsd_dot_mb_id
         # Kiểm tra hợp đồng có đọt mở bán có áp dụng chiết khấu trước hạn hay không
@@ -46,23 +46,20 @@ class BsdBaoGiaLTT(models.Model):
         if not self.bsd_ngay_hh_tt:
             return
         # Kiểm tra ngày thanh toán có trước ngày hết hạn hay không
-        if self.bsd_ngay_tt.date() >= self.bsd_ngay_hh_tt:
+        if ngay_tt.date() >= self.bsd_ngay_hh_tt:
             return
         # Lấy Item chiết khấu thanh toán trước hạn
-        ck_ttth = dot_mb.bsd_ck_ttth_id.bsd_ct_ids.filtered(lambda c: c.bsd_tu_ngay < self.bsd_ngay_tt.date() < c.bsd_den_ngay)
+        ck_ttth = dot_mb.bsd_ck_ttth_id.bsd_ct_ids.filtered(lambda c: c.bsd_tu_ngay < ngay_tt.date() < c.bsd_den_ngay)
         if not ck_ttth:
             return
         if len(ck_ttth) > 1:
             raise UserError("Tìm thấy nhiều hơn 1 chiết khấu. Vui lòng kiểm tra lại")
-        so_ngay_th = (self.bsd_ngay_hh_tt - self.bsd_ngay_tt.date()).days
+        so_ngay_th = (self.bsd_ngay_hh_tt - ngay_tt.date()).days
         if ck_ttth.bsd_chiet_khau_id.bsd_cach_tinh == 'tien':
             tien_ck = so_ngay_th * ck_ttth.bsd_chiet_khau_id.bsd_tien_ck
         else:
-            tien_ck = (((ck_ttth.bsd_chiet_khau_id.bsd_tl_ck/100) * so_ngay_th) / 365) * self.bsd_tien_da_tt
+            tien_ck = ((ck_ttth.bsd_chiet_khau_id.bsd_tl_ck/100) * so_ngay_th) * tien_tt
         # Tạo Giao dich chiết khấu
-        _logger.debug(self.bsd_ngay_tt.date())
-        _logger.debug(ck_ttth)
-        _logger.debug(ck_ttth.bsd_chiet_khau_id.bsd_ma_ck)
         self.env['bsd.ps_gd_ck'].create({
             'bsd_ma_ck': ck_ttth.bsd_chiet_khau_id.bsd_ma_ck,
             'bsd_ten_ck': ck_ttth.bsd_chiet_khau_id.bsd_ten_ck,
@@ -80,8 +77,13 @@ class BsdBaoGiaLTT(models.Model):
 
     # DV.01.09 Theo dõi chiết khấu thanh toán nhanh
     def tao_ck_ttn(self):
+        _logger.debug("Ck nhanh")
+        _logger.debug(self.bsd_hd_ban_id.bsd_dh_ck_ttn)
         # Lấy thông tin đợt mở bán của hợp đồng
         dot_mb = self.bsd_hd_ban_id.bsd_dot_mb_id
+        # Kiểm tra xem đã hưởng chiết khấu thanh toán nhanh chưa
+        if self.bsd_hd_ban_id.bsd_dh_ck_ttn:
+            return
         # Kiểm tra hợp đồng có đọt mở bán có áp dụng chiết khấu nhanh hay không
         if not dot_mb.bsd_ck_ttn_id:
             return
@@ -113,4 +115,7 @@ class BsdBaoGiaLTT(models.Model):
             'bsd_tl_ck': ck_ttn.bsd_chiet_khau_id.bsd_tl_ck,
             'bsd_tien': ck_ttn.bsd_chiet_khau_id.bsd_tien_ck,
             'bsd_tien_ck': tien_ck,
+        })
+        self.bsd_hd_ban_id.write({
+            'bsd_dh_ck_ttn': True
         })
