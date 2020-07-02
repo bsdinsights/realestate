@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 
 class BsdChietKhauTTTH(models.Model):
@@ -9,14 +10,13 @@ class BsdChietKhauTTTH(models.Model):
     _description = "Thông tin chiết khấu thanh toán trước hạn"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    bsd_ma_ck_ttth = fields.Char(string="Mã chiết khấu", help="Mã chiết khấu thanh toán trước hạn",  required=True,
-                                 readonly=True,
-                                 states={'nhap': [('readonly', False)]})
+    bsd_ma_ck_ttth = fields.Char(string="Mã", help="Mã danh sách chiết khấu thanh toán trước hạn", required=True, readonly=True, copy=False,
+                                 default='/')
     _sql_constraints = [
         ('bsd_ma_ck_ttth_unique', 'unique (bsd_ma_ck_ttth)',
          'Mã chiết khấu thanh toán trước hạn đã tồn tại !'),
     ]
-    bsd_ten_ck_ttth = fields.Char(string="Tên chiết khấu", help="Tên chiết khấu thanh toán trước hạn", required=True,
+    bsd_ten_ck_ttth = fields.Char(string="Tên", help="Tên danh sách chiết khấu thanh toán trước hạn", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
@@ -62,6 +62,17 @@ class BsdChietKhauTTTH(models.Model):
         self.write({
             'state': 'huy',
         })
+
+    @api.model
+    def create(self, vals):
+        sequence = False
+        if vals.get('bsd_ma_ck_ttth', '/') == '/':
+            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.ck_ttth')], limit=1).bsd_ma_tt_id
+            vals['bsd_ma_ck_ttth'] = self.env['ir.sequence'].next_by_code('bsd.ck_ttth') or '/'
+        if not sequence:
+            raise UserError(_('Danh mục mã chưa khai báo mã danh sách chiết khấu thanh toán trước hạn'))
+        vals['bsd_ma_ck_ttth'] = sequence.next_by_id()
+        return super(BsdChietKhauTTTH, self).create(vals)
 
 
 class BsdChietKhauTTTHChiTiet(models.Model):

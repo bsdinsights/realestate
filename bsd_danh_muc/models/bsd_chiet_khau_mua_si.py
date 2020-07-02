@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 
 class BsdChietKhauMuaSi(models.Model):
@@ -9,14 +10,13 @@ class BsdChietKhauMuaSi(models.Model):
     _description = "Thông tin chiết khấu mua sỉ"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    bsd_ma_ck_ms = fields.Char(string="Mã chiết khấu", help="Mã chiết khấu mua sỉ", required=True,
-                               readonly=True,
-                               states={'nhap': [('readonly', False)]})
+    bsd_ma_ck_ms = fields.Char(string="Mã", help="Mã danh sách chiết khấu mua sỉ", required=True, readonly=True, copy=False,
+                               default='/')
     _sql_constraints = [
         ('bsd_ma_ck_ms_unique', 'unique (bsd_ma_ck_ms)',
          'Mã chiết khấu mua sỉ đã tồn tại !'),
     ]
-    bsd_ten_ck_ms = fields.Char(string="Tên chiết khấu", help="Tên chiết khấu mua sỉ", required=True,
+    bsd_ten_ck_ms = fields.Char(string="Tên", help="Tên chiết khấu mua sỉ", required=True,
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
@@ -62,6 +62,17 @@ class BsdChietKhauMuaSi(models.Model):
         self.write({
             'state': 'huy',
         })
+
+    @api.model
+    def create(self, vals):
+        sequence = False
+        if vals.get('bsd_ma_ck_ms', '/') == '/':
+            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.ck_ms')], limit=1).bsd_ma_tt_id
+            vals['bsd_ma_ck_ms'] = self.env['ir.sequence'].next_by_code('bsd.ck_ms') or '/'
+        if not sequence:
+            raise UserError(_('Danh mục mã chưa khai báo mã danh sách chiết khấu mua sỉ'))
+        vals['bsd_ma_ck_ms'] = sequence.next_by_id()
+        return super(BsdChietKhauMuaSi, self).create(vals)
 
 
 class BsdChietKhauMuaSiChiTiet(models.Model):

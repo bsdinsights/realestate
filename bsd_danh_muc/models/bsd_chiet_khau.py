@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
@@ -12,9 +12,8 @@ class BsdChietKhau(models.Model):
     _description = "Thông tin chiết khấu"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    bsd_ma_ck = fields.Char(string="Mã chiết khấu", required=True, help="Mã chiết khấu",
-                            readonly=True,
-                            states={'nhap': [('readonly', False)]})
+    bsd_ma_ck = fields.Char(string="Mã", help="Mã chiết khấu", required=True, readonly=True, copy=False,
+                            default='/')
     _sql_constraints = [
         ('bsd_ma_ck_unique', 'unique (bsd_ma_ck)',
          'Mã chiết khấu đã tồn tại !'),
@@ -204,3 +203,14 @@ class BsdChietKhau(models.Model):
                             flag_time = False
                 if flag_time:
                     raise UserError("Đã tồn tại chiết khấu này. Vui lòng kiểm tra lại")
+
+    @api.model
+    def create(self, vals):
+        sequence = False
+        if vals.get('bsd_ma_ck', '/') == '/':
+            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.chiet_khau')], limit=1).bsd_ma_tt_id
+            vals['bsd_ma_ck'] = self.env['ir.sequence'].next_by_code('bsd.chiet_khau') or '/'
+        if not sequence:
+            raise UserError(_('Danh mục mã chưa khai báo mã chiết khấu'))
+        vals['bsd_ma_ck'] = sequence.next_by_id()
+        return super(BsdChietKhau, self).create(vals)

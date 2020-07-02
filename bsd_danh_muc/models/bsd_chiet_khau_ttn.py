@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 
 class BsdChietKhauTTN(models.Model):
@@ -9,22 +10,22 @@ class BsdChietKhauTTN(models.Model):
     _description = "Thông tin chiết khấu thanh toán nhanh"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    bsd_ma_ck_ttn = fields.Char(string="Mã chiết khấu", help="Mã chiết khấu thanh toán nhanh", required=True,
-                               readonly=True,
-                               states={'nhap': [('readonly', False)]})
+    bsd_ma_ck_ttn = fields.Char(string="Mã", help="Mã danh sách chiết khấu thanh toán nhanh", required=True, readonly=True, copy=False,
+                                default='/')
+
     _sql_constraints = [
         ('bsd_ma_ck_ttn_unique', 'unique (bsd_ma_ck_ttn)',
          'Mã chiết khấu thanh toán nhanh đã tồn tại !'),
     ]
-    bsd_ten_ck_ttn = fields.Char(string="Tên chiết khấu", help="Mã chiết khấu thanh toán nhanh", required=True,
-                               readonly=True,
-                               states={'nhap': [('readonly', False)]})
+    bsd_ten_ck_ttn = fields.Char(string="Tên", help="Tên danh sách chiết khấu thanh toán nhanh", required=True,
+                                 readonly=True,
+                                 states={'nhap': [('readonly', False)]})
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
-                               readonly=True,
-                               states={'nhap': [('readonly', False)]})
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng chiết khấu chung",
-                               readonly=True,
-                               states={'nhap': [('readonly', False)]})
+                              readonly=True,
+                              states={'nhap': [('readonly', False)]})
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng chiết khấu chung",
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
@@ -62,6 +63,17 @@ class BsdChietKhauTTN(models.Model):
         self.write({
             'state': 'huy',
         })
+
+    @api.model
+    def create(self, vals):
+        sequence = False
+        if vals.get('bsd_ma_ck_ttn', '/') == '/':
+            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.ck_ttn')], limit=1).bsd_ma_tt_id
+            vals['bsd_ma_ck_ttn'] = self.env['ir.sequence'].next_by_code('bsd.ck_ttn') or '/'
+        if not sequence:
+            raise UserError(_('Danh mục mã chưa khai báo mã danh sách chiết khấu thanh toán nhanh'))
+        vals['bsd_ma_ck_ttn'] = sequence.next_by_id()
+        return super(BsdChietKhauTTN, self).create(vals)
 
 
 class BsdChietKhauTTNChiTiet(models.Model):

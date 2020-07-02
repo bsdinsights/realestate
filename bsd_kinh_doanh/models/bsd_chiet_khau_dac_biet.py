@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 
 class BsdChietKhauDacBiet(models.Model):
@@ -9,9 +10,8 @@ class BsdChietKhauDacBiet(models.Model):
     _description = "Thông tin chiết khấu đặt biệt"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    bsd_ma_ck_db = fields.Char(string="Mã chiết khấu", help="Mã chiết khấu đặt biệt", required=True,
-                               readonly=True,
-                               states={'nhap': [('readonly', False)]})
+    bsd_ma_ck_db = fields.Char(string="Mã", help="Mã danh sách chiết khấu đặc biệt", required=True, readonly=True, copy=False,
+                               default='/')
     _sql_constraints = [
         ('bsd_ma_ck_db_unique', 'unique (bsd_ma_ck_db)',
          'Mã chiết khấu đặt biệt đã tồn tại !'),
@@ -91,3 +91,14 @@ class BsdChietKhauDacBiet(models.Model):
         self.write({
             'state': 'huy',
         })
+
+    @api.model
+    def create(self, vals):
+        sequence = False
+        if vals.get('bsd_ma_ck_db', '/') == '/':
+            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.ck_db')], limit=1).bsd_ma_tt_id
+            vals['bsd_ma_ck_db'] = self.env['ir.sequence'].next_by_code('bsd.ck_db') or '/'
+        if not sequence:
+            raise UserError(_('Danh mục mã chưa khai báo mã danh sách chiết khấu đặc biệt'))
+        vals['bsd_ma_ck_db'] = sequence.next_by_id()
+        return super(BsdChietKhauDacBiet, self).create(vals)

@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 
 class BsdChietKhauCSTT(models.Model):
@@ -9,10 +10,8 @@ class BsdChietKhauCSTT(models.Model):
     _description = "Thông tin chiết khấu chính sách thanh toán"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    bsd_ma_ck_cstt = fields.Char(string="Mã chiết khấu",
-                                 help="Mã chiết khấu theo chính sách thanh toán", required=True,
-                                 readonly=True,
-                                 states={'nhap': [('readonly', False)]})
+    bsd_ma_ck_cstt = fields.Char(string="Mã", help="Mã chiết khấu theo chính sách thanh toán", required=True, readonly=True, copy=False,
+                                 default='/')
     _sql_constraints = [
         ('bsd_ma_ck_cstt', 'unique (bsd_ma_ck_cstt)',
          'Mã chiết khấu theo chính sách thanh toán đã tồn tại !'),
@@ -64,6 +63,17 @@ class BsdChietKhauCSTT(models.Model):
         self.write({
             'state': 'huy',
         })
+
+    @api.model
+    def create(self, vals):
+        sequence = False
+        if vals.get('bsd_ma_ck_cstt', '/') == '/':
+            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.ck_cstt')], limit=1).bsd_ma_tt_id
+            vals['bsd_ma_ck_cstt'] = self.env['ir.sequence'].next_by_code('bsd.ck_cstt') or '/'
+        if not sequence:
+            raise UserError(_('Danh mục mã chưa khai báo mã danh sách chiết khấu chính sách thanh toán'))
+        vals['bsd_ma_ck_cstt'] = sequence.next_by_id()
+        return super(BsdChietKhauCSTT, self).create(vals)
 
 
 class BsdChietKhauCSTTChiTiet(models.Model):

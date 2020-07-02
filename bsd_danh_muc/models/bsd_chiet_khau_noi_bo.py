@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 
 class BsdChietKhauNoiBo(models.Model):
@@ -9,20 +10,22 @@ class BsdChietKhauNoiBo(models.Model):
     _description = "Thông tin chiết khấu nội bộ"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    bsd_ma_ck_nb = fields.Char(string="Mã chiết khấu", help="Mã chiết khấu nội bộ", required=True)
+    bsd_ma_ck_nb = fields.Char(string="Mã", help="Mã danh sách chiết khấu nội bộ", required=True, readonly=True, copy=False,
+                               default='/')
+
     _sql_constraints = [
         ('bsd_ma_ck_nb_unique', 'unique (bsd_ma_ck_nb)',
          'Mã chiết khấu nội bộ đã tồn tại !'),
     ]
-    bsd_ten_ck_nb = fields.Char(string="Tên chiết khấu", help="Mã chiết khấu nội bộ", required=True,
-                               readonly=True,
-                               states={'nhap': [('readonly', False)]})
+    bsd_ten_ck_nb = fields.Char(string="Tên", help="Tên danh sách chiết khấu nội bộ", required=True,
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
     bsd_dien_giai = fields.Char(string="Diễn giải",
-                               readonly=True,
-                               states={'nhap': [('readonly', False)]})
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng chiết khấu nội bộ",
-                               readonly=True,
-                               states={'nhap': [('readonly', False)]})
+                              readonly=True,
+                              states={'nhap': [('readonly', False)]})
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng chiết khấu nội bộ",
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
@@ -60,6 +63,17 @@ class BsdChietKhauNoiBo(models.Model):
         self.write({
             'state': 'huy',
         })
+
+    @api.model
+    def create(self, vals):
+        sequence = False
+        if vals.get('bsd_ma_ck_nb', '/') == '/':
+            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.ck_nb')], limit=1).bsd_ma_tt_id
+            vals['bsd_ma_ck_nb'] = self.env['ir.sequence'].next_by_code('bsd.ck_nb') or '/'
+        if not sequence:
+            raise UserError(_('Danh mục mã chưa khai báo mã danh sách chiết khấu nội bộ'))
+        vals['bsd_ma_ck_nb'] = sequence.next_by_id()
+        return super(BsdChietKhauNoiBo, self).create(vals)
 
 
 class BsdChietKhauNoiBoChiTiet(models.Model):
