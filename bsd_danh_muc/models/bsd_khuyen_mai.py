@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 
 class BsdKhuyenMai(models.Model):
@@ -9,9 +10,9 @@ class BsdKhuyenMai(models.Model):
     _rec_name = 'bsd_ten_km'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    bsd_ma_km = fields.Char(string="Mã khuyến mãi", help="Mã khuyến mãi", required=True,
-                            readonly=True,
-                            states={'nhap': [('readonly', False)]})
+    bsd_ma_km = fields.Char(string="Mã khuyến mãi", help="Mã khuyến mãi", required=True, readonly=True, copy=False,
+                            default='/')
+
     _sql_constraints = [
         ('bsd_ma_km_unique', 'unique (bsd_ma_km)',
          'Mã khuyến mãi đã tồn tại !'),
@@ -74,3 +75,14 @@ class BsdKhuyenMai(models.Model):
         self.write({
             'state': 'huy',
         })
+
+    @api.model
+    def create(self, vals):
+        sequence = False
+        if vals.get('bsd_ma_km', '/') == '/':
+            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.khuyen_mai')], limit=1).bsd_ma_tt_id
+            vals['bsd_ma_km'] = self.env['ir.sequence'].next_by_code('bsd.khuyen_mai') or '/'
+        if not sequence:
+            raise UserError(_('Danh mục mã chưa khai báo mã chương trình khuyến mãi'))
+        vals['bsd_ma_km'] = sequence.next_by_id()
+        return super(BsdKhuyenMai, self).create(vals)

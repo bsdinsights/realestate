@@ -1,6 +1,6 @@
 # -*- conding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
@@ -12,9 +12,8 @@ class BsdChuyenGiuCho(models.Model):
     _rec_name = 'bsd_ma_chuyen_gc'
     _description = 'Phiếu chuyển tên khách hàng giữ chỗ'
 
-    bsd_ma_chuyen_gc = fields.Char(string="Mã", help="Mã phiếu đề nghị chuyển tên", required=True,
-                                   readonly=True,
-                                   states={'nhap': [('readonly', False)]})
+    bsd_ma_chuyen_gc = fields.Char(string="Mã", help="Mã phiếu đề nghị chuyển tên", required=True, readonly=True, copy=False,
+                                   default='/')
     _sql_constraints = [
         ('bsd_ma_chuyen_gc_unique', 'unique (bsd_ma_chuyen_gc)',
          'Mã phiếu chuyển tên đã tồn tại !')]
@@ -89,3 +88,14 @@ class BsdChuyenGiuCho(models.Model):
         self.write({
             'state': 'huy'
         })
+
+    @api.model
+    def create(self, vals):
+        sequence = False
+        if vals.get('bsd_ma_chuyen_gc', '/') == '/':
+            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.chuyen_gc')], limit=1).bsd_ma_tt_id
+            vals['bsd_ma_chuyen_gc'] = self.env['ir.sequence'].next_by_code('bsd.chuyen_gc') or '/'
+        if not sequence:
+            raise UserError(_('Danh mục mã chưa khai báo mã chương trình khuyến mãi'))
+        vals['bsd_ma_chuyen_gc'] = sequence.next_by_id()
+        return super(BsdChuyenGiuCho, self).create(vals)

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 
 class BsdPhatSinhGiaoDichChietKhau(models.Model):
@@ -9,12 +10,12 @@ class BsdPhatSinhGiaoDichChietKhau(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Ghi nhận phát sinh chiết khấu giao dịch'
 
-    bsd_ma_ht = fields.Char(string="Mã hệ thống", required=True, help="Mã hệ thống")
+    bsd_ma_ht = fields.Char(string="Mã hệ thống", help="Mã hệ thống", required=True, readonly=True, copy=False,
+                                   default='/')
     _sql_constraints = [
         ('bsd_ma_ht_unique', 'unique (bsd_ma_ht)',
          'Mã hệ thống đã tồn tại !'),
     ]
-
     bsd_ma_ck = fields.Char(string="Mã chiết khấu", required=True, help="Mã chiết khấu")
     _sql_constraints = [
         ('bsd_ma_ck_unique', 'check(1=1)',
@@ -90,3 +91,14 @@ class BsdPhatSinhGiaoDichChietKhau(models.Model):
         self.write({
             'state': 'huy'
         })
+
+    @api.model
+    def create(self, vals):
+        sequence = False
+        if vals.get('bsd_ma_ht', '/') == '/':
+            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.ps_gd_ck')], limit=1).bsd_ma_tt_id
+            vals['bsd_ma_ht'] = self.env['ir.sequence'].next_by_code('bsd.ps_gd_ck') or '/'
+        if not sequence:
+            raise UserError(_('Danh mục mã chưa khai báo mã phát sinh giao dịch chiết khấu'))
+        vals['bsd_ma_ht'] = sequence.next_by_id()
+        return super(BsdPhatSinhGiaoDichChietKhau, self).create(vals)
