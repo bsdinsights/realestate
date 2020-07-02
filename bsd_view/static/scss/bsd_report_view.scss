@@ -5,6 +5,13 @@
     font-family: 'Arial';
     src: local('Arial'), local('Arial'), url(/bsd_views/static/font/arial-unicode-ms.ttf) format('truetype');
 }
+@font-face {
+    font-family: 'Arial';
+    src: url(/bsd_views/static/font/Arial.eot);
+    src: local('Arial'),
+         url(/bsd_views/static/font/Arial.woff) format('woff'),
+         url(/bsd_views/static/font/Arial.ttf) format('truetype'),
+    }
 
 .h1-title-big {
     font-family: Arial;
