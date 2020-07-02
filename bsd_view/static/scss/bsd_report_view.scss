@@ -3,10 +3,8 @@
 // ------------------------------------------------------------------
 @font-face {
     font-family: 'Arial';
-    src: local('Arial'), local('Arial'), url(/bsd_views/static/font/arial-unicode-ms.ttf) format('truetype');
-}
-@font-face {
-    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 400;
     src: url(/bsd_views/static/font/Arial.eot);
     src: local('Arial'),
          url(/bsd_views/static/font/Arial.woff) format('woff'),
@@ -15,7 +13,7 @@
 
 .h1-title-big {
     font-family: Arial;
-    font-size: 25px;
+    font-size: 60px;
     color: #000;
     font-weight: bold;
 }
