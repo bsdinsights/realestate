@@ -20,5 +20,5 @@ class BsdWizardChietKhauDacBiet(models.TransientModel):
     def action_xac_nhan(self):
         self.bsd_ck_db_id.write({
             'bsd_ly_do': self.bsd_ly_do,
-            'state': 'nhap',
+            'state': 'huy',
         })
