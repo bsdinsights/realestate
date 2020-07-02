@@ -1,0 +1,13 @@
+// ------------------------------------------------------------------
+// Arial fonts
+// ------------------------------------------------------------------
+@font-face {
+    font-family: 'Arial';
+    src: local('Arial'), local('Arial'), url(/bsd_views/static/font/Arial-Regular.ttf) format('truetype');
+}
+
+.h1-title-big {
+    font-family: Arial;
+    font-size: 25px;
+    color: #000;
+}

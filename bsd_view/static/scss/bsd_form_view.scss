@@ -26,22 +26,3 @@
         }
     }
 }
-// ------------------------------------------------------------------
-// Arial fonts
-// ------------------------------------------------------------------
-$arial-font-path: '../font';
-
-@mixin arial-font($family, $type, $weight, $style) {
-    @font-face {
-        font-family: $family;
-        src: url('#{$arial-font-path}/#{$family}/#{$family}-#{$type}.ttf') format('truetype');
-        font-weight: $weight;
-        font-style: $style;
-    }
-}
-
-@mixin arial-font-pair($family) {
-    @include arial-font('#{$family}', 'Regular', 400, normal);
-}
-
-@include arial-font-pair('Arial');
