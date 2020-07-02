@@ -72,12 +72,46 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
             pass
         else:
             so_tien_ut_can_tru = data['bsd_tien_ut']
-            for dot in dot_tt:
-                so_tien_ut_can_tru -= dot.bsd_tien_dot_tt
-                if so_tien_ut_can_tru >= 0:
-                    bsd_tien_tt = dot.bsd_tien_dot_tt
-                else:
-                    bsd_tien_tt = abs(so_tien_ut_can_tru)
+            if data['bsd_tien_ut'] < dot_tt[0].bsd_tien_dot_tt:
+                bsd_tien_tt = data['bsd_tien_ut']
+                bsd_so_ngay_th = (dot_tt[0].bsd_ngay_hh_tt - ngay_ut).days
+                bsd_tl_ck_dot = ck_ttth.bsd_tl_ck * bsd_so_ngay_th
+                bsd_tien_ck = bsd_tien_tt * bsd_tl_ck_dot / 100
+                tong_tien_ck_ttth += bsd_tien_ck
+                doc['ck_ttth'].append({
+                    'bsd_stt': dot_tt[0].bsd_stt,
+                    'bsd_ten_dtt': dot_tt[0].bsd_ten_dtt,
+                    'bsd_ngay_hh_tt': dot_tt[0].bsd_ngay_hh_tt.strftime("%d/%m/%Y"),
+                    'bsd_ngay_tt': ngay_ut.strftime("%d/%m/%Y"),
+                    'bsd_so_ngay_th': bsd_so_ngay_th,
+                    'bsd_tien_dot_tt': dot_tt[0].bsd_tien_dot_tt,
+                    'bsd_tl_ck_dot': float_repr(bsd_tl_ck_dot, precision_digits=3),
+                    'bsd_tien_ck': bsd_tien_ck,
+                    'bsd_tien_tt': bsd_tien_tt,
+                })
+            else:
+                for dot in dot_tt:
+                    so_tien_ut_can_tru -= dot.bsd_tien_dot_tt
+                    if so_tien_ut_can_tru >= 0:
+                        bsd_tien_tt = dot.bsd_tien_dot_tt
+                    else:
+                        bsd_tien_tt = abs(so_tien_ut_can_tru)
+                        bsd_so_ngay_th = (dot.bsd_ngay_hh_tt - ngay_ut).days
+                        bsd_tl_ck_dot = ck_ttth.bsd_tl_ck * bsd_so_ngay_th
+                        bsd_tien_ck = bsd_tien_tt * bsd_tl_ck_dot / 100
+                        tong_tien_ck_ttth += bsd_tien_ck
+                        doc['ck_ttth'].append({
+                            'bsd_stt': dot.bsd_stt,
+                            'bsd_ten_dtt': dot.bsd_ten_dtt,
+                            'bsd_ngay_hh_tt': dot.bsd_ngay_hh_tt.strftime("%d/%m/%Y"),
+                            'bsd_ngay_tt': ngay_ut.strftime("%d/%m/%Y"),
+                            'bsd_so_ngay_th': bsd_so_ngay_th,
+                            'bsd_tien_dot_tt': dot.bsd_tien_dot_tt,
+                            'bsd_tl_ck_dot': float_repr(bsd_tl_ck_dot, precision_digits=3),
+                            'bsd_tien_ck': bsd_tien_ck,
+                            'bsd_tien_tt': bsd_tien_tt,
+                        })
+                        break
                     bsd_so_ngay_th = (dot.bsd_ngay_hh_tt - ngay_ut).days
                     bsd_tl_ck_dot = ck_ttth.bsd_tl_ck * bsd_so_ngay_th
                     bsd_tien_ck = bsd_tien_tt * bsd_tl_ck_dot / 100
@@ -93,22 +127,7 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
                         'bsd_tien_ck': bsd_tien_ck,
                         'bsd_tien_tt': bsd_tien_tt,
                     })
-                    break
-                bsd_so_ngay_th = (dot.bsd_ngay_hh_tt - ngay_ut).days
-                bsd_tl_ck_dot = ck_ttth.bsd_tl_ck * bsd_so_ngay_th
-                bsd_tien_ck = bsd_tien_tt * bsd_tl_ck_dot / 100
-                tong_tien_ck_ttth += bsd_tien_ck
-                doc['ck_ttth'].append({
-                    'bsd_stt': dot.bsd_stt,
-                    'bsd_ten_dtt': dot.bsd_ten_dtt,
-                    'bsd_ngay_hh_tt': dot.bsd_ngay_hh_tt.strftime("%d/%m/%Y"),
-                    'bsd_ngay_tt': ngay_ut.strftime("%d/%m/%Y"),
-                    'bsd_so_ngay_th': bsd_so_ngay_th,
-                    'bsd_tien_dot_tt': dot.bsd_tien_dot_tt,
-                    'bsd_tl_ck_dot': float_repr(bsd_tl_ck_dot, precision_digits=3),
-                    'bsd_tien_ck': bsd_tien_ck,
-                    'bsd_tien_tt': bsd_tien_tt,
-                })
+
         doc['doc_ids'] = data['ids']
         doc['doc_model'] = data['model']
         doc['bsd_ngay_ut'] = ngay_ut.strftime("%d/%m/%Y")
