@@ -10,7 +10,7 @@ class BsdBanGiao(models.Model):
     _rec_name = 'bsd_dk_bg_id'
 
     bsd_dk_bg_id = fields.Many2one('bsd.dk_bg', string="Mã ĐKBG", help="Mã điều kiện bàn giao", required=True)
-    bsd_ten_dkbg = fields.Char(related='bsd_dk_bg_id.bsd_ten_dkbg', store=True)
+    bsd_ma_dkbg = fields.Char(related='bsd_dk_bg_id.bsd_ma_dkbg', store=True)
     bsd_dk_tt = fields.Selection(related='bsd_dk_bg_id.bsd_dk_tt', store=True)
     bsd_gia_m2 = fields.Monetary(related='bsd_dk_bg_id.bsd_gia_m2', store=True)
     bsd_tien = fields.Monetary(related='bsd_dk_bg_id.bsd_tien', store=True)
