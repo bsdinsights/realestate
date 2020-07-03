@@ -345,6 +345,8 @@ class BsdBaoGia(models.Model):
                 dot_dkbg = dot
                 ngay_hh_tt_dkbg = self.bsd_unit_id.bsd_ngay_dkbg or self.bsd_unit_id.bsd_du_an_id.bsd_ngay_dkbg or False
                 stt += 1
+                # cập nhật lại ngày hết hạn thanh toán
+                ngay_hh_tt = ngay_hh_tt_dkbg
                 tien_dot_tt = dot_dkbg.bsd_tl_tt * (self.bsd_tong_gia - self.bsd_tien_pbt) / 100
                 # làm trong tiền đợt thanh toán
                 tien_dot_tt = tien_dot_tt - (tien_dot_tt % 1000)
