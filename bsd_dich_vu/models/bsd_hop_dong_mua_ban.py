@@ -99,7 +99,7 @@ class BsdHopDongMuaBan(models.Model):
                                              ký xác nhận""")
     bsd_ngay_ky_hdb = fields.Datetime(string="Ngày ký hợp đồng", help="Ngày ký hợp đồng mua bán", readonly=True)
 
-    bsd_km_ids = fields.One2many('bsd.bao_gia_km', 'bsd_dat_coc_id', string="Danh sách khuyến mãi",
+    bsd_km_ids = fields.One2many('bsd.bao_gia_km', 'bsd_hd_ban_id', string="Danh sách khuyến mãi",
                                  help="Danh sách khuyến mãi", readonly=True,)
 
     bsd_ps_ck_ids = fields.One2many('bsd.ps_ck', 'bsd_hd_ban_id', string="Phát sinh chiết khấu",
@@ -115,7 +115,7 @@ class BsdHopDongMuaBan(models.Model):
         return action
 
     # DV.01.11 - Theo dõi chiết khấu mua sỉ
-    def tao_ck_ms(self, chiet_khau):
+    def tao_ck_ms(self, chiet_khau, tien=0, tl_ck=0):
         # Tạo dữ liệu trong bảng chiết khấu
         self.bsd_ps_ck_ids.create({
             'bsd_loai_ck': 'mua_si',
@@ -123,6 +123,8 @@ class BsdHopDongMuaBan(models.Model):
             'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
             'bsd_bao_gia_id': self.bsd_bao_gia_id.id,
             'bsd_hd_ban_id': self.id,
+            'bsd_tien': tien,
+            'bsd_tl_ck': tl_ck,
         })
         # Tính lại tiền các đợt chưa thanh toán
         dot_da_tt = self.bsd_ltt_ids.filtered(lambda x: x.bsd_gd_tt == 'dat_coc' or x.bsd_thanh_toan in ['da_tt', 'dang_tt'])

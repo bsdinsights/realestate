@@ -9,10 +9,14 @@
                     <group>
                         <group>
                             <field name="bsd_hd_ban_id"/>
-
+                            <field name="bsd_tong_gia"/>
+                            <field name="bsd_chiet_khau_id" options="{'no_create':true}"/>
+                            <field name="bsd_cach_tinh"/>
                         </group>
                         <group>
-                            <field name="bsd_chiet_khau_id" options="{'no_create':true}"/>
+                            <field name="bsd_tien" attrs="{'invisible':[('bsd_cach_tinh', '=', 'phan_tram')]}"/>
+                            <field name="bsd_tl_ck" attrs="{'invisible':[('bsd_cach_tinh', '=', 'tien')]}"/>
+                            <field name="bsd_tien_ck" attrs="{'invisible':[('bsd_cach_tinh', '=', 'tien')]}"/>
                         </group>
                     </group>
                 </sheet>
