@@ -143,10 +143,17 @@ class BsdHopDongMuaBan(models.Model):
         elif so_dot_tt == 1:
             dot_phai_tt.bsd_tien_dot_tt = tong_tien_phai_tt
         else:
+            tien_da_chia_dot = 0
             for dot in dot_phai_tt:
-                dot.bsd_tien_dot_tt = tong_tien_phai_tt * dot.bsd_cs_tt_ct_id.bsd_tl_tt / tl_con_tt
+                # kiểm tra đợt cuối
+                if dot == dot_phai_tt[-1]:
+                    dot.bsd_tien_dot_tt = tong_tien_phai_tt - tien_da_chia_dot
+                    break
+                # Tính tiền đợt thanh toán khác cuối
+                tien_tt = tong_tien_phai_tt * dot.bsd_cs_tt_ct_id.bsd_tl_tt / tl_con_tt
+                dot.bsd_tien_dot_tt = tien_tt - (tien_tt % 1000)
+                tien_da_chia_dot += dot.bsd_tien_dot_tt
                 _logger.debug(dot.bsd_tien_dot_tt)
-        raise UserError('Lỗi')
 
     # DV.01.12 - Ước tính chiết khấu thanh toán
     def action_uoc_tinh_ck(self):

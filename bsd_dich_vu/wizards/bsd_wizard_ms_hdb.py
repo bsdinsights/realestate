@@ -16,7 +16,7 @@ class BsdMsHDB(models.TransientModel):
 
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", default=_get_hdb, readonly=True)
     bsd_khach_hang_id = fields.Many2one(related='bsd_hd_ban_id.bsd_khach_hang_id')
-    bsd_tong_gia = fields.Monetary(related='bsd_hd_ban_id.bsd_tong_gia')
+    bsd_gia_truoc_thue = fields.Monetary(related='bsd_hd_ban_id.bsd_gia_truoc_thue')
     bsd_chiet_khau_id = fields.Many2one('bsd.chiet_khau', string="Chiết khấu mua sỉ")
     bsd_cach_tinh = fields.Selection(related="bsd_chiet_khau_id.bsd_cach_tinh", store=True)
     bsd_tien = fields.Monetary(string="Tiền chiết khấu")
@@ -26,11 +26,11 @@ class BsdMsHDB(models.TransientModel):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
-    @api.depends('bsd_cach_tinh', 'bsd_tien', 'bsd_tl_ck', 'bsd_tong_gia')
+    @api.depends('bsd_cach_tinh', 'bsd_tien', 'bsd_tl_ck', 'bsd_gia_truoc_thue')
     def _compute_tien_ck(self):
         for each in self:
             if each.bsd_cach_tinh == 'phan_tram':
-                each.bsd_tien_ck = each.bsd_tl_ck * self.bsd_tong_gia / 100
+                each.bsd_tien_ck = each.bsd_tl_ck * self.bsd_gia_truoc_thue / 100
             else:
                 each.bsd_tien_ck = each.bsd_tien
 
