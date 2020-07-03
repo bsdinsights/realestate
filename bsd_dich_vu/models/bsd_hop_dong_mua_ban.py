@@ -109,6 +109,9 @@ class BsdHopDongMuaBan(models.Model):
     bsd_dh_ck_ttn = fields.Boolean(string="Đã hưởng CK Nhanh", help="Đánh dấu hợp đồng đã hưởng CK nhanh",
                                    readonly=True, default=False)
 
+    bsd_hd_ms_id = fields.Many2one('bsd.hd_ban', string="HĐ tính CK mua sỉ",
+                                   readonly=True, help="Họp đồng áp dụng chiết khấu mua sỉ")
+
     # DV.01.11 - Theo dõi chiết khấu mua sỉ (nút nhấn wizard)
     def action_ck_ms(self):
         action = self.env.ref('bsd_dich_vu.bsd_wizard_ms_hdb_action').read()[0]

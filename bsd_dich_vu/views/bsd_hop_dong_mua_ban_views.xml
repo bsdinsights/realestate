@@ -193,7 +193,14 @@
                             </field>
                         </page>
                         <page string="Chiết khấu">
-                            <field name="bsd_ps_ck_ids">
+                            <group>
+                                <group>
+                                    <field name="bsd_hd_ms_id"/>
+                                </group>
+                            </group>
+                            <!--<label for="bsd_hd_ms_id"/>-->
+
+                            <field name="bsd_ps_ck_ids" nolabel="1">
                                 <tree editable="bottom">
                                     <field name="bsd_loai_ck"/>
                                     <field name="bsd_bao_gia_id" invisible="1"/>
@@ -209,6 +216,8 @@
                                     <field name="bsd_tien"/>
                                     <field name="bsd_tl_ck"/>
                                     <field name="bsd_tien_ck" sum="Tổng tiền chiết khấu"/>
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="currency_id" invisible="1"/>
                                 </tree>
                             </field>
                         </page>
@@ -317,6 +326,7 @@
                     <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
                     <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
                     <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
+                    <filter string="Mua sỉ" name="bsd_hd_ms_id" domain="[]" context="{'group_by': 'bsd_hd_ms_id'}"/>
                 </group>
             </search>
         </field>

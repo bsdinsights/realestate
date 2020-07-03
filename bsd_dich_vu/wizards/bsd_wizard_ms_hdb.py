@@ -53,4 +53,11 @@ class BsdMsHDB(models.TransientModel):
 
     def action_xac_nhan(self):
         self.bsd_hd_ban_id.tao_ck_ms(self.bsd_chiet_khau_id, tien=self.bsd_tien, tl_ck=self.bsd_tl_ck)
+        # ghi nhận các hợp đồng đã tính mua sỉ
+        self.bsd_hd_ban_id.write({
+            'bsd_hd_ms_id': self.bsd_hd_ban_id.id,
+        })
+        self.bsd_hd_ban_ids.write({
+            'bsd_hd_ms_id': self.bsd_hd_ban_id.id,
+        })
 
