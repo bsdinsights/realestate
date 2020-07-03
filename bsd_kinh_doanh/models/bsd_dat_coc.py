@@ -270,7 +270,7 @@ class BsdDatCoc(models.Model):
                 cs_tt_ct_id = dot.bsd_cs_tt_ct_id  # lấy lại cách sinh lịch thanh toán
                 # Kiểm tra khi gặp đợt không phải tự động sẽ dừng vòng for
                 if cs_tt_ct_id.bsd_cach_tinh != 'td':
-                    ngay_hh_tt_dot = dot.ngay_hh_tt_dot
+                    ngay_hh_tt_dot = dot.bsd_ngay_hh_tt
                     continue
                 if cs_tt_ct_id.bsd_tiep_theo == 'ngay':
                     ngay_hh_tt_dot += datetime.timedelta(days=cs_tt_ct_id.bsd_so_ngay)
