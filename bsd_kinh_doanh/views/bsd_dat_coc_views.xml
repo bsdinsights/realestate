@@ -197,7 +197,7 @@
                                     <field name="bsd_bao_gia_id" invisible="1"/>
                                     <field name="bsd_dk_bg_id"
                                            options="{'no_create':true}"/>
-                                    <field name="bsd_ten_dkbg"/>
+                                    <field name="bsd_ma_dkbg"/>
                                     <field name="bsd_dk_tt"/>
                                     <field name="bsd_gia_m2"/>
                                     <field name="bsd_tien"/>
