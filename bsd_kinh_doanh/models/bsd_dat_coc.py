@@ -100,7 +100,7 @@ class BsdDatCoc(models.Model):
 
     bsd_co_hdc = fields.Boolean(string="Thỏa thuận đặt cọc", help="Thông tin quy định thỏa thuận đặt cọc hay không",
                                 related="bsd_du_an_id.bsd_hd_coc", store=True)
-    bsd_so_hdc = fields.Char(string="Số hợp đồng", help="Số hợp đồng đặt cọc")
+    bsd_so_hdc = fields.Char(string="Số TTĐC", help="Số thỏa thuận đặt cọc")
 
     bsd_ngay_in_dc = fields.Datetime(string="Ngày in", help="Ngày in phiếu cọc, hợp đồng cọc", readonly=True)
     bsd_ngay_hh_kdc = fields.Datetime(string="Hết hạn ký cọc", help="Ngày hết hạn ký phiếu cọc, hợp đồng cọc",
