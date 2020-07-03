@@ -146,8 +146,7 @@ class BsdHopDongMuaBan(models.Model):
             for dot in dot_phai_tt:
                 dot.bsd_tien_dot_tt = tong_tien_phai_tt * dot.bsd_cs_tt_ct_id.bsd_tl_tt / tl_con_tt
                 _logger.debug(dot.bsd_tien_dot_tt)
-
-        raise UserError("lỗi")
+        raise UserError('Lỗi')
 
     # DV.01.12 - Ước tính chiết khấu thanh toán
     def action_uoc_tinh_ck(self):

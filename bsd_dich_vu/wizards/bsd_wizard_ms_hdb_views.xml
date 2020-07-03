@@ -17,6 +17,8 @@
                             <field name="bsd_tien" attrs="{'invisible':[('bsd_cach_tinh', '=', 'phan_tram')]}"/>
                             <field name="bsd_tl_ck" attrs="{'invisible':[('bsd_cach_tinh', '=', 'tien')]}"/>
                             <field name="bsd_tien_ck" attrs="{'invisible':[('bsd_cach_tinh', '=', 'tien')]}"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
                         </group>
                     </group>
                 </sheet>
