@@ -230,8 +230,8 @@
                         </page>
                         <page string="Chiết khấu đặc biệt">
                             <field name="id" invisible="1"/>
-                            <field name="bsd_ck_db_ids" context="{'default_bsd_bao_gia_id':id}">
-                                <tree>
+                            <field name="bsd_ck_db_ids" context="{'default_bsd_bao_gia_id':bsd_bao_gia_id}">
+                                <tree delete="false">
                                     <field name="bsd_ma_ck_db"/>
                                     <field name="bsd_ten_ck_db"/>
                                     <field name="bsd_cach_tinh"/>
@@ -239,6 +239,7 @@
                                     <field name="bsd_tl_ck"/>
                                     <field name="bsd_tien_ck"/>
                                     <field name="state"/>
+                                    <field name="bsd_bao_gia_id" invisible="1"/>
                                     <button icon="fa-pencil"
                                             name="action_xac_nhan"
                                             confirm="Bạn có muốn Xác nhận yêu cầu không?"
