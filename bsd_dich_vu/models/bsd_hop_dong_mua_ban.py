@@ -259,7 +259,7 @@ class BsdBaoGiaLTT(models.Model):
 
 
 class BsdKhuyenMai(models.Model):
-    _inherit = 'bsd.khuyen_mai'
+    _inherit = 'bsd.bao_gia_km'
 
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True)
 
