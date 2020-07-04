@@ -5,6 +5,7 @@ from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
 
+
 class BsdHdBan(models.Model):
     _inherit = 'bsd.hd_ban'
 

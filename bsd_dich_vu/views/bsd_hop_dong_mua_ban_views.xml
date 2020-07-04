@@ -196,6 +196,10 @@
                         <page string="Chiết khấu">
                             <group>
                                 <group>
+                                    <field name="bsd_co_ck_ms"/>
+                                    <field name="bsd_dh_ck_ttn"/>
+                                </group>
+                                <group>
                                     <field name="bsd_hd_ms_id"/>
                                 </group>
                             </group>

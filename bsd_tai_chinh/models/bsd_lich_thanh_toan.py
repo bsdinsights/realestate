@@ -69,7 +69,7 @@ class BsdBaoGiaLTT(models.Model):
             'bsd_loai_ck': 'ttth',
             'bsd_ltt_id': self.id,
             'bsd_sn_th': so_ngay_th,
-            'bsd_tien_dot_tt': self.bsd_tien_dot_tt,
+            'bsd_tien_dot_tt': tien_tt,
             'bsd_tl_ck': ck_ttth.bsd_chiet_khau_id.bsd_tl_ck,
             'bsd_tien': ck_ttth.bsd_chiet_khau_id.bsd_tien_ck,
             'bsd_tien_ck': tien_ck,

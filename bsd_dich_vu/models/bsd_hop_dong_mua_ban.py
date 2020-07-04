@@ -108,7 +108,7 @@ class BsdHopDongMuaBan(models.Model):
                                     readonly=True)
     bsd_dh_ck_ttn = fields.Boolean(string="Đã hưởng CK Nhanh", help="Đánh dấu hợp đồng đã hưởng CK nhanh",
                                    readonly=True, default=False)
-
+    bsd_co_ck_ms = fields.Boolean(string="Xác nhận CK mua sỉ", help="Xác nhận CK mua sỉ")
     bsd_hd_ms_id = fields.Many2one('bsd.hd_ban', string="HĐ tính CK mua sỉ",
                                    readonly=True, help="Họp đồng áp dụng chiết khấu mua sỉ")
 
