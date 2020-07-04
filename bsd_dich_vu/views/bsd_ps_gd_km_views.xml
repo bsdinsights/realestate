@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_khuyen_mai_form">
-        <field name="name">bsd.khuyen_mai.form</field>
-        <field name="model">bsd.khuyen_mai</field>
+    <record model="ir.ui.view" id="bsd_ps_gd_km_form">
+        <field name="name">bsd.ps_gd_km.form</field>
+        <field name="model">bsd.ps_gd_km</field>
         <field name="arch" type="xml">
             <form>
                 <header>
@@ -20,13 +20,12 @@
                             type="object"/>
                     <button string="Không duyệt"
                             name="action_khong_duyet"
-                            class="oe_highlight"
-                            states="xac_nhan"
+                            confirm="Bạn có muốn Từ Chối yêu cầu không?"
                             type="object"
-                            confirm="Bạn có muốn Từ chối yêu cầu không?"/>
+                            states="xac_nhan"/>
                     <button string="Hủy"
                             name="action_huy"
-                            states="xac_nhan,duyet"
+                            states="xac_nhan"
                             confirm="Bạn có muốn Hủy yêu cầu không?"
                             type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
@@ -34,28 +33,30 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="currency_id" invisible="1"/>
-                            <field name="company_id" invisible="1"/>
+                            <field name="bsd_ma_ht"/>
+                            <field name="bsd_khuyen_mai_id" options="{'no_create':true}"/>
                             <field name="bsd_ma_km"/>
-                            <field name="bsd_ten_km"/>
-                            <field name="bsd_gia_tri"/>
-                            <field name="bsd_loai"/>
+                            <field name="bsd_khach_hang_id" options="{'no_create':true}"/>
+                            <field name="bsd_hd_ban_id"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id])]"/>
+                            <field name="bsd_dot_mb_id"/>
+                            <field name="bsd_dien_giai"/>
                         </group>
                         <group>
-
-                            <field name="bsd_tong_tt" attrs="{'required':[('bsd_loai', 'in', ['tien','ty_le_tien'])],
-                                                                'readonly':[('bsd_loai', 'in', ['ty_le','khong'])]}"/>
-                            <label for="bsd_tl_tt"/>
-                            <div class="o_row no-gutters d-flex">
-                                <field name="bsd_tl_tt"
-                                       class="mr-1"
-                                       attrs="{'required':[('bsd_loai', 'in', ['ty_le','ty_le_tien'])],
-                                                                'readonly':[('bsd_loai', 'in', ['tien','khong'])]}"/>
-                                <span>%</span>
-                            </div>
+                            <field name="bsd_ngay_tt"/>
+                            <field name="bsd_loai"/>
+                            <field name="bsd_gia_tri"/>
                             <field name="bsd_tu_ngay"/>
                             <field name="bsd_den_ngay"/>
-                            <field name="bsd_ngay_hldc"/>
+                            <field name="bsd_tong_tt"/>
+                            <label for="bsd_tl_tt"/>
+                            <div class="o_row no-gutters d-flex">
+                            <field name="bsd_tl_tt" class="mr-1"/>
+                                <span>%</span>
+                            </div>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
                         </group>
                     </group>
                 </sheet>
@@ -67,38 +68,41 @@
             </form>
         </field>
     </record>
-    <record model="ir.ui.view" id="bsd_khuyen_mai_tree">
-        <field name="name">bsd.khuyen_mai.tree</field>
-        <field name="model">bsd.khuyen_mai</field>
+    <record model="ir.ui.view" id="bsd_ps_gd_km_tree">
+        <field name="name">bsd.ps_gd_km.tree</field>
+        <field name="model">bsd.ps_gd_km</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="bsd_ma_ht"/>
+                <field name="bsd_khuyen_mai_id"/>
                 <field name="bsd_ma_km"/>
-                <field name="bsd_ten_km"/>
-                <field name="bsd_gia_tri"/>
-                <field name="bsd_tu_ngay"/>
-                <field name="bsd_den_ngay"/>
-                <field name="state"/>
+                <field name="bsd_khach_hang_id"/>
+
             </tree>
         </field>
     </record>
 
-    <record model="ir.ui.view" id="bsd_khuyen_mai_filter">
-        <field name="name">bsd_khuyen_mai.list.filter</field>
-        <field name="model">bsd.khuyen_mai</field>
+    <record model="ir.ui.view" id="bsd_ps_gd_km_filter">
+        <field name="name">bsd.ps_gd_km.list.filter</field>
+        <field name="model">bsd.ps_gd_km</field>
         <field name="arch" type="xml">
             <search>
                 <field name="bsd_ma_km"/>
-                <field name="bsd_ten_km"/>
+                <field name="bsd_khuyen_mai_id"/>
+                <field name="bsd_hd_ban_id"/>
+                <group expand="0" string="Group by">
+                    <filter string="Hợp đồng" name="bsd_hd_ban_id" domain="[]" context="{'group_by': 'bsd_hd_ban_id'}"/>
+                </group>
             </search>
         </field>
     </record>
 
-    <record model="ir.actions.act_window" id="bsd_khuyen_mai_action">
-        <field name="name">Chương trình khuyến mãi</field>
-        <field name="res_model">bsd.khuyen_mai</field>
+    <record model="ir.actions.act_window" id="bsd_ps_gd_km_action">
+        <field name="name">Phát sinh giao dịch chiết khấu</field>
+        <field name="res_model">bsd.ps_gd_km</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
-            <p>Tạo chương trình khuyến mãi</p>
+            <p>Giao dịch chiết khấu</p>
         </field>
     </record>
 </odoo>

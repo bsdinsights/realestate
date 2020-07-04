@@ -129,6 +129,7 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
     bsd_gd_tt = fields.Selection([('dat_coc', 'Đặt cọc'), ('hop_dong', 'Hợp đồng')],
                                  string="Giai đoạn thanh toán", help="Thanh toán trước hay sau làm hợp đồng",
                                  default="dat_coc", required=True)
+    bsd_dot_ky_hd = fields.Boolean(string="Đợt ký hợp đồng", help="Đánh dấu đợt thanh toán là đợt ký hợp đồng")
 
     @api.onchange('bsd_dot_cuoi')
     def _onchange_bsd_dot_cuoi(self):

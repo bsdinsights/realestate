@@ -114,6 +114,7 @@
                                            domain="['|',('bsd_dot_mb_id', '=', False),('bsd_dot_mb_id', '=', bsd_dot_mb_id),('state','=','duyet')]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_ma_km"/>
+                                    <field name="bsd_loai"/>
                                     <field name="bsd_tu_ngay"/>
                                     <field name="bsd_den_ngay"/>
                                     <field name="bsd_gia_tri"/>

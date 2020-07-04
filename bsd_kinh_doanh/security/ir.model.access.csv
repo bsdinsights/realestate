@@ -21,3 +21,4 @@ bsd_them_unit_manager, Thêm căn hộ của đợt mở bán,model_bsd_them_uni
 bsd_them_unit_cb_manager, Thêm căn hộ của đợt mở bán chi tiết,model_bsd_them_unit_cb,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_huy_gc_manager, Phiếu đề nghị hủy giữ chỗ,model_bsd_huy_gc,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_ck_db, Chiết khấu đặc biệt,model_bsd_ck_db,bsd_kinh_doanh.group_manager,1,1,1,1
+

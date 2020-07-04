@@ -10,14 +10,14 @@ class BsdKhuyenMai(models.Model):
     _rec_name = 'bsd_ten_km'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    bsd_ma_km = fields.Char(string="Mã khuyến mãi", help="Mã khuyến mãi", required=True, readonly=True, copy=False,
+    bsd_ma_km = fields.Char(string="Mã", help="Mã khuyến mãi", required=True, readonly=True, copy=False,
                             default='/')
 
     _sql_constraints = [
         ('bsd_ma_km_unique', 'unique (bsd_ma_km)',
          'Mã khuyến mãi đã tồn tại !'),
     ]
-    bsd_ten_km = fields.Char(string="Tên khuyến mãi", help="Tên khuyến mãi", required=True,
+    bsd_ten_km = fields.Char(string="Tên", help="Tên khuyến mãi", required=True,
                              readonly=True,
                              states={'nhap': [('readonly', False)]})
     bsd_gia_tri = fields.Monetary(string="Giá trị", help="Giá trị (tiền) được hưởng khuyến mãi", required=True,
@@ -26,9 +26,11 @@ class BsdKhuyenMai(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_loai = fields.Boolean(string="Điều kiện", help="Điều kiện xét khuyến mãi", required=True, defaule=False,
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+    bsd_loai = fields.Selection([('khong', 'Không'), ('ty_le', 'Tỷ lệ'), ('tien', 'Tiền'),
+                                 ('ty_le_tien', 'Tỷ lệ hoặc tiền')],
+                                string="Điều kiện", help="Điều kiện xét khuyến mãi", required=True, default='khong',
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
     bsd_tong_tt = fields.Monetary(string="Tổng thanh toán", help="Tổng giá trị thanh toán",
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
