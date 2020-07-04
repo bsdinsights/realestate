@@ -270,6 +270,7 @@ class BsdBaoGia(models.Model):
             'bsd_cs_tt_ct_id': dot_tt.id,
             'bsd_bao_gia_id': self.id,
             'bsd_gd_tt': dot_tt.bsd_gd_tt,
+            'bsd_dot_ky_hd': dot_tt.bsd_dot_ky_hd,
             'bsd_tien_dc': self.bsd_tien_gc + self.bsd_tien_dc if stt == 1 else 0
         })
         return res
