@@ -90,7 +90,7 @@ class BsdDatCoc(models.Model):
     bsd_tien_pql = fields.Monetary(string="Phí quản lý/ tháng", help="Số tiền phí quản lý cần đóng mỗi tháng",
                                    related="bsd_bao_gia_id.bsd_tien_pql", store=True)
 
-    state = fields.Selection([('nhap', 'Nháp'), ('dat_coc', 'Đặt cọc'), ('huy', 'Hủy')],
+    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'), ('dat_coc', 'Đặt cọc'), ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", help="Trạng thái", tracing=1, required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
@@ -175,7 +175,7 @@ class BsdDatCoc(models.Model):
     # KD.10.01 Xác nhận đặt cọc
     def action_xac_nhan(self):
         self.write({
-            'state': 'dat_coc',
+            'state': 'xac_nhan',
         })
         self._tao_rec_cong_no()
 
@@ -190,36 +190,36 @@ class BsdDatCoc(models.Model):
         })
 
     # Tạo công nợ đợt thạnh toán khi ký phiếu cọc
-    def tao_cong_no_dot_tt(self):
-        for dot_tt in self.bsd_ltt_ids.filtered(lambda d: d.bsd_gd_tt == 'dat_coc').sorted('bsd_stt'):
-            if dot_tt.bsd_stt == 1:
-                self.env['bsd.cong_no'].create({
-                        'bsd_chung_tu': dot_tt.bsd_ten_dtt,
-                        'bsd_ngay': dot_tt.bsd_ngay_hh_tt,
-                        'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                        'bsd_du_an_id': self.bsd_du_an_id.id,
-                        'bsd_ps_tang': dot_tt.bsd_tien_dot_tt - (self.bsd_tien_dc + self.bsd_tien_gc),
-                        'bsd_ps_giam': 0,
-                        'bsd_loai_ct': 'dot_tt',
-                        'bsd_phat_sinh': 'tang',
-                        'bsd_dat_coc_id': self.id,
-                        'bsd_dot_tt_id': dot_tt.id,
-                        'state': 'da_gs',
-                })
-            else:
-                self.env['bsd.cong_no'].create({
-                        'bsd_chung_tu': dot_tt.bsd_ten_dtt,
-                        'bsd_ngay': dot_tt.bsd_ngay_hh_tt,
-                        'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                        'bsd_du_an_id': self.bsd_du_an_id.id,
-                        'bsd_ps_tang': dot_tt.bsd_tien_dot_tt,
-                        'bsd_ps_giam': 0,
-                        'bsd_loai_ct': 'dot_tt',
-                        'bsd_phat_sinh': 'tang',
-                        'bsd_dat_coc_id': self.id,
-                        'bsd_dot_tt_id': dot_tt.id,
-                        'state': 'da_gs',
-                })
+    # def tao_cong_no_dot_tt(self):
+    #     for dot_tt in self.bsd_ltt_ids.filtered(lambda d: d.bsd_gd_tt == 'dat_coc').sorted('bsd_stt'):
+    #         if dot_tt.bsd_stt == 1:
+    #             self.env['bsd.cong_no'].create({
+    #                     'bsd_chung_tu': dot_tt.bsd_ten_dtt,
+    #                     'bsd_ngay': dot_tt.bsd_ngay_hh_tt,
+    #                     'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+    #                     'bsd_du_an_id': self.bsd_du_an_id.id,
+    #                     'bsd_ps_tang': dot_tt.bsd_tien_dot_tt - (self.bsd_tien_dc + self.bsd_tien_gc),
+    #                     'bsd_ps_giam': 0,
+    #                     'bsd_loai_ct': 'dot_tt',
+    #                     'bsd_phat_sinh': 'tang',
+    #                     'bsd_dat_coc_id': self.id,
+    #                     'bsd_dot_tt_id': dot_tt.id,
+    #                     'state': 'da_gs',
+    #             })
+    #         else:
+    #             self.env['bsd.cong_no'].create({
+    #                     'bsd_chung_tu': dot_tt.bsd_ten_dtt,
+    #                     'bsd_ngay': dot_tt.bsd_ngay_hh_tt,
+    #                     'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+    #                     'bsd_du_an_id': self.bsd_du_an_id.id,
+    #                     'bsd_ps_tang': dot_tt.bsd_tien_dot_tt,
+    #                     'bsd_ps_giam': 0,
+    #                     'bsd_loai_ct': 'dot_tt',
+    #                     'bsd_phat_sinh': 'tang',
+    #                     'bsd_dat_coc_id': self.id,
+    #                     'bsd_dot_tt_id': dot_tt.id,
+    #                     'state': 'da_gs',
+    #             })
 
     # KD.10.04 Ký đặt cọc
     def action_ky_dc(self):

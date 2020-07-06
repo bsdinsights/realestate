@@ -7,6 +7,8 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='bsd_ngay_tt']" position="after">
                 <field name="bsd_tien_da_tt"/>
+            </xpath>
+            <xpath expr="//field[@name='bsd_thanh_toan']" position="after">
                 <field name="bsd_tien_phai_tt"/>
             </xpath>
         </field>

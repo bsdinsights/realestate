@@ -129,7 +129,7 @@
                         <group>
                             <field name="bsd_stt"/>
                             <field name="bsd_dot_tt"/>
-                            <field name="bsd_gd_tt"/>
+                            <!--<field name="bsd_gd_tt"/>-->
                             <field name="bsd_dot_cuoi"/>
                             <field name="bsd_dot_ky_hd"/>
 

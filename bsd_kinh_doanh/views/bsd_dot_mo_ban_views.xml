@@ -125,7 +125,9 @@
                         <page string="Điều kiện bàn giao">
                             <field name="bsd_dkbg_ids" nolabel="1">
                                 <tree editable="bottom">
-                                    <field name="bsd_dk_bg_id" options="{'no_create':true}"/>
+                                    <field name="bsd_dk_bg_id"
+                                           domain="[('bsd_du_an_id','=',parent.bsd_du_an_id)]"
+                                           options="{'no_create':true}"/>
                                     <field name="bsd_ma_dkbg"/>
                                     <field name="bsd_loai_bg"/>
                                     <field name="bsd_loai_sp_id"/>

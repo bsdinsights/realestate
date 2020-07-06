@@ -8,7 +8,7 @@ _logger = logging.getLogger(__name__)
 
 class BsdChietKhau(models.Model):
     _name = 'bsd.chiet_khau'
-    _rec_name = 'bsd_ma_ck'
+    _rec_name = 'bsd_ten_ck'
     _description = "Thông tin chiết khấu"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
@@ -112,7 +112,8 @@ class BsdChietKhau(models.Model):
         if self.bsd_loai_ck == 'mua_si':
             mua_si = self.env['bsd.chiet_khau'].search([('bsd_loai_ck', '=', 'mua_si'),
                                                         ('id', '!=', self.id),
-                                                        ('state', '!=', 'huy')])
+                                                        ('state', '!=', 'huy'),
+                                                        ('bsd_du_an_id', '=', self.bsd_du_an_id.id)])
             mua_si_time = mua_si.filtered(lambda m: not (m.bsd_sl_den < self.bsd_sl_tu < self.bsd_sl_den
                                                          or self.bsd_sl_tu < self.bsd_sl_den < m.bsd_sl_tu))
             if mua_si_time:
@@ -156,6 +157,7 @@ class BsdChietKhau(models.Model):
         if self.bsd_loai_ck == 'ltt':
             lich_tt = self.env['bsd.chiet_khau'].search([('bsd_loai_ck', '=', 'ltt'),
                                                          ('id', '!=', self.id),
+                                                         ('bsd_cs_tt_id', '=', self.bsd_cs_tt_id.id),
                                                          ('state', '!=', 'huy')])
             if lich_tt:
                 raise UserError("Chính sách thanh toán đã có chiết khấu")
@@ -164,7 +166,8 @@ class BsdChietKhau(models.Model):
         if self.bsd_loai_ck == 'ttth':
             ttth = self.env['bsd.chiet_khau'].search([('bsd_loai_ck', '=', 'ttth'),
                                                       ('id', '!=', self.id),
-                                                      ('state', '!=', 'huy')])
+                                                      ('state', '!=', 'huy'),
+                                                      ('bsd_du_an_id', '=', self.bsd_du_an_id.id)])
             if ttth:
                 khoang_time = [(t.bsd_tu_ngay, t.bsd_den_ngay) for t in ttth.sorted('bsd_tu_ngay')]
                 flag_time = True
@@ -185,7 +188,9 @@ class BsdChietKhau(models.Model):
         # DM.13.10 Kiểm tra điều kiện trùng chiết khấu thanh toán nhanh
         if self.bsd_loai_ck == 'ttn':
             ttn = self.env['bsd.chiet_khau'].search([('bsd_loai_ck', '=', 'ttn'),
-                                                     ('id', '!=', self.id)])
+                                                     ('id', '!=', self.id),
+                                                     ('state', '!=', 'huy'),
+                                                     ('bsd_du_an_id', '=', self.bsd_du_an_id.id)])
             if ttn:
                 khoang_time = [(t.bsd_tu_ngay, t.bsd_den_ngay) for t in ttn.sorted('bsd_tu_ngay')]
                 flag_time = True
