@@ -79,8 +79,15 @@ class BsdHopDongMuaBan(models.Model):
     bsd_tien_pql = fields.Monetary(string="Phí quản lý", help="Số tiền phí quản lý cần đóng",
                                    related="bsd_dat_coc_id.bsd_tien_pql", store=True)
 
-    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
-                              ('da_ky', 'Đã ký'), ('huy', 'Hủy')], string="Trạng thái", default="nhap",
+    state = fields.Selection([('nhap', 'Nháp'),
+                              ('ht_dc', 'Hoàn tất đặt cọc'),
+                              ('tt_dot1', 'Thanh toán đợt 1'),
+                              ('du_dk', 'Đủ điều kiện'),
+                              ('da_ky_ttdc', 'Đã ký TTĐC'),
+                              ('da_ky', 'Đã ký HĐ'),
+                              ('dang_tt', 'Đang thanh toán'),
+                              ('thanh_ly', 'Thanh lý'),
+                              ('huy', 'Hủy')], string="Trạng thái", default="nhap",
                              help="Trạng thái", tracking=1)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
@@ -111,6 +118,15 @@ class BsdHopDongMuaBan(models.Model):
     bsd_co_ck_ms = fields.Boolean(string="Xác nhận CK mua sỉ", help="Xác nhận CK mua sỉ")
     bsd_hd_ms_id = fields.Many2one('bsd.hd_ban', string="HĐ tính CK mua sỉ",
                                    readonly=True, help="Họp đồng áp dụng chiết khấu mua sỉ")
+    bsd_co_ttdc = fields.Boolean(string="Thỏa thuận đặt cọc", related="bsd_dat_coc_id.bsd_co_ttdc",
+                                 help="Đánh dấu hợp đồng cần ký thỏa thuận đặt cọc trước khi ký hợp đồng")
+    bsd_so_ttdc = fields.Char(related="bsd_dat_coc_id.bsd_so_ttdc")
+    bsd_ngay_in_ttdc = fields.Datetime(string="Ngày in TTDC", help="Ngày in thỏa thuận đặt cọc", readonly=True)
+    bsd_ngay_hh_ttdc = fields.Datetime(string="Hạn ký TTDC", help="Hiệu lực của thỏa thuận đặt cọc", readonly=True)
+    bsd_ngay_ky_ttdc = fields.Datetime(string="Ngày ký TTDC", help="Ngày ký thỏa thuận đặt cọc", readonly=True)
+    bsd_duyet_db = fields.Boolean(string="Duyệt đặc biệt", help="Duyệt đặc biệt", readonly=True)
+    bsd_ngay_duyet_db = fields.Datetime(string="Ngày duyệt", help="Ngày duyệt", readonly=True)
+    bsd_nguoi_duyet_db_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
 
     # DV.01.11 - Theo dõi chiết khấu mua sỉ (nút nhấn wizard)
     def action_ck_ms(self):
@@ -185,7 +201,7 @@ class BsdHopDongMuaBan(models.Model):
     # DV.01.01 - Xác nhận hợp đồng
     def action_xac_nhan(self):
         self.write({
-            'state': 'xac_nhan',
+            'state': 'ht_dc',
         })
 
     # DV.01.02 In hợp đồng
