@@ -25,8 +25,8 @@
                             <field name="bsd_so_pt"/>
                             <field name="bsd_ngay_pt"/>
                             <field name="bsd_loai_pt"/>
-                            <field name="bsd_loai_hd" attrs="{'invisible':[('bsd_loai_pt','!=','dot_tt')],
-                                                              'required':[('bsd_loai_pt','=','dot_tt')]}"/>
+                            <!--<field name="bsd_loai_hd" attrs="{'invisible':[('bsd_loai_pt','!=','dot_tt')],-->
+                                                              <!--'required':[('bsd_loai_pt','=','dot_tt')]}"/>-->
                             <field name="bsd_khach_hang_id"
                                    context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
                                    options="{'no_create':true}"/>
@@ -62,17 +62,18 @@
                                    options="{'no_create':true}"
                                    domain="[('bsd_khach_hang_id','in',[bsd_khach_hang_id]),('bsd_unit_id','in',[bsd_unit_id]),
                                             ('state','=','dat_coc')]"
-                                   attrs="{'required':['|',('bsd_loai_pt','=','dat_coc'),'&amp;',('bsd_loai_pt','=','dot_tt'),('bsd_loai_hd','=','dat_coc')],
-                                           'invisible':['|',('bsd_loai_pt','not in',['dat_coc','dot_tt']),('bsd_loai_hd','=','hd_ban')]}"/>
+                                   attrs="{'required':[('bsd_loai_pt','=','dat_coc')],
+                                           'invisible':[('bsd_loai_pt','!=','dat_coc')]}"/>
                             <field name="bsd_hd_ban_id"
                                    options="{'no_create':true}"
                                    domain="[('bsd_khach_hang_id','in',[bsd_khach_hang_id]),('bsd_unit_id','in',[bsd_unit_id]),
                                             ('state','in',['xac_nhan','da_ky'])]"
-                                   attrs="{'required':[('bsd_loai_pt','=','dot_tt'),('bsd_loai_hd','=','hd_ban')],
-                                           'invisible':['|',('bsd_loai_pt','!=','dot_tt'),('bsd_loai_hd','!=','hd_ban')]}"
+                                   attrs="{'required':[('bsd_loai_pt','=','dot_tt')],
+                                           'invisible':[('bsd_loai_pt','!=','dot_tt')]}"
                             />
                             <field name="bsd_dot_tt_id"
                                    options="{'no_create':true}"
+                                   domain="[('bsd_hd_ban_id', '=', bsd_hd_ban_id)]"
                                    attrs="{'required':[('bsd_loai_pt','=','dot_tt')],
                                            'invisible':[('bsd_loai_pt','!=','dot_tt')]}"
                             />
