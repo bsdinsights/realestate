@@ -67,7 +67,7 @@
                             <field name="bsd_hd_ban_id"
                                    options="{'no_create':true}"
                                    domain="[('bsd_khach_hang_id','in',[bsd_khach_hang_id]),('bsd_unit_id','in',[bsd_unit_id]),
-                                            ('state','in',['xac_nhan','da_ky'])]"
+                                            ('state','not in',['thanh_ly','huy'])]"
                                    attrs="{'required':[('bsd_loai_pt','=','dot_tt')],
                                            'invisible':[('bsd_loai_pt','!=','dot_tt')]}"
                             />

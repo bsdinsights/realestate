@@ -232,7 +232,7 @@ class BsdHopDongMuaBan(models.Model):
                         'bsd_ngay': dot_tt.bsd_ngay_hh_tt,
                         'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                         'bsd_du_an_id': self.bsd_du_an_id.id,
-                        'bsd_ps_tang': dot_tt.bsd_tien_dot_tt - (self.bsd_tien_dc + self.bsd_tien_gc),
+                        'bsd_ps_tang': dot_tt.bsd_tien_dot_tt - dot_tt.bsd_tien_dc,
                         'bsd_ps_giam': 0,
                         'bsd_loai_ct': 'dot_tt',
                         'bsd_phat_sinh': 'tang',
