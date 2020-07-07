@@ -125,22 +125,16 @@ class BsdPhieuThu(models.Model):
     #     else:
     #         self.bsd_loai_hd = None
     #
-    # @api.onchange('bsd_dat_coc_id', 'bsd_hd_ban_id', 'bsd_loai_hd')
-    # def _onchange_dot_tt(self):
-    #     res = {}
-    #     if self.bsd_loai_hd == 'dat_coc':
-    #         res.update({
-    #             'domain': {'bsd_dot_tt_id': [('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id),
-    #                                          ('bsd_dat_coc_id', '!=', False),
-    #                                          ('bsd_gd_tt', '=', 'dat_coc')]}
-    #         })
-    #     else:
-    #         res.update({
-    #             'domain': {'bsd_dot_tt_id': [('bsd_hd_ban_id', '=', self.bsd_hd_ban_id.id),
-    #                                          ('bsd_hd_ban_id', '!=', False),
-    #                                          ('bsd_gd_tt', '=', 'hop_dong')]}
-    #         })
-    #     return res
+    @api.onchange('bsd_hd_ban_id')
+    def _onchange_dot_tt(self):
+        res = {}
+        list_dtt = []
+        if self.bsd_hd_ban_id:
+            list_dtt = self.bsd_hd_ban_id.bsd_ltt_ids.ids
+        res.update({
+                'domain': {'bsd_dot_tt_id': [('id', 'in', list_dtt)]}
+            })
+        return res
 
     # TC.01.01 Xác nhận phiếu thu
     def action_xac_nhan(self):
