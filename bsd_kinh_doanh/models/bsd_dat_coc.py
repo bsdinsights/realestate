@@ -267,8 +267,8 @@ class BsdDatCoc(models.Model):
                 'bsd_tien': ck.bsd_tien_ck,
                 'bsd_tien_ck': gd_ck.bsd_tien_ck,
             })
-        # Lấy chiết khấu đặt biệt
-        for ck_db in self.bsd_ck_db_ids:
+        # Lấy chiết khấu đặt biệt đã duyệt
+        for ck_db in self.bsd_ck_db_ids.filtered(lambda c: c.state == 'duyet'):
             self.env['bsd.ps_gd_ck'].create({
                 'bsd_ma_ck': ck_db.bsd_ma_ck_db,
                 'bsd_ten_ck': ck_db.bsd_ten_ck_db,
