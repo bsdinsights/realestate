@@ -227,7 +227,7 @@ class BsdDatCoc(models.Model):
             return datetime.date(year, month, day)
         # ngày ký đặt cọc:
         ngay_ky_dc = self.bsd_ngay_ky_dc
-        ltts = self.bsd_ltt_ids.sorted('bsd_stt')
+        ltts = self.bsd_ltt_ids.filtered(lambda l: l.bsd_loai == 'dtt').sorted('bsd_stt')
         # kiểm tra cách tính của đợt thanh toán đầu tiên
         if ltts[0].bsd_cs_tt_ct_id.bsd_cach_tinh != 'td':
             pass
@@ -238,8 +238,9 @@ class BsdDatCoc(models.Model):
                 cs_tt_ct_id = dot.bsd_cs_tt_ct_id  # lấy lại cách sinh lịch thanh toán
                 # Kiểm tra khi gặp đợt không phải tự động sẽ dừng vòng for
                 if cs_tt_ct_id.bsd_cach_tinh != 'td':
-                    ngay_hh_tt_dot = dot.bsd_ngay_hh_tt
-                    continue
+                    # ngay_hh_tt_dot = dot.bsd_ngay_hh_tt
+                    # continue
+                    break
                 if cs_tt_ct_id.bsd_tiep_theo == 'ngay':
                     ngay_hh_tt_dot += datetime.timedelta(days=cs_tt_ct_id.bsd_so_ngay)
                 else:
@@ -250,6 +251,9 @@ class BsdDatCoc(models.Model):
                 dot.write({
                     'bsd_ngay_hh_tt': ngay_hh_tt_dot,
                     'bsd_ngay_ah': ngay_an_han,
+                })
+                dot.bsd_child_ids.write({
+                    'bsd_ngay_hh_tt': dot.bsd_ngay_hh_tt,
                 })
 
     # KD.10.08 Tự động cập nhật giao dịch chiết khấu

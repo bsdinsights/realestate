@@ -171,9 +171,8 @@
                                     <field name="bsd_ten_dtt"/>
                                     <field name="bsd_ngay_hh_tt"/>
                                     <field name="bsd_tien_dot_tt" sum="Tổng tiền thanh toán"/>
-                                    <field name="bsd_tinh_pql"/>
-                                    <field name="bsd_tinh_pbt"/>
                                     <field name="bsd_dot_ky_hd"/>
+                                    <field name="bsd_child_ids" widget="many2many_tags"/>
                                     <field name="currency_id" invisible="1"/>
                                     <field name="company_id" invisible="1"/>
                                 </tree>

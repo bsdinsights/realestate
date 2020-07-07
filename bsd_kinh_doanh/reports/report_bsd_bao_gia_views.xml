@@ -103,25 +103,25 @@
                             <div class="col-12">
                                 <table class="table table-bordered table-sm"
                                    style="table-layout:fixed;border: 2px !important; border-style: solid !important; border-color: #000000 !important;" >
-                              <thead>
-                                  <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px;">
-                                      <th width="19.5%" style="border: 1px solid black !important;padding-top:0px !important">
-                                            Căn hộ
-                                      </th>
-                                      <th width="19.5%" style="border: 1px solid black !important;">
-                                            Loại căn hộ
-                                      </th>
-                                      <th width="20%" style="border: 1px solid black !important;">
-                                            Diện tích tim tường
-                                      </th>
-                                      <th width="21%" style="border: 1px solid black !important;">
-                                            Diện tích thông thủy
-                                      </th>
-                                      <th width="20%" style="border: 1px solid black !important;">
-                                            Điều kiện bàn giao
-                                      </th>
-                                  </tr>
-                              </thead>
+                                    <thead>
+                                        <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px;">
+                                              <th width="19.5%" style="border: 1px solid black !important;padding-top:0px !important">
+                                                    Căn hộ
+                                              </th>
+                                              <th width="19.5%" style="border: 1px solid black !important;">
+                                                    Loại căn hộ
+                                              </th>
+                                              <th width="20%" style="border: 1px solid black !important;">
+                                                    Diện tích tim tường
+                                              </th>
+                                              <th width="21%" style="border: 1px solid black !important;">
+                                                    Diện tích thông thủy
+                                              </th>
+                                              <th width="20%" style="border: 1px solid black !important;">
+                                                    Điều kiện bàn giao
+                                              </th>
+                                        </tr>
+                                    </thead>
                               <tbody>
                                 <tr class="text-center ">
                                   <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_unit_id.bsd_ten_unit"/></td>
@@ -214,7 +214,7 @@
                                 <td style="border: 1px solid black !important;"><div/></td>
                                 <td style="border: 1px solid black !important;"><div t-field="doc.bsd_du_an_id.bsd_tien_dc" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
                               </tr>
-                              <t t-foreach="doc.bsd_ltt_ids.sorted(key=lambda l: l.bsd_stt)" t-as="line">
+                              <t t-foreach="doc.bsd_ltt_ids.filtered(lambda x: x.bsd_loai=='dtt').sorted(key=lambda l: l.bsd_stt)" t-as="line">
                                   <t t-if="line.bsd_tinh_pql">
                                       <t t-set="tien_tt" t-value="line.bsd_tien_dot_tt - (doc.bsd_tien_pql * doc.bsd_thang_pql)"/>
                                   </t>

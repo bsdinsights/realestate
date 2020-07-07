@@ -111,7 +111,7 @@ class BsdBaoGia(models.Model):
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_bao_gia_id', string="Lịch thanh toán",
-                                  readonly=True)
+                                  readonly=True, domain=[('bsd_loai', 'in', ['dtt', 'pbt'])])
     bsd_ps_ck_ids = fields.One2many('bsd.ps_ck', 'bsd_bao_gia_id', string="Phát sinh chiết khấu",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
@@ -269,9 +269,9 @@ class BsdBaoGia(models.Model):
             'bsd_cs_tt_id': cs_tt.id,
             'bsd_cs_tt_ct_id': dot_tt.id,
             'bsd_bao_gia_id': self.id,
-            # 'bsd_gd_tt': dot_tt.bsd_gd_tt,
             'bsd_dot_ky_hd': dot_tt.bsd_dot_ky_hd,
-            'bsd_tien_dc': self.bsd_tien_gc + self.bsd_tien_dc if stt == 1 else 0
+            'bsd_tien_dc': self.bsd_tien_gc + self.bsd_tien_dc if stt == 1 else 0,
+            'bsd_loai': 'dtt'
         })
         return res
 
@@ -298,6 +298,7 @@ class BsdBaoGia(models.Model):
         # dùng để tính tiền đợt thanh toán cuối
         tong_tien_dot_tt = 0
 
+        # Tạo các đợt thanh toán
         for dot in dot_tt_ids.sorted('bsd_stt'):
             # Tạo dữ liệu đợt cố định
             if dot.bsd_cach_tinh == 'cd' and not dot.bsd_dot_cuoi:
@@ -366,6 +367,41 @@ class BsdBaoGia(models.Model):
                 _logger.debug(tien_dot_tt)
                 self.bsd_ltt_ids.create(self._cb_du_lieu_dtt(stt, 'DBGC', dot_cuoi, lai_phat, False, cs_tt,
                                                              tien_dot_tt))
+
+        # Tạo đợt thu phí quản lý
+        dot_pql = self.bsd_ltt_ids.filtered(lambda d: d.bsd_tinh_pql)
+        if dot_pql:
+            dot_pql = dot_pql[0]
+            stt += 1
+            self.bsd_ltt_ids.create({
+                'bsd_stt': stt,
+                'bsd_ma_dtt': 'PQL',
+                'bsd_ten_dtt': 'Đợt thu phí quản lý',
+                'bsd_ngay_hh_tt': dot_pql.bsd_ngay_hh_tt,
+                'bsd_tien_dot_tt': self.bsd_tien_pql,
+                'bsd_cs_tt_id': dot_pql.bsd_cs_tt_id.id,
+                'bsd_cs_tt_ct_id': dot_pql.bsd_cs_tt_ct_id.id,
+                'bsd_bao_gia_id': self.id,
+                'bsd_parent_id': dot_pql.id,
+                'bsd_loai': 'pql'
+            })
+        # Tạo đợt thu phí bảo trì
+        dot_pbt = self.bsd_ltt_ids.filtered(lambda d: d.bsd_tinh_pbt)
+        if dot_pbt:
+            dot_pbt = dot_pbt[0]
+            stt += 1
+            self.bsd_ltt_ids.create({
+                'bsd_stt': stt,
+                'bsd_ma_dtt': 'PBT',
+                'bsd_ten_dtt': 'Đợt thu phí bảo trì',
+                'bsd_ngay_hh_tt': dot_pbt.bsd_ngay_hh_tt,
+                'bsd_tien_dot_tt': self.bsd_tien_pbt,
+                'bsd_cs_tt_id': dot_pbt.bsd_cs_tt_id.id,
+                'bsd_cs_tt_ct_id': dot_pbt.bsd_cs_tt_ct_id.id,
+                'bsd_bao_gia_id': self.id,
+                'bsd_parent_id': dot_pbt.id,
+                'bsd_loai': 'pbt'
+            })
 
     def action_huy(self):
         pass

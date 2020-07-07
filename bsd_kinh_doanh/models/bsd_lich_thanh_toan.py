@@ -26,14 +26,14 @@ class BsdBaoGiaLTT(models.Model):
     bsd_tinh_pbt = fields.Boolean(string="Phí bảo trì", help="Tính phí bảo trì vào đợt thanh toán hay không")
     bsd_ngay_ah = fields.Date(string="Ngày ân hạn", help="Ngày ân hạn thanh toán")
     bsd_tinh_phat = fields.Selection([('htt', 'Hạn thanh toán'), ('nah', 'Ngày ân hạn')], string="Tính phạt",
-                                     required=True, default="htt")
-    bsd_lai_phat = fields.Float(string="Lãi phạt(%/ngày)", help="Tỷ lệ đóng lãi phạt theo ngày", required=True)
-    bsd_tien_td = fields.Monetary(string="Tiền phạt tối đa", help="Tiền phạt chậm thanh toán tối đa", required=True)
-    bsd_tl_td = fields.Float(string="Tỷ lệ phạt tối đa", help="Tỷ lệ tối đa phạt chậm thanh toán", required=True)
-    bsd_phat_thd = fields.Float(string="Phạt trước hợp đồng", required=True,
+                                     default="htt")
+    bsd_lai_phat = fields.Float(string="Lãi phạt(%/ngày)", help="Tỷ lệ đóng lãi phạt theo ngày")
+    bsd_tien_td = fields.Monetary(string="Tiền phạt tối đa", help="Tiền phạt chậm thanh toán tối đa")
+    bsd_tl_td = fields.Float(string="Tỷ lệ phạt tối đa", help="Tỷ lệ tối đa phạt chậm thanh toán")
+    bsd_phat_thd = fields.Float(string="Phạt trước hợp đồng",
                                 help="""Phần trăm phí phạt (theo giá trị hợp đồng) trong 
                                         trường hợp chấm dứt giao dịch trước khi ký hợp đồng""")
-    bsd_phat_shd = fields.Float(string="Phạt sau hợp đồng", required=True,
+    bsd_phat_shd = fields.Float(string="Phạt sau hợp đồng",
                                 help="""Phần trăm phí phạt (theo giá trị hợp đồng) trong trường hợp chấm dứt 
                                         giao dịch sau khi ký hợp đồng""")
     bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="CS thanh toán", help="Chính sách thanh toán", required=True)
@@ -46,21 +46,26 @@ class BsdBaoGiaLTT(models.Model):
     #                              string="Giai đoạn thanh toán", help="Thanh toán trước hay sau làm hợp đồng",
     #                              default="dat_coc", required=True)
     bsd_dot_ky_hd = fields.Boolean(string="Đợt ký hợp đồng", help="Đánh dấu đợt thanh toán là đợt ký hợp đồng")
+    bsd_parent_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán", readonly=True)
+    bsd_child_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_parent_id', string="Phí", readonly=True)
+    bsd_loai = fields.Selection([('dtt', 'Đợt thanh toán'),
+                                 ('pql', 'Phí quản lý'),
+                                 ('pbt', 'Phí bảo trì')], string="Loại", help="Phân loại", readonly=True)
 
     @api.depends('bsd_tien_dot_tt', 'bsd_tien_da_tt')
     def _compute_tien_tt(self):
         for each in self:
             each.bsd_tien_phai_tt = each.bsd_tien_dot_tt - each.bsd_tien_da_tt
 
-    @api.model
-    def create(self, vals):
-        rec = super(BsdBaoGiaLTT, self).create(vals)
-        tien_dot_tt = rec.bsd_tien_dot_tt
-        if rec.bsd_tinh_pql:
-            tien_dot_tt += rec.bsd_bao_gia_id.bsd_tien_pql
-        if rec.bsd_tinh_pbt:
-            tien_dot_tt += rec.bsd_bao_gia_id.bsd_tien_pbt
-        rec.write({
-            'bsd_tien_dot_tt': tien_dot_tt,
-        })
-        return rec
+    # @api.model
+    # def create(self, vals):
+    #     rec = super(BsdBaoGiaLTT, self).create(vals)
+    #     tien_dot_tt = rec.bsd_tien_dot_tt
+    #     if rec.bsd_tinh_pql:
+    #         tien_dot_tt += rec.bsd_bao_gia_id.bsd_tien_pql
+    #     if rec.bsd_tinh_pbt:
+    #         tien_dot_tt += rec.bsd_bao_gia_id.bsd_tien_pbt
+    #     rec.write({
+    #         'bsd_tien_dot_tt': tien_dot_tt,
+    #     })
+    #     return rec
