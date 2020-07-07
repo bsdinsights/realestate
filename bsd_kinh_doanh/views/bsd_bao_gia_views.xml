@@ -401,7 +401,7 @@
                                 </group>
                             </group>
                         </page>
-                        <page string="Phí" attrs="{'invisible':[('bsd_tinh_pql','=',False)('bsd_tinh_pbt','=',False)]}">
+                        <page string="Phí" attrs="{'invisible':[('bsd_tinh_pql','=',False),('bsd_tinh_pbt','=',False)]}">
                             <field name="bsd_child_ids" nolabel="1">
                                 <tree>
                                     <field name="bsd_ma_dtt"/>

@@ -34,7 +34,9 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
                 filtered(lambda c: c.bsd_tu_ngay < ngay_ut < c.bsd_den_ngay)
             ck_ttn = item_ttn[0].bsd_chiet_khau_id if item_ttn else False
         # lấy các đợt thanh toán trước hạn
-        dot_tt = hd_ban.bsd_ltt_ids.filtered(lambda t: t.bsd_ngay_hh_tt and ngay_ut < t.bsd_ngay_hh_tt).sorted('bsd_stt')
+        dot_tt = hd_ban.bsd_ltt_ids\
+            .filtered(lambda t: t.bsd_ngay_hh_tt and ngay_ut < t.bsd_ngay_hh_tt and t.bsd_loai=='dtt')\
+            .sorted('bsd_stt')
 
         _logger.debug("chiết khấu")
         _logger.debug(ck_ttth)
@@ -84,7 +86,7 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
                     'bsd_ngay_hh_tt': dot_tt[0].bsd_ngay_hh_tt.strftime("%d/%m/%Y"),
                     'bsd_ngay_tt': ngay_ut.strftime("%d/%m/%Y"),
                     'bsd_so_ngay_th': bsd_so_ngay_th,
-                    'bsd_tien_dot_tt': dot_tt[0].bsd_tien_dot_tt,
+                    'bsd_tien_dot_tt': dot_tt[0].bsd_tien_phai_tt,
                     'bsd_tl_ck_dot': float_repr(bsd_tl_ck_dot, precision_digits=3),
                     'bsd_tien_ck': bsd_tien_ck,
                     'bsd_tien_tt': bsd_tien_tt,
@@ -106,7 +108,7 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
                             'bsd_ngay_hh_tt': dot.bsd_ngay_hh_tt.strftime("%d/%m/%Y"),
                             'bsd_ngay_tt': ngay_ut.strftime("%d/%m/%Y"),
                             'bsd_so_ngay_th': bsd_so_ngay_th,
-                            'bsd_tien_dot_tt': dot.bsd_tien_dot_tt,
+                            'bsd_tien_dot_tt': dot.bsd_tien_phai_tt,
                             'bsd_tl_ck_dot': float_repr(bsd_tl_ck_dot, precision_digits=3),
                             'bsd_tien_ck': bsd_tien_ck,
                             'bsd_tien_tt': bsd_tien_tt,
