@@ -57,7 +57,7 @@ class BsdBaoGiaLTT(models.Model):
         rec = super(BsdBaoGiaLTT, self).create(vals)
         tien_dot_tt = rec.bsd_tien_dot_tt
         if rec.bsd_tinh_pql:
-            tien_dot_tt += rec.bsd_bao_gia_id.bsd_thang_pql * rec.bsd_bao_gia_id.bsd_tien_pql
+            tien_dot_tt += rec.bsd_bao_gia_id.bsd_tien_pql
         if rec.bsd_tinh_pbt:
             tien_dot_tt += rec.bsd_bao_gia_id.bsd_tien_pbt
         rec.write({
