@@ -203,6 +203,7 @@ class BsdHopDongMuaBan(models.Model):
         self.write({
             'state': 'ht_dc',
         })
+        self.tao_cong_no_dot_tt()
 
     # DV.01.02 In hợp đồng
     def action_in_hd(self):
@@ -224,20 +225,35 @@ class BsdHopDongMuaBan(models.Model):
 
     # DV.01.08 Theo dõi công nợ hợp đồng
     def tao_cong_no_dot_tt(self):
-        for dot_tt in self.bsd_ltt_ids.filtered(lambda d: d.bsd_gd_tt == 'hop_dong').sorted('bsd_stt'):
-            self.env['bsd.cong_no'].create({
-                    'bsd_chung_tu': dot_tt.bsd_ten_dtt,
-                    'bsd_ngay': dot_tt.bsd_ngay_hh_tt,
-                    'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                    'bsd_du_an_id': self.bsd_du_an_id.id,
-                    'bsd_ps_tang': dot_tt.bsd_tien_dot_tt,
-                    'bsd_ps_giam': 0,
-                    'bsd_loai_ct': 'dot_tt',
-                    'bsd_phat_sinh': 'tang',
-                    'bsd_hd_ban_id': self.id,
-                    'bsd_dot_tt_id': dot_tt.id,
-                    'state': 'da_gs',
-            })
+        for dot_tt in self.bsd_ltt_ids.sorted('bsd_stt'):
+            if dot_tt.bsd_stt == 1:
+                self.env['bsd.cong_no'].create({
+                        'bsd_chung_tu': dot_tt.bsd_ten_dtt,
+                        'bsd_ngay': dot_tt.bsd_ngay_hh_tt,
+                        'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                        'bsd_du_an_id': self.bsd_du_an_id.id,
+                        'bsd_ps_tang': dot_tt.bsd_tien_dot_tt - (self.bsd_tien_dc + self.bsd_tien_gc),
+                        'bsd_ps_giam': 0,
+                        'bsd_loai_ct': 'dot_tt',
+                        'bsd_phat_sinh': 'tang',
+                        'bsd_hd_ban_id': self.id,
+                        'bsd_dot_tt_id': dot_tt.id,
+                        'state': 'da_gs',
+                })
+            else:
+                self.env['bsd.cong_no'].create({
+                        'bsd_chung_tu': dot_tt.bsd_ten_dtt,
+                        'bsd_ngay': dot_tt.bsd_ngay_hh_tt,
+                        'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                        'bsd_du_an_id': self.bsd_du_an_id.id,
+                        'bsd_ps_tang': dot_tt.bsd_tien_dot_tt,
+                        'bsd_ps_giam': 0,
+                        'bsd_loai_ct': 'dot_tt',
+                        'bsd_phat_sinh': 'tang',
+                        'bsd_hd_ban_id': self.id,
+                        'bsd_dot_tt_id': dot_tt.id,
+                        'state': 'da_gs',
+                })
 
     @api.model
     def create(self, vals):
