@@ -372,11 +372,10 @@ class BsdBaoGia(models.Model):
         dot_pql = self.bsd_ltt_ids.filtered(lambda d: d.bsd_tinh_pql)
         if dot_pql:
             dot_pql = dot_pql[0]
-            stt += 1
             self.bsd_ltt_ids.create({
-                'bsd_stt': stt,
+                'bsd_stt': dot_pql.stt,
                 'bsd_ma_dtt': 'PQL',
-                'bsd_ten_dtt': 'Đợt thu phí quản lý',
+                'bsd_ten_dtt': dot_pql.bsd_ten_dtt + ' (phí quản lý)',
                 'bsd_ngay_hh_tt': dot_pql.bsd_ngay_hh_tt,
                 'bsd_tien_dot_tt': self.bsd_tien_pql,
                 'bsd_cs_tt_id': dot_pql.bsd_cs_tt_id.id,
@@ -389,11 +388,10 @@ class BsdBaoGia(models.Model):
         dot_pbt = self.bsd_ltt_ids.filtered(lambda d: d.bsd_tinh_pbt)
         if dot_pbt:
             dot_pbt = dot_pbt[0]
-            stt += 1
             self.bsd_ltt_ids.create({
-                'bsd_stt': stt,
+                'bsd_stt': dot_pbt.stt,
                 'bsd_ma_dtt': 'PBT',
-                'bsd_ten_dtt': 'Đợt thu phí bảo trì',
+                'bsd_ten_dtt': dot_pbt.bsd_ten_dtt + ' (phí quản lý)',
                 'bsd_ngay_hh_tt': dot_pbt.bsd_ngay_hh_tt,
                 'bsd_tien_dot_tt': self.bsd_tien_pbt,
                 'bsd_cs_tt_id': dot_pbt.bsd_cs_tt_id.id,
