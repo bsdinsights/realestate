@@ -373,7 +373,7 @@ class BsdBaoGia(models.Model):
         if dot_pql:
             dot_pql = dot_pql[0]
             self.bsd_ltt_ids.create({
-                'bsd_stt': dot_pql.stt,
+                'bsd_stt': dot_pql.bsd_stt,
                 'bsd_ma_dtt': 'PQL',
                 'bsd_ten_dtt': dot_pql.bsd_ten_dtt,
                 'bsd_ngay_hh_tt': dot_pql.bsd_ngay_hh_tt,
@@ -389,7 +389,7 @@ class BsdBaoGia(models.Model):
         if dot_pbt:
             dot_pbt = dot_pbt[0]
             self.bsd_ltt_ids.create({
-                'bsd_stt': dot_pbt.stt,
+                'bsd_stt': dot_pbt.bsd_stt,
                 'bsd_ma_dtt': 'PBT',
                 'bsd_ten_dtt': dot_pbt.bsd_ten_dtt,
                 'bsd_ngay_hh_tt': dot_pbt.bsd_ngay_hh_tt,
