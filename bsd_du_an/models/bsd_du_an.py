@@ -98,7 +98,7 @@ class BsdProject(models.Model):
                                 help="Tiền hoa hồng được hương của nhân viên dịch vụ khách hàng")
     state = fields.Selection([('chuan_bi', 'Chuẩn bị'),
                               ('phat_hanh', 'Đã ban hành')],
-                             string="Trạng thái", default='nhap', required=True, tracking=1, help="Trạng thái")
+                             string="Trạng thái", default='chuan_bi', required=True, tracking=1, help="Trạng thái")
     bsd_tk_ng_ids = fields.One2many('bsd.da_tknh', 'bsd_du_an_id', string="Tài khoản ngân hàng")
     bsd_nh_tt_ids = fields.One2many('bsd.da_nh', 'bsd_du_an_id', string="Ngân hàng tài trợ")
     bsd_nh_cv_ids = fields.One2many('bsd.da_nh_vay', 'bsd_du_an_id', string="Ngân hàng cho vay")

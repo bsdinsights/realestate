@@ -116,26 +116,32 @@ class BsdPhieuThu(models.Model):
             dat_coc = self.env['bsd.dat_coc'].search([('id', '=', self.bsd_dat_coc_id.id)])
             self.bsd_tien = dat_coc.bsd_tien_phai_tt
 
-        if self.bsd_loai_pt == 'dot_tt' and self.bsd_dot_tt_id:
+        if self.bsd_loai_pt in ['dot_tt', 'pql', 'pbt'] and self.bsd_dot_tt_id:
             dot_tt = self.env['bsd.lich_thanh_toan'].search([('id', '=', self.bsd_dot_tt_id.id)])
             self.bsd_tien = dot_tt.bsd_tien_phai_tt
 
-    # @api.onchange('bsd_loai_pt')
-    # def _onchange_loai_sp(self):
-    #     if self.bsd_loai_pt == 'dot_tt':
-    #         self.bsd_loai_hd = 'dat_coc'
-    #     else:
-    #         self.bsd_loai_hd = None
-    #
-    @api.onchange('bsd_hd_ban_id')
+    @api.onchange('bsd_hd_ban_id', 'bsd_loai_pt')
     def _onchange_dot_tt(self):
         res = {}
         list_dtt = []
-        if self.bsd_hd_ban_id:
+        if self.bsd_hd_ban_id and self.bsd_loai_pt == 'dot_tt':
             list_dtt = self.bsd_hd_ban_id.bsd_ltt_ids.ids
+        elif self.bsd_hd_ban_id and self.bsd_loai_pt == 'pql':
+            pql = self.bsd_hd_ban_id.bsd_ltt_ids\
+                                .filtered(lambda x: x.bsd_tinh_pql)\
+                                .bsd_child_ids.filtered(lambda r: r.bsd_loai == 'pql')
+            self.bsd_dot_tt_id = pql
+            list_dtt = pql.ids
+        elif self.bsd_hd_ban_id and self.bsd_loai_pt == 'pbt':
+            pbt = self.bsd_hd_ban_id.bsd_ltt_ids\
+                                .filtered(lambda x: x.bsd_tinh_pbt)\
+                                .bsd_child_ids.filtered(lambda r: r.bsd_loai == 'pbt')
+            self.bsd_dot_tt_id = pbt
+            list_dtt = pbt.ids
         res.update({
                 'domain': {'bsd_dot_tt_id': [('id', 'in', list_dtt)]}
             })
+
         return res
 
     # TC.01.01 Xác nhận phiếu thu
@@ -156,11 +162,7 @@ class BsdPhieuThu(models.Model):
             self._gs_pt_giu_cho()
         elif self.bsd_loai_pt == 'dat_coc':
             self._gs_pt_dat_coc()
-        elif self.bsd_loai_pt == 'dot_tt':
-            # if self.bsd_loai_hd == 'dat_coc':
-            #     self._gs_pt_dot_tt_dc()
-            # else:
-            #     self._gs_pt_dot_tt_hd()
+        elif self.bsd_loai_pt in ['dot_tt', 'pql', 'pbt']:
             self._gs_pt_dot_tt_hd()
         else:
             pass

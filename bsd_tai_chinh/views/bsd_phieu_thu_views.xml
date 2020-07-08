@@ -44,8 +44,8 @@
                                    context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                    options="{'no_create':true}"
                                    domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"
-                                   attrs="{'invisible':[('bsd_loai_pt','not in',['giu_cho','dat_coc','dot_tt'])],
-                                           'required':[('bsd_loai_pt','in',['giu_cho','dat_coc','dot_tt'])]}"/>
+                                   attrs="{'invisible':[('bsd_loai_pt','not in',['giu_cho','dat_coc','dot_tt','pql','pbt'])],
+                                           'required':[('bsd_loai_pt','in',['giu_cho','dat_coc','dot_tt','pql','pbt'])]}"/>
                             <field name="bsd_gc_tc_id"
                                    options="{'no_create':true}"
                                    domain="[('bsd_khach_hang_id','in',[bsd_khach_hang_id]),('bsd_du_an_id','in',[bsd_du_an_id]),
@@ -68,13 +68,13 @@
                                    options="{'no_create':true}"
                                    domain="[('bsd_khach_hang_id','in',[bsd_khach_hang_id]),('bsd_unit_id','in',[bsd_unit_id]),
                                             ('state','not in',['thanh_ly','huy'])]"
-                                   attrs="{'required':[('bsd_loai_pt','=','dot_tt')],
-                                           'invisible':[('bsd_loai_pt','!=','dot_tt')]}"
+                                   attrs="{'required':[('bsd_loai_pt','in',['dot_tt','pql','pbt'])],
+                                           'invisible':[('bsd_loai_pt','not in',['dot_tt','pql','pbt'])]}"
                             />
                             <field name="bsd_dot_tt_id"
                                    options="{'no_create':true}"
-                                   attrs="{'required':[('bsd_loai_pt','=','dot_tt')],
-                                           'invisible':[('bsd_loai_pt','!=','dot_tt')]}"
+                                   attrs="{'required':[('bsd_loai_pt','in',['dot_tt','pql','pbt'])],
+                                           'invisible':[('bsd_loai_pt','not in',['dot_tt','pql','pbt'])]}"
                             />
                             <field name="currency_id"/>
                             <field name="company_id" invisible="1"/>

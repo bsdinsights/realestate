@@ -35,7 +35,7 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
             ck_ttn = item_ttn[0].bsd_chiet_khau_id if item_ttn else False
         # lấy các đợt thanh toán trước hạn
         dot_tt = hd_ban.bsd_ltt_ids\
-            .filtered(lambda t: t.bsd_ngay_hh_tt and ngay_ut < t.bsd_ngay_hh_tt and t.bsd_loai=='dtt')\
+            .filtered(lambda t: t.bsd_ngay_hh_tt and ngay_ut < t.bsd_ngay_hh_tt )\
             .sorted('bsd_stt')
 
         _logger.debug("chiết khấu")
@@ -74,7 +74,7 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
             pass
         else:
             so_tien_ut_can_tru = data['bsd_tien_ut']
-            if data['bsd_tien_ut'] < dot_tt[0].bsd_tien_dot_tt:
+            if data['bsd_tien_ut'] < dot_tt[0].bsd_tien_phai_tt:
                 bsd_tien_tt = data['bsd_tien_ut']
                 bsd_so_ngay_th = (dot_tt[0].bsd_ngay_hh_tt - ngay_ut).days
                 bsd_tl_ck_dot = ck_ttth.bsd_tl_ck * bsd_so_ngay_th
@@ -86,16 +86,16 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
                     'bsd_ngay_hh_tt': dot_tt[0].bsd_ngay_hh_tt.strftime("%d/%m/%Y"),
                     'bsd_ngay_tt': ngay_ut.strftime("%d/%m/%Y"),
                     'bsd_so_ngay_th': bsd_so_ngay_th,
-                    'bsd_tien_dot_tt': dot_tt[0].bsd_tien_phai_tt,
+                    'bsd_tien_dot_tt': dot_tt[0].bsd_tien_dot_tt,
                     'bsd_tl_ck_dot': float_repr(bsd_tl_ck_dot, precision_digits=3),
                     'bsd_tien_ck': bsd_tien_ck,
                     'bsd_tien_tt': bsd_tien_tt,
                 })
             else:
                 for dot in dot_tt:
-                    so_tien_ut_can_tru -= dot.bsd_tien_dot_tt
+                    so_tien_ut_can_tru -= dot.bsd_tien_phai_tt
                     if so_tien_ut_can_tru >= 0:
-                        bsd_tien_tt = dot.bsd_tien_dot_tt
+                        bsd_tien_tt = dot.bsd_tien_phai_tt
                     else:
                         bsd_tien_tt = abs(so_tien_ut_can_tru)
                         bsd_so_ngay_th = (dot.bsd_ngay_hh_tt - ngay_ut).days
@@ -108,7 +108,7 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
                             'bsd_ngay_hh_tt': dot.bsd_ngay_hh_tt.strftime("%d/%m/%Y"),
                             'bsd_ngay_tt': ngay_ut.strftime("%d/%m/%Y"),
                             'bsd_so_ngay_th': bsd_so_ngay_th,
-                            'bsd_tien_dot_tt': dot.bsd_tien_phai_tt,
+                            'bsd_tien_dot_tt': dot.bsd_tien_dot_tt,
                             'bsd_tl_ck_dot': float_repr(bsd_tl_ck_dot, precision_digits=3),
                             'bsd_tien_ck': bsd_tien_ck,
                             'bsd_tien_tt': bsd_tien_tt,
