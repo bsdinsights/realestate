@@ -57,7 +57,9 @@
                                            options="{'no_create':true}"/>
                                     <field name="bsd_dat_coc_id"
                                            options="{'no_create':true}"
-                                           domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id])]"/>
+                                           domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id]),
+                                                    ('state', '=', 'dat_coc'),('bsd_ngay_ky_dc', '!=',False)]"
+                                    />
                                 </group>
                                 <group>
                                     <field name="bsd_bao_gia_id"/>

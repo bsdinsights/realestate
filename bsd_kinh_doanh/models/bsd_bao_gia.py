@@ -111,7 +111,7 @@ class BsdBaoGia(models.Model):
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_bao_gia_id', string="Lịch thanh toán",
-                                  readonly=True, domain=[('bsd_loai', 'in', ['dtt', 'pbt'])])
+                                  readonly=True, domain=[('bsd_loai', 'in', ['dtt'])])
     bsd_ps_ck_ids = fields.One2many('bsd.ps_ck', 'bsd_bao_gia_id', string="Phát sinh chiết khấu",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})

@@ -26,6 +26,8 @@ class BsdPhieuThu(models.Model):
                                     ('giu_cho', 'Giữ chỗ'),
                                     ('dat_coc', 'Đặt cọc'),
                                     ('dot_tt', 'Đợt thanh toán'),
+                                    ('pql', 'Phí quản lý'),
+                                    ('pbt', 'Phí bảo trì'),
                                     ('khac', 'Khác')], default="tra_truoc", required=True, string="Loại phiếu thu",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})

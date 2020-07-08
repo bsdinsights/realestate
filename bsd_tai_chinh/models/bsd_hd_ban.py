@@ -20,7 +20,7 @@ class BsdHdBan(models.Model):
             if each.bsd_tong_gia > 0:
                 each.bsd_tien_tt_hd = sum(each.bsd_ltt_ids.mapped('bsd_tien_da_tt')) + \
                                       each.bsd_ltt_ids.filtered(lambda x: x.bsd_stt == 1).bsd_tien_dc
-                each.bsd_tl_tt_hd = each.bsd_tien_tt_hd / each.bsd_tong_gia * 100
+                each.bsd_tl_tt_hd = each.bsd_tien_tt_hd / (each.bsd_tong_gia - each.bsd_tien_pbt) * 100
 
     # DV.01.13 Theo dõi giao dịch khuyến mãi
     def tao_giao_dich_khuyen_mai(self, ngay_tt):
