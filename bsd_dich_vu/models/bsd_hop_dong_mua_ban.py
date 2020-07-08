@@ -205,6 +205,7 @@ class BsdHopDongMuaBan(models.Model):
             'state': 'ht_dc',
         })
         self.tao_cong_no_dot_tt()
+        self.tao_cong_no_phi()
 
     # DV.01.02 In hợp đồng
     def action_in_hd(self):

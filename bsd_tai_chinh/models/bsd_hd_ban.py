@@ -79,3 +79,17 @@ class BsdHdBan(models.Model):
                 'bsd_ngay_tt': ngay_tt,
                 'state': 'xac_nhan',
             })
+
+    # DV.01.15 - Cập nhật trạng thái Thanh toán đợt 1
+    def action_tt_dot1(self):
+        if self.state == 'ht_dc' and not self.bsd_duyet_db:
+            self.write({
+                'state': 'tt_dot1'
+            })
+
+    # DV.01.16 - Cập nhật trạng thái Đủ điều kiện
+    def action_du_dk(self):
+        if self.state == 'ht_dc' and not self.bsd_duyet_db:
+            self.write({
+                'state': 'du_dk'
+            })
