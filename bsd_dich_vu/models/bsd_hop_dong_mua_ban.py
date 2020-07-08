@@ -256,6 +256,44 @@ class BsdHopDongMuaBan(models.Model):
                         'state': 'da_gs',
                 })
 
+    # DV.01.18 Theo dõi công nợ phí
+    def tao_cong_no_phi(self):
+        pql = self.bsd_ltt_ids\
+                   .filtered(lambda x: x.bsd_tinh_pql)\
+                   .bsd_child_ids.filtered(lambda r: r.bsd_loai == 'pql')
+        if pql:
+            self.env['bsd.cong_no'].create({
+                    'bsd_chung_tu': pql[0].bsd_ten_dtt,
+                    'bsd_ngay': pql[0].bsd_ngay_hh_tt,
+                    'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                    'bsd_du_an_id': self.bsd_du_an_id.id,
+                    'bsd_ps_tang': pql[0].bsd_tien_dot_tt,
+                    'bsd_ps_giam': 0,
+                    'bsd_loai_ct': 'pql',
+                    'bsd_phat_sinh': 'tang',
+                    'bsd_hd_ban_id': self.id,
+                    'bsd_dot_tt_id': pql[0].id,
+                    'state': 'da_gs',
+            })
+        pbt = self.bsd_ltt_ids\
+                  .filtered(lambda x: x.bsd_tinh_pbt)\
+                  .bsd_child_ids.filtered(lambda r: r.bsd_loai == 'pbt')
+        if pbt:
+            self.env['bsd.cong_no'].create({
+                    'bsd_chung_tu': pbt[0].bsd_ten_dtt,
+                    'bsd_ngay': pbt[0].bsd_ngay_hh_tt,
+                    'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                    'bsd_du_an_id': self.bsd_du_an_id.id,
+                    'bsd_ps_tang': pbt[0].bsd_tien_dot_tt,
+                    'bsd_ps_giam': 0,
+                    'bsd_loai_ct': 'pbt',
+                    'bsd_phat_sinh': 'tang',
+                    'bsd_hd_ban_id': self.id,
+                    'bsd_dot_tt_id': pbt[0].id,
+                    'state': 'da_gs',
+            })
+
+
     @api.model
     def create(self, vals):
         sequence = False

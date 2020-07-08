@@ -153,7 +153,7 @@ class BsdPhieuThu(models.Model):
     # Nút vào sổ
     def action_vao_so(self):
         if self.bsd_loai_pt == 'tra_truoc':
-            self._gs_pt_tra_trươc()
+            self._gs_pt_tra_truoc()
         elif self.bsd_loai_pt == 'khac':
             self._gs_pt_khac()
         elif self.bsd_loai_pt == 'gc_tc':
@@ -172,7 +172,7 @@ class BsdPhieuThu(models.Model):
         })
 
     # TC.01.02 Ghi sổ phiếu thu trả trước
-    def _gs_pt_tra_trươc(self):
+    def _gs_pt_tra_truoc(self):
         self.env['bsd.cong_no'].create({
                 'bsd_chung_tu': self.bsd_so_pt,
                 'bsd_ngay': self.bsd_ngay_pt,
