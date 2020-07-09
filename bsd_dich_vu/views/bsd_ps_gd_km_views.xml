@@ -98,7 +98,7 @@
     </record>
 
     <record model="ir.actions.act_window" id="bsd_ps_gd_km_action">
-        <field name="name">Phát sinh giao dịch chiết khấu</field>
+        <field name="name">Giao dịch khuyến mãi</field>
         <field name="res_model">bsd.ps_gd_km</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
