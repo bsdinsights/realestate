@@ -87,7 +87,7 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
                     'bsd_ngay_tt': ngay_ut.strftime("%d/%m/%Y"),
                     'bsd_so_ngay_th': bsd_so_ngay_th,
                     'bsd_tien_dot_tt': dot_tt[0].bsd_tien_dot_tt,
-                    'bsd_tl_ck_dot': float_repr(bsd_tl_ck_dot, precision_digits=3),
+                    'bsd_tl_ck_dot': bsd_tl_ck_dot,
                     'bsd_tien_ck': bsd_tien_ck,
                     'bsd_tien_tt': bsd_tien_tt,
                 })
@@ -109,7 +109,7 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
                             'bsd_ngay_tt': ngay_ut.strftime("%d/%m/%Y"),
                             'bsd_so_ngay_th': bsd_so_ngay_th,
                             'bsd_tien_dot_tt': dot.bsd_tien_dot_tt,
-                            'bsd_tl_ck_dot': float_repr(bsd_tl_ck_dot, precision_digits=3),
+                            'bsd_tl_ck_dot': bsd_tl_ck_dot,
                             'bsd_tien_ck': bsd_tien_ck,
                             'bsd_tien_tt': bsd_tien_tt,
                         })
@@ -125,7 +125,7 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
                         'bsd_ngay_tt': ngay_ut.strftime("%d/%m/%Y"),
                         'bsd_so_ngay_th': bsd_so_ngay_th,
                         'bsd_tien_dot_tt': dot.bsd_tien_dot_tt,
-                        'bsd_tl_ck_dot': float_repr(bsd_tl_ck_dot, precision_digits=3),
+                        'bsd_tl_ck_dot': bsd_tl_ck_dot,
                         'bsd_tien_ck': bsd_tien_ck,
                         'bsd_tien_tt': bsd_tien_tt,
                     })
