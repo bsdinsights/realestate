@@ -21,8 +21,8 @@
                     <button string="Hủy"
                             name="action_huy"
                             type="object"
-                            confirm="Bạn có muốn Hủy giao dịch chiết khấu này không?"
-                            states="xac_nhan"/>
+                            attrs="{'invisible':['|',('state','!=','xac_nhan'),('bsd_loai_ck','not in',['ttth','ttn'])]}"
+                            confirm="Bạn có muốn Hủy giao dịch chiết khấu này không?"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
