@@ -147,7 +147,7 @@ class BsdHopDongMuaBan(models.Model):
             'bsd_tl_ck': tl_ck,
         })
         # Tính lại tiền các đợt chưa thanh toán
-        dot_da_tt = self.bsd_ltt_ids.filtered(lambda x: x.bsd_gd_tt == 'dat_coc' or x.bsd_thanh_toan in ['da_tt', 'dang_tt'])
+        dot_da_tt = self.bsd_ltt_ids.filtered(lambda x: x.bsd_thanh_toan in ['da_tt', 'dang_tt'])
         _logger.debug(dot_da_tt)
         tong_tien_phai_tt = self.bsd_tong_gia - sum(dot_da_tt.mapped('bsd_tien_dot_tt'))
         _logger.debug(tong_tien_phai_tt)
