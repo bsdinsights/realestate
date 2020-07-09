@@ -243,21 +243,6 @@
                                     <field name="bsd_tien_ck"/>
                                     <field name="state"/>
                                     <field name="bsd_bao_gia_id" invisible="1"/>
-                                    <button icon="fa-pencil"
-                                            name="action_xac_nhan"
-                                            confirm="Bạn có muốn Xác nhận yêu cầu không?"
-                                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
-                                            type="object"/>
-                                    <button icon="fa-check-square-o"
-                                            name="action_duyet"
-                                            states="xac_nhan"
-                                            confirm="Bạn có muốn Duyệt yêu cầu không?"
-                                            type="object"/>
-                                    <button icon="fa-times-circle-o"
-                                            name="action_khong_duyet"
-                                            states="xac_nhan"
-                                            type="object"
-                                            confirm="Bạn có muốn Từ chối yêu cầu không?"/>
                                 </tree>
                                 <form>
                                     <header>

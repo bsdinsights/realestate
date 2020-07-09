@@ -80,6 +80,7 @@ class BsdChietKhauDacBiet(models.Model):
         self.write({
             'state': 'duyet',
         })
+        self.bsd_bao_gia_id.action_lich_tt()
 
     # DM.13.04 Không duyệt chiết khấu
     def action_khong_duyet(self):
