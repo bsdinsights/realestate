@@ -126,8 +126,8 @@
                                 <tr class="text-center ">
                                   <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_unit_id.bsd_ten_unit"/></td>
                                   <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_unit_id.bsd_loai_sp_id.bsd_ma_nhom"/></td>
-                                  <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_dt_xd"/></td>
-                                  <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_dt_sd"/></td>
+                                  <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_dt_xd" t-options='{"widget": "float", "precision": 2}'/></td>
+                                  <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_dt_sd" t-options='{"widget": "float", "precision": 2}'/></td>
                                   <td style="border: 1px solid black !important;"><div></div></td>
                                 </tr>
                               </tbody>

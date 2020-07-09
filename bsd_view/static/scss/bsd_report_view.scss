@@ -1,20 +1,9 @@
-// ------------------------------------------------------------------
-// Arial fonts
-// ------------------------------------------------------------------
-@font-face {
-    font-family: 'Arial';
-    font-style: normal;
-    font-weight: 400;
-    src: url(/bsd_views/static/font/Arial.eot);
-    src: url(data:font/truetype;charset=utf-8;base64,) format("truetype");
-    }
 
+.bsd_font {
+    font-family: RobotoCondensed;
+}
 .h1-title-big {
-    font-family: Oswald;
     font-size: 25px;
     color: #000;
     font-weight: bold;
-}
-.bsd_font {
-    font-family: Oswald;
 }

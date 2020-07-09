@@ -5,9 +5,15 @@
             <link rel="stylesheet" type="text/scss" href="/bsd_view/static/scss/bsd_form_view.scss"/>
         </xpath>
     </template>
+    <template id="bsd_assets_common_custom_fonts" name="Custom fonts" inherit_id="web.assets_common">
+        <xpath expr="." position="inside">
+            <link href="/bsd_view/static/scss/bsd_font_view.scss" rel="stylesheet" type="text/scss"/>
+        </xpath>
+    </template>
+
     <template id="bsd_report_assets_common_custom_fonts" name="Custom QWeb fonts" inherit_id="web.report_assets_common">
-    <xpath expr="." position="inside">
-        <link href="/bsd_view/static/scss/bsd_report_view.scss" rel="stylesheet" type="text/scss"/>
-    </xpath>
-</template>
+        <xpath expr="." position="inside">
+            <link href="/bsd_view/static/scss/bsd_report_view.scss" rel="stylesheet" type="text/scss"/>
+        </xpath>
+    </template>
 </odoo>
