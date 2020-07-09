@@ -49,7 +49,7 @@ class BsdBaoGiaLTT(models.Model):
         if ngay_tt.date() >= self.bsd_ngay_hh_tt:
             return
         # Lấy Item chiết khấu thanh toán trước hạn
-        ck_ttth = dot_mb.bsd_ck_ttth_id.bsd_ct_ids.filtered(lambda c: c.bsd_tu_ngay < ngay_tt.date() < c.bsd_den_ngay)
+        ck_ttth = dot_mb.bsd_ck_ttth_id.bsd_ct_ids.filtered(lambda c: c.bsd_tu_ngay <= ngay_tt.date() <= c.bsd_den_ngay)
         if not ck_ttth:
             return
         if len(ck_ttth) > 1:
@@ -89,7 +89,7 @@ class BsdBaoGiaLTT(models.Model):
             return
         # Lấy Item chiết khấu thanh toán nhanh
         ck_ttn = dot_mb.bsd_ck_ttn_id.bsd_ct_ids.\
-            filtered(lambda c: c.bsd_tu_ngay < self.bsd_ngay_tt.date() < c.bsd_den_ngay)
+            filtered(lambda c: c.bsd_tu_ngay <= self.bsd_ngay_tt.date() <= c.bsd_den_ngay)
         if not ck_ttn:
             return
         if len(ck_ttn) > 1:

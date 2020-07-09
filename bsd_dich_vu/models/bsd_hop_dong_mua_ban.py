@@ -127,7 +127,7 @@ class BsdHopDongMuaBan(models.Model):
     bsd_ngay_ky_ttdc = fields.Datetime(string="Ngày ký TTDC", help="Ngày ký thỏa thuận đặt cọc", readonly=True)
     bsd_duyet_db = fields.Boolean(string="Duyệt đặc biệt", help="Duyệt đặc biệt", readonly=True)
     bsd_ngay_duyet_db = fields.Datetime(string="Ngày duyệt", help="Ngày duyệt", readonly=True)
-    bsd_nguoi_duyet_db_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
+    bsd_nguoi_duyet_db_id = fields.Many2one('res.users', string="Người duyệt", readonly=True, tracking=2)
 
     # DV.01.11 - Theo dõi chiết khấu mua sỉ (nút nhấn wizard)
     def action_ck_ms(self):
@@ -152,10 +152,12 @@ class BsdHopDongMuaBan(models.Model):
         tong_tien_phai_tt = self.bsd_tong_gia - sum(dot_da_tt.mapped('bsd_tien_dot_tt'))
         _logger.debug(tong_tien_phai_tt)
         dot_phai_tt = self.bsd_ltt_ids\
-            .filtered(lambda x: x.bsd_thanh_toan == 'chua_tt' and x.bsd_gd_tt == 'hop_dong')\
+            .filtered(lambda x: x.bsd_thanh_toan == 'chua_tt')\
             .sorted('bsd_stt')
         _logger.debug(dot_phai_tt)
-        tl_con_tt = sum(dot_phai_tt.mapped('bsd_cs_tt_ct_id').mapped('bsd_tl_tt'))
+        tl_con_tt = 0
+        for dot in dot_phai_tt:
+            tl_con_tt += dot.bsd_cs_tt_ct_id.bsd_tl_tt
         _logger.debug(tl_con_tt)
         so_dot_tt = len(dot_phai_tt)
         if so_dot_tt < 1:
@@ -170,7 +172,7 @@ class BsdHopDongMuaBan(models.Model):
                     dot.bsd_tien_dot_tt = tong_tien_phai_tt - tien_da_chia_dot
                     break
                 # Tính tiền đợt thanh toán khác cuối
-                tien_tt = tong_tien_phai_tt * dot.bsd_cs_tt_ct_id.bsd_tl_tt / tl_con_tt
+                tien_tt = (tong_tien_phai_tt * dot.bsd_cs_tt_ct_id.bsd_tl_tt) / tl_con_tt
                 dot.bsd_tien_dot_tt = tien_tt - (tien_tt % 1000)
                 tien_da_chia_dot += dot.bsd_tien_dot_tt
                 _logger.debug(dot.bsd_tien_dot_tt)
@@ -294,6 +296,13 @@ class BsdHopDongMuaBan(models.Model):
                     'state': 'da_gs',
             })
 
+    # DV.01.14 - Duyệt hợp đồng đặc biệt
+    def action_duyet_db(self):
+        self.write({
+            'bsd_duyet_db': True,
+            'bsd_ngay_duyet_db': fields.Datetime.now(),
+            'bsd_nguoi_duyet_db_id': self.env.uid,
+        })
 
     @api.model
     def create(self, vals):

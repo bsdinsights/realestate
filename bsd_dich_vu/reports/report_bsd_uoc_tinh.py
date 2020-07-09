@@ -27,15 +27,15 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
         ck_ttn = False
         if dot_mb.bsd_ck_ttth_id:
             item_ttth = dot_mb.bsd_ck_ttth_id.bsd_ct_ids.\
-                filtered(lambda c: c.bsd_tu_ngay < ngay_ut < c.bsd_den_ngay)
+                filtered(lambda c: c.bsd_tu_ngay <= ngay_ut <= c.bsd_den_ngay)
             ck_ttth = item_ttth[0].bsd_chiet_khau_id if item_ttth else False
         if dot_mb.bsd_ck_ttn_id:
             item_ttn = dot_mb.bsd_ck_ttn_id.bsd_ct_ids.\
-                filtered(lambda c: c.bsd_tu_ngay < ngay_ut < c.bsd_den_ngay)
+                filtered(lambda c: c.bsd_tu_ngay <= ngay_ut <= c.bsd_den_ngay)
             ck_ttn = item_ttn[0].bsd_chiet_khau_id if item_ttn else False
         # lấy các đợt thanh toán trước hạn
         dot_tt = hd_ban.bsd_ltt_ids\
-            .filtered(lambda t: t.bsd_ngay_hh_tt and ngay_ut < t.bsd_ngay_hh_tt )\
+            .filtered(lambda t: t.bsd_ngay_hh_tt and ngay_ut < t.bsd_ngay_hh_tt)\
             .sorted('bsd_stt')
 
         _logger.debug("chiết khấu")

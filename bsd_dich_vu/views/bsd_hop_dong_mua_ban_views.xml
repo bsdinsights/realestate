@@ -13,6 +13,11 @@
                             attrs="{'invisible': ['|',('id', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
+                    <button string="Duyệt ĐB"
+                            name="action_duyet_db"
+                            type="object"
+                            states="ht_dc"
+                            class="oe_highlight"/>
                     <button string="In hợp đồng"
                             name="action_in_hd"
                             type="object"
