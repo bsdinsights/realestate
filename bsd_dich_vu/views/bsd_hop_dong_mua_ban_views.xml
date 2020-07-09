@@ -33,6 +33,8 @@
                     <button string="Chiết khấu mua sỉ"
                         name="action_ck_ms"
                         type="object"
+                        attrs="{'invisible': ['|','&amp;',('state', '!=','tt_dot1'), ('bsd_co_ttdc', '=', False),
+                                                 '&amp;',('state', '!=','du_dk'),('bsd_co_ttdc', '=', True)]}"
                         class="oe_highlight"/>
                     <button string="Ước tính"
                         name="action_uoc_tinh_ck"
