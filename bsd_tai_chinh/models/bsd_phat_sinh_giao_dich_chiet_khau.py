@@ -46,6 +46,78 @@ class BsdPhatSinhGiaoDichChietKhau(models.Model):
                               ('dc_giam', 'Điều chỉnh giảm'),
                               ('huy', 'Hủy')], string="Trạng thái",
                              default='xac_nhan', tracking=1, help="Trạng thái", required=True)
+    bsd_so_hoan_tien = fields.Integer(string="# Hoàn tiền", compute='_compute_hoan_tien')
+    bsd_so_giam_no = fields.Integer(string="# Giảm nợ", compute='_compute_giam_no')
+    
+    def _compute_hoan_tien(self):
+        for each in self:
+            hoan_tien = self.env['bsd.hoan_tien'].search([('bsd_ps_gd_ck_id', '=', self.id)])
+            each.bsd_so_hoan_tien = len(hoan_tien)
+            
+    def action_view_hoan_tien(self):
+        action = self.env.ref('bsd_tai_chinh.bsd_hoan_tien_action').read()[0]
+
+        hoan_tien = self.env['bsd.hoan_tien'].search([('bsd_ps_gd_ck_id', '=', self.id)])
+        if len(hoan_tien) > 1:
+            action['domain'] = [('id', 'in', hoan_tien.ids)]
+        elif hoan_tien:
+            form_view = [(self.env.ref('bsd_tai_chinh.bsd_hoan_tien_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = hoan_tien.id
+
+        loai_ck = ""
+        if self.bsd_loai_ck == 'ttth':
+            loai_ck = "thanh toán trước hạn"
+        elif self.bsd_loai_ck == 'ttn':
+            loai_ck = "thanh toán nhanh"
+        # Prepare the context.
+        context = {
+            'default_bsd_khach_hang_id': self.bsd_hd_ban_id.bsd_khach_hang_id.id,
+            'default_bsd_ps_gd_ck_id': self.id,
+            'default_bsd_du_an_id': self.bsd_dat_coc_id.bsd_du_an_id.id,
+            'default_bsd_loai': 'gd_ck',
+            'default_bsd_dien_giai': "Chiết khấu" + " " + loai_ck
+        }
+        action['context'] = context
+        return action
+
+    def _compute_giam_no(self):
+        for each in self:
+            giam_no = self.env['bsd.giam_no'].search([('bsd_ps_gd_ck_id', '=', self.id)])
+            each.bsd_so_giam_no = len(giam_no)
+
+    def action_view_giam_no(self):
+        action = self.env.ref('bsd_tai_chinh.bsd_giam_no_action').read()[0]
+
+        giam_no = self.env['bsd.giam_no'].search([('bsd_ps_gd_ck_id', '=', self.id)])
+        if len(giam_no) > 1:
+            action['domain'] = [('id', 'in', giam_no.ids)]
+        elif giam_no:
+            form_view = [(self.env.ref('bsd_tai_chinh.bsd_giam_no_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = giam_no.id
+
+        loai_ck = ""
+        if self.bsd_loai_ck == 'ttth':
+            loai_ck = "thanh toán trước hạn"
+        elif self.bsd_loai_ck == 'ttn':
+            loai_ck = "thanh toán nhanh"
+        # Prepare the context.
+        context = {
+            'default_bsd_khach_hang_id': self.bsd_hd_ban_id.bsd_khach_hang_id.id,
+            'default_bsd_ps_gd_ck_id': self.id,
+            'default_bsd_du_an_id': self.bsd_dat_coc_id.bsd_du_an_id.id,
+            'default_bsd_loai': 'gd_ck',
+            'default_bsd_dien_giai': "Chiết khấu" + " " + loai_ck
+        }
+        action['context'] = context
+        return action
 
     # TC.15.01 Hoàn tiền chiết khấu
     def action_hoan_tien(self):
@@ -80,7 +152,8 @@ class BsdPhatSinhGiaoDichChietKhau(models.Model):
             'bsd_du_an_id': self.bsd_hd_ban_id.bsd_du_an_id.id,
             'bsd_loai_dc': 'gd_ck',
             'bsd_tien': self.bsd_tien_ck,
-            'bsd_dien_giai': "Chiết khấu" + " " + loai_ck + " " + self.bsd_ma_ht
+            'bsd_dien_giai': "Chiết khấu" + " " + loai_ck + " " + self.bsd_ma_ht,
+            'bsd_ps_gd_ck_id': self.id,
         })
         self.write({
             'state': 'dc_giam'

@@ -26,6 +26,14 @@
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_hoan_tien" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_hoan_tien', '=', 0)]}">
+                            <field name="bsd_so_hoan_tien" widget="statinfo" string="Hoàn tiền"/>
+                        </button>
+                        <button name="action_view_giam_no" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_giam_no', '=', 0)]}">
+                            <field name="bsd_so_giam_no" widget="statinfo" string="Điều chỉnh giảm"/>
+                        </button>
+                    </div>
                     <group>
                         <group>
                             <field name="bsd_ma_ht"/>

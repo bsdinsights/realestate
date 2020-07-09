@@ -89,7 +89,7 @@ class BsdHdBan(models.Model):
 
     # DV.01.16 - Cập nhật trạng thái Đủ điều kiện
     def action_du_dk(self):
-        if self.state == 'ht_dc' and not self.bsd_duyet_db:
+        if self.state == 'tt_dot1' and not self.bsd_duyet_db:
             self.write({
                 'state': 'du_dk'
             })
