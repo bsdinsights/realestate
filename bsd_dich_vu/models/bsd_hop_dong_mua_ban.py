@@ -211,10 +211,7 @@ class BsdHopDongMuaBan(models.Model):
 
     # DV.01.02 In hợp đồng
     def action_in_hd(self):
-        self.write({
-            'bsd_ngay_in_hdb': datetime.datetime.now(),
-            'bsd_ngay_hh_khdb': datetime.datetime.now() + datetime.timedelta(days=self.bsd_du_an_id.bsd_hh_hd)
-        })
+        return self.env.ref('bsd_dich_vu.bsd_hd_ban_report_action').read()[0]
 
     # DV.01.03 Upload hợp đồng
     def action_upload_hdb(self):
@@ -258,6 +255,11 @@ class BsdHopDongMuaBan(models.Model):
                         'bsd_dot_tt_id': dot_tt.id,
                         'state': 'da_gs',
                 })
+
+    # DV.01.17 Ký thỏa thuận đặt cọc
+    def action_ky_ttdc(self):
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_ttdc_action').read()[0]
+        return action
 
     # DV.01.18 Theo dõi công nợ phí
     def tao_cong_no_phi(self):

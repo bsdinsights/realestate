@@ -28,7 +28,9 @@
         'wizards/bsd_wizard_ms_hdb_views.xml',
         'wizards/bsd_wizard_uoc_tinh_ck_tt_views.xml',
         'wizards/bsd_wizard_khong_duyet_gd_km_views.xml',
+        'wizards/bsd_wizard_ky_ttdc_views.xml',
         'reports/report_bsd_uoc_tinh_views.xml',
+        'reports/report_bsd_hd_ban_views.xml'
     ],
     'application': True,
 }

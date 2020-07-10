@@ -21,8 +21,8 @@
                     <button string="In hợp đồng"
                             name="action_in_hd"
                             type="object"
-                            attrs="{'invisible': ['!','|',('state', '=','du_dk'),'&amp;',('bsd_duyet_db','=',True),('state', '!=','nhap')]}"
                             class="oe_highlight"/>
+                            <!--attrs="{'invisible': ['!','|',('state', '=','du_dk'),'&amp;',('bsd_duyet_db','=',True),('state', '!=','nhap')]}"                    -->
                     <button string="Upload hợp đồng"
                             name="action_upload_hdb"
                             states="du_dk"
@@ -32,19 +32,25 @@
                     <button string="Ký hợp đồng"
                             name="action_ky_hdb"
                             states="du_dk,da_ky_ttdc"
-                            attrs="{'invisible':['|',('bsd_ngay_in_hdb', '=',False)]}"
+                            attrs="{'invisible':['|',('bsd_ngay_up_hdb', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Chiết khấu mua sỉ"
-                        name="action_ck_ms"
-                        type="object"
-                        attrs="{'invisible': ['|','&amp;',('state', '!=','tt_dot1'), ('bsd_co_ttdc', '=', False),
+                            name="action_ck_ms"
+                            type="object"
+                            attrs="{'invisible': ['|','&amp;',('state', '!=','tt_dot1'), ('bsd_co_ttdc', '=', False),
                                                  '&amp;',('state', '!=','du_dk'),('bsd_co_ttdc', '=', True)]}"
-                        class="oe_highlight"/>
+                            class="oe_highlight"/>
                     <button string="Ước tính"
-                        name="action_uoc_tinh_ck"
-                        type="object"
-                        class="oe_highlight"/>
+                            name="action_uoc_tinh_ck"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Ký TTDC"
+                            name="action_ky_ttdc"
+                            states="tt_dot1"
+                            confirm="Bạn có muốn ký thỏa thuận đặt cọc không ?"
+                            attrs="{'invisible':['|',('bsd_ngay_in_ttdc', '=',False)]}"
+                            class="oe_highlight"/>
                     <button string="Hủy"
                             name="action_huy"
                             type="object"/>
