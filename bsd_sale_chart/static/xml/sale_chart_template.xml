@@ -181,7 +181,7 @@
                                                 <div t-attf-class="{{unit[6]}} bsd_unit" t-attf-id="{{unit[4]}}">
                                                     <div class="text-center justify-content-center bsd_inner_unit">
                                                         <div class="bsd_title" t-esc="unit[5]"/>
-                                                        <div>Giữ chỗ:<span t-esc="unit[7]"/></div>
+                                                        <div>Giữ chỗ:<span class="so_giu_cho" t-esc="unit[7]"/></div>
                                                         <div class="bsd_gia"><span t-esc="unit[8]"/><span>đ</span></div>
                                                         <div>Quan tâm BĐS: 0</div>
                                                     </div>

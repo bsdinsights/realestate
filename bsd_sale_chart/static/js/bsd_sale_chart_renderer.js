@@ -27,6 +27,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             'click .bsd_unit': '_clickTooltip',
             'click .tooltip .bsd_giu_cho': '_clickGiuCho',
             'click .tooltip .bsd_bao_gia': '_clickBaoGia',
+            'scroll': '_scrollUnit',
         },
         custom_events: _.extend({}, FieldManagerMixin.custom_events,{
             'field_changed': '_onFieldChange',
@@ -39,6 +40,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             this.model = model;
             this._initialState = state;
             this.data = [],
+            this.interval = null
             this.filter = {
                 bsd_du_an_id: null,
                 bsd_dot_mb_id: null,
@@ -155,7 +157,46 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
 
             });
             var def2 = this._super.apply(this, arguments);
+            this.interval = setInterval(this.updateUnit.bind(this),2000);
             return Promise.all([def1, def2]);
+        },
+        updateUnit: function(){
+            var self = this
+            var id_unit = []
+            if ($('.bsd_unit').length){
+                _.each($('.bsd_unit'),function(item,index,data){
+                    if ($(item).inView()){
+                        id_unit.push(parseInt($(item).attr("id")))
+                    }
+                })
+                this._rpc({
+                    model: 'bsd.sale_chart.widget',
+                    method: 'action_update_unit',
+                    args: [id_unit],
+                    context: self.context,
+                }).then(function(data){
+                    _.each(data,function(item,index,data){
+                        var id = '#' + item[0].toString()
+                        var state = $(id).attr('class').replace("bsd_unit", "")
+                        if (item[2] === null) {
+                            item[2] = 0
+                        }
+                        $(id).removeClass(state).addClass(item[1])
+                        $(id).find(".so_giu_cho").text(item[2].toString())
+                    })
+                })
+            }
+        },
+
+        /**
+         * Destroys the current widget, also destroys all its children before
+         * destroying itself.
+         */
+        destroy: function () {
+            var self = this
+            clearInterval(this.interval);
+            this._super();
+
         },
 
         /**
@@ -528,7 +569,12 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 }
             }
         },
-
+        /**
+         * @private scroll màn hình
+         */
+        _scrollUnit: function(event){
+            console.log("scroll")
+        },
         update: function(dataChange){
             var self = this;
             if (dataChange.field === 'bsd_dot_mb_id'){
