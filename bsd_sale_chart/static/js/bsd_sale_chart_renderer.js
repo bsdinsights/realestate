@@ -157,7 +157,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
 
             });
             var def2 = this._super.apply(this, arguments);
-            this.interval = setInterval(this.updateUnit.bind(this),2000);
+            this.interval = setInterval(this.updateUnit.bind(this),5000);
             return Promise.all([def1, def2]);
         },
         updateUnit: function(){
