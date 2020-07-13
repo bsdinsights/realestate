@@ -157,14 +157,15 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
 
             });
             var def2 = this._super.apply(this, arguments);
-            this.interval = setInterval(this.updateUnit.bind(this),5000);
+            this.interval = setInterval(this.updateUnit.bind(this),2000);
             return Promise.all([def1, def2]);
         },
         updateUnit: function(){
             var self = this
             var id_unit = []
-            if ($('.bsd_unit').length){
-                _.each($('.bsd_unit'),function(item,index,data){
+            var $unit_ids = $('.bsd_unit')
+            if ($unit_ids.length){
+                _.each($unit_ids,function(item,index,data){
                     if ($(item).inView()){
                         id_unit.push(parseInt($(item).attr("id")))
                     }
@@ -174,7 +175,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     method: 'action_update_unit',
                     args: [id_unit],
                     context: self.context,
-                }).then(function(data){
+                },{shadow : true}).then(function(data){
                     _.each(data,function(item,index,data){
                         var id = '#' + item[0].toString()
                         var state = $(id).attr('class').replace("bsd_unit", "")
@@ -193,7 +194,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          * destroying itself.
          */
         destroy: function () {
-            var self = this
             clearInterval(this.interval);
             this._super();
 
@@ -485,8 +485,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     })
                     data.giu_cho = giu_cho
                 }
-                console.log("lấy thông tin giữ chỗ")
-                console.log(giu_cho)
                 var title = qweb.render('bsd_sale_chart.tooltip', {'data':data})
                 $(event.currentTarget).tooltip({
                 template: `<div class="tooltip" role="tooltip">
@@ -568,12 +566,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     this.trigger_up('change_dot_mb', {'data':bsd_dot_mb_id})
                 }
             }
-        },
-        /**
-         * @private scroll màn hình
-         */
-        _scrollUnit: function(event){
-            console.log("scroll")
         },
         update: function(dataChange){
             var self = this;
