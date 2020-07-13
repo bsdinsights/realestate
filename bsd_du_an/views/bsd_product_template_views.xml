@@ -116,15 +116,11 @@
                             <field name="bsd_tong_gb"/>
                         </group>
                     </group>
-                    <group string="MỞ BÁN">
-                        <group>
+                    <group string="MỞ BÁN" name="mo_ban">
+                        <group name="san_gd">
                             <field name="bsd_san_gd_id"
                                    domain="[('is_company', '=',)]"
                                    options="{'no_create':true}"/>
-                        </group>
-                        <group>
-                            <field name="bsd_thanh_ly"/>
-                            <field name="bsd_lan_tl"/>
                         </group>
                     </group>
                     <group string="BÀN GIAO">
@@ -140,10 +136,10 @@
                             </div>
                         </group>
                         <group>
-                            <field name="bsd_ngay_hs"/>
-                            <field name="bsd_tt_vay"/>
                             <field name="bsd_ngay_cn" readonly="1"/>
                             <field name="bsd_ngay_bg" readonly="1"/>
+                            <field name="bsd_ngay_cap_sh"/>
+                            <field name="bsd_da_cap_sh"/>
                             <field name="currency_id" invisible="1"/>
                             <field name="company_id" invisible="1"/>
                         </group>

@@ -35,11 +35,7 @@ class ProductTemplate(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Thông tin về căn hộ")
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch",
                                     help="Sàn giao dịch đang bán(căn hộ) theo đợt mở bán")
-    bsd_thanh_ly = fields.Selection([('0', 'Không'), ('1', 'Có')], string="Thanh lý",
-                                    default="0",
-                                    help="Thông tin căn hộ có từng bị thanh lý hợp đồng hay không")
-    bsd_lan_tl = fields.Integer(string="Lần thanh lý",
-                                help="Số lần căn hộ bị thanh lý hợp đồng")
+
     bsd_loai_sp_id = fields.Many2one('bsd.loai_sp', string="Phân nhóm",
                                      help="Phân nhóm đặc tính kỹ thuật của căn hộ")
     bsd_huong = fields.Selection([('1', 'Đông'),
@@ -127,8 +123,9 @@ class ProductTemplate(models.Model):
                               help="Ngày bàn giao thực tế căn hộ cho khách hàng")
     bsd_ngay_cn = fields.Date(string="Ngày cất nóc",
                               help="Ngày chứng nhận cất nóc (bê tông tầng mái)")
-    bsd_ngay_hs = fields.Date(string="Ngày nhận hồ sơ",
-                              help="Ngày chủ đầu tư nhận đầy đủ hồ sơ và gửi lên trên sở nhà đất để làm sổ hồng")
+    bsd_ngay_cap_sh = fields.Date(string="Ngày cấp sổ hồng",
+                                  help="Ngày khách hàng nhận sổ hồng căn hộ")
+    bsd_da_cap_sh = fields.Selection([('co', 'Có'), ('khong', 'Không')], string="Đã cấp sổ hồng", default='khong')
     state = fields.Selection([('chuan_bi', 'Chuẩn bị'),
                               ('san_sang', 'Sẵn sàng'),
                               ('dat_cho', 'Đặt chỗ'),

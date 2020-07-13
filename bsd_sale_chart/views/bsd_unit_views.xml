@@ -90,8 +90,6 @@
                                     </div>
                                 </group>
                                 <group>
-                                    <field name="bsd_ngay_hs" readonly="1"/>
-                                    <field name="bsd_tt_vay" readonly="1"/>
                                     <field name="bsd_ngay_cn" readonly="1"/>
                                     <field name="bsd_ngay_bg" readonly="1"/>
                                     <field name="currency_id" invisible="1"/>
