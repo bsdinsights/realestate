@@ -59,6 +59,17 @@ class BsdCongChung(models.Model):
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'), ('duyet', 'Duyệt'), ('huy', 'Hủy')],
                              string="Trạng thái", default='nhap', required=True, readonly=True, tracking=1)
 
+    @api.onchange('bsd_unit_id')
+    def _onchange_unit(self):
+        self.bsd_hd_ban_id = self.bsd_unit_id.bsd_hd_ban_id
+
+    @api.onchange('bsd_hd_ban_id')
+    def _onchange_hd_ban(self):
+        self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
+        if self.bsd_hd_ban_id.bsd_dong_sh_ids:
+            self.bsd_co_dsh_ht = True
+            self.bsd_dsh_ht_ids = self.bsd_hd_ban_id.bsd_dong_sh_ids.mapped('bsd_dong_sh_id')
+
     @api.model
     def create(self, vals):
         sequence = False

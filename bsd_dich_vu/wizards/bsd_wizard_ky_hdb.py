@@ -18,9 +18,14 @@ class BsdKyHDB(models.TransientModel):
     bsd_ngay_ky_hdb = fields.Datetime(string="Ngày ký hợp đồng", required=True)
 
     def action_xac_nhan(self):
+        # Cập nhật trạng thái hợp đồng
         self.bsd_hd_ban_id.write({
             'bsd_ngay_ky_hdb': self.bsd_ngay_ky_hdb,
             'state': 'da_ky'
+        })
+        # Cập nhật field hợp đồng trên unit
+        self.bsd_hd_ban_id.bsd_unit_id.write({
+            'bsd_hd_ban_id': self.bsd_hd_ban_id.id
         })
         self.bsd_hd_ban_id.tao_cong_no_dot_tt()
 
