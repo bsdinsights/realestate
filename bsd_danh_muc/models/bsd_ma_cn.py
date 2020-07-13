@@ -40,7 +40,8 @@ class BsdMaBoChungTu(models.Model):
                                     ('bsd.ps_gd_ck', 'Giao dịch chiết khấu'),
                                     ('bsd.khuyen_mai', 'Chương trình khuyến mãi'),
                                     ('bsd.ps_gd_km', 'Giao dịch khuyến mãi'),
-                                    ('bsd.chuyen_gc', 'Chuyển tên khách hàng giữ chỗ')],
+                                    ('bsd.chuyen_gc', 'Chuyển tên khách hàng giữ chỗ'),
+                                    ('bsd.hd_ban_cn', 'Chuyển nhượng hợp đồng')],
                                    string="Loại chứng từ", help="Loại chứng từ được đặt mã", required=True)
     bsd_ma_cn = fields.Char(string="Mã chứng từ", help="Mã tiền tố của chứng từ", required=True)
     _sql_constraints = [

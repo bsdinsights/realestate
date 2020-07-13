@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_hd_ban_cn_form">
+        <field name="name">bsd.hd_ban_cn.form</field>
+        <field name="model">bsd.hd_ban_cn</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <notebook>
+                        <page string="Thông tin chung">
+                            <group>
+                                <group>
+                                    <field name="bsd_ma_cn"/>
+                                    <field name="bsd_ten_cn"/>
+                                    <field name="bsd_ngay_cn"/>
+                                    <field name="bsd_loai"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_du_an_id"/>
+                                    <field name="bsd_unit_id"/>
+                                    <field name="bsd_hd_ban_id"/>
+                                    <field name="bsd_hd_ban_state"/>
+                                </group>
+                            </group>
+                            <group string="XÁC NHẬN">
+                                <group>
+                                    <field name="bsd_ngay_hl_cn"/>
+                                    <field name="bsd_ngay_kt_xn"/>
+                                    <field name="bsd_ngay_in_vb"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_duyet"/>
+                                    <field name="bsd_nguoi_duyet_id"/>
+                                    <field name="bsd_ngay_in_xn_vb"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Khách hàng">
+                            <group>
+                                <group>
+                                    <field name="bsd_khach_hang_id"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_co_dsh_ht"/>
+                                </group>
+                            </group>
+                            <field name="bsd_dsh_ht_ids" nolabel="1"/>
+                            <group>
+                                <group>
+                                    <field name="bsd_kh_moi_id"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_co_dsh_moi"/>
+                                </group>
+                            </group>
+                            <field name="bsd_dsh_moi_ids" nolabel="1"/>
+                        </page>
+                        <page string="Công chứng">
+                            <group>
+                                <group string="CÔNG CHỨNG">
+                                    <field name="bsd_so_cch"/>
+                                    <field name="bsd_noi_cch"/>
+                                    <field name="bsd_ngay_cch"/>
+                                    <field name="bsd_ngay_cn_tt"/>
+                                </group>
+                                <group string="THÔNG BÁO NỘP THUẾ">
+                                    <field name="bsd_so_tb"/>
+                                    <field name="bsd_noi_tb"/>
+                                    <field name="bsd_ngay_tb"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_hd_ban_cn_tree">
+        <field name="name">bsd.hd_ban_cn.tree</field>
+        <field name="model">bsd.hd_ban_cn</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_cn"/>
+                <field name="bsd_ten_cn"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_hd_ban_cn_action">
+        <field name="name">Chuyển nhượng hợp đồng</field>
+        <field name="res_model">bsd.hd_ban_cn</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo thông tin chuyển nhượng hợp đồng</p>
+        </field>
+    </record>
+</odoo>

@@ -129,6 +129,8 @@ class BsdHopDongMuaBan(models.Model):
     bsd_ngay_duyet_db = fields.Datetime(string="Ngày duyệt", help="Ngày duyệt", readonly=True)
     bsd_nguoi_duyet_db_id = fields.Many2one('res.users', string="Người duyệt", readonly=True, tracking=2)
 
+    bsd_cn_ids = fields.One2many('bsd.hd_ban_cn', 'bsd_hd_ban_id', string="Chuyển nhượng hợp đồng")
+
     # DV.01.11 - Theo dõi chiết khấu mua sỉ (nút nhấn wizard)
     def action_ck_ms(self):
         action = self.env.ref('bsd_dich_vu.bsd_wizard_ms_hdb_action').read()[0]

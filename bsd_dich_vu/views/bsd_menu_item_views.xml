@@ -26,7 +26,11 @@
               sequence="12"
               action="bsd_dt_tt_action"
               parent="bsd_main_dich_vu_root"/>
-
+    <menuitem id="bsd_hd_ban_cn_menu_action"
+              name="Chuyển nhượng hợp đồng"
+              sequence="13"
+              action="bsd_hd_ban_cn_action"
+              parent="bsd_main_dich_vu_root"/>
     <menuitem id="bsd_ps_gd_km_menu_action"
               name="Giao dịch khuyến mãi"
               sequence="18"

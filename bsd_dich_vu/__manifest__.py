@@ -21,6 +21,7 @@
         'views/bsd_phu_luc_thay_doi_thong_tin_views.xml',
         'views/bsd_kh_ca_nhan_views.xml',
         'views/bsd_ps_gd_km_views.xml',
+        'views/bsd_hd_ban_chuyen_nhuong_views.xml',
         'views/bsd_menu_item_views.xml',
         'wizards/bsd_wizard_ky_hdb_views.xml',
         'wizards/bsd_wizard_ky_pl_dsh_views.xml',
