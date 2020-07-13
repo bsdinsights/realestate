@@ -30,7 +30,7 @@ class BsdWizardReportHopDong(models.TransientModel):
             if not self.bsd_hd_ban_id.bsd_ngay_in_hdb:
                 self.bsd_hd_ban_id.write({
                     'bsd_ngay_in_hdb': datetime.datetime.now(),
-                    'bsd_ngay_hh_khdb': datetime.datetime.now() + datetime.timedelta(days=self.bsd_du_an_id.bsd_hh_hd)
+                    'bsd_ngay_hh_khdb': datetime.datetime.now() + datetime.timedelta(days=self.bsd_hd_ban_id.bsd_du_an_id.bsd_hh_hd)
                 })
         if self.bsd_mau_in == 'bsd_mau_in_ttdc':
             if not self.bsd_hd_ban_id.bsd_ngay_in_ttdc:
