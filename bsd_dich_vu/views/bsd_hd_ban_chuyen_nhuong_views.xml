@@ -6,6 +6,20 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            states="nhap"
+                            confirm="Bạn có muốn xác nhận chứng từ không?"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Xác nhận TTLK"
+                            name="action_xac_nhan_ttlk"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn xác nhận lũy kế thanh toán này không?"
+                            attrs="{'invisible': ['|',('bsd_ngay_kt_xn', '!=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>

@@ -17,6 +17,7 @@
                             name="action_duyet_db"
                             type="object"
                             states="ht_dc"
+                            attrs="{'invisible': ['|',('bsd_duyet_db', '=',True)]}"
                             class="oe_highlight"/>
                     <button string="In hợp đồng"
                             name="action_in_hd"
@@ -48,6 +49,7 @@
                     <button string="Ký TTDC"
                             name="action_ky_ttdc"
                             states="tt_dot1"
+                            type="object"
                             confirm="Bạn có muốn ký thỏa thuận đặt cọc không ?"
                             attrs="{'invisible':['|',('bsd_ngay_in_ttdc', '=',False)]}"
                             class="oe_highlight"/>

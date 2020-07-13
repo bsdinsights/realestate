@@ -26,7 +26,7 @@
     </record>
 
     <record model="ir.actions.act_window" id="bsd_wizard_ky_ttdc_action">
-        <field name="name">Ký hợp đồng bán</field>
+        <field name="name">Ký thỏa thuận đặt cọc</field>
         <field name="res_model">bsd.wizard.ky_ttdc</field>
         <field name="target">new</field>
         <field name="view_mode">form</field>

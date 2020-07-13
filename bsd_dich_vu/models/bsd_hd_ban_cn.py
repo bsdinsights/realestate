@@ -70,6 +70,37 @@ class BsdCongChung(models.Model):
             self.bsd_co_dsh_ht = True
             self.bsd_dsh_ht_ids = self.bsd_hd_ban_id.bsd_dong_sh_ids.mapped('bsd_dong_sh_id')
 
+    # DV.09.01 Xác nhận
+    def action_xac_nhan(self):
+        self.write({
+            'state': 'xac_nhan'
+        })
+
+    # DV.09.02 Xác nhận lũy kế thanh toán
+    def action_xac_nhan_ttlk(self):
+        self.write({
+            'bsd_ngay_kt_xn': fields.Datetime.now()
+        })
+        message_id = self.env['message.wizard'].create(
+            {'message': _("Vui lòng đính kèm Thư xác nhận thanh toán lũy kế và "
+                          "Biên bản xác nhận bàn giao hóa đơn vào hệ thống")})
+        return {
+            'name': _('Thông báo'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'message.wizard',
+            # pass the id
+            'res_id': message_id.id,
+            'target': 'new'
+        }
+
+    # DV.09.08 Kiểm tra công nợ khách hàng
+    @api.constrains('bsd_hd_ban_id')
+    def _constrains_hd_ban(self):
+        dot_dang_tt = self.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_thanh_toan == 'dang_tt')
+        if dot_dang_tt:
+            raise UserError("Hợp đồng chưa hoàn tất công nợ. Vui lòng kiểm tra lại thông tin hợp đồng")
+
     @api.model
     def create(self, vals):
         sequence = False

@@ -20,5 +20,6 @@ class BsdKyttdc(models.TransientModel):
     def action_xac_nhan(self):
         self.bsd_hd_ban_id.write({
             'bsd_ngay_ky_ttdc': self.bsd_ngay_ky_ttdc,
+            'state': 'da_ky_ttdc'
         })
 

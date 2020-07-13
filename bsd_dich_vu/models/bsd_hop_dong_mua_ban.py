@@ -260,6 +260,7 @@ class BsdHopDongMuaBan(models.Model):
 
     # DV.01.17 Ký thỏa thuận đặt cọc
     def action_ky_ttdc(self):
+        _logger.debug("Ký thỏa thuận")
         action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_ttdc_action').read()[0]
         return action
 
