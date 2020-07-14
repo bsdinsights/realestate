@@ -125,7 +125,7 @@ class BsdPhieuThu(models.Model):
         res = {}
         list_dtt = []
         if self.bsd_hd_ban_id and self.bsd_loai_pt == 'dot_tt':
-            list_dtt = self.bsd_hd_ban_id.bsd_ltt_ids.ids
+            list_dtt = self.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda h: h.state != 'nhap').ids
         elif self.bsd_hd_ban_id and self.bsd_loai_pt == 'pql':
             pql = self.bsd_hd_ban_id.bsd_ltt_ids\
                                 .filtered(lambda x: x.bsd_tinh_pql)\
