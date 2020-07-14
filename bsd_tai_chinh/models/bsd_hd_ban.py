@@ -89,7 +89,18 @@ class BsdHdBan(models.Model):
 
     # DV.01.16 - Cập nhật trạng thái Đủ điều kiện
     def action_du_dk(self):
-        if self.state == 'tt_dot1' and not self.bsd_duyet_db:
-            self.write({
-                'state': 'du_dk'
-            })
+        # Kiểm tra nếu hợp đồng có duyệt đặc biệt thì ko cập nhật trạng thái đủ dk
+        if self.bsd_duyet_db:
+            return
+        if self.bsd_co_ttdc:
+            if self.state != 'da_ky_ttdc':
+                raise UserError("Hợp đồng chưa thực hiện ký thỏa thuận đặt cọc")
+            else:
+                self.write({
+                    'state': 'du_dk'
+                })
+        else:
+            if self.state == 'tt_dot1':
+                self.write({
+                    'state': 'du_dk'
+                })
