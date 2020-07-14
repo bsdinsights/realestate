@@ -34,10 +34,11 @@ class BsdCongChung(models.Model):
     bsd_ngay_in_vb = fields.Datetime(string="Ngày in VBCN", readonly=True,
                                      help="Ngày in Văn bản chuyển nhượng/ Xác "
                                           "nhận cho phép chuyển nhượng")
-    bsd_ngay_in_xn_vb = fields.Datetime(string="Ngày in xác nhận VBCN", readonly=True,
+    bsd_ngay_in_xn_vb = fields.Datetime(string="Ngày xác nhận CN", readonly=True,
                                         help="""Ngày in xác nhận văn bản chuyển nhượng""")
     bsd_ngay_duyet = fields.Datetime(string="Ngày duyệt", help="Ngày duyệt xác nhận chuyển nhượng", readonly=True)
-    bsd_nguoi_duyet_id = fields.Many2one(string="res.users", help="Người duyệt xác nhận chuyển nhượng", readonly=True)
+    bsd_nguoi_duyet_id = fields.Many2one("res.users", string="Người duyệt",
+                                         help="Người duyệt xác nhận chuyển nhượng", readonly=True)
     bsd_khach_hang_id = fields.Many2one("res.partner", string="Khách hàng hiện tại", reaonly=True,
                                         required=True, help="Khách hàng có nhu cầu chuyển nhượng")
     bsd_co_dsh_ht = fields.Boolean(string="Đồng sở hữu hiện tại", readonly=True)
@@ -93,6 +94,10 @@ class BsdCongChung(models.Model):
             'res_id': message_id.id,
             'target': 'new'
         }
+
+    # DV.09.08 In chứng từ chuyển nhượng
+    def action_in_cn(self):
+        return self.env.ref('bsd_dich_vu.bsd_hd_ban_cn_report_action').read()[0]
 
     # DV.09.08 Kiểm tra công nợ khách hàng
     @api.constrains('bsd_hd_ban_id')

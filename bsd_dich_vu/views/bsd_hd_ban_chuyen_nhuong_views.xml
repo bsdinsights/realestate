@@ -20,6 +20,11 @@
                             attrs="{'invisible': ['|',('bsd_ngay_kt_xn', '!=',False)]}"
                             type="object"
                             class="oe_highlight"/>
+                    <button string="In"
+                            name="action_in_cn"
+                            type="object"
+                            states="xac_nhan,duyet"
+                            class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
