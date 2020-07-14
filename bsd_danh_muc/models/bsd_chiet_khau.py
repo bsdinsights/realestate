@@ -71,7 +71,7 @@ class BsdChietKhau(models.Model):
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_tl_ck = fields.Float(string="Tỷ lệ chiết khấu", help="Tỷ lệ chiết khấu được hưởng",
-                             readonly=True,
+                             readonly=True, digits=(2, 4),
                              states={'nhap': [('readonly', False)]})
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
