@@ -48,10 +48,11 @@
                             class="oe_highlight"/>
                     <button string="Ký TTDC"
                             name="action_ky_ttdc"
-                            states="tt_dot1"
                             type="object"
                             confirm="Bạn có muốn ký thỏa thuận đặt cọc không ?"
-                            attrs="{'invisible':['|',('bsd_ngay_in_ttdc', '=',False)]}"
+                            attrs="{'invisible':['|',('bsd_ngay_in_ttdc', '=',False),
+                                                        '|','&amp;',('state','not in',['ht_dc']),('bsd_duyet_db', '=',True),
+                                                            '&amp;',('state','not in',['tt_dot1']),('bsd_duyet_db', '=',False)]}"
                             class="oe_highlight"/>
                     <button string="Hủy"
                             name="action_huy"
@@ -102,6 +103,7 @@
                                     <field name="bsd_nguoi_duyet_db_id"/>
                                 </group>
                                 <group>
+                                    <field name="bsd_ngay_dkbg"/>
                                     <field name="bsd_ngay_in_hdb"/>
                                     <field name="bsd_ngay_hh_khdb"/>
                                     <field name="bsd_ngay_up_hdb"/>
