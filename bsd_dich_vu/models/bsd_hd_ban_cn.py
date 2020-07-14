@@ -22,8 +22,8 @@ class BsdCongChung(models.Model):
     bsd_loai = fields.Selection([('cty', 'Tại công ty'), ('vpcn', 'Tại văn phòng công chứng')],
                                 string="Loại chuyển nhượng", required=True, default='cty')
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
-    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Căn hộ", required=True)
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", required=True)
+    bsd_unit_id = fields.Many2one(related='bsd_hd_ban_id.bsd_unit_id')
     bsd_hd_ban_state = fields.Selection(related="bsd_hd_ban_id.state")
     bsd_ngay_hl_cn = fields.Datetime(string="Hiệu lực CN", readonly=True,
                                      help="""Hiệu lực chuyển nhượng được tính là sau 14 ngày kể từ 
@@ -41,9 +41,9 @@ class BsdCongChung(models.Model):
                                          help="Người duyệt xác nhận chuyển nhượng", readonly=True)
     bsd_khach_hang_id = fields.Many2one("res.partner", string="Khách hàng hiện tại", reaonly=True,
                                         required=True, help="Khách hàng có nhu cầu chuyển nhượng")
-    bsd_co_dsh_ht = fields.Boolean(string="Đồng sở hữu hiện tại", readonly=True)
+    bsd_co_dsh_ht = fields.Boolean(string="Đồng sở hữu hiện tại")
     bsd_dsh_ht_ids = fields.Many2many('res.partner', relation="bsd_hd_ban_cn_kh_ht",
-                                      string="Danh sách đồng sở hữu hiện tại", readonly=True)
+                                      string="Danh sách đồng sở hữu hiện tại")
 
     bsd_kh_moi_id = fields.Many2one('res.partner', string="Khách hàng mới", help="Khách hàng được chuyển nhượng")
     bsd_co_dsh_moi = fields.Boolean(string="Đồng sở hữu mới")
