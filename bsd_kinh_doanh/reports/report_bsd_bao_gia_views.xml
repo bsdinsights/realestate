@@ -226,7 +226,7 @@
                                           <td rowspan="2" style="border: 1px solid black !important;"><div t-field="line.bsd_stt"/></td>
                                           <td rowspan="2" style="border: 1px solid black !important;"><div t-field="line.bsd_ten_dtt"/></td>
                                           <td style="border: 1px solid black !important;"><div t-field="line.bsd_cs_tt_ct_id.bsd_dien_giai"/></td>
-                                          <td style="border: 1px solid black !important;"><div t-esc="tien_tt - doc.bsd_tien_pbt"
+                                          <td style="border: 1px solid black !important;"><div t-esc="tien_tt"
                                                                                              t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
                                       </tr>
                                       <tr class="text-center ">
