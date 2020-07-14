@@ -4,7 +4,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 
-class BsdCongChung(models.Model):
+class BsdChuyenNhuong(models.Model):
     _name = 'bsd.hd_ban_cn'
     _description = " Chuyển nhượng hợp đồng"
     _inherit = ['mail.thread', 'mail.activity.mixin']
@@ -60,10 +60,6 @@ class BsdCongChung(models.Model):
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'), ('duyet', 'Duyệt'), ('huy', 'Hủy')],
                              string="Trạng thái", default='nhap', required=True, readonly=True, tracking=1)
 
-    @api.onchange('bsd_unit_id')
-    def _onchange_unit(self):
-        self.bsd_hd_ban_id = self.bsd_unit_id.bsd_hd_ban_id
-
     @api.onchange('bsd_hd_ban_id')
     def _onchange_hd_ban(self):
         self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
@@ -115,4 +111,10 @@ class BsdCongChung(models.Model):
         if not sequence:
             raise UserError(_('Dự án chưa có mã chuyển nhượng hợp đồng'))
         vals['bsd_ma_cn'] = sequence.next_by_id()
-        return super(BsdCongChung, self).create(vals)
+        res = super(BsdChuyenNhuong, self).create(vals)
+
+        if res.bsd_hd_ban_id.bsd_dong_sh_ids:
+            res.bsd_co_dsh_ht = True
+            res.write({
+                'bsd_dsh_ht_ids': [(6, 0, self.bsd_hd_ban_id.bsd_dong_sh_ids.mapped('bsd_dong_sh_id').ids)]
+            })
