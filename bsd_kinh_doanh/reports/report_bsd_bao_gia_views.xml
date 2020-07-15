@@ -215,12 +215,7 @@
                                 <td style="border: 1px solid black !important;"><div t-field="doc.bsd_du_an_id.bsd_tien_dc" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
                               </tr>
                               <t t-foreach="doc.bsd_ltt_ids.filtered(lambda x: x.bsd_loai=='dtt').sorted(key=lambda l: l.bsd_stt)" t-as="line">
-                                  <t t-if="line.bsd_tinh_pql">
-                                      <t t-set="tien_tt" t-value="line.bsd_tien_dot_tt - (doc.bsd_tien_pql * doc.bsd_thang_pql)"/>
-                                  </t>
-                                  <t t-else="">
-                                      <t t-set="tien_tt" t-value="line.bsd_tien_dot_tt"/>
-                                  </t>
+                                  <t t-set="tien_tt" t-value="line.bsd_tien_dot_tt"/>
                                   <t t-if="line.bsd_tinh_pbt">
                                       <tr class="text-center ">
                                           <td rowspan="2" style="border: 1px solid black !important;"><div t-field="line.bsd_stt"/></td>

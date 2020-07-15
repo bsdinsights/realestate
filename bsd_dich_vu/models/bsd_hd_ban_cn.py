@@ -108,10 +108,64 @@ class BsdChuyenNhuong(models.Model):
         # Cập nhật thông tin hợp đồng
         self.bsd_hd_ban_id.write({
             'bsd_khach_hang_id': self.bsd_kh_moi_id.id,
-            'bsd_dong_sh_ids': [(0, 0, {
-
-            })]
         })
+        # Cập nhật danh sách đồng sở hữu
+        old_dsh = self.bsd_hd_ban_id.bsd_dong_sh_ids
+        new_dsh = self.env['bsd.dong_so_huu']
+        if not old_dsh:
+            for moi in self.bsd_dsh_moi_ids:
+                new_dsh.create({
+                    'bsd_dong_sh_id': moi.id,
+                    'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
+                    'bsd_hd_ban_cn_id': self.id,
+                    'bsd_lan_td': 1,
+                    'state': 'active',
+                })
+        else:
+            old_dsh_active = old_dsh.filtered(lambda o: o.state == 'active')
+            if old_dsh_active:
+                old_dsh_active.write({
+                    'state': 'inactive'
+                })
+            lan_td = max(old_dsh.mapped('bsd_lan_td'))
+            for moi in self.bsd_dsh_moi_ids:
+                new_dsh.create({
+                    'bsd_dong_sh_id': moi.id,
+                    'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
+                    'bsd_hd_ban_cn_id': self.id,
+                    'bsd_lan_td': lan_td + 1,
+                    'state': 'active',
+                })
+        # DV.09.09 - Xử lý công nợ khách hàng Chuyển nhượng HĐ
+        # lấy các đợt đã thanh toán của hợp đồng
+        dot_tt_ids = self.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda d: d.bsd_thanh_toan == 'chua_tt')
+        cong_no_kh_cu = self.env['bsd.cong_no'].search([('bsd_hd_ban_id', '=', self.bsd_hd_ban_id.id),
+                                                        ('bsd_dot_tt_id', 'in', dot_tt_ids.ids),
+                                                        ('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id)])
+        # hủy công nợ của khách hàng cũ
+        cong_no_kh_cu.write({'state': 'huy'})
+        # tạo công nợ cho khách hàng mới
+        for dot_tt in dot_tt_ids:
+            self.env['bsd.cong_no'].create({
+                'bsd_chung_tu': dot_tt.bsd_ten_dtt,
+                'bsd_ngay': dot_tt.bsd_ngay_hh_tt,
+                'bsd_khach_hang_id': self.bsd_kh_moi_id.id,
+                'bsd_du_an_id': self.bsd_du_an_id.id,
+                'bsd_ps_tang': dot_tt.bsd_tien_dot_tt,
+                'bsd_ps_giam': 0,
+                'bsd_loai_ct': 'dot_tt',
+                'bsd_phat_sinh': 'tang',
+                'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
+                'bsd_dot_tt_id': dot_tt.id,
+                'state': 'da_gs',
+            })
+
+    # DV.09.07 Hủy chuyển nhượng
+    def action_huy(self):
+        if self.state in ['nhap', 'xac_nhan']:
+            self.write({
+                'state': 'huy'
+            })
 
     # DV.09.08 Kiểm tra công nợ khách hàng
     @api.constrains('bsd_hd_ban_id')

@@ -14,7 +14,7 @@
                             class="oe_highlight"/>
                     <button string="In bảng giá"
                             name="action_in_bg"
-                            states="xac_nhan"
+                            states="xac_nhan,da_ky"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Ký bảng giá"
