@@ -416,7 +416,7 @@ class BsdBaoGia(models.Model):
     def action_ky_bg(self):
         if self.bsd_giu_cho_id:
             giu_cho = self.env['bsd.giu_cho'].search([('state', '=', 'giu_cho'),
-                                                      ('bsd_stt', '<', self.bsd_giu_cho_id.bsd_stt)])
+                                                      ('bsd_stt_bg', '<', self.bsd_giu_cho_id.bsd_stt_bg)])
             if giu_cho:
                 raise UserError("Có giữ chỗ ưu tiên ký bảng giá trước.\n Vui lòng chờ đến lượt của bạn")
         action = self.env.ref('bsd_kinh_doanh.bsd_wizard_ky_bg_action').read()[0]

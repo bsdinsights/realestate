@@ -5,7 +5,7 @@
             <script type="text/javascript" src="/bsd_sale_chart/static/js/bsd_sale_chart_action.js"></script>
             <script type="text/javascript" src="/bsd_sale_chart/static/js/bsd_sale_chart_model.js"></script>
             <script type="text/javascript" src="/bsd_sale_chart/static/js/bsd_sale_chart_renderer.js"></script>
-            <script type="text/javascript" src="/bsd_sale_chart/static/lib/inView-jquery/jQuery-inView123.js"></script>
+            <script type="text/javascript" src="/bsd_sale_chart/static/lib/inView-jquery/jQuery-inView.js"></script>
         </xpath>
         <xpath expr="//link[last()]" position="after">
             <link rel="stylesheet" type="text/scss" href="/bsd_sale_chart/static/scss/bsd_sale_chart_views.scss"/>

@@ -157,41 +157,37 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
 
             });
             var def2 = this._super.apply(this, arguments);
-            this.interval = setInterval(this.updateUnit.bind(this),10000);
+            this.interval = setInterval(this.updateUnit.bind(this),2000);
             return Promise.all([def1, def2]);
         },
         updateUnit: function(){
             var self = this
             var id_unit = []
             var $unit_ids = $('.bsd_unit')
-            if ($('.bsd_unit').length){
-                if ($('.bsd_unit').inView('both')){
-                    console.log("có unit")
-                }
+            if ($unit_ids.length){
+                _.each($unit_ids,function(item,index,data){
+                    if ($(item).inView()){
+                        id_unit.push(parseInt($(item).attr("id")))
+                    }
+                })
+                console.log(id_unit)
+                this._rpc({
+                    model: 'bsd.sale_chart.widget',
+                    method: 'action_update_unit',
+                    args: [id_unit],
+                    context: self.context,
+                },{shadow : true}).then(function(data){
+                    _.each(data,function(item,index,data){
+                        var id = '#' + item[0].toString()
+                        var state = $(id).attr('class').replace("bsd_unit", "")
+                        if (item[2] === null) {
+                            item[2] = 0
+                        }
+                        $(id).removeClass(state).addClass(item[1])
+                        $(id).find(".so_giu_cho").text(item[2].toString())
+                    })
+                })
             }
-//                _.each($('.bsd_unit'),function(item,index,data){
-//                    if ($(item).inView('both')){
-//                        id_unit.push(parseInt($(item).attr("id")))
-//                    }
-//                })
-//                console.log(id_unit)
-//                this._rpc({
-//                    model: 'bsd.sale_chart.widget',
-//                    method: 'action_update_unit',
-//                    args: [id_unit],
-//                    context: self.context,
-//                },{shadow : true}).then(function(data){
-//                    _.each(data,function(item,index,data){
-//                        var id = '#' + item[0].toString()
-//                        var state = $(id).attr('class').replace("bsd_unit", "")
-//                        if (item[2] === null) {
-//                            item[2] = 0
-//                        }
-//                        $(id).removeClass(state).addClass(item[1])
-//                        $(id).find(".so_giu_cho").text(item[2].toString())
-//                    })
-//                })
-//            }
         },
 
         /**
