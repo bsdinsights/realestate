@@ -32,6 +32,18 @@
                             attrs="{'invisible': ['|',('bsd_ngay_in_vb', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
+                    <button string="Không duyệt"
+                            name="action_khong_duyet"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn từ chối yêu cầu này không?"
+                            attrs="{'invisible': ['|',('bsd_ngay_in_vb', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            states="xac_nhan,nhap"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
@@ -58,6 +70,7 @@
                             <group string="XÁC NHẬN">
                                 <group>
                                     <field name="bsd_ngay_hl_cn"/>
+                                    <field name="bsd_ngay_hl_cn" invisible="1" readonly="0"/>
                                     <field name="bsd_ngay_kt_xn"/>
                                     <field name="bsd_ngay_in_vb"/>
                                 </group>

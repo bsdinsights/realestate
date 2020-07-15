@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+import datetime
 
 
 class BsdChuyenNhuong(models.Model):
@@ -17,12 +18,22 @@ class BsdChuyenNhuong(models.Model):
         ('bsd_ma_cn_unique', 'unique (bsd_ma_cn)',
          'Mã chứng từ chuyển nhượng đã tồn tại !')
     ]
-    bsd_ten_cn = fields.Char(string="Tiêu đề", help="Tiêu đề", required=True)
-    bsd_ngay_cn = fields.Datetime(string="Ngày chứng từ", required=True, default=lambda self: fields.Datetime.now())
+    bsd_ten_cn = fields.Char(string="Tiêu đề", help="Tiêu đề", required=True,
+                             readonly=True,
+                             states={'nhap': [('readonly', False)]})
+    bsd_ngay_cn = fields.Datetime(string="Ngày chứng từ", required=True, default=lambda self: fields.Datetime.now(),
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_loai = fields.Selection([('cty', 'Tại công ty'), ('vpcn', 'Tại văn phòng công chứng')],
-                                string="Loại chuyển nhượng", required=True, default='cty')
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
-    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", required=True)
+                                string="Loại chuyển nhượng", required=True, default='cty',
+                                readonly=True,
+                                states={'nhap': [('readonly', False)], 'xac_nhan': [('readonly', False)]})
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True,
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", required=True,
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]})
     bsd_unit_id = fields.Many2one(related='bsd_hd_ban_id.bsd_unit_id')
     bsd_hd_ban_state = fields.Selection(related="bsd_hd_ban_id.state")
     bsd_ngay_hl_cn = fields.Datetime(string="Hiệu lực CN", readonly=True,
@@ -45,20 +56,34 @@ class BsdChuyenNhuong(models.Model):
     bsd_dsh_ht_ids = fields.Many2many('res.partner', relation="bsd_hd_ban_cn_kh_ht",
                                       string="Danh sách đồng sở hữu hiện tại")
 
-    bsd_kh_moi_id = fields.Many2one('res.partner', string="Khách hàng mới", help="Khách hàng được chuyển nhượng")
-    bsd_co_dsh_moi = fields.Boolean(string="Đồng sở hữu mới")
+    bsd_kh_moi_id = fields.Many2one('res.partner', string="Khách hàng mới", help="Khách hàng được chuyển nhượng",
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)], 'xac_nhan': [('readonly', False)]})
+    bsd_co_dsh_moi = fields.Boolean(string="Đồng sở hữu mới",
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)], 'xac_nhan': [('readonly', False)]})
     bsd_dsh_moi_ids = fields.Many2many('res.partner',
                                        relation="bsd_hd_ban_cn_kh_moi",
-                                       string="Danh sách đồng sở hữu mới")
-    bsd_so_cch = fields.Char(string="Số công chứng", help="Số công chứng")
-    bsd_noi_cch = fields.Many2one('res.country.state', string="Nơi công chứng")
-    bsd_ngay_cch = fields.Date(string="Ngày công chứng", help="Ngày công chứng")
-    bsd_so_tb = fields.Char(string="Số thông báo", help="Số thông báo")
-    bsd_noi_tb = fields.Many2one('res.country.state', string="Nơi thông báo", help="Nơi thông báo")
-    bsd_ngay_tb = fields.Date(string="Ngày thông báo", help="Ngày thông báo")
-    bsd_ngay_cn_tt = fields.Datetime(string="Ngày cập nhật", help="Ngày cập nhật thông tin công chứng")
+                                       string="Danh sách đồng sở hữu mới",
+                                       readonly=True,
+                                       states={'nhap': [('readonly', False)], 'xac_nhan': [('readonly', False)]})
+    bsd_so_cch = fields.Char(string="Số công chứng", help="Số công chứng", readonly=True,
+                             states={'nhap': [('readonly', False)], 'xac_nhan': [('readonly', False)]})
+    bsd_noi_cch = fields.Many2one('res.country.state', string="Nơi công chứng", readonly=True,
+                                  states={'nhap': [('readonly', False)], 'xac_nhan': [('readonly', False)]})
+    bsd_ngay_cch = fields.Date(string="Ngày công chứng", help="Ngày công chứng", readonly=True,
+                               states={'nhap': [('readonly', False)], 'xac_nhan': [('readonly', False)]})
+    bsd_so_tb = fields.Char(string="Số thông báo", help="Số thông báo", readonly=True,
+                            states={'nhap': [('readonly', False)], 'xac_nhan': [('readonly', False)]})
+    bsd_noi_tb = fields.Many2one('res.country.state', string="Nơi thông báo", help="Nơi thông báo", readonly=True,
+                                 states={'nhap': [('readonly', False)], 'xac_nhan': [('readonly', False)]})
+    bsd_ngay_tb = fields.Date(string="Ngày thông báo", help="Ngày thông báo", readonly=True,
+                              states={'nhap': [('readonly', False)], 'xac_nhan': [('readonly', False)]})
+    bsd_ngay_cn_tt = fields.Datetime(string="Ngày cập nhật", help="Ngày cập nhật thông tin công chứng", readonly=True,
+                                     states={'nhap': [('readonly', False)], 'xac_nhan': [('readonly', False)]})
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'), ('duyet', 'Duyệt'), ('huy', 'Hủy')],
                              string="Trạng thái", default='nhap', required=True, readonly=True, tracking=1)
+    bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
 
     @api.onchange('bsd_hd_ban_id')
     def _onchange_hd_ban(self):
@@ -66,6 +91,10 @@ class BsdChuyenNhuong(models.Model):
         if self.bsd_hd_ban_id.bsd_dong_sh_ids:
             self.bsd_co_dsh_ht = True
             self.bsd_dsh_ht_ids = self.bsd_hd_ban_id.bsd_dong_sh_ids.mapped('bsd_dong_sh_id')
+
+    @api.onchange('bsd_kh_moi_id')
+    def _onchange_kh_moi(self):
+        self.bsd_ngay_hl_cn = fields.datetime.now() + datetime.timedelta(days=14)
 
     # DV.09.01 Xác nhận
     def action_xac_nhan(self):
@@ -159,6 +188,11 @@ class BsdChuyenNhuong(models.Model):
                 'bsd_dot_tt_id': dot_tt.id,
                 'state': 'da_gs',
             })
+
+    # DV.09.06 Không duyệt chuyển nhượng
+    def action_khong_duyet(self):
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_hd_ban_cn_action').read()[0]
+        return action
 
     # DV.09.07 Hủy chuyển nhượng
     def action_huy(self):
