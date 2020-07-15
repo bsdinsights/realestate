@@ -91,9 +91,11 @@ class BsdChuyenNhuong(models.Model):
             'target': 'new'
         }
 
-    # DV.09.08 In chứng từ chuyển nhượng
+    # DV.09.03 In chứng từ chuyển nhượng
     def action_in_cn(self):
         return self.env.ref('bsd_dich_vu.bsd_hd_ban_cn_report_action').read()[0]
+
+
 
     # DV.09.08 Kiểm tra công nợ khách hàng
     @api.constrains('bsd_hd_ban_id')

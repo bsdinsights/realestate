@@ -129,7 +129,8 @@ class BsdHopDongMuaBan(models.Model):
     bsd_ngay_duyet_db = fields.Datetime(string="Ngày duyệt", help="Ngày duyệt", readonly=True)
     bsd_nguoi_duyet_db_id = fields.Many2one('res.users', string="Người duyệt", readonly=True, tracking=2)
     bsd_ngay_dkbg = fields.Date(string="Ngày DKBG", help="Ngày dự kiến bàn giao ký kết với khách hàng")
-    bsd_cn_ids = fields.One2many('bsd.hd_ban_cn', 'bsd_hd_ban_id', string="Chuyển nhượng hợp đồng")
+    bsd_cn_ids = fields.One2many('bsd.hd_ban_cn', 'bsd_hd_ban_id', string="Chuyển nhượng hợp đồng",
+                                 domain=[('state', '=', 'duyet')])
 
     # DV.01.11 - Theo dõi chiết khấu mua sỉ (nút nhấn wizard)
     def action_ck_ms(self):
@@ -151,7 +152,7 @@ class BsdHopDongMuaBan(models.Model):
         # Tính lại tiền các đợt chưa thanh toán
         dot_da_tt = self.bsd_ltt_ids.filtered(lambda x: x.bsd_thanh_toan in ['da_tt', 'dang_tt'])
         _logger.debug(dot_da_tt)
-        tong_tien_phai_tt = self.bsd_tong_gia - sum(dot_da_tt.mapped('bsd_tien_dot_tt'))
+        tong_tien_phai_tt = self.bsd_tong_gia - self.bsd_tien_pbt - sum(dot_da_tt.mapped('bsd_tien_dot_tt'))
         _logger.debug(tong_tien_phai_tt)
         dot_phai_tt = self.bsd_ltt_ids\
             .filtered(lambda x: x.bsd_thanh_toan == 'chua_tt')\

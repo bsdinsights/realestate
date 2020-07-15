@@ -25,6 +25,13 @@
                             type="object"
                             states="xac_nhan,duyet"
                             class="oe_highlight"/>
+                    <button string="Duyệt"
+                            name="action_duyet"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn duyệt yêu cầu này không?"
+                            attrs="{'invisible': ['|',('bsd_ngay_in_vncn', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>

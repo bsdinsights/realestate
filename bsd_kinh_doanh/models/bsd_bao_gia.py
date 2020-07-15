@@ -400,6 +400,17 @@ class BsdBaoGia(models.Model):
                 'bsd_parent_id': dot_pbt.id,
                 'bsd_loai': 'pbt'
             })
+        # return {
+        #     'name': "Bảng tính giá"
+        #     'context': self.env.context,
+        #     'view_type': 'form',
+        #     'view_mode': 'form',
+        #     'res_model': 'bsd.bao_gia',
+        #     'res_id': self.id,
+        #     'view_id': False,
+        #     'type': 'ir.actions.act_window',
+        #     'target': 'new',
+        # }
 
     # KD.09.06 Ký báo giá
     def action_ky_bg(self):
