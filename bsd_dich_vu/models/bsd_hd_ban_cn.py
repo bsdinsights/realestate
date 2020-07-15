@@ -86,7 +86,6 @@ class BsdChuyenNhuong(models.Model):
             'type': 'ir.actions.act_window',
             'view_mode': 'form',
             'res_model': 'message.wizard',
-            # pass the id
             'res_id': message_id.id,
             'target': 'new'
         }
@@ -95,7 +94,24 @@ class BsdChuyenNhuong(models.Model):
     def action_in_cn(self):
         return self.env.ref('bsd_dich_vu.bsd_hd_ban_cn_report_action').read()[0]
 
+    # DV.09.05 Duyệt chuyển nhượng
+    def action_duyet(self):
+        # Kiểm tra trạng thái của hợp đồng
+        if self.bsd_hd_ban_id.state in ['thanh_ly', 'huy']:
+            raise UserError("Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin hợp đồng")
+        # Cập nhật trạng thái vào chuyến nhượng
+        self.write({
+            'state': 'duyet',
+            'bsd_nguoi_duyet_id': self.env.uid,
+            'bsd_ngay_duyet': fields.Datetime.now(),
+        })
+        # Cập nhật thông tin hợp đồng
+        self.bsd_hd_ban_id.write({
+            'bsd_khach_hang_id': self.bsd_kh_moi_id.id,
+            'bsd_dong_sh_ids': [(0, 0, {
 
+            })]
+        })
 
     # DV.09.08 Kiểm tra công nợ khách hàng
     @api.constrains('bsd_hd_ban_id')
