@@ -77,7 +77,29 @@
                                     <field name="bsd_gioi_thieu_id" options="{'no_create':true}"/>
                                 </group>
                             </group>
-                            <group string="SẢN PHẨM">
+                            <group string="XÁC NHẬN">
+                                <group>
+                                    <field name="bsd_ngay_in_dc"/>
+                                    <field name="bsd_ngay_hh_kdc"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_up_dc"/>
+                                    <field name="bsd_ngay_ky_dc"/>
+                                </group>
+                            </group>
+                            <group string="THANH TOÁN">
+                                <group>
+                                    <field name="bsd_ngay_tt"/>
+
+                                </group>
+                                <group>
+                                    <!--<field name="bsd_tien_ttd"/>-->
+                                    <field name="bsd_thanh_toan"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Sản phẩm">
+                            <group>
                                 <group>
                                     <field name="bsd_unit_id"
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
@@ -131,26 +153,6 @@
                                 </group>
                                 <group>
                                     <field name="bsd_tien_pql"/>
-                                </group>
-                            </group>
-                            <group string="XÁC NHẬN">
-                                <group>
-                                    <field name="bsd_ngay_in_dc"/>
-                                    <field name="bsd_ngay_hh_kdc"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_ngay_up_dc"/>
-                                    <field name="bsd_ngay_ky_dc"/>
-                                </group>
-                            </group>
-                            <group string="THANH TOÁN">
-                                <group>
-                                    <field name="bsd_ngay_tt"/>
-
-                                </group>
-                                <group>
-                                    <!--<field name="bsd_tien_ttd"/>-->
-                                    <field name="bsd_thanh_toan"/>
                                 </group>
                             </group>
                         </page>
@@ -308,6 +310,28 @@
             </tree>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_dat_coc_filter">
+        <field name="name">bsd.dat_coc.list.filter</field>
+        <field name="model">bsd.dat_coc</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_ma_dat_coc"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_unit_id"/>
+
+                <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_dat_coc_filter"/>
+
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
+                    <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_dat_coc_action">
         <field name="name">Đặt cọc</field>
         <field name="res_model">bsd.dat_coc</field>
