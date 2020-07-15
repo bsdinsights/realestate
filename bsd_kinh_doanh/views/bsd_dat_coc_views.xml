@@ -114,7 +114,7 @@
                                     <label for="bsd_dt_sd"/>
                                     <div class="o_row no-gutters d-flex">
                                         <div class="col">
-                                            <field name="bsd_dt_xd" class="mr-1"/>
+                                            <field name="bsd_dt_sd" class="mr-1"/>
                                             <span>m2</span>
                                         </div>
                                     </div>

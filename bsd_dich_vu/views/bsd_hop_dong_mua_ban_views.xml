@@ -39,8 +39,8 @@
                     <button string="Chiết khấu mua sỉ"
                             name="action_ck_ms"
                             type="object"
-                            attrs="{'invisible': ['|','&amp;',('state', '!=','tt_dot1'), ('bsd_co_ttdc', '=', False),
-                                                 '&amp;',('state', '!=','du_dk'),('bsd_co_ttdc', '=', True)]}"
+                            attrs="{'invisible': ['|','&amp;',('state', '!=','tt_dot1'), ('bsd_co_ttdc', '=', True),
+                                                 '&amp;',('state', '!=','du_dk'),('bsd_co_ttdc', '=', False)]}"
                             class="oe_highlight"/>
                     <button string="Ước tính"
                             name="action_uoc_tinh_ck"
@@ -127,7 +127,7 @@
                                     <label for="bsd_dt_sd"/>
                                     <div class="o_row no-gutters d-flex">
                                         <div class="col">
-                                            <field name="bsd_dt_xd" class="mr-1"/>
+                                            <field name="bsd_dt_sd" class="mr-1"/>
                                             <span>m2</span>
                                         </div>
                                     </div>

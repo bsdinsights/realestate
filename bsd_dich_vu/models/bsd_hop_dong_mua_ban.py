@@ -140,7 +140,7 @@ class BsdHopDongMuaBan(models.Model):
     # DV.01.11 - Theo dõi chiết khấu mua sỉ
     def tao_ck_ms(self, chiet_khau, tien=0, tl_ck=0):
         # Tạo dữ liệu trong bảng chiết khấu
-        self.bsd_ps_ck_ids.create({
+        ps_ch_ms =self.bsd_ps_ck_ids.create({
             'bsd_loai_ck': 'mua_si',
             'bsd_chiet_khau_id': chiet_khau.id,
             'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
@@ -179,7 +179,17 @@ class BsdHopDongMuaBan(models.Model):
                 dot.bsd_tien_dot_tt = tien_tt - (tien_tt % 1000)
                 tien_da_chia_dot += dot.bsd_tien_dot_tt
                 _logger.debug(dot.bsd_tien_dot_tt)
-
+        # Tạo dự liệu bảng phát sinh giao dịch chiết khấu
+        self.env['bsd.ps_gd_ck'].create({
+            'bsd_ma_ck': ps_ch_ms.bsd_ma_ck,
+            'bsd_ten_ck': ps_ch_ms.bsd_ten_ck,
+            'bsd_hd_ban_id': self.id,
+            'bsd_unit_id': self.bsd_unit_id.id,
+            'bsd_loai_ck': ps_ch_ms.bsd_loai_ck,
+            'bsd_tl_ck': ps_ch_ms.bsd_tl_ck,
+            'bsd_tien': ps_ch_ms.bsd_tien_ck,
+            'bsd_tien_ck': ps_ch_ms.bsd_tien_ck,
+        })
     # DV.01.12 - Ước tính chiết khấu thanh toán
     def action_uoc_tinh_ck(self):
         action = self.env.ref('bsd_dich_vu.bsd_wizard_uoc_tinh_ck_tt_action').read()[0]
