@@ -116,5 +116,6 @@ class BsdChuyenNhuong(models.Model):
         if res.bsd_hd_ban_id.bsd_dong_sh_ids:
             res.bsd_co_dsh_ht = True
             res.write({
-                'bsd_dsh_ht_ids': [(6, 0, self.bsd_hd_ban_id.bsd_dong_sh_ids.mapped('bsd_dong_sh_id').ids)]
+                'bsd_dsh_ht_ids': [(6, 0, res.bsd_hd_ban_id.bsd_dong_sh_ids.mapped('bsd_dong_sh_id').ids)]
             })
+        return res

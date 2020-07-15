@@ -102,11 +102,6 @@ class BsdGiuCho(models.Model):
     bsd_so_bao_gia = fields.Integer(string="# Báo giá", compute='_compute_bao_gia')
     bsd_so_huy_gc = fields.Integer(string="# Hủy giữ chỗ", compute='_compute_huy_gc')
 
-    # # R11. khách hàng chuyển nhượng
-    # @api.onchange('bsd_du_an_id')
-    # def _onchange_unit(self):
-    #     self.bsd_unit_id = False
-
     # KD.07.02 Ràng buộc số giữ chỗ theo căn hộ/ NVBH
     @api.constrains('bsd_nvbh_id', 'bsd_unit_id')
     def _constrain_unit_nv(self):
