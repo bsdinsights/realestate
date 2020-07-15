@@ -59,7 +59,8 @@
                                 <group>
                                     <field name="bsd_du_an_id" options="{'no_create':true}"/>
                                     <field name="bsd_hd_ban_id"
-                                           domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"
+                                           domain="[('bsd_du_an_id', '=', bsd_du_an_id),
+                                                    ('state','not in',['nhap','ht_dc','tt_dot1','du_dk','da_ky_ttdc'])]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_unit_id"
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
