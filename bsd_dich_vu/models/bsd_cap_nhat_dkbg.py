@@ -56,7 +56,7 @@ class BsdCapNhatDKBG(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã phiếu giữ chỗ'))
+            raise UserError(_('Dự án chưa có mã cập nhật dự kiến bàn giao'))
         vals['bsd_ma_cn_dkbg'] = sequence.next_by_id()
         return super(BsdCapNhatDKBG, self).create(vals)
 
@@ -80,7 +80,7 @@ class BsdCapNhatDKBGUnit(models.Model):
                                      string="Cập nhật DKBG",
                                      help="Tên chứng từ cập nhật dự kiến bàn giao", required=True)
     bsd_loai = fields.Selection(related="bsd_cn_dkbg_id.bsd_loai", store=True)
-    bsd_du_an_id = fields.Many2one(related="bsd_cn_dkbg_id.bsd_du_an_id", store=True)
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án")
     bsd_unit_id = fields.Many2one('product.product', string="Unit", required=True)
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng")
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán")
@@ -104,6 +104,11 @@ class BsdCapNhatDKBGUnit(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
+    # R.01 Dự án
+    @api.onchange('bsd_cn_dkbg_id')
+    def _onchange_cn_dkbg(self):
+        self.bsd_du_an_id = self.bsd_cn_dkbg_id.bsd_du_an_id
+
     # R.02 Unit
     @api.onchange('bsd_loai', 'bsd_du_an_id')
     def _onchange_loai(self):
@@ -123,6 +128,7 @@ class BsdCapNhatDKBGUnit(models.Model):
     # R.03 Hợp đồng
     @api.onchange('bsd_unit_id')
     def _onchange_unit(self):
+        self.bsd_ngay_dkbg_ht = self.bsd_unit_id.bsd_ngay_dkbg
         if self.bsd_loai != 'san_pham':
             self.bsd_hd_ban_id = self.bsd_unit_id.bsd_hd_ban_id
         else:
@@ -143,6 +149,6 @@ class BsdCapNhatDKBGUnit(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã phiếu giữ chỗ'))
-        vals['bsd_ma_cn_dkbg'] = sequence.next_by_id()
+            raise UserError(_('Dự án chưa có mã cập nhật dự kiến bàn giao chi tiết'))
+        vals['bsd_ma_cn_unit'] = sequence.next_by_id()
         return super(BsdCapNhatDKBGUnit, self).create(vals)

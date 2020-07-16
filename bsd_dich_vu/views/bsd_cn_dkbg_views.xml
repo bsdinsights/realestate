@@ -100,7 +100,8 @@
                             <field name="bsd_cn_dkbg_id" options="{'no_create':true}"/>
                             <field name="bsd_ma_cn_unit"/>
                             <field name="bsd_ngay_cn_unit"/>
-                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true}" readonly="1"/>
+                            <field name="bsd_du_an_id" invisible="1"/>
                             <field name="bsd_unit_id"
                                    context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                    options="{'no_create':true}"/>

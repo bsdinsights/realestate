@@ -126,6 +126,7 @@
                     <group string="BÀN GIAO">
                         <group>
                             <field name="bsd_ngay_dkbg" readonly="1"/>
+                            <field name="bsd_ngay_dkbg" invisible="1"/>
                             <field name="bsd_thang_pql"/>
                             <field name="bsd_don_gia_pql"/>
                             <field name="bsd_tien_pql"/>

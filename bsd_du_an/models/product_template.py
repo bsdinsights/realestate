@@ -146,6 +146,7 @@ class ProductTemplate(models.Model):
         self.bsd_tien_dc = self.bsd_du_an_id.bsd_tien_dc
         self.bsd_qsdd_m2 = self.bsd_du_an_id.bsd_qsdd_m2
         self.bsd_tl_pbt = self.bsd_du_an_id.bsd_tl_pbt
+        self.bsd_ngay_dkbg = self.bsd_du_an_id.bsd_ngay_dkbg
 
     @api.depends('bsd_don_gia_pql', 'bsd_dt_sd', 'bsd_thang_pql')
     def _compute_tien_pql(self):
