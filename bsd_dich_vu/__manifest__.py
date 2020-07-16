@@ -22,6 +22,7 @@
         'views/bsd_kh_ca_nhan_views.xml',
         'views/bsd_ps_gd_km_views.xml',
         'views/bsd_hd_ban_chuyen_nhuong_views.xml',
+        'views/bsd_cn_dkbg_views.xml',
         'views/bsd_menu_item_views.xml',
         'views/product_template_views.xml',
         'wizards/bsd_wizard_ky_hdb_views.xml',

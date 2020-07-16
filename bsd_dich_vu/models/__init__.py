@@ -7,3 +7,5 @@ from . import bsd_phu_luc_thay_doi_thong_tin
 from . import bsd_phat_sinh_giao_dich_khuyen_mai
 from . import bsd_hd_ban_cn
 from . import product_template
+from . import bsd_cap_nhat_dkbg
+

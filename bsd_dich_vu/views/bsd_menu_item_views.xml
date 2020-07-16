@@ -31,6 +31,11 @@
               sequence="13"
               action="bsd_hd_ban_cn_action"
               parent="bsd_main_dich_vu_root"/>
+    <menuitem id="bsd_cn_dkbg_menu_action"
+              name="Cập nhật điều kiện bàn giao"
+              sequence="14"
+              action="bsd_cn_dkbg_action"
+              parent="bsd_main_dich_vu_root"/>
     <menuitem id="bsd_ps_gd_km_menu_action"
               name="Giao dịch khuyến mãi"
               sequence="18"

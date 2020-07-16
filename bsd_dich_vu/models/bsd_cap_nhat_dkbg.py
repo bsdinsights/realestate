@@ -1,0 +1,148 @@
+# -*- coding:utf-8 -*-
+
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
+
+
+class BsdCapNhatDKBG(models.Model):
+    _name = 'bsd.cn_dkbg'
+    _description = "Cập nhật điều kiện bàn giao"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _rec_name = 'bsd_ten_cn_dkbg'
+
+    bsd_ma_cn_dkbg = fields.Char(string="Mã", help="Mã chứng từ ", required=True, readonly=True,
+                                 copy=False, default='/')
+    _sql_constraints = [
+        ('bsd_ma_cn_dkbg_unique', 'unique (bsd_ma_cn_dkbg)',
+         'Mã phiếu cập nhật DKBG đã tồn tại !')
+    ]
+    bsd_ten_cn_dkbg = fields.Char(string="Tiêu đề", help="Tiêu đề", required=True,
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
+    bsd_ngay_cn_dkbg = fields.Datetime(string="Ngày tạo", required=True, default=lambda self: fields.Datetime.now(),
+                                       readonly=True,
+                                       states={'nhap': [('readonly', False)]})
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True)
+    bsd_loai = fields.Selection([('tat_ca', 'Tất cả'),
+                                 ('san_pham', 'Sản phẩm'),
+                                 ('dot_tt', 'Đợt thanh toán')], string="Loại cập nhật", required=True,
+                                help="""Lựa chọn cách cập nhật ngày dự kiến bàn giao:\n
+                                        1 - Tất cả: Cập nhật đồng loạt cho Sản phẩm, Hợp đồng, 
+                                        Đợt thanh toán là Đợt dự kiến bàn giao. \n
+                                        2 - Sản phẩm: Chỉ cập nhật cho Sản phẩm.\n
+                                        3 - Đợt thanh toán: Chỉ cập nhật Đợt thanh toán là Đợt dự kiến bàn giao""")
+    bsd_ngay_ttcn = fields.Date(string="Ngày cất nóc", help="Ngày cất nóc thực tế", required=True)
+    bsd_ngay_ut = fields.Date(string="Ngày ước tính", required=True,
+                              help="""Ngày dùng để ước tính tiền phạt chậm thanh toán khi tạo thông báo bàn giao""")
+    bsd_co_tbnt = fields.Boolean(string="Tạo TBNT", help="Đánh dấu dùng để tạo Thông báo nghiệm thu sản phẩm")
+    bsd_co_tbbg = fields.Boolean(string="Tạo TBBG", help="Đánh dấu dùng để tạo Thông báo bàn giao sản phẩm")
+    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
+    bsd_ngay_duyet = fields.Datetime(string="Ngày duyệt", readonly=1, help="Ngày duyệt")
+    bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", help="Người duyệt")
+    bsd_da_tao_tbbg = fields.Boolean(string="Thông báo bàn giao", readonly=True,
+                                     help="Đánh dấu Cập nhật DKBG đã được tạo thông báo bàn giao")
+    bsd_da_tao_tbnt = fields.Boolean(string="Thông báo nghiệm thu", readonly=True,
+                                     help="Đánh dấu Cập nhật DKBG đã được tạo thông báo nghiệm thu")
+
+    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
+                              ('duyet', 'Duyệt'), ('huy', 'Hủy')],
+                             string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
+    bsd_ct_ids = fields.One2many('bsd.cn_dkbg_unit', 'bsd_cn_dkbg_id', string="Cập nhật DKBG chi tiết")
+
+    @api.model
+    def create(self, vals):
+        sequence = None
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
+        if not sequence:
+            raise UserError(_('Dự án chưa có mã phiếu giữ chỗ'))
+        vals['bsd_ma_cn_dkbg'] = sequence.next_by_id()
+        return super(BsdCapNhatDKBG, self).create(vals)
+
+
+class BsdCapNhatDKBGUnit(models.Model):
+    _name = 'bsd.cn_dkbg_unit'
+    _description = "Cập nhật điều kiện bàn giao sản phẩm"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _rec_name = 'bsd_ma_cn_unit'
+
+    bsd_ma_cn_unit = fields.Char(string="Mã", help="Mã cập nhật dự kiến bàn giao chi tiết",
+                                 required=True, readonly=True, copy=False, default='/')
+    _sql_constraints = [
+        ('bsd_ma_cn_unit_unique', 'unique (bsd_ma_cn_unit)',
+         'Mã cập nhật dkbg sản phẩm đã tồn tại !')
+    ]
+    bsd_ngay_cn_unit = fields.Datetime(string="Ngày tạo", required=True, default=lambda self: fields.Datetime.now(),
+                                       readonly=True,
+                                       states={'nhap': [('readonly', False)]})
+    bsd_cn_dkbg_id = fields.Many2one('bsd.cn_dkbg',
+                                     string="Cập nhật DKBG",
+                                     help="Tên chứng từ cập nhật dự kiến bàn giao", required=True)
+    bsd_loai = fields.Selection(related="bsd_cn_dkbg_id.bsd_loai", store=True)
+    bsd_du_an_id = fields.Many2one(related="bsd_cn_dkbg_id.bsd_du_an_id", store=True)
+    bsd_unit_id = fields.Many2one('product.product', string="Unit", required=True)
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng")
+    bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán")
+    bsd_ngay_dkbg_ht = fields.Date(string="Ngày DKBG hiện tại", help="Ngày dự kiến bàn giao hiện tại")
+    bsd_ngay_dkbg_moi = fields.Date(string="Ngày DKBG mới", help="Ngày dự kiến bàn giao mới")
+    bsd_ngay_htt = fields.Date(string="Hạn thanh toán", help="Hạn thanh toán")
+    bsd_gia_ban = fields.Monetary(related="bsd_unit_id.bsd_gia_ban")
+    bsd_dk_bg = fields.Float(related="bsd_unit_id.bsd_dk_bg")
+    bsd_dt_cl = fields.Float(related="bsd_unit_id.bsd_dt_cl")
+    bsd_dt_xd = fields.Float(related="bsd_unit_id.bsd_dt_xd")
+    bsd_dt_sd = fields.Float(related="bsd_unit_id.bsd_dt_sd")
+    bsd_dt_tt = fields.Float(related="bsd_unit_id.bsd_dt_tt")
+    bsd_dt_sh = fields.Float(related="bsd_unit_id.bsd_dt_sh")
+    bsd_unit_state = fields.Selection(related="bsd_unit_id.state")
+    bsd_ngay_xn = fields.Datetime(string="Ngày xác nhận", readonly=True, help="Ngày xác nhận")
+    bsd_nguoi_xn_id = fields.Many2one('res.users', string="Người xác nhận", readonly=True, help="Ngày xác nhận")
+    bsd_ly_do = fields.Char(string="Lý do hủy", help="Lý do hủy", readonly=True)
+    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
+                              ('duyet', 'Duyệt'), ('huy', 'Hủy')],
+                             string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
+    company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
+    currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+
+    # R.02 Unit
+    @api.onchange('bsd_loai', 'bsd_du_an_id')
+    def _onchange_loai(self):
+        res = {}
+        if self.bsd_loai != 'dot_tt':
+            res.update({
+                'domain': {'bsd_unit_id': [('bsd_du_an_id', '=', self.bsd_du_an_id.id)]}
+            })
+        else:
+            list_id = self.env['product.product'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                          ('bsd_hd_ban_id', '!=', False)]).ids
+            res.update({
+                'domain': {'bsd_unit_id': [('id', 'in', list_id)]}
+            })
+        return res
+
+    # R.03 Hợp đồng
+    @api.onchange('bsd_unit_id')
+    def _onchange_unit(self):
+        if self.bsd_loai != 'san_pham':
+            self.bsd_hd_ban_id = self.bsd_unit_id.bsd_hd_ban_id
+        else:
+            self.bsd_hd_ban_id = None
+
+    # R.04 Đợt thanh toán
+    @api.onchange('bsd_hd_ban_id')
+    def _onchange_hd_ban(self):
+        if self.bsd_loai != 'san_pham':
+            self.bsd_dot_tt_id = self.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_ma_dtt == 'DKBG')
+        else:
+            self.bsd_dot_tt_id = None
+
+    @api.model
+    def create(self, vals):
+        sequence = None
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
+        if not sequence:
+            raise UserError(_('Dự án chưa có mã phiếu giữ chỗ'))
+        vals['bsd_ma_cn_dkbg'] = sequence.next_by_id()
+        return super(BsdCapNhatDKBGUnit, self).create(vals)
