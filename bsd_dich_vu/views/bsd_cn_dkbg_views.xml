@@ -6,6 +6,30 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            states="nhap"
+                            confirm="Bạn có muốn xác nhận yêu cầu không?"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Duyệt"
+                            name="action_duyet"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn duyệt yêu cầu này không?"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Không duyệt"
+                            name="action_khong_duyet"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn từ chối yêu cầu này không?"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            states="xac_nhan,nhap"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
@@ -78,7 +102,7 @@
         </field>
     </record>
     <record model="ir.actions.act_window" id="bsd_cn_dkbg_action">
-        <field name="name">Cập nhật dự kiến bàn giao</field>
+        <field name="name">Cập nhật DKBG</field>
         <field name="res_model">bsd.cn_dkbg</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
@@ -92,6 +116,18 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            states="nhap"
+                            confirm="Bạn có muốn xác nhận yêu cầu không?"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            states="xac_nhan,nhap"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
@@ -145,7 +181,7 @@
         </field>
     </record>
     <record model="ir.actions.act_window" id="bsd_cn_dkbg_unit_action">
-        <field name="name">Chi tiết</field>
+        <field name="name">Cập nhật DKBG chi tiết</field>
         <field name="res_model">bsd.cn_dkbg_unit</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">

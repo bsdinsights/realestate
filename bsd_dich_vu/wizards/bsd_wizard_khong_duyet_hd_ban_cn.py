@@ -14,7 +14,7 @@ class BsdKhongDuyetChuyenNhuong(models.TransientModel):
         hd_ban_cn = self.env['bsd.hd_ban_cn'].browse(self._context.get('active_ids', []))
         return hd_ban_cn
 
-    bsd_hd_ban_cn_id = fields.Many2one('bsd.hd_ban_cn', string="Giao dịch khuyến mãi", default=_get_hd_ban_cn, readonly=True)
+    bsd_hd_ban_cn_id = fields.Many2one('bsd.hd_ban_cn', string="Chuyển nhượng", default=_get_hd_ban_cn, readonly=True)
     bsd_ly_do = fields.Char(string="Lý do", required=True)
 
     def action_xac_nhan(self):

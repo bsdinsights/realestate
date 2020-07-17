@@ -9,3 +9,4 @@ from . import bsd_wizard_uoc_tinh_ck_tt
 from . import bsd_wizard_khong_duyet_gd_km
 from . import bsd_wizard_ky_ttdc
 from . import bsd_wizard_khong_duyet_hd_ban_cn
+from . import bsd_wizard_khong_duyet_cn_dkbg
