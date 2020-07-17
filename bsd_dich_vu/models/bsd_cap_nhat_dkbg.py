@@ -100,7 +100,9 @@ class BsdCapNhatDKBG(models.Model):
         else:
             # Cập nhật trạng thái duyệt cập nhật
             self.write({
-                'state': 'duyet'
+                'state': 'duyet',
+                'bsd_ngay_duyet': fields.Datetime.now(),
+                'bsd_nguoi_duyet_id': self.env.uid
             })
             # Cập nhật trạng thái duyệt cập nhật chi tiết
             self.bsd_ct_ids.write({
@@ -174,15 +176,31 @@ class BsdCapNhatDKBGUnit(models.Model):
                                        states={'nhap': [('readonly', False)]})
     bsd_cn_dkbg_id = fields.Many2one('bsd.cn_dkbg',
                                      string="Cập nhật DKBG",
-                                     help="Tên chứng từ cập nhật dự kiến bàn giao", required=True)
+                                     help="Tên chứng từ cập nhật dự kiến bàn giao", required=True,
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
     bsd_loai = fields.Selection(related="bsd_cn_dkbg_id.bsd_loai", store=True)
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án")
-    bsd_unit_id = fields.Many2one('product.product', string="Unit", required=True)
-    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng")
-    bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán")
-    bsd_ngay_dkbg_ht = fields.Date(string="Ngày DKBG hiện tại", help="Ngày dự kiến bàn giao hiện tại")
-    bsd_ngay_dkbg_moi = fields.Date(string="Ngày DKBG mới", help="Ngày dự kiến bàn giao mới")
-    bsd_ngay_htt = fields.Date(string="Hạn thanh toán", help="Hạn thanh toán")
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_unit_id = fields.Many2one('product.product', string="Unit", required=True,
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng",
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]})
+    bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán",
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]})
+    bsd_ngay_dkbg_ht = fields.Date(string="Ngày DKBG hiện tại", help="Ngày dự kiến bàn giao hiện tại",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_ngay_dkbg_moi = fields.Date(string="Ngày DKBG mới", help="Ngày dự kiến bàn giao mới",
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]})
+    bsd_ngay_htt = fields.Date(string="Hạn thanh toán", help="Hạn thanh toán",
+                               readonly=True,
+                               states={'nhap': [('readonly', False)]})
     bsd_gia_ban = fields.Monetary(related="bsd_unit_id.bsd_gia_ban")
     bsd_dk_bg = fields.Float(related="bsd_unit_id.bsd_dk_bg")
     bsd_dt_cl = fields.Float(related="bsd_unit_id.bsd_dt_cl")
