@@ -45,6 +45,11 @@
                   sequence="11"
                   action="bsd_cn_dkbg_unit_action"
                   parent="bsd_cn_dkbg_menu"/>
+    <menuitem id="bsd_ds_tb_menu_action"
+              name="Danh sách thông báo"
+              sequence="10"
+              action="bsd_ds_tb_action"
+              parent="bsd_main_dich_vu_root"/>
     <menuitem id="bsd_ps_gd_km_menu_action"
               name="Giao dịch khuyến mãi"
               sequence="18"
