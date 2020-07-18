@@ -117,7 +117,9 @@ class BsdSaleChartWidget(models.AbstractModel):
     @api.model
     def action_update_unit(self, data):
         where = ''
-        if len(data) > 1:
+        if len(data) == 0:
+            return
+        elif len(data) > 1:
             where = "where unit.id in {0}".format(tuple(filter(None, data)))
         elif len(data) == 1:
             where = "where unit.id = {0}".format(data[0])

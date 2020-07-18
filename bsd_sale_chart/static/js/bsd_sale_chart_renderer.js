@@ -170,7 +170,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                         id_unit.push(parseInt($(item).attr("id")))
                     }
                 })
-                console.log(id_unit)
                 this._rpc({
                     model: 'bsd.sale_chart.widget',
                     method: 'action_update_unit',
