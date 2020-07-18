@@ -116,10 +116,12 @@ class BsdSaleChartWidget(models.AbstractModel):
 
     @api.model
     def action_update_unit(self, data):
-        _logger.debug(data)
         where = ''
-        if data:
+        if len(data) > 1:
             where = "where unit.id in {0}".format(tuple(filter(None, data)))
+        elif len(data) == 1:
+            where = "where unit.id = {0}".format(data[0])
+        _logger.debug(where)
         query = """SELECT unit.id, unit.state, giu_cho.so_giu_cho_unit
                     FROM product_template AS unit
                     LEFT JOIN (SELECT unit.product_tmpl_id,COUNT(*) AS so_giu_cho_unit 

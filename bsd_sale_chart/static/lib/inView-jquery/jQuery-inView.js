@@ -20,7 +20,6 @@ $.fn.inView = function (inViewType) {
   var bounds = {};
   bounds.top = this.offset().top + offset;
   bounds.bottom = bounds.top + this.outerHeight();
-
   switch (inViewType) {
     case 'bottomOnly':
       return bounds.bottom <= viewport.bottom && bounds.bottom >= viewport.top;
@@ -32,6 +31,6 @@ $.fn.inView = function (inViewType) {
       return bounds.top >= viewport.top && bounds.bottom <= viewport.bottom;
 
     default:
-      return bounds.top >= viewport.top && bounds.bottom <= viewport.bottom;
+      return bounds.top > viewport.top && bounds.bottom < viewport.bottom;
   }
 };
