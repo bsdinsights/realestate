@@ -47,8 +47,13 @@
                   parent="bsd_cn_dkbg_menu"/>
     <menuitem id="bsd_ds_tb_menu_action"
               name="Danh sách thông báo"
-              sequence="10"
+              sequence="15"
               action="bsd_ds_tb_action"
+              parent="bsd_main_dich_vu_root"/>
+    <menuitem id="bsd_tb_nt_menu_action"
+              name="Thông báo nghiệm thu"
+              sequence="16"
+              action="bsd_tb_nt_action"
               parent="bsd_main_dich_vu_root"/>
     <menuitem id="bsd_ps_gd_km_menu_action"
               name="Giao dịch khuyến mãi"

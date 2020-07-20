@@ -38,5 +38,5 @@ class BsdDanhSachThongBao(models.Model):
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
             raise UserError(_('Dự án chưa có mã danh sách thông báo'))
-        vals['bsd_ma_cn'] = sequence.next_by_id()
+        vals['bsd_ma_ds_tb'] = sequence.next_by_id()
         return super(BsdDanhSachThongBao, self).create(vals)

@@ -13,24 +13,6 @@
                             attrs="{'invisible': ['|',('id', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
-                    <button string="Duyệt"
-                            name="action_duyet"
-                            states="xac_nhan"
-                            confirm="Bạn có muốn duyệt yêu cầu này không?"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Không duyệt"
-                            name="action_khong_duyet"
-                            states="xac_nhan"
-                            confirm="Bạn có muốn từ chối yêu cầu này không?"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Hủy"
-                            name="action_huy"
-                            type="object"
-                            attrs="{'invisible': ['|',('id', '=',False)]}"
-                            states="xac_nhan,nhap"/>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
                     <group>

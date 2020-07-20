@@ -13,5 +13,5 @@ bsd_hd_ban_cn_manager, Chuyển nhượng hợp đồng,model_bsd_hd_ban_cn,bsd_
 bsd_cn_dkbg,Cập nhật dự kiến bàn giao,model_bsd_cn_dkbg,bsd_dich_vu.group_manager,1,1,1,1
 bsd_cn_dkbg_unit,Cập nhật dự kiến bàn giao unit,model_bsd_cn_dkbg_unit,bsd_dich_vu.group_manager,1,1,1,1
 
-bsd_ds_tb, Danh sách thông báo,model_bsd_ds_tb,bsd_dich_vu.group_manager,1,1,1,1
-
+bsd_ds_tb,Danh sách thông báo,model_bsd_ds_tb,bsd_dich_vu.group_manager,1,1,1,1
+bsd_tb_nt,Thông báo nghiệm thu,model_bsd_tb_nt,bsd_dich_vu.group_manager,1,1,1,1
