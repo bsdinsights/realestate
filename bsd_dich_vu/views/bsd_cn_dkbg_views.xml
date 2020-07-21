@@ -77,6 +77,18 @@
                                     <field name="bsd_ngay_dkbg_ht"/>
                                     <field name="bsd_ngay_dkbg_moi"/>
                                     <field name="state"/>
+                                    <button icon="fa-check-square-o"
+                                            name="action_xac_nhan"
+                                            states="nhap"
+                                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                                            confirm="Bạn có muốn Xác nhận yêu cầu không?"
+                                            type="object"/>
+                                    <button icon="fa-times-circle-o"
+                                            name="action_huy"
+                                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                                            states="xac_nhan,nhap"
+                                            type="object"
+                                            confirm="Bạn có muốn Hủy yêu cầu không?"/>
                                 </tree>
                             </field>
                         </page>
@@ -97,6 +109,11 @@
             <tree>
                 <field name="bsd_ma_cn_dkbg"/>
                 <field name="bsd_ten_cn_dkbg"/>
+                <field name="bsd_loai"/>
+                <field name="bsd_co_tbnt"/>
+                <field name="bsd_da_tao_tbnt"/>
+                <field name="bsd_co_tbbg"/>
+                <field name="bsd_da_tao_tbbg"/>
                 <field name="state"/>
             </tree>
         </field>

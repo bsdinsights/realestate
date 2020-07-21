@@ -261,7 +261,9 @@ class BsdCapNhatDKBGUnit(models.Model):
         if not self.bsd_hd_ban_id:
             if self.state == 'nhap':
                 self.write({
-                    'state': 'xac_nhan'
+                    'state': 'xac_nhan',
+                    'bsd_ngay_xn': fields.Datetime.now(),
+                    'bsd_nguoi_xn_id': self.env.uid,
                 })
         else:
             if self.bsd_hd_ban_id.state == 'thanh_ly':
@@ -273,7 +275,9 @@ class BsdCapNhatDKBGUnit(models.Model):
             else:
                 if self.state == 'nhap':
                     self.write({
-                        'state': 'xac_nhan'
+                        'state': 'xac_nhan',
+                        'bsd_ngay_xn': fields.Datetime.now(),
+                        'bsd_nguoi_xn_id': self.env.uid,
                     })
 
     # DV.19.02 Hủy chi tiết Cập nhật DkBG
