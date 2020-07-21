@@ -362,8 +362,25 @@ class BsdBanGiao(models.Model):
 
 class BsdBaoGiaLTT(models.Model):
     _inherit = 'bsd.lich_thanh_toan'
+    _rec_name = "bsd_ma_ht"
 
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True)
+    bsd_ma_ht = fields.Char(string="Mã tầng", help="Mã tầng", compute='_compute_ma_ht', store=True)
+
+    @api.depends('bsd_hd_ban_id.bsd_ma_hd_ban', 'bsd_ten_dtt')
+    def _compute_ma_ht(self):
+        for each in self:
+            if each.bsd_hd_ban_id:
+                each.bsd_ma_ht = '{ten_dtt}-{ma_hd}'.format(ten_dtt=each.bsd_tien_dtt,
+                                                            ma_hd=each.bsd_hd_ban_id.bsd_ma_hd_ban)
+            else:
+                each.bsd_ma_ht = each.bsd_ten_dtt
+
+    def name_get(self):
+        res = []
+        for dot_tt in self:
+            res.append((dot_tt.id, "%s" % dot_tt.bsd_ten_dtt))
+        return res
 
 
 class BsdKhuyenMai(models.Model):
