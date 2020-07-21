@@ -48,6 +48,8 @@ class BsdDanhSachThongBao(models.TransientModel):
         if self.bsd_loai == 'nt':
             for ct in cn_dkbg_ct:
                 hd_ban = ct.bsd_hd_ban_id
+                dot_cuoi = hd_ban.bsd_ltt_ids.filtered(lambda x: x.bsd_cs_tt_ct_id.bsd_dot_cuoi)
+                tien_ng = hd_ban.bsd_tong_gia - hd_ban.bsd_tien_pbt - hd_ban.bsd_tien_tt_hd - dot_cuoi.bsd_tien_dot_tt
                 unit_id = ct.bsd_unit_id
                 self.env['bsd.tb_nt'].create({
                     'bsd_ngay_tao_tb': fields.Datetime.now(),
@@ -61,7 +63,7 @@ class BsdDanhSachThongBao(models.TransientModel):
                     'bsd_unit_id': unit_id.id,
                     'bsd_hd_ban_id': hd_ban.id,
                     'bsd_khach_hang_id': hd_ban.bsd_khach_hang_id.id,
-                    'bsd_no_goc': hd_ban.bsd_tong_gia - hd_ban.bsd_tien_pbt - hd_ban.bsd_tien_tt_hd,
+                    'bsd_tien_ng': tien_ng,
                     'bsd_tien_pbt': hd_ban.bsd_tien_pbt,
                     'bsd_tien_pql': hd_ban.bsd_tien_pql,
                     'bsd_thang_pql': hd_ban.bsd_thang_pql,
