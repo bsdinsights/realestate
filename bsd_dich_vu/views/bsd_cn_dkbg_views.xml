@@ -101,6 +101,28 @@
             </tree>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_cn_dkbg_filter">
+        <field name="name">bsd.cn_dkbg.list.filter</field>
+        <field name="model">bsd.cn_dkbg</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_ma_cn_dkbg"/>
+                <field name="bsd_du_an_id"/>
+                <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_cn_dkbg_filter"/>
+                <filter string="Có tạo TBNT" name="bsd_co_tbnt" domain="[('bsd_co_tbnt', '=', True)]"/>
+                <filter string="Có tạo TBBG" name="bsd_co_tbbg" domain="[('bsd_co_tbbg', '=', True)]"/>
+                <filter string="Chưa tạo TBNT" name="bsd_da_tao_tbnt" domain="[('bsd_co_tbbg', '=', False)]"/>
+                <filter string="Chưa tạo TBBG" name="bsd_da_tao_tbbg" domain="[('bsd_co_tbbg', '=', False)]"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Loại cập nhật" name="bsd_loai" domain="[]" context="{'group_by': 'bsd_loai'}"/>
+                    <filter string="Trạng thái" name="state" domain="[]" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_cn_dkbg_action">
         <field name="name">Cập nhật DKBG</field>
         <field name="res_model">bsd.cn_dkbg</field>
@@ -145,8 +167,8 @@
                         <group>
                             <field name="bsd_hd_ban_id" readonly="1"/>
                             <field name="bsd_hd_ban_id" invisible="1"/>
-                            <field name="bsd_dot_tt_id" invisible="1"/>
                             <field name="bsd_dot_tt_id" readonly="1"/>
+                            <field name="bsd_dot_tt_id" invisible="1"/>
                             <field name="bsd_ngay_dkbg_ht" readonly="1"/>
                             <field name="bsd_ngay_dkbg_ht" invisible="1"/>
                             <field name="bsd_ngay_htt"/>

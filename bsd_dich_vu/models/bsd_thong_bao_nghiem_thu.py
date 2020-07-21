@@ -29,8 +29,9 @@ class BsdThongBaoNghiemThu(models.Model):
                                           help="Mã cập nhật DKBG chi tiết",
                                           readonly=True,
                                           states={'nhap': [('readonly', False)]})
-    bsd_ds_tb_id = fields.Many2one('bsd.ds_tb', readonly=True, string="Danh sách thông báo",
-                                   help="Danh sách thông báo cập nhật dự kiến bàn giao")
+    bsd_ngay_nt = fields.Date(string="Ngày nghiệm thu", help="Ngày nghiệm thu",
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
     bsd_ngay_tb = fields.Date(string="Ngày thông báo", help="Ngày thông báo nghiệm thu",
                                      readonly=True,
                                      states={'nhap': [('readonly', False)]})

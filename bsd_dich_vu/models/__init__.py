@@ -8,6 +8,5 @@ from . import bsd_phat_sinh_giao_dich_khuyen_mai
 from . import bsd_hd_ban_cn
 from . import product_template
 from . import bsd_cap_nhat_dkbg
-from . import bsd_danh_sach_thong_bao
 from . import bsd_thong_bao_nghiem_thu
 
