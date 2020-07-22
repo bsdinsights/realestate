@@ -50,6 +50,11 @@
               sequence="16"
               action="bsd_tb_nt_action"
               parent="bsd_main_dich_vu_root"/>
+    <menuitem id="bsd_nghiem_thu_menu_action"
+              name="Nghiệm thu"
+              sequence="17"
+              action="bsd_nghiem_thu_action"
+              parent="bsd_main_dich_vu_root"/>
     <menuitem id="bsd_ps_gd_km_menu_action"
               name="Giao dịch khuyến mãi"
               sequence="18"

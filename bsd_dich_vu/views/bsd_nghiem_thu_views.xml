@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_nghiem_thu_form">
+        <field name="name">bsd.nghiem_thu.form</field>
+        <field name="model">bsd.nghiem_thu</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <notebook>
+                        <page string="Thông tin chung">
+                            <group string="KẾT QUẢ NGHIỆM THU">
+                                <group>
+                                    <field name="bsd_ma_nt"/>
+                                    <field name="bsd_ngay_tao_nt"/>
+                                    <field name="bsd_tb_nt_id" options="{'no_create':true}"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_loai"/>
+                                    <field name="bsd_yc_sc"
+                                           attrs="{'readonly':[('bsd_loai', '=', 'khong_dat')]}"/>
+                                    <field name="bsd_yc_sc" invisible="1"/>
+                                    <field name="bsd_dien_giai"/>
+                                </group>
+                            </group>
+                            <group string="YÊU CẦU SỬA CHỮA">
+                                <group>
+                                    <field name="bsd_duyet_yc"
+                                           attrs="{'invisible':[('bsd_yc_sc', '=', False)]}"/>
+                                    <field name="bsd_ly_do"
+                                           attrs="{'invisible':['|',('bsd_duyet_yc','=','co'),('bsd_yc_sc', '=', False)]}"/>
+                                    <field name="bsd_so_ngay_sc"
+                                           attrs="{'invisible':['|',('bsd_duyet_yc','=','co'),('bsd_yc_sc', '=', False)]}"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_nt_lai"
+                                           attrs="{'invisible':[('bsd_loai','=','dat'),('bsd_yc_sc', '=', False)]}"/>
+                                    <field name="bsd_co_pps"
+                                           attrs="{'invisible':[('bsd_yc_sc', '=', False)]}"/>
+                                    <field name="bsd_tien_ps"
+                                           attrs="{'invisible':['|',('bsd_co_pps', '=', False),('bsd_yc_sc', '=', False)]}"/>
+                                    <field name="bsd_dot_tt_id" options="{'no_create':true}"
+                                           attrs="{'invisible':['|',('bsd_co_pps', '=', False),('bsd_yc_sc', '=', False)]}"/>
+                                </group>
+                            </group>
+                            <group string="XÁC NHẬN">
+                                <group>
+                                    <field name="bsd_ngay_kt_xn"/>
+                                    <field name="bsd_ngay_in_bb"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_nt_tt"/>
+                                    <field name="bsd_nguoi_nt_id" options="{'no_create':true}"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Sản phẩm">
+                            <group>
+                                <group>
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="bsd_du_an_id"/>
+                                    <field name="bsd_unit_id"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_hd_ban_id"/>
+                                    <field name="bsd_khach_hang_id"/>
+                                </group>
+                            </group>
+                            <group string="CÔNG NỢ">
+                                <group>
+                                    <field name="bsd_tien_ng"/>
+                                    <field name="bsd_tien_pbt"/>
+                                    <field name="bsd_tien_pql"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_thang_pql"/>
+                                    <field name="bsd_don_gia_pql"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_nghiem_thu_tree">
+        <field name="name">bsd.nghiem_thu.tree</field>
+        <field name="model">bsd.nghiem_thu</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_nt"/>
+                <field name="bsd_ngay_tao_nt"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_nghiem_thu_action">
+        <field name="name">Nghiệm thu</field>
+        <field name="res_model">bsd.nghiem_thu</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo nghiệm thu</p>
+        </field>
+    </record>
+</odoo>

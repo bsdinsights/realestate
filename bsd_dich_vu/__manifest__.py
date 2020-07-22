@@ -24,6 +24,7 @@
         'views/bsd_hd_ban_chuyen_nhuong_views.xml',
         'views/bsd_cn_dkbg_views.xml',
         'views/bsd_thong_bao_nghiem_thu_views.xml',
+        'views/bsd_nghiem_thu_views.xml',
         'views/bsd_menu_item_views.xml',
         'views/product_template_views.xml',
         'wizards/bsd_wizard_ky_hdb_views.xml',

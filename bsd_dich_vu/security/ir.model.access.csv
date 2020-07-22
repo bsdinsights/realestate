@@ -14,3 +14,4 @@ bsd_cn_dkbg,Cập nhật dự kiến bàn giao,model_bsd_cn_dkbg,bsd_dich_vu.gro
 bsd_cn_dkbg_unit,Cập nhật dự kiến bàn giao unit,model_bsd_cn_dkbg_unit,bsd_dich_vu.group_manager,1,1,1,1
 
 bsd_tb_nt,Thông báo nghiệm thu,model_bsd_tb_nt,bsd_dich_vu.group_manager,1,1,1,1
+bsd_nghiem_thu,Nghiệm thu,model_bsd_nghiem_thu,bsd_dich_vu.group_manager,1,1,1,1
