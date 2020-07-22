@@ -371,7 +371,7 @@ class BsdBaoGiaLTT(models.Model):
     def _compute_ma_ht(self):
         for each in self:
             if each.bsd_hd_ban_id:
-                each.bsd_ma_ht = '{ten_dtt}-{ma_hd}'.format(ten_dtt=each.bsd_tien_dtt,
+                each.bsd_ma_ht = '{ten_dtt}-{ma_hd}'.format(ten_dtt=each.bsd_ten_dtt,
                                                             ma_hd=each.bsd_hd_ban_id.bsd_ma_hd_ban)
             else:
                 each.bsd_ma_ht = each.bsd_ten_dtt
