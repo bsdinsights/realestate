@@ -37,7 +37,7 @@ class BsdDanhSachThongBao(models.TransientModel):
                 raise UserError(_(" Cập nhật DKBG: {} đã tạo thông báo"
                                   .format(','.join(da_tao_ct.mapped('bsd_ten_cn_dkbg')))))
         # Lấy các chi tiết thỏa điều kiện trạng thái duyệt và có hợp đồng chưa thanh lý
-        cn_dkbg_ct = self.env['bsd.cn_dkbg_ct'].search([('bsd_cn_dkbg_id', 'in', self.bsd_cn_dkbg_ids.ids),
+        cn_dkbg_ct = self.env['bsd.cn_dkbg_unit'].search([('bsd_cn_dkbg_id', 'in', self.bsd_cn_dkbg_ids.ids),
                                                         ('state', '=', 'duyet')])
         cn_dkbg_ct = cn_dkbg_ct.filtered(lambda c: c.bsd_hd_ban_id.state != 'thanh_ly')
         # Lấy các unit ở chi tiết
