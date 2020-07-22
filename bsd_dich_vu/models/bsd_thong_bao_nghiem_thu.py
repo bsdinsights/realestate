@@ -2,6 +2,8 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class BsdThongBaoNghiemThu(models.Model):
@@ -73,6 +75,27 @@ class BsdThongBaoNghiemThu(models.Model):
     # DV.21.02 In thông báo nghiệm thu
     def action_in_tb(self):
         return self.env.ref('bsd_dich_vu.bsd_tb_nt_report_action').read()[0]
+
+    # DV.21.03 Cập nhật ngày gửi
+    def action_gui_tb(self):
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_tb_nt_action').read()[0]
+        action['context'] = {'loai_ngay': 'ngay_gui'}
+        _logger.debug(action)
+        return action
+
+    # DV.21.04 Cập nhật ngày đóng
+    def action_dong_tb(self):
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_tb_nt_action').read()[0]
+        action['context'] = {'loai_ngay': 'ngay_dong'}
+        _logger.debug(action)
+        return action
+
+    # DV.21.05 Hủy thông báo nghiệm thu
+    def action_huy(self):
+        if self.state in ['nhap', 'xac_nhan']:
+            self.write({
+                'state': 'huy'
+            })
 
     @api.model
     def create(self, vals):

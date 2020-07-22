@@ -72,6 +72,7 @@
                             <field name="id" invisible="1"/>
                             <field name="bsd_ct_ids" context="{'default_bsd_cn_dkbg_id': id}">
                                 <tree>
+                                    <field name="bsd_ma_cn_unit"/>
                                     <field name="bsd_du_an_id"/>
                                     <field name="bsd_unit_id"/>
                                     <field name="bsd_ngay_dkbg_ht"/>
