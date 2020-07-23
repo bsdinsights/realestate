@@ -6,6 +6,24 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            states="nhap"
+                            confirm="Bạn có muốn xác nhận yêu cầu không?"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Phí phát sinh"
+                            name="action_phi_ps"
+                            states="xac_nhan_tt"
+                            attrs="{'invisible': ['|',('bsd_co_pps', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="In biên bản"
+                            name="action_in_bb"
+                            attrs="{'invisible': [('state', '=','nhap')]}"
+                            type="object"
+                            class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
@@ -36,9 +54,9 @@
                                 </group>
                                 <group>
                                     <field name="bsd_ngay_nt_lai"
-                                           attrs="{'invisible':[('bsd_loai','=','dat'),('bsd_yc_sc', '=', False)]}"/>
+                                           attrs="{'invisible':['|',('bsd_duyet_yc','=','khong'),'&amp;',('bsd_loai','=','dat'),('bsd_yc_sc', '=', False)]}"/>
                                     <field name="bsd_co_pps"
-                                           attrs="{'invisible':[('bsd_yc_sc', '=', False)]}"/>
+                                           attrs="{'invisible':['|',('bsd_yc_sc', '=', False),('bsd_duyet_yc','=','khong')]}"/>
                                     <field name="bsd_tien_ps"
                                            attrs="{'invisible':['|',('bsd_co_pps', '=', False),('bsd_yc_sc', '=', False)]}"/>
                                     <field name="bsd_dot_tt_id" options="{'no_create':true}"

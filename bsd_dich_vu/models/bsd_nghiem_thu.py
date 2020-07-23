@@ -22,7 +22,7 @@ class BsdNghiemThu(models.Model):
                                       required=True, default=lambda self: fields.Datetime.now(),
                                       readonly=True,
                                       states={'nhap': [('readonly', False)]})
-    bsd_tb_nt_id = fields.Many2one('bsd.tb_nt', string="TB nghiệm thu",
+    bsd_tb_nt_id = fields.Many2one('bsd.tb_nt', string="TB nghiệm thu", required=True,
                                    help="Thông báo nghiệm thu",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
@@ -47,10 +47,10 @@ class BsdNghiemThu(models.Model):
     bsd_ngay_nt_tt = fields.Datetime(string="Ngày nghiệm thu", help="Ngày thực hiện nghiệm thu", readonly=True)
     bsd_nguoi_nt_id = fields.Many2one("hr.employee", help="Người thực hiện nghiệm thu", readonly=True,
                                       string="Người nghiệm thu")
-    bsd_du_an_id = fields.Many2one(related='bsd_tb_nt_id.bsd_du_an_id')
-    bsd_unit_id = fields.Many2one(related='bsd_tb_nt_id.bsd_unit_id')
-    bsd_hd_ban_id = fields.Many2one(related='bsd_tb_nt_id.bsd_hd_ban_id')
-    bsd_khach_hang_id = fields.Many2one(related='bsd_tb_nt_id.bsd_khach_hang_id')
+    bsd_du_an_id = fields.Many2one(related='bsd_tb_nt_id.bsd_du_an_id', store=True)
+    bsd_unit_id = fields.Many2one(related='bsd_tb_nt_id.bsd_unit_id', store=True)
+    bsd_hd_ban_id = fields.Many2one(related='bsd_tb_nt_id.bsd_hd_ban_id', store=True)
+    bsd_khach_hang_id = fields.Many2one(related='bsd_tb_nt_id.bsd_khach_hang_id', store=True)
     bsd_tien_ng = fields.Monetary(related='bsd_tb_nt_id.bsd_tien_ng')
     bsd_tien_pbt = fields.Monetary(related='bsd_tb_nt_id.bsd_tien_pbt')
     bsd_tien_pql = fields.Monetary(related='bsd_tb_nt_id.bsd_tien_pql')
@@ -70,12 +70,79 @@ class BsdNghiemThu(models.Model):
         else:
             self.bsd_yc_sc = True
 
+    @api.onchange('bsd_duyet_yc')
+    def _onchange_duyet(self):
+        self.bsd_co_pps = False
+
+    # DV.10.01 Xác nhận nghiệm thu
+    def action_xac_nhan(self):
+        # Kiểm tra sản phẩm nghiệm thu
+        kiem_tra = self._kiem_tra_nt()
+        if isinstance(kiem_tra, dict):
+            return kiem_tra
+        else:
+            if self.state == 'nhap':
+                if self.bsd_co_pps:
+                    self.write({
+                        'state': 'xac_nhan_tt',
+                    })
+                else:
+                    self.write({
+                        'state': 'xac_nhan',
+                    })
+
+    # DV.10.02 Phí phát sinh
+    def action_phi_ps(self):
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_nghiem_thu_action').read()[0]
+        return action
+
+    # DV.10.03 In biên bản
+    def action_in_bb(self):
+        action = self.env.ref('bsd_dich_vu.bsd_nghiem_thu_report_action').read()[0]
+        return action
+
+    # DV.10.07 Kiểm tra điều kiện nghiệm thu sản phẩm
+    def _kiem_tra_nt(self):
+        # Kiểm tra hợp đồng
+        if self.bsd_hd_ban_id.state == 'thanh_ly':
+            if self.state in ['nhap', 'xac_nhan_tt', 'xac_nhan']:
+                self.write({
+                    'state': 'huy'
+                })
+            message_id = self.env['message.wizard'].create(
+                {'message': _('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin')})
+            _logger.debug("kiểm tra hd")
+            return {
+                'name': _('Thông báo'),
+                'type': 'ir.actions.act_window',
+                'view_mode': 'form',
+                'res_model': 'message.wizard',
+                'res_id': message_id.id,
+                'target': 'new'
+            }
+        if not self.bsd_unit_id.bsd_ngay_bg:
+            if self.state in ['nhap', 'xac_nhan_tt', 'xac_nhan']:
+                self.write({
+                    'state': 'huy'
+                })
+            message_id = self.env['message.wizard'].create(
+                {'message': _('Sản phẩm đã được bàn giao. Vui lòng kiểm tra lại thông tin')})
+            _logger.debug("kiểm tra nt")
+            return {
+                'name': _('Thông báo'),
+                'type': 'ir.actions.act_window',
+                'view_mode': 'form',
+                'res_model': 'message.wizard',
+                'res_id': message_id.id,
+                'target': 'new'
+            }
+        return True
     @api.model
     def create(self, vals):
         sequence = False
-        if 'bsd_du_an_id' in vals:
-            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
-            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
+        if 'bsd_tb_nt_id' in vals:
+            tb_nt = self.env['bsd.tb_nt'].browse(vals['bsd_tb_nt_id'])
+            sequence = tb_nt.bsd_du_an_id.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
             raise UserError(_('Dự án chưa có mã nghiệm thu'))
         vals['bsd_ma_nt'] = sequence.next_by_id()

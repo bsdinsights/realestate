@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_wizard_nghiem_thu_form">
+        <field name="name">bsd.wizard.nghiem_thu.form</field>
+        <field name="model">bsd.wizard.nghiem_thu</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_nghiem_thu_id" />
+                        </group>
+                        <group>
+                            <field name="bsd_hd_ban_id"/>
+                        </group>
+                    </group>
+                    <field name="bsd_dot_tt_ids" nolabel="1" domain="[('bsd_hd_ban_id', '=',bsd_hd_ban_id)]">
+                        <tree>
+                            <field name="bsd_ten_dtt"/>
+                            <field name="bsd_ngay_hh_tt"/>
+                            <field name="bsd_tien_da_tt"/>
+                            <field name="bsd_tien_phai_tt"/>
+                            <field name="bsd_thanh_toan"/>
+                        </tree>
+                    </field>
+                </sheet>
+                <footer>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Hủy" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <act_window id="bsd_wizard_nghiem_thu_action"
+                name="Tạo thông báo"
+                binding_model="bsd.cn_dkbg"
+                res_model="bsd.wizard.nghiem_thu"
+                view_mode="form"
+                target="new"/>
+</odoo>

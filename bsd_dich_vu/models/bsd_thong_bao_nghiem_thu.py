@@ -45,10 +45,18 @@ class BsdThongBaoNghiemThu(models.Model):
                                       readonly=True)
     bsd_ngay_gui = fields.Datetime(string="Ngày gửi", help="Ngày gửi nghiệm thu", readonly=True)
     bsd_ngay_dong = fields.Datetime(string="Ngày đóng", help="Ngày đóng nghiệm thu", readonly=True)
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án")
-    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Sản phẩm")
-    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng")
-    bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng")
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True,
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Sản phẩm", required=True,
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng", required=True,
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]})
+    bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng", required=True,
+                                        readonly=True,
+                                        states={'nhap': [('readonly', False)]})
     bsd_tien_ng = fields.Monetary(string="Nợ gốc",
                                   help="Tổng số tiền đợt thanh toán mà khách hàng chưa thanh toán và "
                                        "không bao gồm đợt thanh toán cuối")
