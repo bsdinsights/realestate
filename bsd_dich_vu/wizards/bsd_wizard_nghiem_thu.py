@@ -29,3 +29,22 @@ class BsdWizardNghiemThu(models.TransientModel):
             'bsd_ngay_kt_xn': fields.Datetime.now(),
             'state': 'xac_nhan',
         })
+
+
+class BsdHuyNghiemThu(models.TransientModel):
+    _name = 'bsd.wizard.huy_nt'
+    _description = 'Ghi nhận lý do hủy nghiệm thu'
+
+    def _get_nghiem_thu(self):
+        nghiem_thu = self.env['bsd.nghiem_thu'].browse(self._context.get('active_ids', []))
+        return nghiem_thu
+
+    bsd_nghiem_thu_id = fields.Many2one('bsd.nghiem_thu', string="Nghiệm thu sản phẩm", default=_get_nghiem_thu,
+                                        readonly=True)
+    bsd_ly_do = fields.Char(string="Lý do hủy", required=True)
+
+    def action_xac_nhan(self):
+        self.bsd_hd_ban_cn_id.write({
+            'bsd_ly_do_huy': self.bsd_ly_do,
+            'state': 'nhap',
+        })

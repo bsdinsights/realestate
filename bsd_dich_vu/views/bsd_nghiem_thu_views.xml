@@ -24,6 +24,11 @@
                             attrs="{'invisible': [('state', '=','nhap')]}"
                             type="object"
                             class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            states="nhap,xac_nhan,xac_nhan_tt"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>

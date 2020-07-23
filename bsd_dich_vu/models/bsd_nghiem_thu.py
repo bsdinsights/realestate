@@ -27,25 +27,47 @@ class BsdNghiemThu(models.Model):
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_loai = fields.Selection([('dat', 'Đạt'), ('khong_dat', 'Không đạt')], help="Kết quả nghiệm thu",
-                                string="Loại kết quả", required=True, default='dat')
+                                string="Loại kết quả", required=True, default='dat',
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
     bsd_yc_sc = fields.Boolean(string="Yêu cầu sửa chữa",
-                               help="Đánh dấu kết quả nghiệm thu có yêu cầu sửa chữa hay không")
-    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
+                               help="Đánh dấu kết quả nghiệm thu có yêu cầu sửa chữa hay không",
+                               readonly=True,
+                               states={'nhap': [('readonly', False)]})
+    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
     bsd_duyet_yc = fields.Selection([('co', 'Đồng ý sửa chữa'), ('khong', 'Từ chối sửa chữa')], default='co',
-                                    string="Duyệt yêu cầu", help="Kết quả yêu cầu sửa chữa")
-    bsd_ly_do = fields.Char(string="Lý do từ chối", help="Lý do Ban quản lý dự án từ chối yêu cầu sửa chữa")
-    bsd_so_ngay_sc = fields.Integer(string="Thời gian sửa chữa", help="Thời gian sửa chữa do Ban quản lý dự án cung cấp")
-    bsd_ngay_nt_lai = fields.Date(string="Ngày nghiệm thu lại", help="Ngày nghiệm thu lại")
-    bsd_co_pps = fields.Boolean(string="Phí phát sinh", help="Sửa chữa có phát sinh chi phí")
-    bsd_tien_ps = fields.Monetary(string="Chi phí phát sinh", help="Chi phí phát sinh từ yêu cầu sửa chữa")
+                                    string="Duyệt yêu cầu", help="Kết quả yêu cầu sửa chữa",
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]})
+    bsd_ly_do = fields.Char(string="Lý do từ chối", help="Lý do Ban quản lý dự án từ chối yêu cầu sửa chữa",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_so_ngay_sc = fields.Integer(string="Thời gian sửa chữa", help="Thời gian sửa chữa do Ban quản lý dự án cung cấp",
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]})
+    bsd_ngay_nt_lai = fields.Date(string="Ngày nghiệm thu lại", help="Ngày nghiệm thu lại",
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
+    bsd_co_pps = fields.Boolean(string="Phí phát sinh", help="Sửa chữa có phát sinh chi phí",
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
+    bsd_tien_ps = fields.Monetary(string="Chi phí phát sinh", help="Chi phí phát sinh từ yêu cầu sửa chữa",
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán", readonly=True,
                                     help="""Đợt thanh toán được yêu cầu thanh toán 
                                             thêm phí phát sinh từ yêu cầu sửa chữa""")
     bsd_ngay_kt_xn = fields.Datetime(string="Xác nhận PPS", help="Ngày kế toán xác nhận phí phát sinh", readonly=True)
     bsd_ngay_in_bb = fields.Datetime(string="Ngày in biên bản", help="Ngày in biên bản nghiệm thu theo loại kết quả",
                                      readonly=True)
-    bsd_ngay_nt_tt = fields.Datetime(string="Ngày nghiệm thu", help="Ngày thực hiện nghiệm thu", readonly=True)
-    bsd_nguoi_nt_id = fields.Many2one("hr.employee", help="Người thực hiện nghiệm thu", readonly=True,
+    bsd_ngay_nt_tt = fields.Datetime(string="Ngày nghiệm thu", help="Ngày thực hiện nghiệm thu",
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
+    bsd_nguoi_nt_id = fields.Many2one("hr.employee", help="Người thực hiện nghiệm thu",
+                                      readonly=True,
+                                      states={'nhap': [('readonly', False)]},
                                       string="Người nghiệm thu")
     bsd_du_an_id = fields.Many2one(related='bsd_tb_nt_id.bsd_du_an_id', store=True)
     bsd_unit_id = fields.Many2one(related='bsd_tb_nt_id.bsd_unit_id', store=True)
@@ -62,6 +84,7 @@ class BsdNghiemThu(models.Model):
                               ('xac_nhan', 'Xác nhận'), ('dong_nt', 'Đóng nghiệm thu'),
                               ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
+    bsd_ly_do_huy = fields.Char(string="Lý do hủy", readonly=True, tracking=2)
 
     @api.onchange('bsd_loai')
     def _onchange_loai(self):
@@ -93,13 +116,37 @@ class BsdNghiemThu(models.Model):
 
     # DV.10.02 Phí phát sinh
     def action_phi_ps(self):
-        action = self.env.ref('bsd_dich_vu.bsd_wizard_nghiem_thu_action').read()[0]
-        return action
+        # Kiểm tra sản phẩm nghiệm thu
+        kiem_tra = self._kiem_tra_nt()
+        if isinstance(kiem_tra, dict):
+            return kiem_tra
+        else:
+            action = self.env.ref('bsd_dich_vu.bsd_wizard_nghiem_thu_action').read()[0]
+            return action
 
     # DV.10.03 In biên bản
     def action_in_bb(self):
         action = self.env.ref('bsd_dich_vu.bsd_nghiem_thu_report_action').read()[0]
         return action
+
+    # DV.10.04 Đóng nghiệm thu
+    def action_dong_nt(self):
+        # Kiểm tra sản phẩm nghiệm thu
+        kiem_tra = self._kiem_tra_nt()
+        if isinstance(kiem_tra, dict):
+            return kiem_tra
+        else:
+            self._tao_tb_nt()
+            self._tao_dot_thu_pps()
+
+    # DV.10.05 Hủy nghiệm thu
+    def action_huy(self):
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_huy_nt_action').read()[0]
+        return action
+
+    # DV.10.06 Tạo thông báo nghiệm thu
+    def _tao_tb_nt(self):
+        pass
 
     # DV.10.07 Kiểm tra điều kiện nghiệm thu sản phẩm
     def _kiem_tra_nt(self):
@@ -107,7 +154,8 @@ class BsdNghiemThu(models.Model):
         if self.bsd_hd_ban_id.state == 'thanh_ly':
             if self.state in ['nhap', 'xac_nhan_tt', 'xac_nhan']:
                 self.write({
-                    'state': 'huy'
+                    'state': 'huy',
+                    'bsd_ly_do_huy': 'Hợp đồng đã bị thanh lý'
                 })
             message_id = self.env['message.wizard'].create(
                 {'message': _('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin')})
@@ -123,7 +171,8 @@ class BsdNghiemThu(models.Model):
         if not self.bsd_unit_id.bsd_ngay_bg:
             if self.state in ['nhap', 'xac_nhan_tt', 'xac_nhan']:
                 self.write({
-                    'state': 'huy'
+                    'state': 'huy',
+                    'bsd_ly_do_huy': "Sản phẩm đã được bàn giao"
                 })
             message_id = self.env['message.wizard'].create(
                 {'message': _('Sản phẩm đã được bàn giao. Vui lòng kiểm tra lại thông tin')})
@@ -137,6 +186,11 @@ class BsdNghiemThu(models.Model):
                 'target': 'new'
             }
         return True
+
+    # DV.10.08 Tự động đính kèm phí phát sinh vào đợt thanh toán
+    def _tao_dot_thu_pps(self):
+        pass
+
     @api.model
     def create(self, vals):
         sequence = False
