@@ -138,6 +138,10 @@ class BsdNghiemThu(models.Model):
         else:
             self._tao_tb_nt()
             self._tao_dot_thu_pps()
+            if self.state == 'xac_nhan':
+                self.write({
+                    'state': 'dong_nt'
+                })
 
     # DV.10.05 Hủy nghiệm thu
     def action_huy(self):

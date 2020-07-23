@@ -24,6 +24,12 @@
                             attrs="{'invisible': [('state', '=','nhap')]}"
                             type="object"
                             class="oe_highlight"/>
+                    <button string="Đóng nghiệm thu"
+                            name="action_dong_nt"
+                            states="xac_nhan"
+                            attrs="{'invisible': ['|',('bsd_ngay_in_bb', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
                     <button string="Hủy"
                             name="action_huy"
                             states="nhap,xac_nhan,xac_nhan_tt"
