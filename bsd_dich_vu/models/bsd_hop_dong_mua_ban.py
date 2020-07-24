@@ -45,7 +45,7 @@ class BsdHopDongMuaBan(models.Model):
                              related="bsd_dat_coc_id.bsd_dt_xd", store=True)
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",
                              related="bsd_dat_coc_id.bsd_dt_sd", store=True)
-    bsd_thue_id = fields.Many2one('account.tax', string="Thuế", help="Thuế",
+    bsd_thue_id = fields.Many2one('bsd.thue_suat', string="Thuế", help="Thuế",
                                   related="bsd_dat_coc_id.bsd_thue_id", store=True)
     bsd_qsdd_m2 = fields.Monetary(string="Giá trị QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2",
                                   related="bsd_dat_coc_id.bsd_qsdd_m2", store=True)

@@ -40,3 +40,5 @@ bsd_cs_tt_manager, Thông tin chính sách thanh toán,model_bsd_cs_tt,bsd_danh_
 bsd_cs_tt_ct_manager, Thông tin chi tiết chính sách thanh toán,model_bsd_cs_tt_ct,bsd_danh_muc.group_manager,1,1,1,1
 
 bsd_ma_bo_cn_manager, Mã bộ chứng từ,model_bsd_ma_bo_cn,bsd_danh_muc.group_manager,1,1,1,1
+
+bsd_thue_suat_manager, Thuế suất,model_bsd_thue_suat,bsd_danh_muc.group_manager,1,1,1,1

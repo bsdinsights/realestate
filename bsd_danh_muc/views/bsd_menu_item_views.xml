@@ -126,7 +126,7 @@
             <menuitem id="bsd_tax_menu_action"
                       name="Thuế"
                       sequence="202"
-                      action="account.action_tax_form"
+                      action="bsd_thue_suat_action"
                       parent="bsd_thanh_toan_menu"/>
             <menuitem id="bsd_pt_tt_menu_action"
                       name="Phương thức thanh toán"

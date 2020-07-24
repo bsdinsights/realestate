@@ -103,7 +103,7 @@ class ProductTemplate(models.Model):
                                     ('1', 'Có')], string="Ưu tiên", help="Ưu tiên bán của căn hộ",
                                    default='0', readonly=True)
     bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt ưu tiên",
-                                              help="Người duyệt ưu tiên", readonly=True)
+                                         help="Người duyệt ưu tiên", readonly=True)
     bsd_ngay_duyet = fields.Datetime(string="Ngày duyệt ưu tiên", help="Ngày duyệt ưu tiên", readonly=True)
     bsd_lan_duyet = fields.Integer(string="Lần ưu tiên", help="Lần ưu tiên", readonly=True)
     bsd_ghi_chu = fields.Char(string="Ghi chú ưu tiên", help="Ghi chú ưu tiên", readonly=True)

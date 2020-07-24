@@ -39,6 +39,11 @@
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_nghiem_thu" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_nt', '=', 0)]}">
+                            <field name="bsd_so_nt" widget="statinfo" string="Nghiệm thu"/>
+                        </button>
+                    </div>
                     <notebook>
                         <page string="Thông tin chung">
                             <group>

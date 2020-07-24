@@ -72,6 +72,32 @@ class BsdThongBaoNghiemThu(models.Model):
                               ('dong_nt', 'Đóng nghiệm thu'), ('het_han', 'Hết hạn'),
                               ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
+    bsd_so_nt = fields.Integer(string="# Ngiệm thu", compute="_compute_nt")
+    
+    def _compute_nt(self):
+        for each in self:
+            nghiem_thu = self.env['bsd.nghiem_thu'].search([('bsd_tb_nt_id', '=', self.id)])
+            each.bsd_so_nt = len(nghiem_thu)
+
+    def action_view_nghiem_thu(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_nghiem_thu_action').read()[0]
+
+        nghiem_thu = self.env['bsd.nghiem_thu'].search([('bsd_tb_nt_id', '=', self.id)])
+        if len(nghiem_thu) > 1:
+            action['domain'] = [('id', 'in', nghiem_thu.ids)]
+        elif nghiem_thu:
+            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_nghiem_thu_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = nghiem_thu.id
+        # Prepare the context.
+        context = {
+            'default_bsd_tb_nt_id': self.id,
+        }
+        action['context'] = context
+        return action
 
     # DV.21.01 Xác nhận thông báo nghiêm thu
     def action_xac_nhan(self):
@@ -104,6 +130,14 @@ class BsdThongBaoNghiemThu(models.Model):
             self.write({
                 'state': 'huy'
             })
+
+    # DV.21.06 Tự động tạo nghiệm thu sản phẩm
+    def tao_nt_sp(self):
+        self.env['bsd.nghiem_thu'].create({
+            'bsd_ngay_tao_nt': fields.Datetime.now(),
+            'bsd_tb_nt_id': self.id,
+            'state': 'nhap',
+        })
 
     @api.model
     def create(self, vals):

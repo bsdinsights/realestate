@@ -34,4 +34,5 @@ class BsdTBNT(models.TransientModel):
                     'bsd_ngay_dong': self.bsd_ngay,
                     'state': 'dong_nt'
                 })
+                self.bsd_tb_nt_id.tao_nt_sp()
 

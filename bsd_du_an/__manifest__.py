@@ -8,7 +8,6 @@
                 'base',
                 'mail',
                 'product',
-                'l10n_vn',
     ],
     'data': [
         'security/user_groups.xml',
