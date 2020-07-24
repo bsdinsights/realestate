@@ -76,12 +76,17 @@
                                 <group>
                                     <field name="company_id" invisible="1"/>
                                     <field name="currency_id" invisible="1"/>
-                                    <field name="bsd_du_an_id"/>
-                                    <field name="bsd_unit_id"/>
+                                    <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                                    <field name="bsd_unit_id"
+                                           context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                           options="{'no_create':true}"
+                                    />
                                 </group>
                                 <group>
-                                    <field name="bsd_hd_ban_id"/>
-                                    <field name="bsd_khach_hang_id"/>
+                                    <field name="bsd_hd_ban_id" options="{'no_create':true}"/>
+                                    <field name="bsd_khach_hang_id"
+                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                           options="{'no_create':true}"/>
                                 </group>
                             </group>
                             <group string="CÔNG NỢ">
