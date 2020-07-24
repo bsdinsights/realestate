@@ -5,7 +5,7 @@ from odoo import models, fields, api
 
 class BsdDkbg(models.Model):
     _name = 'bsd.dk_bg'
-    _rec_name = 'bsd_ma_dkbg'
+    _rec_name = 'bsd_ten_dkbg'
     _description = "Điều kiện bàn giao"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
@@ -19,21 +19,22 @@ class BsdDkbg(models.Model):
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu hiệu lực của điều kiện bàn giao", required=True)
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc hiệu lực của điều kiện bàn giao", required=True)
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
-    bsd_loai_bg = fields.Selection([('hoan_thien', 'Bàn giao hoàn thiện'),
-                                    ('tho', 'Bàn giao thô'),
-                                    ('co_ban', 'Bàn giao cơ bản'),
-                                    ('noi_that', 'Bàn giao có nội thất'),
-                                    ('khac', 'Bàn giao khác'),
-                                    ('tuy_chon', 'Bàn giao tùy chọn')], string="Loại bàn giao",
+    bsd_loai_bg = fields.Selection([('tho', 'Bàn giao thô'),
+                                    ('co_ban', 'Bàn giao hoàn thiện cơ bản'),
+                                    ('hoan_thien', 'Bàn giao hoàn thiện'),
+                                    ('noi_that', 'Bàn giao hoàn thiện mặt ngoài và thô bên trong'),
+                                    ('bo_sung', 'Bàn giao bổ sung')], string="Loại bàn giao",
                                    help="Tình trạng của căn hộ khi bàn giao")
     bsd_dk_tt = fields.Selection([('m2', 'Giá/m2'),
                                   ('tien', 'Tiền'),
                                   ('ty_le', 'Tỷ lệ')
                                   ], string="Điều kiện thanh toán", default="m2", required=True,
                                  help="Điều kiện thanh toán để được nhận bàn giao")
-    bsd_theo_ch = fields.Selection([('1', 'Có'), ('0', 'Không')], string="Theo căn hộ", default="0", required=True,
+    bsd_loai_sp_id = fields.Many2one('bsd.loai_sp', string="Theo loại sản phẩm", help="Theo loại sản phẩm")
+    bsd_theo_sp = fields.Selection([('1', 'Có'), ('0', 'Không')], string="Theo sản phẩm", default="0", required=True,
                                    help="Thông tin quy định điều kiện bàn giao sẽ được áp dụng cho căn hộ hay cả dự án")
-    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Tên căn hộ được áp dụng điều kiện bàn giao")
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm",
+                                  help="Tên căn hộ được áp dụng điều kiện bàn giao")
     bsd_gia_m2 = fields.Monetary(string="Giá/m2", help="Giá/m2 theo đợt bàn giao")
     bsd_tien = fields.Monetary(string="Tiền", help="Tiền thanh toán theo đợt bàn giao")
     bsd_ty_le = fields.Float(string="Tỷ lệ (%)", help="Tỷ lệ thanh toán theo đợt bàn giao")

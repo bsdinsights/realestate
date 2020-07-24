@@ -21,3 +21,4 @@ from . import bsd_chinh_sach_thanh_toan
 from . import bsd_ma_cn
 from . import res_country
 from . import bsd_du_an
+from . import bsd_thue_suat

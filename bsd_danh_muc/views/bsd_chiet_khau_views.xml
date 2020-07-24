@@ -5,47 +5,83 @@
         <field name="model">bsd.chiet_khau</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            class="oe_highlight"
+                            confirm="Bạn có muốn Xác nhận yêu cầu không?"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                            type="object"/>
+                    <button string="Duyệt"
+                            name="action_duyet"
+                            class="oe_highlight"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn Duyệt yêu cầu không?"
+                            type="object"/>
+                    <button string="Không duyệt"
+                            name="action_khong_duyet"
+                            class="oe_highlight"
+                            states="xac_nhan"
+                            type="object"
+                            confirm="Bạn có muốn Từ chối yêu cầu không?"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            states="xac_nhan,duyet"
+                            confirm="Bạn có muốn Hủy yêu cầu không?"
+                            type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
                             <field name="bsd_ma_ck"/>
                             <field name="bsd_ten_ck"/>
                             <field name="bsd_loai_ck"/>
-                            <field name="bsd_du_an_id"/>
+                            <field name="bsd_du_an_id" attrs="{'required':[('bsd_loai_ck', 'in',['ttth','mua_si','ttn'])]}"/>
                             <field name="bsd_cach_tinh"/>
                             <field name="bsd_tien_ck"
                                    attrs="{'required':[('bsd_cach_tinh', 'in', ['tien'])],
-                                           'readonly':[('bsd_cach_tinh', 'in', ['phan_tram'])]}"/>
+                                           'readonly':['|',('bsd_cach_tinh', 'in', ['phan_tram']),('state','!=','nhap')]}"/>
+                            <label for="bsd_tl_ck"/>
+                            <div class="o_row no-gutters d-flex">
                             <field name="bsd_tl_ck"
+                                   class="mr-1"
                                    attrs="{'required':[('bsd_cach_tinh', 'in', ['phan_tram'])],
-                                           'readonly':[('bsd_cach_tinh', 'in', ['tien'])]}"/>
+                                           'readonly':['|',('bsd_cach_tinh', 'in', ['tien']),('state','!=','nhap')]}"/>
+                                <span>%</span>
+                            </div>
+
                             <field name="bsd_dien_giai"/>
                         </group>
                         <group>
                             <field name="currency_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
                             <field name="bsd_tu_ngay"
-                                   attrs="{'required':[('bsd_loai_ck', 'in', ['ttth'])]}"/>
+                                   attrs="{'required':[('bsd_loai_ck', 'in', ['ttth','mua_si','ttn'])]}"/>
                             <field name="bsd_den_ngay"
-                                   attrs="{'required':[('bsd_loai_ck', 'in', ['ttth'])]}"/>
+                                   attrs="{'required':[('bsd_loai_ck', 'in', ['ttth','mua_si','ttn'])]}"/>
                             <field name="bsd_cung_tang"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['mua_si'])],
-                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn'])]}"/>
+                                           'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn']),('state','!=','nhap')]}"/>
                             <field name="bsd_sl_tu"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['mua_si'])],
                                            'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn'])]}"/>
                             <field name="bsd_sl_den"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['mua_si'])],
-                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn'])]}"/>
+                                           'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn']),('state','!=','nhap')]}"/>
                             <field name="bsd_cs_tt_id"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['ltt'])],
-                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','ttth','ttn','mua_si'])]}"/>
+                                           'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','ttth','ttn','mua_si']),('state','!=','nhap')]}"/>
                             <field name="bsd_ngay_tt"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['ttn'])],
-                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','mua_si','ltt','ttth'])]}"/>
+                                           'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','mua_si','ltt','ttth']),('state','!=','nhap')]}"/>
+                            <label for="bsd_tl_tt"/>
+                            <div class="o_row no-gutters d-flex">
                             <field name="bsd_tl_tt"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['ttn'])],
-                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','mua_si','ltt','ttth'])]}"/>
-                            <field name="state"/>
+                                           'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','mua_si','ltt','ttth']),('state','!=','nhap')]}"/>
+                                <span>%</span>
+                            </div>
                         </group>
                     </group>
                 </sheet>

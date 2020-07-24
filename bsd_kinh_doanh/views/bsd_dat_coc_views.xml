@@ -14,18 +14,18 @@
                             class="oe_highlight"/>
                     <button string="In đặt cọc"
                             name="action_in_dc"
-                            states="dat_coc"
+                            states="dat_coc,xac_nhan"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Upload đặt cọc"
                             name="action_upload_dc"
-                            states="dat_coc"
+                            states="dat_coc,xac_nhan"
                             attrs="{'invisible':['|',('bsd_ngay_in_dc', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Ký đặt cọc"
                             name="action_ky_dc"
-                            states="dat_coc"
+                            states="dat_coc,xac_nhan"
                             attrs="{'invisible':['|',('bsd_ngay_up_dc', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
@@ -51,21 +51,20 @@
                                     <field name="bsd_bao_gia_id"
                                            options="{'no_create':true}"
                                            domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id]),
-                                                    ('state', '=','da_duyet'),
+                                                    ('state', '=','da_ky'),
                                                     ('bsd_ngay_ky_bg','!=',False)]"/>
                                     <field name="bsd_giu_cho_id"/>
                                     <field name="bsd_du_an_id"/>
                                     <field name="bsd_dien_giai"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_co_hdc"/>
-                                    <field name="bsd_so_hdc" attrs="{'readonly':['|',('bsd_co_hdc','=',False),('state','!=','nhap')],
-                                                                     'required':[('bsd_co_hdc','=',True)]}"/>
+                                    <field name="bsd_co_ttdc"/>
+                                    <field name="bsd_so_ttdc" attrs="{'readonly':['|',('bsd_co_ttdc','=',False),('state','!=','nhap')],
+                                                                     'required':[('bsd_co_ttdc','=',True)]}"/>
                                     <field name="bsd_dot_mb_id"/>
                                     <field name="bsd_bang_gia_id"/>
                                     <field name="bsd_tien_gc"/>
                                     <field name="bsd_tien_dc"/>
-                                    <field name="bsd_pt_tt_id"/>
                                 </group>
                             </group>
                             <group string="MÔI GIỚI">
@@ -78,7 +77,29 @@
                                     <field name="bsd_gioi_thieu_id" options="{'no_create':true}"/>
                                 </group>
                             </group>
-                            <group string="SẢN PHẨM">
+                            <group string="XÁC NHẬN">
+                                <group>
+                                    <field name="bsd_ngay_in_dc"/>
+                                    <field name="bsd_ngay_hh_kdc"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_up_dc"/>
+                                    <field name="bsd_ngay_ky_dc"/>
+                                </group>
+                            </group>
+                            <group string="THANH TOÁN">
+                                <group>
+                                    <field name="bsd_ngay_tt"/>
+
+                                </group>
+                                <group>
+                                    <!--<field name="bsd_tien_ttd"/>-->
+                                    <field name="bsd_thanh_toan"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Sản phẩm">
+                            <group>
                                 <group>
                                     <field name="bsd_unit_id"
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
@@ -93,7 +114,7 @@
                                     <label for="bsd_dt_sd"/>
                                     <div class="o_row no-gutters d-flex">
                                         <div class="col">
-                                            <field name="bsd_dt_xd" class="mr-1"/>
+                                            <field name="bsd_dt_sd" class="mr-1"/>
                                             <span>m2</span>
                                         </div>
                                     </div>
@@ -134,41 +155,14 @@
                                     <field name="bsd_tien_pql"/>
                                 </group>
                             </group>
-                            <group string="XÁC NHẬN">
-                                <group>
-                                    <field name="bsd_ngay_in_dc"/>
-                                    <field name="bsd_ngay_hh_kdc"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_ngay_up_dc"/>
-                                    <field name="bsd_ngay_ky_dc"/>
-                                </group>
-                            </group>
-                            <group string="THANH TOÁN">
-                                <group>
-                                    <field name="bsd_ngay_tt"/>
-
-                                </group>
-                                <group>
-                                    <field name="bsd_tien_ttd"/>
-                                    <field name="bsd_thanh_toan"/>
-                                </group>
-                            </group>
                         </page>
-                        <page string="Bàn giao">
-                            <field name="bsd_bg_ids">
+                        <page string="Đồng sở hữu">
+                            <field name="bsd_dsh_ids" context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}">
                                 <tree editable="bottom">
-                                    <field name="bsd_dk_bg_id"
-                                           options="{'no_create':true}"
-                                           domain="[('bsd_du_an_id', '=',parent.bsd_du_an_id),
-                                                    '|',('bsd_dot_mb_id','=',parent.bsd_dot_mb_id),
-                                                        ('bsd_dot_mb_id', '=',False)]"/>
-                                    <field name="bsd_ten_dkbg"/>
-                                    <field name="bsd_dk_tt"/>
-                                    <field name="bsd_gia_m2"/>
-                                    <field name="bsd_tien"/>
-                                    <field name="bsd_ty_le"/>
-                                    <field name="bsd_tien_bg"/>
+                                    <field name="bsd_ma_kh"/>
+                                    <field name="name" string="Đồng sở hữu"/>
+                                    <field name="mobile"/>
+                                    <field name="email" string="Email"/>
                                 </tree>
                             </field>
                         </page>
@@ -179,9 +173,114 @@
                                     <field name="bsd_ten_dtt"/>
                                     <field name="bsd_ngay_hh_tt"/>
                                     <field name="bsd_tien_dot_tt" sum="Tổng tiền thanh toán"/>
+                                    <field name="bsd_dot_ky_hd"/>
                                     <field name="bsd_tinh_pql"/>
                                     <field name="bsd_tinh_pbt"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="company_id" invisible="1"/>
                                 </tree>
+                            </field>
+                        </page>
+                        <page string="Khuyến mãi">
+                            <field name="bsd_km_ids" nolabel="1" context="{'default_bsd_dot_mb_id':bsd_dot_mb_id}">
+                                <tree editable="bottom">
+                                    <field name="bsd_khuyen_mai_id"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_ma_km"/>
+                                    <field name="bsd_tu_ngay"/>
+                                    <field name="bsd_den_ngay"/>
+                                    <field name="bsd_ngay_hldc"/>
+                                    <field name="bsd_gia_tri"/>
+                                    <field name="bsd_bao_gia_id" invisible="1"/>
+                                    <field name="bsd_dot_mb_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Điều kiện bàn giao">
+                            <field name="bsd_bg_ids" context="{'default_bsd_bao_gia_id': id}">
+                                <tree editable="bottom">
+                                    <field name="bsd_bao_gia_id" invisible="1"/>
+                                    <field name="bsd_dk_bg_id"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_ma_dkbg"/>
+                                    <field name="bsd_dk_tt"/>
+                                    <field name="bsd_gia_m2"/>
+                                    <field name="bsd_tien"/>
+                                    <field name="bsd_ty_le"/>
+                                    <field name="bsd_tien_bg" sum="Tổng tiền bàn giao"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Chiết khấu">
+                            <field name="bsd_ps_ck_ids">
+                                <tree editable="bottom">
+                                    <field name="bsd_loai_ck"/>
+                                    <field name="bsd_bao_gia_id" invisible="1"/>
+                                    <field name="bsd_ck_ch_id" invisible="1"/>
+                                    <field name="bsd_ck_cstt_id" invisible="1"/>
+                                    <field name="bsd_ck_nb_id" invisible="1"/>
+                                    <field name="bsd_cs_tt_id" invisible="1"/>
+                                    <field name="bsd_chiet_khau_id" options="{'no_create':true}"/>
+                                    <field name="bsd_ten_ck"/>
+                                    <field name="bsd_tu_ngay"/>
+                                    <field name="bsd_den_ngay"/>
+                                    <field name="bsd_cach_tinh"/>
+                                    <field name="bsd_tien" readonly="1"/>
+                                    <field name="bsd_tl_ck" readonly="1"/>
+                                    <field name="bsd_tien" invisible="1"/>
+                                    <field name="bsd_tl_ck" invisible="1"/>
+                                    <field name="bsd_tien_ck" sum="Tổng tiền chiết khấu"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Chiết khấu đặc biệt">
+                            <field name="id" invisible="1"/>
+                            <field name="bsd_ck_db_ids" context="{'default_bsd_bao_gia_id':bsd_bao_gia_id}">
+                                <tree delete="false">
+                                    <field name="bsd_ma_ck_db"/>
+                                    <field name="bsd_ten_ck_db"/>
+                                    <field name="bsd_cach_tinh"/>
+                                    <field name="bsd_tien"/>
+                                    <field name="bsd_tl_ck"/>
+                                    <field name="bsd_tien_ck"/>
+                                    <field name="state"/>
+                                    <field name="bsd_bao_gia_id" invisible="1"/>
+                                </tree>
+                                <form>
+                                    <header>
+                                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                                    </header>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="currency_id" invisible="1"/>
+                                                <field name="company_id" invisible="1"/>
+                                                <field name="bsd_ma_ck_db"/>
+                                                <field name="bsd_ten_ck_db"/>
+                                                <field name="bsd_cach_tinh"/>
+                                                <field name="bsd_tien"
+                                                       attrs="{'required':[('bsd_cach_tinh', 'in', ['tien'])],
+                                                               'readonly':['|',('bsd_cach_tinh', 'in', ['phan_tram']),('state','!=','nhap')]}"/>
+                                                <field name="bsd_tl_ck"
+                                                       attrs="{'required':[('bsd_cach_tinh', 'in', ['phan_tram'])],
+                                                               'readonly':['|',('bsd_cach_tinh', 'in', ['tien']),('state','!=','nhap')]}"/>
+                                                <field name="bsd_dien_giai"/>
+                                                <field name="bsd_bao_gia_id"/>
+                                                <field name="bsd_khach_hang_id"/>
+                                            </group>
+                                            <group>
+                                                <field name="bsd_du_an_id"/>
+                                                <field name="bsd_unit_id"/>
+                                                <field name="bsd_dot_mb_id"/>
+                                                <field name="bsd_cs_tt_id"/>
+                                                <field name="bsd_tien_dc"/>
+                                                <field name="bsd_tien_gc"/>
+                                                <field name="bsd_ngay_duyet"/>
+                                                <field name="bsd_nguoi_duyet_id"/>
+                                            </group>
+                                        </group>
+                                    </sheet>
+                                </form>
                             </field>
                         </page>
                     </notebook>
@@ -203,7 +302,7 @@
                 <field name="bsd_du_an_id"/>
                 <field name="bsd_unit_id"/>
                 <field name="bsd_khach_hang_id"/>
-                <field name="bsd_so_hdc"/>
+                <field name="bsd_so_ttdc"/>
                 <field name="bsd_ngay_ky_dc"/>
                 <field name="bsd_thanh_toan"/>
                 <field name="state"/>
@@ -211,6 +310,28 @@
             </tree>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_dat_coc_filter">
+        <field name="name">bsd.dat_coc.list.filter</field>
+        <field name="model">bsd.dat_coc</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_ma_dat_coc"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_unit_id"/>
+
+                <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_dat_coc_filter"/>
+
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
+                    <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_dat_coc_action">
         <field name="name">Đặt cọc</field>
         <field name="res_model">bsd.dat_coc</field>

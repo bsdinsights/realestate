@@ -27,10 +27,11 @@ class BsdWizardReportDatCoc(models.TransientModel):
             'ids': self.bsd_dat_coc_id.ids,
             'model': self.bsd_dat_coc_id._name,
         }
-        self.bsd_dat_coc_id.write({
-            'bsd_ngay_in_dc': datetime.datetime.now(),
-            'bsd_ngay_hh_kdc': datetime.datetime.now() + datetime.timedelta(days=self.bsd_dat_coc_id.bsd_du_an_id.bsd_hh_pc)
-        })
+        if not self.bsd_dat_coc_id.bsd_ngay_in_dc:
+            self.bsd_dat_coc_id.write({
+                'bsd_ngay_in_dc': datetime.datetime.now(),
+                'bsd_ngay_hh_kdc': datetime.datetime.now() + datetime.timedelta(days=self.bsd_dat_coc_id.bsd_du_an_id.bsd_hh_pc)
+            })
         ref_id = 'bsd_kinh_doanh.' + self.bsd_mau_in
         return self.env.ref(ref_id).report_action(self, data=data)
 

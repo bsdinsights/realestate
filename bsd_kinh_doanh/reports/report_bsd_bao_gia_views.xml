@@ -42,7 +42,6 @@
             <t t-if="not o" t-set="o" t-value="doc"/>
 
             <t t-if="not company">
-                <!-- Multicompany -->
                 <t t-if="company_id">
                     <t t-set="company" t-value="company_id"/>
                 </t>
@@ -53,7 +52,6 @@
                     <t t-set="company" t-value="res_company"/>
                 </t>
             </t>
-            <t t-esc="company.update_scss()"/>
             <div class="article o_report_layout_standard"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
                 <t t-call="web.address_layout"/>
                 <t t-raw="0"/>
@@ -65,7 +63,7 @@
                 <t t-foreach="docs" t-as="doc">
                     <t t-set="doc" t-value="doc.with_context(lang=lang)" />
                     <t t-call="web.external_layout">
-                        <div class="page">
+                        <div class="page bsd_font">
                             <div class="row">
                                 <div class="col-7">
                                     <img t-if="doc.company_id.logo" t-att-src="'data:image/png;base64,%s' % to_text(doc.company_id.logo)" style="width: 80px;height:80px" />
@@ -88,7 +86,6 @@
                                     <b>PHIẾU TÍNH GIÁ</b>
                                 </div>
                             </div>
-
                         </div>
 
                         <!--Ngày in báo giá-->
@@ -106,31 +103,31 @@
                             <div class="col-12">
                                 <table class="table table-bordered table-sm"
                                    style="table-layout:fixed;border: 2px !important; border-style: solid !important; border-color: #000000 !important;" >
-                              <thead>
-                                  <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px;">
-                                      <th width="19.5%" style="border: 1px solid black !important;padding-top:0px !important">
-                                            Căn hộ
-                                      </th>
-                                      <th width="19.5%" style="border: 1px solid black !important;">
-                                            Loại căn hộ
-                                      </th>
-                                      <th width="20%" style="border: 1px solid black !important;">
-                                            Diện tích tim tường
-                                      </th>
-                                      <th width="21%" style="border: 1px solid black !important;">
-                                            Diện tích thông thủy
-                                      </th>
-                                      <th width="20%" style="border: 1px solid black !important;">
-                                            Điều kiện bàn giao
-                                      </th>
-                                  </tr>
-                              </thead>
+                                    <thead>
+                                        <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px;">
+                                              <th width="19.5%" style="border: 1px solid black !important;padding-top:0px !important">
+                                                    Căn hộ
+                                              </th>
+                                              <th width="19.5%" style="border: 1px solid black !important;">
+                                                    Loại căn hộ
+                                              </th>
+                                              <th width="20%" style="border: 1px solid black !important;">
+                                                    Diện tích tim tường
+                                              </th>
+                                              <th width="21%" style="border: 1px solid black !important;">
+                                                    Diện tích thông thủy
+                                              </th>
+                                              <th width="20%" style="border: 1px solid black !important;">
+                                                    Điều kiện bàn giao
+                                              </th>
+                                        </tr>
+                                    </thead>
                               <tbody>
                                 <tr class="text-center ">
                                   <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_unit_id.bsd_ten_unit"/></td>
                                   <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_unit_id.bsd_loai_sp_id.bsd_ma_nhom"/></td>
-                                  <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_dt_xd"/></td>
-                                  <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_dt_sd"/></td>
+                                  <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_dt_xd" t-options='{"widget": "float", "precision": 2}'/></td>
+                                  <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_dt_sd" t-options='{"widget": "float", "precision": 2}'/></td>
                                   <td style="border: 1px solid black !important;"><div></div></td>
                                 </tr>
                               </tbody>
@@ -217,19 +214,14 @@
                                 <td style="border: 1px solid black !important;"><div/></td>
                                 <td style="border: 1px solid black !important;"><div t-field="doc.bsd_du_an_id.bsd_tien_dc" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
                               </tr>
-                              <t t-foreach="doc.bsd_ltt_ids.sorted(key=lambda l: l.bsd_stt)" t-as="line">
-                                  <t t-if="line.bsd_tinh_pql">
-                                      <t t-set="tien_tt" t-value="line.bsd_tien_dot_tt - (doc.bsd_tien_pql * doc.bsd_thang_pql)"/>
-                                  </t>
-                                  <t t-else="">
-                                      <t t-set="tien_tt" t-value="line.bsd_tien_dot_tt"/>
-                                  </t>
+                              <t t-foreach="doc.bsd_ltt_ids.filtered(lambda x: x.bsd_loai=='dtt').sorted(key=lambda l: l.bsd_stt)" t-as="line">
+                                  <t t-set="tien_tt" t-value="line.bsd_tien_dot_tt"/>
                                   <t t-if="line.bsd_tinh_pbt">
                                       <tr class="text-center ">
                                           <td rowspan="2" style="border: 1px solid black !important;"><div t-field="line.bsd_stt"/></td>
                                           <td rowspan="2" style="border: 1px solid black !important;"><div t-field="line.bsd_ten_dtt"/></td>
                                           <td style="border: 1px solid black !important;"><div t-field="line.bsd_cs_tt_ct_id.bsd_dien_giai"/></td>
-                                          <td style="border: 1px solid black !important;"><div t-esc="tien_tt - doc.bsd_tien_pbt"
+                                          <td style="border: 1px solid black !important;"><div t-esc="tien_tt"
                                                                                              t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
                                       </tr>
                                       <tr class="text-center ">

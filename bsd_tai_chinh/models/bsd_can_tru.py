@@ -97,26 +97,11 @@ class BsdCanTru(models.Model):
                 'bsd_tien_phai_tt': dat_coc.bsd_tien_phai_tt,
                 'bsd_can_tru_id': self.id,
             })
-        # Lấy chứng từ đợt thanh toán của đặt cọc
+        # Lấy chứng từ đợt thanh toán
         dot_tt_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
                                                      ('bsd_dot_tt_id', '!=', False)]).mapped('bsd_dot_tt_id')
         for dot_tt in dot_tt_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
-            if dot_tt.bsd_gd_tt == 'dat_coc':
-                _logger.debug("dat coc")
-                _logger.debug(dot_tt.bsd_dat_coc_id)
-                self.bsd_ct_ids.create({
-                    'bsd_dot_tt_id': dot_tt.id,
-                    'bsd_dat_coc_id': dot_tt.bsd_dat_coc_id.id,
-                    'bsd_so_ct': dot_tt.bsd_ten_dtt,
-                    'bsd_loai_ct': 'pt_dtt',
-                    'bsd_tien': dot_tt.bsd_tien_dot_tt,
-                    'bsd_tien_phai_tt': dot_tt.bsd_tien_phai_tt,
-                    'bsd_can_tru_id': self.id,
-                })
-            else:
-                _logger.debug("dat coc")
-                _logger.debug(dot_tt.bsd_hd_ban_id)
-                self.bsd_ct_ids.create({
+            self.bsd_ct_ids.create({
                     'bsd_dot_tt_id': dot_tt.id,
                     'bsd_hd_ban_id': dot_tt.bsd_hd_ban_id.id,
                     'bsd_so_ct': dot_tt.bsd_ten_dtt,
@@ -124,7 +109,7 @@ class BsdCanTru(models.Model):
                     'bsd_tien': dot_tt.bsd_tien_dot_tt,
                     'bsd_tien_phai_tt': dot_tt.bsd_tien_phai_tt,
                     'bsd_can_tru_id': self.id,
-                })
+            })
 
     # TC.04.03 Cấn trừ công nợ
     def action_can_tru(self):

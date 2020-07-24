@@ -75,20 +75,51 @@ class BsdGiuChoThienChi(models.Model):
     bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ",
                                   readonly=True)
 
-    bsd_kh_moi_id = fields.Many2one('res.partner', string="KH chuyển nhượng", help="Người được chuyển nhượng giữ chỗ",
+    bsd_kh_moi_id = fields.Many2one('res.partner', string="KH chuyển tên", help="Người được chuyển tên giữ chỗ",
                                     tracking=2, readonly=True)
-    bsd_huy_gc_id = fields.Many2one('bsd.huy_gc', string="Hủy giữ chỗ", help="Mã phiếu hủy giữ chỗ thiện chí", readonly=1)
+    bsd_huy_gc_id = fields.Many2one('bsd.huy_gc', string="Hủy giữ chỗ",
+                                    help="Mã phiếu hủy giữ chỗ thiện chí được duyệt", readonly=1)
+    bsd_so_huy_gc = fields.Integer(string="# Hủy giữ chỗ", compute='_compute_huy_gc')
+
+    def _compute_huy_gc(self):
+        for each in self:
+            huy_gc = self.env['bsd.huy_gc'].search([('bsd_gc_tc_id', '=', self.id)])
+            each.bsd_so_huy_gc = len(huy_gc)
+
+    def action_view_huy_gc(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_huy_gc_action').read()[0]
+
+        huy_gc = self.env['bsd.huy_gc'].search([('bsd_gc_tc_id', '=', self.id)])
+        if len(huy_gc) > 1:
+            action['domain'] = [('id', 'in', huy_gc.ids)]
+        elif huy_gc:
+            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_huy_gc_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = huy_gc.id
+        # Prepare the context.
+        context = {
+            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'default_bsd_gc_tc_id': self.id,
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_loai_gc': 'gc_tc'
+        }
+        action['context'] = context
+        return action
 
     @api.depends('bsd_ngay_gctc')
     def _compute_htgc(self):
         for each in self:
             each.bsd_ngay_hh_gctc = each.bsd_ngay_gctc + datetime.timedelta(hours=each.bsd_du_an_id.bsd_gc_smb)
 
+    # KD.05.05 Tính lại ngày ưu tiên làm ráp căn
     @api.depends('bsd_ngay_tt')
     def _compute_ngay_ut(self):
         for each in self:
             if each.bsd_ngay_tt:
-                each.bsd_ngay_ut = each.bsd_ngay_tt + datetime.timedelta(hours=each.bsd_du_an_id.bsd_gc_smb)
+                each.bsd_ngay_ut = each.bsd_ngay_tt + datetime.timedelta(days=each.bsd_du_an_id.bsd_gc_tmb)
             else:
                 each.bsd_ngay_ut = False
 
@@ -148,6 +179,18 @@ class BsdGiuChoThienChi(models.Model):
             self.write({
                 'bsd_het_han': True
             })
+
+    # KD.05.09 - Đề nghị hủy giữ chỗ
+    def action_de_nghi_huy(self):
+        context = {
+            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'default_bsd_gc_tc_id': self.id,
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_loai_gc': 'gc_tc'
+        }
+        action = self.env.ref('bsd_kinh_doanh.bsd_huy_gc_action_popup').read()[0]
+        action['context'] = context
+        return action
 
     @api.model
     def create(self, vals):

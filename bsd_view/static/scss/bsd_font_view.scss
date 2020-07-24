@@ -1,0 +1,20 @@
+// ------------------------------------------------------------------
+// Roboto_Condensed fonts
+// ------------------------------------------------------------------
+$bsd-font-path: '../fonts';
+
+@mixin bsd-font($family, $type, $weight, $style) {
+    @font-face {
+        font-family: $family;
+        src: url('#{$bsd-font-path}/#{$family}/#{$family}-#{$type}.ttf') format('truetype');
+        font-weight: $weight;
+        font-style: $style;
+    }
+}
+
+@mixin bsd-font-pair($family) {
+    @include bsd-font('#{$family}', 'Regular', 400, normal);
+}
+
+@include bsd-font-pair('RobotoCondensed');
+@include bsd-font-pair('Arimo');

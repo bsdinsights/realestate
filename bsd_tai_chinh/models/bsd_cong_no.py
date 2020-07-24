@@ -18,7 +18,10 @@ class BsdCongNo(models.Model):
     bsd_tien = fields.Monetary(string="Tiền", help="Tiền phát sinh", compute="_compute_tien", store=True)
     bsd_loai_ct = fields.Selection([('gc_tc', 'Giữ chỗ thiện chí'), ('giu_cho', 'Giữ chỗ'),
                                     ('dat_coc', 'Đặt cọc'), ('dot_tt', 'Đợt thanh toán'),
-                                    ('phieu_thu', 'Phiếu thu'), ('dc_giam', 'Điều chỉnh giảm'),
+                                    ('phieu_thu', 'Phiếu thu'),
+                                    ('pql', 'Phí quản lý'),
+                                    ('pbt', 'Phí bảo trì'),
+                                    ('dc_giam', 'Điều chỉnh giảm'),
                                     ('dc_tang', 'Điều chỉnh tăng'),
                                     ('chuyen_tien', 'Chuyển tiền'),
                                     ('hoan_tien', 'Hoàn tiền')], string="Loại chứng từ", help="Loại chứng từ")

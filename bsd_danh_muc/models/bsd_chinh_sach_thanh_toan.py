@@ -42,9 +42,9 @@ class BsdChinhSachThanhToan(models.Model):
     bsd_tb_tt = fields.Integer(string="Thông báo thanh toán",
                                help="Số ngày (trước khi đến hạn thanh toán) để gửi thông tin thanh toán")
 
-    bsd_tl_hd = fields.Integer(string="Thanh lý hợp đồng",
+    bsd_tl_hd = fields.Integer(string="Số ngày trễ",
                                help="Tổng số ngày trễ tối đa để thanh lý hợp đồng")
-    bsd_qh_tt = fields.Integer(string="Quá hạn thanh toán", help="Số ngày trễ tối đa của mỗi đợt thanh toán")
+    bsd_qh_tt = fields.Integer(string="Số ngày trễ/ Đợt", help="Số ngày trễ tối đa của mỗi đợt thanh toán")
     bsd_canh_bao1 = fields.Integer(string="Cảnh báo 1",
                                    help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo quá hạn thanh toán lần 1")
     bsd_canh_bao2 = fields.Integer(string="Cảnh báo 2",
@@ -77,11 +77,11 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
                                      help="""
                                         Phương pháp tính hạn thanh toán dựa trên ngày cố định, tự động hay ngày
                                         bàn giao
-                                     """, default='cd')
+                                     """)
     bsd_ngay_cd = fields.Date(string="Ngày cố định",
                               help="Ngày thanh toán của đợt thanh toán theo cách tính: ngày cố định")
 
-    bsd_dot_cuoi = fields.Boolean(string="Đợt bàn giao cuối", default=False)
+    bsd_dot_cuoi = fields.Boolean(string="Đợt thanh toán cuối", default=False)
 
     bsd_tl_tt = fields.Float(string="Tỷ lệ thanh toán", help="Tỷ lệ thanh toán theo từng đợt bàn giao", required=True)
 
@@ -90,9 +90,9 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
 
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
     bsd_tinh_pbt = fields.Boolean(string="Phí bảo trì", help="Có tính phí bảo trì trong đợt thanh toán hay không?",
-                                default=False)
+                                  default=False)
     bsd_tinh_pql = fields.Boolean(string="Phí quản lý", help="Có tính phí quản lý trong đợt thanh toán hay không?",
-                                default=False)
+                                  default=False)
     bsd_tu_nc = fields.Boolean(string="Từ ngày cọc",
                                help="""Thông tin quy định: hạn thanh toán của đợt thanh toán tính
                                 theo ngày cọc hay ngày ký hợp đồng""", default=False)
@@ -126,11 +126,12 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Không sử dụng')],
                              string="Trạng thái", default='active', required=True)
-    bsd_gd_tt = fields.Selection([('dat_coc', 'Đặt cọc'), ('hop_dong', 'Hợp đồng')],
-                                 string="Giai đoạn thanh toán", help="Thanh toán trước hay sau làm hợp đồng",
-                                 default="dat_coc", required=True)
+    # bsd_gd_tt = fields.Selection([('dat_coc', 'Đặt cọc'), ('hop_dong', 'Hợp đồng')],
+    #                              string="Giai đoạn thanh toán", help="Thanh toán trước hay sau làm hợp đồng",
+    #                              default="dat_coc", required=True)
+    bsd_dot_ky_hd = fields.Boolean(string="Đợt ký hợp đồng", help="Đánh dấu đợt thanh toán là đợt ký hợp đồng")
 
     @api.onchange('bsd_dot_cuoi')
     def _onchange_bsd_dot_cuoi(self):
         _logger.debug("debug tại đây")
-        self.bsd_cach_tinh = False
+        self.bsd_cach_tinh = None

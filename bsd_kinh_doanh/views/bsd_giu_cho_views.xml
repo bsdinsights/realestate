@@ -109,7 +109,7 @@
                             <field name="bsd_tien_gctc" attrs="{'invisible':[('bsd_gc_da', '=',False)]}"/>
                         </group>
                     </group>
-                    <group string="CHUYỂN NHƯỢNG">
+                    <group string="CHUYỂN TÊN">
                         <group>
                             <field name="bsd_kh_moi_id"/>
                         </group>

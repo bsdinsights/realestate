@@ -103,13 +103,37 @@ class BsdSaleChartWidget(models.AbstractModel):
                 LEFT JOIN (SELECT unit.product_tmpl_id,COUNT(*) AS so_giu_cho_unit 
                                             FROM bsd_giu_cho AS giu_cho
                                             LEFT JOIN product_product AS unit 
-                                                ON unit.id = giu_cho.bsd_unit_id AND giu_cho.state IN ('dat_cho','giu_cho')
+                                                ON unit.id = giu_cho.bsd_unit_id AND giu_cho.state IN ('giu_cho')
                                             GROUP BY unit.product_tmpl_id) AS giu_cho ON giu_cho.product_tmpl_id = unit.id
                 LEFT JOIN price ON price.unit_id = unit.id
                 LEFT JOIN bsd_loai_sp AS loai
                     ON loai.id = unit.bsd_loai_sp_id
                 LEFT JOIN product_product AS unit_product ON unit_product.product_tmpl_id = unit.id
                 """ + where + "ORDER BY toa.id, tang.bsd_stt, unit.bsd_stt")
+
+        item_ids = [x for x in self.env.cr.fetchall()]
+        return item_ids
+
+    @api.model
+    def action_update_unit(self, data):
+        where = ''
+        if len(data) == 0:
+            return
+        elif len(data) > 1:
+            where = "where unit.id in {0}".format(tuple(filter(None, data)))
+        elif len(data) == 1:
+            where = "where unit.id = {0}".format(data[0])
+        _logger.debug(where)
+        query = """SELECT unit.id, unit.state, giu_cho.so_giu_cho_unit
+                    FROM product_template AS unit
+                    LEFT JOIN (SELECT unit.product_tmpl_id,COUNT(*) AS so_giu_cho_unit 
+                                            FROM bsd_giu_cho AS giu_cho
+                                            LEFT JOIN product_product AS unit 
+                                                ON unit.id = giu_cho.bsd_unit_id AND giu_cho.state IN ('giu_cho')
+                                            GROUP BY unit.product_tmpl_id) AS giu_cho ON giu_cho.product_tmpl_id = unit.id 
+                
+                """ + where
+        self.env.cr.execute(query)
 
         item_ids = [x for x in self.env.cr.fetchall()]
         return item_ids

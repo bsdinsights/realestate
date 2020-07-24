@@ -7,7 +7,6 @@
     'depends': [
                 'base',
                 'mail',
-                'account',
                 'bsd_du_an',
     ],
     'data': [
@@ -34,8 +33,17 @@
         'views/bsd_chinh_sach_thanh_toan_views.xml',
         'views/bsd_ma_bo_chung_tu_views.xml',
         'views/bsd_du_an_views.xml',
+        'views/bsd_thue_suat_views.xml',
         'views/bsd_menu_item_views.xml',
         'views/bsd_res_country_views.xml',
+        'wizards/bsd_wizard_khong_duyet_khuyen_mai_views.xml',
+        'wizards/bsd_wizard_khong_duyet_chiet_khau_views.xml',
+        'wizards/bsd_wizard_khong_duyet_ck_chung_views.xml',
+        'wizards/bsd_wizard_khong_duyet_ck_ms_views.xml',
+        'wizards/bsd_wizard_khong_duyet_ck_nb_views.xml',
+        'wizards/bsd_wizard_khong_duyet_ck_ttth_views.xml',
+        'wizards/bsd_wizard_khong_duyet_ck_cstt_views.xml',
+        'wizards/bsd_wizard_khong_duyet_ck_ttn_views.xml'
     ],
     'application': True,
 }

@@ -27,6 +27,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             'click .bsd_unit': '_clickTooltip',
             'click .tooltip .bsd_giu_cho': '_clickGiuCho',
             'click .tooltip .bsd_bao_gia': '_clickBaoGia',
+            'scroll': '_scrollUnit',
         },
         custom_events: _.extend({}, FieldManagerMixin.custom_events,{
             'field_changed': '_onFieldChange',
@@ -39,6 +40,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             this.model = model;
             this._initialState = state;
             this.data = [],
+            this.interval = null
             this.filter = {
                 bsd_du_an_id: null,
                 bsd_dot_mb_id: null,
@@ -155,7 +157,46 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
 
             });
             var def2 = this._super.apply(this, arguments);
+            this.interval = setInterval(this.updateUnit.bind(this),2000);
             return Promise.all([def1, def2]);
+        },
+        updateUnit: function(){
+            var self = this
+            var id_unit = []
+            var $unit_ids = $('.bsd_unit')
+            if ($unit_ids.length){
+                _.each($unit_ids,function(item,index,data){
+                    if ($(item).inView()){
+                        id_unit.push(parseInt($(item).attr("id")))
+                    }
+                })
+                this._rpc({
+                    model: 'bsd.sale_chart.widget',
+                    method: 'action_update_unit',
+                    args: [id_unit],
+                    context: self.context,
+                },{shadow : true}).then(function(data){
+                    _.each(data,function(item,index,data){
+                        var id = '#' + item[0].toString()
+                        var state = $(id).attr('class').replace("bsd_unit", "")
+                        if (item[2] === null) {
+                            item[2] = 0
+                        }
+                        $(id).removeClass(state).addClass(item[1])
+                        $(id).find(".so_giu_cho").text(item[2].toString())
+                    })
+                })
+            }
+        },
+
+        /**
+         * Destroys the current widget, also destroys all its children before
+         * destroying itself.
+         */
+        destroy: function () {
+            clearInterval(this.interval);
+            this._super();
+
         },
 
         /**
@@ -424,25 +465,27 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             event.stopPropagation()
             var unit_id = parseInt($(event.currentTarget).attr('id'))
             var data_unit = _.find(this.data, function(item){return item[4] === unit_id})
+            var data = {}
+            data.dien_tich = data_unit[9]
+            data.loai_ch = data_unit[10]
             this._rpc({
                 model: 'bsd.giu_cho',
                 method: 'search_read',
-                fields: ['bsd_ma_gc', 'bsd_khach_hang_id', 'bsd_stt_bg', 'bsd_ngay_hh_bg', 'state'],
-                domain: [['state', 'in', ['dat_cho','giu_cho']], ['bsd_unit_id', '=', unit_id]]
+                fields: ['bsd_ma_gc', 'bsd_khach_hang_id', 'bsd_stt_bg', 'bsd_ngay_hh_bg', 'state', 'bsd_nvbh_id'],
+                domain: [['state', 'in', ['dat_cho','giu_cho']], ['bsd_unit_id', '=', data_unit[11]]]
             }).then(function(giu_cho){
-                console.log("lấy thông tin giữ chỗ")
-                console.log(giu_cho)
-                var title = `<div>Diện tích sử dụng: ${data_unit[9]} m2</div>
-                             <div>Loại căn hộ: ${data_unit[10]} </div>
-                             <table class="table table-bordered table-sm">
-                                <thead>
-                                    <tr>
-                                        <td>Mã giữ chỗ</td>
-                                        <td>Khách hàng</td>
-                                        <td>Số thứ tự </td>
-                                    </tr>
-                                </thead>
-                             </table>`
+                if (_.isEmpty(giu_cho)){
+                    data.giu_cho = null
+                }
+                else {
+                    _.each(giu_cho, function(item,index,giu_cho){
+                        if (item.bsd_ngay_hh_bg === false){
+                            item.bsd_ngay_hh_bg = ''
+                        }
+                    })
+                    data.giu_cho = giu_cho
+                }
+                var title = qweb.render('bsd_sale_chart.tooltip', {'data':data})
                 $(event.currentTarget).tooltip({
                 template: `<div class="tooltip" role="tooltip">
                                 <div class="arrow"></div>
@@ -524,7 +567,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 }
             }
         },
-
         update: function(dataChange){
             var self = this;
             if (dataChange.field === 'bsd_dot_mb_id'){

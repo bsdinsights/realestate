@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_wizard_nghiem_thu_form">
+        <field name="name">bsd.wizard.nghiem_thu.form</field>
+        <field name="model">bsd.wizard.nghiem_thu</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_nghiem_thu_id" />
+                        </group>
+                        <group>
+                            <field name="bsd_hd_ban_id"/>
+                        </group>
+                    </group>
+                    <field name="bsd_dot_tt_ids" nolabel="1" domain="[('bsd_hd_ban_id', '=',bsd_hd_ban_id)]">
+                        <tree>
+                            <field name="bsd_ten_dtt"/>
+                            <field name="bsd_ngay_hh_tt"/>
+                            <field name="bsd_tien_da_tt"/>
+                            <field name="bsd_tien_phai_tt"/>
+                            <field name="bsd_thanh_toan"/>
+                        </tree>
+                    </field>
+                </sheet>
+                <footer>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Hủy" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <act_window id="bsd_wizard_nghiem_thu_action"
+                name="Tạo thông báo"
+                binding_model="bsd.cn_dkbg"
+                res_model="bsd.wizard.nghiem_thu"
+                view_mode="form"
+                target="new"/>
+    
+    <record model="ir.ui.view" id="bsd_wizard_huy_nt_form">
+        <field name="name">bsd.wizard.huy_nt.form</field>
+        <field name="model">bsd.wizard.huy_nt</field>
+        <field name="arch" type="xml">
+            <form string="Ghi nhận lý do">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_nghiem_thu_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ly_do"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_huy_nt_action">
+        <field name="name">Ghi nhận lý do</field>
+        <field name="res_model">bsd.wizard.huy_nt</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>    
+</odoo>

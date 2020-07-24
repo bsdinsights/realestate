@@ -40,6 +40,8 @@
                                    context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
                                    options="{'no_create':true}"/>
                             <field name="bsd_loai_gc"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
                         </group>
                         <group>
                             <field name="bsd_unit_id"
@@ -66,6 +68,9 @@
                             <field name="bsd_tien"/>
                             <field name="bsd_tien_da_tt"/>
                             <field name="bsd_hoan_tien"/>
+                            <field name="bsd_tien_ht"
+                                   attrs="{'invisible':[('bsd_hoan_tien', '=', False)],
+                                           'required':[('bsd_hoan_tien', '=', True)]}"/>
                         </group>
                     </group>
                 </sheet>
@@ -117,5 +122,73 @@
         <field name="help" type="xml">
             <p>Tạo đề nghị hủy giữ chỗ</p>
         </field>
+    </record>
+    <!--#####################################################################################################-->
+    <record model="ir.ui.view" id="bsd_huy_gc_form_popup">
+        <field name="name">bsd.huy_gc.form</field>
+        <field name="model">bsd.huy_gc</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            class="oe_highlight"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                            type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma_huy_gc"/>
+                            <field name="bsd_ngay_huy_gc"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                            <field name="bsd_khach_hang_id"
+                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_loai_gc"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="bsd_unit_id"
+                                   context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_du_an_id','=',bsd_du_an_id)]"
+                                   attrs="{'invisible':[('bsd_loai_gc', '!=','giu_cho')],
+                                           'required':[('bsd_loai_gc', '=', 'giu_cho')]}"/>
+                            <field name="bsd_gc_tc_id"
+                                   domain="[('bsd_du_an_id','=',bsd_du_an_id),('bsd_kh_moi_id', '=',bsd_khach_hang_id),
+                                            ('bsd_thanh_toan','!=','chua_tt'),('state','in', ['xac_nhan'])]"
+                                   options="{'no_create':true}"
+                                   attrs="{'invisible':[('bsd_loai_gc', '!=','gc_tc')],
+                                           'required':[('bsd_loai_gc', '=', 'gc_tc')]}"
+                            />
+                            <field name="bsd_giu_cho_id"
+                                   domain="[('bsd_du_an_id','=',bsd_du_an_id),('bsd_kh_moi_id', '=',bsd_khach_hang_id),
+                                            ('bsd_thanh_toan','!=','chua_tt'),('bsd_truoc_mb','=',True),
+                                            ('bsd_unit_id', '=',bsd_unit_id), ('state' , 'not in', ['nhap','dong','huy'])]"
+                                   options="{'no_create':true}"
+                                   attrs="{'invisible':[('bsd_loai_gc', '!=','giu_cho')],
+                                           'required':[('bsd_loai_gc', '=', 'giu_cho')]}"
+                            />
+                            <field name="bsd_tien"/>
+                            <field name="bsd_tien_da_tt"/>
+                            <field name="bsd_hoan_tien"/>
+                            <field name="bsd_tien_ht"
+                                   attrs="{'invisible':[('bsd_hoan_tien', '=', False)],
+                                           'required':[('bsd_hoan_tien', '=', True)]}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+        <record model="ir.actions.act_window" id="bsd_huy_gc_action_popup">
+        <field name="name">Đề nghị hủy giữ chỗ</field>
+        <field name="res_model">bsd.huy_gc</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="bsd_huy_gc_form_popup"/>
+        <field name="target">new</field>
     </record>
 </odoo>

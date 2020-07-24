@@ -36,7 +36,6 @@ class BsdDatCoc(models.Model):
     bsd_san_gd_id = fields.Many2one(related="bsd_bao_gia_id.bsd_san_gd_id", store=True)
     bsd_ctv_id = fields.Many2one(related="bsd_bao_gia_id.bsd_ctv_id", store=True)
     bsd_gioi_thieu_id = fields.Many2one(related="bsd_bao_gia_id.bsd_gioi_thieu_id", store=True)
-    bsd_pt_tt_id = fields.Many2one(related="bsd_bao_gia_id.bsd_pt_tt_id", store=True)
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
@@ -57,7 +56,7 @@ class BsdDatCoc(models.Model):
                              related="bsd_bao_gia_id.bsd_dt_xd", store=True)
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",
                              related="bsd_bao_gia_id.bsd_dt_sd", store=True)
-    bsd_thue_id = fields.Many2one('account.tax', string="Thuế", help="Thuế",
+    bsd_thue_id = fields.Many2one('bsd.thue_suat', string="Thuế", help="Thuế",
                                   related="bsd_bao_gia_id.bsd_thue_id", store=True)
     bsd_qsdd_m2 = fields.Monetary(string="Giá trị QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2",
                                   related="bsd_bao_gia_id.bsd_qsdd_m2", store=True)
@@ -91,17 +90,18 @@ class BsdDatCoc(models.Model):
     bsd_tien_pql = fields.Monetary(string="Phí quản lý/ tháng", help="Số tiền phí quản lý cần đóng mỗi tháng",
                                    related="bsd_bao_gia_id.bsd_tien_pql", store=True)
 
-    state = fields.Selection([('nhap', 'Nháp'), ('dat_coc', 'Đặt cọc'), ('huy', 'Hủy')],
+    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'), ('dat_coc', 'Đặt cọc'), ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", help="Trạng thái", tracing=1, required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
     bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_dat_coc_id', string="Bàn giao", readonly=True)
-    bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_dat_coc_id', string="Lịch thanh toán", readonly=True)
+    bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_dat_coc_id', string="Lịch thanh toán",
+                                  readonly=True, domain=[('bsd_loai', 'in', ['dtt'])])
 
-    bsd_co_hdc = fields.Boolean(string="Hợp đồng cọc", help="Thông tin quy định có làm hợp đồng cọc hay không",
-                                related="bsd_du_an_id.bsd_hd_coc", store=True)
-    bsd_so_hdc = fields.Char(string="Số hợp đồng", help="Số hợp đồng đặt cọc")
+    bsd_co_ttdc = fields.Boolean(string="Thỏa thuận đặt cọc", help="Thông tin quy định thỏa thuận đặt cọc hay không",
+                                 related="bsd_du_an_id.bsd_hd_coc", store=True)
+    bsd_so_ttdc = fields.Char(string="Số TTĐC", help="Số thỏa thuận đặt cọc")
 
     bsd_ngay_in_dc = fields.Datetime(string="Ngày in", help="Ngày in phiếu cọc, hợp đồng cọc", readonly=True)
     bsd_ngay_hh_kdc = fields.Datetime(string="Hết hạn ký cọc", help="Ngày hết hạn ký phiếu cọc, hợp đồng cọc",
@@ -114,11 +114,18 @@ class BsdDatCoc(models.Model):
     bsd_thanh_toan = fields.Selection([('chua_tt', 'Chưa thanh toán'),
                                        ('dang_tt', 'Đang thanh toán'),
                                        ('da_tt', 'Đã thanh toán')], string="Tình trạng TT", default="chua_tt",
-                                      help="Thanh toán",readonly=True,
+                                      help="Thanh toán", readonly=True,
                                       required=True)
     bsd_ngay_tt = fields.Datetime(string="Ngày TT cọc", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ", readonly=True)
 
     bsd_tien_ttd = fields.Monetary(string="Đã thanh toán/ đợt", help="Tiền đã thanh toán theo đợt thanh toán",)
+    bsd_km_ids = fields.One2many('bsd.bao_gia_km', 'bsd_dat_coc_id', string="Danh sách khuyến mãi",
+                                 help="Danh sách khuyến mãi")
+    bsd_ps_ck_ids = fields.One2many('bsd.ps_ck', 'bsd_dat_coc_id', string="Phát sinh chiết khấu", readonly=True)
+    bsd_ck_db_ids = fields.One2many('bsd.ck_db', 'bsd_dat_coc_id', string="Danh sách chiết khấu đặt biệt",
+                                    domain=[('state', '=', 'duyet')],
+                                    readonly=True)
+    bsd_dsh_ids = fields.Many2many('res.partner', string="Đồng sở hữu", readonly=True)
 
     @api.model
     def create(self, vals):
@@ -139,9 +146,17 @@ class BsdDatCoc(models.Model):
         res = super(BsdDatCoc, self).create(vals)
         ids_bg = res.bsd_bao_gia_id.bsd_bg_ids.ids
         ids_ltt = res.bsd_bao_gia_id.bsd_ltt_ids.ids
+        ids_km = res.bsd_bao_gia_id.bsd_km_ids.ids
+        ids_ck = res.bsd_bao_gia_id.bsd_ps_ck_ids.ids
+        ids_db = res.bsd_bao_gia_id.bsd_ck_db_ids.ids
+        ids_dsh = res.bsd_bao_gia_id.bsd_dsh_ids.ids
         res.write({
             'bsd_bg_ids': [(6, 0, ids_bg)],
-            'bsd_ltt_ids': [(6, 0, ids_ltt)]
+            'bsd_ltt_ids': [(6, 0, ids_ltt)],
+            'bsd_km_ids': [(6, 0, ids_km)],
+            'bsd_ps_ck_ids': [(6, 0, ids_ck)],
+            'bsd_ck_db_ids': [(6, 0, ids_db)],
+            'bsd_dsh_ids': [(6, 0, ids_dsh)],
         })
         return res
 
@@ -163,7 +178,7 @@ class BsdDatCoc(models.Model):
     # KD.10.01 Xác nhận đặt cọc
     def action_xac_nhan(self):
         self.write({
-            'state': 'dat_coc',
+            'state': 'xac_nhan',
         })
         self._tao_rec_cong_no()
 
@@ -176,38 +191,6 @@ class BsdDatCoc(models.Model):
         self.write({
             'bsd_ngay_up_dc': datetime.datetime.now(),
         })
-
-    # Tạo công nợ đợt thạnh toán khi ký phiếu cọc
-    def tao_cong_no_dot_tt(self):
-        for dot_tt in self.bsd_ltt_ids.filtered(lambda d: d.bsd_gd_tt == 'dat_coc').sorted('bsd_stt'):
-            if dot_tt.bsd_stt == 1:
-                self.env['bsd.cong_no'].create({
-                        'bsd_chung_tu': dot_tt.bsd_ten_dtt,
-                        'bsd_ngay': dot_tt.bsd_ngay_hh_tt,
-                        'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                        'bsd_du_an_id': self.bsd_du_an_id.id,
-                        'bsd_ps_tang': dot_tt.bsd_tien_dot_tt - (self.bsd_tien_dc + self.bsd_tien_gc),
-                        'bsd_ps_giam': 0,
-                        'bsd_loai_ct': 'dot_tt',
-                        'bsd_phat_sinh': 'tang',
-                        'bsd_dat_coc_id': self.id,
-                        'bsd_dot_tt_id': dot_tt.id,
-                        'state': 'da_gs',
-                })
-            else:
-                self.env['bsd.cong_no'].create({
-                        'bsd_chung_tu': dot_tt.bsd_ten_dtt,
-                        'bsd_ngay': dot_tt.bsd_ngay_hh_tt,
-                        'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                        'bsd_du_an_id': self.bsd_du_an_id.id,
-                        'bsd_ps_tang': dot_tt.bsd_tien_dot_tt,
-                        'bsd_ps_giam': 0,
-                        'bsd_loai_ct': 'dot_tt',
-                        'bsd_phat_sinh': 'tang',
-                        'bsd_dat_coc_id': self.id,
-                        'bsd_dot_tt_id': dot_tt.id,
-                        'state': 'da_gs',
-                })
 
     # KD.10.04 Ký đặt cọc
     def action_ky_dc(self):
@@ -247,7 +230,7 @@ class BsdDatCoc(models.Model):
             return datetime.date(year, month, day)
         # ngày ký đặt cọc:
         ngay_ky_dc = self.bsd_ngay_ky_dc
-        ltts = self.bsd_ltt_ids.sorted('bsd_stt')
+        ltts = self.bsd_ltt_ids.filtered(lambda l: l.bsd_loai == 'dtt').sorted('bsd_stt')
         # kiểm tra cách tính của đợt thanh toán đầu tiên
         if ltts[0].bsd_cs_tt_ct_id.bsd_cach_tinh != 'td':
             pass
@@ -258,8 +241,9 @@ class BsdDatCoc(models.Model):
                 cs_tt_ct_id = dot.bsd_cs_tt_ct_id  # lấy lại cách sinh lịch thanh toán
                 # Kiểm tra khi gặp đợt không phải tự động sẽ dừng vòng for
                 if cs_tt_ct_id.bsd_cach_tinh != 'td':
+                    # ngay_hh_tt_dot = dot.bsd_ngay_hh_tt
+                    # continue
                     break
-
                 if cs_tt_ct_id.bsd_tiep_theo == 'ngay':
                     ngay_hh_tt_dot += datetime.timedelta(days=cs_tt_ct_id.bsd_so_ngay)
                 else:
@@ -271,3 +255,34 @@ class BsdDatCoc(models.Model):
                     'bsd_ngay_hh_tt': ngay_hh_tt_dot,
                     'bsd_ngay_ah': ngay_an_han,
                 })
+                dot.bsd_child_ids.write({
+                    'bsd_ngay_hh_tt': dot.bsd_ngay_hh_tt,
+                })
+
+    # KD.10.08 Tự động cập nhật giao dịch chiết khấu
+    def tao_gd_chiet_khau(self):
+        # Lấy chiết khấu chung, nội bộ, lịch thanh toán
+        for gd_ck in self.bsd_ps_ck_ids:
+            ck = gd_ck.bsd_chiet_khau_id
+            self.env['bsd.ps_gd_ck'].create({
+                'bsd_ma_ck': ck.bsd_ma_ck,
+                'bsd_ten_ck': ck.bsd_ten_ck,
+                'bsd_dat_coc_id': self.id,
+                'bsd_unit_id': self.bsd_unit_id.id,
+                'bsd_loai_ck': ck.bsd_loai_ck,
+                'bsd_tl_ck': ck.bsd_tl_ck,
+                'bsd_tien': ck.bsd_tien_ck,
+                'bsd_tien_ck': gd_ck.bsd_tien_ck,
+            })
+        # Lấy chiết khấu đặt biệt đã duyệt
+        for ck_db in self.bsd_ck_db_ids.filtered(lambda c: c.state == 'duyet'):
+            self.env['bsd.ps_gd_ck'].create({
+                'bsd_ma_ck': ck_db.bsd_ma_ck_db,
+                'bsd_ten_ck': ck_db.bsd_ten_ck_db,
+                'bsd_dat_coc_id': self.id,
+                'bsd_unit_id': self.bsd_unit_id.id,
+                'bsd_loai_ck': 'dac_biet',
+                'bsd_tl_ck': ck_db.bsd_tl_ck,
+                'bsd_tien': ck_db.bsd_tien,
+                'bsd_tien_ck': ck_db.bsd_tien_ck,
+            })

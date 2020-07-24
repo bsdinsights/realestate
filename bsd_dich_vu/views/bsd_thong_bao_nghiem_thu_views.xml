@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_tb_nt_form">
+        <field name="name">bsd.tb_nt.form</field>
+        <field name="model">bsd.tb_nt</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            states="nhap"
+                            confirm="Bạn có muốn xác nhận yêu cầu không?"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="In thông báo"
+                            name="action_in_tb"
+                            attrs="{'invisible': [('state', 'in',['nhap','huy'])]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Gửi thông báo"
+                            name="action_gui_tb"
+                            states="xac_nhan"
+                            type="object"
+                            attrs="{'invisible': ['|',('bsd_ngay_in', '=',False)]}"
+                            class="oe_highlight"/>
+                    <button string="Đóng thông báo"
+                            name="action_dong_tb"
+                            states="xac_nhan"
+                            attrs="{'invisible': ['|',('bsd_ngay_gui', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"
+                            confirm="Bạn có muốn hủy yêu cầu này không ?"
+                            attrs="{'invisible': ['|',('id', '=',False),'|',('bsd_ngay_in', '!=',False)]}"
+                            states="xac_nhan,nhap"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_nghiem_thu" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_nt', '=', 0)]}">
+                            <field name="bsd_so_nt" widget="statinfo" string="Nghiệm thu"/>
+                        </button>
+                    </div>
+                    <notebook>
+                        <page string="Thông tin chung">
+                            <group>
+                                <group>
+                                    <field name="bsd_ma_tb"/>
+                                    <field name="bsd_ngay_tao_tb"/>
+                                    <field name="bsd_doi_tuong"/>
+                                    <field name="bsd_tao_td"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_cn_dkbg_unit_id"/>
+                                    <field name="bsd_ngay_tb"/>
+                                    <field name="bsd_ngay_nt"/>
+                                    <field name="bsd_ngay_ut"/>
+                                </group>
+                            </group>
+                            <group string="XÁC NHẬN">
+                                <group>
+                                    <field name="bsd_ngay_in"/>
+                                    <field name="bsd_nguoi_in_id"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_gui"/>
+                                    <field name="bsd_ngay_dong"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Sản phẩm">
+                            <group>
+                                <group>
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="bsd_du_an_id"/>
+                                    <field name="bsd_unit_id"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_hd_ban_id"/>
+                                    <field name="bsd_khach_hang_id"/>
+                                </group>
+                            </group>
+                            <group string="CÔNG NỢ">
+                                <group>
+                                    <field name="bsd_tien_ng"/>
+                                    <field name="bsd_tien_pbt"/>
+                                    <field name="bsd_tien_pql"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_thang_pql"/>
+                                    <field name="bsd_don_gia_pql"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_tb_nt_tree">
+        <field name="name">bsd.tb_nt.tree</field>
+        <field name="model">bsd.tb_nt</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_tb"/>
+                <field name="bsd_ngay_tb"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_tb_nt_action">
+        <field name="name">Thông báo nghiệm thu</field>
+        <field name="res_model">bsd.tb_nt</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo thông báo nghiệm thu</p>
+        </field>
+    </record>
+</odoo>

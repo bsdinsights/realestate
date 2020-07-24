@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_hd_ban_form_inherit">
+        <field name="name">bsd.hd_ban.form.inherit</field>
+        <field name="model">bsd.hd_ban</field>
+        <field name="inherit_id" ref="bsd_dich_vu.bsd_hd_ban_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bsd_ltt_ids']" position="before">
+                <group>
+                    <group>
+                        <field name="bsd_tien_tt_hd"/>
+                    </group>
+                    <group>
+                        <label for="bsd_tl_tt_hd"/>
+                        <div class="o_row no-gutters d-flex">
+                            <field name="bsd_tl_tt_hd" class="mr-1"/>
+                            <span>%</span>
+                        </div>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

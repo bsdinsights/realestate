@@ -19,6 +19,7 @@ class BsdKyBG(models.TransientModel):
 
     def action_xac_nhan(self):
         self.bsd_bao_gia_id.write({
-            'bsd_ngay_ky_bg': self.bsd_ngay_ky_bg
+            'bsd_ngay_ky_bg': self.bsd_ngay_ky_bg,
+            'state': 'da_ky'
         })
 

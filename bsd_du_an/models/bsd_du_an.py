@@ -64,12 +64,12 @@ class BsdProject(models.Model):
                                   help="Tiền giữ chỗ khi mua căn hộ của dự án")
     bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", required=True,
                                   help="Tiền đặt cọc khi mua căn hộ của dự án")
-    bsd_hh_bg = fields.Integer(string="Hiệu lực báo giá", required=True,
+    bsd_hh_bg = fields.Integer(string="Hiệu lực bảng tính giá", required=True,
                                help="Số ngày báo giá hết hiệu lực, được tính từ ngày tạo báo giá")
     bsd_hh_pc = fields.Integer(string="Hạn ký phiếu cọc", required=True,
                                help="Số ngày phiếu cọc hết hiệu lực ký, được tính từ ngày in phiếu cọc")
     bsd_hh_hd = fields.Integer(string="Hạn ký hợp đồng", required=True,
-                               help="Số ngày hợp đồng hết hiệu lực ky, được tính kể từ ngày in hợp đồng")
+                               help="Số ngày hợp đồng hết hiệu lực ký, được tính kể từ ngày in hợp đồng")
     bsd_cb_gc = fields.Integer(string="Cảnh báo sau giữ chỗ",
                                help="Số ngày cảnh báo sau khi tạo giữ chỗ")
     bsd_cb_dc = fields.Integer(string="Cảnh báo sau đặt cọc",
@@ -96,13 +96,17 @@ class BsdProject(models.Model):
     bsd_hh_ql = fields.Monetary(string="Quản lý", help="Tiền hoa hồng được hương của quản lý", required=True)
     bsd_hh_dv = fields.Monetary(string="Dịch vụ", required=True,
                                 help="Tiền hoa hồng được hương của nhân viên dịch vụ khách hàng")
-    state = fields.Selection([('active', 'Đang sử dụng'),
-                              ('inactive', 'Không sử dụng')],
-                             string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
+    state = fields.Selection([('chuan_bi', 'Chuẩn bị'),
+                              ('phat_hanh', 'Đã ban hành')],
+                             string="Trạng thái", default='chuan_bi', required=True, tracking=1, help="Trạng thái")
     bsd_tk_ng_ids = fields.One2many('bsd.da_tknh', 'bsd_du_an_id', string="Tài khoản ngân hàng")
-    bsd_ngan_hang_ids = fields.One2many('bsd.da_nh', 'bsd_du_an_id', string="Ngân hàng")
+    bsd_nh_tt_ids = fields.One2many('bsd.da_nh', 'bsd_du_an_id', string="Ngân hàng tài trợ")
+    bsd_nh_cv_ids = fields.One2many('bsd.da_nh_vay', 'bsd_du_an_id', string="Ngân hàng cho vay")
 
-    bsd_unit_ids = fields.One2many('product.product', 'bsd_du_an_id', string="Danh sách căn hộ", readonly=True)
+    bsd_unit_ids = fields.One2many('product.template', 'bsd_du_an_id', string="Danh sách căn hộ", readonly=True)
+    bsd_sl_unit = fields.Integer(string="# Căn hộ", compute="_compute_sl_unit")
+
+    bsd_tong_dt = fields.Float(string="Tổng diện tích", help="Tổng diện tích dự án", digits=(14,0))
 
     @api.constrains('bsd_tl_dc')
     def _check_ty_le_coc(self):
@@ -146,10 +150,34 @@ class BsdProject(models.Model):
             if record.bsd_cb_dc > 100 or record.bsd_cb_dc < 0:
                 raise ValidationError("Cảnh báo sau đặt cọc nằm trong khoảng 0 đến 100")
 
+    @api.depends('bsd_unit_ids')
+    def _compute_sl_unit(self):
+        for each in self:
+            each.bsd_sl_unit = len(each.bsd_unit_ids)
 
-class BsdDuanNganHang(models.Model):
+    def action_view_unit(self):
+        action = self.env.ref('bsd_du_an.bsd_product_template_action').read()[0]
+        action["context"] = {'group_by': 'bsd_toa_nha_id'}
+        action["domain"] = [('bsd_du_an_id', '=', self.id)]
+        return action
+
+
+class BsdDuanNganHangTaiTro(models.Model):
     _name = 'bsd.da_nh'
     _description = "Bảng Ngân hàng của dự án"
+    _rec_name = "bsd_ngan_hang_id"
+
+    bsd_ngan_hang_id = fields.Many2one('res.bank', string="Ngân hàng", required=True)
+    bsd_ma_nh = fields.Char(related="bsd_ngan_hang_id.bic", string="Mã")
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án")
+    state = fields.Selection([('active', 'Đang sử dụng'),
+                              ('inactive', 'Ngưng sử dụng')],
+                             string="Trạng thái", default='active')
+
+
+class BsdDuanNganHangChoVay(models.Model):
+    _name = 'bsd.da_nh_vay'
+    _description = "Bảng Ngân hàng cho vay của dự án"
     _rec_name = "bsd_ngan_hang_id"
 
     bsd_ngan_hang_id = fields.Many2one('res.bank', string="Ngân hàng", required=True)

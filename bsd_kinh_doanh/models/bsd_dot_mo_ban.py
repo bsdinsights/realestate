@@ -27,22 +27,22 @@ class BsdDotMoBan(models.Model):
     bsd_bang_gia_id = fields.Many2one('product.pricelist', string="Bảng giá",
                                       readonly=True, required=True,
                                       states={'cph': [('readonly', False)]})
-    bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="CK chung", domain=[('state', '=', 'active')],
+    bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="CK chung",
                                    readonly=True,
                                    states={'cph': [('readonly', False)]})
-    bsd_ck_nb_id = fields.Many2one('bsd.ck_nb', string="CK nội bộ", domain=[('state', '=', 'active')],
+    bsd_ck_nb_id = fields.Many2one('bsd.ck_nb', string="CK nội bộ",
                                    readonly=True,
                                    states={'cph': [('readonly', False)]})
-    bsd_ck_ms_id = fields.Many2one('bsd.ck_ms', string="CK mua sỉ", domain=[('state', '=', 'active')],
+    bsd_ck_ms_id = fields.Many2one('bsd.ck_ms', string="CK mua sỉ",
                                    readonly=True,
                                    states={'cph': [('readonly', False)]})
-    bsd_ck_ttth_id = fields.Many2one('bsd.ck_ttth', string="CK TT trước hạn", domain=[('state', '=', 'active')],
+    bsd_ck_ttth_id = fields.Many2one('bsd.ck_ttth', string="CK TT trước hạn",
                                      readonly=True,
                                      states={'cph': [('readonly', False)]})
-    bsd_ck_ttn_id = fields.Many2one('bsd.ck_ttn', string="CK TT nhanh", domain=[('state', '=', 'active')],
+    bsd_ck_ttn_id = fields.Many2one('bsd.ck_ttn', string="CK TT nhanh",
                                     readonly=True,
                                     states={'cph': [('readonly', False)]})
-    bsd_ck_cstt_id = fields.Many2one('bsd.ck_cstt', string="CK chính sách TT", domain=[('state', '=', 'active')],
+    bsd_ck_cstt_id = fields.Many2one('bsd.ck_cstt', string="CK chính sách TT",
                                      readonly=True,
                                      states={'cph': [('readonly', False)]})
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng của đợt mở bán",
@@ -98,6 +98,61 @@ class BsdDotMoBan(models.Model):
     bsd_th_ids = fields.One2many('bsd.dot_mb_unit', 'bsd_dot_mb_id', string="Thu hồi unit",
                                  readonly=True,
                                  domain=[('state', '=', 'thu_hoi')])
+
+    bsd_so_thu_hoi_ch = fields.Integer(string="# Thu hồi căn hộ", compute='_compute_thu_hoi_ch')
+    bsd_so_them_ch = fields.Integer(string="# Thêm căn hộ", compute='_compute_them_ch')
+
+    def _compute_thu_hoi_ch(self):
+        for each in self:
+            thu_hoi = self.env['bsd.thu_hoi'].search([('bsd_dot_mb_id', '=', self.id)])
+            each.bsd_so_thu_hoi_ch = len(thu_hoi)
+
+    def _compute_them_ch(self):
+        for each in self:
+            them_unit = self.env['bsd.them_unit'].search([('bsd_dot_mb_id', '=', self.id)])
+            each.bsd_so_them_ch = len(them_unit)
+
+    def action_view_thu_hoi_ch(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_thu_hoi_action').read()[0]
+
+        thu_hoi = self.env['bsd.thu_hoi'].search([('bsd_dot_mb_id', '=', self.id)])
+        if len(thu_hoi) > 1:
+            action['domain'] = [('id', 'in', thu_hoi.ids)]
+        elif thu_hoi:
+            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_thu_hoi_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = thu_hoi.id
+        # Prepare the context.
+        context = {
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_dot_mb_id': self.id,
+        }
+        action['context'] = context
+        return action
+
+    def action_view_them_ch(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_them_unit_action').read()[0]
+
+        them_unit = self.env['bsd.them_unit'].search([('bsd_dot_mb_id', '=', self.id)])
+        if len(them_unit) > 1:
+            action['domain'] = [('id', 'in', them_unit.ids)]
+        elif them_unit:
+            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_them_unit_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = them_unit.id
+        # Prepare the context.
+        context = {
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_dot_mb_id': self.id,
+        }
+        action['context'] = context
+        return action
 
     def action_loc_unit(self):
         # gán giá trị biến nội hàm
@@ -298,6 +353,32 @@ class BsdDotMoBan(models.Model):
                 'bsd_dot_mb_id': False
             })
 
+    # Thu hồi căn hộ trong đợt mở bán
+    def action_thu_hoi_can_ho(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_thu_hoi_action_pop_up').read()[0]
+        context = {
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_dot_mb_id': self.id,
+        }
+        action['context'] = context
+        return action
+
+    # Thêm căn hộ trong đợt mở bán
+    def action_them_can_ho(self):
+        context = {
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_dot_mb_id': self.id,
+        }
+        return {
+            "name": "Tạo phiếu thêm căn hộ",
+            "res_model": 'bsd.them_unit',
+            "view": [[False, 'form']],
+            "type": 'ir.actions.act_window',
+            "view_mode": "form",
+            "context": context,
+            "target": "new"
+        }
+
     @api.model
     def create(self, vals):
         if 'bsd_du_an_id' in vals:
@@ -334,7 +415,11 @@ class BsdDotMoBanKhuyenMai(models.Model):
     bsd_ma_km = fields.Char(related='bsd_khuyen_mai_id.bsd_ma_km')
     bsd_tu_ngay = fields.Date(related='bsd_khuyen_mai_id.bsd_tu_ngay')
     bsd_den_ngay = fields.Date(related='bsd_khuyen_mai_id.bsd_den_ngay')
+    bsd_gia_tri = fields.Monetary(related='bsd_khuyen_mai_id.bsd_gia_tri')
+    bsd_loai = fields.Selection(related='bsd_khuyen_mai_id.bsd_loai', store=True)
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", required=True)
+    company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
+    currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
 
 class BsdDotMoBanDKBG(models.Model):
@@ -346,6 +431,7 @@ class BsdDotMoBanDKBG(models.Model):
     bsd_dk_bg_id = fields.Many2one('bsd.dk_bg', string="Điều kiện bàn giao")
     bsd_ma_dkbg = fields.Char(related="bsd_dk_bg_id.bsd_ma_dkbg")
     bsd_loai_bg = fields.Selection(related="bsd_dk_bg_id.bsd_loai_bg")
+    bsd_loai_sp_id = fields.Many2one(related="bsd_dk_bg_id.bsd_loai_sp_id")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     bsd_tien = fields.Monetary(related="bsd_dk_bg_id.bsd_tien")

@@ -26,6 +26,40 @@
               sequence="12"
               action="bsd_dt_tt_action"
               parent="bsd_main_dich_vu_root"/>
+    <menuitem id="bsd_hd_ban_cn_menu_action"
+              name="Chuyển nhượng hợp đồng"
+              sequence="13"
+              action="bsd_hd_ban_cn_action"
+              parent="bsd_main_dich_vu_root"/>
+    <menuitem id="bsd_cn_dkbg_menu"
+              name="Cập nhật DKBG"
+              sequence="14"
+              parent="bsd_main_dich_vu_root"/>
+        <menuitem id="bsd_cn_dkbg_menu_action"
+                  name="Cập nhật DKBG"
+                  sequence="10"
+                  action="bsd_cn_dkbg_action"
+                  parent="bsd_cn_dkbg_menu"/>
+        <menuitem id="bsd_cn_dkbg_menu_unit_action"
+                  name="Cập nhật DKBG chi tiết"
+                  sequence="11"
+                  action="bsd_cn_dkbg_unit_action"
+                  parent="bsd_cn_dkbg_menu"/>
+    <menuitem id="bsd_tb_nt_menu_action"
+              name="Thông báo nghiệm thu"
+              sequence="16"
+              action="bsd_tb_nt_action"
+              parent="bsd_main_dich_vu_root"/>
+    <menuitem id="bsd_nghiem_thu_menu_action"
+              name="Nghiệm thu"
+              sequence="17"
+              action="bsd_nghiem_thu_action"
+              parent="bsd_main_dich_vu_root"/>
+    <menuitem id="bsd_ps_gd_km_menu_action"
+              name="Giao dịch khuyến mãi"
+              sequence="18"
+              action="bsd_ps_gd_km_action"
+              parent="bsd_kinh_doanh.bsd_main_kinh_doanh_root"/>
 
     <record id="bsd_dich_vu.bsd_main_dich_vu_root" model="ir.ui.menu">
         <field name="action" eval="False"/>

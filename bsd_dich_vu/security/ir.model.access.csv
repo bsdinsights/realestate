@@ -6,3 +6,12 @@ bsd_pl_dsh_moi_manager, Đồng sở hữu mới,model_bsd_pl_dsh_moi,bsd_dich_v
 bsd_pl_dsh_cu_manager, Đồng sở hữu,model_bsd_pl_dsh_cu,bsd_dich_vu.group_manager,1,1,1,1
 bsd_dt_tt_manager, Diện tích thông thủy thưc tế,model_bsd_dt_tt,bsd_dich_vu.group_manager,1,1,1,1
 bsd_pl_tti_manager, Phụ lục thay đổi thông tin,model_bsd_pl_tti,bsd_dich_vu.group_manager,1,1,1,1
+
+bsd_ps_gd_km_manager, Bảng phát sinh giao dịch khuyến mãi,model_bsd_ps_gd_km,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_hd_ban_cn_manager, Chuyển nhượng hợp đồng,model_bsd_hd_ban_cn,bsd_dich_vu.group_manager,1,1,1,1
+
+bsd_cn_dkbg,Cập nhật dự kiến bàn giao,model_bsd_cn_dkbg,bsd_dich_vu.group_manager,1,1,1,1
+bsd_cn_dkbg_unit,Cập nhật dự kiến bàn giao unit,model_bsd_cn_dkbg_unit,bsd_dich_vu.group_manager,1,1,1,1
+
+bsd_tb_nt,Thông báo nghiệm thu,model_bsd_tb_nt,bsd_dich_vu.group_manager,1,1,1,1
+bsd_nghiem_thu,Nghiệm thu,model_bsd_nghiem_thu,bsd_dich_vu.group_manager,1,1,1,1

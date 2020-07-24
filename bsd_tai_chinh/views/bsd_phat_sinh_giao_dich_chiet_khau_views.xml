@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_ps_gd_ck_form">
+        <field name="name">bsd.ps_gd_ck.form</field>
+        <field name="model">bsd.ps_gd_ck</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Hoàn tiền"
+                            name="action_hoan_tien"
+                            type="object"
+                            confirm="Bạn có muốn tạo phiếu Hoàn tiền cho giao dịch này không?"
+                            attrs="{'invisible':['|',('state','!=','xac_nhan'),('bsd_loai_ck','not in',['ttth','ttn'])]}"
+                            class="oe_highlight"/>
+                    <button string="Điều chỉnh giảm"
+                            name="action_dc_giam"
+                            type="object"
+                            confirm="Bạn có muốn tạo phiếu Điều chỉnh giảm công nợ cho giao dịch này không?"
+                            attrs="{'invisible':['|',('state','!=','xac_nhan'),('bsd_loai_ck','not in',['ttth','ttn'])]}"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"
+                            attrs="{'invisible':['|',('state','!=','xac_nhan'),('bsd_loai_ck','not in',['ttth','ttn'])]}"
+                            confirm="Bạn có muốn Hủy giao dịch chiết khấu này không?"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_hoan_tien" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_hoan_tien', '=', 0)]}">
+                            <field name="bsd_so_hoan_tien" widget="statinfo" string="Hoàn tiền"/>
+                        </button>
+                        <button name="action_view_giam_no" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_giam_no', '=', 0)]}">
+                            <field name="bsd_so_giam_no" widget="statinfo" string="Điều chỉnh giảm"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="bsd_ma_ht"/>
+                            <field name="bsd_ma_ck"/>
+                            <field name="bsd_ten_ck"/>
+                            <field name="bsd_dat_coc_id"/>
+                            <field name="bsd_unit_id"/>
+                            <field name="bsd_hd_ban_id"/>
+                            <field name="bsd_loai_ck"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ltt_id"/>
+                            <field name="bsd_sn_th"/>
+                            <field name="bsd_tien_dot_tt"/>
+                            <field name="bsd_tien"/>
+                            <label for="bsd_tl_ck"/>
+                            <div class="o_row no-gutters d-flex">
+                            <field name="bsd_tl_ck" class="mr-1"/>
+                                <span>%</span>
+                            </div>
+                            <field name="bsd_tien_ck"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_ps_gd_ck_tree">
+        <field name="name">bsd.ps_gd_ck.tree</field>
+        <field name="model">bsd.ps_gd_ck</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_ck"/>
+                <field name="bsd_ten_ck"/>
+                <field name="bsd_unit_id"/>
+                <field name="bsd_hd_ban_id"/>
+                <field name="bsd_dat_coc_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_ps_gd_ck_filter">
+        <field name="name">bsd.ps_gd_ck.list.filter</field>
+        <field name="model">bsd.ps_gd_ck</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="bsd_ma_ck"/>
+                <field name="bsd_ten_ck"/>
+                <field name="bsd_unit_id"/>
+                <field name="bsd_hd_ban_id"/>
+                <field name="bsd_dat_coc_id"/>
+                <group expand="0" string="Group by">
+                    <filter string="Loại chiết khấu" name="bsd_loai_ck" domain="[]" context="{'group_by': 'bsd_loai_ck'}"/>
+                    <filter string="Hợp đồng" name="bsd_hd_ban_id" domain="[]" context="{'group_by': 'bsd_hd_ban_id'}"/>
+                    <filter string="Đặt cọc" name="bsd_dat_coc_id" domain="[]" context="{'group_by':'bsd_dat_coc_id'}"/>
+                    <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by':'bsd_unit_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_ps_gd_ck_action">
+        <field name="name">Giao dịch chiết khấu</field>
+        <field name="res_model">bsd.ps_gd_ck</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Giao dịch chiết khấu</p>
+        </field>
+    </record>
+</odoo>

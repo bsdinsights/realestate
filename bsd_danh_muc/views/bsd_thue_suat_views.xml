@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_thue_suat_form">
+        <field name="name">bsd.thue_suat.form</field>
+        <field name="model">bsd.thue_suat</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma_ts"/>
+                            <field name="bsd_ten_ts"/>
+                        </group>
+                        <group>
+                            <field name="bsd_thue_suat"/>
+                            <field name="bsd_dien_giai"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_thue_suat_tree">
+        <field name="name">bsd.thue_suat.tree</field>
+        <field name="model">bsd.thue_suat</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_ts"/>
+                <field name="bsd_ten_ts"/>
+                <field name="bsd_thue_suat"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_thue_suat_filter">
+        <field name="name">bsd.thue_suat.list.filter</field>
+        <field name="model">bsd.thue_suat</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="bsd_ma_ts"/>
+                <field name="bsd_ten_ts"/>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_thue_suat_action">
+        <field name="name">Thuế suất</field>
+        <field name="res_model">bsd.thue_suat</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo thông tin  Thuế suất</p>
+        </field>
+    </record>
+</odoo>

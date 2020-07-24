@@ -26,15 +26,17 @@ class BsdPhieuThu(models.Model):
                                     ('giu_cho', 'Giữ chỗ'),
                                     ('dat_coc', 'Đặt cọc'),
                                     ('dot_tt', 'Đợt thanh toán'),
+                                    ('pql', 'Phí quản lý'),
+                                    ('pbt', 'Phí bảo trì'),
                                     ('khac', 'Khác')], default="tra_truoc", required=True, string="Loại phiếu thu",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_loai_hd = fields.Selection([('dat_coc', 'Đặt cọc'),
-                                    ('hd_ban', 'Hợp đồng bán')], string="Loại hợp đồng",
-                                   help="""Thông tin ghi nhận thu tiền theo đợt thanh toán 
-                                           của Đặt cọc hay hợp đồng bán""",
-                                   readonly=True,
-                                   states={'nhap': [('readonly', False)]})
+    # bsd_loai_hd = fields.Selection([('dat_coc', 'Đặt cọc'),
+    #                                 ('hd_ban', 'Hợp đồng bán')], string="Loại hợp đồng",
+    #                                help="""Thông tin ghi nhận thu tiền theo đợt thanh toán
+    #                                        của Đặt cọc hay hợp đồng bán""",
+    #                                readonly=True,
+    #                                states={'nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
@@ -114,32 +116,33 @@ class BsdPhieuThu(models.Model):
             dat_coc = self.env['bsd.dat_coc'].search([('id', '=', self.bsd_dat_coc_id.id)])
             self.bsd_tien = dat_coc.bsd_tien_phai_tt
 
-        if self.bsd_loai_pt == 'dot_tt' and self.bsd_dot_tt_id:
+        if self.bsd_loai_pt in ['dot_tt', 'pql', 'pbt'] and self.bsd_dot_tt_id:
             dot_tt = self.env['bsd.lich_thanh_toan'].search([('id', '=', self.bsd_dot_tt_id.id)])
             self.bsd_tien = dot_tt.bsd_tien_phai_tt
 
-    @api.onchange('bsd_loai_pt')
-    def _onchange_loai_sp(self):
-        if self.bsd_loai_pt == 'dot_tt':
-            self.bsd_loai_hd = 'dat_coc'
-        else:
-            self.bsd_loai_hd = None
-
-    @api.onchange('bsd_dat_coc_id', 'bsd_hd_ban_id', 'bsd_loai_hd')
+    @api.onchange('bsd_hd_ban_id', 'bsd_loai_pt')
     def _onchange_dot_tt(self):
         res = {}
-        if self.bsd_loai_hd == 'dat_coc':
-            res.update({
-                'domain': {'bsd_dot_tt_id': [('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id),
-                                             ('bsd_dat_coc_id', '!=', False),
-                                             ('bsd_gd_tt', '=', 'dat_coc')]}
+        list_dtt = []
+        if self.bsd_hd_ban_id and self.bsd_loai_pt == 'dot_tt':
+            if self.bsd_hd_ban_id.state != 'nhap':
+                list_dtt = self.bsd_hd_ban_id.bsd_ltt_ids.ids
+        elif self.bsd_hd_ban_id and self.bsd_loai_pt == 'pql':
+            pql = self.bsd_hd_ban_id.bsd_ltt_ids\
+                                .filtered(lambda x: x.bsd_tinh_pql)\
+                                .bsd_child_ids.filtered(lambda r: r.bsd_loai == 'pql')
+            self.bsd_dot_tt_id = pql
+            list_dtt = pql.ids
+        elif self.bsd_hd_ban_id and self.bsd_loai_pt == 'pbt':
+            pbt = self.bsd_hd_ban_id.bsd_ltt_ids\
+                                .filtered(lambda x: x.bsd_tinh_pbt)\
+                                .bsd_child_ids.filtered(lambda r: r.bsd_loai == 'pbt')
+            self.bsd_dot_tt_id = pbt
+            list_dtt = pbt.ids
+        res.update({
+                'domain': {'bsd_dot_tt_id': [('id', 'in', list_dtt)]}
             })
-        else:
-            res.update({
-                'domain': {'bsd_dot_tt_id': [('bsd_hd_ban_id', '=', self.bsd_hd_ban_id.id),
-                                             ('bsd_hd_ban_id', '!=', False),
-                                             ('bsd_gd_tt', '=', 'hop_dong')]}
-            })
+
         return res
 
     # TC.01.01 Xác nhận phiếu thu
@@ -151,7 +154,7 @@ class BsdPhieuThu(models.Model):
     # Nút vào sổ
     def action_vao_so(self):
         if self.bsd_loai_pt == 'tra_truoc':
-            self._gs_pt_tra_trươc()
+            self._gs_pt_tra_truoc()
         elif self.bsd_loai_pt == 'khac':
             self._gs_pt_khac()
         elif self.bsd_loai_pt == 'gc_tc':
@@ -160,11 +163,8 @@ class BsdPhieuThu(models.Model):
             self._gs_pt_giu_cho()
         elif self.bsd_loai_pt == 'dat_coc':
             self._gs_pt_dat_coc()
-        elif self.bsd_loai_pt == 'dot_tt':
-            if self.bsd_loai_hd == 'dat_coc':
-                self._gs_pt_dot_tt_dc()
-            else:
-                self._gs_pt_dot_tt_hd()
+        elif self.bsd_loai_pt in ['dot_tt', 'pql', 'pbt']:
+            self._gs_pt_dot_tt_hd()
         else:
             pass
 
@@ -173,7 +173,7 @@ class BsdPhieuThu(models.Model):
         })
 
     # TC.01.02 Ghi sổ phiếu thu trả trước
-    def _gs_pt_tra_trươc(self):
+    def _gs_pt_tra_truoc(self):
         self.env['bsd.cong_no'].create({
                 'bsd_chung_tu': self.bsd_so_pt,
                 'bsd_ngay': self.bsd_ngay_pt,
@@ -266,31 +266,31 @@ class BsdPhieuThu(models.Model):
         })
 
     # TC.01.06 Ghi sổ phiếu thu đợt thanh toán
-    def _gs_pt_dot_tt_dc(self):
-        # ghi công nợ giảm
-        giam_id = self.env['bsd.cong_no'].create({
-                        'bsd_chung_tu': self.bsd_so_pt,
-                        'bsd_ngay': self.bsd_ngay_pt,
-                        'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                        'bsd_du_an_id': self.bsd_du_an_id.id,
-                        'bsd_ps_giam': self.bsd_tien,
-                        'bsd_ps_tang': 0,
-                        'bsd_loai_ct': 'phieu_thu',
-                        'bsd_phat_sinh': 'giam',
-                        'bsd_phieu_thu_id': self.id,
-                        'state': 'da_gs',
-        })
-        # tạo record trong bảng công nợ chứng từ
-        self.env['bsd.cong_no_ct'].create({
-            'bsd_ngay_pb': self.bsd_ngay_pt,
-            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-            'bsd_phieu_thu_id': self.id,
-            'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
-            'bsd_dot_tt_id': self.bsd_dot_tt_id.id,
-            'bsd_tien_pb': self.bsd_tien,
-            'bsd_loai': 'pt_dtt',
-            'state': 'hoan_thanh',
-        })
+    # def _gs_pt_dot_tt_dc(self):
+    #     # ghi công nợ giảm
+    #     giam_id = self.env['bsd.cong_no'].create({
+    #                     'bsd_chung_tu': self.bsd_so_pt,
+    #                     'bsd_ngay': self.bsd_ngay_pt,
+    #                     'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+    #                     'bsd_du_an_id': self.bsd_du_an_id.id,
+    #                     'bsd_ps_giam': self.bsd_tien,
+    #                     'bsd_ps_tang': 0,
+    #                     'bsd_loai_ct': 'phieu_thu',
+    #                     'bsd_phat_sinh': 'giam',
+    #                     'bsd_phieu_thu_id': self.id,
+    #                     'state': 'da_gs',
+    #     })
+    #     # tạo record trong bảng công nợ chứng từ
+    #     self.env['bsd.cong_no_ct'].create({
+    #         'bsd_ngay_pb': self.bsd_ngay_pt,
+    #         'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+    #         'bsd_phieu_thu_id': self.id,
+    #         'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
+    #         'bsd_dot_tt_id': self.bsd_dot_tt_id.id,
+    #         'bsd_tien_pb': self.bsd_tien,
+    #         'bsd_loai': 'pt_dtt',
+    #         'state': 'hoan_thanh',
+    #     })
 
     # TC.01.06 Ghi sổ phiếu đợt thanh toán hợp đồng bán
     def _gs_pt_dot_tt_hd(self):

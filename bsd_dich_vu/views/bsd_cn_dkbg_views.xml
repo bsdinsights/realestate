@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_cn_dkbg_form">
+        <field name="name">bsd.cn_dkbg.form</field>
+        <field name="model">bsd.cn_dkbg</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            states="nhap"
+                            confirm="Bạn có muốn xác nhận yêu cầu không?"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Duyệt"
+                            name="action_duyet"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn duyệt yêu cầu này không?"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Không duyệt"
+                            name="action_khong_duyet"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn từ chối yêu cầu này không?"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            states="xac_nhan,nhap"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <notebook>
+                        <page string="Thông tin chung">
+                            <group>
+                                <group>
+                                    <field name="bsd_ma_cn_dkbg"/>
+                                    <field name="bsd_ngay_cn_dkbg"/>
+                                    <field name="bsd_ten_cn_dkbg"/>
+                                    <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                                    <field name="bsd_loai"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_ttcn"/>
+                                    <field name="bsd_ngay_ut"/>
+                                    <field name="bsd_co_tbnt"/>
+                                    <field name="bsd_co_tbbg"/>
+                                    <field name="bsd_dien_giai"/>
+                                </group>
+                            </group>
+                            <group string="XÁC NHẬN">
+                                <group>
+                                    <field name="bsd_ngay_duyet"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_nguoi_duyet_id"/>
+                                </group>
+                            </group>
+                            <group string="THÔNG BÁO">
+                                <group>
+                                    <field name="bsd_da_tao_tbnt"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_da_tao_tbbg"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Chi tiết">
+                            <field name="id" invisible="1"/>
+                            <field name="bsd_ct_ids" context="{'default_bsd_cn_dkbg_id': id}">
+                                <tree>
+                                    <field name="bsd_ma_cn_unit"/>
+                                    <field name="bsd_du_an_id"/>
+                                    <field name="bsd_unit_id"/>
+                                    <field name="bsd_ngay_dkbg_ht"/>
+                                    <field name="bsd_ngay_dkbg_moi"/>
+                                    <field name="state"/>
+                                    <button icon="fa-check-square-o"
+                                            name="action_xac_nhan"
+                                            states="nhap"
+                                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                                            confirm="Bạn có muốn Xác nhận yêu cầu không?"
+                                            type="object"/>
+                                    <button icon="fa-times-circle-o"
+                                            name="action_huy"
+                                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                                            states="xac_nhan,nhap"
+                                            type="object"
+                                            confirm="Bạn có muốn Hủy yêu cầu không?"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_cn_dkbg_tree">
+        <field name="name">bsd.cn_dkbg.tree</field>
+        <field name="model">bsd.cn_dkbg</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_cn_dkbg"/>
+                <field name="bsd_ten_cn_dkbg"/>
+                <field name="bsd_loai"/>
+                <field name="bsd_co_tbnt"/>
+                <field name="bsd_da_tao_tbnt"/>
+                <field name="bsd_co_tbbg"/>
+                <field name="bsd_da_tao_tbbg"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_cn_dkbg_filter">
+        <field name="name">bsd.cn_dkbg.list.filter</field>
+        <field name="model">bsd.cn_dkbg</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_ma_cn_dkbg"/>
+                <field name="bsd_du_an_id"/>
+                <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_cn_dkbg_filter"/>
+                <filter string="Có tạo TBNT" name="bsd_co_tbnt" domain="[('bsd_co_tbnt', '=', True)]"/>
+                <filter string="Có tạo TBBG" name="bsd_co_tbbg" domain="[('bsd_co_tbbg', '=', True)]"/>
+                <filter string="Chưa tạo TBNT" name="bsd_da_tao_tbnt" domain="[('bsd_co_tbbg', '=', False)]"/>
+                <filter string="Chưa tạo TBBG" name="bsd_da_tao_tbbg" domain="[('bsd_co_tbbg', '=', False)]"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Loại cập nhật" name="bsd_loai" domain="[]" context="{'group_by': 'bsd_loai'}"/>
+                    <filter string="Trạng thái" name="state" domain="[]" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_cn_dkbg_action">
+        <field name="name">Cập nhật DKBG</field>
+        <field name="res_model">bsd.cn_dkbg</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo phiếu cập nhật dự kiến bàn giao</p>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_cn_dkbg_unit_form">
+        <field name="name">bsd.cn_dkbg_unit.form</field>
+        <field name="model">bsd.cn_dkbg_unit</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            states="nhap"
+                            confirm="Bạn có muốn xác nhận yêu cầu không?"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            states="xac_nhan,nhap"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_cn_dkbg_id" options="{'no_create':true}"/>
+                            <field name="bsd_ma_cn_unit"/>
+                            <field name="bsd_ngay_cn_unit"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true}" readonly="1"/>
+                            <field name="bsd_du_an_id" invisible="1"/>
+                            <field name="bsd_unit_id"
+                                   context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                   options="{'no_create':true}"/>
+                        </group>
+                        <group>
+                            <field name="bsd_hd_ban_id" readonly="1"/>
+                            <field name="bsd_hd_ban_id" invisible="1"/>
+                            <field name="bsd_dot_tt_id" readonly="1"/>
+                            <field name="bsd_dot_tt_id" invisible="1"/>
+                            <field name="bsd_ngay_dkbg_ht" readonly="1"/>
+                            <field name="bsd_ngay_dkbg_ht" invisible="1"/>
+                            <field name="bsd_ngay_htt"/>
+                            <field name="bsd_ngay_dkbg_moi"/>
+                        </group>
+                    </group>
+                    <group string="THÔNG TIN SẢN PHẨM">
+                        <group>
+                            <field name="bsd_gia_ban"/>
+                            <field name="bsd_dk_bg"/>
+                            <field name="bsd_dt_cl"/>
+                            <field name="bsd_dt_xd"/>
+                        </group>
+                        <group>
+                            <field name="bsd_dt_sd"/>
+                            <field name="bsd_dt_tt"/>
+                            <field name="bsd_dt_sh"/>
+                            <field name="bsd_unit_state"/>
+                        </group>
+                    </group>
+                    <group string="XÁC NHẬN">
+                        <group>
+                            <field name="bsd_ngay_xn"/>
+                            <field name="bsd_ly_do"/>
+                        </group>
+                        <group>
+                            <field name="bsd_nguoi_xn_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_cn_dkbg_unit_action">
+        <field name="name">Cập nhật DKBG chi tiết</field>
+        <field name="res_model">bsd.cn_dkbg_unit</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo ngày dự kiến bàn giao </p>
+        </field>
+    </record>
+</odoo>

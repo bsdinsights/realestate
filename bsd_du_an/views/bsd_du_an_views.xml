@@ -6,11 +6,17 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_unit" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_sl_unit', '=', 0)]}">
+                            <field name="bsd_sl_unit" widget="statinfo" string="Căn hộ"/>
+                        </button>
+                    </div>
                     <notebook>
                         <page string="Thông tin chung">
                             <group>
                                 <group>
                                     <field name="currency_id" invisible="1"/>
+                                    <field name="company_id" invisible="1"/>
                                     <field name="bsd_ma_da"/>
                                     <field name="bsd_chu_dt_id"/>
                                     <field name="bsd_ten_da"/>
@@ -29,6 +35,11 @@
                                     <field name="bsd_ngay_qsdd"/>
                                     <field name="bsd_ngay_cpb"/>
                                     <field name="bsd_cho_gx"/>
+                                    <label for="bsd_tong_dt"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_tong_dt" class="mr-1"/>
+                                        <span>m2</span>
+                                    </div>
                                     <field name="state"/>
                                 </group>
                             </group>
@@ -74,14 +85,38 @@
                             </group>
                             <group string="HIỆU LỰC">
                                 <group>
-                                    <field name="bsd_hh_bg"/>
-                                    <field name="bsd_hh_pc"/>
-                                    <field name="bsd_hh_hd"/>
+                                    <label for="bsd_hh_bg"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_hh_bg" class="mr-1"/>
+                                        <span>ngày</span>
+                                    </div>
+                                    <label for="bsd_hh_pc"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_hh_pc" class="mr-1"/>
+                                        <span>ngày</span>
+                                    </div>
+                                    <label for="bsd_hh_hd"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_hh_hd" class="mr-1"/>
+                                        <span>ngày</span>
+                                    </div>
                                 </group>
                                 <group>
-                                    <field name="bsd_cb_gc"/>
-                                    <field name="bsd_cb_dc"/>
-                                    <field name="bsd_hh_qt"/>
+                                    <label for="bsd_cb_gc"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_cb_gc" class="mr-1"/>
+                                        <span>ngày</span>
+                                    </div>
+                                    <label for="bsd_cb_dc"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_cb_dc" class="mr-1"/>
+                                        <span>ngày</span>
+                                    </div>
+                                    <label for="bsd_hh_qt"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_hh_qt" class="mr-1" widget="float_time"/>
+                                        <span>giờ</span>
+                                    </div>
                                 </group>
                             </group>
                             <group string="HOA HỒNG">
@@ -120,8 +155,8 @@
                         </page>
                         <page  string="Ngân hàng">
                             <group>
-                                <group string="NGÂN HÀNG">
-                                    <field name="bsd_ngan_hang_ids" nolabel="1">
+                                <group string="NGÂN HÀNG TÀI TRỢ">
+                                    <field name="bsd_nh_tt_ids" nolabel="1">
                                         <tree editable="bottom">
                                             <field name="bsd_ngan_hang_id" options="{'no_create':true}"/>
                                             <field name="bsd_ma_nh"/>
@@ -151,6 +186,17 @@
                                                 </group>
                                             </sheet>
                                         </form>
+                                    </field>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="NGÂN HÀNG CHO VAY">
+                                    <field name="bsd_nh_cv_ids" nolabel="1">
+                                        <tree editable="bottom">
+                                            <field name="bsd_ngan_hang_id" options="{'no_create':true}"/>
+                                            <field name="bsd_ma_nh"/>
+                                            <field name="state"/>
+                                        </tree>
                                     </field>
                                 </group>
                             </group>

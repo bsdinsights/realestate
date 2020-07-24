@@ -28,7 +28,8 @@ class BsdGiamNo(models.Model):
     def _method_choice(self):
         choices = [('khac', 'Điều chỉnh khác'),
                    ('huy_gctc', 'Hủy giữ chỗ thiện chí'),
-                   ('huy_gc', 'Hủy giữ chỗ')]
+                   ('huy_gc', 'Hủy giữ chỗ'),
+                   ('gd_ck', 'Giao dịch chiết khấu')]
         if self.env['res.users'].has_group('base.group_system'):
             choices += [('chuyen_tien', 'Chuyển tiền')]
         return choices
@@ -51,6 +52,9 @@ class BsdGiamNo(models.Model):
                                      compute='_compute_tien_ct', store=True)
     bsd_tien_con_lai = fields.Monetary(string="Tiền còn lại", help="Tiền còn lại",
                                        compute='_compute_tien_ct', store=True)
+    bsd_ps_gd_ck_id = fields.Many2one('bsd.ps_gd_ck', string="Giao dịch chiết khấu", help="Giao dịch chiết khấu",
+                                      readonly=True,
+                                      states={'nhap': [('readonly', False)]})
     bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_giam_no_id', string="Công nợ chứng tự", readonly=True)
 
     @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien')

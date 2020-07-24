@@ -92,7 +92,7 @@ class BsdGiuCho(models.Model):
     bsd_het_han_gc = fields.Boolean(string="Hết hạn giữ chỗ", readonly=True,
                                     help="""Thông tin ghi nhận giữ chỗ bị hết hiệu lực sau khi đã thanh toán giữ chỗ""")
 
-    bsd_kh_moi_id = fields.Many2one('res.partner', string="KH chuyển nhượng", help="Người được chuyển nhượng giữ chỗ",
+    bsd_kh_moi_id = fields.Many2one('res.partner', string="KH chuyển tên", help="Người được chuyển tên giữ chỗ",
                                     tracking=2, readonly=True)
 
     bsd_tien_gctc = fields.Monetary(string="Tiền GCTC", help="Tiền giữ chỗ thiện chí đã thanh toán",
@@ -101,11 +101,6 @@ class BsdGiuCho(models.Model):
 
     bsd_so_bao_gia = fields.Integer(string="# Báo giá", compute='_compute_bao_gia')
     bsd_so_huy_gc = fields.Integer(string="# Hủy giữ chỗ", compute='_compute_huy_gc')
-
-    # # R11. khách hàng chuyển nhượng
-    # @api.onchange('bsd_du_an_id')
-    # def _onchange_unit(self):
-    #     self.bsd_unit_id = False
 
     # KD.07.02 Ràng buộc số giữ chỗ theo căn hộ/ NVBH
     @api.constrains('bsd_nvbh_id', 'bsd_unit_id')
@@ -249,6 +244,7 @@ class BsdGiuCho(models.Model):
     # R7 Ghi nhận thông tin trước mở bán
     @api.model
     def create(self, vals):
+        sequence = False
         if 'bsd_du_an_id' in vals:
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)

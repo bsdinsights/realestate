@@ -44,6 +44,11 @@
               sequence="17"
               action="bsd_hoan_tien_action"
               parent="bsd_main_tai_chinh_root"/>
+    <menuitem id="bsd_ps_gd_ck_menu_action"
+              name="Giao dịch chiết khấu"
+              sequence="18"
+              action="bsd_ps_gd_ck_action"
+              parent="bsd_main_tai_chinh_root"/>
 
     <record id="bsd_tai_chinh.bsd_main_tai_chinh_root" model="ir.ui.menu">
         <field name="action" eval="False"/>

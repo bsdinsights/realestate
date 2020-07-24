@@ -9,6 +9,11 @@
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_giu_cho" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_sl_giu_cho', '=', 0)]}">
+                            <field name="bsd_sl_giu_cho" widget="statinfo" string="Giữ chỗ"/>
+                        </button>
+                    </div>
                     <group string="THÔNG TIN CÁ NHÂN">
                         <group>
                             <field name="bsd_ma_kh" readonly="1"/>

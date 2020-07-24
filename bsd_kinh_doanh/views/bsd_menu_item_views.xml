@@ -79,6 +79,11 @@
               sequence="16"
               action="bsd_dat_coc_action"
               parent="bsd_main_kinh_doanh_root"/>
+    <menuitem id="bsd_ck_db_menu_action"
+              name="Chiết khấu đặt biệt"
+              sequence="17"
+              action="bsd_ck_db_action"
+              parent="bsd_main_kinh_doanh_root"/>
 
     <record id="bsd_kinh_doanh.bsd_main_kinh_doanh_root" model="ir.ui.menu">
         <field name="action" eval="False"/>

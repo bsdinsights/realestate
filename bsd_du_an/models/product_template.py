@@ -35,11 +35,7 @@ class ProductTemplate(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Thông tin về căn hộ")
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch",
                                     help="Sàn giao dịch đang bán(căn hộ) theo đợt mở bán")
-    bsd_thanh_ly = fields.Selection([('0', 'Không'), ('1', 'Có')], string="Thanh lý",
-                                    default="0",
-                                    help="Thông tin căn hộ có từng bị thanh lý hợp đồng hay không")
-    bsd_lan_tl = fields.Integer(string="Lần thanh lý",
-                                help="Số lần căn hộ bị thanh lý hợp đồng")
+
     bsd_loai_sp_id = fields.Many2one('bsd.loai_sp', string="Phân nhóm",
                                      help="Phân nhóm đặc tính kỹ thuật của căn hộ")
     bsd_huong = fields.Selection([('1', 'Đông'),
@@ -107,7 +103,7 @@ class ProductTemplate(models.Model):
                                     ('1', 'Có')], string="Ưu tiên", help="Ưu tiên bán của căn hộ",
                                    default='0', readonly=True)
     bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt ưu tiên",
-                                              help="Người duyệt ưu tiên", readonly=True)
+                                         help="Người duyệt ưu tiên", readonly=True)
     bsd_ngay_duyet = fields.Datetime(string="Ngày duyệt ưu tiên", help="Ngày duyệt ưu tiên", readonly=True)
     bsd_lan_duyet = fields.Integer(string="Lần ưu tiên", help="Lần ưu tiên", readonly=True)
     bsd_ghi_chu = fields.Char(string="Ghi chú ưu tiên", help="Ghi chú ưu tiên", readonly=True)
@@ -127,8 +123,9 @@ class ProductTemplate(models.Model):
                               help="Ngày bàn giao thực tế căn hộ cho khách hàng")
     bsd_ngay_cn = fields.Date(string="Ngày cất nóc",
                               help="Ngày chứng nhận cất nóc (bê tông tầng mái)")
-    bsd_ngay_hs = fields.Date(string="Ngày nhận hồ sơ",
-                              help="Ngày chủ đầu tư nhận đầy đủ hồ sơ và gửi lên trên sở nhà đất để làm sổ hồng")
+    bsd_ngay_cap_sh = fields.Date(string="Ngày cấp sổ hồng",
+                                  help="Ngày khách hàng nhận sổ hồng căn hộ")
+    bsd_da_cap_sh = fields.Selection([('co', 'Có'), ('khong', 'Không')], string="Đã cấp sổ hồng", default='khong')
     state = fields.Selection([('chuan_bi', 'Chuẩn bị'),
                               ('san_sang', 'Sẵn sàng'),
                               ('dat_cho', 'Đặt chỗ'),
@@ -149,6 +146,7 @@ class ProductTemplate(models.Model):
         self.bsd_tien_dc = self.bsd_du_an_id.bsd_tien_dc
         self.bsd_qsdd_m2 = self.bsd_du_an_id.bsd_qsdd_m2
         self.bsd_tl_pbt = self.bsd_du_an_id.bsd_tl_pbt
+        self.bsd_ngay_dkbg = self.bsd_du_an_id.bsd_ngay_dkbg
 
     @api.depends('bsd_don_gia_pql', 'bsd_dt_sd', 'bsd_thang_pql')
     def _compute_tien_pql(self):
