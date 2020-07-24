@@ -396,9 +396,9 @@ class BsdDotMoBanSanGiaoDich(models.Model):
     _description = 'Thông tin sàn giao dich cho đợt mở bán'
     _rec_name = 'bsd_san_gd_id'
 
-    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán")
+    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", required=True)
     bsd_san_gd_id = fields.Many2one('res.partner', string="Tên sàn giao dịch", domain=[('is_company', '=', True)],
-                                    help="Sàn giao dịch được bán các căn hộ trong đợt mở bán")
+                                    help="Sàn giao dịch được bán các căn hộ trong đợt mở bán", required=True)
     bsd_san_gd_phone = fields.Char(string="Số điện thoại", related="bsd_san_gd_id.phone")
     bsd_san_gd_street = fields.Char('Đường', related="bsd_san_gd_id.street")
     bsd_san_gd_city = fields.Char('Thành phố', related="bsd_san_gd_id.city")
@@ -411,7 +411,7 @@ class BsdDotMoBanKhuyenMai(models.Model):
     _description = "Thông tin chương trình khuyến mãi cho đợt mở bán"
     _rec_name = 'bsd_khuyen_mai_id'
 
-    bsd_khuyen_mai_id = fields.Many2one('bsd.khuyen_mai', string="Khuyến mãi")
+    bsd_khuyen_mai_id = fields.Many2one('bsd.khuyen_mai', string="Khuyến mãi", required=True)
     bsd_ma_km = fields.Char(related='bsd_khuyen_mai_id.bsd_ma_km')
     bsd_tu_ngay = fields.Date(related='bsd_khuyen_mai_id.bsd_tu_ngay')
     bsd_den_ngay = fields.Date(related='bsd_khuyen_mai_id.bsd_den_ngay')
@@ -428,7 +428,7 @@ class BsdDotMoBanDKBG(models.Model):
     _rec_name = 'bsd_dk_bg_id'
 
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", required=True)
-    bsd_dk_bg_id = fields.Many2one('bsd.dk_bg', string="Điều kiện bàn giao")
+    bsd_dk_bg_id = fields.Many2one('bsd.dk_bg', string="Điều kiện bàn giao", required=True)
     bsd_ma_dkbg = fields.Char(related="bsd_dk_bg_id.bsd_ma_dkbg")
     bsd_loai_bg = fields.Selection(related="bsd_dk_bg_id.bsd_loai_bg")
     bsd_loai_sp_id = fields.Many2one(related="bsd_dk_bg_id.bsd_loai_sp_id")

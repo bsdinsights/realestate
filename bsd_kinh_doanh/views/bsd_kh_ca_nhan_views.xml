@@ -86,7 +86,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="bsd_ma_kh"/>
-                <field name="name"/>
+                <field name="bsd_ten"/>
                 <field name="bsd_gioi_tinh"/>
                 <field name="bsd_cmnd"/>
                 <field name="bsd_ho_chieu"/>
