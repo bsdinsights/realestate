@@ -10,7 +10,7 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     bsd_ho_tl = fields.Char(string="Họ và tên lót", help="Họ và tên lót")
-    bsd_ten = fields.Char(string="Tên", help="Tên khách hàng")
+    bsd_ten = fields.Char(string="Họ và tên", help="Tên khách hàng")
     bsd_ma_kh = fields.Char(string="Mã khách hàng", required=True, readonly=True, copy=False, default='/')
     _sql_constraints = [
         ('bsd_ma_kh_unique', 'unique (bsd_ma_kh)',
@@ -87,14 +87,14 @@ class ResPartner(models.Model):
     ]
 
     # R.10 tên khách hàng
-    @api.onchange('bsd_ho_tl', 'bsd_ten')
+    @api.onchange('bsd_ho_tl', 'name')
     def _onchange_ten(self):
-        self.name = (self.bsd_ho_tl or "") + " " + (self.bsd_ten or "")
+        self.bsd_ten = (self.bsd_ho_tl or "") + " " + (self.name or "")
 
     # R.11 Load địa chỉ
     @api.onchange('bsd_cung_dc')
     def _onchange_dc(self):
-        if self.bsd_cung_dc :
+        if self.bsd_cung_dc:
             self.bsd_quoc_gia_lh_id = self.bsd_quoc_gia_tt_id
             self.bsd_tinh_lh_id = self.bsd_tinh_tt_id
             self.bsd_quan_lh_id = self.bsd_quan_tt_id
@@ -140,5 +140,8 @@ class ResPartner(models.Model):
     def name_get(self):
         res = []
         for partner in self:
-            res.append((partner.id, "[%s]%s" % (partner.bsd_ma_kh, partner.name)))
+            if not partner.is_company:
+                res.append((partner.id, "[%s]%s" % (partner.bsd_ma_kh, partner.bsd_ten)))
+            else:
+                res.append((partner.id, "[%s]%s" % (partner.bsd_ma_kh, partner.name)))
         return res
