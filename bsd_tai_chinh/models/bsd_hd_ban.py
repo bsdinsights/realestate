@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
@@ -104,3 +104,49 @@ class BsdHdBan(models.Model):
                 self.write({
                     'state': 'du_dk'
                 })
+
+    # DV.01.21 Cập nhật trạng thái Đang thanh toán
+    def action_dang_tt(self):
+        # Kiểm tra nếu hợp đồng có duyệt bàn giao đặc biệt thì không cập nhật trạng thái hợp đồng
+        if self.bsd_duyet_bgdb:
+            return
+        # Lấy đợt thanh toán ký hợp đồng
+        dot_ky_hd = self.bsd_ltt_ids.filtered(lambda l: l.bsd_dot_ky_hd)
+        stt_dot_ky_hd = dot_ky_hd.bsd_stt
+        dot_sau_ky_hd = self.bsd_ltt_ids.filtered(lambda l: l.bsd_stt == stt_dot_ky_hd + 1)
+        # Lấy đợt thanh toán sau ký hợp đồng
+        if dot_sau_ky_hd.bsd_thanh_toan == 'da_tt':
+            self.write({
+                'state': 'dang_tt'
+            })
+
+    # DV.01.22 Cập nhật trạng thái đủ điều kiện bàn giao
+    def action_du_dkbg(self):
+        # Kiểm tra nếu hợp đồng có duyệt bàn giao đặt biệt thì không cập nhật trạng thái hợp đồng
+        if self.bsd_duyet_bgdb:
+            return
+        # Kiểm tra hợp đông đã được thanh toán phí bảo trì
+        if not self.bsd_dot_pbt_ids:
+            raise UserError(_('Hợp đồng chưa ghi nhận thu phí bảo trì'))
+        if len(self.bsd_dot_pbt_ids) > 1:
+            raise UserError(_('Hợp đồng có nhiều hơn 1 đợt thu phí bảo trì'))
+        if self.bsd_dot_pbt_ids.bsd_thanh_toan != 'da_tt':
+            return
+        # Kiểm tra hợp đông đã được thanh toán phí quản lý
+        if not self.bsd_dot_pql_ids:
+            raise UserError(_('Hợp đồng chưa ghi nhận thu phí quản lý'))
+        if len(self.bsd_dot_pql_ids) > 1:
+            raise UserError(_('Hợp đồng có nhiều hơn 1 đợt thu phí quản lý'))
+        if self.bsd_dot_pql_ids.bsd_thanh_toan != 'da_tt':
+            return
+        # Kiểm tra hợp đồng đã thanh toán đợt dự kiến bàn giao
+        dot_dkbg = self.bsd_ltt_ids.filtered(lambda l: l.bsd_ma_dtt == 'dkbg')
+        if not dot_dkbg:
+            raise UserError(_("Hợp đồng không có đợt dự kiến bàn giao"))
+        if len(dot_dkbg) > 1:
+            raise UserError(_("Hợp đồng có nhiều hơn 1 đợt dkbg"))
+        if dot_dkbg.bsd_thanh_toan != 'da_tt':
+            return
+        # Kiểm tra tỷ lệ thanh toán của hợp đồng với điều kiện bàn giao trên sản phẩm
+        if self.bsd_tl_tt_hd < self.bsd_unit_id.bsd_dk_bg:
+            return
