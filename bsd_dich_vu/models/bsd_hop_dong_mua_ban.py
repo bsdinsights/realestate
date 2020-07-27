@@ -86,6 +86,8 @@ class BsdHopDongMuaBan(models.Model):
                               ('du_dk', 'Đủ điều kiện'),
                               ('da_ky', 'Đã ký HĐ'),
                               ('dang_tt', 'Đang thanh toán'),
+                              ('du_dkbg', 'Đủ ĐKBG'),
+                              ('da_bg', 'Đã bàn giao'),
                               ('thanh_ly', 'Thanh lý'),
                               ('huy', 'Hủy')], string="Trạng thái", default="nhap",
                              help="Trạng thái", tracking=1)
@@ -132,6 +134,10 @@ class BsdHopDongMuaBan(models.Model):
     bsd_ngay_dkbg = fields.Date(string="Ngày DKBG", help="Ngày dự kiến bàn giao ký kết với khách hàng")
     bsd_cn_ids = fields.One2many('bsd.hd_ban_cn', 'bsd_hd_ban_id', string="Chuyển nhượng hợp đồng",
                                  domain=[('state', '=', 'duyet')])
+    bsd_duyet_bgdb = fields.Boolean(string="Duyệt BGĐB", help="Duyệt bàn giao đặc biệt", readonly=True)
+    bsd_ngay_duyet_bgdb = fields.Datetime(string="Ngày duyệt BGĐB", help="Ngày duyệt bàn giao đặc biệt", readonly=True)
+    bsd_nguoi_duyet_bgdb_id = fields.Many2one('res.users', string="Người duyệt BGĐB",
+                                              help="Người duyệt bàn giao đặc biệt", readonly=True)
 
     # DV.01.11 - Theo dõi chiết khấu mua sỉ (nút nhấn wizard)
     def action_ck_ms(self):
@@ -320,6 +326,14 @@ class BsdHopDongMuaBan(models.Model):
             'bsd_duyet_db': True,
             'bsd_ngay_duyet_db': fields.Datetime.now(),
             'bsd_nguoi_duyet_db_id': self.env.uid,
+        })
+
+    # DV.01.20 - Duyệt bàn giao đặc biệt
+    def action_duyet_bgdb(self):
+        self.write({
+            'bsd_duyet_bgdb': True,
+            'bsd_ngay_duyet_bgdb': fields.Datetime.now(),
+            'bsd_nguoi_duyet_bgdb_id': self.env.uid,
         })
 
     @api.model

@@ -54,6 +54,12 @@
                                                         '|','&amp;',('state','not in',['ht_dc']),('bsd_duyet_db', '=',True),
                                                             '&amp;',('state','not in',['tt_dot1']),('bsd_duyet_db', '=',False)]}"
                             class="oe_highlight"/>
+                    <button string="Duyệt BGĐB"
+                            name="action_duyet_bgdb"
+                            type="object"
+                            confirm="Bàn có muốn duyệt bàn giao đặc biệt cho hợp đồng không?"
+                            states="da_ky,dang_tt"
+                            class="oe_highlight"/>
                     <button string="Hủy"
                             name="action_huy"
                             type="object"/>
@@ -101,6 +107,9 @@
                                     <field name="bsd_duyet_db"/>
                                     <field name="bsd_ngay_duyet_db"/>
                                     <field name="bsd_nguoi_duyet_db_id"/>
+                                    <field name="bsd_duyet_bgdb"/>
+                                    <field name="bsd_ngay_duyet_bgdb"/>
+                                    <field name="bsd_nguoi_duyet_bgdb_id"/>
                                 </group>
                                 <group>
                                     <field name="bsd_ngay_dkbg"/>

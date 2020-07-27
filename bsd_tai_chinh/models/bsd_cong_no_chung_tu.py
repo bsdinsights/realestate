@@ -81,15 +81,28 @@ class BsdCongNoCT(models.Model):
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             if self.bsd_dot_tt_id.bsd_tien_dot_tt < tien:
                 raise UserError("Không thể thực hiện thanh toán dư")
-            # Kiểm tra điều kiện đợt tt có giai đoạn hợp đồng
+            # Kiểm tra điều kiện đợt tt tạo giao dịch chiết khấu và khuyến mãi
             if self.bsd_dot_tt_id.bsd_hd_ban_id:
+                # Gọi hàm xử lý giao dịch chiết khấu thanh toán trước hạn
                 self.bsd_dot_tt_id.tao_ck_ttth(ngay_tt=self.bsd_ngay_pb, tien_tt=self.bsd_tien_pb)
+                # Gọi hàm xử lý giao dịch chiết khấu thanh toán nhanh
                 self.bsd_dot_tt_id.tao_ck_ttn()
+                # Gọi hàm xứ lý khuyến mãi
                 self.bsd_dot_tt_id.bsd_hd_ban_id.tao_giao_dich_khuyen_mai(ngay_tt=self.bsd_ngay_pb)
+            # Cập nhật trạng thái hợp đồng khi thanh toán đủ đợt thanh toán
+            if self.bsd_dot_tt_id.bsd_tien_dot_tt == tien:
+                # Gọi hàm xử lý khi thanh toán đợt 1 cho hợp đồng
                 if self.bsd_dot_tt_id.bsd_stt == 1:
                     self.bsd_dot_tt_id.bsd_hd_ban_id.action_tt_dot1()
+                # Gọi hàm xử lý khi thanh toán đợt đủ điều kiện làm hợp đồng
                 if self.bsd_dot_tt_id.bsd_dot_ky_hd:
                     self.bsd_dot_tt_id.bsd_hd_ban_id.action_du_dk()
+                # Gọi hàm xử lý khi thanh toán đợt sau khi ký hợp đồng
+                if True:
+                    pass
+                # Gọi hàm xử lý khi thanh toám đợt dự kiến bàn giao
+                if self.bsd_dot_tt_id.bsd_ma_dtt == 'dkbg':
+                    self.bsd_dot_tt
         elif self.bsd_loai == 'pt_ht':
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_phieu_thu_id', '=', self.bsd_phieu_thu_id.id)])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
