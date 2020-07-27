@@ -109,6 +109,25 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="bsd_phieu_thu_filter">
+        <field name="name">bsd.phieu_thu.list.filter</field>
+        <field name="model">bsd.phieu_thu</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_so_pt"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_unit_id"/>
+                <field name="bsd_du_an_id"/>
+                <filter string="Phiếu thu của tôi" domain="[('create_uid', '=', uid)]" name="my_phiếu thu_filter"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
+                    <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_phieu_thu_action">
         <field name="name">Phiếu thu</field>
         <field name="res_model">bsd.phieu_thu</field>

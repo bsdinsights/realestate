@@ -71,6 +71,23 @@
             </tree>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_hoan_tien_filter">
+        <field name="name">bsd.hoan_tien.list.filter</field>
+        <field name="model">bsd.hoan_tien</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_so_ct"/>
+                <field name="bsd_khach_hang_id"/>
+                <filter string="Phiếu thu của tôi" domain="[('create_uid', '=', uid)]" name="my_phiếu thu_filter"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_hoan_tien_action">
         <field name="name">Hoàn tiền</field>
         <field name="res_model">bsd.hoan_tien</field>
