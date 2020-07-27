@@ -47,6 +47,7 @@
                         <tree editable="top" create="false" delete="false">
                             <field name="bsd_loai_ct"/>
                             <field name="bsd_so_ct"/>
+                            <field name="bsd_hd_ban_id"/>
                             <field name="bsd_ngay_ct"/>
                             <field name="bsd_tien"/>
                             <field name="bsd_tien_phai_tt"/>
