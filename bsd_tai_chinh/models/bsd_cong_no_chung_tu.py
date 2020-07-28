@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+from odoo.tools import float_utils
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -92,8 +93,10 @@ class BsdCongNoCT(models.Model):
                 # Gọi hàm xứ lý khuyến mãi
                 hd_ban.tao_giao_dich_khuyen_mai(ngay_tt=self.bsd_ngay_pb)
             # Cập nhật trạng thái hợp đồng khi thanh toán đủ đợt thanh toán
-            if self.bsd_dot_tt_id.bsd_tien_dot_tt == tien:
+            tien_thu_dot = self.bsd_dot_tt_id.bsd_tien_dot_tt - self.bsd_dot_tt_id.bsd_tien_dc
+            if float_utils.float_compare(tien_thu_dot,tien,4) == 0:
                 # Gọi hàm xử lý khi thanh toán đợt 1 cho hợp đồng
+                _logger.debug("thanh toán đủ")
                 if self.bsd_dot_tt_id.bsd_stt == 1:
                     hd_ban.action_tt_dot1()
                 # Gọi hàm xử lý khi thanh toán đợt đủ điều kiện làm hợp đồng
