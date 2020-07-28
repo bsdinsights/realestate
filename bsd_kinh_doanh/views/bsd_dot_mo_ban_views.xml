@@ -117,6 +117,7 @@
                                     <field name="bsd_den_ngay"/>
                                     <field name="bsd_gia_tri"/>
                                     <field name="bsd_dot_mb_id" invisible="1"/>
+                                    <field name="state" invisible="1"/>
                                 </tree>
                             </field>
                         </page>
