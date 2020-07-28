@@ -82,7 +82,7 @@ class BsdDotMoBan(models.Model):
     bsd_sgd_ids = fields.One2many('bsd.dot_mb_sgd', 'bsd_dot_mb_id', string="Các sàn giao dịch",
                                   readonly=True,
                                   states={'cph': [('readonly', False)]})
-    bsd_km_ids = fields.Many2many('bsd.khuyen_mai', string="Khuyến mãi",
+    bsd_km_ids = fields.Many2many('bsd.khuyen_mai', string="Khuyến mãi", domain=[('state', '=', 'duyet')],
                                   readonly=True,
                                   states={'cph': [('readonly', False)]})
     bsd_dkbg_ids = fields.Many2many('bsd.dk_bg', string="Điều kiện bàn giao",
