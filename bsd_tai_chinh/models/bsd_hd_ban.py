@@ -81,6 +81,7 @@ class BsdHdBan(models.Model):
 
     # DV.01.15 - Cập nhật trạng thái Thanh toán đợt 1
     def action_tt_dot1(self):
+        _logger.debug("Cập nhật đợt thanh toán 1")
         if self.state == 'ht_dc' and not self.bsd_duyet_db:
             self.write({
                 'state': 'tt_dot1'
