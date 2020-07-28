@@ -28,8 +28,7 @@ class BsdHdBan(models.Model):
         _logger.debug("tạo giao dịch chiết khấu")
         # Các khuyến mãi có điều kiện của hợp đồng
         km_hd = self.bsd_dot_mb_id.bsd_km_ids\
-            .filtered(lambda k: k.bsd_loai != 'khong')\
-            .mapped('bsd_khuyen_mai_id')
+            .filtered(lambda k: k.bsd_loai != 'khong')
         _logger.debug(km_hd)
         # Kiểm tra khuyến mãi của hợp đồng đã tạo khuyến mãi
         km_da_ps_gd = self.env['bsd.ps_gd_km'].search([('bsd_hd_ban_id', '=', self.id)]).mapped('bsd_khuyen_mai_id')
