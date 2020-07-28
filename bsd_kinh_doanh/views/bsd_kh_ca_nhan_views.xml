@@ -111,6 +111,7 @@
                     <field name="image_128"/>
                     <field name="parent_id"/>
                     <field name="type"/>
+                    <field name="bsd_ten"/>
                     <field name="bsd_dia_chi_lh"/>
                     <field name="bsd_sl_giu_cho"/>
                     <templates>
@@ -132,7 +133,7 @@
                                     <div class="o_kanban_image_fill_left o_kanban_image_full" t-attf-style="background-image: url(#{kanban_image('res.partner', 'image_128', record.id.raw_value, placeholder)})" role="img"/>
                                 </t>
                                 <div class="oe_kanban_details">
-                                    <strong class="o_kanban_record_title oe_partner_heading"><field name="name"/></strong>
+                                    <strong class="o_kanban_record_title oe_partner_heading"><field name="bsd_ten"/></strong>
                                     <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
                                     <div><span>Mã:</span><field name="bsd_ma_kh"/></div>
                                     <ul>
