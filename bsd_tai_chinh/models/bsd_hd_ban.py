@@ -140,7 +140,7 @@ class BsdHdBan(models.Model):
         if self.bsd_dot_pql_ids.bsd_thanh_toan != 'da_tt':
             return
         # Kiểm tra hợp đồng đã thanh toán đợt dự kiến bàn giao
-        dot_dkbg = self.bsd_ltt_ids.filtered(lambda l: l.bsd_ma_dtt == 'dkbg')
+        dot_dkbg = self.bsd_ltt_ids.filtered(lambda l: l.bsd_ma_dtt == 'DKBG')
         if not dot_dkbg:
             raise UserError(_("Hợp đồng không có đợt dự kiến bàn giao"))
         if len(dot_dkbg) > 1:
