@@ -180,6 +180,6 @@
                       (0, 0, {'view_mode': 'kanban', 'view_id': ref('bsd_res_partner_cn_kanban')}),
                       (0, 0, {'view_mode': 'tree', 'view_id': ref('bsd_res_partner_cn_tree')}),
                       (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_res_partner_cn_form')})]"/>
-        <field name="search_view_id" ref="bsd_res_partner_cn_filter"/>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
     </record>
 </odoo>

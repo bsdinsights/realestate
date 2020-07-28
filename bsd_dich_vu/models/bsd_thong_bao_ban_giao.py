@@ -128,15 +128,7 @@ class BsdThongBaoBanGiao(models.Model):
 
     # DV.21.03 Cập nhật ngày gửi
     def action_gui_tb(self):
-        action = self.env.ref('bsd_dich_vu.bsd_wizard_tb_nt_action').read()[0]
-        action['context'] = {'loai_ngay': 'ngay_gui'}
-        _logger.debug(action)
-        return action
-
-    # DV.21.04 Cập nhật ngày đóng
-    def action_dong_tb(self):
-        action = self.env.ref('bsd_dich_vu.bsd_wizard_tb_nt_action').read()[0]
-        action['context'] = {'loai_ngay': 'ngay_dong'}
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_tb_bg_action').read()[0]
         _logger.debug(action)
         return action
 

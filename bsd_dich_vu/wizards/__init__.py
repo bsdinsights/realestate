@@ -13,3 +13,4 @@ from . import bsd_wizard_khong_duyet_cn_dkbg
 from . import bsd_wizard_ds_tb
 from . import bsd_wizard_tb_nt
 from . import bsd_wizard_nghiem_thu
+from . import bsd_wizard_tb_bg
