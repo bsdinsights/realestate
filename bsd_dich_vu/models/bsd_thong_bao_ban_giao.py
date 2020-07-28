@@ -56,6 +56,19 @@ class BsdThongBaoBanGiao(models.Model):
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng", required=True,
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
+    bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán",
+                                    help="Đợt thanh toán là Đợt dự kiến bàn giao", compute="_compute_dot_tt")
+    bsd_ngay_hh_tt = fields.Date(string="Hạn thanh toán", help="Hạn thanh toán của đợt dự kiến bàn giao",
+                                 compute="_compute_dot_tt")
+
+    @api.depends('bsd_hd_ban_id')
+    def _compute_dot_tt(self):
+        for each in self:
+            dot_dkbg = each.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_ma_dtt == 'dkbg')
+            each.bsd_dot_tt_id = dot_dkbg.id
+            each.bsd_ngay_hh_tt = dot_dkbg.bsd_ngay_hh_tt
+
+    bsd_ngay_dkbg = fields.Date(related="bsd_hd_ban_id.bsd_ngay_dkbg")
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
@@ -102,14 +115,14 @@ class BsdThongBaoBanGiao(models.Model):
     #     action['context'] = context
     #     return action
 
-    # DV.21.01 Xác nhận thông báo nghiêm thu
+    # DV.16.01 Xác nhận thông báo bàn giao
     def action_xac_nhan(self):
         if self.state == 'nhap':
             self.write({
                 'state': 'xac_nhan'
             })
 
-    # DV.21.02 In thông báo bàn giao
+    # DV.16.02 In thông báo bàn giao
     def action_in_tb(self):
         return self.env.ref('bsd_dich_vu.bsd_tb_nt_report_action').read()[0]
 

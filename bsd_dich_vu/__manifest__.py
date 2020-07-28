@@ -45,6 +45,7 @@
         'reports/report_bsd_hd_ban_cn_views.xml',
         'reports/report_bsd_tb_nt_views.xml',
         'reports/report_bsd_nghiem_thu_views.xml',
+        'reports/report_bsd_tb_bg_views.xml',
     ],
     'application': True,
 }
