@@ -98,9 +98,9 @@ class BsdDatCoc(models.Model):
     bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_dat_coc_id', string="Bàn giao", readonly=True)
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_dat_coc_id', string="Lịch thanh toán",
                                   readonly=True, domain=[('bsd_loai', 'in', ['dtt'])])
-    bsd_dot_pbt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_hd_ban_id', string="Đợt thu phí bảo trì",
+    bsd_dot_pbt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_dat_coc_id', string="Đợt thu phí bảo trì",
                                       readonly=True, domain=[('bsd_loai', '=', 'pbt')])
-    bsd_dot_pql_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_hd_ban_id', string="Đợt thu phí quản lý",
+    bsd_dot_pql_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_dat_coc_id', string="Đợt thu phí quản lý",
                                       readonly=True, domain=[('bsd_loai', '=', 'pql')])
     bsd_co_ttdc = fields.Boolean(string="Thỏa thuận đặt cọc", help="Thông tin quy định thỏa thuận đặt cọc hay không",
                                  related="bsd_du_an_id.bsd_hd_coc", store=True)
