@@ -113,9 +113,9 @@ class BsdBaoGia(models.Model):
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_bao_gia_id', string="Lịch thanh toán",
                                   readonly=True, domain=[('bsd_loai', 'in', ['dtt'])])
 
-    bsd_dot_pbt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_hd_ban_id', string="Đợt thu phí bảo trì",
+    bsd_dot_pbt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_bao_gia_id', string="Đợt thu phí bảo trì",
                                       readonly=True, domain=[('bsd_loai', '=', 'pbt')])
-    bsd_dot_pql_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_hd_ban_id', string="Đợt thu phí quản lý",
+    bsd_dot_pql_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_bao_gia_id', string="Đợt thu phí quản lý",
                                       readonly=True, domain=[('bsd_loai', '=', 'pql')])
 
     bsd_ps_ck_ids = fields.One2many('bsd.ps_ck', 'bsd_bao_gia_id', string="Phát sinh chiết khấu",
