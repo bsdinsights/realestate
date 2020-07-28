@@ -509,7 +509,7 @@ class BsdBaoGiaKhuyenMai(models.Model):
         list_id = []
         if self.bsd_dot_mb_id:
             # Lấy các điều kiện bàn giao trong đợt mở bán
-            khuyen_mai = self.bsd_dot_mb_id.bsd_km_ids.mapped('bsd_khuyen_mai_id')
+            khuyen_mai = self.bsd_dot_mb_id.bsd_km_ids
             # Lọc các điều kiện bàn giao có nhóm sản phẩm trùng với unit trong bảng tính giá
             list_id = khuyen_mai.filtered(
                 lambda d: d.state == 'duyet' and d.bsd_loai == 'khong').ids
