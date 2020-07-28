@@ -55,9 +55,14 @@
               sequence="17"
               action="bsd_nghiem_thu_action"
               parent="bsd_main_dich_vu_root"/>
+    <menuitem id="bsd_tb_bg_menu_action"
+              name="Thông báo bàn giao"
+              sequence="18"
+              action="bsd_tb_bg_action"
+              parent="bsd_main_dich_vu_root"/>
     <menuitem id="bsd_ps_gd_km_menu_action"
               name="Giao dịch khuyến mãi"
-              sequence="18"
+              sequence="19"
               action="bsd_ps_gd_km_action"
               parent="bsd_kinh_doanh.bsd_main_kinh_doanh_root"/>
 
