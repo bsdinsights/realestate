@@ -98,7 +98,10 @@ class BsdDatCoc(models.Model):
     bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_dat_coc_id', string="Bàn giao", readonly=True)
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_dat_coc_id', string="Lịch thanh toán",
                                   readonly=True, domain=[('bsd_loai', 'in', ['dtt'])])
-
+    bsd_dot_pbt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_hd_ban_id', string="Đợt thu phí bảo trì",
+                                      readonly=True, domain=[('bsd_loai', '=', 'pbt')])
+    bsd_dot_pql_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_hd_ban_id', string="Đợt thu phí quản lý",
+                                      readonly=True, domain=[('bsd_loai', '=', 'pql')])
     bsd_co_ttdc = fields.Boolean(string="Thỏa thuận đặt cọc", help="Thông tin quy định thỏa thuận đặt cọc hay không",
                                  related="bsd_du_an_id.bsd_hd_coc", store=True)
     bsd_so_ttdc = fields.Char(string="Số TTĐC", help="Số thỏa thuận đặt cọc")
@@ -150,6 +153,8 @@ class BsdDatCoc(models.Model):
         ids_ck = res.bsd_bao_gia_id.bsd_ps_ck_ids.ids
         ids_db = res.bsd_bao_gia_id.bsd_ck_db_ids.ids
         ids_dsh = res.bsd_bao_gia_id.bsd_dsh_ids.ids
+        ids_pbt = res.bsd_bao_gia_id.bsd_dot_pbt_ids.ids
+        ids_pql = res.bsd_bao_gia_id.bsd_dot_pql_ids.ids
         res.write({
             'bsd_bg_ids': [(6, 0, ids_bg)],
             'bsd_ltt_ids': [(6, 0, ids_ltt)],
@@ -157,6 +162,8 @@ class BsdDatCoc(models.Model):
             'bsd_ps_ck_ids': [(6, 0, ids_ck)],
             'bsd_ck_db_ids': [(6, 0, ids_db)],
             'bsd_dsh_ids': [(6, 0, ids_dsh)],
+            'bsd_dot_pbt_ids': [(6, 0, ids_pbt)],
+            'bsd_dot_pql_ids': [(6, 0, ids_pql)],
         })
         return res
 
