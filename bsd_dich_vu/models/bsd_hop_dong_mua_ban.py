@@ -355,7 +355,6 @@ class BsdHopDongMuaBan(models.Model):
         ids_km = res.bsd_dat_coc_id.bsd_km_ids.ids
         ids_ck = res.bsd_dat_coc_id.bsd_ps_ck_ids.ids
         ids_db = res.bsd_dat_coc_id.bsd_ck_db_ids.ids
-        ids_dsh = res.bsd_dat_coc_id.bsd_dsh_ids.ids
         ids_pbt = res.bsd_dat_coc_id.bsd_dot_pbt_ids.ids
         ids_pql = res.bsd_dat_coc_id.bsd_dot_pql_ids.ids
         res.write({
@@ -364,10 +363,17 @@ class BsdHopDongMuaBan(models.Model):
             'bsd_km_ids': [(6, 0, ids_km)],
             'bsd_ps_ck_ids': [(6, 0, ids_ck)],
             'bsd_ck_db_ids': [(6, 0, ids_db)],
-            'bsd_dsh_ids': [(6, 0, ids_dsh)],
             'bsd_dot_pbt_ids': [(6, 0, ids_pbt)],
             'bsd_dot_pql_ids': [(6, 0, ids_pql)],
         })
+        # Cập nhật đồng sở hữu từ đặt cọc
+        ids_dsh = res.bsd_dat_coc_id.bsd_dsh_ids
+        for dsh in ids_dsh:
+            self.env['bsd.dong_so_huu'].create({
+                'bsd_hd_ban_id': res.id,
+                'bsd_dong_sh_id': dsh.id,
+                'bsd_lan_td': 0
+            })
         return res
 
 
