@@ -150,3 +150,7 @@ class BsdHdBan(models.Model):
         # Kiểm tra tỷ lệ thanh toán của hợp đồng với điều kiện bàn giao trên sản phẩm
         if self.bsd_tl_tt_hd < self.bsd_unit_id.bsd_dk_bg:
             return
+        # Ghi nhận trạng thái đủ dk bàn giao
+        self.write({
+            'state': 'du_dkbg'
+        })
