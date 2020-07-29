@@ -56,7 +56,7 @@
                                 <group>
                                     <field name="bsd_cn_dkbg_unit_id"/>
                                     <field name="bsd_ngay_tb"/>
-                                    <field name="bsd_ngay_nt"/>
+                                    <field name="bsd_ngay_bg"/>
                                     <field name="bsd_ngay_ut"/>
                                 </group>
                             </group>

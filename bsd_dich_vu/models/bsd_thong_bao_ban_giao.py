@@ -30,9 +30,9 @@ class BsdThongBaoBanGiao(models.Model):
                                 readonly=True)
     bsd_cn_dkbg_unit_id = fields.Many2one('bsd.cn_dkbg_unit', string="Cập nhật DKBG chi tiết",
                                           help="Mã cập nhật DKBG chi tiết",
-                                          readonly=True,
+                                          readonly=True, required=True,
                                           states={'nhap': [('readonly', False)]})
-    bsd_ngay_nt = fields.Date(string="Ngày bàn giao", help="Ngày bàn giao",
+    bsd_ngay_bg = fields.Date(string="Ngày bàn giao", help="Ngày bàn giao",
                               readonly=True,
                               states={'nhap': [('readonly', False)]})
     bsd_ngay_tb = fields.Date(string="Ngày thông báo", help="Ngày thông báo bàn giao",
@@ -61,12 +61,14 @@ class BsdThongBaoBanGiao(models.Model):
     bsd_ngay_hh_tt = fields.Date(string="Hạn thanh toán", help="Hạn thanh toán của đợt dự kiến bàn giao",
                                  compute="_compute_dot_tt")
 
-    @api.depends('bsd_hd_ban_id')
-    def _compute_dot_tt(self):
-        for each in self:
-            dot_dkbg = each.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_ma_dtt == 'DKBG')
-            each.bsd_dot_tt_id = dot_dkbg.id
-            each.bsd_ngay_hh_tt = dot_dkbg.bsd_ngay_hh_tt
+    @api.onchange('bsd_cn_dkbg_unit_id')
+    def _onchange_dkbg_unit(self):
+        self.bsd_ngay_bt = self.bsd_cn_dkbg_unit_id.bsd_ngay_dkbg_moi
+        self.bsd_ngay_tb = fields.Datetime.now()
+        self.bsd_ngay_ut = self.bsd_cn_dkbg_unit_id.bsd_cn_dkbg_id.bsd_ngay_ut
+        self.bsd_du_an_id = self.bsd_cn_dkbg_unit_id.bsd_du_an_id
+        self.bsd_hd_ban_id = self.bsd_cn_dkbg_unit_id.bsd_hd_ban_id
+        self.bsd_unit_id = self.bsd_cn_dkbg_unit_id.bsd_unit_id
 
     bsd_ngay_dkbg = fields.Date(related="bsd_hd_ban_id.bsd_ngay_dkbg")
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng", required=True,
@@ -89,6 +91,22 @@ class BsdThongBaoBanGiao(models.Model):
                               ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
     bsd_so_bg_sp = fields.Integer(string="# Bàn giao sp", compute="_compute_bg_sp")
+
+    @api.onchange('bsd_hd_ban_id')
+    def _onchange_hd_ban(self):
+        self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
+        self.bsd_tien_pbt = self.bsd_hd_ban_id.bsd_tien_pbt
+        self.bsd_tien_pql = self.bsd_hd_ban_id.bsd_tien_pql
+        dot_cuoi = self.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_cs_tt_ct_id.bsd_dot_cuoi)
+        self.bsd_tien_ng = self.bsd_hd_ban_id.bsd_tong_gia - self.bsd_hd_ban_id.bsd_tien_pbt - self.bsd_hd_ban_id.bsd_tien_tt_hd - dot_cuoi.bsd_tien_dot_tt
+
+    @api.depends('bsd_hd_ban_id')
+    def _compute_dot_tt(self):
+        for each in self:
+            dot_dkbg = each.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_ma_dtt == 'DKBG')
+            each.bsd_dot_tt_id = dot_dkbg.id
+            each.bsd_ngay_hh_tt = dot_dkbg.bsd_ngay_hh_tt
+
 
     def _compute_bg_sp(self):
         for each in self:
