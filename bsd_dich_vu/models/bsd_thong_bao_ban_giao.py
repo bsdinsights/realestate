@@ -63,7 +63,7 @@ class BsdThongBaoBanGiao(models.Model):
 
     @api.onchange('bsd_cn_dkbg_unit_id')
     def _onchange_dkbg_unit(self):
-        self.bsd_ngay_bt = self.bsd_cn_dkbg_unit_id.bsd_ngay_dkbg_moi
+        self.bsd_ngay_bg = self.bsd_cn_dkbg_unit_id.bsd_ngay_dkbg_moi
         self.bsd_ngay_tb = fields.Datetime.now()
         self.bsd_ngay_ut = self.bsd_cn_dkbg_unit_id.bsd_cn_dkbg_id.bsd_ngay_ut
         self.bsd_du_an_id = self.bsd_cn_dkbg_unit_id.bsd_du_an_id
@@ -106,7 +106,6 @@ class BsdThongBaoBanGiao(models.Model):
             dot_dkbg = each.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_ma_dtt == 'DKBG')
             each.bsd_dot_tt_id = dot_dkbg.id
             each.bsd_ngay_hh_tt = dot_dkbg.bsd_ngay_hh_tt
-
 
     def _compute_bg_sp(self):
         for each in self:
