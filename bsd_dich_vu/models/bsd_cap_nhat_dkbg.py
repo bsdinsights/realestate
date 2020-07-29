@@ -115,6 +115,7 @@ class BsdCapNhatDKBG(models.Model):
                 for ct in ct_dkbg:
                     ct.bsd_unit_id.write({
                         'bsd_ngay_dkbg': ct.bsd_ngay_dkbg_moi,
+                        'bsd_ngay_cn': self.bsd_ngay_ttcn,
                     })
             # DV.19.08 Cập nhật DKBG với loại cập nhật là đợt thanh toán
             elif self.bsd_loai == 'dot_tt':
@@ -130,6 +131,7 @@ class BsdCapNhatDKBG(models.Model):
                     })
                     ct.bsd_unit_id.write({
                         'bsd_ngay_dkbg': ct.bsd_ngay_dkbg_moi,
+                        'bsd_ngay_cn': self.bsd_ngay_ttcn,
                     })
                     ct.bsd_hd_ban_id.write({
                         'bsd_ngay_dkbg': ct.bsd_ngay_dkbg_moi,
