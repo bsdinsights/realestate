@@ -126,26 +126,27 @@ class BsdThongBaoBanGiao(models.Model):
     def action_in_tb(self):
         return self.env.ref('bsd_dich_vu.bsd_tb_nt_report_action').read()[0]
 
-    # DV.21.03 Cập nhật ngày gửi
+    # DV.16.03 Cập nhật ngày gửi
     def action_gui_tb(self):
         action = self.env.ref('bsd_dich_vu.bsd_wizard_tb_bg_action').read()[0]
         _logger.debug(action)
         return action
 
-    # DV.21.05 Hủy thông báo bàn giao
+    # DV.16.04 Hoàn thành thông báo bàn giao
+    def action_hoan_thanh(self):
+        if self.state == 'xac_nhan':
+            self.write({
+                'state': 'hoan_thanh',
+                'bsd_ngay_ht': fields.Datetime.now(),
+                'bsd_nguoi_ht_id': self.env.uid,
+            })
+
+    # DV.16.05 Hủy thông báo bàn giao
     def action_huy(self):
-        if self.state in ['nhap', 'xac_nhan']:
+        if self.state == 'nhap':
             self.write({
                 'state': 'huy'
             })
-
-    # DV.21.06 Tự động tạo bàn giao sản phẩm
-    def tao_nt_sp(self):
-        self.env['bsd.ban_giao'].create({
-            'bsd_ngay_tao_nt': fields.Datetime.now(),
-            'bsd_tb_nt_id': self.id,
-            'state': 'nhap',
-        })
 
     @api.model
     def create(self, vals):
@@ -156,4 +157,4 @@ class BsdThongBaoBanGiao(models.Model):
         if not sequence:
             raise UserError(_('Dự án chưa có mã thông báo bàn giao'))
         vals['bsd_ma_tb'] = sequence.next_by_id()
-        return super(BsdThongBaoNghiemThu, self).create(vals)
+        return super(BsdThongBaoBanGiao, self).create(vals)

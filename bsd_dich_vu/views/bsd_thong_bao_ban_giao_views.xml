@@ -24,8 +24,8 @@
                             type="object"
                             attrs="{'invisible': ['|',('bsd_ngay_in', '=',False)]}"
                             class="oe_highlight"/>
-                    <button string="Đóng thông báo"
-                            name="action_dong_tb"
+                    <button string="Hoàn thành"
+                            name="action_hoan_thanh"
                             states="xac_nhan"
                             attrs="{'invisible': ['|',('bsd_ngay_gui', '=',False)]}"
                             type="object"
@@ -34,8 +34,8 @@
                             name="action_huy"
                             type="object"
                             confirm="Bạn có muốn hủy yêu cầu này không ?"
-                            attrs="{'invisible': ['|',('id', '=',False),'|',('bsd_ngay_in', '!=',False)]}"
-                            states="xac_nhan,nhap"/>
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            states="nhap"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
