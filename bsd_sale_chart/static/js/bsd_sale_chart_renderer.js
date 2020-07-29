@@ -176,16 +176,16 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     args: [id_unit],
                     context: self.context,
                 },{shadow : true}).then(function(data){
-                    if (!(_.isEmpty(data))){
-                    _.each(data,function(item,index,data){
-                        var id = '#' + item[0].toString()
-                        var state = $(id).attr('class').replace("bsd_unit", "")
-                        if (item[2] === null) {
-                            item[2] = 0
-                        }
-                        $(id).removeClass(state).addClass(item[1])
-                        $(id).find(".so_giu_cho").text(item[2].toString())
-                    })
+                    if (data !== undefined){
+                        _.each(data,function(item,index,data){
+                            var id = '#' + item[0].toString()
+                            var state = $(id).attr('class').replace("bsd_unit", "")
+                            if (item[2] === null) {
+                                item[2] = 0
+                            }
+                            $(id).removeClass(state).addClass(item[1])
+                            $(id).find(".so_giu_cho").text(item[2].toString())
+                        })
                     }
                 })
             }
