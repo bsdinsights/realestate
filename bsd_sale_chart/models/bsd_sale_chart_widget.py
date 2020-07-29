@@ -121,7 +121,7 @@ class BsdSaleChartWidget(models.AbstractModel):
             return
         elif len(data) > 1:
             where = "where unit.id in {0}".format(tuple(filter(None, data)))
-        elif len(data) == 1:
+        elif len(data) == 1 and data[0]:
             where = "where unit.id = {0}".format(data[0])
         _logger.debug(where)
         query = """SELECT unit.id, unit.state, giu_cho.so_giu_cho_unit
