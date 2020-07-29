@@ -59,6 +59,7 @@
                             type="object"
                             confirm="Bàn có muốn duyệt bàn giao đặc biệt cho hợp đồng không?"
                             states="da_ky,dang_tt"
+                            attrs="{'invisible':['|', ('bsd_duyet_db', '=', True)]}"
                             class="oe_highlight"/>
                     <button string="Hủy"
                             name="action_huy"
