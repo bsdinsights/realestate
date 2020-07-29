@@ -157,7 +157,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
 
             });
             var def2 = this._super.apply(this, arguments);
-            this.interval = setInterval(this.updateUnit.bind(this),2000);
             return Promise.all([def1, def2]);
         },
         updateUnit: function(){
@@ -176,16 +175,17 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     args: [id_unit],
                     context: self.context,
                 },{shadow : true}).then(function(data){
+                    console.log(data)
                     if (data !== undefined){
-                        _.each(data,function(item,index,data){
-                            var id = '#' + item[0].toString()
-                            var state = $(id).attr('class').replace("bsd_unit", "")
-                            if (item[2] === null) {
-                                item[2] = 0
-                            }
-                            $(id).removeClass(state).addClass(item[1])
-                            $(id).find(".so_giu_cho").text(item[2].toString())
-                        })
+                    _.each(data,function(item,index,data){
+                        var id = '#' + item[0].toString()
+                        var state = $(id).attr('class').replace("bsd_unit", "")
+                        if (item[2] === null) {
+                            item[2] = 0
+                        }
+                        $(id).removeClass(state).addClass(item[1])
+                        $(id).find(".so_giu_cho").text(item[2].toString())
+                    })
                     }
                 })
             }
@@ -196,7 +196,9 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          * destroying itself.
          */
         destroy: function () {
-            clearInterval(this.interval);
+            var self = this
+            console.log(self)
+            clearInterval(self.interval);
             this._super();
 
         },
@@ -296,6 +298,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 });
                 var $svg = $(qweb.render("bsd_sale_chart.chart", {'data': data_show}));
                 $chart.append($svg)
+                self.interval = setInterval(self.updateUnit.bind(self),2000);
             })
         },
         /**
