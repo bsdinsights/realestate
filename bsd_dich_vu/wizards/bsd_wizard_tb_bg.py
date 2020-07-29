@@ -20,7 +20,6 @@ class BsdTBNT(models.TransientModel):
     def action_xac_nhan(self):
         if self.bsd_tb_bg_id:
             self.bsd_tb_bg_id.write({
-                'bsd_ngay_dong': self.bsd_ngay,
-                'state': 'dong_nt'
+                'bsd_ngay_gui': self.bsd_ngay,
             })
 

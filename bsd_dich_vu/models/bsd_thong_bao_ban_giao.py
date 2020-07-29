@@ -64,7 +64,7 @@ class BsdThongBaoBanGiao(models.Model):
     @api.depends('bsd_hd_ban_id')
     def _compute_dot_tt(self):
         for each in self:
-            dot_dkbg = each.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_ma_dtt == 'dkbg')
+            dot_dkbg = each.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_ma_dtt == 'DKBG')
             each.bsd_dot_tt_id = dot_dkbg.id
             each.bsd_ngay_hh_tt = dot_dkbg.bsd_ngay_hh_tt
 
@@ -88,7 +88,7 @@ class BsdThongBaoBanGiao(models.Model):
                               ('hoan_thanh', 'Hoàn thành'),
                               ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
-    bsd_so_bg_sp = fields.Integer(string="# Bàn giao sp", compute="_compute_bg")
+    bsd_so_bg_sp = fields.Integer(string="# Bàn giao sp", compute="_compute_bg_sp")
 
     def _compute_bg_sp(self):
         for each in self:
@@ -124,7 +124,7 @@ class BsdThongBaoBanGiao(models.Model):
 
     # DV.16.02 In thông báo bàn giao
     def action_in_tb(self):
-        return self.env.ref('bsd_dich_vu.bsd_tb_nt_report_action').read()[0]
+        return self.env.ref('bsd_dich_vu.bsd_tb_bg_report_action').read()[0]
 
     # DV.16.03 Cập nhật ngày gửi
     def action_gui_tb(self):
