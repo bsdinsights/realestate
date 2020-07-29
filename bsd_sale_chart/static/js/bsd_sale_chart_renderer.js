@@ -197,7 +197,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          */
         destroy: function () {
             var self = this
-            console.log(self)
             clearInterval(self.interval);
             this._super();
 
