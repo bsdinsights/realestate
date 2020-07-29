@@ -148,6 +148,12 @@ class BsdThongBaoBanGiao(models.Model):
                 'state': 'huy'
             })
 
+    # DV.16.06 Kiểm tra điều kiện của cập nhật DKBG chi tiết
+    @api.constrains('bsd_hd_ban_id')
+    def _constrains_hd_ban(self):
+        if self.bsd_hd_ban_id.state == 'thanh_ly':
+            raise UserError(_('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại!'))
+
     @api.model
     def create(self, vals):
         sequence = False
