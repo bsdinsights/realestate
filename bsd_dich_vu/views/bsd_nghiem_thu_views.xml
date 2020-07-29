@@ -61,7 +61,7 @@
                                     <field name="bsd_ly_do"
                                            attrs="{'invisible':['|',('bsd_duyet_yc','=','co'),('bsd_yc_sc', '=', False)]}"/>
                                     <field name="bsd_so_ngay_sc"
-                                           attrs="{'invisible':['|',('bsd_duyet_yc','=','co'),('bsd_yc_sc', '=', False)]}"/>
+                                           attrs="{'invisible':['|',('bsd_duyet_yc','=','khong'),('bsd_yc_sc', '=', False)]}"/>
                                 </group>
                                 <group>
                                     <field name="bsd_ngay_nt_lai"
