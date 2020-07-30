@@ -22,14 +22,14 @@ class BsdPhiPhatSinh(models.Model):
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_ten_ps = fields.Char(string="Tiêu đề", help="Tiêu đề", required=True,
-                                  readonly=True,
-                                  states={'nhap': [('readonly', False)]})
+                             readonly=True,
+                             states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True,
-                                  readonly=True,
-                                  states={'nhap': [('readonly', False)]})
-    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng",
-                                  readonly=True,
-                                  states={'nhap': [('readonly', False)]})
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng", required=True,
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]})
     bsd_unit_id = fields.Many2one(related='bsd_hd_ban_id.bsd_unit_id', store=True)
     bsd_khach_hang_id = fields.Many2one(related='bsd_hd_ban_id.bsd_khach_hang_id', store=True)
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán", required=True,
@@ -56,10 +56,10 @@ class BsdPhiPhatSinh(models.Model):
     bsd_tien_thue = fields.Monetary(string="Tiền thuế", help="Tiền thuế", required=True,
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
-    bsd_tien_tang = fields.Monetary(string="Điều chỉnh tăng", help="Số tiền điều chỉnh tăng",
+    bsd_tien_tang = fields.Monetary(string="Điều chỉnh tăng", help="Số tiền điều chỉnh tăng", required=True,
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
-    bsd_tien_giam = fields.Monetary(string="Điều chỉnh giảm", help="Số tiền điều chỉnh giảm",
+    bsd_tien_giam = fields.Monetary(string="Điều chỉnh giảm", help="Số tiền điều chỉnh giảm", required=True,
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
     bsd_tong_tien = fields.Monetary(string="Tổng tiền", help="Tổng tiền", compute='_compute_tong_tien')
