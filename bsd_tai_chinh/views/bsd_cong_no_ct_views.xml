@@ -28,6 +28,7 @@
                             <field name="bsd_phieu_thu_id"/>
                             <field name="bsd_hoan_tien_id"/>
                             <field name="bsd_giam_no_id"/>
+                            <field name="bsd_phi_ps_id"/>
                         </group>
                     </group>
                 </sheet>

@@ -131,7 +131,7 @@ class BsdPhiPhatSinh(models.Model):
                 'bsd_ps_tang': self.bsd_tong_tien,
                 'bsd_loai_ct': 'phi_ps',
                 'bsd_phat_sinh': 'tang',
-                'bsd_phi_ps_ids': self.id,
+                'bsd_phi_ps_id': self.id,
                 'state': 'da_gs',
             })
 
