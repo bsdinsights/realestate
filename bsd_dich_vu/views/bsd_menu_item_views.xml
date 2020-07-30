@@ -62,7 +62,7 @@
               parent="bsd_main_dich_vu_root"/>
     <menuitem id="bsd_ps_gd_km_menu_action"
               name="Giao dịch khuyến mãi"
-              sequence="19"
+              sequence="100"
               action="bsd_ps_gd_km_action"
               parent="bsd_kinh_doanh.bsd_main_kinh_doanh_root"/>
 

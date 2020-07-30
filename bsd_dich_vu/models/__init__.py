@@ -11,4 +11,3 @@ from . import bsd_cap_nhat_dkbg
 from . import bsd_thong_bao_nghiem_thu
 from . import bsd_nghiem_thu
 from . import bsd_thong_bao_ban_giao
-

@@ -24,7 +24,7 @@ class BsdCanTru(models.Model):
                                        states={'nhap': [('readonly', False)]})
     bsd_tien_can_tru = fields.Monetary(string="Tiền cấn trừ", compute='_compute_tien_can_tru', store=True)
     bsd_loai_ct = fields.Selection([('phieu_thu', 'Phiếu thu')], string="Loại chứng từ", help="Loại chứng từ",
-                                   required=True, readonly=True,
+                                   required=True, readonly=True, default='phieu_thu',
                                    states={'nhap': [('readonly', False)]})
     bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thu", help="Phiếu thu", readonly=True,
                                        states={'nhap': [('readonly', False)]})
@@ -110,6 +110,20 @@ class BsdCanTru(models.Model):
                     'bsd_tien_phai_tt': dot_tt.bsd_tien_phai_tt,
                     'bsd_can_tru_id': self.id,
             })
+        # Lấy chứng từ phí phát sinh
+        phi_ps_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
+                                                     ('bsd_loai_ct', '=', 'phi_ps')]).mapped('bsd_phi_ps_id')
+        for phi_ps in phi_ps_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
+            self.bsd_ct_ids.create({
+                    'bsd_phi_ps_id': phi_ps.id,
+                    'bsd_dot_tt_id': phi_ps.bsd_dot_tt_id.id,
+                    'bsd_hd_ban_id': phi_ps.bsd_hd_ban_id.id,
+                    'bsd_so_ct': phi_ps.bsd_ma_ps,
+                    'bsd_loai_ct': 'pt_pps',
+                    'bsd_tien': phi_ps.bsd_tong_tien,
+                    'bsd_tien_phai_tt': phi_ps.bsd_tien_phai_tt,
+                    'bsd_can_tru_id': self.id,
+            })
 
     # TC.04.03 Cấn trừ công nợ
     def action_can_tru(self):
@@ -151,6 +165,7 @@ class BsdCanTruChiTiet(models.Model):
     bsd_loai_ct = fields.Selection([('pt_gctc', 'Giữ chỗ thiện chí'),
                                     ('pt_gc', 'Giữ chỗ'),
                                     ('pt_dc', 'Đặt cọc'),
+                                    ('pt_pps', 'Phí phát sinh'),
                                     ('pt_dtt', 'Đợt thanh toán')], string="Loại chứng từ",
                                    help="Loại chứng từ", readonly=True)
     bsd_so_ct = fields.Char(string="Số chứng từ", help="Số chứng từ", readonly=True)
@@ -164,6 +179,7 @@ class BsdCanTruChiTiet(models.Model):
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Đặt cọc", readonly=True)
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng", readonly=True)
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán", readonly=True)
+    bsd_phi_ps_id = fields.Many2one('bsd.phi_ps', string="Phí phát sinh", readonly=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 

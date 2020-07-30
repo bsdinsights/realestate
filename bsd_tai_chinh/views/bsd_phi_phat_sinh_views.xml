@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_phi_ps_form">
+        <field name="name">bsd.phi_ps.form</field>
+        <field name="model">bsd.phi_ps</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            type="object"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                            class="oe_highlight"/>
+                    <button string="Ghi sổ"
+                            name="action_ghi_so"
+                            type="object"
+                            states="xac_nhan"
+                            class="oe_highlight"/>
+                    <button string="Cấn trừ"
+                            name="action_can_tru"
+                            type="object"
+                            states="ghi_so"
+                            attrs="{'invisible':['|', ('bsd_tien_phai_tt', '=', 0)]}"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"
+                            states="nhap,xac_nhan"
+                            class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="bsd_ma_ps"/>
+                            <field name="bsd_ngay_ps"/>
+                            <field name="bsd_ten_ps"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                        </group>
+                        <group>
+                            <field name="bsd_hd_ban_id"
+                                   domain="[('bsd_du_an_id', '=', bsd_du_an_id), ('state','not in', ['nhap','thanh_ly'])]"
+                                   options="{'no_create':true}"
+                            />
+                            <field name="bsd_unit_id"/>
+                            <field name="bsd_khach_hang_id"/>
+                            <field name="bsd_dot_tt_id" domain="[('bsd_hd_ban_id', '=',bsd_hd_ban_id)]" options="{'no_create':true}"/>
+                            <field name="bsd_so_tt_tb"/>
+                        </group>
+                    </group>
+                    <group string="PHÍ PHÁT SINH">
+                        <group>
+                            <field name="bsd_loai"/>
+                            <field name="bsd_tien_ps"/>
+                            <field name="bsd_tien_thue"/>
+                            <field name="bsd_tien_tang"/>
+                            <field name="bsd_tien_giam"/>
+                        </group>
+                        <group>
+                            <field name="bsd_tong_tien"/>
+                            <field name="bsd_ngay_tt"/>
+                            <field name="bsd_thanh_toan"/>
+                            <field name="bsd_tien_da_tt"/>
+                            <field name="bsd_tien_phai_tt"/>
+
+                        </group>
+
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_phi_ps_tree">
+        <field name="name">bsd.phi_ps.tree</field>
+        <field name="model">bsd.phi_ps</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_ps"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_phi_ps_action">
+        <field name="name">Phí phát sinh</field>
+        <field name="res_model">bsd.phi_ps</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo phí phát sinh</p>
+        </field>
+    </record>
+</odoo>

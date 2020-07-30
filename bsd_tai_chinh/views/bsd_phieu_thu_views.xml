@@ -74,7 +74,7 @@
                             <field name="bsd_dot_tt_id"
                                    options="{'no_create':true}"
                                    attrs="{'required':[('bsd_loai_pt','in',['dot_tt','pql','pbt'])],
-                                           'invisible':[('bsd_loai_pt','not in',['dot_tt','pql','pbt'])]}"
+                                           'invisible':[('bsd_loai_pt','not in',['dot_tt','pql','pbt','pps'])]}"
                             />
                             <field name="currency_id"/>
                             <field name="company_id" invisible="1"/>
