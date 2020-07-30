@@ -8,6 +8,7 @@ class BsdPhiPhatSinh(models.Model):
     _name = 'bsd.phi_ps'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Bảng phí phát sinh'
+    _rec_name = 'bsd_ten_ps'
 
     bsd_ma_ps = fields.Char(string="Mã", help="Mã chứng từ phí phát sinh", readonly=True, copy=False, required=True,
                             default='/')
@@ -162,7 +163,7 @@ class BsdPhiPhatSinh(models.Model):
     def action_huy(self):
         if self.state in ['nhap', 'xac_nhan']:
             self.write({
-                'state': 'ghi_so'
+                'state': 'huy'
             })
 
     @api.model
