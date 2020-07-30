@@ -158,6 +158,13 @@ class BsdPhiPhatSinh(models.Model):
                         }
         }
 
+    # TC.15.04 Hủy phí phát sinh
+    def action_huy(self):
+        if self.state in ['nhap', 'xac_nhan']:
+            self.write({
+                'state': 'ghi_so'
+            })
+
     @api.model
     def create(self, vals):
         if 'bsd_du_an_id' in vals:
