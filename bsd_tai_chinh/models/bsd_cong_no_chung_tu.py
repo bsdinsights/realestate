@@ -115,6 +115,12 @@ class BsdCongNoCT(models.Model):
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             if self.bsd_phieu_thu_id.bsd_tien < tien:
                 raise UserError("Không thể thực hiện thanh toán dư")
+        elif self.bsd_loai == 'pt_pps':
+            cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_phi_ps_id', '=', self.bsd_phi_ps_id.id)])
+            tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
+            if self.bsd_phi_ps_id.bsd_tong_tien < tien:
+                raise UserError("Không thể thực hiện thanh toán dư")
+            self.bsd_phi_ps_id.bsd_hd_ban_id.action_du_dkbg()
 
     @api.model
     def create(self, vals):

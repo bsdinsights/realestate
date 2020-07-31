@@ -151,7 +151,11 @@ class BsdHdBan(models.Model):
         dot_pps = self.bsd_ltt_ids.filtered(lambda d: d.bsd_stt <= dot_dkbg.bsd_stt)
         # Lấy các phí phát sinh
         phi_ps_ids = self.env['bsd.phi_ps'].search([('bsd_hd_ban_id', '=', self.id),
-                                                    ('bsd_dot_tt_id', 'in', dot_pps.ids)])
+                                                    ('bsd_dot_tt_id', 'in', dot_pps.ids),
+                                                    ('state', '=', 'ghi_so')])
+        phi_ps_ids = phi_ps_ids.filtered(lambda p: p.bsd_thanh_toan != 'da_tt')
+        if phi_ps_ids:
+            return
         # Kiểm tra tỷ lệ thanh toán của hợp đồng với điều kiện bàn giao trên sản phẩm
         if self.bsd_tl_tt_hd < self.bsd_unit_id.bsd_dk_bg:
             return
