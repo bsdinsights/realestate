@@ -85,6 +85,12 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="bsd_ma_ps"/>
+                <field name="bsd_ngay_ps"/>
+                <field name="bsd_ten_ps"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_hd_ban_id"/>
+                <field name="bsd_tong_tien"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
