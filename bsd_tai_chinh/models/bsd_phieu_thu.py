@@ -148,6 +148,7 @@ class BsdPhieuThu(models.Model):
 
     # TC.01.01 Xác nhận phiếu thu
     def action_xac_nhan(self):
+        # TC.01.09
         # Kiểm tra hợp đồng đã bị thanh lý chưa
         if self.bsd_hd_ban_id.state == 'thanh_ly':
             raise UserError(_('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin hợp đồng'))
@@ -271,6 +272,7 @@ class BsdPhieuThu(models.Model):
         })
 
     # TC.01.06 Ghi sổ phiếu đợt thanh toán hợp đồng bán
+    # TC.01.10 Ghi sổ phí quản lý, phí bảo trì là 1 đợt thanh toán
     def _gs_pt_dot_tt_hd(self):
         # Kiểm tra hợp đồng đã bị thanh lý chưa
         if self.bsd_hd_ban_id.state == 'thanh_ly':
