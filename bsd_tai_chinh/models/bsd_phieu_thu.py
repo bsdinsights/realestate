@@ -374,6 +374,7 @@ class BsdPhieuThu(models.Model):
             })
 
     # TC.01.12 Cấn trừ công nợ phiếu thu
+    def action_can_tru(self):
         if self.bsd_hd_ban_id.state == 'thanh_ly':
             raise UserError(_('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin!'))
         if self.bsd_loai_pt == 'pps':
