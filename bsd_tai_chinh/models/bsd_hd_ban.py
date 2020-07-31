@@ -147,6 +147,11 @@ class BsdHdBan(models.Model):
             raise UserError(_("Hợp đồng có nhiều hơn 1 đợt dkbg"))
         if dot_dkbg.bsd_thanh_toan != 'da_tt':
             return
+        # Kiểm tra các phí phát sinh từ đợt dkbg trở về trước
+        dot_pps = self.bsd_ltt_ids.filtered(lambda d: d.bsd_stt <= dot_dkbg.bsd_stt)
+        # Lấy các phí phát sinh
+        phi_ps_ids = self.env['bsd.phi_ps'].search([('bsd_hd_ban_id', '=', self.id),
+                                                    ('bsd_dot_tt_id', 'in', dot_pps.ids)])
         # Kiểm tra tỷ lệ thanh toán của hợp đồng với điều kiện bàn giao trên sản phẩm
         if self.bsd_tl_tt_hd < self.bsd_unit_id.bsd_dk_bg:
             return
