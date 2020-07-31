@@ -139,7 +139,7 @@ class BsdCanTru(models.Model):
             # Lấy chứng từ đợt thanh toán
             dot_tt_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
                                                          ('bsd_dot_tt_id', '!=', False),
-                                                         ('bsd_hd_ban_id', '=', self.bsd_hd_ban.id)])\
+                                                         ('bsd_hd_ban_id', '=', self.bsd_hd_ban_id.id)])\
                 .mapped('bsd_dot_tt_id')
             for dot_tt in dot_tt_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
                 self.bsd_ct_ids.create({
