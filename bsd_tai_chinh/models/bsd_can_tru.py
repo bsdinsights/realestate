@@ -168,7 +168,7 @@ class BsdCanTru(models.Model):
                             'bsd_can_tru_id': self.id,
                     })
             else:
-                phi_ps_ids.filtered(lambda x: x.bsd_dot_tt_id == self.bsd_dot_tt_id)
+                phi_ps_ids.filtered(lambda x: x.bsd_dot_tt_id == self.bsd_dot_tt_id.id)
                 # Lấy chứng từ phí phát sinh
                 for phi_ps in phi_ps_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
                     self.bsd_ct_ids.create({
@@ -198,6 +198,7 @@ class BsdCanTru(models.Model):
                 'bsd_dat_coc_id': ct.bsd_dat_coc_id.id,
                 'bsd_hd_ban_id': ct.bsd_hd_ban_id.id,
                 'bsd_dot_tt_id': ct.bsd_dot_tt_id.id,
+                'bsd_phi_ps_id': ct.bsd_phi_ps_id.id,
                 'bsd_phieu_thu_id': self.bsd_phieu_thu_id.id,
                 'bsd_tien_pb': ct.bsd_tien_can_tru,
                 'bsd_loai': ct.bsd_loai_ct,
