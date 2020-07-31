@@ -148,6 +148,9 @@ class BsdPhieuThu(models.Model):
 
     # TC.01.01 Xác nhận phiếu thu
     def action_xac_nhan(self):
+        # Kiểm tra hợp đồng đã bị thanh lý chưa
+        if self.bsd_hd_ban_id.state == 'thanh_ly':
+            raise UserError(_('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin hợp đồng'))
         self.write({
             'state': 'da_xn',
         })
@@ -166,9 +169,10 @@ class BsdPhieuThu(models.Model):
             self._gs_pt_dat_coc()
         elif self.bsd_loai_pt in ['dot_tt', 'pql', 'pbt']:
             self._gs_pt_dot_tt_hd()
+        elif self.bsd_loai_pt == 'pps':
+            self._gs_pt_pps()
         else:
             pass
-
         self.write({
             'state': 'da_gs',
         })
@@ -266,35 +270,11 @@ class BsdPhieuThu(models.Model):
             'state': 'hoan_thanh',
         })
 
-    # TC.01.06 Ghi sổ phiếu thu đợt thanh toán
-    # def _gs_pt_dot_tt_dc(self):
-    #     # ghi công nợ giảm
-    #     giam_id = self.env['bsd.cong_no'].create({
-    #                     'bsd_chung_tu': self.bsd_so_pt,
-    #                     'bsd_ngay': self.bsd_ngay_pt,
-    #                     'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-    #                     'bsd_du_an_id': self.bsd_du_an_id.id,
-    #                     'bsd_ps_giam': self.bsd_tien,
-    #                     'bsd_ps_tang': 0,
-    #                     'bsd_loai_ct': 'phieu_thu',
-    #                     'bsd_phat_sinh': 'giam',
-    #                     'bsd_phieu_thu_id': self.id,
-    #                     'state': 'da_gs',
-    #     })
-    #     # tạo record trong bảng công nợ chứng từ
-    #     self.env['bsd.cong_no_ct'].create({
-    #         'bsd_ngay_pb': self.bsd_ngay_pt,
-    #         'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-    #         'bsd_phieu_thu_id': self.id,
-    #         'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
-    #         'bsd_dot_tt_id': self.bsd_dot_tt_id.id,
-    #         'bsd_tien_pb': self.bsd_tien,
-    #         'bsd_loai': 'pt_dtt',
-    #         'state': 'hoan_thanh',
-    #     })
-
     # TC.01.06 Ghi sổ phiếu đợt thanh toán hợp đồng bán
     def _gs_pt_dot_tt_hd(self):
+        # Kiểm tra hợp đồng đã bị thanh lý chưa
+        if self.bsd_hd_ban_id.state == 'thanh_ly':
+            raise UserError(_('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin hợp đồng'))
         # ghi công nợ giảm
         giam_id = self.env['bsd.cong_no'].create({
                         'bsd_chung_tu': self.bsd_so_pt,
@@ -375,6 +355,59 @@ class BsdPhieuThu(models.Model):
                 flag = True
         if flag:
             raise UserError("Tiền phải thu vượt quá số tiền còn lại. Vui lòng kiểm tra lại!")
+
+    # TC.01.11 - Ghi sổ phiếu thu phí phát sinh
+    def _gs_pt_pps(self):
+        # Kiểm tra hợp đồng đã bị thanh lý chưa
+        if self.bsd_hd_ban_id.state == 'thanh_ly':
+            raise UserError(_('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin hợp đồng'))
+        self.env['bsd.cong_no'].create({
+                'bsd_ngay': self.bsd_ngay_pt,
+                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                'bsd_du_an_id': self.bsd_du_an_id.id,
+                'bsd_ps_giam': self.bsd_tien,
+                'bsd_ps_tang': 0,
+                'bsd_loai_ct': 'phieu_thu',
+                'bsd_phat_sinh': 'giam',
+                'bsd_phieu_thu_id': self.id,
+                'state': 'da_gs',
+            })
+
+    # TC.01.12 Cấn trừ công nợ phiếu thu
+        if self.bsd_hd_ban_id.state == 'thanh_ly':
+            raise UserError(_('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin!'))
+        if self.bsd_loai_pt == 'pps':
+            if self.bsd_dot_tt_id:
+                phi_ps_ids = self.env['bsd.phi_ps'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)])
+            else:
+                phi_ps_ids = self.env['bsd.phi_ps'].search([('bsd_hd_ban_id', '=', self.bsd_hd_ban.id)])
+        list_ct = []
+        for phi_ps in phi_ps_ids:
+            ct_can_tru = (0, 0, {
+                                    'bsd_phi_ps_id': phi_ps.id,
+                                    'bsd_dot_tt_id': phi_ps.bsd_dot_tt_id.id,
+                                    'bsd_hd_ban_id': phi_ps.bsd_hd_ban_id.id,
+                                    'bsd_so_ct': phi_ps.bsd_ma_ps,
+                                    'bsd_loai_ct': 'pt_pps',
+                                    'bsd_tien': phi_ps.bsd_tong_tien,
+                                    'bsd_tien_phai_tt': phi_ps.bsd_tien_phai_tt,
+                                }
+                          )
+            list_ct.append(ct_can_tru)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Cấn trừ công nợ',
+            'res_model': 'bsd.can_tru',
+            'view_mode': 'form',
+            'target': 'current',
+            'context': {'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                        'default_bsd_loai': 'pps',
+                        'default_bsd_hd_ban_id': self.bsd_hd_ban_id.id,
+                        'default_dot_tt_id': self.bsd_dot_tt_id.id,
+                        'default_bsd_phieu_thu_id': self.id,
+                        'default_bsd_ct_ids': list_ct
+                        }
+        }
 
     @api.model
     def create(self, vals):

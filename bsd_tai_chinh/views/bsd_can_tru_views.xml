@@ -42,7 +42,22 @@
                             <field name="currency_id" invisible="1"/>
                         </group>
                     </group>
-                    <button string="Load" name="action_load" type="object" class="oe_right oe_highlight"/>
+                    <group string="LỌC CÔNG NỢ">
+                        <group>
+                            <field name="bsd_loai"/>
+                            <field name="bsd_hd_ban_id"
+                                   options="{'no_create':true}"
+                                   attrs="{'invisible':[('bsd_loai', '=', 'tat_ca')]}"/>
+
+                        </group>
+                        <group>
+                            <field name="bsd_dot_tt_id"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_hd_ban_id', '=', bsd_hd_ban_id)]"
+                                   attrs="{'invisible':[('bsd_loai', '!=', 'pps')]}"/>
+                        </group>
+                        <button string="Load" name="action_load" type="object" class="oe_right oe_highlight"/>
+                    </group>
                     <field name="bsd_ct_ids" nolabel="1" >
                         <tree editable="top" create="false" delete="false">
                             <field name="bsd_loai_ct"/>

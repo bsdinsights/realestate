@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
@@ -28,6 +28,14 @@ class BsdCanTru(models.Model):
                                    states={'nhap': [('readonly', False)]})
     bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thu", help="Phiếu thu", readonly=True,
                                        states={'nhap': [('readonly', False)]})
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Điều kiện lọc thêm hợp đồng")
+    bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán", help="Lọc phí phát sinh theo đợt")
+
+    bsd_loai = fields.Selection([('tat_ca', 'Tất cả'),
+                                 ('dtt', 'Đợt thanh toán'),
+                                 ('pps', 'Phí phát sinh')], string="Lọc theo",
+                                help="Phân loại lọc dữ liệu",
+                                default='tat_ca', required=True)
     bsd_ngay_ct = fields.Datetime(string="Ngày chứng từ", help="Ngày chứng từ", related='bsd_phieu_thu_id.bsd_ngay_pt')
     bsd_tien_con_lai = fields.Monetary(related="bsd_phieu_thu_id.bsd_tien_con_lai", store=True)
     state = fields.Selection([('nhap', 'Nháp'),
@@ -54,76 +62,125 @@ class BsdCanTru(models.Model):
 
     # TC.04.01 Load chứng từ cần cấn trừ
     def action_load(self):
-        # Xóa bảng chi tiết
-        self.bsd_ct_ids.unlink()
-        # Lấy chứng từ giữ chỗ thiện chí
-        gc_tc_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
-                                                    ('bsd_loai_ct', '=', 'gc_tc'),
-                                                    ('bsd_gc_tc_id', '!=', False)]).mapped('bsd_gc_tc_id')
-        for gc_tc in gc_tc_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
-            self.bsd_ct_ids.create({
-                'bsd_gc_tc_id': gc_tc.id,
-                'bsd_so_ct': gc_tc.bsd_ma_gctc,
-                'bsd_loai_ct': 'pt_gctc',
-                'bsd_tien': gc_tc.bsd_tien_gc,
-                'bsd_tien_phai_tt': gc_tc.bsd_tien_phai_tt,
-                'bsd_can_tru_id': self.id,
-            })
-        # Lấy chứng từ giữ chỗ
-        giu_cho_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
-                                                      ('bsd_loai_ct', '=', 'giu_cho'),
-                                                      ('bsd_giu_cho_id', '!=', False)]).mapped('bsd_giu_cho_id')
-        for giu_cho in giu_cho_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
-            self.bsd_ct_ids.create({
-                'bsd_giu_cho_id': giu_cho.id,
-                'bsd_so_ct': giu_cho.bsd_ma_gc,
-                'bsd_loai_ct': 'pt_gc',
-                'bsd_tien': giu_cho.bsd_tien_gc,
-                'bsd_tien_phai_tt': giu_cho.bsd_tien_phai_tt,
-                'bsd_can_tru_id': self.id,
-            })
+        # Xóa bảng chi tiết không được cấn trừ
+        self.bsd_ct_ids.filtered(lambda x: x.bsd_tien_can_tru <= 0).unlink()
+        if self.bsd_loai == 'tat_ca':
+            # Lấy chứng từ giữ chỗ thiện chí
+            gc_tc_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
+                                                        ('bsd_loai_ct', '=', 'gc_tc'),
+                                                        ('bsd_gc_tc_id', '!=', False)]).mapped('bsd_gc_tc_id')
+            for gc_tc in gc_tc_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
+                self.bsd_ct_ids.create({
+                    'bsd_gc_tc_id': gc_tc.id,
+                    'bsd_so_ct': gc_tc.bsd_ma_gctc,
+                    'bsd_loai_ct': 'pt_gctc',
+                    'bsd_tien': gc_tc.bsd_tien_gc,
+                    'bsd_tien_phai_tt': gc_tc.bsd_tien_phai_tt,
+                    'bsd_can_tru_id': self.id,
+                })
+            # Lấy chứng từ giữ chỗ
+            giu_cho_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
+                                                          ('bsd_loai_ct', '=', 'giu_cho'),
+                                                          ('bsd_giu_cho_id', '!=', False)]).mapped('bsd_giu_cho_id')
+            for giu_cho in giu_cho_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
+                self.bsd_ct_ids.create({
+                    'bsd_giu_cho_id': giu_cho.id,
+                    'bsd_so_ct': giu_cho.bsd_ma_gc,
+                    'bsd_loai_ct': 'pt_gc',
+                    'bsd_tien': giu_cho.bsd_tien_gc,
+                    'bsd_tien_phai_tt': giu_cho.bsd_tien_phai_tt,
+                    'bsd_can_tru_id': self.id,
+                })
 
-        # Lấy chứng từ đặt cọc
-        dat_coc_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
-                                                      ('bsd_loai_ct', '=', 'dat_coc'),
-                                                      ('bsd_dat_coc_id', '!=', False),
-                                                      ('bsd_dot_tt_id', '=', False)]).mapped('bsd_dat_coc_id')
-        for dat_coc in dat_coc_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
-            self.bsd_ct_ids.create({
-                'bsd_dat_coc_id': dat_coc.id,
-                'bsd_so_ct': dat_coc.bsd_ma_dat_coc,
-                'bsd_loai_ct': 'pt_dc',
-                'bsd_tien': dat_coc.bsd_tien_dc,
-                'bsd_tien_phai_tt': dat_coc.bsd_tien_phai_tt,
-                'bsd_can_tru_id': self.id,
-            })
-        # Lấy chứng từ đợt thanh toán
-        dot_tt_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
-                                                     ('bsd_dot_tt_id', '!=', False)]).mapped('bsd_dot_tt_id')
-        for dot_tt in dot_tt_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
-            self.bsd_ct_ids.create({
-                    'bsd_dot_tt_id': dot_tt.id,
-                    'bsd_hd_ban_id': dot_tt.bsd_hd_ban_id.id,
-                    'bsd_so_ct': dot_tt.bsd_ten_dtt,
-                    'bsd_loai_ct': 'pt_dtt',
-                    'bsd_tien': dot_tt.bsd_tien_dot_tt,
-                    'bsd_tien_phai_tt': dot_tt.bsd_tien_phai_tt,
+            # Lấy chứng từ đặt cọc
+            dat_coc_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
+                                                          ('bsd_loai_ct', '=', 'dat_coc'),
+                                                          ('bsd_dat_coc_id', '!=', False),
+                                                          ('bsd_dot_tt_id', '=', False)]).mapped('bsd_dat_coc_id')
+            for dat_coc in dat_coc_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
+                self.bsd_ct_ids.create({
+                    'bsd_dat_coc_id': dat_coc.id,
+                    'bsd_so_ct': dat_coc.bsd_ma_dat_coc,
+                    'bsd_loai_ct': 'pt_dc',
+                    'bsd_tien': dat_coc.bsd_tien_dc,
+                    'bsd_tien_phai_tt': dat_coc.bsd_tien_phai_tt,
                     'bsd_can_tru_id': self.id,
-            })
-        # Lấy chứng từ phí phát sinh
-        phi_ps_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
-                                                     ('bsd_loai_ct', '=', 'phi_ps')]).mapped('bsd_phi_ps_id')
-        for phi_ps in phi_ps_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
-            self.bsd_ct_ids.create({
-                    'bsd_phi_ps_id': phi_ps.id,
-                    'bsd_dot_tt_id': phi_ps.bsd_dot_tt_id.id,
-                    'bsd_hd_ban_id': phi_ps.bsd_hd_ban_id.id,
-                    'bsd_so_ct': phi_ps.bsd_ma_ps,
-                    'bsd_loai_ct': 'pt_pps',
-                    'bsd_tien': phi_ps.bsd_tong_tien,
-                    'bsd_tien_phai_tt': phi_ps.bsd_tien_phai_tt,
-                    'bsd_can_tru_id': self.id,
-            })
+                })
+            # Lấy chứng từ đợt thanh toán
+            dot_tt_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
+                                                         ('bsd_dot_tt_id', '!=', False)]).mapped('bsd_dot_tt_id')
+            for dot_tt in dot_tt_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
+                self.bsd_ct_ids.create({
+                        'bsd_dot_tt_id': dot_tt.id,
+                        'bsd_hd_ban_id': dot_tt.bsd_hd_ban_id.id,
+                        'bsd_so_ct': dot_tt.bsd_ten_dtt,
+                        'bsd_loai_ct': 'pt_dtt',
+                        'bsd_tien': dot_tt.bsd_tien_dot_tt,
+                        'bsd_tien_phai_tt': dot_tt.bsd_tien_phai_tt,
+                        'bsd_can_tru_id': self.id,
+                })
+            # Lấy chứng từ phí phát sinh
+            phi_ps_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
+                                                         ('bsd_loai_ct', '=', 'phi_ps')]).mapped('bsd_phi_ps_id')
+            for phi_ps in phi_ps_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
+                self.bsd_ct_ids.create({
+                        'bsd_phi_ps_id': phi_ps.id,
+                        'bsd_dot_tt_id': phi_ps.bsd_dot_tt_id.id,
+                        'bsd_hd_ban_id': phi_ps.bsd_hd_ban_id.id,
+                        'bsd_so_ct': phi_ps.bsd_ma_ps,
+                        'bsd_loai_ct': 'pt_pps',
+                        'bsd_tien': phi_ps.bsd_tong_tien,
+                        'bsd_tien_phai_tt': phi_ps.bsd_tien_phai_tt,
+                        'bsd_can_tru_id': self.id,
+                })
+        elif self.bsd_loai == 'dtt':
+            if not self.bsd_hd_ban_id:
+                raise UserError(_('Vui lòng chọn hợp đồng'))
+            # Lấy chứng từ đợt thanh toán
+            dot_tt_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
+                                                         ('bsd_dot_tt_id', '!=', False),
+                                                         ('bsd_hd_ban', '=', self.bsd_hd_ban.id)])\
+                .mapped('bsd_dot_tt_id')
+            for dot_tt in dot_tt_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
+                self.bsd_ct_ids.create({
+                        'bsd_dot_tt_id': dot_tt.id,
+                        'bsd_hd_ban_id': dot_tt.bsd_hd_ban_id.id,
+                        'bsd_so_ct': dot_tt.bsd_ten_dtt,
+                        'bsd_loai_ct': 'pt_dtt',
+                        'bsd_tien': dot_tt.bsd_tien_dot_tt,
+                        'bsd_tien_phai_tt': dot_tt.bsd_tien_phai_tt,
+                        'bsd_can_tru_id': self.id,
+                })
+        elif self.bsd_loai == 'pps':
+            phi_ps_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
+                                                         ('bsd_loai_ct', '=', 'phi_ps')]).mapped('bsd_phi_ps_id')
+            if not self.bsd_dot_tt_id:
+                # Lấy chứng từ phí phát sinh
+                for phi_ps in phi_ps_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
+                    self.bsd_ct_ids.create({
+                            'bsd_phi_ps_id': phi_ps.id,
+                            'bsd_dot_tt_id': phi_ps.bsd_dot_tt_id.id,
+                            'bsd_hd_ban_id': phi_ps.bsd_hd_ban_id.id,
+                            'bsd_so_ct': phi_ps.bsd_ma_ps,
+                            'bsd_loai_ct': 'pt_pps',
+                            'bsd_tien': phi_ps.bsd_tong_tien,
+                            'bsd_tien_phai_tt': phi_ps.bsd_tien_phai_tt,
+                            'bsd_can_tru_id': self.id,
+                    })
+            else:
+                phi_ps_ids.filtered(lambda x: x.bsd_dot_tt_id == self.bsd_dot_tt_id)
+                # Lấy chứng từ phí phát sinh
+                for phi_ps in phi_ps_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
+                    self.bsd_ct_ids.create({
+                            'bsd_phi_ps_id': phi_ps.id,
+                            'bsd_dot_tt_id': phi_ps.bsd_dot_tt_id.id,
+                            'bsd_hd_ban_id': phi_ps.bsd_hd_ban_id.id,
+                            'bsd_so_ct': phi_ps.bsd_ma_ps,
+                            'bsd_loai_ct': 'pt_pps',
+                            'bsd_tien': phi_ps.bsd_tong_tien,
+                            'bsd_tien_phai_tt': phi_ps.bsd_tien_phai_tt,
+                            'bsd_can_tru_id': self.id,
+                    })
 
     # TC.04.03 Cấn trừ công nợ
     def action_can_tru(self):
