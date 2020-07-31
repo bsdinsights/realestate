@@ -52,6 +52,7 @@ class BsdDatCoc(models.Model):
                                   related="bsd_bao_gia_id.bsd_tien_dc",store=True)
     bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Tên căn hộ",
                                   related="bsd_bao_gia_id.bsd_unit_id", store=True)
+    bsd_ten_sp = fields.Char(related="bsd_unit_id.name")
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích tim tường",
                              related="bsd_bao_gia_id.bsd_dt_xd", store=True)
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",
@@ -134,7 +135,7 @@ class BsdDatCoc(models.Model):
     def name_get(self):
         res = []
         for dc in self:
-            res.append((dc.id, "%s" % dc.bsd_unit_id))
+            res.append((dc.id, "%s" % dc.bsd_ten_sp))
         return res
 
     @api.model

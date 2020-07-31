@@ -41,6 +41,7 @@ class BsdHopDongMuaBan(models.Model):
                                       related="bsd_dat_coc_id.bsd_bang_gia_id", store=True)
     bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Tên căn hộ",
                                   related="bsd_dat_coc_id.bsd_unit_id", store=True)
+    bsd_ten_sp = fields.Char(related="bsd_unit_id.name")
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích tim tường",
                              related="bsd_dat_coc_id.bsd_dt_xd", store=True)
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",
@@ -147,7 +148,7 @@ class BsdHopDongMuaBan(models.Model):
     def name_get(self):
         res = []
         for hd in self:
-            res.append((hd.id, "%s" % hd.bsd_unit_id))
+            res.append((hd.id, "%s" % hd.bsd_ten_sp))
         return res
 
     # DV.01.11 - Theo dõi chiết khấu mua sỉ (nút nhấn wizard)
