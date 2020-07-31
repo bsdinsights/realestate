@@ -44,7 +44,7 @@ class BsdHuyNghiemThu(models.TransientModel):
     bsd_ly_do = fields.Char(string="Lý do hủy", required=True)
 
     def action_xac_nhan(self):
-        self.bsd_hd_ban_cn_id.write({
+        self.bsd_nghiem_thu_id.write({
             'bsd_ly_do_huy': self.bsd_ly_do,
-            'state': 'nhap',
+            'state': 'huy',
         })
