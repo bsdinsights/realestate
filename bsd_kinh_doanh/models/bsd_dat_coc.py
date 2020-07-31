@@ -130,6 +130,13 @@ class BsdDatCoc(models.Model):
                                     readonly=True)
     bsd_dsh_ids = fields.Many2many('res.partner', string="Đồng sở hữu", readonly=True)
 
+    # Tên hiện thị record
+    def name_get(self):
+        res = []
+        for dc in self:
+            res.append((dc.id, "%s" % dc.bsd_unit_id))
+        return res
+
     @api.model
     def create(self, vals):
         # KD.10.07 kiểm tra báo giá đã có đặt cọc chưa:

@@ -143,6 +143,13 @@ class BsdHopDongMuaBan(models.Model):
     bsd_nguoi_duyet_bgdb_id = fields.Many2one('res.users', string="Người duyệt BGĐB",
                                               help="Người duyệt bàn giao đặc biệt", readonly=True)
 
+    # Tên hiện thị record
+    def name_get(self):
+        res = []
+        for hd in self:
+            res.append((hd.id, "%s" % hd.bsd_unit_id))
+        return res
+
     # DV.01.11 - Theo dõi chiết khấu mua sỉ (nút nhấn wizard)
     def action_ck_ms(self):
         action = self.env.ref('bsd_dich_vu.bsd_wizard_ms_hdb_action').read()[0]
