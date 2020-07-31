@@ -172,7 +172,7 @@ class BsdNghiemThu(models.Model):
                 'res_id': message_id.id,
                 'target': 'new'
             }
-        if not self.bsd_unit_id.bsd_ngay_bg:
+        if self.bsd_unit_id.bsd_ngay_bg:
             if self.state in ['nhap', 'xac_nhan_tt', 'xac_nhan']:
                 self.write({
                     'state': 'huy',
