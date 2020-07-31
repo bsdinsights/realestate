@@ -34,14 +34,16 @@ class BsdPhiPhatSinh(models.Model):
     bsd_unit_id = fields.Many2one(related='bsd_hd_ban_id.bsd_unit_id', store=True)
     bsd_khach_hang_id = fields.Many2one(related='bsd_hd_ban_id.bsd_khach_hang_id', store=True)
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán", required=True,
-                                    help="Đợt thanh toán đính kèm phí phát sinh")
+                                    help="Đợt thanh toán đính kèm phí phát sinh",
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]})
     bsd_so_tt_tb = fields.Integer(string="STT thông báo",
                                   help="STT hiển thị khoản phí trên thông báo thanh toán theo đợt",
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_loai = fields.Selection(selection='_method_choice', string="Phân loại", help="Nguồn gốc phát sinh phí phát sinh",
                                 required=True, default='bg_gt',
-                                eadonly=True,
+                                readonly=True,
                                 states={'nhap': [('readonly', False)]})
 
     @api.model
