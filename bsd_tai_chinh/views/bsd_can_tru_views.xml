@@ -34,7 +34,7 @@
                             <field name="bsd_phieu_thu_id"
                                    options="{'no_create':true}"
                                    domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id]),
-                                            ('bsd_loai_pt', 'in', ['tra_truoc','khac']),
+                                            ('bsd_loai_pt', 'in', ['tra_truoc','khac','pps']),
                                             ('state', '=', 'da_gs')]"/>
                             <field name="bsd_ngay_ct"/>
                             <field name="bsd_tien_con_lai"/>
