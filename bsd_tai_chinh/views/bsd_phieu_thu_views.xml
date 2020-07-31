@@ -20,9 +20,10 @@
                     <button string="Cấn trừ"
                             name="action_can_tru"
                             type="object"
+                            states="da_gs"
                             confirm="Bạn có muốn cấn trừ công nợ cho chứng từ này không?"
                             attrs="{'invisible':['|',('bsd_tien_con_lai', '=', 0),
-                                                 '|',('bsd_loai_pt', 'in',['tra_truoc','khac','pps'])]}"
+                                                 '|',('bsd_loai_pt', 'not in',['tra_truoc','khac','pps'])]}"
                             class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
