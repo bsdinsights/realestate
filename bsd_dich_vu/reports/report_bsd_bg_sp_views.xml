@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
-        <record model="ir.ui.view" id="bsd_nghiem_thu_report_wizard_form">
-            <field name="name">bsd.nghiem_thu.report.wizard.form</field>
-            <field name="model">bsd.nghiem_thu.report.wizard</field>
+        <record model="ir.ui.view" id="bsd_bg_sp_report_wizard_form">
+            <field name="name">bsd.bg_sp.report.wizard.form</field>
+            <field name="model">bsd.bg_sp.report.wizard</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="In biên bản nghiệm thu">
+                <form string="In biên bản bàn giao">
                     <group>
                         <group>
                             <field name="bsd_mau_in"/>
-                            <field name="bsd_nghiem_thu_id"/>
+                            <field name="bsd_bg_sp_id"/>
                         </group>
                     </group>
                     <footer>
@@ -20,25 +20,25 @@
                 </form>
             </field>
         </record>
-        <act_window id="bsd_nghiem_thu_report_action"
-                    name="Chọn mẫu in nghiệm thu"
-                    res_model="bsd.nghiem_thu.report.wizard"
+        <act_window id="bsd_bg_sp_report_action"
+                    name="Chọn mẫu in bàn giao"
+                    res_model="bsd.bg_sp.report.wizard"
                     view_mode="form"
                     target="new"/>
-        <report id="bsd_mau_in_nghiem_thu_html"
-                model="bsd.nghiem_thu.report.wizard"
-                string="Nghiệm thu sản phẩm"
+        <report id="bsd_mau_in_bg_sp_html"
+                model="bsd.bg_sp.report.wizard"
+                string="Bàn giao sản phẩm"
                 report_type="qweb-html"
-                name="bsd_dich_vu.bsd_nghiem_thu_view"
+                name="bsd_dich_vu.bsd_bg_sp_view"
                 menu="False"/>
-        <template id="bsd_nghiem_thu_view">
+        <template id="bsd_bg_sp_view">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
                     <t t-set="doc" t-value="doc.with_context(lang=lang)" />
                     <t t-call="web.external_layout">
                         <div class="page bsd_font">
                             <div class="row">
-                                <div>Nghiệm thu sản phẩm</div>
+                                <div>Bàn giaosản phẩm</div>
                             </div>
                         </div>
                     </t>

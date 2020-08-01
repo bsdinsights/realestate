@@ -48,8 +48,8 @@ class BsdBanGiaoSanPham(models.Model):
     bsd_nguoi_in_id = fields.Many2one('res.users', string="Người in", help="Người in biên bản bàn giao sản phẩm",
                                       readonly=True)
     bsd_ngay_bg_tt = fields.Datetime(string="Ngày BG thực tế", help="Ngày bàn giao sản phẩm thực tế", readonly=True)
-    bsd_nguoi_bg_tt_id = fields.Many2one('res.users', string="Người BG thực tế", help="Người bàn giao sản phẩm thực tế",
-                                      readonly=True)
+    bsd_nguoi_bg_tt_id = fields.Many2one('hr.employee', string="Người BG thực tế",
+                                         help="Người bàn giao sản phẩm thực tế", readonly=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'),
@@ -63,6 +63,28 @@ class BsdBanGiaoSanPham(models.Model):
     def _onchange_hd_ban(self):
         self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
         self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
+
+    # DV.11.01 Xác nhận bàn giao sản phẩm
+    def action_xac_nhan(self):
+        if self.state == 'nhap':
+            self.write({
+                'state': 'xac_nhan',
+            })
+
+    # DV.11.02 In biên bản bàn giao sản phẩm
+    def action_in(self):
+        action = self.env.ref('bsd_dich_vu.bsd_bg_sp_report_action').read()[0]
+        return action
+
+    # DV.11.03 Ký biên bản bàn giao sản phẩm
+    def action_ky(self):
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_bg_sp_action').read()[0]
+        return action
+
+    # DV.11.04 Hủy bàn giao sản phẩm
+    def action_huy(self):
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_huy_bg_sp_action').read()[0]
+        return action
 
     @api.model
     def create(self, vals):

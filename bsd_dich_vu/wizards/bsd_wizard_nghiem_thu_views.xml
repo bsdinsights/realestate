@@ -34,12 +34,13 @@
             </form>
         </field>
     </record>
-    <act_window id="bsd_wizard_nghiem_thu_action"
-                name="Tạo thông báo"
-                binding_model="bsd.cn_dkbg"
-                res_model="bsd.wizard.nghiem_thu"
-                view_mode="form"
-                target="new"/>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_nghiem_thu_action">
+        <field name="name">Chọn đợt đính kèm phí phát sinh</field>
+        <field name="res_model">bsd.wizard.nghiem_thu</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
     
     <record model="ir.ui.view" id="bsd_wizard_huy_nt_form">
         <field name="name">bsd.wizard.huy_nt.form</field>
