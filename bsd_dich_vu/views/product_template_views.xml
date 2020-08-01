@@ -17,6 +17,9 @@
                     </group>
                 </group>
             </xpath>
+            <xpath expr="//field[@name='bsd_ngay_bg']" position="after">
+                <field name="bsd_bg_sp_id"/>
+            </xpath>
         </field>
     </record>
 </odoo>

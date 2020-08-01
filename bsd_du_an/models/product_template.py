@@ -125,7 +125,6 @@ class ProductTemplate(models.Model):
                               help="Ngày chứng nhận cất nóc (bê tông tầng mái)")
     bsd_ngay_cap_sh = fields.Date(string="Ngày cấp sổ hồng",
                                   help="Ngày khách hàng nhận sổ hồng căn hộ")
-    bsd_da_cap_sh = fields.Selection([('co', 'Có'), ('khong', 'Không')], string="Đã cấp sổ hồng", default='khong')
     state = fields.Selection([('chuan_bi', 'Chuẩn bị'),
                               ('san_sang', 'Sẵn sàng'),
                               ('dat_cho', 'Đặt chỗ'),
