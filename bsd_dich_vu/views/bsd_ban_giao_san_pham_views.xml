@@ -42,12 +42,14 @@
                                    domain="['&amp;',('bsd_du_an_id', '=', bsd_du_an_id),
                                             '|',('state', '=', 'du_dk'),('bsd_duyet_bgdb', '=', True)]"
                                    options="{'no_create':true}"/>
-                            <field name="bsd_unit_id" readonly="1"/>
+                            <field name="bsd_unit_id" readonly="1"
+                                   context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"/>
                             <field name="bsd_unit_id" invisible="1"/>
                         </group>
                         <group>
                             <field name="bsd_duyet_bgdb"/>
-                            <field name="bsd_khach_hang_id" readonly="1"/>
+                            <field name="bsd_khach_hang_id" readonly="1"
+                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"/>
                             <field name="bsd_khach_hang_id" invisible="1"/>
                             <field name="bsd_tien_tt_hd"/>
                             <label for="bsd_tl_tt_hd"/>
