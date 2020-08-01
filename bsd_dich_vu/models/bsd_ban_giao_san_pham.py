@@ -63,10 +63,15 @@ class BsdBanGiaoSanPham(models.Model):
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
     bsd_ly_do = fields.Char(string="Lý do hủy", readonly=True, tracking=2)
 
+    @api.onchange('bsd_hd_ban_id')
+    def _onchange_hd_ban(self):
+        self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
+        self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
+
     @api.model
     def create(self, vals):
         sequence = False
-        if 'bsd_tb_bg_id' in vals:
+        if 'bsd_du_an_id' in vals:
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
