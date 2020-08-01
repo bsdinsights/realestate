@@ -144,6 +144,9 @@ class BsdHopDongMuaBan(models.Model):
     bsd_nguoi_duyet_bgdb_id = fields.Many2one('res.users', string="Người duyệt BGĐB",
                                               help="Người duyệt bàn giao đặc biệt", readonly=True)
 
+    bsd_tl_tt_hd = fields.Float(string="Tỷ lệ thanh toán HĐ", help="Tỷ lệ thanh toán hợp đồng", digits=(10, 1))
+    bsd_tien_tt_hd = fields.Monetary(string="Tiền thanh toán HĐ", help="Tiền thanh toán hợp đồng")
+
     # Tên hiện thị record
     def name_get(self):
         res = []

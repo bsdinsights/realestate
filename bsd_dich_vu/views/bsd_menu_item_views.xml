@@ -60,6 +60,11 @@
               sequence="18"
               action="bsd_tb_bg_action"
               parent="bsd_main_dich_vu_root"/>
+    <menuitem id="bsd_bg_sp_menu_action"
+              name="Bàn giao sản phẩm"
+              sequence="19"
+              action="bsd_bg_sp_action"
+              parent="bsd_main_dich_vu_root"/>
     <menuitem id="bsd_ps_gd_km_menu_action"
               name="Giao dịch khuyến mãi"
               sequence="100"

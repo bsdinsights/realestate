@@ -48,6 +48,7 @@ class BsdMaBoChungTu(models.Model):
                                     ('bsd.tb_nt', 'Thông báo nghiệm thu'),
                                     ('bsd.tb_bg', 'Thông báo bàn giao'),
                                     ('bsd.nghiem_thu', 'Nghiệm thu'),
+                                    ('bsd.bg_sp', 'Bàn giao sản phẩm'),
                                     ('bsd.phi_ps', 'Phí phát sinh')],
                                    string="Loại chứng từ", help="Loại chứng từ được đặt mã", required=True)
     bsd_ma_cn = fields.Char(string="Mã chứng từ", help="Mã tiền tố của chứng từ", required=True)

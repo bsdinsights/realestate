@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_bg_sp_form">
+        <field name="name">bsd.bg_sp.form</field>
+        <field name="model">bsd.bg_sp</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma_bg"/>
+                            <field name="bsd_ngay_tao_bg"/>
+                            <field name="bsd_ten_bg"/>
+                            <field name="bsd_du_an_id"/>
+                            <field name="bsd_hd_ban_id"/>
+                            <field name="bsd_unit_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_duyet_bgdb"/>
+                            <field name="bsd_khach_hang_id"/>
+                            <field name="bsd_tien_tt_hd"/>
+                            <field name="bsd_tl_tt_hd"/>
+                            <field name="bsd_dt_tt"/>
+                            <field name="bsd_ngay_dkbg"/>
+                        </group>
+                    </group>
+                    <group string="XÁC NHẬN">
+                        <group>
+                            <field name="bsd_ngay_in"/>
+                            <field name="bsd_nguoi_in_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ngay_bg_tt"/>
+                            <field name="bsd_nguoi_bg_tt_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_bg_sp_tree">
+        <field name="name">bsd.bg_sp.tree</field>
+        <field name="model">bsd.bg_sp</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_bg"/>
+                <field name="bsd_ngay_tao_bg"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_bg_sp_action">
+        <field name="name">Bàn giao sản phẩm</field>
+        <field name="res_model">bsd.bg_sp</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo nghiệm thu</p>
+        </field>
+    </record>
+</odoo>
