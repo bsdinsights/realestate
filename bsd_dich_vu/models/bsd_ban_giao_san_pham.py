@@ -25,10 +25,6 @@ class BsdBanGiaoSanPham(models.Model):
     bsd_ten_bg = fields.Char(string="Tiêu đề", required=True,
                              readonly=True,
                              states={'nhap': [('readonly', False)]})
-    bsd_tb_bg_id = fields.Many2one('bsd.tb_bg', string="TB bàn giao", required=True,
-                                   help="Thông báo bàn giao sản phẩm",
-                                   readonly=True,
-                                   states={'nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})

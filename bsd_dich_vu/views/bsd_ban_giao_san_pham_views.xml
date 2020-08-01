@@ -27,8 +27,16 @@
                             <field name="bsd_khach_hang_id" readonly="1"/>
                             <field name="bsd_khach_hang_id" invisible="1"/>
                             <field name="bsd_tien_tt_hd"/>
-                            <field name="bsd_tl_tt_hd"/>
-                            <field name="bsd_dt_tt"/>
+                            <label for="bsd_tl_tt_hd"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_tl_tt_hd" class="mr-1"/>
+                                <span>%</span>
+                            </div>
+                            <label for="bsd_dt_tt"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_dt_tt" class="mr-1"/>
+                                <span>m2</span>
+                            </div>
                             <field name="bsd_ngay_dkbg"/>
                             <field name="company_id" invisible="1"/>
                             <field name="currency_id" invisible="1"/>
