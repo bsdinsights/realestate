@@ -226,23 +226,26 @@ class BsdCanTruChiTiet(models.Model):
                                     ('pt_pps', 'Phí phát sinh'),
                                     ('pt_dtt', 'Đợt thanh toán')], string="Loại chứng từ",
                                    help="Loại chứng từ", readonly=True)
-    bsd_so_ct = fields.Char(string="Số chứng từ", help="Số chứng từ", readonly=True)
-    bsd_ngay_ct = fields.Datetime(string="Ngày chứng từ", help="Ngày chứng từ", readonly=True)
-    bsd_tien = fields.Monetary(string="Tiền", help="Tiền trên chứng từ", readonly=True)
-    bsd_tien_phai_tt = fields.Monetary(string="Phải thanh toán", help="Phải thanh toán", readonly=True)
+    bsd_so_ct = fields.Char(string="Số chứng từ", help="Số chứng từ")
+    bsd_ngay_ct = fields.Datetime(string="Ngày chứng từ", help="Ngày chứng từ")
+    bsd_tien = fields.Monetary(string="Tiền", help="Tiền trên chứng từ")
+    bsd_tien_phai_tt = fields.Monetary(string="Phải thanh toán", help="Phải thanh toán",)
     bsd_tien_can_tru = fields.Monetary(string="Tiền cấn trừ", help="Tiền cấn trừ")
 
-    bsd_gc_tc_id = fields.Many2one('bsd.gc_tc', string="Giữ chỗ thiện chí", help="Giữ chỗ thiện chí", readonly=True)
-    bsd_giu_cho_id = fields.Many2one('bsd.giu_cho', string="Giữ chỗ", help="Giữ chỗ", readonly=True)
-    bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Đặt cọc", readonly=True)
-    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng", readonly=True)
-    bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán", readonly=True)
-    bsd_phi_ps_id = fields.Many2one('bsd.phi_ps', string="Phí phát sinh", readonly=True)
+    bsd_gc_tc_id = fields.Many2one('bsd.gc_tc', string="Giữ chỗ thiện chí", help="Giữ chỗ thiện chí")
+    bsd_giu_cho_id = fields.Many2one('bsd.giu_cho', string="Giữ chỗ", help="Giữ chỗ")
+    bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Đặt cọc")
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng")
+    bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán")
+    bsd_phi_ps_id = fields.Many2one('bsd.phi_ps', string="Phí phát sinh")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
     @api.constrains('bsd_tien_can_tru')
     def _constrains_tien_can_tru(self):
+        _logger.debug("Tiền cấn trừ")
+        _logger.debug(self.bsd_tien_can_tru)
+        _logger.debug(self.bsd_tien_phai_tt)
         if self.bsd_tien_can_tru > self.bsd_tien_phai_tt:
             raise UserError("Tiền cấn trừ không thể lớn hơn tiền phải thanh toán")
 

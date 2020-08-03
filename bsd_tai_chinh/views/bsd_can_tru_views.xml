@@ -63,15 +63,26 @@
                     </group>
                     <field name="bsd_ct_ids" nolabel="1" >
                         <tree editable="top" create="false" delete="false">
-                            <field name="bsd_loai_ct"/>
-                            <field name="bsd_so_ct"/>
-                            <field name="bsd_hd_ban_id"/>
-                            <field name="bsd_ngay_ct"/>
-                            <field name="bsd_tien"/>
-                            <field name="bsd_tien_phai_tt"/>
-                            <field name="bsd_tien_can_tru"/>
                             <field name="company_id" invisible="1"/>
                             <field name="currency_id" invisible="1"/>
+                            <field name="bsd_gc_tc_id" invisible="1" />
+                            <field name="bsd_giu_cho_id" invisible="1" />
+                            <field name="bsd_dat_coc_id" invisible="1" />
+                            <field name="bsd_dot_tt_id" invisible="1" />
+                            <field name="bsd_phi_ps_id" invisible="1" />
+                            <field name="bsd_loai_ct" invisible="1" />
+                            <field name="bsd_so_ct" invisible="1" />
+                            <field name="bsd_hd_ban_id" invisible="1" />
+                            <field name="bsd_ngay_ct" invisible="1" />
+                            <field name="bsd_tien" invisible="1" />
+                            <field name="bsd_tien_phai_tt" invisible="1" />
+                            <field name="bsd_loai_ct" readonly="1" />
+                            <field name="bsd_so_ct" readonly="1" />
+                            <field name="bsd_hd_ban_id" readonly="1" />
+                            <field name="bsd_ngay_ct" readonly="1" />
+                            <field name="bsd_tien" readonly="1" />
+                            <field name="bsd_tien_phai_tt" readonly="1" />
+                            <field name="bsd_tien_can_tru"/>
                         </tree>
                     </field>
                 </sheet>
