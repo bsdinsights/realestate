@@ -40,7 +40,7 @@
                             <field name="bsd_du_an_id" options="{'no_create':true}"/>
                             <field name="bsd_hd_ban_id"
                                    domain="['&amp;',('bsd_du_an_id', '=', bsd_du_an_id),
-                                            '|',('state', '=', 'du_dk'),('bsd_duyet_bgdb', '=', True)]"
+                                            '|',('state', '=', 'du_dkbg'),('bsd_duyet_bgdb', '=', True)]"
                                    options="{'no_create':true}"/>
                             <field name="bsd_unit_id" readonly="1"
                                    context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"/>
