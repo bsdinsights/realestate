@@ -241,7 +241,7 @@ class BsdCanTruChiTiet(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
-    @api.constrains('bsd_tien_can_tru')
+    @api.constrains('bsd_tien_can_tru', 'bsd_tien_phai_tt')
     def _constrains_tien_can_tru(self):
         if self.bsd_tien_can_tru > self.bsd_tien_phai_tt:
             raise UserError("Tiền cấn trừ không thể lớn hơn tiền phải thanh toán")
