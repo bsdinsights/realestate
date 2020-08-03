@@ -301,3 +301,18 @@ class BsdDatCoc(models.Model):
                 'bsd_tien': ck_db.bsd_tien,
                 'bsd_tien_ck': ck_db.bsd_tien_ck,
             })
+
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        # private implementation of name_search, allows passing a dedicated user
+        # for the name_get part to solve some access rights issues
+        args = list(args or [])
+        # optimize out the default criterion of ``ilike ''`` that matches everything
+        if not self.bsd_ten_sp:
+            _logger.warning("Cannot execute name_search, no _rec_name defined on %s", self._name)
+        elif not (name == '' and operator == 'ilike'):
+            args += [(self.bsd_ten_sp, operator, name)]
+        access_rights_uid = name_get_uid or self._uid
+        ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
+        recs = self.browse(ids)
+        return models.lazy_name_get(recs.with_user(access_rights_uid))
