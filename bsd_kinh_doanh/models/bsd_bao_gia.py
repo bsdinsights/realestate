@@ -285,6 +285,8 @@ class BsdBaoGia(models.Model):
     def action_lich_tt(self):
         # Xóa lịch thanh toán hiện tại
         self.bsd_ltt_ids.unlink()
+        self.bsd_dot_pbt_ids.unlink()
+        self.bsd_dot_pql_ids.unlink()
         _logger.debug("Tao tu dong lich thanh toan")
 
         # hàm cộng tháng
