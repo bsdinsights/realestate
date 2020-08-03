@@ -158,7 +158,8 @@ class BsdPhiPhatSinh(models.Model):
                                                         'bsd_loai_ct': 'pt_pps',
                                                         'bsd_tien': self.bsd_tong_tien,
                                                         'bsd_tien_phai_tt': self.bsd_tien_phai_tt,
-                                                        'company_id': self.env.company.id
+                                                        'company_id': self.env.company.id,
+                                                        'currency_id': self.env.company.currency_id.id
                                                         }
                                                 )]
                         }
