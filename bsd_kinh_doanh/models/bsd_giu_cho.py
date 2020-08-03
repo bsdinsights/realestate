@@ -109,6 +109,18 @@ class BsdGiuCho(models.Model):
         for gc in self:
             res.append((gc.id, "%s" % gc.bsd_ten_sp))
         return res
+    
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        # private implementation of name_search, allows passing a dedicated user
+        # for the name_get part to solve some access rights issues
+        args = list(args or [])
+        if not (name == '' and operator == 'ilike'):
+            args += [('bsd_ten_sp', operator, name)]
+        access_rights_uid = name_get_uid or self._uid
+        ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
+        recs = self.browse(ids)
+        return models.lazy_name_get(recs.with_user(access_rights_uid))    
 
     # KD.07.02 Ràng buộc số giữ chỗ theo căn hộ/ NVBH
     @api.constrains('bsd_nvbh_id', 'bsd_unit_id')

@@ -307,11 +307,8 @@ class BsdDatCoc(models.Model):
         # private implementation of name_search, allows passing a dedicated user
         # for the name_get part to solve some access rights issues
         args = list(args or [])
-        # optimize out the default criterion of ``ilike ''`` that matches everything
-        if not self.bsd_ten_sp:
-            _logger.warning("Cannot execute name_search, no _rec_name defined on %s", self._name)
-        elif not (name == '' and operator == 'ilike'):
-            args += [(self.bsd_ten_sp, operator, name)]
+        if not (name == '' and operator == 'ilike'):
+            args += [('bsd_ten_sp', operator, name)]
         access_rights_uid = name_get_uid or self._uid
         ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
         recs = self.browse(ids)
