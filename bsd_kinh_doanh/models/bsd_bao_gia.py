@@ -305,7 +305,11 @@ class BsdBaoGia(models.Model):
         lai_phat = cs_tt.bsd_lai_phat_tt_id
         # dùng để tính tiền đợt thanh toán cuối
         tong_tien_dot_tt = 0
-
+        # Kiểm tra chính sách thanh toán chi tiết
+        if len(dot_tt_ids.filtlered(lambda x: x.bsd_cach_tinh == 'dkbg')):
+            raise UserError(_("Chính sách thanh toán chi tiết có nhiều hơn 1 đợt dự kiến bàn giao"))
+        if len(dot_tt_ids.filtlered(lambda x: x.bsd_dot_cuoi)):
+            raise UserError(_("Chính sách thanh toán chi tiết có nhiều hơn 1 đợt dự thanh toán cuối"))
         # Tạo các đợt thanh toán
         for dot in dot_tt_ids.sorted('bsd_stt'):
             # Tạo dữ liệu đợt cố định
@@ -371,9 +375,7 @@ class BsdBaoGia(models.Model):
                 dot_cuoi = dot
                 stt += 1
                 tien_dot_tt = (self.bsd_tong_gia - self.bsd_tien_pbt) - tong_tien_dot_tt
-                _logger.debug("tiền đợt cuối")
-                _logger.debug(tien_dot_tt)
-                self.bsd_ltt_ids.create(self._cb_du_lieu_dtt(stt, 'DBGC', dot_cuoi, lai_phat, False, cs_tt,
+                self.bsd_ltt_ids.create(self._cb_du_lieu_dtt(stt, 'DTTC', dot_cuoi, lai_phat, False, cs_tt,
                                                              tien_dot_tt))
 
         # Tạo đợt thu phí quản lý
