@@ -79,7 +79,9 @@ class BsdPhiPhatSinh(models.Model):
                                      compute="_compute_tien_tt", store=True)
     bsd_tien_phai_tt = fields.Monetary(string="Phải thanh toán", help="Phải thanh toán",
                                        compute="_compute_tien_tt", store=True)
-    bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_phi_ps_id', string="Công nợ chứng tự", readonly=True)
+    bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_phi_ps_id', string="Công nợ chứng tự",
+                                 domain=[('bsd_loai', '=', 'pt_pps')],
+                                 readonly=True)
     bsd_thanh_toan = fields.Selection([('chua_tt', 'Chưa thanh toán'), ('dang_tt', 'Đang thanh toán'),
                                        ('da_tt', 'Đã thanh toán')], string="Thanh toán", help="Tình trạng thanh toán",
                                       compute='_compute_tien_tt', store=True)
