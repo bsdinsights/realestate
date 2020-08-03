@@ -243,9 +243,6 @@ class BsdCanTruChiTiet(models.Model):
 
     @api.constrains('bsd_tien_can_tru')
     def _constrains_tien_can_tru(self):
-        _logger.debug("Tiền cấn trừ")
-        _logger.debug(self.bsd_tien_can_tru)
-        _logger.debug(self.bsd_tien_phai_tt)
         if self.bsd_tien_can_tru > self.bsd_tien_phai_tt:
             raise UserError("Tiền cấn trừ không thể lớn hơn tiền phải thanh toán")
 
