@@ -379,6 +379,7 @@ class BsdPhieuThu(models.Model):
     def action_can_tru(self):    
         if self.bsd_hd_ban_id.state == 'thanh_ly':
             raise UserError(_('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin!'))
+        list_ct = []
         if self.bsd_loai_pt == 'pps':
             if self.bsd_dot_tt_id:
                 phi_ps_ids = self.env['bsd.phi_ps'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)])
@@ -386,19 +387,19 @@ class BsdPhieuThu(models.Model):
                 phi_ps_ids = self.env['bsd.phi_ps'].search([('bsd_hd_ban_id', '=', self.bsd_hd_ban_id.id)])
             else:
                 phi_ps_ids = []
-        list_ct = []
-        for phi_ps in phi_ps_ids:
-            ct_can_tru = (0, 0, {
-                                    'bsd_phi_ps_id': phi_ps.id,
-                                    'bsd_dot_tt_id': phi_ps.bsd_dot_tt_id.id,
-                                    'bsd_hd_ban_id': phi_ps.bsd_hd_ban_id.id,
-                                    'bsd_so_ct': phi_ps.bsd_ma_ps,
-                                    'bsd_loai_ct': 'pt_pps',
-                                    'bsd_tien': phi_ps.bsd_tong_tien,
-                                    'bsd_tien_phai_tt': phi_ps.bsd_tien_phai_tt,
-                                }
-                          )
-            list_ct.append(ct_can_tru)
+
+            for phi_ps in phi_ps_ids:
+                ct_can_tru = (0, 0, {
+                                        'bsd_phi_ps_id': phi_ps.id,
+                                        'bsd_dot_tt_id': phi_ps.bsd_dot_tt_id.id,
+                                        'bsd_hd_ban_id': phi_ps.bsd_hd_ban_id.id,
+                                        'bsd_so_ct': phi_ps.bsd_ma_ps,
+                                        'bsd_loai_ct': 'pt_pps',
+                                        'bsd_tien': phi_ps.bsd_tong_tien,
+                                        'bsd_tien_phai_tt': phi_ps.bsd_tien_phai_tt,
+                                    }
+                              )
+                list_ct.append(ct_can_tru)
         return {
             'type': 'ir.actions.act_window',
             'name': 'Cấn trừ công nợ',
