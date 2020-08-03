@@ -382,8 +382,10 @@ class BsdPhieuThu(models.Model):
         if self.bsd_loai_pt == 'pps':
             if self.bsd_dot_tt_id:
                 phi_ps_ids = self.env['bsd.phi_ps'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)])
-            else:
+            elif self.bsd_hd_ban_id:
                 phi_ps_ids = self.env['bsd.phi_ps'].search([('bsd_hd_ban_id', '=', self.bsd_hd_ban_id.id)])
+            else:
+                phi_ps_ids = []
         list_ct = []
         for phi_ps in phi_ps_ids:
             ct_can_tru = (0, 0, {
