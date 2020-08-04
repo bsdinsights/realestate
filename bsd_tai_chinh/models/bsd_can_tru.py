@@ -172,9 +172,7 @@ class BsdCanTru(models.Model):
                             'bsd_can_tru_id': self.id,
                     })
             elif self.bsd_dot_tt_id and self.bsd_hd_ban_id:
-                _logger.debug("Lọc phí")
                 phi_ps_ids = phi_ps_ids.filtered(lambda x: x.bsd_dot_tt_id == self.bsd_dot_tt_id)
-                _logger.debug(phi_ps_ids)
                 # Lấy chứng từ phí phát sinh
                 for phi_ps in phi_ps_ids:
                     self.bsd_ct_ids.create({
@@ -188,7 +186,6 @@ class BsdCanTru(models.Model):
                             'bsd_can_tru_id': self.id,
                     })
             elif not self.bsd_dot_tt_id and self.bsd_hd_ban_id:
-                _logger.debug("123")
                 phi_ps_ids = phi_ps_ids.filtered(lambda x: x.bsd_hd_ban_id == self.bsd_hd_ban_id)
                 # Lấy chứng từ phí phát sinh
                 for phi_ps in phi_ps_ids:
