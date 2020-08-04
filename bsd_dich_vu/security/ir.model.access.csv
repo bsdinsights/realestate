@@ -20,4 +20,4 @@ bsd_nghiem_thu,Nghiệm thu,model_bsd_nghiem_thu,bsd_dich_vu.group_manager,1,1,1
 bsd_bg_sp,Bàn giao sản phẩm,model_bsd_bg_sp,bsd_dich_vu.group_manager,1,1,1,1
 
 bsd_cn_ndc,Cập nhật ngày đợt cuối,model_bsd_cn_ndc,bsd_dich_vu.group_manager,1,1,1,1
-bsd_cn_ndc_ct,Chi tiết cập nhật ngày đợt cuối,model_bsd_cn_ndc,bsd_dich_vu.group_manager,1,1,1,1
+bsd_cn_ndc_ct,Chi tiết cập nhật ngày đợt cuối,model_bsd_cn_ndc_ct,bsd_dich_vu.group_manager,1,1,1,1
