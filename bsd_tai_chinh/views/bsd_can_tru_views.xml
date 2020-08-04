@@ -52,7 +52,7 @@
                                    attrs="{'invisible':[('bsd_loai', '=', 'tat_ca')]}"/>
                             <field name="bsd_dot_tt_id"
                                    options="{'no_create':true}"
-                                   domain="[('bsd_hd_ban_id', '=', bsd_hd_ban_id)]"
+                                   domain="[('bsd_hd_ban_id', '=', bsd_hd_ban_id),('bsd_loai', '=', 'dtt')]"
                                    attrs="{'invisible':[('bsd_loai', '!=', 'pps')]}"/>
                         </group>
                         <button string="Load"

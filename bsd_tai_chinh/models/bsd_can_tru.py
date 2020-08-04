@@ -171,7 +171,7 @@ class BsdCanTru(models.Model):
                             'bsd_tien_phai_tt': phi_ps.bsd_tien_phai_tt,
                             'bsd_can_tru_id': self.id,
                     })
-            elif self.bsd_dot_tt_id:
+            elif self.bsd_dot_tt_id and self.bsd_hd_ban_id:
                 phi_ps_ids = phi_ps_ids.filtered(lambda x: x.bsd_dot_tt_id == self.bsd_dot_tt_id.id)
                 # Lấy chứng từ phí phát sinh
                 for phi_ps in phi_ps_ids:
@@ -185,7 +185,7 @@ class BsdCanTru(models.Model):
                             'bsd_tien_phai_tt': phi_ps.bsd_tien_phai_tt,
                             'bsd_can_tru_id': self.id,
                     })
-            elif self.bsd_hd_ban_id:
+            elif not self.bsd_dot_tt_id and self.bsd_hd_ban_id:
                 phi_ps_ids = phi_ps_ids.filtered(lambda x: x.bsd_hd_ban_id == self.bsd_hd_ban_id.id)
                 # Lấy chứng từ phí phát sinh
                 for phi_ps in phi_ps_ids:
