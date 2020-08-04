@@ -35,6 +35,32 @@ class BsdCapNhatNDC(models.Model):
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
 
+    # DV22.01 Xác nhận cập nhật đến hạn thanh toán đợt cuối
+    def action_xac_nhan(self):
+        if self.state == 'nhap':
+            self.write({
+                'state': 'xac_nhan',
+            })
+
+    # DV.22.02 Duyệt cập nhật ngày đến hạn thanh toán đợt cuối
+    def action_duyet(self):
+        if self.state == 'xac_nhan':
+            self.write({
+                'state': 'duyet',
+            })
+
+    # DV.22.03 Không duyệt cập nhật ngày đến hạn thanh toán đợt cuối
+    def action_khong_duyet(self):
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_khong_duyet_cn_ndc_action').read()[0]
+        return action
+
+    # DV.22.04 Hủy cập nhật ngày đến hạn thanh toán cuối
+    def action_huy(self):
+        if self.state == 'xac_nhan':
+            self.write({
+                'state': 'huy'
+            })
+
     @api.model
     def create(self, vals):
         sequence = None
