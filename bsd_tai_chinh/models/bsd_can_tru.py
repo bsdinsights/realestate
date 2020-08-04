@@ -121,8 +121,9 @@ class BsdCanTru(models.Model):
                 })
             # Lấy chứng từ phí phát sinh
             phi_ps_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
-                                                         ('bsd_loai_ct', '=', 'phi_ps')]).mapped('bsd_phi_ps_id')
-            for phi_ps in phi_ps_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
+                                                         ('bsd_loai_ct', '=', 'phi_ps')])\
+                .mapped('bsd_phi_ps_id').filtered(lambda x: x.bsd_thanh_toan != 'da_tt')
+            for phi_ps in phi_ps_ids:
                 self.bsd_ct_ids.create({
                         'bsd_phi_ps_id': phi_ps.id,
                         'bsd_dot_tt_id': phi_ps.bsd_dot_tt_id.id,
@@ -140,8 +141,8 @@ class BsdCanTru(models.Model):
             dot_tt_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
                                                          ('bsd_dot_tt_id', '!=', False),
                                                          ('bsd_hd_ban_id', '=', self.bsd_hd_ban_id.id)])\
-                .mapped('bsd_dot_tt_id')
-            for dot_tt in dot_tt_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
+                .mapped('bsd_dot_tt_id').filtered(lambda x: x.bsd_thanh_toan != 'da_tt')
+            for dot_tt in dot_tt_ids:
                 self.bsd_ct_ids.create({
                         'bsd_dot_tt_id': dot_tt.id,
                         'bsd_hd_ban_id': dot_tt.bsd_hd_ban_id.id,
@@ -153,10 +154,13 @@ class BsdCanTru(models.Model):
                 })
         elif self.bsd_loai == 'pps':
             phi_ps_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
-                                                         ('bsd_loai_ct', '=', 'phi_ps')]).mapped('bsd_phi_ps_id')
-            if not self.bsd_dot_tt_id:
+                                                         ('bsd_loai_ct', '=', 'phi_ps')])\
+                                                .mapped('bsd_phi_ps_id')\
+                                                .filtered(lambda x: x.bsd_thanh_toan != 'da_tt')
+
+            if not self.bsd_dot_tt_id and not self.bsd_hd_ban_id:
                 # Lấy chứng từ phí phát sinh
-                for phi_ps in phi_ps_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
+                for phi_ps in phi_ps_ids:
                     self.bsd_ct_ids.create({
                             'bsd_phi_ps_id': phi_ps.id,
                             'bsd_dot_tt_id': phi_ps.bsd_dot_tt_id.id,
@@ -167,10 +171,24 @@ class BsdCanTru(models.Model):
                             'bsd_tien_phai_tt': phi_ps.bsd_tien_phai_tt,
                             'bsd_can_tru_id': self.id,
                     })
-            else:
-                phi_ps_ids.filtered(lambda x: x.bsd_dot_tt_id == self.bsd_dot_tt_id.id)
+            elif self.bsd_dot_tt_id:
+                phi_ps_ids = phi_ps_ids.filtered(lambda x: x.bsd_dot_tt_id == self.bsd_dot_tt_id.id)
                 # Lấy chứng từ phí phát sinh
-                for phi_ps in phi_ps_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt'):
+                for phi_ps in phi_ps_ids:
+                    self.bsd_ct_ids.create({
+                            'bsd_phi_ps_id': phi_ps.id,
+                            'bsd_dot_tt_id': phi_ps.bsd_dot_tt_id.id,
+                            'bsd_hd_ban_id': phi_ps.bsd_hd_ban_id.id,
+                            'bsd_so_ct': phi_ps.bsd_ma_ps,
+                            'bsd_loai_ct': 'pt_pps',
+                            'bsd_tien': phi_ps.bsd_tong_tien,
+                            'bsd_tien_phai_tt': phi_ps.bsd_tien_phai_tt,
+                            'bsd_can_tru_id': self.id,
+                    })
+            elif self.bsd_hd_ban_id:
+                phi_ps_ids = phi_ps_ids.filtered(lambda x: x.bsd_hd_ban_id == self.bsd_hd_ban_id.id)
+                # Lấy chứng từ phí phát sinh
+                for phi_ps in phi_ps_ids:
                     self.bsd_ct_ids.create({
                             'bsd_phi_ps_id': phi_ps.id,
                             'bsd_dot_tt_id': phi_ps.bsd_dot_tt_id.id,
