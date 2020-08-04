@@ -375,7 +375,7 @@ class BsdBaoGia(models.Model):
                 dot_cuoi = dot
                 stt += 1
                 tien_dot_tt = (self.bsd_tong_gia - self.bsd_tien_pbt) - tong_tien_dot_tt
-                self.bsd_ltt_ids.create(self._cb_du_lieu_dtt(stt, 'DTTC', dot_cuoi, lai_phat, False, cs_tt,
+                self.bsd_ltt_ids.create(self._cb_du_lieu_dtt(stt, 'DBGC', dot_cuoi, lai_phat, False, cs_tt,
                                                              tien_dot_tt))
 
         # Tạo đợt thu phí quản lý

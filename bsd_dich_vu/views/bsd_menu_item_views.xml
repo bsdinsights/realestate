@@ -65,6 +65,11 @@
               sequence="19"
               action="bsd_bg_sp_action"
               parent="bsd_main_dich_vu_root"/>
+    <menuitem id="bsd_cn_ndc_menu_action"
+              name="Cập nhật NTTC"
+              sequence="20"
+              action="bsd_cn_ndc_action"
+              parent="bsd_main_dich_vu_root"/>
     <menuitem id="bsd_ps_gd_km_menu_action"
               name="Giao dịch khuyến mãi"
               sequence="100"
