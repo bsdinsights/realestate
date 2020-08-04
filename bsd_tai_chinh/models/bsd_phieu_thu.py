@@ -152,6 +152,10 @@ class BsdPhieuThu(models.Model):
         # Kiểm tra hợp đồng đã bị thanh lý chưa
         if self.bsd_hd_ban_id.state == 'thanh_ly':
             raise UserError(_('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin hợp đồng'))
+        # Kiểm tra nếu thu phí quản lý, phí bảo trì căn hộ phải có ngày cất nóc
+        if self.bsd_loai_pt in ['pql', 'pbt']:
+            if not self.bsd_unit_id.bsd_ngay_cn:
+                raise UserError(_('Vui lòng kiểm tra thông tin sản phẩm trên hợp đồng'))
         self.write({
             'state': 'da_xn',
         })
@@ -277,6 +281,10 @@ class BsdPhieuThu(models.Model):
         # Kiểm tra hợp đồng đã bị thanh lý chưa
         if self.bsd_hd_ban_id.state == 'thanh_ly':
             raise UserError(_('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin hợp đồng'))
+        # Kiểm tra nếu thu phí quản lý, phí bảo trì căn hộ phải có ngày cất nóc
+        if self.bsd_loai_pt in ['pql', 'pbt']:
+            if not self.bsd_unit_id.bsd_ngay_cn:
+                raise UserError(_('Vui lòng kiểm tra thông tin sản phẩm trên hợp đồng'))
         # ghi công nợ giảm
         giam_id = self.env['bsd.cong_no'].create({
                         'bsd_chung_tu': self.bsd_so_pt,
