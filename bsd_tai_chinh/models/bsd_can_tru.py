@@ -225,7 +225,7 @@ class BsdCanTruChiTiet(models.Model):
                                     ('pt_dc', 'Đặt cọc'),
                                     ('pt_pps', 'Phí phát sinh'),
                                     ('pt_dtt', 'Đợt thanh toán')], string="Loại chứng từ",
-                                   help="Loại chứng từ", readonly=True)
+                                   help="Loại chứng từ")
     bsd_so_ct = fields.Char(string="Số chứng từ", help="Số chứng từ")
     bsd_ngay_ct = fields.Datetime(string="Ngày chứng từ", help="Ngày chứng từ")
     bsd_tien = fields.Monetary(string="Tiền", help="Tiền trên chứng từ")
