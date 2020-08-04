@@ -14,6 +14,8 @@ class BsdHdBan(models.Model):
     bsd_tien_tt_hd = fields.Monetary(string="Tiền thanh toán HĐ", help="Tiền thanh toán hợp đồng",
                                      compute='_compute_tl_tt', store=True)
 
+    bsd_phi_ps_ids = fields.One2many('bsd.phi_ps', 'bsd_hd_ban_id', string="Danh sách phí phát sinh", readonly=True)
+
     @api.depends('bsd_ltt_ids.bsd_tien_da_tt', 'bsd_tong_gia')
     def _compute_tl_tt(self):
         for each in self:

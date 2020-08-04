@@ -19,6 +19,21 @@
                     </group>
                 </group>
             </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Phí phát sinh">
+                    <field name="bsd_phi_ps_ids">
+                        <tree>
+                            <field name="bsd_ma_ps"/>
+                            <field name="bsd_ten_ps"/>
+                            <field name="bsd_tong_tien"/>
+                            <field name="bsd_tien_da_tt"/>
+                            <field name="bsd_tien_phai_tt"/>
+                            <field name="bsd_thanh_toan"/>
+                            <field name="state"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
         </field>
     </record>
 </odoo>
