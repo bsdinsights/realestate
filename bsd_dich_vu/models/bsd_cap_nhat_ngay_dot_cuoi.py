@@ -153,12 +153,12 @@ class BsdCapNhatNDCChiTiet(models.Model):
     @api.onchange('bsd_hd_ban_id')
     def _onchange_hd_ban(self):
         self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
-        self.bsd_dot_tt_id = self.bsd_hd_ban_id.filtered(lambda x: x.bsd_ma_dtt == 'DBGC')
+        self.bsd_dot_tt_id = self.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_ma_dtt == 'DBGC')
 
     @api.constrains('bsd_ngay_dtt', 'bsd_dot_tt_id')
     def _constrains_ngay_dtt(self):
         stt = self.bsd_dot_tt_id.bsd_stt - 1
-        dot_lien_ke = self.bsd_hd_ban_id.filtered(lambda x: x.bsd_stt == stt)
+        dot_lien_ke = self.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_stt == stt)
         if self.bsd_ngay_dtt < dot_lien_ke.bsd_ngay_hh_tt:
             raise UserError(_('Ngày đến hạn nhỏ hơn ngày đến hạn của đợt thanh toán liền kề'))
 

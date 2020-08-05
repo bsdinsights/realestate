@@ -72,7 +72,7 @@
                                     <sheet>
                                         <group>
                                             <group>
-                                                <field name="bsd_ten_cn"/>
+                                                <field name="bsd_ten_ct"/>
                                                 <field name="bsd_cn_ndc_id"/>
                                                 <field name="bsd_hd_ban_id"/>
                                             </group>
