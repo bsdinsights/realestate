@@ -140,7 +140,7 @@ class BsdCapNhatNDCChiTiet(models.Model):
     bsd_ten_ct = fields.Char(string="Tiêu đề", help="Tên chi tiết cập nhật ngày đến hạn thanh toán đợt cuối",
                              required=True)
     bsd_cn_ndc_id = fields.Many2one('bsd.cn_ndc', string="Cập nhật ĐHTT", help="Cập nhật đến hạn thanh toán cuối",
-                                    required=True, ondelete='cascade', index=True, copy=False)
+                                    ondelete='cascade', index=True, copy=False)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True)
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng", required=True)
     bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Sản phẩm", required=True)
