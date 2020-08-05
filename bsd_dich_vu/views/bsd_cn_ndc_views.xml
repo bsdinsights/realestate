@@ -64,6 +64,7 @@
                                     <field name="bsd_ngay_dtt"/>
                                     <field name="state"/>
                                     <field name="bsd_ly_do_huy"/>
+                                    <field name="bsd_cn_ndc_id" invisible="1"/>
                                 </tree>
                                 <form>
                                     <header>
