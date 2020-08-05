@@ -56,12 +56,13 @@
                             <field name="id" invisible="1"/>
                             <field name="bsd_ct_ids" context="{'default_bsd_cn_ndc_id': id,
                                                                'default_bsd_du_an_id': bsd_du_an_id}">
-                                <tree>
+                                <tree editable="top">
                                     <field name="bsd_du_an_id"/>
                                     <field name="bsd_hd_ban_id"/>
-                                    <field name="bsd_unit_id"/>
-                                    <field name="bsd_dot_tt_id"/>
-                                    <field name="bsd_ngay_dtt"/>
+                                    <field name="bsd_unit_id" readonly="1"/>
+                                    <field name="bsd_unit_id" invisible="1"/>
+                                    <field name="bsd_dot_tt_id" readonly="1"/>
+                                    <field name="bsd_ngay_dtt" invisible="1"/>
                                     <field name="state"/>
                                     <field name="bsd_ly_do_huy"/>
                                     <field name="bsd_cn_ndc_id" invisible="1"/>
