@@ -145,7 +145,8 @@ class BsdCapNhatNDCChiTiet(models.Model):
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng", required=True)
     bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Sản phẩm", required=True)
     bsd_ngay_dtt = fields.Date(string="Ngày đến hạn", help="Hạn thanh toán của đợt thanh toán cuối", required=True)
-    bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán cuối", help="Đợt thanh toán cuối")
+    bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán cuối", help="Đợt thanh toán cuối",
+                                    required=True)
     bsd_ly_do_huy = fields.Char(string="Lý do hủy", help="Lý do hủy", readonly=True)
     state = fields.Selection([('duyet', 'Duyệt'), ('huy', 'Hủy')], string="Trạng thái",
                              help="Trạng thái của chi tiết", readonly=True)
