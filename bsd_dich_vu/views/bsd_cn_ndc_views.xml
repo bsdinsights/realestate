@@ -62,7 +62,28 @@
                                     <field name="bsd_unit_id"/>
                                     <field name="bsd_dot_tt_id"/>
                                     <field name="bsd_ngay_dtt"/>
+                                    <field name="bsd_state"/>
+                                    <field name="bsd_ly_do_huy"/>
                                 </tree>
+                                <form>
+                                    <header>
+                                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                                    </header>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="bsd_ten_cn"/>
+                                                <field name="bsd_cn_ndc_id"/>
+                                                <field name="bsd_hd_ban_id"/>
+                                            </group>
+                                            <group>
+                                                <field name="bsd_dot_tt_id"/>
+                                                <field name="bsd_unit_id"/>
+                                                <field name="bsd_ngay_dtt"/>
+                                            </group>
+                                        </group>
+                                    </sheet>
+                                </form>
                             </field>
                         </page>
                     </notebook>
