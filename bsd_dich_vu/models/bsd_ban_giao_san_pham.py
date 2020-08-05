@@ -12,13 +12,13 @@ class BsdBanGiaoSanPham(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma_bg'
 
-    bsd_ma_bg = fields.Char(string="Mã", help="Mã nghiệm thu", required=True, readonly=True,
+    bsd_ma_bg = fields.Char(string="Mã", help="Mã bàn giao sản phẩm", required=True, readonly=True,
                             copy=False, default='/')
     _sql_constraints = [
         ('bsd_ma_bg_unique', 'unique (bsd_ma_bg)',
-         'Mã nghiệm thu đã tồn tại !')
+         'Mã bàn giao sản phẩm đã tồn tại !')
     ]
-    bsd_ngay_tao_bg = fields.Datetime(string="Ngày", help="Ngày tạo nghiệm thu",
+    bsd_ngay_tao_bg = fields.Datetime(string="Ngày", help="Ngày tạo bàn giao sản phẩm",
                                       required=True, default=lambda self: fields.Datetime.now(),
                                       readonly=True,
                                       states={'nhap': [('readonly', False)]})

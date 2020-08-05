@@ -70,6 +70,11 @@
               sequence="20"
               action="bsd_cn_ndc_action"
               parent="bsd_main_dich_vu_root"/>
+    <menuitem id="bsd_bg_gt_menu_action"
+              name="Bàn giao giấy tờ"
+              sequence="21"
+              action="bsd_bg_gt_action"
+              parent="bsd_main_dich_vu_root"/>
     <menuitem id="bsd_ps_gd_km_menu_action"
               name="Giao dịch khuyến mãi"
               sequence="100"

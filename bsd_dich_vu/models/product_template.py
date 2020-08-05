@@ -14,4 +14,5 @@ class ProductTemplate(models.Model):
                                    ('1', 'Có')], string="Tình trạng vay", default='0',
                                   help="Tình trạng vay ngân hàng của căn hộ")
     bsd_bg_sp_id = fields.Many2one('bsd.bg_sp', string="Bàn giao sản phẩm", help="Bàn giao sản phẩm", readonly=True)
+    bsd_bg_gt_id = fields.Many2one('bsd.bg_gt', string="Bàn giao giấy tờ", help="Bàn giao giấy tờ", readonly=True)
 

@@ -20,6 +20,9 @@
             <xpath expr="//field[@name='bsd_ngay_bg']" position="after">
                 <field name="bsd_bg_sp_id"/>
             </xpath>
+            <xpath expr="//field[@name='bsd_ngay_cap_sh']" position="after">
+                <field name="bsd_bg_gt_id"/>
+            </xpath>
         </field>
     </record>
 </odoo>
