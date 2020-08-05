@@ -30,13 +30,21 @@ class BsdCapNhatNDC(models.Model):
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'), ('duyet', 'Duyệt'), ('huy', 'Hủy')],
                              string='Trạng thái', help="Trạng thái",
                              required=True, readonly=True, default='nhap', tracking=1)
-
+    bsd_ly_do = fields.Char(string="Lý do", help="Lý do", readonly=True, tracking=2)
     bsd_ct_ids = fields.One2many('bsd.cn_ndc_ct', 'bsd_cn_ndc_id', string="Cập nhật NDC chi tiết",
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
 
     # DV22.01 Xác nhận cập nhật đến hạn thanh toán đợt cuối
     def action_xac_nhan(self):
+        if not self.bsd_ct_ids:
+            raise UserError(_('Không có Hợp đồng cần được cập nhật đến hạn thanh toán của đợt cuối'))
+        else:
+            ct = self.bsd_ct_ids.filtered(lambda x: x.bsd_hd_ban_id.state == 'thanh_ly')
+            ct.write({
+                'state': 'huy',
+                'bsd_ly_do_huy': 'Hợp đồng bị thanh lý'
+            })
         if self.state == 'nhap':
             self.write({
                 'state': 'xac_nhan',
@@ -44,18 +52,70 @@ class BsdCapNhatNDC(models.Model):
 
     # DV.22.02 Duyệt cập nhật ngày đến hạn thanh toán đợt cuối
     def action_duyet(self):
+        # Kiểm tra các hợp đồng đã bị thanh lý chưa
+        ct_da_tl = self.bsd_ct_ids.filtered(lambda x: x.bsd_hd_ban_id.state == 'thanh_ly')
+        if ct_da_tl:
+            ct_da_tl.write({
+                    'state': 'huy',
+                    'bsd_ly_do_huy': 'Hợp đồng đã bị thanh lý'
+                })
+        # Kiểm tra trạng thái thanh toán của đợt thanh toán cuối
+        ct_da_tt = self.bsd_ct_ids.filtered(lambda x: x.bsd_dot_tt_id.bsd_thanh_toan != 'chua_tt')
+        if ct_da_tt:
+            ct_da_tt.write({
+                'state': 'huy',
+                'bsd_ly_do_huy': 'Đợt thanh toán đã được thanh toán'
+            })
+        ct_ids = self.bsd_ct_ids - ct_da_tt - ct_da_tl
+        if ct_ids:
+            ct_ids.write({
+                'state': 'duyet',
+            })
+        # Cập nhật hạn thanh toán đợt cuối
+        for ct in ct_ids:
+            ct.bsd_dot_tt_id.write({
+                'bsd_ngay_hh_tt': ct.bsd_ngay_dtt
+            })
         if self.state == 'xac_nhan':
             self.write({
                 'state': 'duyet',
+                'bsd_ngay_duyet': fields.Datetime.now(),
+                'bsd_nguoi_duyet_id': self.env.uid
             })
+        # Hiển thị thông báo các hợp đồng đã bị thanh lý hoặc đã được thanh toán
+        message = ''
+        # Lọc các hợp đồng đã bị thanh lý
+        if ct_da_tl:
+            message += "<ul><li>Những hợp đồng đã bị thanh lý: {}</li>"\
+                .format(','.join(ct_da_tl.bsd_hd_ban_id.mapped('bsd_ma_hd_ban')))
+        # Lọc các đặ
+        if ct_da_tt:
+            message += "<li>Những hợp đồng đã thanh toán đợt cuối: {}</li>"\
+                .format(','.join(ct_da_tl.bsd_hd_ban_id.mapped('bsd_ma_hd_ban')))
+        if message:
+            self.message_post(body=message)
+            message_id = self.env['message.wizard'].create(
+                {'message': _(message)})
+            return {
+                'name': _('Thông báo'),
+                'type': 'ir.actions.act_window',
+                'view_mode': 'form',
+                'res_model': 'message.wizard',
+                'res_id': message_id.id,
+                'target': 'new'
+            }
 
     # DV.22.03 Không duyệt cập nhật ngày đến hạn thanh toán đợt cuối
     def action_khong_duyet(self):
-        action = self.env.ref('bsd_dich_vu.bsd_wizard_khong_duyet_cn_ndc_action').read()[0]
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_cn_ndc_action').read()[0]
         return action
 
     # DV.22.04 Hủy cập nhật ngày đến hạn thanh toán cuối
     def action_huy(self):
+        # Cập nhật trạng thái hủy chi tiết
+        self.bsd_ct_ids.write({
+            'state': 'huy'
+        })
         if self.state == 'xac_nhan':
             self.write({
                 'state': 'huy'
@@ -86,8 +146,9 @@ class BsdCapNhatNDCChiTiet(models.Model):
     bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Sản phẩm", required=True)
     bsd_ngay_dtt = fields.Date(string="Ngày đến hạn", help="Hạn thanh toán của đợt thanh toán cuối", required=True)
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán cuối", help="Đợt thanh toán cuối")
+    bsd_ly_do_huy = fields.Char(string="Lý do hủy", help="Lý do hủy", readonly=True)
     state = fields.Selection([('duyet', 'Duyệt'), ('huy', 'Hủy')], string="Trạng thái",
-                             help="Trạng thái của chi tiết")
+                             help="Trạng thái của chi tiết", readonly=True)
 
     @api.onchange('bsd_hd_ban_id')
     def _onchange_hd_ban(self):
