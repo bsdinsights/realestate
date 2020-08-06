@@ -136,7 +136,11 @@ class ProductTemplate(models.Model):
                               ('thanh_toan_dot_1', 'Thanh toán đợt 1'),
                               ('ky_thoa_thuan_coc', 'Ký thỏa thuận cọc'),
                               ('du_dieu_kien', 'Đủ điều kiện'),
-                              ('da_ban', 'Đã bán')], string="Trạng thái",
+                              ('da_ban', 'Đã bán'),
+                              ('du_dkbg', 'Đủ ĐKBG'),
+                              ('da_bg', 'Đã bàn giao'),
+                              ('ht_tt', 'Hoàn tất TT'),
+                              ('da_ht', 'Đã hoàn tất')], string="Trạng thái",
                              default="chuan_bi", tracking=1, help="Trạng thái", required=True)
 
     @api.onchange('bsd_du_an_id', 'bsd_thang_pql')
