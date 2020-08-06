@@ -207,7 +207,9 @@ class BsdCanTru(models.Model):
         })
         # Xóa chứng từ không cấn trừ
         self.bsd_ct_ids.filtered(lambda x: x.bsd_tien_can_tru <= 0).unlink()
-        for ct in self.bsd_ct_ids:
+        # Lọc các công nợ là đợt thanh toán sorted theo số thứ tự
+        ct_dtt = self.bsd_ct_ids.filtered(lambda x: x.bsd_dot_tt_id).sorted(lambda x: x.bsd_dot_tt_id.bsd_stt)
+        for ct in (self.bsd_ct_ids - ct_dtt):
             self.env['bsd.cong_no_ct'].create({
                 'bsd_ngay_pb': self.bsd_ngay_can_tru,
                 'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
@@ -215,8 +217,19 @@ class BsdCanTru(models.Model):
                 'bsd_giu_cho_id': ct.bsd_giu_cho_id.id,
                 'bsd_dat_coc_id': ct.bsd_dat_coc_id.id,
                 'bsd_hd_ban_id': ct.bsd_hd_ban_id.id,
-                'bsd_dot_tt_id': ct.bsd_dot_tt_id.id,
                 'bsd_phi_ps_id': ct.bsd_phi_ps_id.id,
+                'bsd_phieu_thu_id': self.bsd_phieu_thu_id.id,
+                'bsd_tien_pb': ct.bsd_tien_can_tru,
+                'bsd_loai': ct.bsd_loai_ct,
+                'state': 'hoan_thanh',
+                'bsd_can_tru_id': self.id,
+            })
+        for ct in ct_dtt:
+            self.env['bsd.cong_no_ct'].create({
+                'bsd_ngay_pb': self.bsd_ngay_can_tru,
+                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                'bsd_hd_ban_id': ct.bsd_hd_ban_id.id,
+                'bsd_dot_tt_id': ct.bsd_dot_tt_id.id,
                 'bsd_phieu_thu_id': self.bsd_phieu_thu_id.id,
                 'bsd_tien_pb': ct.bsd_tien_can_tru,
                 'bsd_loai': ct.bsd_loai_ct,
