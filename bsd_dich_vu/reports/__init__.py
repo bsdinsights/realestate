@@ -7,3 +7,4 @@ from . import report_bsd_tb_nt
 from . import report_bsd_nghiem_thu
 from . import report_bsd_tb_bg
 from . import report_bsd_bg_sp
+from . import report_bsd_bg_gt

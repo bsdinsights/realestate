@@ -54,6 +54,7 @@
         'reports/report_bsd_nghiem_thu_views.xml',
         'reports/report_bsd_tb_bg_views.xml',
         'reports/report_bsd_bg_sp_views.xml',
+        'reports/report_bsd_bg_gt_views.xml'
     ],
     'application': True,
 }

@@ -72,7 +72,10 @@ class BsdBanGiaoGiayTo(models.Model):
 
     # DV.12.04 Hủy bàn giao giấy tờ
     def action_huy(self):
-        pass
+        if self.state in ['nhap', 'xac_nhan']:
+            self.write({
+                'state': 'huy'
+            })
 
     @api.model
     def create(self, vals):
