@@ -57,6 +57,10 @@ class BsdThanhLyKetThucHopDong(models.Model):
         self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
         self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
 
+    @api.onchange('bsd_unit_id')
+    def _onchange_unit(self):
+        self.bsd_bg_gt_id = self.bsd_unit_id.bsd_bg_gt_id
+
     # DV.14.01 Xác nhận thanh lý kết thúc hợp đồng
     def action_xac_nhan(self):
         if self.state == 'nhap':
