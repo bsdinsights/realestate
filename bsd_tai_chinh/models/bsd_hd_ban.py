@@ -165,3 +165,22 @@ class BsdHdBan(models.Model):
         self.write({
             'state': 'du_dkbg'
         })
+
+    # DV.01.23 Cập nhật trạng thái hoàn tất thanh toán
+    def action_ht_tt(self):
+        # Kiểm tra đã thu đủ nợ gốc chưa
+        if self.bsd_ltt_ids.filtered(lambda l: l.bsd_thanh_toan != 'da_tt'):
+            return
+        # Kiểm tra đã thu phí bảo trì chưa
+        if self.bsd_dot_pbt_ids.filtered(lambda p: p.bsd_thanh_toan != 'da_tt'):
+            return
+        # Kiểm tra đã thu phí quản lý chưa
+        if self.bsd_dot_pql_ids.filtered(lambda p: p.bsd_thanh_toan != 'da_tt'):
+            return
+        # Kiểm tra đã thu đủ phí phát sinh chưa
+        if self.bsd_phi_ps_ids.filtered(lambda p: p.bsd_thanh_toan != 'da_tt'):
+            return
+        # Cập nhật trạng thái hoàn tất thanh toán
+        self.write({
+            'state': 'ht_tt'
+        })

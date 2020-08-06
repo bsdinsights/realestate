@@ -110,6 +110,9 @@ class BsdCongNoCT(models.Model):
                 # Gọi hàm xử lý khi thanh toám đợt dự kiến bàn giao
                 if hd_ban.state in ['da_ky', 'dang_tt']:
                     hd_ban.action_du_dkbg()
+                # Gọi hàm kiểm tra đã hoàn tất thanh toán hợp đồng
+                    hd_ban.action_ht_tt()
+
         elif self.bsd_loai == 'pt_ht':
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_phieu_thu_id', '=', self.bsd_phieu_thu_id.id)])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
