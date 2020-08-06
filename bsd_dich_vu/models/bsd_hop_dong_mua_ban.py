@@ -91,6 +91,7 @@ class BsdHopDongMuaBan(models.Model):
                               ('da_bg', 'Đã bàn giao'),
                               ('ht_tt', 'Hoàn tất thanh toán'),
                               ('bg_gt', 'Bàn giao giấy tờ'),
+                              ('da_ht', 'Đã hoàn tất'),
                               ('thanh_ly', 'Thanh lý'),
                               ('huy', 'Hủy')], string="Trạng thái", default="nhap",
                              help="Trạng thái", tracking=1)

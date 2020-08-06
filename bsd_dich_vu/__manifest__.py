@@ -29,6 +29,7 @@
         'views/bsd_ban_giao_san_pham_views.xml',
         'views/bsd_ban_giao_giay_to_views.xml',
         'views/bsd_cn_ndc_views.xml',
+        'views/bsd_thanh_ly_kt_hd_views.xml',
         'views/bsd_menu_item_views.xml',
         'views/product_template_views.xml',
         'wizards/bsd_wizard_ky_hdb_views.xml',
@@ -47,6 +48,7 @@
         'wizards/bsd_wizard_bg_sp_views.xml',
         'wizards/bsd_wizard_cn_ndc_views.xml',
         'wizards/bsd_wizard_bg_gt_views.xml',
+        'wizards/bsd_wizard_tl_kt_hd_views.xml',
         'reports/report_bsd_uoc_tinh_views.xml',
         'reports/report_bsd_hd_ban_views.xml',
         'reports/report_bsd_hd_ban_cn_views.xml',
@@ -54,7 +56,8 @@
         'reports/report_bsd_nghiem_thu_views.xml',
         'reports/report_bsd_tb_bg_views.xml',
         'reports/report_bsd_bg_sp_views.xml',
-        'reports/report_bsd_bg_gt_views.xml'
+        'reports/report_bsd_bg_gt_views.xml',
+        'reports/report_bsd_thanh_ly_kt_hd_views.xml',
     ],
     'application': True,
 }

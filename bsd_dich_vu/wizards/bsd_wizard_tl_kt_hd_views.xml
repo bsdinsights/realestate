@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_wizard_ky_tl_kt_hd_form">
+        <field name="name">bsd.wizard.ky_tl_kt_hd.form</field>
+        <field name="model">bsd.wizard.ky_tl_kt_hd</field>
+        <field name="arch" type="xml">
+            <form string="Ghi nhận kết thanh lý kết thúc hợp đồng">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_tl_kt_hd_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ngay_xn"/>
+                            <field name="bsd_nguoi_xn_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_ky_tl_kt_hd_action">
+        <field name="name">Ghi nhận ngày ký thanh lý kết thúc hợp đồng</field>
+        <field name="res_model">bsd.wizard.ky_tl_kt_hd</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
+
+</odoo>

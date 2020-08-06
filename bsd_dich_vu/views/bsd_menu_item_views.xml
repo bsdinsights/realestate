@@ -75,6 +75,11 @@
               sequence="21"
               action="bsd_bg_gt_action"
               parent="bsd_main_dich_vu_root"/>
+    <menuitem id="bsd_tl_kt_hd_menu_action"
+              name="Thanh ký kết thúc hợp đồng"
+              sequence="22"
+              action="bsd_tl_kt_hd_action"
+              parent="bsd_main_dich_vu_root"/>
     <menuitem id="bsd_ps_gd_km_menu_action"
               name="Giao dịch khuyến mãi"
               sequence="100"

@@ -14,5 +14,4 @@ from . import bsd_thong_bao_ban_giao
 from . import bsd_ban_giao_san_pham
 from . import bsd_cap_nhat_ngay_dot_cuoi
 from . import bsd_ban_giao_giay_to
-
-
+from . import bsd_thanh_ly_kt_hd
