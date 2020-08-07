@@ -208,7 +208,8 @@ class BsdCanTru(models.Model):
         # Xóa chứng từ không cấn trừ
         self.bsd_ct_ids.filtered(lambda x: x.bsd_tien_can_tru <= 0).unlink()
         # Lọc các công nợ là đợt thanh toán sorted theo số thứ tự
-        ct_dtt = self.bsd_ct_ids.filtered(lambda x: x.bsd_dot_tt_id).sorted(lambda x: x.bsd_dot_tt_id.bsd_stt)
+        ct_dtt = self.bsd_ct_ids.filtered(lambda x: x.bsd_dot_tt_id and not x.bsd_phi_ps_id)\
+            .sorted(lambda x: x.bsd_dot_tt_id.bsd_stt)
         for ct in (self.bsd_ct_ids - ct_dtt):
             self.env['bsd.cong_no_ct'].create({
                 'bsd_ngay_pb': self.bsd_ngay_can_tru,
