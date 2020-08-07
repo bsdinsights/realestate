@@ -98,6 +98,7 @@ class BsdDatCoc(models.Model):
                               ('het_han', 'Hết hạn'),
                               ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", help="Trạng thái", tracing=1, required=True)
+    bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
@@ -219,7 +220,8 @@ class BsdDatCoc(models.Model):
 
     # KD.10.05 Hủy đặt cọc
     def action_huy(self):
-        pass
+        action = self.env.ref('bsd_kinh_doanh.bsd_wizard_huy_dc_action').read()[0]
+        return action
 
     # R.14 Đã thanh toán đợt
     def _compute_tien_ttd(self):
@@ -307,6 +309,7 @@ class BsdDatCoc(models.Model):
                 'bsd_tien_ck': ck_db.bsd_tien_ck,
             })
 
+    # Override hàm search name của odoo
     @api.model
     def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
         # private implementation of name_search, allows passing a dedicated user
@@ -318,3 +321,9 @@ class BsdDatCoc(models.Model):
         ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
         recs = self.browse(ids)
         return models.lazy_name_get(recs.with_user(access_rights_uid))
+
+    # Tạo thong báo hủy giữ chỗ
+    def tao_tb_huy_gc(self):
+        giu_cho = self.bsd_bao_gia_id.bsd_giu_cho_id
+        giu_cho.activity_schedule(act_type_xmlid='mail.mail_activity_data_todo',
+                                  summary='Hủy giữ chỗ đặt cọc bị hủy')
