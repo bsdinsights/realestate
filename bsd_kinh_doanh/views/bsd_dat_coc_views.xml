@@ -29,10 +29,11 @@
                             attrs="{'invisible':['|',('bsd_ngay_up_dc', '=',False),'|',('bsd_ngay_ky_dc', '=',True)]}"
                             type="object"
                             class="oe_highlight"/>
-                    <!--<button string="Hủy"-->
-                            <!--name="action_huy"-->
-                            <!--states="dat_coc"-->
-                            <!--type="object"/>-->
+                    <button string="Hủy"
+                            name="action_huy"
+                            states="nhap,xac_nhan"
+                            attrs="{'invisible':['|',('bsd_thanh_toan', '!=', 'chua_tt')]}"
+                            type="object"/>
 
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
