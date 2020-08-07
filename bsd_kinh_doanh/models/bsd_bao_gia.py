@@ -306,9 +306,9 @@ class BsdBaoGia(models.Model):
         # dùng để tính tiền đợt thanh toán cuối
         tong_tien_dot_tt = 0
         # Kiểm tra chính sách thanh toán chi tiết
-        if len(dot_tt_ids.filtered(lambda x: x.bsd_cach_tinh == 'dkbg')):
+        if len(dot_tt_ids.filtered(lambda x: x.bsd_cach_tinh == 'dkbg')) > 1:
             raise UserError(_("Chính sách thanh toán chi tiết có nhiều hơn 1 đợt dự kiến bàn giao"))
-        if len(dot_tt_ids.filtered(lambda x: x.bsd_dot_cuoi)):
+        if len(dot_tt_ids.filtered(lambda x: x.bsd_dot_cuoi)) > 1:
             raise UserError(_("Chính sách thanh toán chi tiết có nhiều hơn 1 đợt dự thanh toán cuối"))
         # Tạo các đợt thanh toán
         for dot in dot_tt_ids.sorted('bsd_stt'):
