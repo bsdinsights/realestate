@@ -14,25 +14,25 @@
                             class="oe_highlight"/>
                     <button string="In đặt cọc"
                             name="action_in_dc"
-                            states="dat_coc,xac_nhan"
+                            states="dat_coc,xac_nhan,het_han"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Upload đặt cọc"
                             name="action_upload_dc"
-                            states="dat_coc,xac_nhan"
-                            attrs="{'invisible':['|',('bsd_ngay_in_dc', '=',False)]}"
+                            states="da_tc"
+                            attrs="{'invisible':['|',('bsd_ngay_in_dc', '=',False),'|',('bsd_ngay_up_dc', '=',True)]}"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Ký đặt cọc"
                             name="action_ky_dc"
-                            states="dat_coc,xac_nhan"
-                            attrs="{'invisible':['|',('bsd_ngay_up_dc', '=',False)]}"
+                            states="da_tc"
+                            attrs="{'invisible':['|',('bsd_ngay_up_dc', '=',False),'|',('bsd_ngay_ky_dc', '=',True)]}"
                             type="object"
                             class="oe_highlight"/>
-                    <button string="Hủy"
-                            name="action_huy"
-                            states="dat_coc"
-                            type="object"/>
+                    <!--<button string="Hủy"-->
+                            <!--name="action_huy"-->
+                            <!--states="dat_coc"-->
+                            <!--type="object"/>-->
 
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>

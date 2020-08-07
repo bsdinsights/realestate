@@ -75,9 +75,7 @@ class BsdCongNoCT(models.Model):
             if self.bsd_dat_coc_id.bsd_tien_dc < tien:
                 raise UserError("Không thể thực hiện thanh toán dư")
             if self.bsd_dat_coc_id.bsd_tien_dc == tien:
-                self.bsd_dat_coc_id.write({
-                    'state': 'dat_coc',
-                })
+                self.bsd_dat_coc_id.cap_nhat_trang_thai()
 
         elif self.bsd_loai == 'pt_dtt':
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)])

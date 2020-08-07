@@ -91,7 +91,12 @@ class BsdDatCoc(models.Model):
     bsd_tien_pql = fields.Monetary(string="Phí quản lý/ tháng", help="Số tiền phí quản lý cần đóng mỗi tháng",
                                    related="bsd_bao_gia_id.bsd_tien_pql", store=True)
 
-    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'), ('dat_coc', 'Đặt cọc'), ('huy', 'Hủy')],
+    state = fields.Selection([('nhap', 'Nháp'),
+                              ('xac_nhan', 'Xác nhận'),
+                              ('da_tc', 'Đã thu cọc'),
+                              ('dat_coc', 'Đặt cọc'),
+                              ('het_han', 'Hết hạn'),
+                              ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", help="Trạng thái", tracing=1, required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
@@ -108,10 +113,10 @@ class BsdDatCoc(models.Model):
     bsd_so_ttdc = fields.Char(string="Số TTĐC", help="Số thỏa thuận đặt cọc")
 
     bsd_ngay_in_dc = fields.Datetime(string="Ngày in", help="Ngày in phiếu cọc, hợp đồng cọc", readonly=True)
-    bsd_ngay_hh_kdc = fields.Datetime(string="Hết hạn ký cọc", help="Ngày hết hạn ký phiếu cọc, hợp đồng cọc",
+    bsd_ngay_hh_kdc = fields.Datetime(string="Hạn ký đặt cọc", help="Ngày hết hạn ký phiếu cọc",
                                       readonly=True)
     bsd_ngay_up_dc = fields.Datetime(string="Upload đặt cọc", readonly=True,
-                                     help="""Ngày tải lên hệ thống phiếu đặt cọc, hợp đồng cọc đã được khách hàng 
+                                     help="""Ngày tải lên hệ thống phiếu đặt cọc đã được khách hàng 
                                              ký xác nhận""")
     bsd_ngay_ky_dc = fields.Datetime(string="Ngày ký đặt cọc", help="Ngày ký đặt cọc", readonly=True)
 
