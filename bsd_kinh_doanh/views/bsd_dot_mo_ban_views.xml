@@ -122,7 +122,7 @@
                             </field>
                         </page>
                         <page string="Điều kiện bàn giao">
-                            <field name="bsd_dkbg_ids" nolabel="1">
+                            <field name="bsd_dkbg_ids" nolabel="1" domain="[('bsd_du_an_id', '=', bsd_du_an_id)]">
                                 <tree editable="bottom">
                                     <field name="bsd_ma_dkbg"/>
                                     <field name="bsd_ten_dkbg"/>
