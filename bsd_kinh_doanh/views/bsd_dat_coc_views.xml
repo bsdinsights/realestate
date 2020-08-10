@@ -14,7 +14,7 @@
                             class="oe_highlight"/>
                     <button string="In đặt cọc"
                             name="action_in_dc"
-                            states="dat_coc,xac_nhan,het_han"
+                            states="dat_coc,xac_nhan,het_han,da_tc"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Upload đặt cọc"
