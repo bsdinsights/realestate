@@ -175,7 +175,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     args: [id_unit],
                     context: self.context,
                 },{shadow : true}).then(function(data){
-                    console.log(data)
                     if (data !== undefined){
                     _.each(data,function(item,index,data){
                         var id = '#' + item[0].toString()
@@ -467,6 +466,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          */
          _clickTooltip: function(event){
             event.stopPropagation()
+            $(event.currentTarget).tooltip("dispose")
             var unit_id = parseInt($(event.currentTarget).attr('id'))
             var data_unit = _.find(this.data, function(item){return item[4] === unit_id})
             var data = {}
