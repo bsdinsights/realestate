@@ -34,7 +34,7 @@ class BsdChietKhau(models.Model):
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án",
-                                   readonly=True,
+                                   readonly=True, required=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_cach_tinh = fields.Selection([('phan_tram', 'Phần trăm'), ('tien', 'Tiền')],
                                      help='Hình thức trả chiết khấu theo tiền hoăc theo phần trăm số tiền',
@@ -212,10 +212,10 @@ class BsdChietKhau(models.Model):
     @api.model
     def create(self, vals):
         sequence = False
-        if vals.get('bsd_ma_ck', '/') == '/':
-            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.chiet_khau')], limit=1).bsd_ma_tt_id
-            vals['bsd_ma_ck'] = self.env['ir.sequence'].next_by_code('bsd.chiet_khau') or '/'
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Danh mục mã chưa khai báo mã chiết khấu'))
+            raise UserError(_('Dự án chưa có mã Chiết khấu'))
         vals['bsd_ma_ck'] = sequence.next_by_id()
         return super(BsdChietKhau, self).create(vals)

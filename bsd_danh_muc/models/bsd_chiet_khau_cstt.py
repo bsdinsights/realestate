@@ -67,11 +67,11 @@ class BsdChietKhauCSTT(models.Model):
     @api.model
     def create(self, vals):
         sequence = False
-        if vals.get('bsd_ma_ck_cstt', '/') == '/':
-            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.ck_cstt')], limit=1).bsd_ma_tt_id
-            vals['bsd_ma_ck_cstt'] = self.env['ir.sequence'].next_by_code('bsd.ck_cstt') or '/'
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Danh mục mã chưa khai báo mã danh sách chiết khấu chính sách thanh toán'))
+            raise UserError(_('Dự án chưa có mã chiết khấu chính sách thanh toán'))
         vals['bsd_ma_ck_cstt'] = sequence.next_by_id()
         return super(BsdChietKhauCSTT, self).create(vals)
 
