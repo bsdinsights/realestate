@@ -75,8 +75,8 @@ class BsdDanhSachThongBao(models.TransientModel):
             self.bsd_cn_dkbg_ids.write({
                 'bsd_da_tao_tbnt': True
             })
-
         # DV.20.03 Tạo dữ liệu bảng thông báo bàn giao
+        else:
             for ct in cn_dkbg_ct:
                 hd_ban = ct.bsd_hd_ban_id
                 dot_dkbg = hd_ban.bsd_ltt_ids.filtered(lambda x: x.bsd_ma_dtt == 'DKBG')
