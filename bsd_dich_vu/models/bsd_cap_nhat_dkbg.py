@@ -188,6 +188,7 @@ class BsdCapNhatDKBGUnit(models.Model):
     bsd_unit_id = fields.Many2one('product.product', string="Unit", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
+    bsd_ma_sp = fields.Char(related="bsd_unit_id.bsd_ma_unit", store=True)
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
@@ -219,6 +220,23 @@ class BsdCapNhatDKBGUnit(models.Model):
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+
+    # Tên hiện thị record
+    def name_get(self):
+        res = []
+        for bg in self:
+            res.append((bg.id, "%s" % bg.bsd_ten_sp))
+        return res
+
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        args = list(args or [])
+        if not (name == '' and operator == 'ilike'):
+            args += [('bsd_ma_sp', operator, name)]
+        access_rights_uid = name_get_uid or self._uid
+        ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
+        recs = self.browse(ids)
+        return models.lazy_name_get(recs.with_user(access_rights_uid))
 
     # R.01 Dự án
     @api.onchange('bsd_cn_dkbg_id')
