@@ -225,7 +225,7 @@ class BsdCapNhatDKBGUnit(models.Model):
     def name_get(self):
         res = []
         for bg in self:
-            res.append((bg.id, "%s" % bg.bsd_ten_sp))
+            res.append((bg.id, "%s" % bg.bsd_ma_sp))
         return res
 
     @api.model
