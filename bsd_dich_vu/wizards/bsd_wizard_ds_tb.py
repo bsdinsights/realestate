@@ -83,7 +83,7 @@ class BsdDanhSachThongBao(models.TransientModel):
                 dot_cuoi = hd_ban.bsd_ltt_ids.filtered(lambda x: x.bsd_cs_tt_ct_id.bsd_dot_cuoi)
                 tien_ng = hd_ban.bsd_tong_gia - hd_ban.bsd_tien_pbt - hd_ban.bsd_tien_tt_hd - dot_cuoi.bsd_tien_dot_tt
                 unit_id = ct.bsd_unit_id
-                self.env['bsd.tb_nt'].create({
+                self.env['bsd.tb_bg'].create({
                     'bsd_ngay_tao_tb': fields.Datetime.now(),
                     'bsd_doi_tuong': "Thông báo bàn giao",
                     'bsd_tao_td': True,
