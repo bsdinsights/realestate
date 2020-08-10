@@ -44,7 +44,8 @@ class BsdDanhSachThongBao(models.TransientModel):
         unit_ids = cn_dkbg_ct.mapped('bsd_unit_id')
         if len(unit_ids) < len(cn_dkbg_ct):
             raise UserError(_("Có sản phẩm bị trùng cập nhật dự kiến bàn giao"))
-        # Tạo dự liệu bảng thông báo nghiệm thu
+
+        # DV.20.02 Tạo dự liệu bảng thông báo nghiệm thu
         if self.bsd_loai == 'nt':
             for ct in cn_dkbg_ct:
                 hd_ban = ct.bsd_hd_ban_id
@@ -53,7 +54,7 @@ class BsdDanhSachThongBao(models.TransientModel):
                 unit_id = ct.bsd_unit_id
                 self.env['bsd.tb_nt'].create({
                     'bsd_ngay_tao_tb': fields.Datetime.now(),
-                    'bsd_doi_tuong': "Thông báo Nghiệm thu",
+                    'bsd_doi_tuong': "Thông báo nghiệm thu",
                     'bsd_tao_td': True,
                     'bsd_cn_dkbg_unit_id': ct.id,
                     'bsd_ngay_tb': fields.Date.today(),
@@ -75,3 +76,35 @@ class BsdDanhSachThongBao(models.TransientModel):
                 'bsd_da_tao_tbnt': True
             })
 
+        # DV.20.03 Tạo dữ liệu bảng thông báo bàn giao
+            for ct in cn_dkbg_ct:
+                hd_ban = ct.bsd_hd_ban_id
+                dot_dkbg = hd_ban.bsd_ltt_ids.filtered(lambda x: x.bsd_ma_dtt == 'DKBG')
+                dot_cuoi = hd_ban.bsd_ltt_ids.filtered(lambda x: x.bsd_cs_tt_ct_id.bsd_dot_cuoi)
+                tien_ng = hd_ban.bsd_tong_gia - hd_ban.bsd_tien_pbt - hd_ban.bsd_tien_tt_hd - dot_cuoi.bsd_tien_dot_tt
+                unit_id = ct.bsd_unit_id
+                self.env['bsd.tb_nt'].create({
+                    'bsd_ngay_tao_tb': fields.Datetime.now(),
+                    'bsd_doi_tuong': "Thông báo bàn giao",
+                    'bsd_tao_td': True,
+                    'bsd_cn_dkbg_unit_id': ct.id,
+                    'bsd_ngay_tb': fields.Date.today(),
+                    'bsd_ngay_bg': ct.bsd_ngay_dkbg_moi,
+                    'bsd_ngay_ut': ct.bsd_cn_dkbg_id.bsd_ngay_ut,
+                    'bsd_du_an_id': ct.bsd_du_an_id.id,
+                    'bsd_unit_id': unit_id.id,
+                    'bsd_hd_ban_id': hd_ban.id,
+                    'bsd_khach_hang_id': hd_ban.bsd_khach_hang_id.id,
+                    'bsd_dot_tt_id': dot_dkbg.id,
+                    'bsd_ngay_hh_tt': dot_dkbg.bsd_ngay_hh_tt,
+                    'bsd_tien_ng': tien_ng,
+                    'bsd_tien_pbt': hd_ban.bsd_tien_pbt,
+                    'bsd_tien_pql': hd_ban.bsd_tien_pql,
+                    'bsd_thang_pql': hd_ban.bsd_thang_pql,
+                    'bsd_don_gia_pql': unit_id.bsd_don_gia_pql,
+                    'state': 'nhap',
+                })
+            # Cập nhật field đã tạo thông báo nghiệm thu
+            self.bsd_cn_dkbg_ids.write({
+                'bsd_da_tao_tbbg': True
+            })
