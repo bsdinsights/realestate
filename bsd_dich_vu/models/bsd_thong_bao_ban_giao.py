@@ -53,7 +53,6 @@ class BsdThongBaoBanGiao(models.Model):
     bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Sản phẩm", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
-    bsd_ten_sp = fields.Char(related="bsd_unit_id.name", store=True)
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng", required=True,
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
@@ -61,23 +60,6 @@ class BsdThongBaoBanGiao(models.Model):
                                     help="Đợt thanh toán là Đợt dự kiến bàn giao", compute="_compute_dot_tt")
     bsd_ngay_hh_tt = fields.Date(string="Hạn thanh toán", help="Hạn thanh toán của đợt dự kiến bàn giao",
                                  compute="_compute_dot_tt")
-
-    # Tên hiện thị record
-    def name_get(self):
-        res = []
-        for bg in self:
-            res.append((bg.id, "%s" % bg.bsd_ten_sp))
-        return res
-
-    @api.model
-    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
-        args = list(args or [])
-        if not (name == '' and operator == 'ilike'):
-            args += [('bsd_ten_sp', operator, name)]
-        access_rights_uid = name_get_uid or self._uid
-        ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
-        recs = self.browse(ids)
-        return models.lazy_name_get(recs.with_user(access_rights_uid))
 
     @api.onchange('bsd_cn_dkbg_unit_id')
     def _onchange_dkbg_unit(self):
