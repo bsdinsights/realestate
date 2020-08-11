@@ -80,6 +80,11 @@
               sequence="22"
               action="bsd_tl_kt_hd_action"
               parent="bsd_main_dich_vu_root"/>
+    <menuitem id="bsd_ds_td_menu_action"
+              name="Danh sách theo dõi"
+              sequence="23"
+              action="bsd_ds_td_action"
+              parent="bsd_main_dich_vu_root"/>
     <menuitem id="bsd_ps_gd_km_menu_action"
               name="Giao dịch khuyến mãi"
               sequence="100"
