@@ -9,7 +9,7 @@
                     <group>
                         <group>
                             <field name="bsd_tb_nt_id"/>
-                            <field name="bsd_loai_ngay" />
+                            <field name="bsd_loai_ngay" invisible="1"/>
                         </group>
                         <group>
                             <field name="bsd_ngay"/>
