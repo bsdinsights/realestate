@@ -173,10 +173,20 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="bsd_giu_cho_graph">
+        <field name="name">bsd.giu_cho.graph</field>
+        <field name="model">bsd.giu_cho</field>
+        <field name="arch" type="xml">
+            <graph>
+                <field name="bsd_kh_moi_id"/>
+            </graph>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_giu_cho_action">
         <field name="name">Giữ chỗ</field>
         <field name="res_model">bsd.giu_cho</field>
-        <field name="view_mode">tree,pivot,form</field>
+        <field name="view_mode">tree,pivot,graph,activity,form</field>
         <field name="help" type="xml">
             <p>Tạo phiếu giữ chỗ</p>
         </field>

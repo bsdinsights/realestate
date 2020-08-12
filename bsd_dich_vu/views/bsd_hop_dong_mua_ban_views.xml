@@ -414,10 +414,20 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="bsd_hd_ban_graph">
+        <field name="name">bsd.hd_ban.graph</field>
+        <field name="model">bsd.hd_ban</field>
+        <field name="arch" type="xml">
+            <graph>
+                <field name="bsd_khach_hang_id" type="row"/>
+            </graph>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_hd_ban_action">
         <field name="name">Hợp đồng mua bán</field>
         <field name="res_model">bsd.hd_ban</field>
-        <field name="view_mode">tree,pivot,form</field>
+        <field name="view_mode">tree,pivot,graph,activity,form</field>
         <field name="help" type="xml">
             <p>Tạo hợp đồng mua bán</p>
         </field>
