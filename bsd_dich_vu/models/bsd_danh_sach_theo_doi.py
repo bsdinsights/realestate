@@ -117,10 +117,27 @@ class BsdDanhSachTheoDoi(models.Model):
     state_hd = fields.Selection(related='bsd_hd_ban_id.state')
 
     @api.onchange('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id')
-    def _onchange_ngay_hh(self):
-        if self.bsd_loai_dt == 'dat_coc' and self.bsd_dat_coc_id:
-            self.bsd_ngay_hh = self.bsd_dat_coc_id.bsd_ngay_ky_dc
-        else:
+    def _onchange_tt(self):
+        if self.bsd_loai_dt == 'dat_coc':
+            if self.bsd_dat_coc_id:
+                self.bsd_ngay_hh = self.bsd_dat_coc_id.bsd_ngay_ky_dc
+                self.bsd_khach_hang_id = self.bsd_dat_coc_id.bsd_khach_hang_id
+                self.bsd_unit_id = self.bsd_dat_coc_id.bsd_unit_id
+                self.bsd_tien_dc = self.bsd_dat_coc_id.bsd_tien_dc
+                self.bsd_tien_da_tt = self.bsd_dat_coc_id.bsd_tien_da_tt
+        elif self.bsd_loai_dt == 'ttdc':
+            if self.bsd_hd_ban_id:
+                self.bsd_ngay_hh = self.bsd_hd_ban_id.bsd_ngay_ky_ttdc
+                self.bsd_khach_hang_id = self.bsd_dat_coc_id.bsd_khach_hang_id
+                self.bsd_unit_id = self.bsd_dat_coc_id.bsd_unit_id
+                self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tien_tt_hd
+        elif self.bsd_loai_dt == 'hd_ban':
+            if self.bsd_hd_ban_id:
+                self.bsd_ngay_hh = self.bsd_hd_ban_id.bsd_ngay_ky_hdb
+                self.bsd_khach_hang_id = self.bsd_dat_coc_id.bsd_khach_hang_id
+                self.bsd_unit_id = self.bsd_dat_coc_id.bsd_unit_id
+
+
 
     @api.depends('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id')
     def _compute_tt(self):
