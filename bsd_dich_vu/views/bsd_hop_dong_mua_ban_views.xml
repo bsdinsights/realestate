@@ -404,6 +404,16 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="bsd_hd_ban_pivot">
+        <field name="name">bsd.hd_ban.pivot</field>
+        <field name="model">bsd.hd_ban</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="bsd_khach_hang_id" type="row"/>
+            </pivot>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_hd_ban_action">
         <field name="name">Hợp đồng mua bán</field>
         <field name="res_model">bsd.hd_ban</field>

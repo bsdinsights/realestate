@@ -136,6 +136,16 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="bsd_phieu_thu_pivot">
+        <field name="name">bsd.phieu_thu.pivot</field>
+        <field name="model">bsd.phieu_thu</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="bsd_khach_hang_id" type="row"/>
+            </pivot>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_phieu_thu_action">
         <field name="name">Phiếu thu</field>
         <field name="res_model">bsd.phieu_thu</field>
