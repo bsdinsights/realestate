@@ -116,6 +116,12 @@ class BsdDanhSachTheoDoi(models.Model):
     bsd_bang_gia_hd_id = fields.Many2one(related='bsd_hd_ban_id.bsd_bang_gia_id')
     state_hd = fields.Selection(related='bsd_hd_ban_id.state')
 
+    @api.onchange('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id')
+    def _onchange_ngay_hh(self):
+        if self.bsd_loai_dt == 'dat_coc' and self.bsd_dat_coc_id:
+            self.bsd_ngay_hh = self.bsd_dat_coc_id.bsd_ngay_ky_dc
+        else:
+
     @api.depends('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id')
     def _compute_tt(self):
         if self.bsd_loai_dt in ['dat_coc']:
