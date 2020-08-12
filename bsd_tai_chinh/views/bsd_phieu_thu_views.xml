@@ -149,7 +149,7 @@
     <record model="ir.actions.act_window" id="bsd_phieu_thu_action">
         <field name="name">Phiếu thu</field>
         <field name="res_model">bsd.phieu_thu</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,pivot,form</field>
         <field name="help" type="xml">
             <p>Tạo mới phiếu thu</p>
         </field>

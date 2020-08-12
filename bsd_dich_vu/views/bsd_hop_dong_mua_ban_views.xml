@@ -417,7 +417,7 @@
     <record model="ir.actions.act_window" id="bsd_hd_ban_action">
         <field name="name">Hợp đồng mua bán</field>
         <field name="res_model">bsd.hd_ban</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,pivot,form</field>
         <field name="help" type="xml">
             <p>Tạo hợp đồng mua bán</p>
         </field>
