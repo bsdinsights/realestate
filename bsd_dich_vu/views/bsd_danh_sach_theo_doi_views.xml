@@ -24,10 +24,24 @@
                                     <field name="bsd_du_an_id"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_hd_ban_id"/>
-                                    <field name="bsd_dat_coc_id"/>
-                                    <field name="bsd_unit_id"/>
-                                    <field name="bsd_khach_hang_id"/>
+                                    <field name="bsd_hd_ban_id"
+                                           attrs="{'invisible':[('bsd_loai_dt', '=', 'dat_coc')]}"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_dat_coc_id"
+                                           attrs="{'invisible':[('bsd_loai_dt', '!=', 'dat_coc')]}"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_unit_id"
+                                           context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                           options="{'no_create':true}" readonly="1"/>
+                                    <field name="bsd_unit_id"
+                                           context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                           options="{'no_create':true}" invisible="1"/>
+                                    <field name="bsd_khach_hang_id"
+                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                           options="{'no_create':true}" readonly="1"/>
+                                    <field name="bsd_khach_hang_id"
+                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                           options="{'no_create':true}" invisible="1"/>
                                     <field name="bsd_tien_dc"/>
                                     <field name="bsd_tong_gt_hd"/>
                                     <field name="bsd_ngay_hh"/>
@@ -70,7 +84,7 @@
                                 <group>
                                     <field name="bsd_unit_id"
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
-                                           options="{'no_create':true}"/>
+                                           options="{'no_create':true}" readonly="1"/>
                                     <label for="bsd_dt_xd"/>
                                     <div class="o_row no-gutters d-flex">
                                         <div class="col">

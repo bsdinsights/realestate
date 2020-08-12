@@ -64,25 +64,32 @@ class BsdDanhSachTheoDoi(models.Model):
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-    bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích xây dựng")
-    bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế")
-    bsd_thue_id = fields.Many2one('bsd.thue_suat', string="Mã thuế", help="Mã thuế")
-    bsd_qsdd_m2 = fields.Float(string="QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2")
-    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất")
-    bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì")
-    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="CS thanh toán", help="Chính sách thanh toán")
-    bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán")
-    bsd_tien_ck = fields.Monetary(string="Tiền chiết khấu", help="Tổng tiền chiết khấu")
-    bsd_tien_bg = fields.Monetary(string="Tiền bàn giao", help="Tổng tiền bàn giao")
+
+    bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích xây dựng", compute="_compute_tt")
+    bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế", compute="_compute_tt")
+    bsd_thue_id = fields.Many2one('bsd.thue_suat', string="Mã thuế", help="Mã thuế", compute="_compute_tt")
+    bsd_qsdd_m2 = fields.Float(string="QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2", compute="_compute_tt")
+    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", compute="_compute_tt")
+    bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì", compute="_compute_tt")
+    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="CS thanh toán", help="Chính sách thanh toán",
+                                   compute="_compute_tt")
+    bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán", compute="_compute_tt")
+    bsd_tien_ck = fields.Monetary(string="Tiền chiết khấu", help="Tổng tiền chiết khấu", compute="_compute_tt")
+    bsd_tien_bg = fields.Monetary(string="Tiền bàn giao", help="Tổng tiền bàn giao", compute="_compute_tt")
     bsd_gia_truoc_thue = fields.Monetary(string="Giá bán trước thuế",
-                                         help="Giá bán trước thuế: bằng giá bán cộng tiền bàn giao trừ tiền chiết khấu")
+                                         help="Giá bán trước thuế: bằng giá bán cộng tiền bàn giao trừ tiền chiết khấu",
+                                         compute="_compute_tt")
     bsd_tien_qsdd = fields.Monetary(string="Giá trị QSDĐ",
-                                    help="Giá trị quyền sử dụng đất: bằng QSDĐ/m2 nhân với diện tích sử dụng")
+                                    help="Giá trị quyền sử dụng đất: bằng QSDĐ/m2 nhân với diện tích sử dụng",
+                                    compute="_compute_tt")
     bsd_tien_thue = fields.Monetary(string="Tiền thuế",
-                                    help="Tiền thuế: bằng giá bán trước thuế trừ giá trị QSDĐ/m2 nhân với thuế suất")
-    bsd_tien_pbt = fields.Monetary(string="Phí bảo trì", help="Phí bảo trì: bằng % phí bảo trì nhân giá bán")
+                                    help="Tiền thuế: bằng giá bán trước thuế trừ giá trị QSDĐ/m2 nhân với thuế suất",
+                                    compute="_compute_tt")
+    bsd_tien_pbt = fields.Monetary(string="Phí bảo trì", help="Phí bảo trì: bằng % phí bảo trì nhân giá bán",
+                                   compute="_compute_tt")
     bsd_tong_gia = fields.Monetary(string="Tổng giá bán",
-                                   help="Tổng giá bán: bằng giá bán trước thuế cộng tiền thuế cộng phí bảo trì")
+                                   help="Tổng giá bán: bằng giá bán trước thuế cộng tiền thuế cộng phí bảo trì",
+                                   compute="_compute_tt")
 
     bsd_ma_dat_coc = fields.Char(related='bsd_dat_coc_id.bsd_ma_dat_coc')
     bsd_ngay_dat_coc = fields.Datetime(related='bsd_dat_coc_id.bsd_ngay_dat_coc')
@@ -108,6 +115,75 @@ class BsdDanhSachTheoDoi(models.Model):
     bsd_dot_mb_id = fields.Many2one(related='bsd_hd_ban_id.bsd_dot_mb_id')
     bsd_bang_gia_hd_id = fields.Many2one(related='bsd_hd_ban_id.bsd_bang_gia_id')
     state_hd = fields.Selection(related='bsd_hd_ban_id.state')
+
+    @api.depends('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id')
+    def _compute_tt(self):
+        if self.bsd_loai_dt in ['dat_coc']:
+            if self.bsd_dat_coc_id:
+                self.bsd_dt_xd = self.bsd_dat_coc_id.bsd_dt_xd
+                self.bsd_dt_sd = self.bsd_dat_coc_id.bsd_dt_sd
+                self.bsd_thue_id = self.bsd_dat_coc_id.bsd_thue_id
+                self.bsd_qsdd_m2 = self.bsd_dat_coc_id.bsd_qsdd_m2
+                self.bsd_thue_suat = self.bsd_dat_coc_id.bsd_thue_suat
+                self.bsd_tl_pbt = self.bsd_dat_coc_id.bsd_tl_pbt
+                self.bsd_cs_tt_id = self.bsd_dat_coc_id.bsd_cs_tt_id
+                self.bsd_gia_ban = self.bsd_dat_coc_id.bsd_gia_ban
+                self.bsd_tien_ck = self.bsd_dat_coc_id.bsd_tien_ck
+                self.bsd_tien_bg = self.bsd_dat_coc_id.bsd_tien_bg
+                self.bsd_gia_truoc_thue = self.bsd_dat_coc_id.bsd_gia_truoc_thue
+                self.bsd_tien_qsdd = self.bsd_dat_coc_id.bsd_tien_qsdd
+                self.bsd_tien_thue = self.bsd_dat_coc_id.bsd_tien_thue
+                self.bsd_tien_pbt = self.bsd_dat_coc_id.bsd_tien_pbt
+                self.bsd_tong_gia = self.bsd_dat_coc_id.bsd_tong_gia
+            else:
+                self.bsd_dt_xd = False
+                self.bsd_dt_sd = False
+                self.bsd_thue_id = False
+                self.bsd_qsdd_m2 = False
+                self.bsd_thue_suat = False
+                self.bsd_tl_pbt = False
+                self.bsd_cs_tt_id = False
+                self.bsd_gia_ban = False
+                self.bsd_tien_ck = False
+                self.bsd_tien_bg = False
+                self.bsd_gia_truoc_thue = False
+                self.bsd_tien_qsdd = False
+                self.bsd_tien_thue = False
+                self.bsd_tien_pbt = False
+                self.bsd_tong_gia = False
+        else:
+            if self.bsd_hd_ban_id:
+                self.bsd_dt_xd = self.bsd_hd_ban_id.bsd_dt_xd
+                self.bsd_dt_sd = self.bsd_hd_ban_id.bsd_dt_sd
+                self.bsd_thue_id = self.bsd_hd_ban_id.bsd_thue_id
+                self.bsd_qsdd_m2 = self.bsd_hd_ban_id.bsd_qsdd_m2
+                self.bsd_thue_suat = self.bsd_hd_ban_id.bsd_thue_suat
+                self.bsd_tl_pbt = self.bsd_hd_ban_id.bsd_tl_pbt
+                self.bsd_cs_tt_id = self.bsd_hd_ban_id.bsd_cs_tt_id
+                self.bsd_gia_ban = self.bsd_hd_ban_id.bsd_gia_ban
+                self.bsd_tien_ck = self.bsd_hd_ban_id.bsd_tien_ck
+                self.bsd_tien_bg = self.bsd_hd_ban_id.bsd_tien_bg
+                self.bsd_gia_truoc_thue = self.bsd_hd_ban_id.bsd_gia_truoc_thue
+                self.bsd_tien_qsdd = self.bsd_hd_ban_id.bsd_tien_qsdd
+                self.bsd_tien_thue = self.bsd_hd_ban_id.bsd_tien_thue
+                self.bsd_tien_pbt = self.bsd_hd_ban_id.bsd_tien_pbt
+                self.bsd_tong_gia = self.bsd_hd_ban_id.bsd_tong_gia
+            else:
+                self.bsd_dt_xd = False
+                self.bsd_dt_sd = False
+                self.bsd_thue_id = False
+                self.bsd_qsdd_m2 = False
+                self.bsd_thue_suat = False
+                self.bsd_tl_pbt = False
+                self.bsd_cs_tt_id = False
+                self.bsd_gia_ban = False
+                self.bsd_tien_ck = False
+                self.bsd_tien_bg = False
+                self.bsd_gia_truoc_thue = False
+                self.bsd_tien_qsdd = False
+                self.bsd_tien_thue = False
+                self.bsd_tien_pbt = False
+                self.bsd_tong_gia = False
 
     @api.model
     def create(self, vals):
