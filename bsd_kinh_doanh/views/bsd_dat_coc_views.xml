@@ -56,16 +56,14 @@
                                                     ('bsd_ngay_ky_bg','!=',False)]"/>
                                     <field name="bsd_giu_cho_id"/>
                                     <field name="bsd_du_an_id"/>
-                                    <field name="bsd_dien_giai"/>
                                 </group>
                                 <group>
                                     <field name="bsd_co_ttdc"/>
-                                    <field name="bsd_so_ttdc" attrs="{'readonly':['|',('bsd_co_ttdc','=',False),('state','!=','nhap')],
-                                                                     'required':[('bsd_co_ttdc','=',True)]}"/>
                                     <field name="bsd_dot_mb_id"/>
                                     <field name="bsd_bang_gia_id"/>
                                     <field name="bsd_tien_gc"/>
                                     <field name="bsd_tien_dc"/>
+                                    <field name="bsd_dien_giai"/>
                                 </group>
                             </group>
                             <group string="MÔI GIỚI">
@@ -303,7 +301,6 @@
                 <field name="bsd_du_an_id"/>
                 <field name="bsd_unit_id"/>
                 <field name="bsd_khach_hang_id"/>
-                <field name="bsd_so_ttdc"/>
                 <field name="bsd_ngay_ky_dc"/>
                 <field name="bsd_thanh_toan"/>
                 <field name="state"/>

@@ -132,7 +132,7 @@ class BsdHopDongMuaBan(models.Model):
                                    readonly=True, help="Họp đồng áp dụng chiết khấu mua sỉ")
     bsd_co_ttdc = fields.Boolean(string="Thỏa thuận đặt cọc", related="bsd_dat_coc_id.bsd_co_ttdc",
                                  help="Đánh dấu hợp đồng cần ký thỏa thuận đặt cọc trước khi ký hợp đồng", store=True)
-    bsd_so_ttdc = fields.Char(related="bsd_dat_coc_id.bsd_so_ttdc")
+    bsd_so_ttdc = fields.Char(string="Số TTĐC", help="Số thỏa thuận đặt cọc", readonly=True)
     bsd_ngay_in_ttdc = fields.Datetime(string="Ngày in TTDC", help="Ngày in thỏa thuận đặt cọc", readonly=True)
     bsd_ngay_hh_ttdc = fields.Datetime(string="Hạn ký TTDC", help="Hiệu lực của thỏa thuận đặt cọc", readonly=True)
     bsd_ngay_ky_ttdc = fields.Datetime(string="Ngày ký TTDC", help="Ngày ký thỏa thuận đặt cọc", readonly=True)
