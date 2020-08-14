@@ -25,7 +25,7 @@ class BsdKyBGGT(models.TransientModel):
         })
         if self.bsd_bg_gt_id.bsd_hd_ban_id.state == 'ht_tt':
             self.bsd_bg_gt_id.bsd_hd_ban_id.write({
-                'state': 'bt_gt',
+                'state': 'bg_gt',
             })
         self.bsd_bg_gt_id.bsd_unit_id.write({
             'bsd_ngay_hs': self.bsd_ngay_bg_tt,
