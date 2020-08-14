@@ -167,3 +167,4 @@ class BsdCapNhatNDCChiTiet(models.Model):
     @api.onchange('bsd_cn_ndc_id')
     def _onchange_cn_ndc(self):
         self.bsd_ten_ct = self.bsd_cn_ndc_id.bsd_ten_cn
+        self.bsd_du_an_id = self.bsd_cn_ndc_id.bsd_du_an_id
