@@ -23,7 +23,7 @@ class BsdKyBGGT(models.TransientModel):
             'bsd_nguoi_xn_id': self.bsd_nguoi_xn_id.id,
             'state': 'da_tl'
         })
-        if self.bsd_tl_kt_hd_id.bsd_hd_ban_id.state == 'bt_gt':
+        if self.bsd_tl_kt_hd_id.bsd_hd_ban_id.state == 'bg_gt':
             self.bsd_tl_kt_hd_id.bsd_hd_ban_id.write({
                 'state': 'da_ht',
             })
