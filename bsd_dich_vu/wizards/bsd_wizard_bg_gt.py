@@ -28,6 +28,6 @@ class BsdKyBGGT(models.TransientModel):
                 'state': 'bg_gt',
             })
         self.bsd_bg_gt_id.bsd_unit_id.write({
-            'bsd_ngay_hs': self.bsd_ngay_bg_tt,
+            'bsd_ngay_cap_sh': self.bsd_ngay_bg_tt,
             'bsd_bg_gt_id': self.bsd_bg_gt_id.id,
         })
