@@ -137,8 +137,6 @@ class BsdDanhSachTheoDoi(models.Model):
                 self.bsd_khach_hang_id = self.bsd_dat_coc_id.bsd_khach_hang_id
                 self.bsd_unit_id = self.bsd_dat_coc_id.bsd_unit_id
 
-
-
     @api.depends('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id')
     def _compute_tt(self):
         if self.bsd_loai_dt in ['dat_coc']:

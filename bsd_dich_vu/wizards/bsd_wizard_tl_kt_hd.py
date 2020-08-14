@@ -20,7 +20,7 @@ class BsdKyBGGT(models.TransientModel):
     def action_xac_nhan(self):
         self.bsd_tl_kt_hd_id.write({
             'bsd_ngay_xn': self.bsd_ngay_xn,
-            'bsd_nguoi_xn_id': self.bsd_nguoi_bg_tt_id.id,
+            'bsd_nguoi_xn_id': self.bsd_nguoi_xn_id.id,
             'state': 'da_tl'
         })
         if self.bsd_tl_kt_hd_id.bsd_hd_ban_id.state == 'bt_gt':
