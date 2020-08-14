@@ -65,8 +65,12 @@ class BsdBaoGia(models.Model):
                              related="bsd_unit_id.bsd_dt_xd", store=True)
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",
                              related="bsd_unit_id.bsd_dt_sd", store=True)
+
+    def _get_thue(self):
+        return self.env['bsd.thue_suat'].search([('bsd_ma_ts', '=', 'VAT10')], limit=1)
+
     bsd_thue_id = fields.Many2one('bsd.thue_suat', string="Thuế", help="Thuế", required=True,
-                                  readonly=True,
+                                  readonly=True, default=_get_thue,
                                   states={'nhap': [('readonly', False)]})
     bsd_qsdd_m2 = fields.Monetary(string="Giá trị QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2",
                                   related="bsd_unit_id.bsd_qsdd_m2", store=True)
