@@ -158,10 +158,11 @@ class BsdCapNhatNDCChiTiet(models.Model):
 
     @api.constrains('bsd_ngay_dtt', 'bsd_dot_tt_id')
     def _constrains_ngay_dtt(self):
-        stt = self.bsd_dot_tt_id.bsd_stt - 1
-        dot_lien_ke = self.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_stt == stt)
-        if self.bsd_ngay_dtt < dot_lien_ke.bsd_ngay_hh_tt:
-            raise UserError(_('Ngày đến hạn nhỏ hơn ngày đến hạn của đợt thanh toán liền kề'))
+        for each in self:
+            stt = each.bsd_dot_tt_id.bsd_stt - 1
+            dot_lien_ke = each.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_stt == stt)
+            if each.bsd_ngay_dtt < dot_lien_ke.bsd_ngay_hh_tt:
+                raise UserError(_('Ngày đến hạn nhỏ hơn ngày đến hạn của đợt thanh toán liền kề'))
 
     @api.onchange('bsd_cn_ndc_id')
     def _onchange_cn_ndc(self):
