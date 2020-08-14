@@ -87,7 +87,7 @@ class BsdThanhLyKetThucHopDong(models.Model):
 
     @api.model
     def create(self, vals):
-        sequence = False
+        sequence = self.env['ir.sequence']
         if 'bsd_du_an_id' in vals:
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)

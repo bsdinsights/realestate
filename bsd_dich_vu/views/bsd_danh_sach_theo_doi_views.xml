@@ -58,34 +58,35 @@
                                     <field name="bsd_tien_da_tt" invisible="1"/>
                                 </group>
                             </group>
-                            <group string="GIA HẠN">
+                            <group string="GIA HẠN" attrs="{'invisible':[('bsd_loai_td', '!=', 'gia_han')]}">
                                 <group>
                                     <field name="bsd_ngay_gh"/>
                                 </group>
                             </group>
-                            <group string="HÌNH THỨC THANH LÝ">
+                            <group string="HÌNH THỨC THANH LÝ" attrs="{'invisible':[('bsd_loai_td', '!=', 'thanh_ly')]}">
                                 <group>
                                     <field name="bsd_gui_thu"/>
+                                    <field name="bsd_tl_phat"/>
                                 </group>
                                 <group>
                                     <field name="bsd_ky_bb"/>
+                                    <field name="bsd_tien_phat"/>
                                 </group>
                             </group>
-                            <group string="MỞ BÁN">
+                            <group string="MỞ BÁN" attrs="{'invisible':[('bsd_loai_td', '!=', 'thanh_ly')]}">
                                 <group>
                                     <field name="bsd_mo_bl"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_dot_mb_id"/>
+                                    <field name="bsd_dot_mb_id"
+                                           attrs="{'invisible':[('bsd_mo_bl', '=', False)]}"
+                                           readonly="1"/>
+                                    <field name="bsd_dot_mb_id" invisible="1"/>
                                 </group>
                             </group>
-                            <group string="XỬ LÝ THANH LÝ">
+                            <group string="QUYẾT ĐỊNH">
                                 <group>
-                                    <field name="bsd_tl_phat"/>
                                     <field name="bsd_quyet_dinh"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_tien_phat"/>
                                 </group>
                             </group>
                         </page>

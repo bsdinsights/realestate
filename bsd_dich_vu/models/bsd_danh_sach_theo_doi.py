@@ -112,11 +112,12 @@ class BsdDanhSachTheoDoi(models.Model):
     bsd_bao_gia_hd_id = fields.Many2one(related='bsd_hd_ban_id.bsd_bao_gia_id')
     bsd_dat_coc_hd_id = fields.Many2one(related='bsd_hd_ban_id.bsd_dat_coc_id')
     bsd_du_an_hd_id = fields.Many2one(related='bsd_hd_ban_id.bsd_du_an_id')
-    bsd_dot_mb_id = fields.Many2one(related='bsd_hd_ban_id.bsd_dot_mb_id')
+    bsd_dot_mb_hd_id = fields.Many2one(related='bsd_hd_ban_id.bsd_dot_mb_id')
     bsd_bang_gia_hd_id = fields.Many2one(related='bsd_hd_ban_id.bsd_bang_gia_id')
     state_hd = fields.Selection(related='bsd_hd_ban_id.state')
 
-    @api.onchange('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id')
+    # R.02
+    @api.onchange('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id', 'bsd_loai_td', 'bsd_du_an_id')
     def _onchange_tt(self):
         if self.bsd_loai_dt == 'dat_coc':
             if self.bsd_dat_coc_id:
@@ -128,14 +129,77 @@ class BsdDanhSachTheoDoi(models.Model):
         elif self.bsd_loai_dt == 'ttdc':
             if self.bsd_hd_ban_id:
                 self.bsd_ngay_hh = self.bsd_hd_ban_id.bsd_ngay_ky_ttdc
-                self.bsd_khach_hang_id = self.bsd_dat_coc_id.bsd_khach_hang_id
-                self.bsd_unit_id = self.bsd_dat_coc_id.bsd_unit_id
-                self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tien_tt_hd
+                self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
+                self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
+                self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
+                self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
+            res = {}
+            list_id = []
+            if self.bsd_du_an_id and self.bsd_loai_td == 'vp_tg':
+                list_id = self.env['bsd.hd_ban'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                         ('state', '=', 'tt_dot1'),
+                                                         '|',
+                                                         ('bsd_duyet_db', '=', True),
+                                                         ('bsd_ngay_ky_ttdc', '=', False)])
+            res.update({
+                'domain': {'bsd_hd_ban_id': [('id', 'in', list_id)]}
+            })
+            return res
         elif self.bsd_loai_dt == 'hd_ban':
             if self.bsd_hd_ban_id:
                 self.bsd_ngay_hh = self.bsd_hd_ban_id.bsd_ngay_ky_hdb
-                self.bsd_khach_hang_id = self.bsd_dat_coc_id.bsd_khach_hang_id
-                self.bsd_unit_id = self.bsd_dat_coc_id.bsd_unit_id
+                self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
+                self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
+                self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
+                self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
+            res = {}
+            list_id = []
+            if self.bsd_du_an_id and self.bsd_loai_td == 'vp_tg':
+                list_id = self.env['bsd.hd_ban'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                         ('state', '=', 'du_dk'),
+                                                         '|',
+                                                         ('bsd_duyet_db', '=', True),
+                                                         ('bsd_ngay_ky_hd', '=', False)])
+            res.update({
+                'domain': {'bsd_hd_ban_id': [('id', 'in', list_id)]}
+            })
+            return res
+        elif self.bsd_loai_dt == 'dc_cb':
+            if self.bsd_hd_ban_id:
+                self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
+                self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
+                self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
+                self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
+            res = {}
+            list_id = []
+            if self.bsd_du_an_id and self.bsd_loai_td == 'vp_tg':
+                list_id = self.env['bsd.hd_ban'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                         ('state', '=', 'ht_dc')])
+            res.update({
+                'domain': {'bsd_hd_ban_id': [('id', 'in', list_id)]}
+            })
+            return res
+
+        if self.bsd_loai_td == 'yc_kh':
+            res = {}
+            list_id = []
+            if self.bsd_du_an_id:
+                list_id = self.env['bsd.hd_ban'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                         ('state', 'not in', ['nhap', 'huy', 'thanh_ly', 'da_ht'])])
+            res.update({
+                'domain': {'bsd_hd_ban_id': [('id', 'in', list_id)]}
+            })
+            return res
+
+    @api.onchange('bsd_mo_bl', 'bsd_hd_ban_id', 'bsd_dat_coc_id')
+    def _onchange_dot_mb(self):
+        if self.bsd_mo_bl:
+            if self.bsd_loai_dt == 'dat_coc':
+                if self.bsd_dat_coc_id:
+                    self.bsd_dot_mb_id = self.bsd_dat_coc_id.bsd_dot_mb_id
+            else:
+                if self.bsd_hd_ban_id:
+                    self.bsd_dot_mb_id = self.bsd_hd_ban_id.bsd_dot_mb_id
 
     @api.depends('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id')
     def _compute_tt(self):
@@ -208,7 +272,7 @@ class BsdDanhSachTheoDoi(models.Model):
 
     @api.model
     def create(self, vals):
-        sequence = False
+        sequence = self.env['ir.sequence']
         if 'bsd_du_an_id' in vals:
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
