@@ -52,7 +52,8 @@ class BsdMaBoChungTu(models.Model):
                                     ('bsd.phi_ps', 'Phí phát sinh'),
                                     ('bsd.cn_ndc', 'Cập nhật ngày thanh toán cuối'),
                                     ('bsd.bg_gt', 'Bàn giao giấy tờ'),
-                                    ('bsd.tl_kt_hd', 'Thanh lý kết thúc hợp đồng')],
+                                    ('bsd.tl_kt_hd', 'Thanh lý kết thúc hợp đồng'),
+                                    ('bsd.ds_td', 'Danh sách theo dõi')],
                                    string="Loại chứng từ", help="Loại chứng từ được đặt mã", required=True)
     bsd_ma_cn = fields.Char(string="Mã chứng từ", help="Mã tiền tố của chứng từ", required=True)
     _sql_constraints = [

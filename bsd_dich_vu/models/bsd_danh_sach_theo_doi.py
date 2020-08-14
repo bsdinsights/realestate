@@ -270,6 +270,34 @@ class BsdDanhSachTheoDoi(models.Model):
                 self.bsd_tien_pbt = False
                 self.bsd_tong_gia = False
 
+    # DV.15.01 Xác nhận thông tin trên danh sách theo dõi
+    def action_xac_nhan(self):
+        pass
+
+    # DV.15.02 Xác nhận công nợ
+    def action_xn_cn(self):
+        pass
+
+    # DV.15.03 Gia hạn
+    def action_gia_han(self):
+        pass
+
+    # DV.15.04 Gửi thông báo thanh lý
+    def action_gui_tbtl(self):
+        pass
+
+    # DV.15.05 Thanh lý
+    def action_thanh_ly(self):
+        pass
+
+    # DV.15.06 Chuyển thanh lý
+    def action_chuyen_tl(self):
+        pass
+
+    # DV.15.07 Hủy danh sách theo dõi
+    def action_huy(self):
+        pass
+
     @api.model
     def create(self, vals):
         sequence = self.env['ir.sequence']

@@ -6,6 +6,32 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button name="action_xac_nhan"
+                            type="object"
+                            string="Xác nhận"
+                            states="nhap"
+                            attrs="{'invisible':['|',('id', '=',False)]"
+                            confirm="Bạn có muốn xác nhận yêu cầu không?"
+                            class="oe_highlight"/>
+                    <button name="action_xn_cn"
+                            type="object"
+                            states="xac_nhan"
+                            string="Xác nhận công nợ"/>
+                    <button name="action_gui_tbtl"
+                            type="object"
+                            string="Gửi TBTL"/>
+                    <button name="action_gia_han"
+                            type="object"
+                            string="Gia hạn"/>
+                    <button name="action_thanh_ly"
+                            type="object"
+                            string="Thanh lý"/>
+                    <button name="action_chuyen_tl"
+                            type="object"
+                            string="Chuyển thanh lý"/>
+                    <button name="action_huy"
+                            type="object"
+                            string="Hủy"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
