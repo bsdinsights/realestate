@@ -9,8 +9,7 @@
                     <button name="action_xac_nhan"
                             type="object"
                             string="Xác nhận"
-                            states="nhap"
-                            attrs="{'invisible':['|',('id', '=',False)]"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
                             confirm="Bạn có muốn xác nhận yêu cầu không?"
                             class="oe_highlight"/>
                     <button name="action_xn_cn"

@@ -50,6 +50,7 @@
         'wizards/bsd_wizard_cn_ndc_views.xml',
         'wizards/bsd_wizard_bg_gt_views.xml',
         'wizards/bsd_wizard_tl_kt_hd_views.xml',
+        'wizards/bsd_wizard_ds_td_views.xml',
         'reports/report_bsd_uoc_tinh_views.xml',
         'reports/report_bsd_hd_ban_views.xml',
         'reports/report_bsd_hd_ban_cn_views.xml',

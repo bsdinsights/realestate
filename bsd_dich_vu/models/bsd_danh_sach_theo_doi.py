@@ -62,6 +62,7 @@ class BsdDanhSachTheoDoi(models.Model):
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('hoan_thanh', 'Hoàn thành'), ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
+    bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
@@ -272,11 +273,15 @@ class BsdDanhSachTheoDoi(models.Model):
 
     # DV.15.01 Xác nhận thông tin trên danh sách theo dõi
     def action_xac_nhan(self):
-        pass
+        if self.state == 'nhap':
+            self.write({
+                'state': 'xac_nhan',
+            })
 
     # DV.15.02 Xác nhận công nợ
     def action_xn_cn(self):
-        pass
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_ds_td_kt_xn_action').read()[0]
+        return action
 
     # DV.15.03 Gia hạn
     def action_gia_han(self):
