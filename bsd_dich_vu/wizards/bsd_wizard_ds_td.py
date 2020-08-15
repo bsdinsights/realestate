@@ -1,7 +1,7 @@
 from odoo import fields, models, api
 
 
-class BsdWizardKTXN(models.Model):
+class BsdWizardKTXN(models.TransientModel):
     _name = 'bsd.wizard.ds_td.kt_xn'
     _description = 'Kế toán xác nhận công nợ'
 

@@ -15,15 +15,24 @@
                     <button name="action_xn_cn"
                             type="object"
                             states="xac_nhan"
-                            string="Xác nhận công nợ"/>
+                            string="Xác nhận công nợ"
+                            class="oe_highlight"/>
                     <button name="action_gui_tbtl"
                             type="object"
+                            attrs="{'invisible': ['|', ('state', '!=', 'hoan_thanh'),
+                                                       ('bsd_gui_thu', '=', False),
+                                                       ('bsd_loai_yc', '!=', 'thanh_ly')]}"
                             string="Gửi TBTL"/>
                     <button name="action_gia_han"
                             type="object"
+                            attrs="{'invisible': ['|', ('state', '!=', 'hoan_thanh'),
+                                                       ('bsd_loai_yc', '=', 'thanh_ly')]}"
                             string="Gia hạn"/>
                     <button name="action_thanh_ly"
                             type="object"
+                            attrs="{'invisible': ['|', ('state', '!=', 'hoan_thanh'),
+                                                       ('bsd_gui_thu', '=', False),
+                                                       ('bsd_loai_yc', '!=', 'thanh_ly')]}"
                             string="Thanh lý"/>
                     <button name="action_chuyen_tl"
                             type="object"
@@ -84,12 +93,12 @@
                                     <field name="bsd_tien_da_tt" invisible="1"/>
                                 </group>
                             </group>
-                            <group string="GIA HẠN" attrs="{'invisible':[('bsd_loai_td', '!=', 'gia_han')]}">
+                            <group string="GIA HẠN" attrs="{'invisible':[('bsd_loai_yc', '!=', 'gia_han')]}">
                                 <group>
                                     <field name="bsd_ngay_gh"/>
                                 </group>
                             </group>
-                            <group string="HÌNH THỨC THANH LÝ" attrs="{'invisible':[('bsd_loai_td', '!=', 'thanh_ly')]}">
+                            <group string="HÌNH THỨC THANH LÝ" attrs="{'invisible':[('bsd_loai_yc', '!=', 'thanh_ly')]}">
                                 <group>
                                     <field name="bsd_gui_thu"/>
                                     <field name="bsd_tl_phat"/>
@@ -122,6 +131,9 @@
                                     <field name="bsd_unit_id"
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                            options="{'no_create':true}" readonly="1"/>
+                                    <field name="bsd_unit_id"
+                                           context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                           options="{'no_create':true}" invisible="1"/>
                                     <label for="bsd_dt_xd"/>
                                     <div class="o_row no-gutters d-flex">
                                         <div class="col">

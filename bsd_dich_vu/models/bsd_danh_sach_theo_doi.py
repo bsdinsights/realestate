@@ -162,7 +162,7 @@ class BsdDanhSachTheoDoi(models.Model):
                                                          ('bsd_duyet_db', '=', True),
                                                          ('bsd_ngay_ky_hd', '=', False)])
             res.update({
-                'domain': {'bsd_hd_ban_id': [('id', 'in', list_id)]}
+                'domain': {'bsd_hd_ban_id': [('id', 'in', list_id.ids)]}
             })
             return res
         elif self.bsd_loai_dt == 'dc_cb':
@@ -177,7 +177,7 @@ class BsdDanhSachTheoDoi(models.Model):
                 list_id = self.env['bsd.hd_ban'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                          ('state', '=', 'ht_dc')])
             res.update({
-                'domain': {'bsd_hd_ban_id': [('id', 'in', list_id)]}
+                'domain': {'bsd_hd_ban_id': [('id', 'in', list_id.ids)]}
             })
             return res
 
@@ -188,7 +188,7 @@ class BsdDanhSachTheoDoi(models.Model):
                 list_id = self.env['bsd.hd_ban'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                          ('state', 'not in', ['nhap', 'huy', 'thanh_ly', 'da_ht'])])
             res.update({
-                'domain': {'bsd_hd_ban_id': [('id', 'in', list_id)]}
+                'domain': {'bsd_hd_ban_id': [('id', 'in', list_id.ids)]}
             })
             return res
 
