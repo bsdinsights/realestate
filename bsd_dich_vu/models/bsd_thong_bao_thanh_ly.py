@@ -62,6 +62,33 @@ class BsdTBTL(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
+    @api.onchange('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id', 'bsd_du_an_id')
+    def _onchange_tt(self):
+        if self.bsd_loai_dt == 'dat_coc':
+            if self.bsd_dat_coc_id:
+                self.bsd_khach_hang_id = self.bsd_dat_coc_id.bsd_khach_hang_id
+                self.bsd_unit_id = self.bsd_dat_coc_id.bsd_unit_id
+                # self.bsd_tien_dc = self.bsd_dat_coc_id.bsd_tien_dc
+                # self.bsd_tien_da_tt = self.bsd_dat_coc_id.bsd_tien_da_tt
+        elif self.bsd_loai_dt == 'ttdc':
+            if self.bsd_hd_ban_id:
+                self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
+                self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
+                # self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
+                # self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
+        elif self.bsd_loai_dt == 'hd_ban':
+            if self.bsd_hd_ban_id:
+                self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
+                self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
+                # self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
+                # self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
+        elif self.bsd_loai_dt == 'dc_cb':
+            if self.bsd_hd_ban_id:
+                self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
+                self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
+                # self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
+                # self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
+
     # DV.17.01 - Thông báo thanh lý
     def action_xac_nhan(self):
         if self.state == 'nhap':
