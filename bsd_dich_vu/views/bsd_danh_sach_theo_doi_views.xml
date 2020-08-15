@@ -20,7 +20,7 @@
                     <button name="action_gui_tbtl"
                             type="object"
                             attrs="{'invisible': ['|', ('state', '!=', 'hoan_thanh'),
-                                                       ('bsd_gui_thu', '=', False),
+                                                  '|',  ('bsd_gui_thu', '=', False),
                                                        ('bsd_loai_yc', '!=', 'thanh_ly')]}"
                             string="Gửi TBTL"/>
                     <button name="action_gia_han"
@@ -31,7 +31,7 @@
                     <button name="action_thanh_ly"
                             type="object"
                             attrs="{'invisible': ['|', ('state', '!=', 'hoan_thanh'),
-                                                       ('bsd_gui_thu', '=', False),
+                                                  '|', ('bsd_ky_bb', '=', False),
                                                        ('bsd_loai_yc', '!=', 'thanh_ly')]}"
                             string="Thanh lý"/>
                     <button name="action_chuyen_tl"

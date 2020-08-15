@@ -122,14 +122,14 @@ class BsdDanhSachTheoDoi(models.Model):
     def _onchange_tt(self):
         if self.bsd_loai_dt == 'dat_coc':
             if self.bsd_dat_coc_id:
-                self.bsd_ngay_hh = self.bsd_dat_coc_id.bsd_ngay_ky_dc
+                self.bsd_ngay_hh = self.bsd_dat_coc_id.bsd_ngay_hh_kdc
                 self.bsd_khach_hang_id = self.bsd_dat_coc_id.bsd_khach_hang_id
                 self.bsd_unit_id = self.bsd_dat_coc_id.bsd_unit_id
                 self.bsd_tien_dc = self.bsd_dat_coc_id.bsd_tien_dc
                 self.bsd_tien_da_tt = self.bsd_dat_coc_id.bsd_tien_da_tt
         elif self.bsd_loai_dt == 'ttdc':
             if self.bsd_hd_ban_id:
-                self.bsd_ngay_hh = self.bsd_hd_ban_id.bsd_ngay_ky_ttdc
+                self.bsd_ngay_hh = self.bsd_hd_ban_id.bsd_ngay_hh_ttdc
                 self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
                 self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
                 self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
@@ -148,7 +148,7 @@ class BsdDanhSachTheoDoi(models.Model):
             return res
         elif self.bsd_loai_dt == 'hd_ban':
             if self.bsd_hd_ban_id:
-                self.bsd_ngay_hh = self.bsd_hd_ban_id.bsd_ngay_ky_hdb
+                self.bsd_ngay_hh = self.bsd_hd_ban_id.bsd_ngay_hh_khdb
                 self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
                 self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
                 self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
@@ -285,7 +285,21 @@ class BsdDanhSachTheoDoi(models.Model):
 
     # DV.15.03 Gia hạn
     def action_gia_han(self):
-        pass
+        if self.bsd_loai_dt == 'dat_coc':
+            if self.bsd_dat_coc_id:
+                self.bsd_dat_coc_id.write({
+                    'bsd_ngay_hh_kdc': self.bsd_ngay_gh
+                })
+        if self.bsd_loai_dt == 'ttdc':
+            if self.bsd_hd_ban_id:
+                self.bsd_hd_ban_id.write({
+                    'bsd_ngay_hh_ttdc': self.bsd_ngay_gh
+                })
+        if self.bsd_loai_dt == 'hd_ban':
+            if self.bsd_hd_ban_id:
+                self.bsd_hd_ban_id.write({
+                    'bsd_ngay_hh_khdb': self.bsd_ngay_gh
+                })
 
     # DV.15.04 Gửi thông báo thanh lý
     def action_gui_tbtl(self):
