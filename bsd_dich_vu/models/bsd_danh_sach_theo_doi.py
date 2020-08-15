@@ -38,7 +38,7 @@ class BsdDanhSachTheoDoi(models.Model):
                                     ('tt_dc', 'Thỏa thuận đặt cọc'),
                                     ('hd_ban', 'Hợp đồng mua bán')], string="Đối tượng", required=True,
                                    help="Đối tượng", default='dat_coc')
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án")
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True)
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Đặt cọc")
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng")
     bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Sản phẩm")

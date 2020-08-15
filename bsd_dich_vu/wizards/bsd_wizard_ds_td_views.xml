@@ -22,9 +22,10 @@
             </form>
         </field>
     </record>
-    <act_window id="bsd_wizard_ds_td_kt_xn_action"
-                name="Xác nhận công nợ"
-                res_model="bsd.wizard.ds_td.kt_xn"
-                view_mode="form"
-                target="new"/>
+    <record model="ir.actions.act_window" id="bsd_wizard_ds_td_kt_xn_action">
+        <field name="name">Xác nhận công nợ</field>
+        <field name="res_model">bsd.wizard.ds_td.kt_xn</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
 </odoo>

@@ -46,13 +46,14 @@
                                     <field name="bsd_loai_td"/>
                                     <field name="bsd_loai_yc"/>
                                     <field name="bsd_loai_dt"/>
-                                    <field name="bsd_du_an_id"/>
+                                    <field name="bsd_du_an_id" options="{'no_create':true}"/>
                                 </group>
                                 <group>
                                     <field name="bsd_hd_ban_id"
                                            attrs="{'invisible':[('bsd_loai_dt', '=', 'dat_coc')]}"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_dat_coc_id"
+                                           domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"
                                            attrs="{'invisible':[('bsd_loai_dt', '!=', 'dat_coc')]}"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_unit_id"
@@ -237,7 +238,7 @@
             <tree>
                 <field name="bsd_ma"/>
                 <field name="bsd_ngay_tao"/>
-                <!--<field name="state"/>-->
+                <field name="state"/>
             </tree>
         </field>
     </record>
