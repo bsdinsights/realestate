@@ -28,37 +28,77 @@ class BsdDanhSachTheoDoi(models.Model):
     bsd_loai_td = fields.Selection([('vp_tg', 'Vi phạm thời gian'),
                                     ('yc_kh', 'Yêu cầu khách hàng'),
                                     ('vp_tt', 'Vi phạm thanh toán')], string="Loại theo dõi",
-                                   required=True, help="Loại theo dõi", default="yc_kh")
+                                   required=True, help="Loại theo dõi", default="yc_kh",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
     bsd_loai_yc = fields.Selection([('gia_han', 'Gia hạn'),
                                     ('thanh_ly', 'Thanh lý'),
                                     ('tt_td', 'Tiếp tục theo dõi')], string="Loại yêu cầu",
-                                   required=True, help="Loại yêu cầu", default='thanh_ly')
+                                   required=True, help="Loại yêu cầu", default='thanh_ly',
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
     bsd_loai_dt = fields.Selection([('dat_coc', 'Đặt cọc'),
                                     ('dc_cb', 'Đặt cọc - Chuẩn bị HĐ'),
                                     ('tt_dc', 'Thỏa thuận đặt cọc'),
                                     ('hd_ban', 'Hợp đồng mua bán')], string="Đối tượng", required=True,
-                                   help="Đối tượng", default='dat_coc')
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True)
-    bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Đặt cọc")
-    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng")
-    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Sản phẩm")
-    bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng")
+                                   help="Đối tượng", default='dat_coc',
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True,
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Đặt cọc",
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng",
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]})
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Sản phẩm", required=True,
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
+    bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng", required=True,
+                                        readonly=True,
+                                        states={'nhap': [('readonly', False)]})
     bsd_ngay_hh = fields.Datetime(string="ngày hết hạn",
                                   help="""Ngày hết hạn:\n 
                                         - Nếu đối tượng là đặt cọc: Hạn ký đặt cọc \n
                                         - Nếu đối tượng là thỏa thuận đặt cọc: Hạn ký thỏa thuận đặt cọc\n
-                                        - Nếu đối tượng là hơp đồng mua bán: Hạn ký hợp đồng""")
-    bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc")
-    bsd_tong_gt_hd = fields.Monetary(string="Tổng giá trị HĐ", help="Tổng giá trị thanh toán theo Hợp đồng")
-    bsd_tien_da_tt = fields.Monetary(string="Đã thanh toán", help="Số tiền khách hàng đã thanh toán")
-    bsd_ngay_gh = fields.Date(string="Ngày gia hạn", help="Ngày gia hạn mới cho đặt cọc/ Thỏa thuận đặt cọc/ Hợp đồng")
-    bsd_gui_thu = fields.Boolean(string="Gửi thư thanh lý", help="Gửi thư thanh lý")
-    bsd_ky_bb = fields.Boolean(string="Ký BB thanh lý", help="Ký biên bản thanh lý")
-    bsd_mo_bl = fields.Boolean(string="Mở bán lại", help="Đánh dấu sản phẩm được mở bán lại?")
-    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Đợt mở bán")
-    bsd_tl_phat = fields.Float(string="Tỷ lệ phạt", help="Tỷ lệ phần trăm mà khách hàng bị phạt")
-    bsd_tien_phat = fields.Monetary(string="Tiền phạt", help="Số tiền khách hàng bị phạt do vi phạm hợp đồng")
-    bsd_quyet_dinh = fields.Char(string="Quyết định", help="Quyết định xử lý cho Danh sách theo dõi")
+                                        - Nếu đối tượng là hơp đồng mua bán: Hạn ký hợp đồng""",
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
+    bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc",
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
+    bsd_tong_gt_hd = fields.Monetary(string="Tổng giá trị HĐ", help="Tổng giá trị thanh toán theo Hợp đồng",
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
+    bsd_tien_da_tt = fields.Monetary(string="Đã thanh toán", help="Số tiền khách hàng đã thanh toán",
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
+    bsd_ngay_gh = fields.Date(string="Ngày gia hạn", help="Ngày gia hạn mới cho đặt cọc/ Thỏa thuận đặt cọc/ Hợp đồng",
+                              readonly=True,
+                              states={'nhap': [('readonly', False)]})
+    bsd_gui_thu = fields.Boolean(string="Gửi thư thanh lý", help="Gửi thư thanh lý",
+                                 readonly=True,
+                                 states={'nhap': [('readonly', False)]})
+    bsd_ky_bb = fields.Boolean(string="Ký BB thanh lý", help="Ký biên bản thanh lý",
+                               readonly=True,
+                               states={'nhap': [('readonly', False)]})
+    bsd_mo_bl = fields.Boolean(string="Mở bán lại", help="Đánh dấu sản phẩm được mở bán lại?",
+                               readonly=True,
+                               states={'nhap': [('readonly', False)]})
+    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Đợt mở bán",
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]})
+    bsd_tl_phat = fields.Float(string="Tỷ lệ phạt", help="Tỷ lệ phần trăm mà khách hàng bị phạt",
+                               readonly=True,
+                               states={'nhap': [('readonly', False)]})
+    bsd_tien_phat = fields.Monetary(string="Tiền phạt", help="Số tiền khách hàng bị phạt do vi phạm hợp đồng",
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]})
+    bsd_quyet_dinh = fields.Char(string="Quyết định", help="Quyết định xử lý cho Danh sách theo dõi",
+                                 readonly=True,
+                                 states={'nhap': [('readonly', False)]})
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('hoan_thanh', 'Hoàn thành'), ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)

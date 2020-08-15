@@ -31,6 +31,7 @@
         'views/bsd_cn_ndc_views.xml',
         'views/bsd_thanh_ly_kt_hd_views.xml',
         'views/bsd_danh_sach_theo_doi_views.xml',
+        'views/bsd_thong_bao_thanh_ly_views.xml',
         'views/bsd_menu_item_views.xml',
         'views/product_template_views.xml',
         'wizards/bsd_wizard_ky_hdb_views.xml',
@@ -51,6 +52,7 @@
         'wizards/bsd_wizard_bg_gt_views.xml',
         'wizards/bsd_wizard_tl_kt_hd_views.xml',
         'wizards/bsd_wizard_ds_td_views.xml',
+        'wizards/bsd_wizard_tb_tl_views.xml',
         'reports/report_bsd_uoc_tinh_views.xml',
         'reports/report_bsd_hd_ban_views.xml',
         'reports/report_bsd_hd_ban_cn_views.xml',
@@ -60,6 +62,7 @@
         'reports/report_bsd_bg_sp_views.xml',
         'reports/report_bsd_bg_gt_views.xml',
         'reports/report_bsd_tl_kt_hd_views.xml',
+        'reports/report_bsd_tb_tl_views.xml'
     ],
     'application': True,
 }

@@ -19,3 +19,4 @@ from . import bsd_wizard_cn_ndc
 from . import bsd_wizard_bg_gt
 from . import bsd_wizard_tl_kt_hd
 from . import bsd_wizard_ds_td
+from . import bsd_wizard_tb_tl

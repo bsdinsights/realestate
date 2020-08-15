@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="bsd_tb_tl_form_view" model="ir.ui.view">
+            <field name="name">bsd.tb_tl.form</field>
+            <field name="model">bsd.tb_tl</field>
+            <field name="arch" type="xml">
+                <form string="Thông báo thanh lý">
+                    <header>
+                        <button string="Xác nhận"
+                                name="action_xac_nhan"
+                                states="nhap"
+                                confirm="Bạn có muốn xác nhận yêu cầu không?"
+                                attrs="{'invisible': ['|',('id', '=',False)]}"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="In thông báo"
+                                name="action_in"
+                                attrs="{'invisible': [('state', '=','nhap')]}"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Gửi thông báo"
+                                name="action_gui"
+                                states="xac_nhan"
+                                attrs="{'invisible': ['|',('bsd_ngay_in', '=',False)]}"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Hoàn thành"
+                                name="action_hoan_thanh"
+                                states="xac_nhan"
+                                attrs="{'invisible': ['|',('bsd_ngay_gui', '=',False)]}"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Hủy"
+                                name="action_huy"
+                                states="nhap,xac_nhan"
+                                attrs="{'invisible': ['|',('id', '=',False)]}"
+                                type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="bsd_ma"/>
+                                <field name="bsd_ngay_tao"/>
+                                <field name="bsd_ten"/>
+                                <field name="bsd_ds_td_id"/>
+                                <field name="bsd_loai_ld"/>
+                                <field name="bsd_loai_dt"/>
+                                <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                                <field name="bsd_dat_coc_id"
+                                       domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"
+                                       attrs="{'invisible':[('bsd_loai_dt', '!=', 'dat_coc')],
+                                               'required':[('bsd_loai_dt', '=', 'dat_coc')]}"
+                                       options="{'no_create':true}"/>
+                            </group>
+                            <group>
+                                <field name="company_id" invisible="1"/>
+                                <field name="currency_id" invisible="1"/>
+                                    <field name="bsd_hd_ban_id"
+                                           attrs="{'invisible':[('bsd_loai_dt', '=', 'dat_coc')],
+                                                    'required':[('bsd_loai_dt', '!=', 'dat_coc')]}"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_unit_id"
+                                           context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                           options="{'no_create':true}" readonly="1"/>
+                                    <field name="bsd_unit_id"
+                                           context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                           options="{'no_create':true}" invisible="1"/>
+                                    <field name="bsd_khach_hang_id"
+                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                           options="{'no_create':true}" readonly="1"/>
+                                    <field name="bsd_khach_hang_id"
+                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                           options="{'no_create':true}" invisible="1"/>
+                            </group>
+                        </group>
+                        <group string="XÁC NHẬN">
+                            <group>
+                                <field name="bsd_ngay_in"/>
+                                <field name="bsd_ngay_gui"/>
+                            </group>
+                            <group>
+                                <field name="bsd_ngay_ht"/>
+                                <field name="bsd_nguoi_ht_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="bsd_tb_tl_tree_view" model="ir.ui.view">
+            <field name="name">bsd.tb_tl.tree</field>
+            <field name="model">bsd.tb_tl</field>
+            <field name="arch" type="xml">
+                <tree string="Thông báo thanh lý">
+                    <field name="bsd_ma"/>
+                    <field name="bsd_ngay_tao"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="bsd_tb_tl_search_view" model="ir.ui.view">
+            <field name="name">bsd.tb_tl.search</field>
+            <field name="model">bsd.tb_tl</field>
+            <field name="arch" type="xml">
+                <search string="Thông báo thanh lý">
+                    <field name="bsd_ma"/>
+                    <field name="bsd_ngay_tao"/>
+                    <field name="state"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="bsd_tb_tl_act_window" model="ir.actions.act_window">
+            <field name="name">Thông báo thanh lý</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bsd.tb_tl</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Tạo thông báo thanh lý
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

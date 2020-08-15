@@ -59,11 +59,13 @@
                                 </group>
                                 <group>
                                     <field name="bsd_hd_ban_id"
-                                           attrs="{'invisible':[('bsd_loai_dt', '=', 'dat_coc')]}"
+                                           attrs="{'invisible':[('bsd_loai_dt', '=', 'dat_coc')],
+                                                    'required':[('bsd_loai_dt', '!=', 'dat_coc')]}"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_dat_coc_id"
                                            domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"
-                                           attrs="{'invisible':[('bsd_loai_dt', '!=', 'dat_coc')]}"
+                                           attrs="{'invisible':[('bsd_loai_dt', '!=', 'dat_coc')],
+                                                   'required':[('bsd_loai_dt', '=', 'dat_coc')]}"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_unit_id"
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"

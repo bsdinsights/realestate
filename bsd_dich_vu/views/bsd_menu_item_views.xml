@@ -85,6 +85,11 @@
               sequence="23"
               action="bsd_ds_td_action"
               parent="bsd_main_dich_vu_root"/>
+    <menuitem id="bsd_tb_tl_menu_action"
+              name="Thông báo thanh lý"
+              sequence="24"
+              action="bsd_tb_tl_act_window"
+              parent="bsd_main_dich_vu_root"/>
     <menuitem id="bsd_ps_gd_km_menu_action"
               name="Giao dịch khuyến mãi"
               sequence="100"
