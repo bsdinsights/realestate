@@ -98,6 +98,7 @@
                 <tree string="Thông báo thanh lý">
                     <field name="bsd_ma"/>
                     <field name="bsd_ngay_tao"/>
+                    <field name="state"/>
                 </tree>
             </field>
         </record>
