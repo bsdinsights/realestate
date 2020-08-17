@@ -99,7 +99,8 @@ class BsdDanhSachTheoDoi(models.Model):
     bsd_quyet_dinh = fields.Char(string="Quyết định", help="Quyết định xử lý cho Danh sách theo dõi",
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
-    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
+    state = fields.Selection([('nhap', 'Nháp'), ('xn_tt', 'Xác nhận thông tin'),
+                              ('xac_nhan', 'Xác nhận'),
                               ('hoan_thanh', 'Hoàn thành'), ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
     bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
@@ -318,7 +319,7 @@ class BsdDanhSachTheoDoi(models.Model):
     def action_xac_nhan(self):
         if self.state == 'nhap':
             self.write({
-                'state': 'xac_nhan',
+                'state': 'xn_tt',
             })
 
     # DV.15.02 Xác nhận công nợ
@@ -343,6 +344,9 @@ class BsdDanhSachTheoDoi(models.Model):
                 self.bsd_hd_ban_id.write({
                     'bsd_ngay_hh_khdb': self.bsd_ngay_gh
                 })
+        self.write({
+            'state': 'hoan_thanh'
+        })
 
     # DV.15.04 Gửi thông báo thanh lý
     def action_gui_tbtl(self):
@@ -391,7 +395,9 @@ class BsdDanhSachTheoDoi(models.Model):
 
     # DV.15.05 Thanh lý
     def action_thanh_ly(self):
-        pass
+        self.write({
+            'state': 'hoan_thanh'
+        })
 
     # DV.15.06 Chuyển thanh lý
     def action_chuyen_tl(self):
@@ -400,6 +406,9 @@ class BsdDanhSachTheoDoi(models.Model):
                            'bsd_ten': "Theo dõi thanh lý",
                            'bsd_ma': '/',
                            'bsd_parent_id': self.id})
+        self.write({
+            'state': 'hoan_thanh'
+        })
 
     # DV.15.11 Chuyển gia hạn
     def action_chuyen_gh(self):
@@ -408,7 +417,9 @@ class BsdDanhSachTheoDoi(models.Model):
                            'bsd_ten': "Theo dõi gia hạn",
                            'bsd_ma': '/',
                            'bsd_parent_id': self.id})
-
+        self.write({
+            'state': 'hoan_thanh'
+        })
     # DV.15.07 Hủy danh sách theo dõi
     def action_huy(self):
         return self.env.ref('bsd_dich_vu.bsd_wizard_huy_ds_td_action').read()[0]

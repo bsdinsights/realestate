@@ -12,7 +12,7 @@ class BsdWizardKTXN(models.TransientModel):
 
     def action_co(self):
         self.bsd_ds_td_id.write({
-            'state': 'hoan_thanh'
+            'state': 'xac_nhan'
         })
 
     def action_khong(self):

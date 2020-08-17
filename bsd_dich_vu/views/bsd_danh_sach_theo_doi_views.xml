@@ -14,39 +14,40 @@
                             class="oe_highlight"/>
                     <button name="action_xn_cn"
                             type="object"
-                            states="xac_nhan"
+                            states="xn_tt"
                             string="Xác nhận công nợ"
                             class="oe_highlight"/>
                     <button name="action_gui_tbtl"
                             type="object"
-                            attrs="{'invisible': ['|', ('state', '!=', 'hoan_thanh'),
+                            attrs="{'invisible': ['|', ('state', '!=', 'xac_nhan'),
                                                   '|',  ('bsd_gui_thu', '=', False),
                                                        ('bsd_loai_yc', '!=', 'thanh_ly')]}"
                             string="Gửi TBTL"/>
                     <button name="action_gia_han"
                             type="object"
-                            attrs="{'invisible': ['|', ('state', '!=', 'hoan_thanh'),
+                            attrs="{'invisible': ['|', ('state', '!=', 'xac_nhan'),
                                                        ('bsd_loai_yc', '!=', 'gia_han')]}"
                             string="Gia hạn"/>
                     <button name="action_thanh_ly"
                             type="object"
-                            attrs="{'invisible': ['|', ('state', '!=', 'hoan_thanh'),
+                            attrs="{'invisible': ['|', ('state', '!=', 'xac_nhan'),
                                                   '|', ('bsd_ky_bb', '=', False),
                                                        ('bsd_loai_yc', '!=', 'thanh_ly')]}"
                             string="Thanh lý"/>
                     <button name="action_chuyen_tl"
                             type="object"
-                            attrs="{'invisible': ['|', ('state', '!=', 'hoan_thanh'),
+                            attrs="{'invisible': ['|', ('state', '!=', 'xac_nhan'),
                                                        ('bsd_loai_yc', '!=', 'tt_td')]}"
                             class="oe_highlight"
                             string="Chuyển thanh lý"/>
                     <button name="action_chuyen_gh"
                             type="object"
-                            attrs="{'invisible': ['|', ('state', '!=', 'hoan_thanh'),
+                            attrs="{'invisible': ['|', ('state', '!=', 'xac_nhan'),
                                                        ('bsd_loai_yc', '!=', 'tt_td')]}"
                             string="Chuyển gia hạn"/>
                     <button name="action_huy"
                             type="object"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap', 'xn_tt', 'xac_nhan'])]}"
                             string="Hủy"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
@@ -105,7 +106,7 @@
                             </group>
                             <group string="GIA HẠN" attrs="{'invisible':[('bsd_loai_yc', '!=', 'gia_han')]}">
                                 <group>
-                                    <field name="bsd_ngay_gh"/>
+                                    <field name="bsd_ngay_gh" attrs="{'required':[('bsd_loai_yc', '=', 'gia_han')]}"/>
                                 </group>
                             </group>
                             <group string="HÌNH THỨC THANH LÝ" attrs="{'invisible':[('bsd_loai_yc', '!=', 'thanh_ly')]}">
