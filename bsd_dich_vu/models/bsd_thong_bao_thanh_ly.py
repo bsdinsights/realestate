@@ -18,9 +18,9 @@ class BsdTBTL(models.Model):
                                    required=True, default=lambda self: fields.Datetime.now(),
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_ten = fields.Char(string="Tiêu đề", required=True, help="Tiêu đề thông báo thanh lý",
-                          readonly=True,
-                          states={'nhap': [('readonly', False)]})
+    # bsd_ten = fields.Char(string="Tiêu đề", required=True, help="Tiêu đề thông báo thanh lý",
+    #                       readonly=True,
+    #                       states={'nhap': [('readonly', False)]})
     bsd_loai_ld = fields.Selection([('qua_han', 'Quá hạn'),
                                     ('yc_kh', 'Yêu cầu khách hàng'),
                                     ('vp_dk', 'Vi phạm điều khoản')], string="Lý do", help="Lý do", required=True,

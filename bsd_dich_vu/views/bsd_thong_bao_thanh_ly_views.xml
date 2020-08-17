@@ -44,7 +44,7 @@
                             <group>
                                 <field name="bsd_ma"/>
                                 <field name="bsd_ngay_tao"/>
-                                <field name="bsd_ten"/>
+<!--                                <field name="bsd_ten"/>-->
                                 <field name="bsd_ds_td_id"/>
                                 <field name="bsd_loai_ld"/>
                                 <field name="bsd_loai_dt"/>
