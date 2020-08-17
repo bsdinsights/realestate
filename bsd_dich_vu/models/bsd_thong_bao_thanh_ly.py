@@ -5,7 +5,7 @@ from odoo.exceptions import UserError
 class BsdTBTL(models.Model):
     _name = 'bsd.tb_tl'
     _description = 'Thông báo thanh lý'
-    _rec_name = 'bsd_ten'
+    _rec_name = 'bsd_ma'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     bsd_ma = fields.Char(string="Mã", help="Mã thông báo thanh lý", required=True, readonly=True,
