@@ -26,7 +26,7 @@
                     <button name="action_gia_han"
                             type="object"
                             attrs="{'invisible': ['|', ('state', '!=', 'hoan_thanh'),
-                                                       ('bsd_loai_yc', '=', 'thanh_ly')]}"
+                                                       ('bsd_loai_yc', '!=', 'gia_han')]}"
                             string="Gia hạn"/>
                     <button name="action_thanh_ly"
                             type="object"
@@ -36,7 +36,15 @@
                             string="Thanh lý"/>
                     <button name="action_chuyen_tl"
                             type="object"
+                            attrs="{'invisible': ['|', ('state', '!=', 'hoan_thanh'),
+                                                       ('bsd_loai_yc', '!=', 'tt_td')]}"
+                            class="oe_highlight"
                             string="Chuyển thanh lý"/>
+                    <button name="action_chuyen_gh"
+                            type="object"
+                            attrs="{'invisible': ['|', ('state', '!=', 'hoan_thanh'),
+                                                       ('bsd_loai_yc', '!=', 'tt_td')]}"
+                            string="Chuyển gia hạn"/>
                     <button name="action_huy"
                             type="object"
                             string="Hủy"/>

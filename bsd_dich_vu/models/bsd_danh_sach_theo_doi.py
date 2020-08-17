@@ -157,6 +157,9 @@ class BsdDanhSachTheoDoi(models.Model):
     bsd_bang_gia_hd_id = fields.Many2one(related='bsd_hd_ban_id.bsd_bang_gia_id')
     state_hd = fields.Selection(related='bsd_hd_ban_id.state')
 
+    bsd_parent_id = fields.Many2one('bsd.ds_td', string="Danh sách theo dõi", readonly=True)
+    bsd_child_ids = fields.One2many('bsd.ds_td', 'bsd_parent_id', string="Danh sách theo dõi", readonly=True)
+
     # R.02
     @api.onchange('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id', 'bsd_loai_td', 'bsd_du_an_id')
     def _onchange_tt(self):
@@ -343,7 +346,35 @@ class BsdDanhSachTheoDoi(models.Model):
 
     # DV.15.04 Gửi thông báo thanh lý
     def action_gui_tbtl(self):
-        pass
+        if self.bsd_loai_td == 'vp_tg':
+            loai_ld = 'qua_han'
+        elif self.bsd_loai_td == 'yc_kh':
+            loai_ld = 'yc_kh'
+        elif self.bsd_loai_td == 'vp_tt':
+            loai_ld = 'vp_dk'
+        else:
+            loai_ld = ''
+
+        if self.bsd_loai_dt == 'dat_coc':
+            self.env['bsd.tb_tl'].create({
+                'bsd_ds_td_id': self.id,
+                'bsd_loai_ld': loai_ld,
+                'bsd_loai_dt': self.bsd_loai_dt,
+                'bsd_du_an_id': self.bsd_du_an_id.id,
+                'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
+                'bsd_tien_dc': self.bsd_tien_dc,
+                'bsd_ngay_ky_dc': self.bsd_dat_coc_id.bsd_ngay_ky_dc
+            })
+        # elif self.bsd_loai_dt == 'tt_dc':
+        #     self.env['bsd.tb_tl'].create({
+        #         'bsd_ds_td_id': self.id,
+        #         'bsd_loai_ld': loai_ld,
+        #         'bsd_loai_dt': self.bsd_loai_dt,
+        #         'bsd_du_an_id': self.bsd_du_an_id.id,
+        #         'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
+        #         'bsd_tong_gt_hd': self.bsd_tong_gt_hd,
+        #         'bsd_ngay_ky_ttdc': self.bsd_hd_ban_id.bsd_ngay_ky_ttdc
+        #     })
 
     # DV.15.05 Thanh lý
     def action_thanh_ly(self):
@@ -351,11 +382,21 @@ class BsdDanhSachTheoDoi(models.Model):
 
     # DV.15.06 Chuyển thanh lý
     def action_chuyen_tl(self):
-        pass
+        self.copy(default={'bsd_loai_yc': 'thanh_ly',
+                           'bsd_ngay_tao': fields.Datetime.now(),
+                           'bsd_ten': "Theo dõi thanh lý",
+                           'bsd_ma': '/'})
+
+    # DV.15.11 Chuyển gia hạn
+    def action_chuyen_gh(self):
+        self.copy(default={'bsd_loai_yc': 'gia_han',
+                           'bsd_ngay_tao': fields.Datetime.now(),
+                           'bsd_ten': "Theo dõi gia hạn",
+                           'bsd_ma': '/'})
 
     # DV.15.07 Hủy danh sách theo dõi
     def action_huy(self):
-        pass
+        return self.env.ref('bsd_dich_vu.bsd_wizard_huy_ds_td_action').read()[0]
 
     @api.model
     def create(self, vals):
