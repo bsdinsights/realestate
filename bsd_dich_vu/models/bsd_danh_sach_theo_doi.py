@@ -363,18 +363,31 @@ class BsdDanhSachTheoDoi(models.Model):
                 'bsd_du_an_id': self.bsd_du_an_id.id,
                 'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
                 'bsd_tien_dc': self.bsd_tien_dc,
-                'bsd_ngay_ky_dc': self.bsd_dat_coc_id.bsd_ngay_ky_dc
+                'bsd_ngay_ky_dc': self.bsd_dat_coc_id.bsd_ngay_ky_dc,
+                'bsd_tien_da_tt': self.bsd_tien_da_tt
             })
-        # elif self.bsd_loai_dt == 'tt_dc':
-        #     self.env['bsd.tb_tl'].create({
-        #         'bsd_ds_td_id': self.id,
-        #         'bsd_loai_ld': loai_ld,
-        #         'bsd_loai_dt': self.bsd_loai_dt,
-        #         'bsd_du_an_id': self.bsd_du_an_id.id,
-        #         'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
-        #         'bsd_tong_gt_hd': self.bsd_tong_gt_hd,
-        #         'bsd_ngay_ky_ttdc': self.bsd_hd_ban_id.bsd_ngay_ky_ttdc
-        #     })
+        elif self.bsd_loai_dt == 'tt_dc':
+            self.env['bsd.tb_tl'].create({
+                'bsd_ds_td_id': self.id,
+                'bsd_loai_ld': loai_ld,
+                'bsd_loai_dt': self.bsd_loai_dt,
+                'bsd_du_an_id': self.bsd_du_an_id.id,
+                'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
+                'bsd_tong_gt_hd': self.bsd_tong_gt_hd,
+                'bsd_ngay_ky_ttdc': self.bsd_hd_ban_id.bsd_ngay_ky_ttdc,
+                'bsd_tien_da_tt': self.bsd_tien_da_tt
+            })
+        elif self.bsd_loai_dt == 'hd_ban':
+            self.env['bsd.tb_tl'].create({
+                'bsd_ds_td_id': self.id,
+                'bsd_loai_ld': loai_ld,
+                'bsd_loai_dt': self.bsd_loai_dt,
+                'bsd_du_an_id': self.bsd_du_an_id.id,
+                'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
+                'bsd_tong_gt_hd': self.bsd_tong_gt_hd,
+                'bsd_ngay_ky_hdb': self.bsd_hd_ban_id.bsd_ngay_ky_hdb,
+                'bsd_tien_da_tt': self.bsd_tien_da_tt
+            })
 
     # DV.15.05 Thanh lý
     def action_thanh_ly(self):
