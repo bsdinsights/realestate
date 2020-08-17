@@ -165,6 +165,10 @@ class BsdHdBan(models.Model):
         self.write({
             'state': 'du_dkbg'
         })
+        # Cập nhật trạng thái unit
+        self.bsd_unit_id.write({
+            'state': 'du_dkbg'
+        })
 
     # DV.01.23 Cập nhật trạng thái hoàn tất thanh toán
     def action_ht_tt(self):

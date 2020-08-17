@@ -138,7 +138,6 @@ class ProductTemplate(models.Model):
                               ('du_dk', 'Đủ điều kiện'),
                               ('da_ban', 'Đã bán'),
                               ('du_dkbg', 'Đủ ĐKBG'),
-                              ('da_bg', 'Đã bàn giao'),
                               ('ht_tt', 'Hoàn tất TT'),
                               ('da_ht', 'Đã hoàn tất')], string="Trạng thái",
                              default="chuan_bi", tracking=1, help="Trạng thái", required=True)
