@@ -28,9 +28,7 @@
         <field name="target">new</field>
         <field name="view_mode">form</field>
     </record>
-    
-<?xml version="1.0" encoding="UTF-8" ?>
-<odoo>
+
     <record model="ir.ui.view" id="bsd_wizard_ds_td_huy_form">
         <field name="name">bsd.wizard.ds_td.huy.form</field>
         <field name="model">bsd.wizard.ds_td.huy</field>
@@ -61,6 +59,4 @@
         <field name="target">new</field>
         <field name="view_mode">form</field>
     </record>
-</odoo>    
-    
 </odoo>
