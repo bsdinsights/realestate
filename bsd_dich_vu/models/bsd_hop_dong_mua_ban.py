@@ -140,9 +140,11 @@ class BsdHopDongMuaBan(models.Model):
     bsd_duyet_db = fields.Boolean(string="Duyệt đặc biệt", help="Duyệt đặc biệt", readonly=True)
     bsd_ngay_duyet_db = fields.Datetime(string="Ngày duyệt", help="Ngày duyệt", readonly=True)
     bsd_nguoi_duyet_db_id = fields.Many2one('res.users', string="Người duyệt", readonly=True, tracking=2)
-    bsd_ngay_dkbg = fields.Date(string="Ngày DKBG", help="Ngày dự kiến bàn giao ký kết với khách hàng")
+    bsd_ngay_dkbg = fields.Date(string="Ngày DKBG", help="Ngày dự kiến bàn giao ký kết với khách hàng",
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
     bsd_cn_ids = fields.One2many('bsd.hd_ban_cn', 'bsd_hd_ban_id', string="Chuyển nhượng hợp đồng",
-                                 domain=[('state', '=', 'duyet')])
+                                 domain=[('state', '=', 'duyet')], readonly=True)
     bsd_duyet_bgdb = fields.Boolean(string="Duyệt BGĐB", help="Duyệt bàn giao đặc biệt", readonly=True)
     bsd_ngay_duyet_bgdb = fields.Datetime(string="Ngày duyệt BGĐB", help="Ngày duyệt bàn giao đặc biệt", readonly=True)
     bsd_nguoi_duyet_bgdb_id = fields.Many2one('res.users', string="Người duyệt BGĐB",
