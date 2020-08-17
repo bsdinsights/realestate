@@ -51,6 +51,24 @@ class BsdTBTL(models.Model):
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
+    bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc",
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
+    bsd_ngay_ky_dc = fields.Datetime(string="Ngày ký đặt cọc", help="Ngày ký đặt cọc",
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
+    bsd_tong_gt_hd = fields.Monetary(string="Tổng giá trị HĐ", help="Tổng giá trị hợp đồng",
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
+    bsd_ngay_ky_ttdc = fields.Datetime(string="Ngày ký TTĐC", help="Ngày ký thỏa thuận đặt cọc",
+                                       readonly=True,
+                                       states={'nhap': [('readonly', False)]})
+    bsd_ngay_ky_hdb = fields.Datetime(string="ngày ký hợp đồng", help="Ngày ký hợp đồng",
+                                      readonly=True,
+                                      states={'nhap': [('readonly', False)]})
+    bsd_tien_da_tt = fields.Monetary(string="Đã thanh toán", help="Đã thanh toán",
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
     bsd_ngay_in = fields.Datetime(string="Ngày in", help="Ngày in", readonly=True)
     bsd_ngay_gui = fields.Datetime(string="Ngày gửi", help="Ngày gửi", readonly=True)
     bsd_ngay_ht = fields.Datetime(string="Ngày hoàn thành", help="Ngày hoàn thành", readonly=True)
@@ -62,32 +80,35 @@ class BsdTBTL(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
-    @api.onchange('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id', 'bsd_du_an_id')
+    @api.onchange('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id')
     def _onchange_tt(self):
         if self.bsd_loai_dt == 'dat_coc':
             if self.bsd_dat_coc_id:
                 self.bsd_khach_hang_id = self.bsd_dat_coc_id.bsd_khach_hang_id
                 self.bsd_unit_id = self.bsd_dat_coc_id.bsd_unit_id
-                # self.bsd_tien_dc = self.bsd_dat_coc_id.bsd_tien_dc
-                # self.bsd_tien_da_tt = self.bsd_dat_coc_id.bsd_tien_da_tt
+                self.bsd_tien_dc = self.bsd_dat_coc_id.bsd_tien_dc
+                self.bsd_tien_da_tt = self.bsd_dat_coc_id.bsd_tien_da_tt
+                self.bsd_ngay_ky_dc = self.bsd_dat_coc_id.bsd_ngay_ky_dc
         elif self.bsd_loai_dt == 'ttdc':
             if self.bsd_hd_ban_id:
                 self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
                 self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
-                # self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
-                # self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
+                self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
+                self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
+                self.bsd_ngay_ky_ttdc = self.bsd_hd_ban_id.bsd_ngay_ky_ttdc
         elif self.bsd_loai_dt == 'hd_ban':
             if self.bsd_hd_ban_id:
                 self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
                 self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
-                # self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
-                # self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
+                self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
+                self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
+                self.bsd_ngay_ky_hdb = self.bsd_hd_ban_id.bsd_ngay_ky_hdb
         elif self.bsd_loai_dt == 'dc_cb':
             if self.bsd_hd_ban_id:
                 self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
                 self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
-                # self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
-                # self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
+                self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
+                self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
 
     # DV.17.01 - Thông báo thanh lý
     def action_xac_nhan(self):
