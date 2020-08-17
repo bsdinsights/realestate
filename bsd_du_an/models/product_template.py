@@ -142,7 +142,7 @@ class ProductTemplate(models.Model):
                               ('da_ht', 'Đã hoàn tất')], string="Trạng thái",
                              default="chuan_bi", tracking=1, help="Trạng thái", required=True)
 
-    @api.onchange('bsd_du_an_id', 'bsd_thang_pql')
+    @api.onchange('bsd_du_an_id')
     def _onchange_du_an(self):
         self.bsd_tien_gc = self.bsd_du_an_id.bsd_tien_gc
         self.bsd_tien_dc = self.bsd_du_an_id.bsd_tien_dc
@@ -197,18 +197,17 @@ class ProductTemplate(models.Model):
         _logger.debug(templates)
         for template in templates:
             du_an = template.bsd_du_an_id
-            _logger.debug(du_an)
             toa_nha = template.bsd_toa_nha_id
-            _logger.debug(toa_nha)
             tang = template.bsd_tang_id
-            _logger.debug(tang)
             if not template.bsd_ma_unit:
                 template.write({
                     'bsd_ma_unit': du_an.bsd_ma_da + du_an.bsd_dd_da +
-                            toa_nha.bsd_ma_tn + du_an.bsd_dd_khu + tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_stt
+                            toa_nha.bsd_ma_tn + du_an.bsd_dd_khu +
+                                   tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_stt
                 })
             if not template.bsd_ten_unit:
                 template.write({
-                    'bsd_ten_unit': toa_nha.bsd_ma_tn + du_an.bsd_dd_khu + tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_stt
+                    'bsd_ten_unit': toa_nha.bsd_ma_tn + du_an.bsd_dd_khu +
+                                    tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_stt
                 })
         return templates

@@ -41,6 +41,7 @@ class BsdHopDongMuaBan(models.Model):
                                       related="bsd_dat_coc_id.bsd_bang_gia_id", store=True)
     bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Tên căn hộ",
                                   related="bsd_dat_coc_id.bsd_unit_id", store=True)
+    bsd_ngay_cn = fields.Date(related='bsd_unit_id.bsd_ngay_cn', store=True)
     bsd_ten_sp = fields.Char(related="bsd_unit_id.name", store=True)
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích tim tường",
                              related="bsd_dat_coc_id.bsd_dt_xd", store=True)
@@ -149,6 +150,10 @@ class BsdHopDongMuaBan(models.Model):
 
     bsd_tl_tt_hd = fields.Float(string="Tỷ lệ thanh toán HĐ", help="Tỷ lệ thanh toán hợp đồng", digits=(10, 1))
     bsd_tien_tt_hd = fields.Monetary(string="Tiền thanh toán HĐ", help="Tiền thanh toán hợp đồng")
+
+    @api.onchange('bsd_unit_id')
+    def _onchange_unit(self):
+        self.bsd_ngay_dkbg = self.bsd_unit_id.bsd_ngay_dkbg
 
     # Tên hiện thị record
     def name_get(self):
