@@ -398,14 +398,16 @@ class BsdDanhSachTheoDoi(models.Model):
         self.copy(default={'bsd_loai_yc': 'thanh_ly',
                            'bsd_ngay_tao': fields.Datetime.now(),
                            'bsd_ten': "Theo dõi thanh lý",
-                           'bsd_ma': '/'})
+                           'bsd_ma': '/',
+                           'bsd_parent_id': self.id})
 
     # DV.15.11 Chuyển gia hạn
     def action_chuyen_gh(self):
         self.copy(default={'bsd_loai_yc': 'gia_han',
                            'bsd_ngay_tao': fields.Datetime.now(),
                            'bsd_ten': "Theo dõi gia hạn",
-                           'bsd_ma': '/'})
+                           'bsd_ma': '/',
+                           'bsd_parent_id': self.id})
 
     # DV.15.07 Hủy danh sách theo dõi
     def action_huy(self):
