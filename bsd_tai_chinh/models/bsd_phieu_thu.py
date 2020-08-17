@@ -141,7 +141,7 @@ class BsdPhieuThu(models.Model):
             self.bsd_dot_tt_id = pbt
             list_dtt = pbt.ids
         res.update({
-                'domain': {'bsd_dot_tt_id': [('id', 'in', list_dtt)]}
+                'domain': {'bsd_dot_tt_id': [('id', 'in', list_dtt), ('bsd_thanh_toan', '!=', 'da_tt')]}
             })
 
         return res
