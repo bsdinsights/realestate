@@ -32,7 +32,7 @@
               action="bsd_bg_gt_action"
               parent="bsd_hd_ban_menu"/>
         <menuitem id="bsd_tl_kt_hd_menu_action"
-              name="Thanh ký kết thúc hợp đồng"
+              name="Thanh lý kết thúc hợp đồng"
               sequence="15"
               action="bsd_tl_kt_hd_action"
               parent="bsd_hd_ban_menu"/>

@@ -31,7 +31,6 @@
                             class="oe_highlight"/>
                     <button string="Ký hợp đồng"
                             name="action_ky_hdb"
-                            states="du_dk,da_ky_ttdc"
                             attrs="{'invisible':['|',('bsd_ngay_up_hdb', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
