@@ -185,7 +185,7 @@ class BsdCapNhatDKBGUnit(models.Model):
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_unit_id = fields.Many2one('product.product', string="Unit", required=True,
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_ma_sp = fields.Char(related="bsd_unit_id.bsd_ma_unit", store=True)
