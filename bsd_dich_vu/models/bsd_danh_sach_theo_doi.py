@@ -184,7 +184,7 @@ class BsdDanhSachTheoDoi(models.Model):
                                                          ('state', '=', 'tt_dot1'),
                                                          '|',
                                                          ('bsd_duyet_db', '=', True),
-                                                         ('bsd_ngay_ky_ttdc', '=', False)])
+                                                         ('bsd_ngay_ky_ttdc', '=', False)]).ids
             res.update({
                 'domain': {'bsd_hd_ban_id': [('id', 'in', list_id)]}
             })
@@ -203,9 +203,9 @@ class BsdDanhSachTheoDoi(models.Model):
                                                          ('state', '=', 'du_dk'),
                                                          '|',
                                                          ('bsd_duyet_db', '=', True),
-                                                         ('bsd_ngay_ky_hd', '=', False)])
+                                                         ('bsd_ngay_ky_hd', '=', False)]).ids
             res.update({
-                'domain': {'bsd_hd_ban_id': [('id', 'in', list_id.ids)]}
+                'domain': {'bsd_hd_ban_id': [('id', 'in', list_id)]}
             })
             return res
         elif self.bsd_loai_dt == 'dc_cb':
@@ -218,9 +218,9 @@ class BsdDanhSachTheoDoi(models.Model):
             list_id = []
             if self.bsd_du_an_id and self.bsd_loai_td == 'vp_tg':
                 list_id = self.env['bsd.hd_ban'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-                                                         ('state', '=', 'ht_dc')])
+                                                         ('state', '=', 'ht_dc')]).ids
             res.update({
-                'domain': {'bsd_hd_ban_id': [('id', 'in', list_id.ids)]}
+                'domain': {'bsd_hd_ban_id': [('id', 'in', list_id)]}
             })
             return res
 
@@ -229,9 +229,9 @@ class BsdDanhSachTheoDoi(models.Model):
             list_id = []
             if self.bsd_du_an_id:
                 list_id = self.env['bsd.hd_ban'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-                                                         ('state', 'not in', ['nhap', 'huy', 'thanh_ly', 'da_ht'])])
+                                                         ('state', 'not in', ['nhap', 'huy', 'thanh_ly', 'da_ht'])]).ids
             res.update({
-                'domain': {'bsd_hd_ban_id': [('id', 'in', list_id.ids)]}
+                'domain': {'bsd_hd_ban_id': [('id', 'in', list_id)]}
             })
             return res
 
