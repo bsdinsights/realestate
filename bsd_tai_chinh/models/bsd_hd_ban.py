@@ -184,3 +184,7 @@ class BsdHdBan(models.Model):
         self.write({
             'state': 'ht_tt'
         })
+        # Cập nhật trạng thái hoàn tất thanh toán cho sản phẩm
+        self.bsd_unit_id.write({
+            'state': 'ht_tt'
+        })
