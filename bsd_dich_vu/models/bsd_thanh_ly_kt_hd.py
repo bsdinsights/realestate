@@ -40,7 +40,7 @@ class BsdThanhLyKetThucHopDong(models.Model):
                                   readonly=True)
     bsd_nguoi_in_id = fields.Many2one('res.users', string="Người in", readonly=True,
                                       help="Người in biên bản thanh lý kết thúc hợp đồng")
-    bsd_ngay_xn = fields.Datetime(string="Ngày xác nhận ký biên bản", readonly=True,
+    bsd_ngay_xn = fields.Datetime(string="Ngày xác nhận", readonly=True,
                                   help="Ngày xác nhận ký biên bản")
     bsd_nguoi_xn_id = fields.Many2one('res.users', string="Người xác nhận ký", readonly=True,
                                       help="Người xác nhận ký biên bản thanh lý kết thúc hợp đồng")

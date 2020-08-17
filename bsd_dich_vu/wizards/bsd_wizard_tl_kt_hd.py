@@ -14,13 +14,12 @@ class BsdKyBGGT(models.TransientModel):
 
     bsd_tl_kt_hd_id = fields.Many2one('bsd.tl_kt_hd', string="Thanh lý kết thúc hợp đồng", default=_get_tl,
                                       readonly=True)
-    bsd_ngay_xn = fields.Datetime(string="Ngày xác nhận", required=True)
-    bsd_nguoi_xn_id = fields.Many2one('res.users', required=True, string="Người xác nhận")
+    bsd_ngay_xn = fields.Datetime(string="Ngày ký", required=True)
 
     def action_xac_nhan(self):
         self.bsd_tl_kt_hd_id.write({
             'bsd_ngay_xn': self.bsd_ngay_xn,
-            'bsd_nguoi_xn_id': self.bsd_nguoi_xn_id.id,
+            'bsd_nguoi_xn_id': self.env.uid,
             'state': 'da_tl'
         })
         if self.bsd_tl_kt_hd_id.bsd_hd_ban_id.state == 'bg_gt':
