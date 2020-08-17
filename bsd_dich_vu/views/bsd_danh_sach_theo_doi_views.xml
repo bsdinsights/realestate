@@ -19,17 +19,20 @@
                             class="oe_highlight"/>
                     <button name="action_gui_tbtl"
                             type="object"
+                            class="oe_highlight"
                             attrs="{'invisible': ['|', ('state', '!=', 'xac_nhan'),
                                                   '|',  ('bsd_gui_thu', '=', False),
                                                        ('bsd_loai_yc', '!=', 'thanh_ly')]}"
                             string="Gửi TBTL"/>
                     <button name="action_gia_han"
                             type="object"
+                            class="oe_highlight"
                             attrs="{'invisible': ['|', ('state', '!=', 'xac_nhan'),
                                                        ('bsd_loai_yc', '!=', 'gia_han')]}"
                             string="Gia hạn"/>
                     <button name="action_thanh_ly"
                             type="object"
+                            class="oe_highlight"
                             attrs="{'invisible': ['|', ('state', '!=', 'xac_nhan'),
                                                   '|', ('bsd_ky_bb', '=', False),
                                                        ('bsd_loai_yc', '!=', 'thanh_ly')]}"
@@ -42,6 +45,7 @@
                             string="Chuyển thanh lý"/>
                     <button name="action_chuyen_gh"
                             type="object"
+                            class="oe_highlight"
                             attrs="{'invisible': ['|', ('state', '!=', 'xac_nhan'),
                                                        ('bsd_loai_yc', '!=', 'tt_td')]}"
                             string="Chuyển gia hạn"/>
