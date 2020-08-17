@@ -54,7 +54,8 @@
                                    context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"/>
                             <field name="bsd_bg_gt_id" readonly="1"/>
                             <field name="bsd_bg_gt_id" invisible="1"/>
-                            <field name="bsd_han_th"/>
+                            <field name="bsd_han_th" attrs="{'invisible':[('bsd_loai', '=', 'dat_bh')],
+                                                             'required': [('bsd_loai', '=', 'gui_thu')]}"/>
                         </group>
                     </group>
                     <group string="XÁC NHẬN">

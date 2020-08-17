@@ -25,15 +25,15 @@ class BsdThanhLyKetThucHopDong(models.Model):
     bsd_ten = fields.Char(string="Tiêu đề", required=True, help="Tiêu đề thanh lý kết thúc hợp đồng",
                           readonly=True,
                           states={'nhap': [('readonly', False)]})
-    bsd_loai = fields.Selection([('gui_thu', 'Gửi thư'), ('dat_bh', 'Đặt buổi hẹn')], string="Gửi thư",
-                                help="Hình thức được chọn để thực hiện thanh lý hợp đồng", required=True)
+    bsd_loai = fields.Selection([('gui_thu', 'Gửi thư'), ('dat_bh', 'Đặt buổi hẹn')], string="Hình thức TLHĐ",
+                                help="Hình thức được chọn để thực hiện thanh lý hợp đồng", required=True,
+                                default='gui_thu')
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True)
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng", required=True)
     bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Sản phẩm", required=True)
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng", required=True)
     bsd_bg_gt_id = fields.Many2one('bsd.bg_gt', string="Bàn giao giấy tờ", help="Bàn giao giấy tờ", required=True)
     bsd_han_th = fields.Date(string="Hạn thu hồi", help="Thời hạn thu hồi Biên bản thanh lý kết thúc hợp đồng",
-                             required=True,
                              readonly=True,
                              states={'nhap': [('readonly', False)]})
     bsd_ngay_in = fields.Datetime(string="Ngày in", help="Ngày in Biên bản thanh lý kết thúc hợp đồng",
