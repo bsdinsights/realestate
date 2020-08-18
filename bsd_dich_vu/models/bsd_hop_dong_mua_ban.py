@@ -373,6 +373,36 @@ class BsdHopDongMuaBan(models.Model):
             'bsd_nguoi_duyet_bgdb_id': self.env.uid,
         })
 
+    # DV.01.24 Xử lý TTĐC quá hạn ký
+    def auto_tao_ds_td_ttdc(self):
+        self.env['bsd.ds_td'].create({
+            'bsd_ten': 'Gia hạn ký TTĐC ' + self.bsd_ma_hd_ban,
+            'bsd_loai_td': 'vp_tg',
+            'bsd_loai_yc': 'gia_han',
+            'bsd_loai_dt': 'ttdc',
+            'bsd_du_an_id': self.bsd_du_an_id.id,
+            'bsd_unit_id': self.bsd_unit_id.id,
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_hd_ban_id': self.id,
+            'bsd_ngay_hh': self.bsd_ngay_hh_ttdc,
+            'bsd_tien_da_tt': self.bsd_tien_tt_hd,
+        })
+
+    # DV.01.25 Xử lý Hợp đồng quá hạn ký
+    def auto_tao_ds_td_hd(self):
+        self.env['bsd.ds_td'].create({
+            'bsd_ten': 'Gia hạn ký hợp đồng ' + self.bsd_ma_hd_ban,
+            'bsd_loai_td': 'vp_tg',
+            'bsd_loai_yc': 'gia_han',
+            'bsd_loai_dt': 'hd_ban',
+            'bsd_du_an_id': self.bsd_du_an_id.id,
+            'bsd_unit_id': self.bsd_unit_id.id,
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_hd_ban_id': self.id,
+            'bsd_ngay_hh': self.bsd_ngay_hh_khdb,
+            'bsd_tien_da_tt': self.bsd_tien_tt_hd,
+        })
+
     @api.model
     def create(self, vals):
         sequence = False

@@ -204,7 +204,7 @@ class BsdDanhSachTheoDoi(models.Model):
                                                          ('state', '=', 'du_dk'),
                                                          '|',
                                                          ('bsd_duyet_db', '=', True),
-                                                         ('bsd_ngay_ky_hd', '=', False)]).ids
+                                                         ('bsd_ngay_ky_hdb', '=', False)]).ids
             res.update({
                 'domain': {'bsd_hd_ban_id': [('id', 'in', list_id)]}
             })
