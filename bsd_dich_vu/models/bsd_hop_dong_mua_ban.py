@@ -379,7 +379,7 @@ class BsdHopDongMuaBan(models.Model):
             'bsd_ten': 'Gia hạn ký TTĐC ' + self.bsd_ma_hd_ban,
             'bsd_loai_td': 'vp_tg',
             'bsd_loai_yc': 'gia_han',
-            'bsd_loai_dt': 'ttdc',
+            'bsd_loai_dt': 'tt_dc',
             'bsd_du_an_id': self.bsd_du_an_id.id,
             'bsd_unit_id': self.bsd_unit_id.id,
             'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
