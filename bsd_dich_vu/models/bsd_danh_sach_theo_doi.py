@@ -426,6 +426,7 @@ class BsdDanhSachTheoDoi(models.Model):
         self.write({
             'state': 'hoan_thanh'
         })
+
     # DV.15.07 Hủy danh sách theo dõi
     def action_huy(self):
         return self.env.ref('bsd_dich_vu.bsd_wizard_huy_ds_td_action').read()[0]
