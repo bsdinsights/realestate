@@ -6,10 +6,10 @@
             <field name="model_id" ref="bsd_kinh_doanh.model_bsd_dat_coc"/>
             <field name="trigger">on_time</field>
             <field name="filter_domain">[('bsd_thanh_toan', '=','da_tt'),('bsd_ngay_ky_dc', '=', False)]</field>
+            <field name="trg_date_id" ref="bsd_kinh_doanh.field_bsd_dat_coc__bsd_ngay_hh_kdc"/>
             <field name="state">code</field>
             <field name="code">
-record = model.browse(env.context['active_id'])
-record.auto_tao_ds_td()
+records.auto_tao_ds_td()
             </field>
         </record>
     </data>

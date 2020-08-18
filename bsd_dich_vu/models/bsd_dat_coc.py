@@ -15,6 +15,7 @@ class BsdDatCoc(models.Model):
             'bsd_loai_td': 'vp_tg',
             'bsd_loai_yc': 'gia_han',
             'bsd_loai_dt': 'dat_coc',
+            'bsd_du_an_id': self.bsd_du_an_id.id,
             'bsd_unit_id': self.bsd_unit_id.id,
             'bsd_khach_hang_id': self.bsd_khach_hang_id,
             'bsd_tien_dc': self.bsd_tien_dc,
