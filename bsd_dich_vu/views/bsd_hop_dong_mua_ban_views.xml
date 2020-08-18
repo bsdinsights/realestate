@@ -56,8 +56,9 @@
                             name="action_duyet_bgdb"
                             type="object"
                             confirm="Bàn có muốn duyệt bàn giao đặc biệt cho hợp đồng không?"
-                            states="da_ky,dang_tt"
-                            attrs="{'invisible':['|', ('bsd_duyet_db', '=', True)]}"
+                            attrs="{'invisible':['|', ('bsd_duyet_bgdb', '=', True),
+                                                 '|', ('bsd_ngay_duyet_bgdb', '!=', False),
+                                                 ('state', 'not in', ['da_ky', 'dang_tt'])]}"
                             class="oe_highlight"/>
                     <button string="Hủy"
                             name="action_huy"
