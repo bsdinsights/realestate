@@ -33,6 +33,7 @@
         'views/bsd_thanh_ly_kt_hd_views.xml',
         'views/bsd_danh_sach_theo_doi_views.xml',
         'views/bsd_thong_bao_thanh_ly_views.xml',
+        'views/bsd_thanh_ly_views.xml',
         'views/bsd_menu_item_views.xml',
         'views/product_template_views.xml',
         'wizards/bsd_wizard_ky_hdb_views.xml',

@@ -26,5 +26,7 @@ bsd_bg_gt,Bàn giao giấy tờ,model_bsd_bg_gt,bsd_dich_vu.group_manager,1,1,1,
 bsd_tl_kt_hd,Thanh lý kết thúc hợp đồng,model_bsd_tl_kt_hd,bsd_dich_vu.group_manager,1,1,1,1
 bsd_ds_td,Danh sách theo dõi,model_bsd_ds_td,bsd_dich_vu.group_manager,1,1,1,1
 bsd_tb_tl,Thông báo thanh lý,model_bsd_tb_tl,bsd_dich_vu.group_manager,1,1,1,1
+bsd_thanh_ly,Thanh lý chấm dứt hợp đồng,model_bsd_thanh_ly,bsd_dich_vu.group_manager,1,1,1,1
+
 
 
