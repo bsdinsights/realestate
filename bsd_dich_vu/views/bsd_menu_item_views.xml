@@ -37,7 +37,7 @@
                   action="bsd_tl_kt_hd_action"
                   parent="bsd_hd_ban_menu"/>
         <menuitem id="bsd_thanh_ly_menu_action"
-                  name="Thanh lý chấm dứt hợp đồng hợp đồng"
+                  name="Thanh lý chấm dứt hợp đồng"
                   sequence="16"
                   action="bsd_thanh_ly_action"
                   parent="bsd_hd_ban_menu"/>
