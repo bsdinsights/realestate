@@ -175,7 +175,7 @@ class BsdDanhSachTheoDoi(models.Model):
     def _compute_thanh_ly(self):
         for each in self:
             thanh_ly = self.env['bsd.thanh_ly'].search([('bsd_ds_td_id', '=', self.id)])
-            each.bsd_so_tb_tl = len(thanh_ly)
+            each.bsd_so_thanh_ly = len(thanh_ly)
 
     def action_view_tb_tl(self):
         action = self.env.ref('bsd_dich_vu.bsd_tb_tl_action').read()[0]
