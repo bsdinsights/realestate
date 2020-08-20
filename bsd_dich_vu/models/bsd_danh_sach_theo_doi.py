@@ -161,6 +161,35 @@ class BsdDanhSachTheoDoi(models.Model):
     bsd_parent_id = fields.Many2one('bsd.ds_td', string="Danh sách theo dõi", readonly=True)
     bsd_child_ids = fields.One2many('bsd.ds_td', 'bsd_parent_id', string="Danh sách theo dõi", readonly=True)
 
+    bsd_tb_tl_ids = fields.One2many('bsd.tb_tl', 'bsd_ds_td_id', string="Thông báo thanh_lý", help="Thông báo thanh lý")
+    bsd_so_tb_tl = fields.Integer(string="# TB thanh lý",compute='_compute_tb_tl')
+
+    def _compute_tb_tl(self):
+        for each in self:
+            tb_tl = self.env['bsd.tb_tl'].search([('bsd_ds_td_id', '=', self.id)])
+            each.bsd_so_tb_tl = len(tb_tl)
+
+    def action_view_tb_tl(self):
+        action = self.env.ref('bsd_dich_vu.bsd_tb_tl_action').read()[0]
+
+        tb_tl = self.env['bsd.tb_tl'].search([('bsd_ds_td', '=', self.id)])
+        if len(tb_tl) > 1:
+            action['domain'] = [('id', 'in', tb_tl.ids)]
+        elif tb_tl:
+            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_tb_tl_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = tb_tl.id
+        # Prepare the context.
+        context = {
+            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'default_bsd_bao_gia_id': self.id,
+        }
+        action['context'] = context
+        return action
+
     # R.02
     @api.onchange('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id', 'bsd_loai_td', 'bsd_du_an_id')
     def _onchange_tt(self):

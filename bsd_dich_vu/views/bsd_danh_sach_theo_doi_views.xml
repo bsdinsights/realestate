@@ -56,6 +56,11 @@
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_tb_tl" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_tb_tl', '=', 0)]}">
+                            <field name="bsd_so_tb_tl" widget="statinfo" string="Thông báo thanh lý"/>
+                        </button>
+                    </div>
                     <notebook>
                         <page string="Thông tin chung">
                             <group>
