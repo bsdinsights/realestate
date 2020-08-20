@@ -227,7 +227,7 @@ class BsdDanhSachTheoDoi(models.Model):
             elif self.bsd_loai_dt == 'dat_coc':
                 if self.bsd_dat_coc_id:
                     self.bsd_tl_phat = self.bsd_dat_coc_id.bsd_cs_tt_id.bsd_phat_thd
-                    self.bsd_tien_phat = self.bsd_tl_phat * self.bsd_tong_gt_hd / 100
+                    self.bsd_tien_phat = self.bsd_tl_phat * self.bsd_tien_dc / 100
             else:
                 if self.bsd_hd_ban_id:
                     self.bsd_tl_phat = self.bsd_hd_ban_id.bsd_cs_tt_id.bsd_phat_thd
