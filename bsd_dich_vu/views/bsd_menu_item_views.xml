@@ -78,7 +78,7 @@
         <menuitem id="bsd_tb_tl_menu_action"
                   name="Thông báo thanh lý"
                   sequence="103"
-                  action="bsd_tb_tl_act_window"
+                  action="bsd_tb_tl_action"
                   parent="bsd_thong_bao_menu"/>
     <menuitem id="bsd_quan_ly_menu"
               name="Quản lý"
