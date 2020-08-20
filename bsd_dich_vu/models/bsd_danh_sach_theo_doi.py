@@ -217,6 +217,19 @@ class BsdDanhSachTheoDoi(models.Model):
         action['context'] = context
         return action
 
+    @api.onchange('bsd_loai_yc', 'bsd_hd_ban_id', 'bsd_dat_coc_id', 'bsd_loai_dt')
+    def onchange_loai_yc(self):
+        if self.bsd_loai_yc == 'thanh_ly':
+            if self.bsd_loai_dt == 'hd_ban':
+                if self.bsd_hd_ban_id:
+                    self.bsd_tl_phat = self.bsd_hd_ban_id.bsd_cs_tt_id.bsd_phat_shd
+            elif self.bsd_loai_dt == 'dat_coc':
+                if self.bsd_dat_coc_id:
+                    self.bsd_tl_phat = self.bsd_dat_coc_id.bsd_cs_tt_id.bsd_phat_thd
+            else:
+                if self.bsd_hd_ban_id:
+                    self.bsd_tl_phat = self.bsd_hd_ban_id.bsd_cs_tt_id.bsd_phat_thd
+
     # R.02
     @api.onchange('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id', 'bsd_loai_td', 'bsd_du_an_id')
     def _onchange_tt(self):
@@ -532,6 +545,14 @@ class BsdDanhSachTheoDoi(models.Model):
         self.write({
             'state': 'hoan_thanh'
         })
+
+    # DV.15.12 Kiểm tra dk đặt cọc
+    @api.constrains('bsd_loai_dt', 'bsd_dat_coc_id')
+    def _constrain_dat_coc(self):
+        if self.bsd_loai_dt == 'dat_coc':
+            hop_dong = self.env['bsd.hd_ban'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id)])
+            if hop_dong:
+                raise UserError("Đặc cọc đã được tạo hợp đồng. Vui lòng kiểm tra lại thông tin!")
 
     # DV.15.13 Kiểm tra dk chuyển trạng thái hoàn thành
     def _chuyen_hoan_thanh(self):
