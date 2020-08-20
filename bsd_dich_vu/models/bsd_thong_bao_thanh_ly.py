@@ -80,6 +80,29 @@ class BsdTBTL(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
+    bsd_tl_phat = fields.Float(string="Tỷ lệ phạt", help="Tỷ lệ phần trăm mà khách hàng bị phạt",
+                               readonly=True,
+                               states={'nhap': [('readonly', False)]})
+    bsd_tien_phat = fields.Monetary(string="Tiền phạt", help="Số tiền khách hàng bị phạt do vi phạm hợp đồng",
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]})
+
+    bsd_tien_mg = fields.Monetary(string="Miển giảm phạt", help="Số tiền phạt được miễn giảm",
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
+    bsd_tong_phat = fields.Monetary(string="Tổng số tiền phạt", help="Tổng số tiền phạt sau khi được miễn giảm",
+                                    readonly=True, compute="_compute_tong_phat", store=True)
+
+    @api.depends('bsd_tien_phat', 'bsd_tien_mg')
+    def _compute_tong_phat(self):
+        for each in self:
+            each.bsd_tong_phat = each.bsd_tien_phat - each.bsd_tien_mg
+
+    @api.onchange('bsd_ds_td_id')
+    def _onchange_ds(self):
+        self.bsd_tl_phat = self.bsd_ds_td_id.bsd_tl_phat
+        self.bsd_tien_phat = self.bsd_ds_td_id.bsd_tien_phat
+
     @api.onchange('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id')
     def _onchange_tt(self):
         if self.bsd_loai_dt == 'dat_coc':

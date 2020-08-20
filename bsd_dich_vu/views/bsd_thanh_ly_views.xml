@@ -70,7 +70,13 @@
                             </group>
                             <group string="XỬ LÝ THANH LÝ">
                                 <group>
-                                    <field name="bsd_tl_phat"/>
+                                    <label for="bsd_tl_phat"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <div class="col">
+                                            <field name="bsd_tl_phat" class="mr-1"/>
+                                            <span>%</span>
+                                        </div>
+                                    </div>
                                 </group>
                                 <group>
                                     <field name="bsd_tien_phat"/>
