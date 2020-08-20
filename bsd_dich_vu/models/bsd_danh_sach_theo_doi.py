@@ -430,7 +430,7 @@ class BsdDanhSachTheoDoi(models.Model):
 
     # DV.15.05 Thanh lý
     def action_thanh_ly(self):
-        self._tao_tb_tl()
+        # self._tao_tb_tl()
         self._tao_thanh_ly()
         self._chuyen_hoan_thanh()
 
@@ -541,8 +541,13 @@ class BsdDanhSachTheoDoi(models.Model):
                     self.write({
                         'state': 'hoan_thanh',
                     })
-            if self.bsd_gui_thu and self.bsd_ky_bb:
+            elif self.bsd_gui_thu and self.bsd_ky_bb:
                 if self.bsd_da_tb_tl and self.bsd_da_thanh_ly:
+                    self.write({
+                        'state': 'hoan_thanh',
+                    })
+            elif not self.bsd_gui_thu and self.bsd_ky_bb:
+                if self.bsd_da_thanh_ly:
                     self.write({
                         'state': 'hoan_thanh',
                     })
