@@ -161,22 +161,30 @@ class BsdDanhSachTheoDoi(models.Model):
     bsd_parent_id = fields.Many2one('bsd.ds_td', string="Danh sách theo dõi", readonly=True)
     bsd_child_ids = fields.One2many('bsd.ds_td', 'bsd_parent_id', string="Danh sách theo dõi", readonly=True)
 
-    bsd_tb_tl_ids = fields.One2many('bsd.tb_tl', 'bsd_ds_td_id', string="Thông báo thanh_lý", help="Thông báo thanh lý")
-    bsd_so_tb_tl = fields.Integer(string="# TB thanh lý",compute='_compute_tb_tl')
+    bsd_so_tb_tl = fields.Integer(string="# TB thanh lý", compute='_compute_tb_tl')
+    bsd_so_thanh_ly = fields.Integer(string="# Thanh lý", compute='_compute_thanh_ly')
+
+    bsd_da_tb_tl = fields.Boolean(string="Đã tạo tbtl", default=False, readonly=True)
+    bsd_da_thanh_ly = fields.Boolean(string="Đã tạo thanh lý", default=False, readonly=True)
 
     def _compute_tb_tl(self):
         for each in self:
             tb_tl = self.env['bsd.tb_tl'].search([('bsd_ds_td_id', '=', self.id)])
             each.bsd_so_tb_tl = len(tb_tl)
 
+    def _compute_thanh_ly(self):
+        for each in self:
+            thanh_ly = self.env['bsd.thanh_ly'].search([('bsd_ds_td_id', '=', self.id)])
+            each.bsd_so_tb_tl = len(thanh_ly)
+
     def action_view_tb_tl(self):
         action = self.env.ref('bsd_dich_vu.bsd_tb_tl_action').read()[0]
 
-        tb_tl = self.env['bsd.tb_tl'].search([('bsd_ds_td', '=', self.id)])
+        tb_tl = self.env['bsd.tb_tl'].search([('bsd_ds_td_id', '=', self.id)])
         if len(tb_tl) > 1:
             action['domain'] = [('id', 'in', tb_tl.ids)]
         elif tb_tl:
-            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_tb_tl_form').id, 'form')]
+            form_view = [(self.env.ref('bsd_dich_vu.bsd_tb_tl_form').id, 'form')]
             if 'views' in action:
                 action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
             else:
@@ -184,8 +192,27 @@ class BsdDanhSachTheoDoi(models.Model):
             action['res_id'] = tb_tl.id
         # Prepare the context.
         context = {
-            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-            'default_bsd_bao_gia_id': self.id,
+            'default_bsd_ds_td_id': self.id,
+        }
+        action['context'] = context
+        return action
+
+    def action_view_thanh_ly(self):
+        action = self.env.ref('bsd_dich_vu.bsd_thanh_ly_action').read()[0]
+
+        thanh_ly = self.env['bsd.thanh_ly'].search([('bsd_ds_td_id', '=', self.id)])
+        if len(thanh_ly) > 1:
+            action['domain'] = [('id', 'in', thanh_ly.ids)]
+        elif thanh_ly:
+            form_view = [(self.env.ref('bsd_dich_vu.bsd_thanh_ly_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = thanh_ly.id
+        # Prepare the context.
+        context = {
+            'default_bsd_ds_td_id': self.id,
         }
         action['context'] = context
         return action
@@ -398,6 +425,32 @@ class BsdDanhSachTheoDoi(models.Model):
 
     # DV.15.04 Gửi thông báo thanh lý
     def action_gui_tbtl(self):
+        self._tao_tb_tl()
+        self._chuyen_hoan_thanh()
+
+    # DV.15.05 Thanh lý
+    def action_thanh_ly(self):
+        self._tao_tb_tl()
+        self._tao_thanh_ly()
+        self._chuyen_hoan_thanh()
+
+    # DV.15.06 Chuyển thanh lý
+    def action_chuyen_tl(self):
+        self.copy(default={'bsd_loai_yc': 'thanh_ly',
+                           'bsd_ngay_tao': fields.Datetime.now(),
+                           'bsd_ten': "Theo dõi thanh lý",
+                           'bsd_ma': '/',
+                           'bsd_parent_id': self.id})
+        self.write({
+            'state': 'hoan_thanh'
+        })
+
+    # DV.15.07 Hủy danh sách theo dõi
+    def action_huy(self):
+        return self.env.ref('bsd_dich_vu.bsd_wizard_huy_ds_td_action').read()[0]
+
+    # DV.15.08 Tự động tạo thông báo thanh lý
+    def _tao_tb_tl(self):
         if self.bsd_loai_td == 'vp_tg':
             loai_ld = 'qua_han'
         elif self.bsd_loai_td == 'yc_kh':
@@ -446,22 +499,27 @@ class BsdDanhSachTheoDoi(models.Model):
                 'bsd_ngay_ky_hdb': self.bsd_hd_ban_id.bsd_ngay_ky_hdb,
                 'bsd_tien_da_tt': self.bsd_tien_da_tt
             })
-
-    # DV.15.05 Thanh lý
-    def action_thanh_ly(self):
         self.write({
-            'state': 'hoan_thanh'
+            'bsd_da_tb_tl': True
         })
 
-    # DV.15.06 Chuyển thanh lý
-    def action_chuyen_tl(self):
-        self.copy(default={'bsd_loai_yc': 'thanh_ly',
-                           'bsd_ngay_tao': fields.Datetime.now(),
-                           'bsd_ten': "Theo dõi thanh lý",
-                           'bsd_ma': '/',
-                           'bsd_parent_id': self.id})
+    # DV.15.09 Tự động tạo thanh lý
+    def _tao_thanh_ly(self):
+        ten = "Thanh lý " + "đặt cọc " + self.bsd_unit_id.bsd_ten_unit if self.bsd_loai_dt == 'dat_coc' \
+            else "Thanh lý " + "hợp đồng " + self.bsd_unit_id.bsd_ten_unit
+        self.env['bsd.thanh_ly'].create({
+            'bsd_ten': ten,
+            'bsd_ds_td_id': self.id,
+            'bsd_du_an_id': self.bsd_du_an_id.id,
+            'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
+            'bsd_unit_id': self.bsd_unit_id.id,
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_tien_dc': self.bsd_tien_dc,
+            'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
+            'bsd_tong_gt_hd': self.bsd_tong_gt_hd,
+        })
         self.write({
-            'state': 'hoan_thanh'
+            'bsd_da_thanh_ly': True
         })
 
     # DV.15.11 Chuyển gia hạn
@@ -475,9 +533,19 @@ class BsdDanhSachTheoDoi(models.Model):
             'state': 'hoan_thanh'
         })
 
-    # DV.15.07 Hủy danh sách theo dõi
-    def action_huy(self):
-        return self.env.ref('bsd_dich_vu.bsd_wizard_huy_ds_td_action').read()[0]
+    # DV.15.13 Kiểm tra dk chuyển trạng thái hoàn thành
+    def _chuyen_hoan_thanh(self):
+        if self.bsd_loai_yc == 'thanh_ly':
+            if self.bsd_gui_thu and not self.bsd_ky_bb:
+                if self.bsd_da_tb_tl:
+                    self.write({
+                        'state': 'hoan_thanh',
+                    })
+            if self.bsd_gui_thu and self.bsd_ky_bb:
+                if self.bsd_da_tb_tl and self.bsd_da_thanh_ly:
+                    self.write({
+                        'state': 'hoan_thanh',
+                    })
 
     @api.model
     def create(self, vals):

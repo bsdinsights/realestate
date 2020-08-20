@@ -2,7 +2,7 @@
 <odoo>
     <data>
 
-        <record id="bsd_tb_tl_form_view" model="ir.ui.view">
+        <record id="bsd_tb_tl_form" model="ir.ui.view">
             <field name="name">bsd.tb_tl.form</field>
             <field name="model">bsd.tb_tl</field>
             <field name="arch" type="xml">
