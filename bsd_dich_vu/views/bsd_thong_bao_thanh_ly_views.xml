@@ -142,7 +142,7 @@
             </field>
         </record>
 
-        <record id="bsd_tb_tl_act_window" model="ir.actions.act_window">
+        <record id="bsd_tb_tl_action" model="ir.actions.act_window">
             <field name="name">Thông báo thanh lý</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">bsd.tb_tl</field>
