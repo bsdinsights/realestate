@@ -33,14 +33,11 @@ class BsdHopDongMuaBan(models.Model):
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', related="bsd_dat_coc_id.bsd_bao_gia_id", store=True)
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án",
-                                   related="bsd_dat_coc_id.bsd_du_an_id", store=True)
-    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Tên đợt mở bán",
-                                    related="bsd_dat_coc_id.bsd_dot_mb_id", store=True)
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True)
+    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Tên đợt mở bán", required=True)
     bsd_bang_gia_id = fields.Many2one('product.pricelist', string="Bảng giá", help="Bảng giá bán",
                                       related="bsd_dat_coc_id.bsd_bang_gia_id", store=True)
-    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Tên căn hộ",
-                                  related="bsd_dat_coc_id.bsd_unit_id", store=True)
+    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Tên căn hộ", required=True)
     bsd_ngay_cn = fields.Date(related='bsd_unit_id.bsd_ngay_cn', store=True)
     bsd_ten_sp = fields.Char(related="bsd_unit_id.name", store=True)
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích tim tường",
@@ -408,9 +405,9 @@ class BsdHopDongMuaBan(models.Model):
     @api.model
     def create(self, vals):
         sequence = False
-        if 'bsd_dat_coc_id' in vals:
-            dat_coc = self.env['bsd.dat_coc'].browse(vals['bsd_dat_coc_id'])
-            sequence = dat_coc.bsd_du_an_id.get_ma_bo_cn(loai_cn=self._name)
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
             raise UserError(_('Dự án chưa có mã hợp đồng'))
         vals['bsd_ma_hd_ban'] = sequence.next_by_id()
