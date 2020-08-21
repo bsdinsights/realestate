@@ -150,12 +150,6 @@ class BsdHopDongMuaBan(models.Model):
     bsd_tl_tt_hd = fields.Float(string="Tỷ lệ thanh toán HĐ", help="Tỷ lệ thanh toán hợp đồng", digits=(10, 1))
     bsd_tien_tt_hd = fields.Monetary(string="Tiền thanh toán HĐ", help="Tiền thanh toán hợp đồng")
 
-    @api.onchange('bsd_dat_coc_id')
-    def _onchange_dat_coc(self):
-        self.bsd_dot_mb_id = self.bsd_dat_coc_id.bsd_dot_mb_id
-        self.bsd_du_an_id = self.bsd_dat_coc_id.bsd_du_an_id
-        self.bsd_unit_id = self.bsd_dat_coc_id.bsd_unit_id
-
     @api.onchange('bsd_unit_id')
     def _onchange_unit(self):
         self.bsd_ngay_dkbg = self.bsd_unit_id.bsd_ngay_dkbg
@@ -243,10 +237,13 @@ class BsdHopDongMuaBan(models.Model):
         action = self.env.ref('bsd_dich_vu.bsd_wizard_uoc_tinh_ck_tt_action').read()[0]
         return action
 
-    # Cập nhật đồng sở hữu từ báo giá
+    # Cập nhật đồng sở hữu từ báo giá, đợt mở bán , dự án, sản phẩm
     @api.onchange('bsd_dat_coc_id')
     def _onchange_dat_coc(self):
         for each in self:
+            each.bsd_dot_mb_id = each.bsd_dat_coc_id.bsd_dot_mb_id
+            each.bsd_du_an_id = each.bsd_dat_coc_id.bsd_du_an_id
+            each.bsd_unit_id = each.bsd_dat_coc_id.bsd_unit_id
             lines = [(5, 0, 0)]
             for line in each.bsd_dat_coc_id.bsd_bao_gia_id.bsd_dsh_ids:
                 vals = {
