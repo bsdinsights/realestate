@@ -150,6 +150,12 @@ class BsdHopDongMuaBan(models.Model):
     bsd_tl_tt_hd = fields.Float(string="Tỷ lệ thanh toán HĐ", help="Tỷ lệ thanh toán hợp đồng", digits=(10, 1))
     bsd_tien_tt_hd = fields.Monetary(string="Tiền thanh toán HĐ", help="Tiền thanh toán hợp đồng")
 
+    @api.onchange('bsd_dat_coc_id')
+    def _onchange_dat_coc(self):
+        self.bsd_dot_mb_id = self.bsd_dat_coc_id.bsd_dot_mb_id
+        self.bsd_du_an_id = self.bsd_dat_coc_id.bsd_du_an_id
+        self.bsd_unit_id = self.bsd_dat_coc_id.bsd_unit_id
+
     @api.onchange('bsd_unit_id')
     def _onchange_unit(self):
         self.bsd_ngay_dkbg = self.bsd_unit_id.bsd_ngay_dkbg
