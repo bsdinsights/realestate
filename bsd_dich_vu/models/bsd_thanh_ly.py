@@ -198,6 +198,33 @@ class BsdThanhLy(models.Model):
                 self.bsd_tien_pbt = False
                 self.bsd_tong_gia = False
 
+    # DV.13.01 Xác nhận thanh lý
+    def action_xac_nhan(self):
+        if self.state == 'nhap':
+            self.write({
+                'state': 'xac_nhan',
+            })
+
+    # DV.13.02 In biên bản thanh lý
+    def action_in(self):
+        pass
+
+    # DV.13.03 Ký biên bản thanh lý
+    def action_ky(self):
+        pass
+
+    # DV.13.04 Hoàn tiền thanh lý
+    def action_hoan_tien(self):
+        pass
+
+    # DV.13.05 Mở bán lại
+    def _mo_ban_lai(self):
+        pass
+
+    # DV.13.06 Hủy thanh lý
+    def action_huy(self):
+        pass
+
     @api.model
     def create(self, vals):
         sequence = self.env['ir.sequence']

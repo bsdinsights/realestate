@@ -6,6 +6,29 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button name="action_xac_nhan"
+                            type="object"
+                            string="Xác nhận"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                            confirm="Bạn có muốn xác nhận yêu cầu không?"
+                            class="oe_highlight"/>
+                    <button name="action_in"
+                            type="object"
+                            states="xac_nhan"
+                            string="In biên bản"
+                            class="oe_highlight"/>
+                    <button name="action_ky"
+                            type="object"
+                            class="oe_highlight"
+                            string="Ký biên bản"/>
+                    <button name="action_hoan_tien"
+                            type="object"
+                            class="oe_highlight"
+                            string="Hoàn tiền"/>
+                    <button name="action_huy"
+                            type="object"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap', 'xac_nhan'])]}"
+                            string="Hủy"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
