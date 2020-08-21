@@ -384,6 +384,7 @@ class BsdHopDongMuaBan(models.Model):
             'bsd_unit_id': self.bsd_unit_id.id,
             'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
             'bsd_hd_ban_id': self.id,
+            'bsd_tong_gt_hd': self.bsd_tong_gia,
             'bsd_ngay_hh': self.bsd_ngay_hh_ttdc,
             'bsd_tien_da_tt': self.bsd_tien_tt_hd,
         })
@@ -400,6 +401,7 @@ class BsdHopDongMuaBan(models.Model):
             'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
             'bsd_hd_ban_id': self.id,
             'bsd_ngay_hh': self.bsd_ngay_hh_khdb,
+            'bsd_tong_gt_hd': self.bsd_tong_gia,
             'bsd_tien_da_tt': self.bsd_tien_tt_hd,
         })
 
