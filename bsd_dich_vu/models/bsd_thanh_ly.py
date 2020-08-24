@@ -36,7 +36,9 @@ class BsdThanhLy(models.Model):
                                    help="""Loại thanh lý:\n
                                         - Thường: Không được duyệt giảm tỷ lệ phạt hoặc hoàn tiền. \n
                                         - Đặc biệt: Được xét duyệt giảm tỷ lệ phạt hoặc hoàn tiền. \n""",
-                                   required=True, default='thuong')
+                                   required=True, default='thuong',
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
     bsd_ds_td_id = fields.Many2one('bsd.ds_td', string="Danh sách theo dõi", help="Danh sách theo dõi", required=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True,
                                    readonly=True,
