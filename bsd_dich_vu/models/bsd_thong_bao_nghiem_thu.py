@@ -80,13 +80,13 @@ class BsdThongBaoNghiemThu(models.Model):
             each.bsd_so_nt = len(nghiem_thu)
 
     def action_view_nghiem_thu(self):
-        action = self.env.ref('bsd_kinh_doanh.bsd_nghiem_thu_action').read()[0]
+        action = self.env.ref('bsd_dich_vu.bsd_nghiem_thu_action').read()[0]
 
         nghiem_thu = self.env['bsd.nghiem_thu'].search([('bsd_tb_nt_id', '=', self.id)])
         if len(nghiem_thu) > 1:
             action['domain'] = [('id', 'in', nghiem_thu.ids)]
         elif nghiem_thu:
-            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_nghiem_thu_form').id, 'form')]
+            form_view = [(self.env.ref('bsd_dich_vu.bsd_nghiem_thu_form').id, 'form')]
             if 'views' in action:
                 action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
             else:

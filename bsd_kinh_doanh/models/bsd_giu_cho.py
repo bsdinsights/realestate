@@ -30,6 +30,7 @@ class BsdGiuCho(models.Model):
     bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", required=True,
                                   readonly=True, help="Tên căn hộ",
                                   states={'nhap': [('readonly', False)]})
+    bsd_ten_sp = fields.Char(related="bsd_unit_id.name")
     bsd_product_tmpl_id = fields.Many2one(related='bsd_unit_id.product_tmpl_id', store=True)
     bsd_dien_giai = fields.Char(string="Diễn giải",
                                 readonly=True, help="Diễn giải",
@@ -101,6 +102,25 @@ class BsdGiuCho(models.Model):
 
     bsd_so_bao_gia = fields.Integer(string="# Báo giá", compute='_compute_bao_gia')
     bsd_so_huy_gc = fields.Integer(string="# Hủy giữ chỗ", compute='_compute_huy_gc')
+
+    # Tên hiện thị record
+    def name_get(self):
+        res = []
+        for gc in self:
+            res.append((gc.id, "%s" % gc.bsd_ten_sp))
+        return res
+    
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        # private implementation of name_search, allows passing a dedicated user
+        # for the name_get part to solve some access rights issues
+        args = list(args or [])
+        if not (name == '' and operator == 'ilike'):
+            args += [('bsd_ten_sp', operator, name)]
+        access_rights_uid = name_get_uid or self._uid
+        ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
+        recs = self.browse(ids)
+        return models.lazy_name_get(recs.with_user(access_rights_uid))    
 
     # KD.07.02 Ràng buộc số giữ chỗ theo căn hộ/ NVBH
     @api.constrains('bsd_nvbh_id', 'bsd_unit_id')

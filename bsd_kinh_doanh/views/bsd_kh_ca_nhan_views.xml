@@ -18,9 +18,9 @@
                         <group>
                             <field name="bsd_ma_kh" readonly="1"/>
                             <field name="bsd_ho_tl" required="1"/>
-                            <field name="bsd_ten" required="1"/>
-                            <field name="name" string="Họ và tên" readonly="1"/>
-                            <field name="name" invisible="1"/>
+                            <field name="name" required="1"/>
+                            <field name="bsd_ten" readonly="1"/>
+                            <field name="bsd_ten" invisible="1"/>
                             <field name="bsd_ngay_sinh"/>
                             <field name="bsd_gioi_tinh"/>
                             <field name="phone"/>
@@ -86,7 +86,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="bsd_ma_kh"/>
-                <field name="name"/>
+                <field name="bsd_ten"/>
                 <field name="bsd_gioi_tinh"/>
                 <field name="bsd_cmnd"/>
                 <field name="bsd_ho_chieu"/>
@@ -111,6 +111,7 @@
                     <field name="image_128"/>
                     <field name="parent_id"/>
                     <field name="type"/>
+                    <field name="bsd_ten"/>
                     <field name="bsd_dia_chi_lh"/>
                     <field name="bsd_sl_giu_cho"/>
                     <templates>
@@ -132,7 +133,7 @@
                                     <div class="o_kanban_image_fill_left o_kanban_image_full" t-attf-style="background-image: url(#{kanban_image('res.partner', 'image_128', record.id.raw_value, placeholder)})" role="img"/>
                                 </t>
                                 <div class="oe_kanban_details">
-                                    <strong class="o_kanban_record_title oe_partner_heading"><field name="name"/></strong>
+                                    <strong class="o_kanban_record_title oe_partner_heading"><field name="bsd_ten"/></strong>
                                     <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
                                     <div><span>Mã:</span><field name="bsd_ma_kh"/></div>
                                     <ul>
@@ -179,6 +180,6 @@
                       (0, 0, {'view_mode': 'kanban', 'view_id': ref('bsd_res_partner_cn_kanban')}),
                       (0, 0, {'view_mode': 'tree', 'view_id': ref('bsd_res_partner_cn_tree')}),
                       (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_res_partner_cn_form')})]"/>
-        <field name="search_view_id" ref="bsd_res_partner_cn_filter"/>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
     </record>
 </odoo>

@@ -82,12 +82,12 @@ class BsdDotMoBan(models.Model):
     bsd_sgd_ids = fields.One2many('bsd.dot_mb_sgd', 'bsd_dot_mb_id', string="Các sàn giao dịch",
                                   readonly=True,
                                   states={'cph': [('readonly', False)]})
-    bsd_km_ids = fields.One2many('bsd.dot_mb_km', 'bsd_dot_mb_id', string="Khuyến mãi",
-                                 readonly=True,
-                                 states={'cph': [('readonly', False)]})
-    bsd_dkbg_ids = fields.One2many('bsd.dot_mb_dkbg', 'bsd_dot_mb_id', string="Bàn giao",
-                                   readonly=True,
-                                   states={'cph': [('readonly', False)]})
+    bsd_km_ids = fields.Many2many('bsd.khuyen_mai', string="Khuyến mãi", domain=[('state', '=', 'duyet')],
+                                  readonly=True,
+                                  states={'cph': [('readonly', False)]})
+    bsd_dkbg_ids = fields.Many2many('bsd.dk_bg', string="Điều kiện bàn giao",
+                                    readonly=True,
+                                    states={'cph': [('readonly', False)]})
     bsd_cb_ids = fields.One2many('bsd.dot_mb_cb', 'bsd_dot_mb_id', string="Chuẩn bị unit",
                                  readonly=True,
                                  states={'cph': [('readonly', False)]})
@@ -396,47 +396,14 @@ class BsdDotMoBanSanGiaoDich(models.Model):
     _description = 'Thông tin sàn giao dich cho đợt mở bán'
     _rec_name = 'bsd_san_gd_id'
 
-    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán")
+    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", required=True)
     bsd_san_gd_id = fields.Many2one('res.partner', string="Tên sàn giao dịch", domain=[('is_company', '=', True)],
-                                    help="Sàn giao dịch được bán các căn hộ trong đợt mở bán")
+                                    help="Sàn giao dịch được bán các căn hộ trong đợt mở bán", required=True)
     bsd_san_gd_phone = fields.Char(string="Số điện thoại", related="bsd_san_gd_id.phone")
     bsd_san_gd_street = fields.Char('Đường', related="bsd_san_gd_id.street")
     bsd_san_gd_city = fields.Char('Thành phố', related="bsd_san_gd_id.city")
     bsd_san_gd_state_id = fields.Many2one("res.country.state", string='Tỉnh thành', related="bsd_san_gd_id.state_id")
     bsd_san_gd_country_id = fields.Many2one('res.country', string='Quốc gia', related="bsd_san_gd_id.country_id")
-
-
-class BsdDotMoBanKhuyenMai(models.Model):
-    _name = 'bsd.dot_mb_km'
-    _description = "Thông tin chương trình khuyến mãi cho đợt mở bán"
-    _rec_name = 'bsd_khuyen_mai_id'
-
-    bsd_khuyen_mai_id = fields.Many2one('bsd.khuyen_mai', string="Khuyến mãi")
-    bsd_ma_km = fields.Char(related='bsd_khuyen_mai_id.bsd_ma_km')
-    bsd_tu_ngay = fields.Date(related='bsd_khuyen_mai_id.bsd_tu_ngay')
-    bsd_den_ngay = fields.Date(related='bsd_khuyen_mai_id.bsd_den_ngay')
-    bsd_gia_tri = fields.Monetary(related='bsd_khuyen_mai_id.bsd_gia_tri')
-    bsd_loai = fields.Selection(related='bsd_khuyen_mai_id.bsd_loai', store=True)
-    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", required=True)
-    company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
-    currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-
-
-class BsdDotMoBanDKBG(models.Model):
-    _name = 'bsd.dot_mb_dkbg'
-    _description = 'Thông tin điều kiện bàn giao cho đợt mở bán'
-    _rec_name = 'bsd_dk_bg_id'
-
-    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", required=True)
-    bsd_dk_bg_id = fields.Many2one('bsd.dk_bg', string="Điều kiện bàn giao")
-    bsd_ma_dkbg = fields.Char(related="bsd_dk_bg_id.bsd_ma_dkbg")
-    bsd_loai_bg = fields.Selection(related="bsd_dk_bg_id.bsd_loai_bg")
-    bsd_loai_sp_id = fields.Many2one(related="bsd_dk_bg_id.bsd_loai_sp_id")
-    company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
-    currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-    bsd_tien = fields.Monetary(related="bsd_dk_bg_id.bsd_tien")
-    bsd_ty_le = fields.Float(related="bsd_dk_bg_id.bsd_ty_le")
-    bsd_gia_m2 = fields.Monetary(related="bsd_dk_bg_id.bsd_gia_m2")
 
 
 class BsdDotMoBanCB(models.Model):
@@ -470,9 +437,6 @@ class BsdDotMoBanCB(models.Model):
         return rec
 
     def write(self, vals):
-        _logger.debug("chỉnh chuẩn bị")
-        _logger.debug(vals)
-        _logger.debug(self.bsd_dot_mb_id)
         if 'bsd_unit_id' in vals.keys():
             if self.env['bsd.dot_mb_cb'].search([('bsd_unit_id', '=', vals['bsd_unit_id']),
                                                  ('bsd_dot_mb_id', '=', self.bsd_dot_mb_id.id)]):

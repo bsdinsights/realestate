@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="bsd_tl_kt_hd_report_wizard_form">
+            <field name="name">bsd.tl_kt_hd.report.wizard.form</field>
+            <field name="model">bsd.tl_kt_hd.report.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="In thanh lý kết thúc hợp đồng">
+                    <group>
+                        <group>
+                            <field name="bsd_mau_in"/>
+                            <field name="bsd_tl_kt_hd_id"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_in" string="In" type="object" class="oe_highlight"/>
+                        <button string="Hủy" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <act_window id="bsd_tl_kt_hd_report_action"
+                    name="Chọn mẫu in thanh lý kết thúc hợp đồng"
+                    res_model="bsd.tl_kt_hd.report.wizard"
+                    view_mode="form"
+                    target="new"/>
+        <report id="bsd_mau_in_tl_kt_hd_html"
+                model="bsd.tl_kt_hd.report.wizard"
+                string="Thanh lý kết thúc hợp đồng"
+                report_type="qweb-html"
+                name="bsd_dich_vu.bsd_tl_kt_hd_view"
+                menu="False"/>
+        <template id="bsd_tl_kt_hd_view">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="doc" t-value="doc.with_context(lang=lang)" />
+                    <t t-call="web.external_layout">
+                        <div class="page bsd_font">
+                            <div class="row">
+                                <div>Thanh lý kết thúc hợp đồng</div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

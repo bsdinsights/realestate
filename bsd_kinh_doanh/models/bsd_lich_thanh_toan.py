@@ -8,10 +8,10 @@ class BsdBaoGiaLTT(models.Model):
     _description = "Lịch thanh toán cho báo giá"
     _rec_name = 'bsd_ten_dtt'
 
-    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", help="Bảng tính giá", required=True)
+    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", help="Bảng tính giá")
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="'Đặt cọc", help="Phiếu đặt cọc", readonly=True)
-    bsd_stt = fields.Integer(string='Số thứ tự', help="Số thứ tự đợt thanh toán")
-    bsd_ma_dtt = fields.Char(string="Mã đợt thanh toán", help="Mã đợt thanh toán", required=True)
+    bsd_stt = fields.Integer(string='Số thứ tự', help="Số thứ tự đợt thanh toán", readonly=True)
+    bsd_ma_dtt = fields.Char(string="Mã đợt thanh toán", help="Mã đợt thanh toán", required=True, readonly=True)
     bsd_ten_dtt = fields.Char(string="Tên đợt thanh toán", help="Tên đợt thanh toán", required=True)
     bsd_ngay_hh_tt = fields.Date(string="Hạn thanh toán", help="Thời hạn thanh toán của đợt thanh toán")
     bsd_tien_dot_tt = fields.Monetary(string="Tiền", help="Tiền thanh toán của đợt thanh toán",
@@ -43,31 +43,9 @@ class BsdBaoGiaLTT(models.Model):
                                       help="Đợt thanh toán theo chính sách thanh toán")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-
-    # bsd_gd_tt = fields.Selection([('dat_coc', 'Đặt cọc'), ('hop_dong', 'Hợp đồng')],
-    #                              string="Giai đoạn thanh toán", help="Thanh toán trước hay sau làm hợp đồng",
-    #                              default="dat_coc", required=True)
     bsd_dot_ky_hd = fields.Boolean(string="Đợt ký hợp đồng", help="Đánh dấu đợt thanh toán là đợt ký hợp đồng")
     bsd_parent_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán", readonly=True)
     bsd_child_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_parent_id', string="Phí", readonly=True)
     bsd_loai = fields.Selection([('dtt', 'Đợt thanh toán'),
                                  ('pql', 'Phí quản lý'),
                                  ('pbt', 'Phí bảo trì')], string="Loại", help="Phân loại", readonly=True)
-
-    @api.depends('bsd_tien_dot_tt', 'bsd_tien_da_tt')
-    def _compute_tien_tt(self):
-        for each in self:
-            each.bsd_tien_phai_tt = each.bsd_tien_dot_tt - each.bsd_tien_da_tt
-
-    # @api.model
-    # def create(self, vals):
-    #     rec = super(BsdBaoGiaLTT, self).create(vals)
-    #     tien_dot_tt = rec.bsd_tien_dot_tt
-    #     if rec.bsd_tinh_pql:
-    #         tien_dot_tt += rec.bsd_bao_gia_id.bsd_tien_pql
-    #     if rec.bsd_tinh_pbt:
-    #         tien_dot_tt += rec.bsd_bao_gia_id.bsd_tien_pbt
-    #     rec.write({
-    #         'bsd_tien_dot_tt': tien_dot_tt,
-    #     })
-    #     return rec

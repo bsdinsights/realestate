@@ -28,7 +28,7 @@ class BsdBanGiao(models.Model):
         list_id = []
         if self.bsd_bao_gia_id.bsd_dot_mb_id:
             # Lấy các điều kiện bàn giao trong đợt mở bán
-            dk_bg = self.bsd_bao_gia_id.bsd_dot_mb_id.bsd_dkbg_ids.mapped('bsd_dk_bg_id')
+            dk_bg = self.bsd_bao_gia_id.bsd_dot_mb_id.bsd_dkbg_ids
             # Lọc các điều kiện bàn giao có nhóm sản phẩm trùng với unit trong bảng tính giá
             list_id = dk_bg.filtered(
                 lambda d: d.bsd_loai_sp_id == self.bsd_bao_gia_id.bsd_unit_id.bsd_loai_sp_id).ids

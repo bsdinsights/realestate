@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="bsd_bg_gt_report_wizard_form">
+            <field name="name">bsd.bg_gt.report.wizard.form</field>
+            <field name="model">bsd.bg_gt.report.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="In biên bản bàn giao">
+                    <group>
+                        <group>
+                            <field name="bsd_mau_in"/>
+                            <field name="bsd_bg_gt_id"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_in" string="In" type="object" class="oe_highlight"/>
+                        <button string="Hủy" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <act_window id="bsd_bg_gt_report_action"
+                    name="Chọn mẫu in bàn giao"
+                    res_model="bsd.bg_gt.report.wizard"
+                    view_mode="form"
+                    target="new"/>
+        <report id="bsd_mau_in_bg_gt_html"
+                model="bsd.bg_gt.report.wizard"
+                string="Bàn giao giấy tờ"
+                report_type="qweb-html"
+                name="bsd_dich_vu.bsd_bg_gt_view"
+                menu="False"/>
+        <template id="bsd_bg_gt_view">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="doc" t-value="doc.with_context(lang=lang)" />
+                    <t t-call="web.external_layout">
+                        <div class="page bsd_font">
+                            <div class="row">
+                                <div>Bàn giao giấy tờ</div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -37,7 +37,7 @@
                             <field name="bsd_ma_ck"/>
                             <field name="bsd_ten_ck"/>
                             <field name="bsd_loai_ck"/>
-                            <field name="bsd_du_an_id" attrs="{'required':[('bsd_loai_ck', 'in',['ttth','mua_si','ttn'])]}"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
                             <field name="bsd_cach_tinh"/>
                             <field name="bsd_tien_ck"
                                    attrs="{'required':[('bsd_cach_tinh', 'in', ['tien'])],

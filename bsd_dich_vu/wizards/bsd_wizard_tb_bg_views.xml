@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_wizard_tb_bg_form">
+        <field name="name">bsd.wizard.tb_bg.form</field>
+        <field name="model">bsd.wizard.tb_bg</field>
+        <field name="arch" type="xml">
+            <form string="Cập nhật ngày">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_tb_bg_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ngay"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_tb_bg_action">
+        <field name="name">Cập nhật ngày</field>
+        <field name="res_model">bsd.wizard.tb_bg</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
+</odoo>

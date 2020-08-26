@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
@@ -13,6 +13,8 @@ class BsdHdBan(models.Model):
                                 store=True, digits=(10, 1))
     bsd_tien_tt_hd = fields.Monetary(string="Tiền thanh toán HĐ", help="Tiền thanh toán hợp đồng",
                                      compute='_compute_tl_tt', store=True)
+
+    bsd_phi_ps_ids = fields.One2many('bsd.phi_ps', 'bsd_hd_ban_id', string="Danh sách phí phát sinh", readonly=True)
 
     @api.depends('bsd_ltt_ids.bsd_tien_da_tt', 'bsd_tong_gia')
     def _compute_tl_tt(self):
@@ -28,8 +30,7 @@ class BsdHdBan(models.Model):
         _logger.debug("tạo giao dịch chiết khấu")
         # Các khuyến mãi có điều kiện của hợp đồng
         km_hd = self.bsd_dot_mb_id.bsd_km_ids\
-            .filtered(lambda k: k.bsd_loai != 'khong')\
-            .mapped('bsd_khuyen_mai_id')
+            .filtered(lambda k: k.bsd_loai != 'khong')
         _logger.debug(km_hd)
         # Kiểm tra khuyến mãi của hợp đồng đã tạo khuyến mãi
         km_da_ps_gd = self.env['bsd.ps_gd_km'].search([('bsd_hd_ban_id', '=', self.id)]).mapped('bsd_khuyen_mai_id')
@@ -82,6 +83,7 @@ class BsdHdBan(models.Model):
 
     # DV.01.15 - Cập nhật trạng thái Thanh toán đợt 1
     def action_tt_dot1(self):
+        _logger.debug("Cập nhật đợt thanh toán 1")
         if self.state == 'ht_dc' and not self.bsd_duyet_db:
             self.write({
                 'state': 'tt_dot1'
@@ -104,3 +106,89 @@ class BsdHdBan(models.Model):
                 self.write({
                     'state': 'du_dk'
                 })
+
+    # DV.01.21 Cập nhật trạng thái Đang thanh toán
+    def action_dang_tt(self):
+        # Kiểm tra nếu hợp đồng có duyệt bàn giao đặc biệt thì không cập nhật trạng thái hợp đồng
+        if self.bsd_duyet_bgdb:
+            return
+        # Lấy đợt thanh toán ký hợp đồng
+        dot_ky_hd = self.bsd_ltt_ids.filtered(lambda l: l.bsd_dot_ky_hd)
+        stt_dot_ky_hd = dot_ky_hd.bsd_stt
+        dot_sau_ky_hd = self.bsd_ltt_ids.filtered(lambda l: l.bsd_stt == stt_dot_ky_hd + 1)
+        # Lấy đợt thanh toán sau ký hợp đồng
+        if dot_sau_ky_hd.bsd_thanh_toan == 'da_tt':
+            self.write({
+                'state': 'dang_tt'
+            })
+
+    # DV.01.22 Cập nhật trạng thái đủ điều kiện bàn giao
+    def action_du_dkbg(self):
+        # Kiểm tra nếu hợp đồng có duyệt bàn giao đặt biệt thì không cập nhật trạng thái hợp đồng
+        if self.bsd_duyet_bgdb:
+            return
+        # Kiểm tra hợp đông đã được thanh toán phí bảo trì
+        if not self.bsd_dot_pbt_ids:
+            raise UserError(_('Hợp đồng chưa ghi nhận thu phí bảo trì'))
+        if len(self.bsd_dot_pbt_ids) > 1:
+            raise UserError(_('Hợp đồng có nhiều hơn 1 đợt thu phí bảo trì'))
+        if self.bsd_dot_pbt_ids.bsd_thanh_toan != 'da_tt':
+            return
+        # Kiểm tra hợp đông đã được thanh toán phí quản lý
+        if not self.bsd_dot_pql_ids:
+            raise UserError(_('Hợp đồng chưa ghi nhận thu phí quản lý'))
+        if len(self.bsd_dot_pql_ids) > 1:
+            raise UserError(_('Hợp đồng có nhiều hơn 1 đợt thu phí quản lý'))
+        if self.bsd_dot_pql_ids.bsd_thanh_toan != 'da_tt':
+            return
+        # Kiểm tra hợp đồng đã thanh toán đợt dự kiến bàn giao
+        dot_dkbg = self.bsd_ltt_ids.filtered(lambda l: l.bsd_ma_dtt == 'DKBG')
+        if not dot_dkbg:
+            raise UserError(_("Hợp đồng không có đợt dự kiến bàn giao"))
+        if len(dot_dkbg) > 1:
+            raise UserError(_("Hợp đồng có nhiều hơn 1 đợt dkbg"))
+        if dot_dkbg.bsd_thanh_toan != 'da_tt':
+            return
+        # Kiểm tra các phí phát sinh từ đợt dkbg trở về trước
+        dot_pps = self.bsd_ltt_ids.filtered(lambda d: d.bsd_stt <= dot_dkbg.bsd_stt)
+        # Lấy các phí phát sinh
+        phi_ps_ids = self.env['bsd.phi_ps'].search([('bsd_hd_ban_id', '=', self.id),
+                                                    ('bsd_dot_tt_id', 'in', dot_pps.ids),
+                                                    ('state', '=', 'ghi_so')])
+        phi_ps_ids = phi_ps_ids.filtered(lambda p: p.bsd_thanh_toan != 'da_tt')
+        if phi_ps_ids:
+            return
+        # Kiểm tra tỷ lệ thanh toán của hợp đồng với điều kiện bàn giao trên sản phẩm
+        if self.bsd_tl_tt_hd < self.bsd_unit_id.bsd_dk_bg:
+            return
+        # Ghi nhận trạng thái đủ dk bàn giao
+        self.write({
+            'state': 'du_dkbg'
+        })
+        # Cập nhật trạng thái unit
+        self.bsd_unit_id.write({
+            'state': 'du_dkbg'
+        })
+
+    # DV.01.23 Cập nhật trạng thái hoàn tất thanh toán
+    def action_ht_tt(self):
+        # Kiểm tra đã thu đủ nợ gốc chưa
+        if self.bsd_ltt_ids.filtered(lambda l: l.bsd_thanh_toan != 'da_tt'):
+            return
+        # Kiểm tra đã thu phí bảo trì chưa
+        if self.bsd_dot_pbt_ids.filtered(lambda p: p.bsd_thanh_toan != 'da_tt'):
+            return
+        # Kiểm tra đã thu phí quản lý chưa
+        if self.bsd_dot_pql_ids.filtered(lambda p: p.bsd_thanh_toan != 'da_tt'):
+            return
+        # Kiểm tra đã thu đủ phí phát sinh chưa
+        if self.bsd_phi_ps_ids.filtered(lambda p: p.bsd_thanh_toan != 'da_tt'):
+            return
+        # Cập nhật trạng thái hoàn tất thanh toán
+        self.write({
+            'state': 'ht_tt'
+        })
+        # Cập nhật trạng thái hoàn tất thanh toán cho sản phẩm
+        self.bsd_unit_id.write({
+            'state': 'ht_tt'
+        })

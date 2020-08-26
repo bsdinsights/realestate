@@ -106,7 +106,7 @@
                                             <td rowspan="6" width="10%"
                                                 style="border: 1px solid black !important;vertical-align: middle;"><b>Người mua 1</b></td>
                                             <td class="text-left" width="20%" style="border: 1px solid black !important;"><div>Họ vàn tên:</div></td>
-                                            <td width="38%" style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.name"/></div></td>
+                                            <td width="38%" style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.bsd_ten"/></div></td>
                                             <td class="text-left" width="12%" style="border: 1px solid black !important;"><div>Ngày sinh:</div></td>
                                             <td width="20%" style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.bsd_ngay_sinh" t-options='{"format": "dd/MM/YYYY"}'/></div></td>
                                         </tr>

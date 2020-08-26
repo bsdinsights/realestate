@@ -28,7 +28,7 @@ class BsdDatCoc(models.Model):
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
-    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", help="Tên báo giá", required=True,
+    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", help="Tên bảng tính giá", required=True,
                                      readonly=True,
                                      states={'nhap': [('readonly', False)]})
 
@@ -52,6 +52,7 @@ class BsdDatCoc(models.Model):
                                   related="bsd_bao_gia_id.bsd_tien_dc",store=True)
     bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Tên căn hộ",
                                   related="bsd_bao_gia_id.bsd_unit_id", store=True)
+    bsd_ten_sp = fields.Char(related="bsd_unit_id.name", store=True)
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích tim tường",
                              related="bsd_bao_gia_id.bsd_dt_xd", store=True)
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",
@@ -90,24 +91,32 @@ class BsdDatCoc(models.Model):
     bsd_tien_pql = fields.Monetary(string="Phí quản lý/ tháng", help="Số tiền phí quản lý cần đóng mỗi tháng",
                                    related="bsd_bao_gia_id.bsd_tien_pql", store=True)
 
-    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'), ('dat_coc', 'Đặt cọc'), ('huy', 'Hủy')],
+    state = fields.Selection([('nhap', 'Nháp'),
+                              ('xac_nhan', 'Xác nhận'),
+                              ('da_tc', 'Đã thu cọc'),
+                              ('dat_coc', 'Đặt cọc'),
+                              ('het_han', 'Hết hạn'),
+                              ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", help="Trạng thái", tracing=1, required=True)
+    bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
     bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_dat_coc_id', string="Bàn giao", readonly=True)
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_dat_coc_id', string="Lịch thanh toán",
                                   readonly=True, domain=[('bsd_loai', 'in', ['dtt'])])
-
+    bsd_dot_pbt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_dat_coc_id', string="Đợt thu phí bảo trì",
+                                      readonly=True, domain=[('bsd_loai', '=', 'pbt')])
+    bsd_dot_pql_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_dat_coc_id', string="Đợt thu phí quản lý",
+                                      readonly=True, domain=[('bsd_loai', '=', 'pql')])
     bsd_co_ttdc = fields.Boolean(string="Thỏa thuận đặt cọc", help="Thông tin quy định thỏa thuận đặt cọc hay không",
                                  related="bsd_du_an_id.bsd_hd_coc", store=True)
-    bsd_so_ttdc = fields.Char(string="Số TTĐC", help="Số thỏa thuận đặt cọc")
 
     bsd_ngay_in_dc = fields.Datetime(string="Ngày in", help="Ngày in phiếu cọc, hợp đồng cọc", readonly=True)
-    bsd_ngay_hh_kdc = fields.Datetime(string="Hết hạn ký cọc", help="Ngày hết hạn ký phiếu cọc, hợp đồng cọc",
+    bsd_ngay_hh_kdc = fields.Datetime(string="Hạn ký đặt cọc", help="Ngày hết hạn ký phiếu cọc",
                                       readonly=True)
     bsd_ngay_up_dc = fields.Datetime(string="Upload đặt cọc", readonly=True,
-                                     help="""Ngày tải lên hệ thống phiếu đặt cọc, hợp đồng cọc đã được khách hàng 
+                                     help="""Ngày tải lên hệ thống phiếu đặt cọc đã được khách hàng 
                                              ký xác nhận""")
     bsd_ngay_ky_dc = fields.Datetime(string="Ngày ký đặt cọc", help="Ngày ký đặt cọc", readonly=True)
 
@@ -126,6 +135,13 @@ class BsdDatCoc(models.Model):
                                     domain=[('state', '=', 'duyet')],
                                     readonly=True)
     bsd_dsh_ids = fields.Many2many('res.partner', string="Đồng sở hữu", readonly=True)
+
+    # Tên hiện thị record
+    def name_get(self):
+        res = []
+        for dc in self:
+            res.append((dc.id, "%s" % dc.bsd_ten_sp))
+        return res
 
     @api.model
     def create(self, vals):
@@ -150,6 +166,8 @@ class BsdDatCoc(models.Model):
         ids_ck = res.bsd_bao_gia_id.bsd_ps_ck_ids.ids
         ids_db = res.bsd_bao_gia_id.bsd_ck_db_ids.ids
         ids_dsh = res.bsd_bao_gia_id.bsd_dsh_ids.ids
+        ids_pbt = res.bsd_bao_gia_id.bsd_dot_pbt_ids.ids
+        ids_pql = res.bsd_bao_gia_id.bsd_dot_pql_ids.ids
         res.write({
             'bsd_bg_ids': [(6, 0, ids_bg)],
             'bsd_ltt_ids': [(6, 0, ids_ltt)],
@@ -157,6 +175,8 @@ class BsdDatCoc(models.Model):
             'bsd_ps_ck_ids': [(6, 0, ids_ck)],
             'bsd_ck_db_ids': [(6, 0, ids_db)],
             'bsd_dsh_ids': [(6, 0, ids_dsh)],
+            'bsd_dot_pbt_ids': [(6, 0, ids_pbt)],
+            'bsd_dot_pql_ids': [(6, 0, ids_pql)],
         })
         return res
 
@@ -199,7 +219,8 @@ class BsdDatCoc(models.Model):
 
     # KD.10.05 Hủy đặt cọc
     def action_huy(self):
-        pass
+        action = self.env.ref('bsd_kinh_doanh.bsd_wizard_huy_dc_action').read()[0]
+        return action
 
     # R.14 Đã thanh toán đợt
     def _compute_tien_ttd(self):
@@ -286,3 +307,22 @@ class BsdDatCoc(models.Model):
                 'bsd_tien': ck_db.bsd_tien,
                 'bsd_tien_ck': ck_db.bsd_tien_ck,
             })
+
+    # Override hàm search name của odoo
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        # private implementation of name_search, allows passing a dedicated user
+        # for the name_get part to solve some access rights issues
+        args = list(args or [])
+        if not (name == '' and operator == 'ilike'):
+            args += [('bsd_ten_sp', operator, name)]
+        access_rights_uid = name_get_uid or self._uid
+        ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
+        recs = self.browse(ids)
+        return models.lazy_name_get(recs.with_user(access_rights_uid))
+
+    # Tạo thong báo hủy giữ chỗ
+    def tao_tb_huy_gc(self):
+        giu_cho = self.bsd_bao_gia_id.bsd_giu_cho_id
+        giu_cho.activity_schedule(act_type_xmlid='mail.mail_activity_data_todo',
+                                  summary='Hủy giữ chỗ đặt cọc bị hủy')

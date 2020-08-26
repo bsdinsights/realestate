@@ -14,7 +14,9 @@ class BsdDatCoc(models.Model):
                                      compute="_compute_tien_tt", store=True)
     bsd_tien_phai_tt = fields.Monetary(string="Phải thanh toán", help="Đã thanh toán",
                                        compute="_compute_tien_tt", store=True)
-    bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_dat_coc_id', string="Công nợ chứng tự", readonly=True)
+    bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_dat_coc_id', string="Công nợ chứng tự",
+                                 domain=[('bsd_loai', '=', 'pt_dc')],
+                                 readonly=True)
     bsd_ngay_tt = fields.Datetime(compute='_compute_tien_tt', store=True)
     # bsd_tien_ttd = fields.Monetary(compute="_compute_tien_ttd")
     bsd_thanh_toan = fields.Selection(compute='_compute_tien_tt', store=True)
@@ -37,8 +39,13 @@ class BsdDatCoc(models.Model):
             else:
                 each.bsd_ngay_tt = None
 
-    # R.14 Đã thanh toán đợt
-    # def _compute_tien_ttd(self):
-    #     for each in self:
-    #         ltt_dc = each.bsd_ltt_ids.filtered(lambda l: l.bsd_gd_tt == 'dat_coc')
-    #         each.bsd_tien_ttd = sum(ltt_dc.mapped('bsd_tien_da_tt'))
+    # KD.10.10 - Cập nhật trạng thái đặt cọc
+    def cap_nhat_trang_thai(self):
+        if self.state == 'xac_nhan':
+            self.write({
+                'state': 'da_tc',
+            })
+        if self.bsd_unit_id.state == 'dat_coc':
+            self.bsd_unit_id.write({
+                'state': 'da_tc'
+            })

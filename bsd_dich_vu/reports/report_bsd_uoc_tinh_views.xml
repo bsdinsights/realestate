@@ -18,7 +18,7 @@
             <field name="name">Ước tính chiết khấu thanh toán</field>
             <field name="model">bsd.wizard.uoc_tinh_ck_tt</field>
             <field name="report_type">qweb-html</field>
-            <field name="report_name">Ước tính chiết khấu thanh toán</field>
+            <field name="report_name">bsd_dich_vu.bsd_uoc_tinh_view</field>
             <field name="multi">False</field>
             <field name="paperformat_id" ref="bsd_dich_vu.bsd_giay_in_uoc_tinh"/>
         </record>

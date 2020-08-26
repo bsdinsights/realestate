@@ -8,8 +8,8 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="bsd_hd_ban_id"/>
-
+                            <field name="bsd_hd_ban_id" invisible="1"/>
+                            <field name="bsd_so_ttdc"/>
                         </group>
                         <group>
                             <field name="bsd_ngay_ky_ttdc"/>

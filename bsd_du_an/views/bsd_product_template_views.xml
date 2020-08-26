@@ -140,7 +140,6 @@
                             <field name="bsd_ngay_cn" readonly="1"/>
                             <field name="bsd_ngay_bg" readonly="1"/>
                             <field name="bsd_ngay_cap_sh"/>
-                            <field name="bsd_da_cap_sh"/>
                             <field name="currency_id" invisible="1"/>
                             <field name="company_id" invisible="1"/>
                         </group>

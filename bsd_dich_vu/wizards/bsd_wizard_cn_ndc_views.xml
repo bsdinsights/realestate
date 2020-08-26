@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_wizard_ky_dc_form">
-        <field name="name">bsd.wizard.ky_dc.form</field>
-        <field name="model">bsd.wizard.ky_dc</field>
+    <record model="ir.ui.view" id="bsd_wizard_cn_ndc_form">
+        <field name="name">bsd.wizard.cn_ndc.form</field>
+        <field name="model">bsd.wizard.cn_ndc</field>
         <field name="arch" type="xml">
-            <form string="Ký đặt cọc">
+            <form string="Ghi nhận lý do">
                 <sheet>
                     <group>
                         <group>
-                            <field name="bsd_dat_coc_id"/>
-
+                            <field name="bsd_cn_ndc_id"/>
                         </group>
                         <group>
-                            <field name="bsd_ngay_ky_dc"/>
+                            <field name="bsd_ly_do"/>
                         </group>
                     </group>
                 </sheet>
@@ -25,9 +24,9 @@
         </field>
     </record>
 
-    <record model="ir.actions.act_window" id="bsd_wizard_ky_dc_action">
-        <field name="name">Ký đặt cọc</field>
-        <field name="res_model">bsd.wizard.ky_dc</field>
+    <record model="ir.actions.act_window" id="bsd_wizard_cn_ndc_action">
+        <field name="name">Ghi nhận lý do</field>
+        <field name="res_model">bsd.wizard.cn_ndc</field>
         <field name="target">new</field>
         <field name="view_mode">form</field>
     </record>

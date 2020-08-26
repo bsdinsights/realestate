@@ -46,7 +46,16 @@ class BsdMaBoChungTu(models.Model):
                                     ('bsd.cn_dkbg_unit', 'Cập nhật dự kiến bàn giao chi tiết'),
                                     ('bsd.ds_tb', 'Danh sách thông báo'),
                                     ('bsd.tb_nt', 'Thông báo nghiệm thu'),
-                                    ('bsd.nghiem_thu', 'Nghiệm thu')],
+                                    ('bsd.tb_bg', 'Thông báo bàn giao'),
+                                    ('bsd.nghiem_thu', 'Nghiệm thu'),
+                                    ('bsd.bg_sp', 'Bàn giao sản phẩm'),
+                                    ('bsd.phi_ps', 'Phí phát sinh'),
+                                    ('bsd.cn_ndc', 'Cập nhật ngày thanh toán cuối'),
+                                    ('bsd.bg_gt', 'Bàn giao giấy tờ'),
+                                    ('bsd.tl_kt_hd', 'Thanh lý kết thúc hợp đồng'),
+                                    ('bsd.ds_td', 'Danh sách theo dõi'),
+                                    ('bsd.tb_tl', 'Thông báo thanh lý'),
+                                    ('bsd.thanh_ly', 'Thanh lý')],
                                    string="Loại chứng từ", help="Loại chứng từ được đặt mã", required=True)
     bsd_ma_cn = fields.Char(string="Mã chứng từ", help="Mã tiền tố của chứng từ", required=True)
     _sql_constraints = [

@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+from odoo.tools import float_utils
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -24,6 +25,7 @@ class BsdCongNoCT(models.Model):
     bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thu", help="Phiếu thu")
     bsd_hoan_tien_id = fields.Many2one('bsd.hoan_tien', string="Hoàn tiền", help="Hoàn tiền")
     bsd_giam_no_id = fields.Many2one('bsd.giam_no', string="Điều chỉnh giảm", help="Điều chỉnh giảm")
+    bsd_phi_ps_id = fields.Many2one('bsd.phi_ps', string="Phí phát sinh", help="Phí phát sinh")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     state = fields.Selection([('hoan_thanh', 'Hoàn thành'), ('huy', 'Hủy')])
@@ -33,6 +35,7 @@ class BsdCongNoCT(models.Model):
                                  ('pt_dc', 'Phiếu thu - Đặt cọc'),
                                  ('pt_dtt', 'Phiếu thu - Đợt thanh toán'),
                                  ('pt_ht', 'Phiếu thu - Hoàn tiền'),
+                                 ('pt_pps', 'Phiếu thu - Phí phát sinh'),
                                  ('giam_ht', 'Điều chỉnh giảm - Hoàn tiền'),
                                  ('giam_gctc', 'Điều chỉnh giảm - Giữ chỗ thiện chí'),
                                  ('giam_gc', 'Điều chỉnh giảm - Giữ chỗ')], string="Phân loại",
@@ -72,29 +75,53 @@ class BsdCongNoCT(models.Model):
             if self.bsd_dat_coc_id.bsd_tien_dc < tien:
                 raise UserError("Không thể thực hiện thanh toán dư")
             if self.bsd_dat_coc_id.bsd_tien_dc == tien:
-                self.bsd_dat_coc_id.write({
-                    'state': 'dat_coc',
-                })
+                self.bsd_dat_coc_id.cap_nhat_trang_thai()
 
         elif self.bsd_loai == 'pt_dtt':
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             if self.bsd_dot_tt_id.bsd_tien_dot_tt < tien:
                 raise UserError("Không thể thực hiện thanh toán dư")
-            # Kiểm tra điều kiện đợt tt có giai đoạn hợp đồng
-            if self.bsd_dot_tt_id.bsd_hd_ban_id:
+
+            hd_ban = self.bsd_dot_tt_id.bsd_hd_ban_id
+            # Kiểm tra điều kiện đợt tt tạo giao dịch chiết khấu và khuyến mãi
+            if hd_ban:
+                # Gọi hàm xử lý giao dịch chiết khấu thanh toán trước hạn
                 self.bsd_dot_tt_id.tao_ck_ttth(ngay_tt=self.bsd_ngay_pb, tien_tt=self.bsd_tien_pb)
+                # Gọi hàm xử lý giao dịch chiết khấu thanh toán nhanh
                 self.bsd_dot_tt_id.tao_ck_ttn()
-                self.bsd_dot_tt_id.bsd_hd_ban_id.tao_giao_dich_khuyen_mai(ngay_tt=self.bsd_ngay_pb)
+                # Gọi hàm xứ lý khuyến mãi
+                hd_ban.tao_giao_dich_khuyen_mai(ngay_tt=self.bsd_ngay_pb)
+            # Cập nhật trạng thái hợp đồng khi thanh toán đủ đợt thanh toán
+            tien_thu_dot = self.bsd_dot_tt_id.bsd_tien_dot_tt - self.bsd_dot_tt_id.bsd_tien_dc
+            if float_utils.float_compare(tien_thu_dot, tien, 4) == 0:
+                # Gọi hàm xử lý khi thanh toán đợt 1 cho hợp đồng
+                _logger.debug("thanh toán đủ")
                 if self.bsd_dot_tt_id.bsd_stt == 1:
-                    self.bsd_dot_tt_id.bsd_hd_ban_id.action_tt_dot1()
+                    hd_ban.action_tt_dot1()
+                # Gọi hàm xử lý khi thanh toán đợt đủ điều kiện làm hợp đồng
                 if self.bsd_dot_tt_id.bsd_dot_ky_hd:
-                    self.bsd_dot_tt_id.bsd_hd_ban_id.action_du_dk()
+                    hd_ban.action_du_dk()
+                # Gọi hàm xử lý khi thanh toán đợt sau khi ký hợp đồng
+                if hd_ban.state == 'da_ky':
+                    hd_ban.action_dang_tt()
+                # Gọi hàm xử lý khi thanh toám đợt dự kiến bàn giao
+                if hd_ban.state in ['da_ky', 'dang_tt']:
+                    hd_ban.action_du_dkbg()
+                # Gọi hàm kiểm tra đã hoàn tất thanh toán hợp đồng
+                hd_ban.action_ht_tt()
+
         elif self.bsd_loai == 'pt_ht':
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_phieu_thu_id', '=', self.bsd_phieu_thu_id.id)])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             if self.bsd_phieu_thu_id.bsd_tien < tien:
                 raise UserError("Không thể thực hiện thanh toán dư")
+        elif self.bsd_loai == 'pt_pps':
+            cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_phi_ps_id', '=', self.bsd_phi_ps_id.id)])
+            tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
+            if self.bsd_phi_ps_id.bsd_tong_tien < tien:
+                raise UserError("Không thể thực hiện thanh toán dư")
+            self.bsd_phi_ps_id.bsd_hd_ban_id.action_du_dkbg()
 
     @api.model
     def create(self, vals):

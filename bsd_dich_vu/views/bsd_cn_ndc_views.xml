@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_cn_ndc_form">
+        <field name="name">bsd.cn_ndc.form</field>
+        <field name="model">bsd.cn_ndc</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            class="oe_highlight"
+                            confirm="Bạn có muốn Xác nhận yêu cầu không?"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                            type="object"/>
+                    <button string="Duyệt"
+                            name="action_duyet"
+                            class="oe_highlight"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn Duyệt yêu cầu không?"
+                            type="object"/>
+                    <button string="Không duyệt"
+                            name="action_khong_duyet"
+                            confirm="Bạn có muốn Từ Chối yêu cầu không?"
+                            type="object"
+                            states="xac_nhan"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn Hủy yêu cầu không?"
+                            type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <notebook>
+                        <page string="Thông tin chung">
+                            <group>
+                                <group>
+                                    <field name="bsd_ma_cn"/>
+                                    <field name="bsd_ngay_cn"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ten_cn"/>
+                                    <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                                </group>
+                            </group>
+                            <group string="XÁC NHẬN">
+                                <group>
+                                    <field name="bsd_ngay_duyet"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_nguoi_duyet_id"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Chi tiết">
+                            <field name="id" invisible="1"/>
+                            <field name="bsd_ct_ids" context="{'default_bsd_cn_ndc_id': id,
+                                                               'default_bsd_du_an_id': bsd_du_an_id}">
+                                <tree>
+                                    <field name="bsd_du_an_id"/>
+                                    <field name="bsd_hd_ban_id"/>
+                                    <field name="bsd_unit_id"/>
+                                    <field name="bsd_unit_id"/>
+                                    <field name="bsd_dot_tt_id"/>
+                                    <field name="bsd_ngay_dtt"/>
+                                    <field name="state"/>
+                                    <field name="bsd_ly_do_huy"/>
+                                    <field name="bsd_cn_ndc_id" invisible="1"/>
+                                </tree>
+                                <form>
+                                    <header>
+                                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                                    </header>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="bsd_ten_ct"/>
+                                                <field name="bsd_du_an_id"
+                                                       options="{'no_create':true}"/>
+                                                <field name="bsd_hd_ban_id"
+                                                       domain="[('bsd_du_an_id', '=', bsd_du_an_id),('state', '=','da_bg')]"
+                                                       options="{'no_create':true}"/>
+                                                <field name="bsd_cn_ndc_id" invisible="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="bsd_dot_tt_id"/>
+                                                <field name="bsd_unit_id"/>
+                                                <field name="bsd_ngay_dtt"/>
+                                            </group>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_cn_ndc_tree">
+        <field name="name">bsd.cn_ndc.tree</field>
+        <field name="model">bsd.cn_ndc</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma_cn"/>
+                <field name="bsd_ten_cn"/>
+                <field name="bsd_du_an_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_cn_ndc_filter">
+        <field name="name">bsd.cn_ndc.list.filter</field>
+        <field name="model">bsd.cn_ndc</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_ma_cn"/>
+                <field name="bsd_du_an_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_cn_ndc_action">
+        <field name="name">Cập nhật ngày thanh toán cuối</field>
+        <field name="res_model">bsd.cn_ndc</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo phiếu cập nhật ngày thanh toán cuối</p>
+        </field>
+    </record>
+
+</odoo>

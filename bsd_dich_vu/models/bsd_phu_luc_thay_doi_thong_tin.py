@@ -12,7 +12,7 @@ class BsdPLTDTT(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma_pl_tti'
 
-    bsd_ma_pl_tti = fields.Char(string="Mã PLHĐ", help="Mã phụ lục hợp đồng thay đổi thông tin", required=True,
+    bsd_ma_pl_tti = fields.Char(string="Mã", help="Mã phụ lục hợp đồng thay đổi thông tin", required=True,
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
     _sql_constraints = [

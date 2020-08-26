@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record model="base.automation" id="bsd_dat_coc_qua_han">
+            <field name="name">Xử lý đặt cọc quá hạn</field>
+            <field name="model_id" ref="bsd_kinh_doanh.model_bsd_dat_coc"/>
+            <field name="trigger">on_time</field>
+            <field name="filter_domain">[('bsd_thanh_toan', '=','da_tt'),('bsd_ngay_ky_dc', '=', False)]</field>
+            <field name="trg_date_id" ref="bsd_kinh_doanh.field_bsd_dat_coc__bsd_ngay_hh_kdc"/>
+            <field name="state">code</field>
+            <field name="code">
+record = model.browse(env.context['active_id'])
+record.auto_tao_ds_td()
+            </field>
+        </record>
+
+        <record model="base.automation" id="bsd_ttdc_qua_han">
+            <field name="name">Xử lý thỏa thuận đặt cọc quá hạn</field>
+            <field name="model_id" ref="bsd_dich_vu.model_bsd_hd_ban"/>
+            <field name="trigger">on_time</field>
+            <field name="filter_domain">[('bsd_ngay_ky_ttdc', '=', False), ('bsd_co_ttdc', '=', True), ('bsd_ngay_in_ttdc', '!=', False)]</field>
+            <field name="trg_date_id" ref="bsd_dich_vu.field_bsd_hd_ban__bsd_ngay_hh_ttdc"/>
+            <field name="state">code</field>
+            <field name="code">
+record = model.browse(env.context['active_id'])
+record.auto_tao_ds_td_ttdc()
+            </field>
+        </record>
+
+        <record model="base.automation" id="bsd_hd_qua_han">
+            <field name="name">Xử lý hợp đồng quá hạn</field>
+            <field name="model_id" ref="bsd_dich_vu.model_bsd_hd_ban"/>
+            <field name="trigger">on_time</field>
+            <field name="filter_domain">[('bsd_ngay_ky_hdb', '=', False),('bsd_ngay_in_hdb', '!=', False)]</field>
+            <field name="trg_date_id" ref="bsd_dich_vu.field_bsd_hd_ban__bsd_ngay_hh_khdb"/>
+            <field name="state">code</field>
+            <field name="code">
+record = model.browse(env.context['active_id'])
+record.auto_tao_ds_td_hd()
+            </field>
+        </record>
+
+    </data>
+</odoo>

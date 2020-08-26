@@ -134,7 +134,9 @@
                                             <span>%</span>
                                         </div>
                                     </div>
-                                    <field name="bsd_cs_tt_id" options="{'no_create':true}"/>
+                                    <field name="bsd_cs_tt_id"
+                                           domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"
+                                           options="{'no_create':true}"/>
                                 </group>
                                 <group>
                                     <field name="bsd_gia_ban"/>

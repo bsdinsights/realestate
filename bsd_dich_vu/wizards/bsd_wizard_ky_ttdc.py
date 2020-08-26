@@ -16,10 +16,12 @@ class BsdKyttdc(models.TransientModel):
 
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng bán", default=_get_ttdc, readonly=True)
     bsd_ngay_ky_ttdc = fields.Datetime(string="Ngày ký ", required=True)
+    bsd_so_ttdc = fields.Char(string="Số TTĐC", required=True)
 
     def action_xac_nhan(self):
         self.bsd_hd_ban_id.write({
             'bsd_ngay_ky_ttdc': self.bsd_ngay_ky_ttdc,
+            'bsd_so_ttdc': self.bsd_so_ttdc,
             'state': 'da_ky_ttdc'
         })
 

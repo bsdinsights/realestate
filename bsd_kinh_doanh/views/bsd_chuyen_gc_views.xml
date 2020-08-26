@@ -98,6 +98,7 @@
             <search string="Lọc dữ liệu">
                 <field name="bsd_ma_chuyen_gc"/>
                 <field name="bsd_kh_ht_id"/>
+                <field name="bsd_unit_id"/>
                 <field name="bsd_du_an_id"/>
 
                 <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="bsd_my_chuyen_gc_filter"/>

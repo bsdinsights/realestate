@@ -65,8 +65,12 @@ class BsdBaoGia(models.Model):
                              related="bsd_unit_id.bsd_dt_xd", store=True)
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",
                              related="bsd_unit_id.bsd_dt_sd", store=True)
+
+    def _get_thue(self):
+        return self.env['bsd.thue_suat'].search([('bsd_ma_ts', '=', 'VAT10')], limit=1)
+
     bsd_thue_id = fields.Many2one('bsd.thue_suat', string="Thuế", help="Thuế", required=True,
-                                  readonly=True,
+                                  readonly=True, default=_get_thue,
                                   states={'nhap': [('readonly', False)]})
     bsd_qsdd_m2 = fields.Monetary(string="Giá trị QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2",
                                   related="bsd_unit_id.bsd_qsdd_m2", store=True)
@@ -112,6 +116,12 @@ class BsdBaoGia(models.Model):
                                  states={'nhap': [('readonly', False)]})
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_bao_gia_id', string="Lịch thanh toán",
                                   readonly=True, domain=[('bsd_loai', 'in', ['dtt'])])
+
+    bsd_dot_pbt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_bao_gia_id', string="Đợt thu phí bảo trì",
+                                      readonly=True, domain=[('bsd_loai', '=', 'pbt')])
+    bsd_dot_pql_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_bao_gia_id', string="Đợt thu phí quản lý",
+                                      readonly=True, domain=[('bsd_loai', '=', 'pql')])
+
     bsd_ps_ck_ids = fields.One2many('bsd.ps_ck', 'bsd_bao_gia_id', string="Phát sinh chiết khấu",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
@@ -279,6 +289,8 @@ class BsdBaoGia(models.Model):
     def action_lich_tt(self):
         # Xóa lịch thanh toán hiện tại
         self.bsd_ltt_ids.unlink()
+        self.bsd_dot_pbt_ids.unlink()
+        self.bsd_dot_pql_ids.unlink()
         _logger.debug("Tao tu dong lich thanh toan")
 
         # hàm cộng tháng
@@ -297,7 +309,11 @@ class BsdBaoGia(models.Model):
         lai_phat = cs_tt.bsd_lai_phat_tt_id
         # dùng để tính tiền đợt thanh toán cuối
         tong_tien_dot_tt = 0
-
+        # Kiểm tra chính sách thanh toán chi tiết
+        if len(dot_tt_ids.filtered(lambda x: x.bsd_cach_tinh == 'dkbg')) > 1:
+            raise UserError(_("Chính sách thanh toán chi tiết có nhiều hơn 1 đợt dự kiến bàn giao"))
+        if len(dot_tt_ids.filtered(lambda x: x.bsd_dot_cuoi)) > 1:
+            raise UserError(_("Chính sách thanh toán chi tiết có nhiều hơn 1 đợt dự thanh toán cuối"))
         # Tạo các đợt thanh toán
         for dot in dot_tt_ids.sorted('bsd_stt'):
             # Tạo dữ liệu đợt cố định
@@ -363,8 +379,6 @@ class BsdBaoGia(models.Model):
                 dot_cuoi = dot
                 stt += 1
                 tien_dot_tt = (self.bsd_tong_gia - self.bsd_tien_pbt) - tong_tien_dot_tt
-                _logger.debug("tiền đợt cuối")
-                _logger.debug(tien_dot_tt)
                 self.bsd_ltt_ids.create(self._cb_du_lieu_dtt(stt, 'DBGC', dot_cuoi, lai_phat, False, cs_tt,
                                                              tien_dot_tt))
 
@@ -416,6 +430,7 @@ class BsdBaoGia(models.Model):
     def action_ky_bg(self):
         if self.bsd_giu_cho_id:
             giu_cho = self.env['bsd.giu_cho'].search([('state', '=', 'giu_cho'),
+                                                      ('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                       ('bsd_stt_bg', '<', self.bsd_giu_cho_id.bsd_stt_bg)])
             if giu_cho:
                 raise UserError("Có giữ chỗ ưu tiên ký bảng giá trước.\n Vui lòng chờ đến lượt của bạn")
@@ -509,7 +524,7 @@ class BsdBaoGiaKhuyenMai(models.Model):
         list_id = []
         if self.bsd_dot_mb_id:
             # Lấy các điều kiện bàn giao trong đợt mở bán
-            khuyen_mai = self.bsd_dot_mb_id.bsd_km_ids.mapped('bsd_khuyen_mai_id')
+            khuyen_mai = self.bsd_dot_mb_id.bsd_km_ids
             # Lọc các điều kiện bàn giao có nhóm sản phẩm trùng với unit trong bảng tính giá
             list_id = khuyen_mai.filtered(
                 lambda d: d.state == 'duyet' and d.bsd_loai == 'khong').ids

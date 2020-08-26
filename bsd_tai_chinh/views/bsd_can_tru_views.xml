@@ -34,7 +34,7 @@
                             <field name="bsd_phieu_thu_id"
                                    options="{'no_create':true}"
                                    domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id]),
-                                            ('bsd_loai_pt', 'in', ['tra_truoc','khac']),
+                                            ('bsd_loai_pt', 'in', ['tra_truoc','khac','pps']),
                                             ('state', '=', 'da_gs')]"/>
                             <field name="bsd_ngay_ct"/>
                             <field name="bsd_tien_con_lai"/>
@@ -42,17 +42,47 @@
                             <field name="currency_id" invisible="1"/>
                         </group>
                     </group>
-                    <button string="Load" name="action_load" type="object" class="oe_right oe_highlight"/>
+                    <group string="LỌC CÔNG NỢ">
+                        <group>
+                            <field name="bsd_loai"/>
+                        </group>
+                        <group>
+                            <field name="bsd_hd_ban_id"
+                                   options="{'no_create':true}"
+                                   attrs="{'invisible':[('bsd_loai', '=', 'tat_ca')]}"/>
+                            <field name="bsd_dot_tt_id"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_hd_ban_id', '=', bsd_hd_ban_id),('bsd_loai', '=', 'dtt')]"
+                                   attrs="{'invisible':[('bsd_loai', '!=', 'pps')]}"/>
+                        </group>
+                        <button string="Load"
+                                name="action_load"
+                                type="object"
+                                states="nhap"
+                                class="oe_right oe_highlight"/>
+                    </group>
                     <field name="bsd_ct_ids" nolabel="1" >
                         <tree editable="top" create="false" delete="false">
-                            <field name="bsd_loai_ct"/>
-                            <field name="bsd_so_ct"/>
-                            <field name="bsd_ngay_ct"/>
-                            <field name="bsd_tien"/>
-                            <field name="bsd_tien_phai_tt"/>
-                            <field name="bsd_tien_can_tru"/>
                             <field name="company_id" invisible="1"/>
                             <field name="currency_id" invisible="1"/>
+                            <field name="bsd_loai_ct" readonly="1" />
+                            <field name="bsd_so_ct" readonly="1" />
+                            <field name="bsd_hd_ban_id" readonly="1" />
+                            <field name="bsd_ngay_ct" readonly="1" />
+                            <field name="bsd_tien" readonly="1" />
+                            <field name="bsd_tien_phai_tt" readonly="1" />
+                            <field name="bsd_tien_can_tru"/>
+                            <field name="bsd_gc_tc_id" invisible="1" />
+                            <field name="bsd_giu_cho_id" invisible="1" />
+                            <field name="bsd_dat_coc_id" invisible="1" />
+                            <field name="bsd_dot_tt_id" invisible="1" />
+                            <field name="bsd_phi_ps_id" invisible="1" />
+                            <field name="bsd_loai_ct" invisible="1" />
+                            <field name="bsd_so_ct" invisible="1" />
+                            <field name="bsd_hd_ban_id" invisible="1" />
+                            <field name="bsd_ngay_ct" invisible="1" />
+                            <field name="bsd_tien" invisible="1" />
+                            <field name="bsd_tien_phai_tt" invisible="1" />
                         </tree>
                     </field>
                 </sheet>

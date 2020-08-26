@@ -21,13 +21,13 @@
             </field>
         </record>
         <act_window id="bsd_nghiem_thu_report_action"
-                    name="Chọn mẫu in thông báo báo"
+                    name="Chọn mẫu in nghiệm thu"
                     res_model="bsd.nghiem_thu.report.wizard"
                     view_mode="form"
                     target="new"/>
         <report id="bsd_mau_in_nghiem_thu_html"
                 model="bsd.nghiem_thu.report.wizard"
-                string="Thông báo nghiệm thu"
+                string="Nghiệm thu sản phẩm"
                 report_type="qweb-html"
                 name="bsd_dich_vu.bsd_nghiem_thu_view"
                 menu="False"/>

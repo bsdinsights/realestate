@@ -22,4 +22,7 @@ class BsdKyBG(models.TransientModel):
             'bsd_ngay_ky_bg': self.bsd_ngay_ky_bg,
             'state': 'da_ky'
         })
+        self.bsd_bao_gia_id.bsd_unit_id.write({
+            'state': 'dat_coc'
+        })
 

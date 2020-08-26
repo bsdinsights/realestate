@@ -49,6 +49,11 @@
               sequence="18"
               action="bsd_ps_gd_ck_action"
               parent="bsd_main_tai_chinh_root"/>
+    <menuitem id="bsd_phi_ps_menu_action"
+              name="Phí phát sinh"
+              sequence="19"
+              action="bsd_phi_ps_action"
+              parent="bsd_main_tai_chinh_root"/>
 
     <record id="bsd_tai_chinh.bsd_main_tai_chinh_root" model="ir.ui.menu">
         <field name="action" eval="False"/>

@@ -85,6 +85,25 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="bsd_ck_db_filter">
+        <field name="name">bsd.ck_db.list.filter</field>
+        <field name="model">bsd.ck_db</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_ma_ck_db"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_unit_id"/>
+                <field name="bsd_du_an_id"/>
+                <filter string="Phiếu CN của tôi" domain="[('create_uid', '=', uid)]" name="my_hd_ban_cn_filter"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
+                    <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_ck_db_action">
         <field name="name">Chiết khấu đặc biệt</field>
         <field name="res_model">bsd.ck_db</field>

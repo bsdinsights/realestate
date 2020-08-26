@@ -8,13 +8,13 @@ _logger = logging.getLogger(__name__)
 
 class BsdWizardReportTBNT(models.TransientModel):
     _name = 'bsd.tb_nt.report.wizard'
-    _description = 'Chọn mẫu in thông báo bàn giao'
+    _description = 'Chọn mẫu in thông báo nghiệm thu'
 
-    def _get_tbnt(self):
-        hdb = self.env['bsd.tb_nt'].browse(self._context.get('active_ids', []))
-        return hdb
+    def _get_tbbg(self):
+        bg = self.env['bsd.tb_nt'].browse(self._context.get('active_ids', []))
+        return bg
 
-    bsd_tb_nt_id = fields.Many2one('bsd.tb_nt', string="Thông báo nghiệm thu", default=_get_tbnt, readonly=True)
+    bsd_tb_nt_id = fields.Many2one('bsd.tb_nt', string="Thông báo nghiệm thu", default=_get_tbbg, readonly=True)
     bsd_mau_in = fields.Selection([('bsd_mau_in_tb_nt_html', 'Thông báo nghiệm thu (html)'),
                                    ('bsd_mau_in_tb_nt', 'Thông báo nghiệm thu')], string="Mẫu in", required=True,
                                   default='bsd_mau_in_tb_nt_html')
