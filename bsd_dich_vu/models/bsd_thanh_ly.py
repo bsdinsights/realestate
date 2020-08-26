@@ -209,7 +209,7 @@ class BsdThanhLy(models.Model):
 
     # DV.13.02 In biên bản thanh lý
     def action_in(self):
-        pass
+        return self.env.ref('bsd_dich_vu.bsd_thanh_ly_report_action').read()[0]
 
     # DV.13.03 Ký biên bản thanh lý
     def action_ky(self):
