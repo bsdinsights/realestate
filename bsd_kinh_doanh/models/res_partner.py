@@ -16,6 +16,7 @@ class ResPartner(models.Model):
         ('bsd_ma_kh_unique', 'unique (bsd_ma_kh)',
          'Mã khách hàng đã tồn tại !'),
     ]
+    bsd_la_kh = fields.Boolean(string="Khách hàng")
     bsd_ngay_sinh = fields.Date(string="Ngày sinh", help="Ngày sinh")
     bsd_gioi_tinh = fields.Selection([('nam', 'Nam'), ('nu', 'Nữ')], string="Giới tính", help="Giới tính", default='nam')
     bsd_loai_kh = fields.Selection([('vn', 'Việt Nam'),
@@ -125,23 +126,29 @@ class ResPartner(models.Model):
 
     @api.model
     def create(self, vals):
+        _logger.debug("tạo partner")
         _logger.debug(vals)
+        _logger.debug(vals.get('bsd_la_kh'))
         sequence = False
-        if vals.get('bsd_ma_kh', '/') == '/' and not vals.get('is_company'):
+        if vals.get('bsd_ma_kh', '/') == '/' and not vals.get('is_company') and vals.get('bsd_la_kh'):
             sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.kh_cn')], limit=1).bsd_ma_tt_id
             vals['bsd_ma_kh'] = self.env['ir.sequence'].next_by_code('bsd.kh_cn') or '/'
-        if vals.get('bsd_ma_kh', '/') == '/' and vals.get('is_company'):
+        if vals.get('bsd_ma_kh', '/') == '/' and vals.get('is_company') and vals.get('bsd_la_kh'):
             sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.kh_dn')], limit=1).bsd_ma_tt_id
-        if not sequence:
+        if not sequence and vals.get('bsd_la_kh'):
             raise UserError(_('Danh mục mã chưa khai báo mã khách hàng'))
-        vals['bsd_ma_kh'] = sequence.next_by_id()
+        if sequence:
+            vals['bsd_ma_kh'] = sequence.next_by_id()
         return super(ResPartner, self).create(vals)
 
     def name_get(self):
         res = []
         for partner in self:
             if not partner.is_company:
-                res.append((partner.id, "[%s]%s" % (partner.bsd_ma_kh, partner.bsd_ten)))
+                if partner.bsd_la_kh:
+                    res.append((partner.id, "[%s]%s" % (partner.bsd_ma_kh, partner.bsd_ten)))
+                else:
+                    res.append((partner.id, "%s" % partner.name))
             else:
                 res.append((partner.id, "[%s]%s" % (partner.bsd_ma_kh, partner.name)))
         return res
