@@ -41,8 +41,9 @@
                                    options="{'no_create':true}"
                                    domain="[('bsd_loai_pt', 'in', ['tra_truoc','khac']),('bsd_tien_con_lai','>',0),
                                    ('bsd_khach_hang_id', 'in', [bsd_khach_hang_id]),('state', '!=', 'nhap')]"/>
+                            <field name="bsd_giam_no_id"/>
+                            <field name="bsd_thanh_ly_id"/>
                             <field name="bsd_tien"/>
-                            <!--<field name="bsd_tien_con_lai"/>-->
                             <field name="currency_id"/>
                         </group>
                     </group>
