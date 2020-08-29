@@ -233,13 +233,23 @@ class BsdThanhLy(models.Model):
         if self.bsd_loai_dt == 'dat_coc':
             self._xu_ly_dat_coc()
 
+        # gọi hàm mở bán lại
+        self._mo_ban_lai()
+
     # DV.13.05 Mở bán lại
     def _mo_ban_lai(self):
-        pass
+        if self.bsd_mo_bl:
+            self.bsd_unit_id.write({
+                'state': 'san_sang',
+            })
+        else:
+            self.bsd_unit_id.write({
+                'state': 'chuan_bi',
+            })
 
     # DV.13.06 Hủy thanh lý
     def action_huy(self):
-        pass
+        return self.env.ref('bsd_dich_vu.bsd_wizard_huy_tl_action').read()[0]
 
     # DV.13.07 Xử lý hoàn tiền đặt cọc
     def _xu_ly_dat_coc(self):

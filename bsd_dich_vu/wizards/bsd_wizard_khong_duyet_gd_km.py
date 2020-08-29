@@ -6,7 +6,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class BsdHuyGC(models.TransientModel):
+class BsdPSGDKM(models.TransientModel):
     _name = 'bsd.wizard.ps_gd_km'
     _description = 'Ghi nhận lý do từ chối'
 
