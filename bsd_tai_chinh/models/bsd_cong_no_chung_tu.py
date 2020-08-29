@@ -26,6 +26,7 @@ class BsdCongNoCT(models.Model):
     bsd_hoan_tien_id = fields.Many2one('bsd.hoan_tien', string="Hoàn tiền", help="Hoàn tiền")
     bsd_giam_no_id = fields.Many2one('bsd.giam_no', string="Điều chỉnh giảm", help="Điều chỉnh giảm")
     bsd_phi_ps_id = fields.Many2one('bsd.phi_ps', string="Phí phát sinh", help="Phí phát sinh")
+    bsd_thanh_ly_id = fields.Many2one('bsd.thanh_ly', string="Thanh lý", help="Thanh lý")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     state = fields.Selection([('hoan_thanh', 'Hoàn thành'), ('huy', 'Hủy')])
@@ -38,7 +39,9 @@ class BsdCongNoCT(models.Model):
                                  ('pt_pps', 'Phiếu thu - Phí phát sinh'),
                                  ('giam_ht', 'Điều chỉnh giảm - Hoàn tiền'),
                                  ('giam_gctc', 'Điều chỉnh giảm - Giữ chỗ thiện chí'),
-                                 ('giam_gc', 'Điều chỉnh giảm - Giữ chỗ')], string="Phân loại",
+                                 ('giam_gc', 'Điều chỉnh giảm - Giữ chỗ'),
+                                 ('giam_tl', 'Điều chỉnh giảm - thanh lý'),
+                                 ('giam_dc', 'Điều chỉnh giảm - đặt cọc')], string="Phân loại",
                                 help="Phân loại", required=True)
     bsd_can_tru_id = fields.Many2one('bsd.can_tru', string="Cấn trừ", readonly=True)
 

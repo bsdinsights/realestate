@@ -96,6 +96,7 @@ class BsdDatCoc(models.Model):
                               ('da_tc', 'Đã thu cọc'),
                               ('dat_coc', 'Đặt cọc'),
                               ('het_han', 'Hết hạn'),
+                              ('da_tl', 'Đã thanh lý'),
                               ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", help="Trạng thái", tracing=1, required=True)
     bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)

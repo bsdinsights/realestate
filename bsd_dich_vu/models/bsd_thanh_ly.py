@@ -130,6 +130,7 @@ class BsdThanhLy(models.Model):
         # self.bsd_ngay_hh = self.bsd_ds_td_id.bsd_ngay_hh
         self.bsd_hd_ban_id = self.bsd_ds_td_id.bsd_hd_ban_id
         self.bsd_tong_gt_hd = self.bsd_ds_td_id.bsd_tong_gt_hd
+        self.bsd_loai_dt = self.bsd_ds_td_id.bsd_loai_dt
 
     @api.depends('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id')
     def _compute_tt(self):
@@ -217,7 +218,20 @@ class BsdThanhLy(models.Model):
 
     # DV.13.04 Hoàn tiền thanh lý
     def action_hoan_tien(self):
-        pass
+        if self.bsd_loai_dt == 'dat_coc':
+            self.bsd_dat_coc_id.write({
+                'state': 'da_tl',
+            })
+        else:
+            self.bsd_hd_ban_id.write({
+                'state': 'thanh_ly',
+            })
+        self.write({
+            'state': 'da_tl',
+        })
+        # gọi hàm xử lý hoàn tiền đặt cọc
+        if self.bsd_loai_dt == 'dat_coc':
+            self._xu_ly_dat_coc()
 
     # DV.13.05 Mở bán lại
     def _mo_ban_lai(self):
@@ -227,6 +241,62 @@ class BsdThanhLy(models.Model):
     def action_huy(self):
         pass
 
+    # DV.13.07 Xử lý hoàn tiền đặt cọc
+    def _xu_ly_dat_coc(self):
+        # Tạo record bảng điều chỉnh giảm
+        giam_no = self.env['bsd.giam_no'].create({
+            'bsd_loai_dc': 'tl_dc',
+            'bsd_dien_giai': 'Thanh lý đặt cọc ' + self.bsd_dat_coc_id.bsd_ma_dat_coc,
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_du_an_id': self.bsd_du_an_id.id,
+            'bsd_tien': self.bsd_tien_dc,
+            'state': 'nhap'
+        })
+        giam_no.action_xac_nhan()
+        giam_no.action_vao_so()
+        # Tạo record phát sinh tăng từ chứng từ thanh lý
+        self.env['bsd.cong_no'].create({
+            'bsd_chung_tu': self.bsd_ma,
+            'bsd_ngay': fields.Datetime.now(),
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_du_an_id': self.bsd_du_an_id.id,
+            'bsd_ps_tang': self.bsd_tien_phat,
+            'bsd_loai_ct': 'tl_dc',
+            'bsd_thanh_ly_id': self.id,
+        })
+        # Tạo record trong bảng công nợ chứng từ
+        self.env['bsd.cong_no_ct'].create({
+            'bsd_ngay_pb': fields.Datetime.now(),
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_thanh_ly_id': self.id,
+            'bsd_giam_no_id': giam_no.id,
+            'bsd_tien_pb': self.bsd_tien_phat,
+            'bsd_loai': 'giam_tl',
+            'state': 'hoan_thanh',
+        })
+        if self.bsd_dat_coc_id.bsd_thanh_toan == 'dang_tt':
+            self.env['bsd.cong_no_ct'].create({
+                'bsd_ngay_pb': fields.Datetime.now(),
+                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
+                'bsd_giam_no_id': giam_no.id,
+                'bsd_tien_pb': self.bsd_tien_dc - self.bsd_tien_phat - self.bsd_tien_hoan,
+                'bsd_loai': 'giam_dc',
+                'state': 'hoan_thanh',
+            })
+
+        # Tạo record hoàn tiền từ thanh lý
+        hoan_tien = self.env['bsd.hoan_tien'].create({
+                        'bsd_ngay_ct': fields.Datetime.now(),
+                        'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                        'bsd_du_an_id': self.bsd_du_an_id.id,
+                        'bsd_loai': 'tl_dc',
+                        'bsd_giam_no_id': giam_no.id,
+                        'bsd_tien': self.bsd_tien_hoan,
+                        'bsd_dien_giai': 'Hoàn tiền cho ' + self.bsd_ma + ' cho ' + self.bsd_dat_coc_id.bsd_ma_dat_coc,
+                        'state': 'nhap',
+                })
+        hoan_tien.action_xac_nhan()
     @api.model
     def create(self, vals):
         sequence = self.env['ir.sequence']

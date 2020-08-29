@@ -241,7 +241,7 @@ class BsdDanhSachTheoDoi(models.Model):
                 self.bsd_ngay_hh = self.bsd_dat_coc_id.bsd_ngay_hh_kdc
                 self.bsd_khach_hang_id = self.bsd_dat_coc_id.bsd_khach_hang_id
                 self.bsd_unit_id = self.bsd_dat_coc_id.bsd_unit_id
-                self.bsd_tien_dc = self.bsd_dat_coc_id.bsd_tien_dc
+                self.bsd_tien_dc = self.bsd_dat_coc_id.bsd_tien_dc + self.bsd_dat_coc_id.bsd_tien_gc
                 self.bsd_tien_da_tt = self.bsd_dat_coc_id.bsd_tien_da_tt
         elif self.bsd_loai_dt == 'ttdc' and self.bsd_loai_td == 'vp_tg':
             if self.bsd_hd_ban_id:

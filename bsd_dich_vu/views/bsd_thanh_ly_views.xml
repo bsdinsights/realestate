@@ -19,10 +19,13 @@
                             class="oe_highlight"/>
                     <button name="action_ky"
                             type="object"
+                            states="xac_nhan"
                             class="oe_highlight"
                             string="Ký biên bản"/>
                     <button name="action_hoan_tien"
                             type="object"
+                            confirm="Bạn có muốn thực hiện yêu cầu này không?"
+                            attrs="{'invisible': ['!','|',('state','=','da_ky'),'&amp;',('state','=','xac_nhan'),('bsd_loai_tl','=','thuong')]}"
                             class="oe_highlight"
                             string="Hoàn tiền"/>
                     <button name="action_huy"
@@ -42,7 +45,9 @@
                                     <field name="bsd_ngay_tao"/>
                                     <field name="bsd_ten"/>
                                     <field name="bsd_ds_td_id"/>
-                                    <field name="bsd_loai_dt"/>
+                                    <field name="bsd_loai_tl"/>
+                                    <field name="bsd_loai_dt" readonly="1"/>
+                                    <field name="bsd_loai_dt" invisible="1"/>
                                     <field name="bsd_du_an_id" options="{'no_create':true}" readonly="1"/>
                                     <field name="bsd_du_an_id" invisible="1"/>
                                 </group>

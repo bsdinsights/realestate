@@ -183,7 +183,6 @@ class BsdHuyGC(models.Model):
             if self.bsd_hoan_tien:
                 # tạo record trong bảng hoàn tiền
                 self.env['bsd.hoan_tien'].create({
-                    'bsd_so_ct': self.bsd_ma_huy_gc,
                     'bsd_ngay_ct': self.bsd_ngay_huy_gc,
                     'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                     'bsd_du_an_id': self.bsd_du_an_id.id,

@@ -11,13 +11,15 @@ class BsdCongNo(models.Model):
 
     bsd_chung_tu = fields.Char(string="Số chứng từ", readonly=True)
     bsd_ngay = fields.Date(string="Ngày", help="Ngày chứng từ")
-    bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng")
+    bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng",required=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án")
     bsd_ps_tang = fields.Monetary(string="Phát sinh tăng", help="Phát sinh tăng")
     bsd_ps_giam = fields.Monetary(string="Phát sinh giảm", help="Phát sinh giảm")
     bsd_tien = fields.Monetary(string="Tiền", help="Tiền phát sinh", compute="_compute_tien", store=True)
-    bsd_loai_ct = fields.Selection([('gc_tc', 'Giữ chỗ thiện chí'), ('giu_cho', 'Giữ chỗ'),
-                                    ('dat_coc', 'Đặt cọc'), ('dot_tt', 'Đợt thanh toán'),
+    bsd_loai_ct = fields.Selection([('gc_tc', 'Giữ chỗ thiện chí'),
+                                    ('giu_cho', 'Giữ chỗ'),
+                                    ('dat_coc', 'Đặt cọc'),
+                                    ('dot_tt', 'Đợt thanh toán'),
                                     ('phieu_thu', 'Phiếu thu'),
                                     ('pql', 'Phí quản lý'),
                                     ('pbt', 'Phí bảo trì'),
@@ -25,7 +27,8 @@ class BsdCongNo(models.Model):
                                     ('dc_tang', 'Điều chỉnh tăng'),
                                     ('chuyen_tien', 'Chuyển tiền'),
                                     ('phi_ps', 'Phí phát sinh'),
-                                    ('hoan_tien', 'Hoàn tiền')], string="Loại chứng từ", help="Loại chứng từ")
+                                    ('hoan_tien', 'Hoàn tiền'),
+                                    ('tl_dc', 'Thanh lý đặt cọc')], string="Loại chứng từ", help="Loại chứng từ")
     bsd_phat_sinh = fields.Selection([('tang', 'Tăng'), ('giam', 'Giảm')], string="Phát sinh",
                                      help="Phát sinh tăng hoặc giảm công nợ")
     bsd_gc_tc_id = fields.Many2one('bsd.gc_tc', string="Giữ chỗ thiện chí", help="Giữ chỗ thiện chí")
@@ -36,6 +39,7 @@ class BsdCongNo(models.Model):
     bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thu", help="Phiếu thu")
     bsd_chuyen_tien_id = fields.Many2one('bsd.chuyen_tien', string="Chuyển tiền", help="Chuyển tiền")
     bsd_hoan_tien_id = fields.Many2one('bsd.hoan_tien', string="Hoàn tiền", help="Hoàn tiền")
+    bsd_thanh_ly_id = fields.Many2one('bsd.thanh_ly', string="Thanh lý", help="Thanh lý")
     bsd_phi_ps_id = fields.Many2one('bsd.phi_ps', string="Phí phát sinh", help="Phí phát sinh")
     state = fields.Selection([('da_gs', 'Đã ghi sổ'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)

@@ -27,7 +27,7 @@
                     target="new"/>
         <report id="bsd_mau_in_thanh_ly_html"
                 model="bsd.thanh_ly.report.wizard"
-                string="Thông báo thanh lý"
+                string="Biên bản thanh lý"
                 report_type="qweb-html"
                 name="bsd_dich_vu.bsd_thanh_ly_view"
                 menu="False"/>

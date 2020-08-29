@@ -31,7 +31,7 @@ class BsdGiamNo(models.Model):
                    ('huy_gc', 'Hủy giữ chỗ'),
                    ('gd_ck', 'Giao dịch chiết khấu')]
         if self.env['res.users'].has_group('base.group_system'):
-            choices += [('chuyen_tien', 'Chuyển tiền')]
+            choices += [('chuyen_tien', 'Chuyển tiền'), ('tl_dc', 'Thanh lý đặt cọc')]
         return choices
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Lý do điều chỉnh",
                                 readonly=True,
