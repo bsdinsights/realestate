@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_wizard_ky_thanh_ly_form">
+        <field name="name">bsd.wizard.ky_thanh_ly.form</field>
+        <field name="model">bsd.wizard.ky_thanh_ly</field>
+        <field name="arch" type="xml">
+            <form string="Ký biên bản thanh lý">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_thanh_ly_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ngay_ky_thanh_ly"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_ky_thanh_ly_action">
+        <field name="name">Ký biên bản thanh lý</field>
+        <field name="res_model">bsd.wizard.ky_thanh_ly</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
+</odoo>

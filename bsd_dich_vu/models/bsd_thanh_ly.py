@@ -112,7 +112,7 @@ class BsdThanhLy(models.Model):
 
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
-                              ('da_ly', 'Đã ký'),
+                              ('da_ky', 'Đã ký'),
                               ('da_tl', 'Đã thanh lý'),
                               ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
@@ -213,7 +213,7 @@ class BsdThanhLy(models.Model):
 
     # DV.13.03 Ký biên bản thanh lý
     def action_ky(self):
-        pass
+        return self.env.ref('bsd_dich_vu.bsd_wizard_ky_thanh_ly_action').read()[0]
 
     # DV.13.04 Hoàn tiền thanh lý
     def action_hoan_tien(self):
