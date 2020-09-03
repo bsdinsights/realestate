@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 
 class BsdThueSuat(models.Model):
@@ -20,3 +21,9 @@ class BsdThueSuat(models.Model):
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Không sử dụng')],
                              string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
+
+    @api.constrains('bsd_thue_suat')
+    def _check_bsd_thue_suat(self):
+        for record in self:
+            if record.bsd_thue_suat > 100 or record.bsd_thue_suat < 0:
+                raise ValidationError("Thuế suất nằm trong khoảng 0 đến 100")

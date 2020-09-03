@@ -4,7 +4,7 @@
         <field name="name">bsd.du_an.form</field>
         <field name="model">bsd.du_an</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="0">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_unit" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_sl_unit', '=', 0)]}">
@@ -18,7 +18,9 @@
                                     <field name="currency_id" invisible="1"/>
                                     <field name="company_id" invisible="1"/>
                                     <field name="bsd_ma_da"/>
-                                    <field name="bsd_chu_dt_id"/>
+                                    <field name="bsd_chu_dt_id"
+                                           domain="[('is_company', '=', True)]"
+                                           options="{'no_create':true}"/>
                                     <field name="bsd_ten_da"/>
                                     <field name="bsd_loai_da"/>
                                     <field name="bsd_loai_sd"/>
@@ -215,7 +217,7 @@
         <field name="name">bsd.du_an.tree</field>
         <field name="model">bsd.du_an</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree duplicate="0">
                 <field name="bsd_ma_da"/>
                 <field name="bsd_ten_da"/>
                 <field name="bsd_loai_da"/>
