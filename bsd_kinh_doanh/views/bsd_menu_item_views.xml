@@ -94,4 +94,35 @@
         <field name="sequence">10</field>
         <field name="web_icon">fa fa-dollar,#FFFFFF,#002080</field>
     </record>
+<!--    Cấu hình icon ngoài màn hình chính     -->
+    <menuitem id="bsd_gc_tc_menu_action_2"
+              name="Giữ chỗ thiện chí"
+              sequence="2"
+              action="bsd_kinh_doanh.bsd_gc_tc_action"
+              web_icon="fa fa-shopping-cart,#FFFFFF,#002080"
+    />
+    <menuitem id="bsd_giu_cho_menu_action_2"
+              name="Giữ chỗ"
+              sequence="3"
+              action="bsd_kinh_doanh.bsd_giu_cho_action"
+              web_icon="fa fa-shopping-cart,#FFFFFF,#002080"
+    />
+    <menuitem id="bsd_bao_gia_menu_action_2"
+              name="Bảng tính giá"
+              sequence="4"
+              action="bsd_kinh_doanh.bsd_bao_gia_action"
+              web_icon="fa fa-shopping-cart,#FFFFFF,#002080"
+    />
+    <menuitem id="bsd_dat_coc_menu_action_2"
+              name="Đặt cọc"
+              sequence="5"
+              action="bsd_kinh_doanh.bsd_dat_coc_action"
+              web_icon="fa fa-shopping-cart,#FFFFFF,#002080"
+    />
+    <menuitem id="bsd_cho_tt_menu_action_2"
+              name="Chờ thanh toán"
+              sequence="6"
+              action="bsd_kinh_doanh.bsd_dat_coc_action"
+              web_icon="fa fa-shopping-cart,#FFFFFF,#002080"
+    />
 </odoo>
