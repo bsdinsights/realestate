@@ -125,7 +125,84 @@
         <field name="groups_id" eval="[(6, 0, [])]"/>
         <field name="name">Dịch vụ</field>
         <field name="parent_id" eval="False"/>
-        <field name="sequence">10</field>
+        <field name="sequence">50</field>
         <field name="web_icon">fa fa-th-list,#FFFFFF,#2F4F4F</field>
     </record>
+
+<!--    Tạo icon màn hình -->
+    <menuitem id="bsd_hd_ban_menu_action_2"
+              name="Hợp đồng"
+              sequence="7"
+              action="bsd_dich_vu.bsd_hd_ban_action"
+              web_icon="fa fa-handshake-o,#FFFFFF,#c0b66d"
+    />
+    <menuitem id="bsd_phu_luc_menu_2"
+              name="Phụ lục"
+              sequence="13"
+              web_icon="fa fa-code-fork,#FFFFFF,#6c3d3d"
+    />
+        <menuitem id="bsd_pl_dsh_menu_action_2"
+                  name="Thay đổi đồng sở hữu"
+                  sequence='101'
+                  action='bsd_pl_dsh_action'
+                  parent='bsd_phu_luc_menu_2' />
+        <menuitem id="bsd_pl_tti_menu_action_2"
+                  name="Thay đổi thông tin"
+                  sequence='102'
+                  action='bsd_pl_tti_action'
+                  parent='bsd_phu_luc_menu_2' />
+        <menuitem id="bsd_dt_tt_menu_action_2"
+                  name="Diện tích thực tế"
+                  sequence="103"
+                  action="bsd_dt_tt_action"
+                  parent="bsd_phu_luc_menu_2"/>
+    <menuitem id="bsd_thong_bao_menu_2"
+              name="Thông báo"
+              sequence="14"
+              web_icon="fa fa-bullhorn,#FFFFFF,#75b28e"
+    />
+        <menuitem id="bsd_tb_nt_menu_action_2"
+                  name="Thông báo nghiệm thu"
+                  sequence="101"
+                  action="bsd_tb_nt_action"
+                  parent="bsd_thong_bao_menu_2"/>
+        <menuitem id="bsd_tb_bg_menu_action_2"
+                  name="Thông báo bàn giao"
+                  sequence="102"
+                  action="bsd_tb_bg_action"
+                  parent="bsd_thong_bao_menu_2"/>
+        <menuitem id="bsd_tb_tl_menu_action"
+                  name="Thông báo thanh lý"
+                  sequence="103"
+                  action="bsd_tb_tl_action"
+                  parent="bsd_thong_bao_menu_2"/>
+    <menuitem id="bsd_hd_ban_cn_menu_action_2"
+              name="Chuyển nhượng HĐ"
+              sequence="15"
+              action="bsd_hd_ban_cn_action"
+              web_icon="fa fa-share,#FFFFFF,#c0b66d"/>
+    <menuitem id="bsd_nghiem_thu_menu_action_2"
+              name="Nghiệm thu"
+              sequence="16"
+              action="bsd_nghiem_thu_action"
+              web_icon="fa fa-share-alt,#FFFFFF,#d38455"/>
+    <menuitem id="bsd_bao_giao_menu_2"
+              name="Bàn giao"
+              sequence="17"
+              web_icon="fa fa-tty,#FFFFFF,#656765"/>
+        <menuitem id="bsd_bg_sp_menu_action_2"
+                  name="Bàn giao sản phẩm"
+                  sequence="101"
+                  action="bsd_bg_sp_action"
+                  parent="bsd_bao_giao_menu_2"/>
+        <menuitem id="bsd_bg_gt_menu_action_2"
+                  name="Bàn giao giấy tờ"
+                  sequence="102"
+                  action="bsd_bg_gt_action"
+                  parent="bsd_bao_giao_menu_2"/>
+    <menuitem id="bsd_ds_td_menu_action_2"
+              name="DS theo dõi"
+              sequence="18"
+              action="bsd_ds_td_action"
+              web_icon="fa fa-dot-circle-o,#FFFFFF,#cb6382"/>
 </odoo>

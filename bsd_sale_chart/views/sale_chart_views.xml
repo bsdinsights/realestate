@@ -14,6 +14,6 @@
               name="Giỏ hàng"
               sequence="1"
               action="bsd_sale_chart.bsd_sale_chart_action"
-              web_icon="fa fa-shopping-cart,#FFFFFF,#002080"
+              web_icon="fa fa-shopping-cart,#FFFFFF,#cb6383"
     />
 </odoo>
