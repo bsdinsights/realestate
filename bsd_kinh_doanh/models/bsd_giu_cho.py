@@ -27,8 +27,8 @@ class BsdGiuCho(models.Model):
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True,
                                    readonly=True, help="Tên dự án",
                                    states={'nhap': [('readonly', False)]})
-    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", required=True,
-                                  readonly=True, help="Tên căn hộ",
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", required=True,
+                                  readonly=True, help="Tên Sản phẩm",
                                   states={'nhap': [('readonly', False)]})
     bsd_ten_sp = fields.Char(related="bsd_unit_id.name")
     bsd_product_tmpl_id = fields.Many2one(related='bsd_unit_id.product_tmpl_id', store=True)
@@ -122,18 +122,18 @@ class BsdGiuCho(models.Model):
         recs = self.browse(ids)
         return models.lazy_name_get(recs.with_user(access_rights_uid))    
 
-    # KD.07.02 Ràng buộc số giữ chỗ theo căn hộ/ NVBH
+    # KD.07.02 Ràng buộc số giữ chỗ theo Sản phẩm/ NVBH
     @api.constrains('bsd_nvbh_id', 'bsd_unit_id')
     def _constrain_unit_nv(self):
-        _logger.debug(" Ràng buộc số giữ chỗ theo căn hộ/ NVBH")
+        _logger.debug(" Ràng buộc số giữ chỗ theo Sản phẩm/ NVBH")
         gc_in_unit = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                      ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
                                                      ('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                      ('state', 'in', ['nhap', 'giu_cho', 'dat_cho'])])
         if len(gc_in_unit) > self.bsd_du_an_id.bsd_gc_unit_nv:
-            raise UserError("Tổng số giữ chỗ trên Căn hộ của bạn đã vượt quá quy định!")
+            raise UserError("Tổng số giữ chỗ trên Sản phẩm của bạn đã vượt quá quy định!")
 
-    # KD.07.03 Ràng buộc số giữ chỗ theo căn hộ
+    # KD.07.03 Ràng buộc số giữ chỗ theo Sản phẩm
     @api.constrains('bsd_unit_id')
     def _constrain_unit(self):
 
@@ -141,7 +141,7 @@ class BsdGiuCho(models.Model):
                                                      ('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                      ('state', 'in', ['nhap', 'giu_cho', 'dat_cho'])])
         if len(gc_in_unit) > self.bsd_du_an_id.bsd_gc_unit:
-            raise UserError("Tổng số giữ chỗ trên Căn hộ đã vượt quá quy định!")
+            raise UserError("Tổng số giữ chỗ trên Sản phẩm đã vượt quá quy định!")
 
     # KD.07.04 Ràng buộc số giữ chỗ theo NVBH/ngày
     @api.constrains('bsd_nvbh_id', 'bsd_ngay_gc')
@@ -156,7 +156,7 @@ class BsdGiuCho(models.Model):
         if len(gc_in_day) > self.bsd_du_an_id.bsd_gc_nv_ngay:
             raise UserError("Tổng số Giữ chỗ trên một ngày của bạn đã vượt quá quy định")
 
-    # KD.07.05 Ràng buộc số giữ chỗ theo căn hộ/NVBH/ngày
+    # KD.07.05 Ràng buộc số giữ chỗ theo Sản phẩm/NVBH/ngày
     @api.constrains('bsd_nvbh_id', 'bsd_unit_id', 'bsd_ngay_gc')
     def _constrain_unit_nv_ngay(self):
         min_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
@@ -168,7 +168,7 @@ class BsdGiuCho(models.Model):
                                                    ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
                                                    ('state', 'in', ['nhap', 'giu_cho', 'dat_cho'])])
         if len(gc_in_day) > self.bsd_du_an_id.bsd_gc_unit_nv_ngay:
-            raise UserError("Tổng số Giữ chỗ trong ngày theo căn hộ của bạn đã vượt quá quy định")
+            raise UserError("Tổng số Giữ chỗ trong ngày theo Sản phẩm của bạn đã vượt quá quy định")
 
     @api.onchange('bsd_unit_id', 'bsd_du_an_id')
     def _onchange_tien_gc(self):
@@ -360,7 +360,7 @@ class BsdGiuCho(models.Model):
         self.env['bsd.cong_no'].search([('bsd_giu_cho_id', '=', self.id)], limit=1).write({
             'state': 'huy'
         })
-        # cập nhật căn hộ trên phiếu giữ chỗ
+        # cập nhật Sản phẩm trên phiếu giữ chỗ
         if not self.bsd_dot_mb_id:
             giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                       ('state', 'not in', ['huy', 'nhap'])])
@@ -386,7 +386,7 @@ class BsdGiuCho(models.Model):
     # KD.07.11 Tạo Bảng tính giá từ màn hình Giữ chỗ
     def action_tao_bao_gia(self):
         context = {
-            'default_bsd_ten_bao_gia': 'Bảng tính giá căn hộ' + self.bsd_unit_id.name,
+            'default_bsd_ten_bao_gia': 'Bảng tính giá Sản phẩm' + self.bsd_unit_id.name,
             'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
             'default_bsd_giu_cho_id': self.id,
             'default_bsd_nvbh_id': self.bsd_nvbh_id.id,
@@ -429,7 +429,7 @@ class BsdGiuCho(models.Model):
             action['res_id'] = bao_gia.id
         # Prepare the context.
         context = {
-            'default_bsd_ten_bao_gia': 'Bảng tính giá căn hộ' + self.bsd_unit_id.name,
+            'default_bsd_ten_bao_gia': 'Bảng tính giá Sản phẩm' + self.bsd_unit_id.name,
             'default_bsd_khach_hang_id': self.bsd_kh_moi_id.id,
             'default_bsd_giu_cho_id': self.id,
             'default_bsd_nvbh_id': self.bsd_nvbh_id.id,

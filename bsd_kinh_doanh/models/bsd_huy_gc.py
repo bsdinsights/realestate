@@ -31,7 +31,7 @@ class BsdHuyGC(models.Model):
                                    string="Loại", required=True, default='gc_tc', help="Loại phiếu hủy",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Căn hộ",
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Sản phẩm",
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_gc_tc_id = fields.Many2one('bsd.gc_tc', string="Giữ chỗ thiện chí", help="Giữ chỗ thiện chí bị hủy",

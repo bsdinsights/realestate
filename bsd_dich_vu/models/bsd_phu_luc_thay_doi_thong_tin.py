@@ -30,7 +30,7 @@ class BsdPLTDTT(models.Model):
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one(string="Dự án", help="Tên dự án", related='bsd_hd_ban_id.bsd_du_an_id', store=True)
-    bsd_unit_id = fields.Many2one(string="Căn hộ", help="Tên căn hộ", related='bsd_hd_ban_id.bsd_unit_id', store=True)
+    bsd_unit_id = fields.Many2one(string="Sản phẩm", help="Tên Sản phẩm", related='bsd_hd_ban_id.bsd_unit_id', store=True)
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
@@ -38,7 +38,7 @@ class BsdPLTDTT(models.Model):
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('dk_pl', 'Đã ký phụ lục'), ('huy', 'Hủy')],
                              string="Trạng thái", help="Trạng thái", required=True, default="nhap", tracking=1)
-    bsd_loai_pl = fields.Selection([('dien_tich', 'Diện tích'), ('ten_ch', 'Tên căn hộ')], required=True,
+    bsd_loai_pl = fields.Selection([('dien_tich', 'Diện tích'), ('ten_ch', 'Tên Sản phẩm')], required=True,
                                    string="Loại phụ lục", help="Loại phụ lục hợp đồng", default="dien_tich",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
@@ -56,10 +56,10 @@ class BsdPLTDTT(models.Model):
     bsd_dt_cl = fields.Float(string="% Chênh lệch cho phép", help="% Chênh lệch cho phép",
                              related="bsd_dt_tt_id.bsd_dt_cl", store=True)
 
-    bsd_ten_unit_moi = fields.Char(string="Tên căn hộ (mới)", help="Tên căn hộ mới",
+    bsd_ten_unit_moi = fields.Char(string="Tên Sản phẩm (mới)", help="Tên Sản phẩm mới",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_ten_unit_cu = fields.Char(string="Tên căn hộ (cũ)", help="Tên căn hộ (cũ) trước khi được thay đổi",
+    bsd_ten_unit_cu = fields.Char(string="Tên Sản phẩm (cũ)", help="Tên Sản phẩm (cũ) trước khi được thay đổi",
                                   related='bsd_unit_id.bsd_ten_unit')
 
     # DV.03.01 - Xác nhận phụ lục hợp đồng

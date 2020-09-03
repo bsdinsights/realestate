@@ -24,7 +24,7 @@ class BsdPhatSinhGiaoDichChietKhau(models.Model):
     bsd_ten_ck = fields.Char(string="Tên chiết khấu", required=True, help="Tên chiết khấu")
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc")
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng")
-    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ")
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm")
     bsd_loai_ck = fields.Selection([('chung', 'Chung'),
                                     ('noi_bo', 'Nội bộ'),
                                     ('mua_si', 'Mua sỉ'),

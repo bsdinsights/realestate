@@ -12,7 +12,7 @@ _logger = logging.getLogger(__name__)
 
 class BsdBaoGia(models.Model):
     _name = 'bsd.bao_gia'
-    _description = "Bảng tính giá căn hộ"
+    _description = "Bảng tính giá sản phẩm"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ten_bao_gia'
 
@@ -60,7 +60,7 @@ class BsdBaoGia(models.Model):
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
 
-    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Tên căn hộ")
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Tên Sản phẩm")
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích tim tường",
                              related="bsd_unit_id.bsd_dt_xd", store=True)
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",

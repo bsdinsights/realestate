@@ -9,7 +9,7 @@ _logger = logging.getLogger(__name__)
 
 class BsdThemUnit(models.Model):
     _name = 'bsd.them_unit'
-    _description = 'Thêm căn hộ trong đợt phát hành'
+    _description = 'Thêm Sản phẩm trong đợt phát hành'
     _rec_name = 'bsd_ma_tu'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
@@ -41,15 +41,15 @@ class BsdThemUnit(models.Model):
     bsd_cb_ids = fields.One2many('bsd.them_unit_cb', 'bsd_them_unit_id', string="Chuẩn bị")
     bsd_ph_ids = fields.One2many('bsd.dot_mb_unit', 'bsd_them_unit_id', string="Phát hành", readonly=True)
 
-    # KD.04.05.01 - Chuẩn bị căn hộ
+    # KD.04.05.01 - Chuẩn bị Sản phẩm
     def action_chuan_bi(self):
         if not self.bsd_cb_ids:
-            raise UserError("Chưa có căn hộ được chọn. Vui lòng kiểm tra lại!")
+            raise UserError("Chưa có Sản phẩm được chọn. Vui lòng kiểm tra lại!")
         self.write({
             'state': 'cph',
         })
 
-    # KD.04.05.02 - Phát hành thêm căn hộ
+    # KD.04.05.02 - Phát hành thêm Sản phẩm
     def action_phat_hanh(self):
         # kiểm tra đợt mở bán
         if self.bsd_dot_mb_id.state != 'ph' or self.bsd_dot_mb_id.bsd_den_ngay < datetime.date.today():
@@ -138,7 +138,7 @@ class BsdThemUnit(models.Model):
                 'bsd_dot_mb_id': self.bsd_dot_mb_id.id,
                 'bsd_them_unit_id': self.id
             })
-            # KD.04.06 Cập nhật tình trạng căn hộ phát hành
+            # KD.04.06 Cập nhật tình trạng Sản phẩm phát hành
             if unit.state == 'chuan_bi':
                 unit.write({
                     'bsd_dot_mb_id': self.bsd_dot_mb_id.id,
@@ -186,12 +186,12 @@ class BsdThemUnit(models.Model):
                         'bsd_ngay_hh_bg': ngay_ph
                     })
 
-    # KD.04.04.05 - Không duyệt thu hồi căn hộ
+    # KD.04.04.05 - Không duyệt thu hồi Sản phẩm
     def action_khong_duyet(self):
         action = self.env.ref('bsd_kinh_doanh.bsd_wizard_them_unit_action').read()[0]
         return action
 
-    # KD.04.04.06 - Hủy thu hồi căn hộ
+    # KD.04.04.06 - Hủy thu hồi Sản phẩm
     def action_huy(self):
         self.write({
             'state': 'huy',
@@ -203,7 +203,7 @@ class BsdThemUnit(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã phiếu thêm căn hộ đợt mở bán'))
+            raise UserError(_('Dự án chưa có mã phiếu thêm Sản phẩm đợt mở bán'))
         vals['bsd_ma_tu'] = sequence.next_by_id()
         res = super(BsdThemUnit, self).create(vals)
         return res
@@ -211,14 +211,14 @@ class BsdThemUnit(models.Model):
 
 class BsdDotMoBanCB(models.Model):
     _name = 'bsd.them_unit_cb'
-    _description = 'Thông tin căn hộ chuẩn bị phiếu thêm căn hộ'
+    _description = 'Thông tin Sản phẩm chuẩn bị phiếu thêm Sản phẩm'
     _rec_name = 'bsd_unit_id'
 
-    bsd_them_unit_id = fields.Many2one('bsd.them_unit', string="Phiếu thêm căn hộ", required=True)
+    bsd_them_unit_id = fields.Many2one('bsd.them_unit', string="Phiếu thêm Sản phẩm", required=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
     bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà", required=True)
     bsd_tang_id = fields.Many2one('bsd.tang', string="Tầng", required=True)
-    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", required=True)
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", required=True)
     bsd_gia_ban = fields.Monetary(string="Giá bán", required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
@@ -226,7 +226,7 @@ class BsdDotMoBanCB(models.Model):
                                   ('dang_mb', 'Đang mở bán'),
                                   ('dd_ut', 'Đánh dấu ưu tiên'),
                                   ('kd_tt', 'Không đúng trạng thái')],
-                                 string="Lý do", help="Lý do căn hộ không được phát hành mở bán", readonly=True)
+                                 string="Lý do", help="Lý do Sản phẩm không được phát hành mở bán", readonly=True)
 
     @api.model
     def create(self, vals):

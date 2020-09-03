@@ -28,7 +28,7 @@ class BsdRapCan(models.Model):
     bsd_khach_hang_id = fields.Many2one('res.partner', related="bsd_gc_tc_id.bsd_kh_moi_id",
                                         string="Khách hàng", store=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', related="bsd_gc_tc_id.bsd_du_an_id", store=True)
-    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", required=True,
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_dien_giai = fields.Char(string="Diễn giải",

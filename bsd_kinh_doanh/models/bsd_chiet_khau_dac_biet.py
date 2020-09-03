@@ -39,7 +39,7 @@ class BsdChietKhauDacBiet(models.Model):
     bsd_khach_hang_id = fields.Many2one(related="bsd_bao_gia_id.bsd_khach_hang_id", store=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án",
                                    related="bsd_bao_gia_id.bsd_du_an_id", store=True)
-    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Tên căn hộ",
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Tên Sản phẩm",
                                   related="bsd_bao_gia_id.bsd_unit_id", store=True)
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Tên đợt mở bán",
                                     related="bsd_bao_gia_id.bsd_dot_mb_id", store=True)

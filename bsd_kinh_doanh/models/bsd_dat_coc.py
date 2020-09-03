@@ -50,7 +50,7 @@ class BsdDatCoc(models.Model):
                                   related="bsd_bao_gia_id.bsd_tien_gc", store=True)
     bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc",
                                   related="bsd_bao_gia_id.bsd_tien_dc",store=True)
-    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Tên căn hộ",
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Tên sản phẩm",
                                   related="bsd_bao_gia_id.bsd_unit_id", store=True)
     bsd_ten_sp = fields.Char(related="bsd_unit_id.name", store=True)
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích tim tường",

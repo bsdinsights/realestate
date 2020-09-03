@@ -29,7 +29,7 @@ class BsdDTTTTT(models.Model):
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Tên căn hộ", required=True,
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Tên Sản phẩm", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_dt_tt_tt = fields.Float(string="Diện tích thực tế", help="Diện tích thông thủy thực tế", required=True,

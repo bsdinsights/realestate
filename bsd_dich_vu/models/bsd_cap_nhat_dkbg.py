@@ -81,7 +81,7 @@ class BsdCapNhatDKBG(models.Model):
         # Lọc các unit đã bàn giao
         unit = self.bsd_ct_ids.mapped('bsd_unit_id').filtered(lambda h: h.bsd_ngay_bg)
         if unit:
-            message += "<li>Những căn hộ đã bàn giao: {}</li>".format(','.join(unit.mapped('bsd_ten_unit')))
+            message += "<li>Những Sản phẩm đã bàn giao: {}</li>".format(','.join(unit.mapped('bsd_ten_unit')))
         chi_tiet = self.bsd_ct_ids.filtered(lambda h: h.state == 'nhap')
         if chi_tiet:
             message += "<li>Những chi tiết chưa xác nhận: {}</li></ul>".format(','.join(chi_tiet.mapped('bsd_ma_cn_unit')))

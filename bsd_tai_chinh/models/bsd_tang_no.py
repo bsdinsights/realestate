@@ -33,7 +33,7 @@ class BsdTangNo(models.Model):
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", help="Căn hộ",
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Sản phẩm",
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_tien = fields.Monetary(string="Tiền", help="Tiền điều chỉnh", required=True,

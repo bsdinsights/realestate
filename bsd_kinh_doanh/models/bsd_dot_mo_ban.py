@@ -72,7 +72,7 @@ class BsdDotMoBan(models.Model):
                                 readonly=True,
                                 states={'cph': [('readonly', False)]})
     state = fields.Selection([('cph', 'Chưa phát hành'), ('ph', 'Phát hành'),
-                              ('thmb', 'Thu hồi mở bán'), ('thch', 'Thu hồi căn hộ')],
+                              ('thmb', 'Thu hồi mở bán'), ('thch', 'Thu hồi Sản phẩm')],
                              string="Trạng thái", default="cph", tracking=1, required=True)
     bsd_san_gd = fields.Boolean(string="Sàn giao dịch", default=False,
                                 help="""Thông tin quy định đợt mở bán chỉ cho phép các sàn giao dịch được bán, 
@@ -99,8 +99,8 @@ class BsdDotMoBan(models.Model):
                                  readonly=True,
                                  domain=[('state', '=', 'thu_hoi')])
 
-    bsd_so_thu_hoi_ch = fields.Integer(string="# Thu hồi căn hộ", compute='_compute_thu_hoi_ch')
-    bsd_so_them_ch = fields.Integer(string="# Thêm căn hộ", compute='_compute_them_ch')
+    bsd_so_thu_hoi_ch = fields.Integer(string="# Thu hồi Sản phẩm", compute='_compute_thu_hoi_ch')
+    bsd_so_them_ch = fields.Integer(string="# Thêm Sản phẩm", compute='_compute_them_ch')
 
     def _compute_thu_hoi_ch(self):
         for each in self:
@@ -279,7 +279,7 @@ class BsdDotMoBan(models.Model):
                 'bsd_gia_ban': pricelist_item.fixed_price,
                 'bsd_dot_mb_id': self.id
             })
-            # KD.04.06 Cập nhật tình trạng căn hộ phát hành
+            # KD.04.06 Cập nhật tình trạng Sản phẩm phát hành
             if unit.state == 'chuan_bi':
                 unit.write({
                     'bsd_dot_mb_id': self.id,
@@ -353,7 +353,7 @@ class BsdDotMoBan(models.Model):
                 'bsd_dot_mb_id': False
             })
 
-    # Thu hồi căn hộ trong đợt mở bán
+    # Thu hồi Sản phẩm trong đợt mở bán
     def action_thu_hoi_can_ho(self):
         action = self.env.ref('bsd_kinh_doanh.bsd_thu_hoi_action_pop_up').read()[0]
         context = {
@@ -363,14 +363,14 @@ class BsdDotMoBan(models.Model):
         action['context'] = context
         return action
 
-    # Thêm căn hộ trong đợt mở bán
+    # Thêm Sản phẩm trong đợt mở bán
     def action_them_can_ho(self):
         context = {
             'default_bsd_du_an_id': self.bsd_du_an_id.id,
             'default_bsd_dot_mb_id': self.id,
         }
         return {
-            "name": "Tạo phiếu thêm căn hộ",
+            "name": "Tạo phiếu thêm Sản phẩm",
             "res_model": 'bsd.them_unit',
             "view": [[False, 'form']],
             "type": 'ir.actions.act_window',
@@ -398,7 +398,7 @@ class BsdDotMoBanSanGiaoDich(models.Model):
 
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", required=True)
     bsd_san_gd_id = fields.Many2one('res.partner', string="Tên sàn giao dịch", domain=[('is_company', '=', True)],
-                                    help="Sàn giao dịch được bán các căn hộ trong đợt mở bán", required=True)
+                                    help="Sàn giao dịch được bán các Sản phẩm trong đợt mở bán", required=True)
     bsd_san_gd_phone = fields.Char(string="Số điện thoại", related="bsd_san_gd_id.phone")
     bsd_san_gd_street = fields.Char('Đường', related="bsd_san_gd_id.street")
     bsd_san_gd_city = fields.Char('Thành phố', related="bsd_san_gd_id.city")
@@ -408,14 +408,14 @@ class BsdDotMoBanSanGiaoDich(models.Model):
 
 class BsdDotMoBanCB(models.Model):
     _name = 'bsd.dot_mb_cb'
-    _description = 'Thông tin căn hộ chuẩn bị cho đợt mở bán'
+    _description = 'Thông tin Sản phẩm chuẩn bị cho đợt mở bán'
     _rec_name = 'bsd_unit_id'
 
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", required=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
     bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà", required=True)
     bsd_tang_id = fields.Many2one('bsd.tang', string="Tầng", required=True)
-    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", required=True)
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", required=True)
     bsd_gia_ban = fields.Monetary(string="Giá bán", required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
@@ -423,7 +423,7 @@ class BsdDotMoBanCB(models.Model):
                                   ('dang_mb', 'Đang mở bán'),
                                   ('dd_ut', 'Đánh dấu ưu tiên'),
                                   ('kd_tt', 'Không đúng trạng thái')],
-                                 string="Lý do", help="Lý do căn hộ không được phát hành mở bán", readonly=True)
+                                 string="Lý do", help="Lý do Sản phẩm không được phát hành mở bán", readonly=True)
 
     @api.model
     def create(self, vals):
@@ -447,18 +447,18 @@ class BsdDotMoBanCB(models.Model):
 
 class BsdDotMoBanUnit(models.Model):
     _name = 'bsd.dot_mb_unit'
-    _description = 'Thông tin căn hộ phát hành cho đợt mở bán'
+    _description = 'Thông tin Sản phẩm phát hành cho đợt mở bán'
     _rec_name = 'bsd_unit_id'
 
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", required=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
     bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà", required=True)
     bsd_tang_id = fields.Many2one('bsd.tang', string="Tầng", required=True)
-    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ", required=True)
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", required=True)
     bsd_gia_ban = fields.Monetary(string="Giá bán", required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     state = fields.Selection([('phat_hanh', 'Phát hành'), ('thu_hoi', 'Thu hồi')], string="Trạng thái",
                              required="True", default='phat_hanh', help="Tráng thái")
     bsd_thu_hoi_id = fields.Many2one('bsd.thu_hoi', string="Thu hồi", help="Thu hồi", readonly=True)
-    bsd_them_unit_id = fields.Many2one('bsd.them_unit', string="Thêm căn hộ", help="Thêm căn hộ", readonly=True)
+    bsd_them_unit_id = fields.Many2one('bsd.them_unit', string="Thêm Sản phẩm", help="Thêm Sản phẩm", readonly=True)

@@ -58,7 +58,7 @@ class BsdPhieuThu(models.Model):
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_unit_id = fields.Many2one('product.product', string="Căn hộ",
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm",
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_gc_tc_id = fields.Many2one('bsd.gc_tc', string="Giữ chỗ thiện chí", help="Giữ chỗ thiện chí",
@@ -152,7 +152,7 @@ class BsdPhieuThu(models.Model):
         # Kiểm tra hợp đồng đã bị thanh lý chưa
         if self.bsd_hd_ban_id.state == 'thanh_ly':
             raise UserError(_('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin hợp đồng'))
-        # Kiểm tra nếu thu phí quản lý, phí bảo trì căn hộ phải có ngày cất nóc
+        # Kiểm tra nếu thu phí quản lý, phí bảo trì Sản phẩm phải có ngày cất nóc
         if self.bsd_loai_pt in ['pql', 'pbt']:
             if not self.bsd_unit_id.bsd_ngay_cn:
                 raise UserError(_('Vui lòng kiểm tra thông tin sản phẩm trên hợp đồng'))
@@ -281,7 +281,7 @@ class BsdPhieuThu(models.Model):
         # Kiểm tra hợp đồng đã bị thanh lý chưa
         if self.bsd_hd_ban_id.state == 'thanh_ly':
             raise UserError(_('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin hợp đồng'))
-        # Kiểm tra nếu thu phí quản lý, phí bảo trì căn hộ phải có ngày cất nóc
+        # Kiểm tra nếu thu phí quản lý, phí bảo trì Sản phẩm phải có ngày cất nóc
         if self.bsd_loai_pt in ['pql', 'pbt']:
             if not self.bsd_unit_id.bsd_ngay_cn:
                 raise UserError(_('Vui lòng kiểm tra thông tin sản phẩm trên hợp đồng'))
