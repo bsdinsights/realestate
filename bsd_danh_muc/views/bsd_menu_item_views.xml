@@ -160,16 +160,16 @@
               parent="bsd_main_danh_muc_root"/>
 
 
-
-    <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">
-        <field name="action" eval="False"/>
-        <field name="active" eval="True"/>
-        <field name="groups_id" eval="[(6, 0, [])]"/>
-        <field name="name">Danh mục</field>
-        <field name="parent_id" eval="False"/>
-        <field name="sequence">50</field>
-        <field name="web_icon">fa fa-file,#FFFFFF,#ffaa00</field>
-    </record>
+<!-- Không sử dụng ở bản demo -->
+<!--    <record id="bsd_danh_muc.bsd_main_danh_muc_root" model="ir.ui.menu">-->
+<!--        <field name="action" eval="False"/>-->
+<!--        <field name="active" eval="True"/>-->
+<!--        <field name="groups_id" eval="[(6, 0, [])]"/>-->
+<!--        <field name="name">Danh mục</field>-->
+<!--        <field name="parent_id" eval="False"/>-->
+<!--        <field name="sequence">50</field>-->
+<!--        <field name="web_icon">fa fa-file,#FFFFFF,#ffaa00</field>-->
+<!--    </record>-->
 
 <!--    Tạo menu icon -->
     <menuitem id="bsd_cs_tt_menu_2"

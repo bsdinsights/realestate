@@ -16,7 +16,7 @@
                             type="object"
                             attrs="{'invisible':[('bsd_uu_tien','=','0'),('state','in',['chuan_bi','san_sang'])]}"
                             class="oe_highlight"/>
-                    <!--<field name="state" widget="statusbar" statusbar_visible="0"/>-->
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
                     <group string="THÔNG TIN CHUNG">
@@ -35,7 +35,6 @@
                             <field name="bsd_ma_unit"/>
                             <field name="bsd_ten_unit"/>
                             <field name="bsd_dien_giai"/>
-                            <field name="state"/>
                         </group>
                     </group>
                     <group string="PHÂN NHÓM">

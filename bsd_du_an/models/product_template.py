@@ -19,10 +19,10 @@ class ProductTemplate(models.Model):
     def name_get(self):
         return [(template.id, template.bsd_ma_unit)for template in self]
 
-    bsd_stt = fields.Char(string="Số thứ tự", help="Số căn hộ", required=True)
-    bsd_ten_unit = fields.Char(string="Tên căn hộ", help="Tên căn hộ bao gồm mã tòa nhà, mã tầng và số căn hộ")
-    bsd_ma_unit = fields.Char(string="Mã căn hộ",
-                              help="Mã đầy đủ của căn hộ bao gồm mã dữ án, mã tòa nhà, mã tầng và số căn hộ")
+    bsd_stt = fields.Char(string="Số thứ tự", help="Số thứ tự sản phẩm", required=True)
+    bsd_ten_unit = fields.Char(string="Tên sản phẩm", help="Tên sản phẩm bao gồm mã tòa nhà, mã tầng và số sản phẩm")
+    bsd_ma_unit = fields.Char(string="Mã sản phẩm",
+                              help="Mã đầy đủ của sản phẩm bao gồm mã dữ án, mã tòa nhà, mã tầng và số sản phẩm")
     _sql_constraints = [
         ('bsd_ma_unit_unique', 'unique (bsd_ma_unit)',
          'Mã unit đã tồn tại !'),
@@ -30,14 +30,14 @@ class ProductTemplate(models.Model):
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True, help="Tên dự án")
     bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà", required=True, help="Tên tòa nhà")
     bsd_tang_id = fields.Many2one('bsd.tang', string="Tầng", required=True, help="Tên tầng lầu")
-    bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc của căn hộ")
-    bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ của căn hộ")
-    bsd_dien_giai = fields.Char(string="Diễn giải", help="Thông tin về căn hộ")
+    bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc của sản phẩm")
+    bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ của sản phẩm")
+    bsd_dien_giai = fields.Char(string="Diễn giải", help="Thông tin về sản phẩm")
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch",
-                                    help="Sàn giao dịch đang bán(căn hộ) theo đợt mở bán")
+                                    help="Sàn giao dịch đang bán(sản phẩm) theo đợt mở bán")
 
     bsd_loai_sp_id = fields.Many2one('bsd.loai_sp', string="Phân nhóm",
-                                     help="Phân nhóm đặc tính kỹ thuật của căn hộ")
+                                     help="Phân nhóm đặc tính kỹ thuật của sản phẩm")
     bsd_huong = fields.Selection([('1', 'Đông'),
                                   ('2', 'Tây'),
                                   ('3', 'Nam'),
@@ -54,13 +54,13 @@ class ProductTemplate(models.Model):
                                  ('6', 'Rừng'),
                                  ('7', 'Cao tốc'),
                                  ('8', 'Hồ'),
-                                 ('9', 'Biển')], string="View", help="Góc nhìn của căn hộ")
-    bsd_so_pn = fields.Integer(string="Số phòng ngủ", help="Số phòng ngủ của căn hộ")
+                                 ('9', 'Biển')], string="View", help="Góc nhìn của sản phẩm")
+    bsd_so_pn = fields.Integer(string="Số phòng ngủ", help="Số phòng ngủ của sản phẩm")
     bsd_loai_bds = fields.Selection([('1', 'Liền thổ(đất)'),
                                      ('2', 'Căn hộ'),
                                      ('3', 'Phức hợp'),
                                      ('4', 'Nghỉ dưỡng')],
-                                    help="Loại hình sử dụng của căn hộ",
+                                    help="Loại hình sử dụng của sản phẩm",
                                     string="Loại bất động sản")
     bsd_phan_loai = fields.Selection([('1', 'Condotel'),
                                       ('2', 'Apartment')], string="Phân loại", help="Phân loại")
@@ -78,10 +78,10 @@ class ProductTemplate(models.Model):
     bsd_dt_tt = fields.Float(string="Diện tích thực tế", help="Diện tích thông thủy thực tế")
     bsd_dt_sh = fields.Float(string="Diện tích sổ hồng", help="Diện tích sổ hồng")
     bsd_don_gia = fields.Monetary(string="Đơn giá bán/m2", help="Đơn giá bán trước thuế theo m2")
-    bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán trước thuế của căn hộ")
+    bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán trước thuế của sản phẩm")
     bsd_qsdd_m2 = fields.Monetary(string="QSDĐ/ m2", help="Giá trị quyền sử dụng đất theo m2")
     bsd_tien_qsdd = fields.Monetary(string="Giá trị QSDĐ", help="""
-                                                                    Tổng giá trị sử dụng đất của căn hộ được tính theo
+                                                                    Tổng giá trị sử dụng đất của sản phẩm được tính theo
                                                                     công thức: diện tích sử dụng(thông thủy) * 
                                                                     QSDĐ/m2
                                                                     """,
@@ -93,14 +93,14 @@ class ProductTemplate(models.Model):
                                                                 """,
                                    compute='_compute_bsd_phi_bao_tri', store=True)
     bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất")
-    bsd_tien_thue = fields.Monetary(string="Tiền thuế", help="""Tiền thuế của căn hộ được tính theo công thức:
+    bsd_tien_thue = fields.Monetary(string="Tiền thuế", help="""Tiền thuế của sản phẩm được tính theo công thức:
                                                             (giá bán - Giá trị QSDĐ)* thuế suất""",
                                     readonly=True, compute='_compute_tien_thue', store=True)
-    bsd_tong_gb = fields.Monetary(string="Tổng giá bán", help="""Tổng giá bán của căn hộ tính theo công thức:
+    bsd_tong_gb = fields.Monetary(string="Tổng giá bán", help="""Tổng giá bán của sản phẩm tính theo công thức:
                                                                         giá bán + tiền thuế + tiền phí bảo trì""",
                                   readonly=True, compute='_compute_bsd_tong_gia_ban', store=True)
     bsd_uu_tien = fields.Selection([('0', 'Không'),
-                                    ('1', 'Có')], string="Ưu tiên", help="Ưu tiên bán của căn hộ",
+                                    ('1', 'Có')], string="Ưu tiên", help="Ưu tiên bán của sản phẩm",
                                    default='0', readonly=True)
     bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt ưu tiên",
                                          help="Người duyệt ưu tiên", readonly=True)
@@ -111,7 +111,7 @@ class ProductTemplate(models.Model):
     bsd_ngay_huy = fields.Datetime(string="Ngày hủy ưu tiên", readonly=True, help="Ngày hủy ưu tiên")
     bsd_tt_vay = fields.Selection([('0', 'Không'),
                                    ('1', 'Có')], string="Tình trạng vay", default='0',
-                                  help="Tình trạng vay ngân hàng của căn hộ")
+                                  help="Tình trạng vay ngân hàng của sản phẩm")
     bsd_ngay_dkbg = fields.Date(string="Ngày DKBG", help="Ngày dự kiến bàn giao")
     bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý", help="Số tháng đóng phí quản lý")
     bsd_don_gia_pql = fields.Monetary(string="Đơn giá PQL", help="Đơn giá Phí quản lý m2/tháng", required=True)
@@ -120,11 +120,11 @@ class ProductTemplate(models.Model):
     bsd_dk_bg = fields.Float(string="Điều kiện bàn giao",
                              help="% thanh toán đủ điều kiện bàn giao(tối thiểu")
     bsd_ngay_bg = fields.Date(string="Ngày bàn giao",
-                              help="Ngày bàn giao thực tế căn hộ cho khách hàng")
+                              help="Ngày bàn giao thực tế sản phẩm cho khách hàng")
     bsd_ngay_cn = fields.Date(string="Ngày cất nóc",
                               help="Ngày chứng nhận cất nóc (bê tông tầng mái)")
     bsd_ngay_cap_sh = fields.Date(string="Ngày cấp sổ hồng",
-                                  help="Ngày khách hàng nhận sổ hồng căn hộ")
+                                  help="Ngày khách hàng nhận sổ hồng")
     state = fields.Selection([('chuan_bi', 'Chuẩn bị'),
                               ('san_sang', 'Sẵn sàng'),
                               ('dat_cho', 'Đặt chỗ'),

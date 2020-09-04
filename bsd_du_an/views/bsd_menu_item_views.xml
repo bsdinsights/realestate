@@ -1,59 +1,59 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <!--Top menu-->
-    <menuitem id="bsd_main_du_an_root" name="Dự án"/>
+<!--    <menuitem id="bsd_main_du_an_root" name="Dự án"/>-->
 
     <!--Dự án menu-->
-    <menuitem id="bsd_du_an_menu"
-              name="Dự án"
-              sequence="10"
-              parent="bsd_main_du_an_root"/>
-    <menuitem id="bsd_du_an_menu_action"
-              name="Dự án"
-              sequence="10"
-              action="bsd_du_an_action"
-              parent="bsd_du_an_menu"/>
-    <menuitem id="bsd_toa_nha_menu_action"
-              name="Tòa nhà"
-              sequence="11"
-              action="bsd_toa_nha_action"
-              parent="bsd_du_an_menu"/>
-    <menuitem id="bsd_tang_menu_action"
-              name="Tầng"
-              sequence="12"
-              action="bsd_tang_action"
-              parent="bsd_du_an_menu"/>
+<!--    <menuitem id="bsd_du_an_menu"-->
+<!--              name="Dự án"-->
+<!--              sequence="10"-->
+<!--              parent="bsd_main_du_an_root"/>-->
+<!--    <menuitem id="bsd_du_an_menu_action"-->
+<!--              name="Dự án"-->
+<!--              sequence="10"-->
+<!--              action="bsd_du_an_action"-->
+<!--              parent="bsd_du_an_menu"/>-->
+<!--    <menuitem id="bsd_toa_nha_menu_action"-->
+<!--              name="Tòa nhà"-->
+<!--              sequence="11"-->
+<!--              action="bsd_toa_nha_action"-->
+<!--              parent="bsd_du_an_menu"/>-->
+<!--    <menuitem id="bsd_tang_menu_action"-->
+<!--              name="Tầng"-->
+<!--              sequence="12"-->
+<!--              action="bsd_tang_action"-->
+<!--              parent="bsd_du_an_menu"/>-->
 
-    <!--Unit menu-->
-    <menuitem id="bsd_unit_menu"
-              name="Unit"
-              sequence="11"
-              parent="bsd_main_du_an_root"/>
-    <menuitem id="bsd_unit_menu_action"
-              name="Unit"
-              sequence="11"
-              action="bsd_product_template_action"
-              parent="bsd_unit_menu"/>
-    <menuitem id="bsd_loai_san_pham_menu_action"
-              name="Loại sản phẩm"
-              sequence="12"
-              action="bsd_loai_san_pham_action"
-              parent="bsd_unit_menu"/>
-    <menuitem id="bsd_thong_tin_ky_thuat_menu_action"
-              name="Thông tin kỹ thuật"
-              sequence="13"
-              action="bsd_thong_tin_ky_thuat_action"
-              parent="bsd_unit_menu"/>
-
-    <record id="bsd_du_an.bsd_main_du_an_root" model="ir.ui.menu">
-        <field name="action" eval="False"/>
-        <field name="active" eval="True"/>
-        <field name="groups_id" eval="[(6, 0, [])]"/>
-        <field name="name">Dự án</field>
-        <field name="parent_id" eval="False"/>
-        <field name="sequence">50</field>
-        <field name="web_icon">fa fa-building-o,#FFFFFF,#04B45F</field>
-    </record>
+<!--    &lt;!&ndash;Unit menu&ndash;&gt;-->
+<!--    <menuitem id="bsd_unit_menu"-->
+<!--              name="Unit"-->
+<!--              sequence="11"-->
+<!--              parent="bsd_main_du_an_root"/>-->
+<!--    <menuitem id="bsd_unit_menu_action"-->
+<!--              name="Unit"-->
+<!--              sequence="11"-->
+<!--              action="bsd_product_template_action"-->
+<!--              parent="bsd_unit_menu"/>-->
+<!--    <menuitem id="bsd_loai_san_pham_menu_action"-->
+<!--              name="Loại sản phẩm"-->
+<!--              sequence="12"-->
+<!--              action="bsd_loai_san_pham_action"-->
+<!--              parent="bsd_unit_menu"/>-->
+<!--    <menuitem id="bsd_thong_tin_ky_thuat_menu_action"-->
+<!--              name="Thông tin kỹ thuật"-->
+<!--              sequence="13"-->
+<!--              action="bsd_thong_tin_ky_thuat_action"-->
+<!--              parent="bsd_unit_menu"/>-->
+<!-- Không sử dung ở bản demo khách hàng-->
+<!--    <record id="bsd_du_an.bsd_main_du_an_root" model="ir.ui.menu">-->
+<!--        <field name="action" eval="False"/>-->
+<!--        <field name="active" eval="True"/>-->
+<!--        <field name="groups_id" eval="[(6, 0, [])]"/>-->
+<!--        <field name="name">Dự án</field>-->
+<!--        <field name="parent_id" eval="False"/>-->
+<!--        <field name="sequence">50</field>-->
+<!--        <field name="web_icon">fa fa-building-o,#FFFFFF,#04B45F</field>-->
+<!--    </record>-->
 
 <!--    Tạo icon màn hình menu -->
     <menuitem id="bsd_du_an_menu_2"
