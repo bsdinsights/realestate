@@ -80,5 +80,9 @@
           sequence="20"
           action="bsd_product_template_action"
           web_icon="fa fa-university,#FFFFFF,#80aac1"/>
+<!--Chuyển icon thảo luận về cuối màn hình-->
+    <menuitem
+        id="mail.menu_root_discuss"
+        sequence="100"/>
 
 </odoo>

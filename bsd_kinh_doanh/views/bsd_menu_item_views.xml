@@ -124,12 +124,20 @@
                   sequence="106"
                   action="bsd_huy_gc_action"
                   parent="bsd_giu_cho_menu_2"/>
-    <menuitem id="bsd_bao_gia_menu_action_2"
+    <menuitem id="bsd_bao_gia_menu_2"
               name="Bảng tính giá"
               sequence="3"
-              action="bsd_kinh_doanh.bsd_bao_gia_action"
-              web_icon="fa fa-pencil-square-o,#FFFFFF,#676967"
-    />
+              web_icon="fa fa-pencil-square-o,#FFFFFF,#676967" />
+        <menuitem id="bsd_bao_gia_menu_action_2"
+                  name="Bảng tính giá"
+                  sequence="101"
+                  action="bsd_kinh_doanh.bsd_bao_gia_action"
+                  parent="bsd_bao_gia_menu_2"/>
+        <menuitem id="bsd_ck_db_menu_action_2"
+                  name="CK đặt biệt"
+                  sequence="102"
+                  action="bsd_ck_db_action"
+                  parent="bsd_bao_gia_menu_2"/>
     <menuitem id="bsd_dat_coc_menu_action_2"
               name="Đặt cọc"
               sequence="4"
