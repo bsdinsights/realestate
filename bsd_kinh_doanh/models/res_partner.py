@@ -150,5 +150,5 @@ class ResPartner(models.Model):
                 else:
                     res.append((partner.id, "%s" % partner.name))
             else:
-                res.append((partner.id, "[%s]%s" % (partner.bsd_ma_kh, partner.name)))
+                res.append((partner.id, "%s" % partner.name))
         return res
