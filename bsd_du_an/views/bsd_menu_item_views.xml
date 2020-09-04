@@ -75,11 +75,25 @@
                   sequence="103"
                   action="bsd_tang_action"
                   parent="bsd_du_an_menu_2"/>
-    <menuitem id="bsd_unit_menu_action_2"
+    <menuitem id="bsd_unit_menu_2"
           name="Sản phẩm"
           sequence="20"
-          action="bsd_product_template_action"
-          web_icon="fa fa-university,#FFFFFF,#80aac1"/>
+          web_icon="fa fa-home,#FFFFFF,#80aac1"/>
+        <menuitem id="bsd_unit_menu_action_2"
+                  name="Sản phẩm"
+                  sequence="101"
+                  action="bsd_product_template_action"
+                  parent="bsd_unit_menu_2"/>
+        <menuitem id="bsd_loai_san_pham_menu_action_2"
+                  name="Loại sản phẩm"
+                  sequence="102"
+                  action="bsd_loai_san_pham_action"
+                  parent="bsd_unit_menu_2"/>
+        <menuitem id="bsd_thong_tin_ky_thuat_menu_action_2"
+                  name="Thông tin kỹ thuật"
+                  sequence="103"
+                  action="bsd_thong_tin_ky_thuat_action"
+                  parent="bsd_unit_menu_2"/>
 <!--Chuyển icon thảo luận về cuối màn hình-->
     <menuitem
         id="mail.menu_root_discuss"

@@ -19,9 +19,7 @@ class BsdThongSoKyThuat(models.Model):
     bsd_dien_giai_2 = fields.Char(string="Diễn giải 2", help="Diễn giải bằng tiếng Anh")
     bsd_loai_sp_id = fields.Many2one('bsd.loai_sp', string="Loại sản phẩm", required=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
-    state = fields.Selection([('active', 'Đang sử dụng'),
-                              ('inactive', 'Ngưng sử dụng')],
-                             string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
+    active = fields.Boolean(default=True)
     bsd_line_ids = fields.One2many('bsd.tt_kt_ct', 'bsd_tt_kt_id', string="Bảng chi tiết")
 
 

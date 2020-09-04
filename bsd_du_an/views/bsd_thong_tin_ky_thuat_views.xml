@@ -11,14 +11,13 @@
                             <field name="bsd_ma_ttkt"/>
                             <field name="bsd_ten_ttkt"/>
                             <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                        </group>
+                        <group>
                             <field name="bsd_loai_sp_id"
                                    domain="[('bsd_du_an_id','in',[bsd_du_an_id])]"
                                    options="{'no_create':true}"/>
-                        </group>
-                        <group>
                             <field name="bsd_dien_giai"/>
                             <field name="bsd_dien_giai_2"/>
-                            <field name="state"/>
                         </group>
                     </group>
                     <notebook>
@@ -72,7 +71,6 @@
                 <field name="bsd_ten_ttkt"/>
                 <field name="bsd_du_an_id" options="{'no_create':true}"/>
                 <field name="bsd_loai_sp_id" options="{'no_create':true}"/>
-                <field name="state"/>
             </tree>
         </field>
     </record>

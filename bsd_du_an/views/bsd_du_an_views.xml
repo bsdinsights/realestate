@@ -5,6 +5,9 @@
         <field name="model">bsd.du_an</field>
         <field name="arch" type="xml">
             <form duplicate="0">
+                <header>
+                    <field name="state" widget="statusbar" options="{'clickable':1}"/>
+                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_unit" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_sl_unit', '=', 0)]}">
@@ -42,7 +45,6 @@
                                         <field name="bsd_tong_dt" class="mr-1"/>
                                         <span>m2</span>
                                     </div>
-                                    <field name="state"/>
                                 </group>
                             </group>
                             <group string="ĐỊNH DẠNG MÃ CĂN HỘ">
@@ -162,7 +164,6 @@
                                         <tree editable="bottom">
                                             <field name="bsd_ngan_hang_id" options="{'no_create':true}"/>
                                             <field name="bsd_ma_nh"/>
-                                            <field name="state"/>
                                         </tree>
                                     </field>
                                 </group>
@@ -173,7 +174,6 @@
                                                    options="{'no_create':true}"
                                                    domain="[('partner_id', '=', parent.bsd_chu_dt_id)]"/>
                                             <field name="bsd_ngan_hang_id"/>
-                                            <field name="state"/>
                                         </tree>
                                         <form>
                                             <sheet>
@@ -183,7 +183,6 @@
                                                         <field name="bsd_ngan_hang_id"/>
                                                     </group>
                                                     <group>
-                                                        <field name="state"/>
                                                     </group>
                                                 </group>
                                             </sheet>
@@ -197,7 +196,6 @@
                                         <tree editable="bottom">
                                             <field name="bsd_ngan_hang_id" options="{'no_create':true}"/>
                                             <field name="bsd_ma_nh"/>
-                                            <field name="state"/>
                                         </tree>
                                     </field>
                                 </group>

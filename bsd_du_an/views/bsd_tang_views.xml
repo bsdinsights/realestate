@@ -13,12 +13,11 @@
                                    options="{'no_create':true}"
                                    domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
                             <field name="bsd_ten_tang"/>
-                            <field name="bsd_ma_tang"/>
                         </group>
                         <group>
+                            <field name="bsd_ma_tang"/>
                             <field name="bsd_stt"/>
                             <field name="bsd_dien_giai"/>
-                            <field name="state"/>
                         </group>
                     </group>
                 </sheet>
@@ -39,7 +38,6 @@
                 <field name="bsd_du_an_id"/>
                 <field name="bsd_toa_nha_id"/>
                 <field name="bsd_ten_tang"/>
-                <field name="state"/>
             </tree>
         </field>
     </record>

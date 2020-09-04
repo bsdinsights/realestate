@@ -17,7 +17,6 @@
                             <field name="bsd_toa_nha_id"
                                    options="{'no_create':true}"
                                    domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
-                            <field name="state"/>
                         </group>
                     </group>
                 </sheet>
@@ -38,7 +37,6 @@
                 <field name="bsd_ten_nhom"/>
                 <field name="bsd_du_an_id"/>
                 <field name="bsd_toa_nha_id"/>
-                <field name="state"/>
             </tree>
         </field>
     </record>

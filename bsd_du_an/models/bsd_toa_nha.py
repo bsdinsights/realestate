@@ -30,9 +30,7 @@ class BsdBlock(models.Model):
     bsd_so_tang = fields.Integer(string="Số tầng", help="Số tầng")
     bsd_so_unit = fields.Integer(string="Số căn hộ", help="Số căn hộ")
     bsd_dia_chi = fields.Text(string="Địa chỉ", help="Địa chỉ tòa nhà")
-    state = fields.Selection([('active', 'Đang sử dụng'),
-                              ('inactive', 'Ngưng sử dụng')],
-                             string="Trạng thái", default='active', tracking=1, help="Trạng thái")
+    active = fields.Boolean(default=True)
 
     def name_get(self):
         res = []

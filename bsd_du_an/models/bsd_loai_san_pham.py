@@ -18,9 +18,7 @@ class BsdLoaiSanPham(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True, help="Tên dự án")
     bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà", help="Tên tòa nhà")
-    state = fields.Selection([('active', 'Đang sử dụng'),
-                              ('inactive', 'Ngưng sử dụng')],
-                             string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
+    active = fields.Boolean(default=True)
 
     def name_get(self):
         res = []

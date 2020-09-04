@@ -12,13 +12,12 @@
                             <field name="bsd_ma_tn"/>
                             <field name="bsd_ten_tn"/>
                             <field name="bsd_dia_chi"/>
-                            <field name="bsd_ma_ht"/>
                         </group>
                         <group>
+                            <field name="bsd_ma_ht"/>
                             <field name="bsd_stt"/>
                             <field name="bsd_so_tang"/>
                             <field name="bsd_so_unit"/>
-                            <field name="state"/>
                         </group>
                     </group>
                 </sheet>
@@ -41,7 +40,6 @@
                 <field name="bsd_ten_tn"/>
                 <field name="bsd_so_tang"/>
                 <field name="bsd_so_unit"/>
-                <field name="state"/>
             </tree>
         </field>
     </record>

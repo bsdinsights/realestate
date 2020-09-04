@@ -204,5 +204,5 @@
               name="DS theo dõi"
               sequence="18"
               action="bsd_ds_td_action"
-              web_icon="fa fa-dot-circle-o,#FFFFFF,#cb6382"/>
+              web_icon="fa fa-tags,#FFFFFF,#cb6382"/>
 </odoo>

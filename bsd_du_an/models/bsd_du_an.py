@@ -105,7 +105,7 @@ class BsdProject(models.Model):
 
     bsd_unit_ids = fields.One2many('product.template', 'bsd_du_an_id', string="Danh sách căn hộ", readonly=True)
     bsd_sl_unit = fields.Integer(string="# Căn hộ", compute="_compute_sl_unit")
-
+    active = fields.Boolean(default=True)
     bsd_tong_dt = fields.Float(string="Tổng diện tích", help="Tổng diện tích dự án", digits=(14,0))
 
     @api.constrains('bsd_tl_dc')
@@ -170,9 +170,7 @@ class BsdDuanNganHangTaiTro(models.Model):
     bsd_ngan_hang_id = fields.Many2one('res.bank', string="Ngân hàng", required=True)
     bsd_ma_nh = fields.Char(related="bsd_ngan_hang_id.bic", string="Mã")
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án")
-    state = fields.Selection([('active', 'Đang sử dụng'),
-                              ('inactive', 'Ngưng sử dụng')],
-                             string="Trạng thái", default='active')
+    active = fields.Boolean(default=True)
 
 
 class BsdDuanNganHangChoVay(models.Model):
