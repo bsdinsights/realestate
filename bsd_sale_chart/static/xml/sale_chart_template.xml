@@ -37,13 +37,13 @@
 
                                     </tr>
                                     <tr class="create_den_gia">
-                                        <td class="o_td_label" style="min-width:80px;padding:0 0 0 0;"><label class="o_form_label">Đến</label></td>
+                                        <td class="o_td_label" style="min-width:80px;padding:0 0 0 0;"><label class="o_form_label">Giá đến</label></td>
                                         <td class="o_td_field" style="padding:0 0 0 0;"></td>
                                         <td>đ</td>
 
                                     </tr>
                                     <tr class="create_view">
-                                        <td class="o_td_label" style="min-width:80px;padding:0 0 0 0;"><label class="o_form_label">View</label></td>
+                                        <td class="o_td_label" style="min-width:80px;padding:0 0 0 0;"><label class="o_form_label">Hướng nhìn</label></td>
                                         <td style="padding:0 0 0 0;" class="o_td_field"></td>
                                     </tr>
                                 </tbody>
@@ -56,7 +56,7 @@
                                         <td>m2</td>
                                     </tr>
                                     <tr class="create_den_dt">
-                                        <td class="o_td_label" style="min-width:80px;padding:0 0 0 0;"><label class="o_form_label">Đến</label></td>
+                                        <td class="o_td_label" style="min-width:80px;padding:0 0 0 0;"><label class="o_form_label">Diện tích đến</label></td>
                                          <td class="o_td_field" style="padding:0 0 0 0;"></td>
                                         <td>m2</td>
                                     </tr>

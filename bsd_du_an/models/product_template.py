@@ -19,17 +19,21 @@ class ProductTemplate(models.Model):
     def name_get(self):
         return [(template.id, template.bsd_ma_unit)for template in self]
 
-    bsd_stt = fields.Char(string="Số thứ tự", help="Số thứ tự sản phẩm", required=True)
-    bsd_ten_unit = fields.Char(string="Tên sản phẩm", help="Tên sản phẩm bao gồm mã tòa nhà, mã tầng và số sản phẩm")
-    bsd_ma_unit = fields.Char(string="Mã sản phẩm",
+    bsd_stt = fields.Char(string="Số thứ tự", help="Số thứ tự sản phẩm", required=True,
+                          readonly=True,
+                          states={'chuan_bi': [('readonly', False)]})
+    bsd_ten_unit = fields.Char(string="Mã sản phẩm",
+                               help="Mã sản phẩm bao gồm mã tòa nhà, mã tầng và số sản phẩm")
+    bsd_ma_unit = fields.Char(string="Mã SP (hệ thống)",
                               help="Mã đầy đủ của sản phẩm bao gồm mã dữ án, mã tòa nhà, mã tầng và số sản phẩm")
+    bsd_ten_sp = fields.Char(string="Tên sản phẩm", help="Tên sản phẩm")
     _sql_constraints = [
         ('bsd_ma_unit_unique', 'unique (bsd_ma_unit)',
          'Mã unit đã tồn tại !'),
     ]
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True, help="Tên dự án")
-    bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà", required=True, help="Tên tòa nhà")
-    bsd_tang_id = fields.Many2one('bsd.tang', string="Tầng", required=True, help="Tên tầng lầu")
+    bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà/ khu", required=True, help="Tên tòa nhà hoặc khu ")
+    bsd_tang_id = fields.Many2one('bsd.tang', string="Tầng/ dãy", required=True, help="Tên tầng lầu hoặc dãy nhà")
     bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc của sản phẩm")
     bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ của sản phẩm")
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Thông tin về sản phẩm")
@@ -46,15 +50,16 @@ class ProductTemplate(models.Model):
                                   ('6', 'Đông bắc'),
                                   ('7', 'Tây nam'),
                                   ('8', 'Tây bắc')], string="Hướng", help="Hướng nhà")
-    bsd_view = fields.Selection([('1', 'Phố'),
-                                 ('2', 'Hồ bơi'),
-                                 ('3', 'Công viên'),
-                                 ('4', 'Mặt tiền'),
-                                 ('5', 'Bãi biển/sông/hồ/núi'),
-                                 ('6', 'Rừng'),
-                                 ('7', 'Cao tốc'),
-                                 ('8', 'Hồ'),
-                                 ('9', 'Biển')], string="View", help="Góc nhìn của sản phẩm")
+    # bsd_view = fields.Selection([('1', 'Phố'),
+    #                              ('2', 'Hồ bơi'),
+    #                              ('3', 'Công viên'),
+    #                              ('4', 'Mặt tiền'),
+    #                              ('5', 'Bãi biển/sông/hồ/núi'),
+    #                              ('6', 'Rừng'),
+    #                              ('7', 'Cao tốc'),
+    #                              ('8', 'Hồ'),
+    #                              ('9', 'Biển')], string="Hướng nhìn", help="Góc nhìn của sản phẩm")
+    bsd_view_ids = fields.Many2many('bsd.view', string="Hướng nhìn")
     bsd_so_pn = fields.Integer(string="Số phòng ngủ", help="Số phòng ngủ của sản phẩm")
     bsd_loai_bds = fields.Selection([('1', 'Liền thổ(đất)'),
                                      ('2', 'Căn hộ'),
@@ -68,13 +73,14 @@ class ProductTemplate(models.Model):
                                       ('2', 'Căn hộ nhiều tầng'),
                                       ('3', 'Siêu thị/cửa hàng'),
                                       ('4', 'Penthouse')], string="Loại sản phẩm", help="Loại sản phẩm")
-    bsd_tl_tc = fields.Float(string="Tỷ lệ Tiền cọc",
+    bsd_tl_tc = fields.Float(string="Tỷ lệ tiền cọc",
                              help="Tỷ lệ thanh toán tối thiểu để ký thỏa thuận đặt cọc")
     bsd_dt_cl = fields.Float(string="Chênh lệch (+/-)",
-                             help="Tỷ lệ chênh lệch giữa diện tích xây dựng và diện tích sử dụng")
+                             help="Tỷ lệ chênh lệch giữa diện tích xây dựng và diện tích sử dụng",
+                             required=True)
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng",
-                             help="Diện tích tim tường")
-    bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế")
+                             help="Diện tích tim tường", required=True)
+    bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế", required=True)
     bsd_dt_tt = fields.Float(string="Diện tích thực tế", help="Diện tích thông thủy thực tế")
     bsd_dt_sh = fields.Float(string="Diện tích sổ hồng", help="Diện tích sổ hồng")
     bsd_don_gia = fields.Monetary(string="Đơn giá bán/m2", help="Đơn giá bán trước thuế theo m2")
@@ -86,7 +92,7 @@ class ProductTemplate(models.Model):
                                                                     QSDĐ/m2
                                                                     """,
                                     readonly=True, compute='_compute_bsd_tong_gtsd_dat', store=True)
-    bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì")
+    bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì", required=True)
     bsd_tien_pbt = fields.Monetary(string="Phí bảo trì", help="""
                                                                 Tổng tiền phí bảo trì được tính theo công thức:
                                                                 Tỷ lệ phí bảo trì * giá bán trước thuế
@@ -112,7 +118,7 @@ class ProductTemplate(models.Model):
     bsd_tt_vay = fields.Selection([('0', 'Không'),
                                    ('1', 'Có')], string="Tình trạng vay", default='0',
                                   help="Tình trạng vay ngân hàng của sản phẩm")
-    bsd_ngay_dkbg = fields.Date(string="Ngày DKBG", help="Ngày dự kiến bàn giao")
+    bsd_ngay_dkbg = fields.Date(string="Ngày dự kiến bàn giao", help="Ngày dự kiến bàn giao")
     bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý", help="Số tháng đóng phí quản lý")
     bsd_don_gia_pql = fields.Monetary(string="Đơn giá PQL", help="Đơn giá Phí quản lý m2/tháng", required=True)
     bsd_tien_pql = fields.Monetary(string="Phí quản lý", help="Số tiền phí quản lý",
@@ -121,7 +127,7 @@ class ProductTemplate(models.Model):
                              help="% thanh toán đủ điều kiện bàn giao(tối thiểu")
     bsd_ngay_bg = fields.Date(string="Ngày bàn giao",
                               help="Ngày bàn giao thực tế sản phẩm cho khách hàng")
-    bsd_ngay_cn = fields.Date(string="Ngày cất nóc",
+    bsd_ngay_cn = fields.Date(string="Ngày ht cất nóc",
                               help="Ngày chứng nhận cất nóc (bê tông tầng mái)")
     bsd_ngay_cap_sh = fields.Date(string="Ngày cấp sổ hồng",
                                   help="Ngày khách hàng nhận sổ hồng")
@@ -211,3 +217,10 @@ class ProductTemplate(models.Model):
                                     tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_stt
                 })
         return templates
+
+
+class BsdHuongNhin(models.Model):
+    _name = "bsd.view"
+    _rec_name = "bsd_ten"
+
+    bsd_ten = fields.Char(string="Hướng nhìn", help="Hướng nhìn", required=True)

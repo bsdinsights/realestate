@@ -17,13 +17,10 @@ class BsdProject(models.Model):
          'Mã dự án đã tồn tại !'),
     ]
     bsd_chu_dt_id = fields.Many2one('res.partner', string="Chủ dự án", required=True, help="Tên chủ đầu tư của dự án")
-    bsd_loai_da = fields.Selection([('chung_cu', 'Chung cư'),
-                                    ('khu_ph', 'Khu phức hợp'),
-                                    ('nha_lk', 'Nhà liền kề'),
-                                    ('khu_nd', 'Khu nghỉ dưỡng')], string="Loại dự án", help="Loại hình dự án")
-    bsd_loai_sd = fields.Selection([('con', 'Condo'),
-                                    ('res', 'Căn hộ'),
-                                    ('pen', 'Nhà phố')], string="Loại hình sử dụng", help="Loại hình sử dụng")
+    bsd_loai_da = fields.Selection([('da_rieng', 'Dự án riêng'),
+                                    ('da_ph', 'Dự án phức hợp')], string="Loại dự án", help="Loại hình dự án")
+    bsd_mh_kd = fields.Selection([('nha_o', 'Nhà ở'), ('nghi_duong', 'Nghỉ dưỡng')], string="Mô hình kinh doanh")
+    bsd_loai_sd_ids = fields.Many2many('bsd.lh_sd', string="Loại hình sử dụng", help="Loại hình sử dụng")
     bsd_gp_dt = fields.Char(string="Giấy phép đầu tư", help="Giấy phép đầu tư của dự án")
     bsd_ngay_gp = fields.Date(string="Ngày cấp phép", help="Ngày cấp phép đầu tư của dự án")
     bsd_dia_chi = fields.Text(string="Địa chỉ", help="Địa chỉ của dự án")
@@ -198,3 +195,10 @@ class BsdDuanTaiKhoanNganHang(models.Model):
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Ngưng sử dụng')],
                              string="Trạng thái", default='active')
+
+
+class BsdLoaiHinhSuDung(models.Model):
+    _name = 'bsd.lh_sd'
+    _rec_name = 'bsd_ten'
+
+    bsd_ten = fields.Char(string="Loại hình sử dụng", help="Loại hình sử dụng", required=True)

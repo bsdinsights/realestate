@@ -26,7 +26,7 @@
                                            options="{'no_create':true}"/>
                                     <field name="bsd_ten_da"/>
                                     <field name="bsd_loai_da"/>
-                                    <field name="bsd_loai_sd"/>
+                                    <field name="bsd_loai_sd_ids" widget="many2many_tags"/>
                                     <field name="bsd_gp_dt"/>
                                     <field name="bsd_ngay_gp"/>
                                     <field name="bsd_dia_chi"/>
@@ -219,7 +219,8 @@
                 <field name="bsd_ma_da"/>
                 <field name="bsd_ten_da"/>
                 <field name="bsd_loai_da"/>
-                <field name="bsd_loai_sd"/>
+                <field name="bsd_mh_kd"/>
+                <field name="bsd_loai_sd_ids" widget="many2many_tags"/>
                 <field name="bsd_ngay_dkcn"/>
                 <field name="bsd_ngay_dkbg"/>
                 <field name="state"/>

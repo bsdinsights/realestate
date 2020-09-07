@@ -25,7 +25,7 @@ class BsdSaleChartWidget(models.AbstractModel):
                                  ('6', 'Rừng'),
                                  ('7', 'Cao tốc'),
                                  ('8', 'Hồ'),
-                                 ('9', 'Biển')], string="View", help="Góc nhìn của căn hộ")
+                                 ('9', 'Biển')], string="Hướng nhìn", help="Góc nhìn của căn hộ")
     bsd_huong = fields.Selection([('1', 'Đông'),
                                   ('2', 'Tây'),
                                   ('3', 'Nam'),
