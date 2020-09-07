@@ -30,7 +30,7 @@
                     <group string="THÔNG TIN CÁ NHÂN">
                         <group>
                             <field name="bsd_ho_tl" required="1"/>
-                            <field name="name"/>
+                            <field name="name" required="1"/>
                             <field name="bsd_ngay_sinh"/>
                             <field name="bsd_gioi_tinh"/>
                             <field name="phone"/>
@@ -59,14 +59,14 @@
                     <group string="ĐỊA CHỈ">
                         <group>
                             <field name="bsd_dia_chi_tt"/>
-                            <field name="bsd_quoc_gia_tt_id" options="{'no_create':true}"/>
+                            <field name="bsd_quoc_gia_tt_id" options="{'no_create':true}" required="1"/>
                             <field name="bsd_tinh_tt_id" domain="[('country_id', 'in',[bsd_quoc_gia_tt_id])]"
-                                   options="{'no_create':true}"/>
+                                   options="{'no_create':true}" required="1"/>
                             <field name="bsd_quan_tt_id" domain="[('bsd_tinh_thanh_id', 'in',[bsd_tinh_tt_id])]"
-                                   options="{'no_create':true}"/>
+                                   options="{'no_create':true}" required="1"/>
                             <field name="bsd_phuong_tt_id" domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_tt_id])]"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_so_nha_tt"/>
+                                   options="{'no_create':true}" required="1" />
+                            <field name="bsd_so_nha_tt" required="1"/>
                             <field name="bsd_cung_dc"/>
                         </group>
                         <group>
@@ -171,7 +171,12 @@
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <search>
+                <field name="bsd_ma_kh"/>
                 <field name="name"/>
+                <field name="bsd_cmnd"/>
+                <field name="bsd_ho_chieu"/>
+                <field name="mobile"/>
+                <field name="email"/>
             </search>
         </field>
     </record>
@@ -191,6 +196,6 @@
                       (0, 0, {'view_mode': 'kanban', 'view_id': ref('bsd_res_partner_cn_kanban')}),
                       (0, 0, {'view_mode': 'tree', 'view_id': ref('bsd_res_partner_cn_tree')}),
                       (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_res_partner_cn_form')})]"/>
-        <field name="search_view_id" ref="base.view_res_partner_filter"/>
+        <field name="search_view_id" ref="bsd_kinh_doanh.bsd_res_partner_cn_filter"/>
     </record>
 </odoo>

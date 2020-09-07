@@ -177,13 +177,15 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 },{shadow : true}).then(function(data){
                     if (data !== undefined){
                     _.each(data,function(item,index,data){
-                        var id = '#' + item[0].toString()
-                        var state = $(id).attr('class').replace("bsd_unit", "")
-                        if (item[2] === null) {
-                            item[2] = 0
+                        if (item[0] != null){
+                            var id = '#' + item[0].toString()
+                            var state = $(id).attr('class').replace("bsd_unit", "")
+                            if (item[2] === null) {
+                                item[2] = 0
+                            }
+                            $(id).removeClass(state).addClass(item[1])
+                            $(id).find(".so_giu_cho").text(item[2].toString())
                         }
-                        $(id).removeClass(state).addClass(item[1])
-                        $(id).find(".so_giu_cho").text(item[2].toString())
                     })
                     }
                 })
@@ -469,6 +471,9 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             $(event.currentTarget).tooltip("dispose")
             var unit_id = parseInt($(event.currentTarget).attr('id'))
             var data_unit = _.find(this.data, function(item){return item[4] === unit_id})
+            if (data_unit == undefined){
+                return null
+            }
             var data = {}
             data.dien_tich = data_unit[9]
             data.loai_ch = data_unit[10]

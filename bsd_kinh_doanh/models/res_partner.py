@@ -1,7 +1,8 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+import re
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -55,6 +56,22 @@ class ResPartner(models.Model):
     bsd_giu_cho_ids = fields.One2many('bsd.giu_cho', 'bsd_kh_moi_id', string="Danh sách giữ chỗ", domain=[('state', '!=', 'nhap')])
 
     bsd_sl_giu_cho = fields.Integer(string="# Giữ chỗ", compute="_compute_sl_gc", store=True)
+
+    @api.constrains('bsd_ngay_sinh')
+    def _constrains_ngay_sinh(self):
+        if not self.bsd_nguoi_bh:
+            nam_ht = fields.Date.today().year
+            nam_sinh = self.bsd_ngay_sinh.year
+            if nam_ht - nam_sinh < 18:
+                raise UserError(_("Khách hàng chưa đủ 18 tuổi, vui lòng kiểm tra lại"))
+
+    @api.constrains('email')
+    def _constrains_email(self):
+        if self.email:
+            match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', self.email)
+            _logger.debug(match)
+            if not match:
+                raise ValidationError('Nhập thông tin email không đúng')
 
     @api.depends('bsd_giu_cho_ids', 'bsd_giu_cho_ids.state')
     def _compute_sl_gc(self):
