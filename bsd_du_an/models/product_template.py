@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 from datetime import datetime
 import logging
 _logger = logging.getLogger(__name__)
@@ -184,7 +185,9 @@ class ProductTemplate(models.Model):
     bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý", help="Số tháng đóng phí quản lý",
                                    readonly=True,
                                    states={'chuan_bi': [('readonly', False)]})
-    bsd_don_gia_pql = fields.Monetary(string="Đơn giá PQL", help="Đơn giá Phí quản lý m2/tháng", required=True)
+    bsd_don_gia_pql = fields.Monetary(string="Đơn giá PQL", help="Đơn giá Phí quản lý m2/tháng", required=True,
+                                      readonly=True,
+                                      states={'chuan_bi': [('readonly', False)]})
     bsd_tien_pql = fields.Monetary(string="Phí quản lý", help="Số tiền phí quản lý",
                                    compute="_compute_tien_pql", store=True)
     bsd_dk_bg = fields.Float(string="Điều kiện bàn giao",
@@ -201,8 +204,7 @@ class ProductTemplate(models.Model):
                               states={'chuan_bi': [('readonly', False)]})
     bsd_ngay_cap_sh = fields.Date(string="Ngày cấp sổ hồng",
                                   help="Ngày khách hàng nhận sổ hồng",
-                                  readonly=True,
-                                  states={'chuan_bi': [('readonly', False)]})
+                                  readonly=True)
     state = fields.Selection([('chuan_bi', 'Chuẩn bị'),
                               ('san_sang', 'Sẵn sàng'),
                               ('dat_cho', 'Đặt chỗ'),
@@ -219,6 +221,102 @@ class ProductTemplate(models.Model):
                               ('ht_tt', 'Hoàn tất TT'),
                               ('da_ht', 'Đã hoàn tất')], string="Trạng thái",
                              default="chuan_bi", tracking=1, help="Trạng thái", required=True, readonly=True)
+
+    @api.constrains('bsd_tl_pbt')
+    def _check_bsd_phi_bao_tri(self):
+        for record in self:
+            if record.bsd_tl_pbt > 100 or record.bsd_tl_pbt < 0:
+                raise ValidationError("Phí bảo trì nằm trong khoảng 0 đến 100")
+
+    @api.constrains('bsd_thue_suat')
+    def _check_bsd_thue_suat(self):
+        for record in self:
+            if record.bsd_thue_suat > 100 or record.bsd_thue_suat < 0:
+                raise ValidationError("Thuế suất nằm trong khoảng 0 đến 100")
+
+    @api.constrains('bsd_tl_tc')
+    def _check_bsd_tl_tc(self):
+        for record in self:
+            if record.bsd_tl_tc > 100 or record.bsd_tl_tc < 0:
+                raise ValidationError("Tỷ lệ tiền cọc nằm trong khoảng 0 đến 100")
+
+    @api.constrains('bsd_so_pn')
+    def _check_bsd_so_pn(self):
+        for record in self:
+            if record.bsd_so_pn < 0:
+                raise ValidationError("Số phòng ngủ phải lớn hơn 0")
+
+    @api.constrains('bsd_dt_cl')
+    def _check_bsd_dt_cl(self):
+        for record in self:
+            if record.bsd_dt_cl > 100 or record.bsd_dt_cl < 0:
+                raise ValidationError("Diện tích chênh lệch nằm trong khoảng 0 đến 100")
+
+    @api.constrains('bsd_dt_xd')
+    def _check_bsd_dt_xd(self):
+        for record in self:
+            if record.bsd_dt_xd <= 0:
+                raise ValidationError("Diện tích xây dựng phải lớn hơn 0")
+
+    @api.constrains('bsd_dt_sd')
+    def _check_bsd_dt_sd(self):
+        for record in self:
+            if record.bsd_dt_sd <= 0:
+                raise ValidationError("Diện tích sử dụng phải lớn hơn 0")
+
+    @api.constrains('bsd_dt_tt')
+    def _check_bsd_dt_tt(self):
+        for record in self:
+            if record.bsd_dt_tt < 0:
+                raise ValidationError("Diện tích thực tế phải lớn hơn 0")
+
+    @api.constrains('bsd_dt_sh')
+    def _check_bsd_dt_sh(self):
+        for record in self:
+            if record.bsd_dt_sh < 0:
+                raise ValidationError("Diện tích sổ hồng phải lớn hơn 0")
+
+    @api.constrains('bsd_tien_gc')
+    def _check_bsd_tien_gc(self):
+        for record in self:
+            if record.bsd_tien_gc <= 0:
+                raise ValidationError("Tiền giữ chỗ phải lớn hơn 0")
+
+    @api.constrains('bsd_tien_dc')
+    def _check_bsd_tien_dc(self):
+        for record in self:
+            if record.bsd_tien_dc <= 0:
+                raise ValidationError("Tiền đặt cọc phải lớn hơn 0")
+
+    @api.constrains('bsd_don_gia')
+    def _check_bsd_don_gia(self):
+        for record in self:
+            if record.bsd_don_gia <= 0:
+                raise ValidationError("Đơn giá bán trước thuế phải lớn hơn 0")
+
+    @api.constrains('bsd_gia_ban')
+    def _check_bsd_gia_ban(self):
+        for record in self:
+            if record.bsd_gia_ban <= 0:
+                raise ValidationError("Giá bán phải lớn hơn 0")
+
+    @api.constrains('bsd_qsdd_m2')
+    def _check_bsd_qsdd_m2(self):
+        for record in self:
+            if record.bsd_qsdd_m2 <= 0:
+                raise ValidationError("Giá trị quyền sử dụng đất theo m2 phải lớn hơn 0")
+
+    @api.constrains('bsd_don_gia_pql')
+    def _check_bsd_don_gia_pql(self):
+        for record in self:
+            if record.bsd_don_gia_pql <= 0:
+                raise ValidationError("Đơn giá phí quản lý phải lớn hơn 0")
+
+    @api.constrains('bsd_thang_pql')
+    def _check_bsd_thang_pql(self):
+        for record in self:
+            if record.bsd_don_gia_pql <= 0:
+                raise ValidationError("Số tháng đóng phí quản lý phải lớn hơn 0")
 
     @api.onchange('bsd_du_an_id')
     def _onchange_du_an(self):

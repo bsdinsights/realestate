@@ -35,9 +35,11 @@
                             <field name="bsd_stt"/>
                         </group>
                         <group>
-                            <field name="bsd_ma_unit"/>
-                            <field name="bsd_ten_unit"/>
-                            <field name="bsd_ten_sp"/>
+                            <field name="bsd_ma_unit" readonly="1"/>
+                            <field name="bsd_ma_unit" invisible="1"/>
+                            <field name="bsd_ten_unit" readonly="1"/>
+                            <field name="bsd_ten_unit" invisible="1"/>
+                            <field name="bsd_ten_sp" />
                             <field name="bsd_dien_giai"/>
                         </group>
                     </group>

@@ -147,6 +147,18 @@ class BsdProject(models.Model):
             if record.bsd_cb_dc > 100 or record.bsd_cb_dc < 0:
                 raise ValidationError("Cảnh báo sau đặt cọc nằm trong khoảng 0 đến 100")
 
+    @api.constrains('bsd_tien_gc')
+    def _check_bsd_tien_gc(self):
+        for record in self:
+            if record.bsd_tien_gc <= 0:
+                raise ValidationError("Tiền giữ chỗ phải lớn hơn 0")
+
+    @api.constrains('bsd_tien_dc')
+    def _check_bsd_tien_dc(self):
+        for record in self:
+            if record.bsd_tien_dc <= 0:
+                raise ValidationError("Tiền đặt cọc phải lớn hơn 0")
+
     @api.depends('bsd_unit_ids')
     def _compute_sl_unit(self):
         for each in self:

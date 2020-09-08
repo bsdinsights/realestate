@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 import datetime
 import logging
 _logger = logging.getLogger(__name__)
@@ -120,7 +120,13 @@ class BsdGiuCho(models.Model):
         access_rights_uid = name_get_uid or self._uid
         ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
         recs = self.browse(ids)
-        return models.lazy_name_get(recs.with_user(access_rights_uid))    
+        return models.lazy_name_get(recs.with_user(access_rights_uid))
+
+    @api.constrains('bsd_tien_gc')
+    def _check_bsd_tien_gc(self):
+        for record in self:
+            if record.bsd_tien_gc < 0:
+                raise ValidationError("Tiền giữ chỗ phải lớn hơn 0")
 
     # KD.07.02 Ràng buộc số giữ chỗ theo Sản phẩm/ NVBH
     @api.constrains('bsd_nvbh_id', 'bsd_unit_id')

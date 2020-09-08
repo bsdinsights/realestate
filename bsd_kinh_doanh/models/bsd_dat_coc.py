@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 import logging
 import datetime
 import calendar
@@ -136,6 +136,12 @@ class BsdDatCoc(models.Model):
                                     domain=[('state', '=', 'duyet')],
                                     readonly=True)
     bsd_dsh_ids = fields.Many2many('res.partner', string="Đồng sở hữu", readonly=True)
+
+    @api.constrains('bsd_tien_dc')
+    def _check_bsd_tien_dc(self):
+        for record in self:
+            if record.bsd_tien_dc < 0:
+                raise ValidationError("Tiền đặt cọc phải lớn hơn 0")
 
     # Tên hiện thị record
     def name_get(self):

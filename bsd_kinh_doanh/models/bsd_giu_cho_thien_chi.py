@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 import datetime
 import logging
 _logger = logging.getLogger(__name__)
@@ -80,6 +80,12 @@ class BsdGiuChoThienChi(models.Model):
     bsd_huy_gc_id = fields.Many2one('bsd.huy_gc', string="Hủy giữ chỗ",
                                     help="Mã phiếu hủy giữ chỗ thiện chí được duyệt", readonly=1)
     bsd_so_huy_gc = fields.Integer(string="# Hủy giữ chỗ", compute='_compute_huy_gc')
+
+    @api.constrains('bsd_tien_gc')
+    def _check_bsd_tien_gc(self):
+        for record in self:
+            if record.bsd_tien_gc < 0:
+                raise ValidationError("Tiền giữ chỗ phải lớn hơn 0")
 
     def _compute_huy_gc(self):
         for each in self:
