@@ -86,40 +86,40 @@
                         <span t-esc="toa.headerToa[1]"/>
                     </a>
                     <div class="d-inline-flex flex-row ml-4">
-                        <div class="chuan_bi d-flex justify-content-center ml-2 bsd_state">
+                        <div class="chuan_bi d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Chuẩn bị">
                             <div t-esc="toa.state.chuan_bi"></div>
                         </div>
-                        <div class="san_sang d-flex justify-content-center ml-2 bsd_state">
+                        <div class="san_sang d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Sẵn sàng">
                             <div t-esc="toa.state.san_sang"></div>
                         </div>
-                        <div class="dat_cho d-flex justify-content-center ml-2 bsd_state">
+                        <div class="dat_cho d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Đặt chỗ">
                             <div t-esc="toa.state.dat_cho"></div>
                         </div>
-                        <div class="giu_cho d-flex justify-content-center ml-2 bsd_state">
+                        <div class="giu_cho d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Giữ chỗ">
                             <div t-esc="toa.state.giu_cho"></div>
                         </div>
-                        <div class="dat_coc d-flex justify-content-center ml-2 bsd_state">
+                        <div class="dat_coc d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Đặt cọc">
                             <div t-esc="toa.state.dat_coc"></div>
                         </div>
-                        <div class="chuyen_coc d-flex justify-content-center ml-2 bsd_state">
+                        <div class="chuyen_coc d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Chuyển cọc">
                             <div t-esc="toa.state.chuyen_coc"></div>
                         </div>
-                        <div class="da_thu_coc d-flex justify-content-center ml-2 bsd_state">
+                        <div class="da_tc d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Đã thu cọc">
                             <div t-esc="toa.state.da_thu_coc"></div>
                         </div>
-                        <div class="hoan_tat_dat_coc d-flex justify-content-center ml-2 bsd_state">
+                        <div class="ht_dc d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Hoàn tất đặt cọc">
                             <div t-esc="toa.state.hoan_tat_dat_coc"></div>
                         </div>
-                        <div class="thanh_toan_dot_1 d-flex justify-content-center ml-2 bsd_state">
+                        <div class="tt_dot_1 d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Thanh toán đợt 1">
                             <div t-esc="toa.state.thanh_toan_dot_1"></div>
                         </div>
-                        <div class="ky_thoa_thuan_coc d-flex justify-content-center ml-2 bsd_state">
+                        <div class="ky_tt_coc d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Ký thỏa thuận đặt cọc">
                             <div t-esc="toa.state.ky_thoa_thuan_coc"></div>
                         </div>
-                        <div class="du_dieu_kien d-flex justify-content-center ml-2 bsd_state">
+                        <div class="du_dk d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Đủ điều kiện">
                             <div t-esc="toa.state.du_dieu_kien"></div>
                         </div>
-                        <div class="da_ban d-flex justify-content-center ml-2 bsd_state">
+                        <div class="da_ban d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Đã bán">
                             <div t-esc="toa.state.da_ban"></div>
                         </div>
                     </div>
@@ -135,40 +135,40 @@
                                     <span t-esc="tang.headerTang[1]"/>
                                 </a>
                                 <div class="d-inline-flex flex-row ml-4">
-                                    <div class="chuan_bi d-flex justify-content-center ml-2 bsd_state">
+                                    <div class="chuan_bi d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Chuẩn bị">
                                         <div t-esc="tang.state.chuan_bi"></div>
                                     </div>
-                                    <div class="san_sang d-flex justify-content-center ml-2 bsd_state">
+                                    <div class="san_sang d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Sẵn sàng">
                                         <div t-esc="tang.state.san_sang"></div>
                                     </div>
-                                    <div class="dat_cho d-flex justify-content-center ml-2 bsd_state">
+                                    <div class="dat_cho d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Đặt chỗ">
                                         <div t-esc="tang.state.dat_cho"></div>
                                     </div>
-                                    <div class="giu_cho d-flex justify-content-center ml-2 bsd_state">
+                                    <div class="giu_cho d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Giữ chỗ">
                                         <div t-esc="tang.state.giu_cho"></div>
                                     </div>
-                                    <div class="dat_coc d-flex justify-content-center ml-2 bsd_state">
+                                    <div class="dat_coc d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Đặt cọc">
                                         <div t-esc="tang.state.dat_coc"></div>
                                     </div>
-                                    <div class="chuyen_coc d-flex justify-content-center ml-2 bsd_state">
+                                    <div class="chuyen_coc d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Chuyển cọc">
                                         <div t-esc="tang.state.chuyen_coc"></div>
                                     </div>
-                                    <div class="da_thu_coc d-flex justify-content-center ml-2 bsd_state">
+                                    <div class="da_tc d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Đã thu cọc">
                                         <div t-esc="tang.state.da_thu_coc"></div>
                                     </div>
-                                    <div class="hoan_tat_dat_coc d-flex justify-content-center ml-2 bsd_state">
+                                    <div class="ht_dc d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Hoàn tất đặt cọc">
                                         <div t-esc="tang.state.hoan_tat_dat_coc"></div>
                                     </div>
-                                    <div class="thanh_toan_dot_1 d-flex justify-content-center ml-2 bsd_state">
+                                    <div class="tt_dot_1 d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Thanh toán đợt 1">
                                         <div t-esc="tang.state.thanh_toan_dot_1"></div>
                                     </div>
-                                    <div class="ky_thoa_thuan_coc d-flex justify-content-center ml-2 bsd_state">
+                                    <div class="ky_tt_coc d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Ký thỏa thuận đặt cọc">
                                         <div t-esc="tang.state.ky_thoa_thuan_coc"></div>
                                     </div>
-                                    <div class="du_dieu_kien d-flex justify-content-center ml-2 bsd_state">
+                                    <div class="du_dk d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Đủ điều kiện">
                                         <div t-esc="tang.state.du_dieu_kien"></div>
                                     </div>
-                                    <div class="da_ban d-flex justify-content-center ml-2 bsd_state">
+                                    <div class="da_ban d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Đã bán">
                                         <div t-esc="tang.state.da_ban"></div>
                                     </div>
                                 </div>

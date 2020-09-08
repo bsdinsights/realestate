@@ -216,10 +216,7 @@ class ProductTemplate(models.Model):
                               ('tt_dot_1', 'Thanh toán đợt 1'),
                               ('ky_tt_coc', 'Ký thỏa thuận cọc'),
                               ('du_dk', 'Đủ điều kiện'),
-                              ('da_ban', 'Đã bán'),
-                              ('du_dkbg', 'Đủ ĐKBG'),
-                              ('ht_tt', 'Hoàn tất TT'),
-                              ('da_ht', 'Đã hoàn tất')], string="Trạng thái",
+                              ('da_ban', 'Đã bán')], string="Trạng thái",
                              default="chuan_bi", tracking=1, help="Trạng thái", required=True, readonly=True)
 
     @api.constrains('bsd_tl_pbt')

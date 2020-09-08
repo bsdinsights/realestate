@@ -12,9 +12,9 @@
     > a {
         pointer-events:none;
     }
-    > div {
-        pointer-events:none;
-    }
+  //  > div {
+   //     pointer-events:none;
+   // }
 }
 .bsd_header_tang{
     font-size: 1.25rem;
@@ -49,77 +49,101 @@
         pointer-events:none;
     }
 }
+// 1
 .chuan_bi{
     background: #FFC000;
     padding: 0 2px;
     font-size:13px;
     min-width:20px;
+    cursor: default;
 }
+// 2
 .san_sang{
     background: #00B050;
     padding: 0 2px;
     font-size:13px;
     min-width:20px;
+    cursor: default;
 }
+// 3
 .dat_cho{
     background: #00d1d4;
     padding: 0 2px;
     font-size:13px;
     min-width:20px;
+    cursor: default;
 }
+// 4
 .giu_cho{
     background: #00B0F0;
     padding: 0 2px;
     font-size:13px;
     min-width:20px;
+    cursor: default;
 }
+// 5
 .dat_coc{
     background: #339966;
     padding: 0 2px;
     font-size:13px;
     min-width:20px;
+    cursor: default;
 }
+// 6
 .chuyen_coc{
     background: #7030A0;
     padding: 0 2px;
     font-size:13px;
     min-width:20px;
+    cursor: default;
 }
-.da_thu_coc{
+// 7
+.da_tc{
     background: #ED7D31;
     padding: 0 2px;
     font-size:13px;
     min-width:20px;
+    cursor: default;
 }
-.hoan_tat_dat_coc{
-    background: #880000;
+// 8
+.ht_dc{
+    background: #C7D367;
     padding: 0 2px;
     font-size:13px;
     min-width:20px;
+    cursor: default;
 }
-.thanh_toan_dot_1{
-    background: #B30000;
+// 9
+.tt_dot_1{
+    background: #D4A03A;
     padding: 0 2px;
     font-size:13px;
     min-width:20px;
+    cursor: default;
 }
-.ky_thoa_thuan_coc{
-    background: #FF0F0F;
-    padding: 0 2px;
-    font-size:13px;
-    min-width:20px;
-}
-.du_dieu_kien{
-    background: #909090;
-    padding: 0 2px;
-    font-size:13px;
-    min-width:20px;
-}
-.da_ban{
+// 10
+.ky_tt_coc{
     background: #939393;
     padding: 0 2px;
     font-size:13px;
     min-width:20px;
+    cursor: default;
+}
+// 11
+.du_dk{
+    background: #904B28;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+    cursor: default;
+}
+// 12
+.da_ban{
+    background: #B30000;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+    cursor: default;
 }
 .bsd_tooltip_action {
     background-color: black;
