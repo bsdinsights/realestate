@@ -37,6 +37,7 @@
                         <group>
                             <field name="bsd_ma_unit"/>
                             <field name="bsd_ten_unit"/>
+                            <field name="bsd_ten_sp"/>
                             <field name="bsd_dien_giai"/>
                         </group>
                     </group>

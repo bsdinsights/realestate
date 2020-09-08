@@ -89,8 +89,8 @@
                     <group string="HIỆU LỰC">
                         <group>
                             <field name="bsd_ngay_hh_gc"/>
-                            <field name="bsd_thanh_toan"/>
-                            <field name="bsd_ngay_tt"/>
+                            <field name="bsd_thanh_toan" attrs="{'invisible':[('id', '=', False)]}"/>
+                            <field name="bsd_ngay_tt" attrs="{'invisible':[('id', '=', False)]}"/>
                         </group>
                         <group>
                             <field name="bsd_ngay_hh_stt"/>

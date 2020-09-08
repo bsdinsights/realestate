@@ -500,6 +500,10 @@ class BsdBaoGia(models.Model):
         action['context'] = context
         return action
 
+    # Sử dụng trên popup
+    def action_luu(self):
+        pass
+
 
 class BsdBaoGiaKhuyenMai(models.Model):
     _name = 'bsd.bao_gia_km'

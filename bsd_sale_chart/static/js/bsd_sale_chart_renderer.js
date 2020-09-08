@@ -536,14 +536,17 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          _clickBaoGia: function(event){
             event.stopPropagation()
             var self = this
-            this.do_action({
-                name: "Tạo bảng tính giá",
-                res_model: 'bsd.bao_gia',
-                views: [[false, 'form']],
-                type: 'ir.actions.act_window',
-                view_mode: "form",
-                target: "new"
+            this._loadAction('bsd_kinh_doanh.bsd_bao_gia_action_popup').then(function(action){
+                self.do_action(action)
             })
+//            this.do_action({
+//                name: "Tạo bảng tính giá",
+//                res_model: 'bsd.bao_gia',
+//                views: [[false, 'form']],
+//                type: 'ir.actions.act_window',
+//                view_mode: "form",
+//                target: "new"
+//            })
          },
         /**
          * @private Thay đổi dự án đợt mở bán

@@ -393,16 +393,20 @@ class BsdGiuCho(models.Model):
             'default_bsd_san_gd_id': self.bsd_san_gd_id.id,
             'default_bsd_ctv_id': self.bsd_ctv_id.id,
             'default_bsd_gioi_thieu_id': self.bsd_gioi_thieu_id.id,
+            'default_state': 'nhap',
         }
-        return {
-            "name": "Tạo báo giá",
-            "res_model": 'bsd.bao_gia',
-            "view": [[False, 'form']],
-            "type": 'ir.actions.act_window',
-            "view_mode": "form",
-            "context": context,
-            "target": "new"
-        }
+        action = self.env.ref('bsd_kinh_doanh.bsd_bao_gia_action_popup').read()[0]
+        action['context'] = context
+        return action
+        # return {
+        #     "name": "Tạo bảng tính giá",
+        #     "res_model": 'bsd.bao_gia',
+        #     "view": [[False, 'form']],
+        #     "type": 'ir.actions.act_window',
+        #     "view_mode": "form",
+        #     "context": context,
+        #     "target": "new"
+        # }
 
     def _compute_bao_gia(self):
         for each in self:
