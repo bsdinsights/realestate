@@ -57,6 +57,16 @@ class ResPartner(models.Model):
 
     bsd_sl_giu_cho = fields.Integer(string="# Giữ chỗ", compute="_compute_sl_gc", store=True)
 
+    @api.constrains('bsd_cmnd')
+    def _constrains_cmnd(self):
+        if self.env['res.users'].has_group('bsd_kinh_doanh.group_manager'):
+            pass
+        else:
+            khach_hang = self.env['res.partner'].search([('bsd_cmnd', '=', self.bsd_cmnd),
+                                                         ('id', '!=', self.id)])
+            if khach_hang:
+                raise UserError("Chứng minh nhân dân đã được sử dụng")
+
     @api.constrains('bsd_ngay_sinh')
     def _constrains_ngay_sinh(self):
         if not self.bsd_nguoi_bh:
