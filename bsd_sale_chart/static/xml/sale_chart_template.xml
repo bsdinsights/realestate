@@ -105,19 +105,19 @@
                             <div t-esc="toa.state.chuyen_coc"></div>
                         </div>
                         <div class="da_tc d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Đã thu cọc">
-                            <div t-esc="toa.state.da_thu_coc"></div>
+                            <div t-esc="toa.state.da_tc"></div>
                         </div>
                         <div class="ht_dc d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Hoàn tất đặt cọc">
-                            <div t-esc="toa.state.hoan_tat_dat_coc"></div>
+                            <div t-esc="toa.state.ht_dc"></div>
                         </div>
                         <div class="tt_dot_1 d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Thanh toán đợt 1">
-                            <div t-esc="toa.state.thanh_toan_dot_1"></div>
+                            <div t-esc="toa.state.tt_dot_1"></div>
                         </div>
                         <div class="ky_tt_coc d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Ký thỏa thuận đặt cọc">
-                            <div t-esc="toa.state.ky_thoa_thuan_coc"></div>
+                            <div t-esc="toa.state.ky_tt_coc"></div>
                         </div>
                         <div class="du_dk d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Đủ điều kiện">
-                            <div t-esc="toa.state.du_dieu_kien"></div>
+                            <div t-esc="toa.state.du_dk"></div>
                         </div>
                         <div class="da_ban d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Đã bán">
                             <div t-esc="toa.state.da_ban"></div>
@@ -154,19 +154,19 @@
                                         <div t-esc="tang.state.chuyen_coc"></div>
                                     </div>
                                     <div class="da_tc d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Đã thu cọc">
-                                        <div t-esc="tang.state.da_thu_coc"></div>
+                                        <div t-esc="tang.state.da_tc"></div>
                                     </div>
                                     <div class="ht_dc d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Hoàn tất đặt cọc">
-                                        <div t-esc="tang.state.hoan_tat_dat_coc"></div>
+                                        <div t-esc="tang.state.ht_dc"></div>
                                     </div>
                                     <div class="tt_dot_1 d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Thanh toán đợt 1">
-                                        <div t-esc="tang.state.thanh_toan_dot_1"></div>
+                                        <div t-esc="tang.state.tt_dot_1"></div>
                                     </div>
                                     <div class="ky_tt_coc d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Ký thỏa thuận đặt cọc">
-                                        <div t-esc="tang.state.ky_thoa_thuan_coc"></div>
+                                        <div t-esc="tang.state.ky_tt_coc"></div>
                                     </div>
                                     <div class="du_dk d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Đủ điều kiện">
-                                        <div t-esc="tang.state.du_dieu_kien"></div>
+                                        <div t-esc="tang.state.du_dk"></div>
                                     </div>
                                     <div class="da_ban d-flex justify-content-center ml-2 bsd_state" data-toggle="tooltip" title="Đã bán">
                                         <div t-esc="tang.state.da_ban"></div>
@@ -180,8 +180,8 @@
                                                 <div t-attf-class="{{unit[6]}} bsd_unit" t-attf-id="{{unit[4]}}">
                                                     <div class="text-center justify-content-center bsd_inner_unit">
                                                         <div class="bsd_title" t-esc="unit[5]"/>
-                                                        <div>Giữ chỗ:<span class="so_giu_cho" t-esc="unit[7]"/></div>
-                                                        <div class="bsd_gia"><span t-esc="unit[8]"/><span>đ</span></div>
+                                                        <div>Giữ chỗ: <span class="so_giu_cho" t-esc="unit[7]"/></div>
+                                                        <div class="bsd_gia"><span t-esc="unit[8]"/><span> đ</span></div>
                                                         <div>Quan tâm BĐS: 0</div>
                                                     </div>
                                                 </div>

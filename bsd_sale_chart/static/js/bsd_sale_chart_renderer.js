@@ -246,11 +246,11 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                             giu_cho:0,
                             dat_coc:0,
                             chuyen_coc:0,
-                            da_thu_coc:0,
-                            hoan_tat_dat_coc:0,
-                            thanh_toan_dot_1:0,
-                            ky_thoa_thuan_coc:0,
-                            du_dieu_kien:0,
+                            da_tc:0,
+                            ht_dc:0,
+                            tt_dot_1:0,
+                            ky_tt_coc:0,
+                            du_dk:0,
                             da_ban:0,
                         }
                     var group_tang = _.groupBy(item, function(item){ return item[2]})
@@ -266,11 +266,11 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                             giu_cho:0,
                             dat_coc:0,
                             chuyen_coc:0,
-                            da_thu_coc:0,
-                            hoan_tat_dat_coc:0,
-                            thanh_toan_dot_1:0,
-                            ky_thoa_thuan_coc:0,
-                            du_dieu_kien:0,
+                            da_tc:0,
+                            ht_dc:0,
+                            tt_dot_1:0,
+                            ky_tt_coc:0,
+                            du_dk:0,
                             da_ban:0,
                         }
                         var countState =_.countBy(item,function(item){
@@ -280,11 +280,11 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                             if (item[6] == 'giu_cho') {return 'giu_cho'}
                             if (item[6] == 'dat_coc') {return 'dat_coc'}
                             if (item[6] == 'chuyen_coc') {return 'chuyen_coc'}
-                            if (item[6] == 'da_thu_coc') {return 'da_thu_coc'}
-                            if (item[6] == 'hoan_tat_dat_coc') {return 'hoan_tat_dat_coc'}
-                            if (item[6] == 'thanh_toan_dot_1') {return 'thanh_toan_dot_1'}
-                            if (item[6] == 'ky_thoa_thuan_coc') {return 'ky_thoa_thuan_coc'}
-                            if (item[6] == 'du_dieu_kien') {return 'du_dieu_kien'}
+                            if (item[6] == 'da_tc') {return 'da_tc'}
+                            if (item[6] == 'ht_dc') {return 'ht_dc'}
+                            if (item[6] == 'tt_dot_1') {return 'tt_dot_1'}
+                            if (item[6] == 'ky_tt_coc') {return 'ky_tt_coc'}
+                            if (item[6] == 'du_dk') {return 'du_dk'}
                             if (item[6] == 'da_ban') {return 'da_ban'}
                         })
                         if (countState){
