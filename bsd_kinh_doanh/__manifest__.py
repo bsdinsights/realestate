@@ -17,7 +17,7 @@
         'security/ir.model.access.csv',
         'security/bsd_security.xml',
         'views/bsd_kh_ca_nhan_views.xml',
-        'views/res_partner_views.xml',
+        'views/bsd_kh_doanh_nghiep_views.xml',
         'views/bsd_dot_mo_ban_views.xml',
         'views/bsd_product_template_views.xml',
         'views/bsd_giu_cho_thien_chi_views.xml',
