@@ -13,10 +13,10 @@ class BsdSaleChartWidget(models.AbstractModel):
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án")
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Đợt mở bán")
     bsd_unit = fields.Char(string='Mã căn hộ', help="Mã căn hộ")
-    bsd_tu_gia = fields.Float(string="Giá từ", help="Giá từ")
-    bsd_den_gia = fields.Float(string="Giá đến", help="Giá đến")
-    bsd_tu_dt = fields.Float(string="Từ diện tích")
-    bsd_den_dt = fields.Float(string="Đến diện tích")
+    bsd_tu_gia = fields.Char(string="Giá từ", help="Giá từ")
+    bsd_den_gia = fields.Char(string="Giá đến", help="Giá đến")
+    bsd_tu_dt = fields.Char(string="Từ diện tích")
+    bsd_den_dt = fields.Char(string="Đến diện tích")
     bsd_view = fields.Selection([('1', 'Phố'),
                                  ('2', 'Hồ bơi'),
                                  ('3', 'Công viên'),

@@ -107,7 +107,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                             }
                         }
                     ),
-                    bsd_tu_gia : new basic_fields.FieldFloat(self,
+                    bsd_tu_gia : new basic_fields.FieldChar(self,
                         'bsd_tu_gia',
                         self.model.get(recordID), {
                             mode: 'edit',
@@ -117,7 +117,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                             currency: 1,
                         }
                     ),
-                    bsd_den_gia : new basic_fields.FieldFloat(self,
+                    bsd_den_gia : new basic_fields.FieldChar(self,
                         'bsd_den_gia',
                         self.model.get(recordID), {
                             mode: 'edit',
@@ -126,7 +126,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                             }
                         }
                     ),
-                    bsd_tu_dt : new basic_fields.FieldFloat(self,
+                    bsd_tu_dt : new basic_fields.FieldChar(self,
                         'bsd_tu_dt',
                         self.model.get(recordID), {
                             mode: 'edit',
@@ -135,7 +135,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                             }
                         }
                     ),
-                    bsd_den_dt : new basic_fields.FieldFloat(self,
+                    bsd_den_dt : new basic_fields.FieldChar(self,
                         'bsd_den_dt',
                         self.model.get(recordID), {
                             mode: 'edit',
@@ -333,9 +333,10 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
         /**
          * @private hiển thị field tiền
          */
-         _formatCurrency: function(money){
-            money = money.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-            return money;
+         _format_number: function(x){
+            var parts = x.toString().split(",");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            return parts.join(",");
          },
         /**
          * @private giá từ thay đổi
@@ -343,14 +344,19 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          _onChangeTuGia: function(event){
             event.stopPropagation();
             var temp = $(event.currentTarget).val()
+            console.log("change giá")
+            console.log(typeof temp)
+            console.log(temp)
             if (temp){
-                this.filter.bsd_tu_gia =  Number(temp.replace(/[^0-9.-]+/g,""));
-                $(event.currentTarget).val(this._formatCurrency(this.filter.bsd_tu_gia))
+                temp = temp.replaceAll(".","")
+                var temp_so = temp.replaceAll(",",".")
+                this.filter.bsd_tu_gia =  Number(temp_so.replace(/[^0-9.-]+/g,""));
+                $(event.currentTarget).val(this._format_number(temp))
             }
             else {
                 this.filter.bsd_tu_gia =  null
             }
-
+            console.log(this.filter.bsd_tu_gia)
          },
         /**
          * @private giá đến thay đổi
@@ -359,13 +365,15 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             event.stopPropagation();
             var temp = $(event.currentTarget).val()
             if (temp){
-                this.filter.bsd_den_gia =  Number(temp.replace(/[^0-9.-]+/g,""));
-                $(event.currentTarget).val(this._formatCurrency(this.filter.bsd_den_gia))
+                temp = temp.replaceAll(".","")
+                var temp_so = temp.replaceAll(",",".")
+                this.filter.bsd_den_gia =  Number(temp_so.replace(/[^0-9.-]+/g,""));
+                $(event.currentTarget).val(this._format_number(temp))
             }
             else {
                 this.filter.bsd_den_gia =  null
             }
-
+            console.log(this.filter.bsd_den_gia)
          },
         /**
          * @private diện tích từ thay đổi
@@ -374,13 +382,15 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             event.stopPropagation();
             var temp = $(event.currentTarget).val()
             if (temp){
-                this.filter.bsd_tu_dt =  Number(temp.replace(/[^0-9.-]+/g,""))
-                $(event.currentTarget).val(this.filter.bsd_tu_dt)
+                temp = temp.replaceAll(".","")
+                var temp_so = temp.replaceAll(",",".")
+                this.filter.bsd_tu_dt =  Number(temp_so.replace(/[^0-9.-]+/g,""))
+                $(event.currentTarget).val(this._format_number(temp))
             }
             else {
                 this.filter.bsd_tu_dt =  null
             }
-
+            console.log(this.filter.bsd_tu_dt)
          },
         /**
          * @private Diện tích đến thay đổi
@@ -389,12 +399,15 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             event.stopPropagation();
             var temp = $(event.currentTarget).val()
             if (temp){
-                this.filter.bsd_den_dt =  Number(temp.replace(/[^0-9.-]+/g,""))
-                $(event.currentTarget).val(this.filter.bsd_den_dt)
+                temp = temp.replaceAll(".","")
+                var temp_so = temp.replaceAll(",",".")
+                this.filter.bsd_den_dt =  Number(temp_so.replace(/[^0-9.-]+/g,""))
+                $(event.currentTarget).val(this._format_number(temp))
             }
             else {
                 this.filter.bsd_den_dt =  null
             }
+            console.log(this.filter.bsd_den_dt)
          },
         /**
          * @private Lấy giá trị khi thay đổi tên căn hộ
@@ -656,19 +669,19 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                                   [8, 'Tây bắc']]
                 },
                 {
-                    type: 'float',
+                    type: 'char',
                     name: 'bsd_tu_gia',
                 },
                 {
-                    type: 'float',
+                    type: 'char',
                     name: 'bsd_den_gia',
                 },
                 {
-                    type: 'float',
+                    type: 'char',
                     name: 'bsd_tu_dt',
                 },
                 {
-                    type: 'float',
+                    type: 'char',
                     name: 'bsd_den_dt',
                 },
             ];
