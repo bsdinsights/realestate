@@ -27,6 +27,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             'click .bsd_unit': '_clickTooltip',
             'click .tooltip .bsd_giu_cho': '_clickGiuCho',
             'click .tooltip .bsd_bao_gia': '_clickBaoGia',
+            'click .mo_giu_cho': '_clickMoGiuCho',
             'scroll': '_scrollUnit',
         },
         custom_events: _.extend({}, FieldManagerMixin.custom_events,{
@@ -465,7 +466,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 action.res_id = unit_id
                 action.flags={'mode': 'readonly'}
                 self.do_action(action)
-
             })
 //            this.do_action('bsd_sale_chart.bsd_product_template_gio_hang_action')
          },
@@ -507,27 +507,30 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     data.giu_cho = giu_cho
                 }
                 var title = qweb.render('bsd_sale_chart.tooltip', {'data':data})
+                var template = qweb.render('bsd_sale_chart.template_tooltip', {'data': data_unit})
                 $(event.currentTarget).tooltip({
-                template: `<div class="tooltip" role="tooltip">
-                                <div class="arrow"></div>
-                                <div class="tooltip-inner bsd_tooltip_title"></div>
-                                <div class="bsd_tooltip_action" id=${data_unit[11]}>
-                                    <span class="bsd_quan_tam">Quan tâm</span>
-                                    <span class="bsd_giu_cho ml-4">Giữ chỗ</span>
-                                    <span class="bsd_bao_gia ml-4">Bảng tính giá</span>
-                                </div>
-                            </div>
-                           </div>`,
-                title: title,
-                delay: {show:0, hide:0},
-                selector: '.bsd_title',
-                placement: "top",
-                trigger: "click focus",
-                container: "#chart"
+                    template: template,
+                    title: title,
+                    delay: {show:0, hide:0},
+                    selector: '.bsd_title',
+                    placement: "top",
+                    trigger: "click focus",
+                    container: "#chart"
             }).tooltip("show")
             })
-
-
+         },
+        /**
+         * @private Click mở giữ chỗ
+         */
+         _clickMoGiuCho: function(event){
+            event.stopPropagation()
+            var self = this
+            var giu_cho_id = parseInt($(event.currentTarget).attr('id'))
+            this._loadAction('bsd_sale_chart.bsd_giu_cho_action_2').then(function(action){
+                action.res_id = giu_cho_id
+                action.flags={'mode': 'readonly'}
+                self.do_action(action)
+            })
          },
         /**
          * @private tạo giữ chỗ

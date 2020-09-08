@@ -213,7 +213,7 @@
             <tbody>
                 <t t-foreach="data.giu_cho" t-as="giu_cho">
                     <tr>
-                        <td><span t-esc="giu_cho.bsd_ma_gc"/> </td>
+                        <td><div class="mo_giu_cho" t-attf-id="{{giu_cho.id}}"><span t-esc="giu_cho.bsd_ma_gc"/></div></td>
                         <td><span t-esc="giu_cho.bsd_khach_hang_id[1]"/> </td>
                         <td class="text-center"><span t-esc="giu_cho.bsd_stt_bg"/> </td>
                         <td><span t-esc="giu_cho.bsd_ngay_hh_bg"/> </td>
@@ -223,6 +223,19 @@
             </tbody>
         </table>
         </t>
+    </t>
 
+    <t t-name="bsd_sale_chart.template_tooltip">
+        <div class="tooltip" role="tooltip">
+            <div class="arrow"></div>
+            <div class="tooltip-inner bsd_tooltip_title"></div>
+            <div class="bsd_tooltip_action" t-attf-id="{{data[11]}}">
+                <span class="bsd_quan_tam">Quan tâm</span>
+                <span class="bsd_giu_cho ml-4">Giữ chỗ</span>
+                <t t-if="data[6] != 'chuan_bi'">
+                    <span class="bsd_bao_gia ml-4">Bảng tính giá</span>
+                </t>
+            </div>
+       </div>
     </t>
 </templates>

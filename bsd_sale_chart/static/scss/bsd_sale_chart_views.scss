@@ -172,3 +172,12 @@
         }
     };
 }
+
+.mo_giu_cho{
+        color: #fff;
+        cursor: pointer;
+        text-decoration: underline;
+        &:hover {
+            color:#4169E1;
+        }
+}
