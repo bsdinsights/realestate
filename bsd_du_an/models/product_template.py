@@ -23,25 +23,47 @@ class ProductTemplate(models.Model):
                           readonly=True,
                           states={'chuan_bi': [('readonly', False)]})
     bsd_ten_unit = fields.Char(string="Mã sản phẩm",
-                               help="Mã sản phẩm bao gồm mã tòa nhà, mã tầng và số sản phẩm")
+                               help="Mã sản phẩm bao gồm mã tòa nhà, mã tầng và số sản phẩm",
+                               readonly=True,
+                               states={'chuan_bi': [('readonly', False)]})
     bsd_ma_unit = fields.Char(string="Mã SP (hệ thống)",
-                              help="Mã đầy đủ của sản phẩm bao gồm mã dữ án, mã tòa nhà, mã tầng và số sản phẩm")
-    bsd_ten_sp = fields.Char(string="Tên sản phẩm", help="Tên sản phẩm")
+                              help="Mã đầy đủ của sản phẩm bao gồm mã dữ án, mã tòa nhà, mã tầng và số sản phẩm",
+                              readonly=True,
+                              states={'chuan_bi': [('readonly', False)]})
+    bsd_ten_sp = fields.Char(string="Tên sản phẩm", help="Tên sản phẩm",
+                             readonly=True,
+                             states={'chuan_bi': [('readonly', False)]})
     _sql_constraints = [
         ('bsd_ma_unit_unique', 'unique (bsd_ma_unit)',
          'Mã unit đã tồn tại !'),
     ]
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True, help="Tên dự án")
-    bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà/ khu", required=True, help="Tên tòa nhà hoặc khu ")
-    bsd_tang_id = fields.Many2one('bsd.tang', string="Tầng/ dãy", required=True, help="Tên tầng lầu hoặc dãy nhà")
-    bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc của sản phẩm")
-    bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ của sản phẩm")
-    bsd_dien_giai = fields.Char(string="Diễn giải", help="Thông tin về sản phẩm")
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True, help="Tên dự án",
+                                   readonly=True,
+                                   states={'chuan_bi': [('readonly', False)]})
+    bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà/ khu", required=True, help="Tên tòa nhà hoặc khu",
+                                     readonly=True,
+                                     states={'chuan_bi': [('readonly', False)]})
+    bsd_tang_id = fields.Many2one('bsd.tang', string="Tầng/ dãy", required=True, help="Tên tầng lầu hoặc dãy nhà",
+                                  readonly=True,
+                                  states={'chuan_bi': [('readonly', False)]})
+    bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc của sản phẩm",
+                                  readonly=True,
+                                  states={'chuan_bi': [('readonly', False)]})
+    bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ của sản phẩm",
+                                  readonly=True,
+                                  states={'chuan_bi': [('readonly', False)]})
+    bsd_dien_giai = fields.Char(string="Diễn giải", help="Thông tin về sản phẩm",
+                                readonly=True,
+                                states={'chuan_bi': [('readonly', False)]})
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch",
-                                    help="Sàn giao dịch đang bán(sản phẩm) theo đợt mở bán")
+                                    help="Sàn giao dịch đang bán(sản phẩm) theo đợt mở bán",
+                                    readonly=True,
+                                    states={'chuan_bi': [('readonly', False)]})
 
     bsd_loai_sp_id = fields.Many2one('bsd.loai_sp', string="Phân nhóm",
-                                     help="Phân nhóm đặc tính kỹ thuật của sản phẩm")
+                                     help="Phân nhóm đặc tính kỹ thuật của sản phẩm",
+                                     readonly=True,
+                                     states={'chuan_bi': [('readonly', False)]})
     bsd_huong = fields.Selection([('1', 'Đông'),
                                   ('2', 'Tây'),
                                   ('3', 'Nam'),
@@ -49,56 +71,92 @@ class ProductTemplate(models.Model):
                                   ('5', 'Đông nam'),
                                   ('6', 'Đông bắc'),
                                   ('7', 'Tây nam'),
-                                  ('8', 'Tây bắc')], string="Hướng", help="Hướng nhà")
-    # bsd_view = fields.Selection([('1', 'Phố'),
-    #                              ('2', 'Hồ bơi'),
-    #                              ('3', 'Công viên'),
-    #                              ('4', 'Mặt tiền'),
-    #                              ('5', 'Bãi biển/sông/hồ/núi'),
-    #                              ('6', 'Rừng'),
-    #                              ('7', 'Cao tốc'),
-    #                              ('8', 'Hồ'),
-    #                              ('9', 'Biển')], string="Hướng nhìn", help="Góc nhìn của sản phẩm")
-    bsd_view_ids = fields.Many2many('bsd.view', string="Hướng nhìn")
-    bsd_so_pn = fields.Integer(string="Số phòng ngủ", help="Số phòng ngủ của sản phẩm")
+                                  ('8', 'Tây bắc')], string="Hướng", help="Hướng nhà",
+                                 readonly=True,
+                                 states={'chuan_bi': [('readonly', False)]})
+    bsd_view = fields.Selection([('1', 'Phố'),
+                                 ('2', 'Hồ bơi'),
+                                 ('3', 'Công viên'),
+                                 ('4', 'Mặt tiền'),
+                                 ('5', 'Bãi biển/sông/hồ/núi'),
+                                 ('6', 'Rừng'),
+                                 ('7', 'Cao tốc'),
+                                 ('8', 'Hồ'),
+                                 ('9', 'Biển')], string="Hướng nhìn", help="Góc nhìn của sản phẩm",
+                                readonly=True,
+                                states={'chuan_bi': [('readonly', False)]})
+    # bsd_view_ids = fields.Many2many('bsd.view', string="Hướng nhìn",
+    #                       readonly=True,
+    #                       states={'chuan_bi': [('readonly', False)]})
+    bsd_so_pn = fields.Integer(string="Số phòng ngủ", help="Số phòng ngủ của sản phẩm",
+                               readonly=True,
+                               states={'chuan_bi': [('readonly', False)]})
     bsd_loai_bds = fields.Selection([('1', 'Liền thổ(đất)'),
                                      ('2', 'Căn hộ'),
                                      ('3', 'Phức hợp'),
                                      ('4', 'Nghỉ dưỡng')],
                                     help="Loại hình sử dụng của sản phẩm",
-                                    string="Loại bất động sản")
+                                    string="Loại bất động sản",
+                                    readonly=True,
+                                    states={'chuan_bi': [('readonly', False)]})
     bsd_phan_loai = fields.Selection([('1', 'Condotel'),
-                                      ('2', 'Apartment')], string="Phân loại", help="Phân loại")
+                                      ('2', 'Apartment')], string="Phân loại", help="Phân loại",
+                                     readonly=True,
+                                     states={'chuan_bi': [('readonly', False)]})
     bsd_loai_unit = fields.Selection([('1', 'Căn hộ'),
                                       ('2', 'Căn hộ nhiều tầng'),
                                       ('3', 'Siêu thị/cửa hàng'),
-                                      ('4', 'Penthouse')], string="Loại sản phẩm", help="Loại sản phẩm")
+                                      ('4', 'Penthouse')], string="Loại sản phẩm", help="Loại sản phẩm",
+                                     readonly=True,
+                                     states={'chuan_bi': [('readonly', False)]})
     bsd_tl_tc = fields.Float(string="Tỷ lệ tiền cọc",
-                             help="Tỷ lệ thanh toán tối thiểu để ký thỏa thuận đặt cọc")
+                             help="Tỷ lệ thanh toán tối thiểu để ký thỏa thuận đặt cọc",
+                             readonly=True,
+                             states={'chuan_bi': [('readonly', False)]})
     bsd_dt_cl = fields.Float(string="Chênh lệch (+/-)",
                              help="Tỷ lệ chênh lệch giữa diện tích xây dựng và diện tích sử dụng",
-                             required=True)
+                             required=True,
+                             readonly=True,
+                             states={'chuan_bi': [('readonly', False)]})
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng",
-                             help="Diện tích tim tường", required=True)
-    bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế", required=True)
-    bsd_dt_tt = fields.Float(string="Diện tích thực tế", help="Diện tích thông thủy thực tế")
-    bsd_dt_sh = fields.Float(string="Diện tích sổ hồng", help="Diện tích sổ hồng")
-    bsd_don_gia = fields.Monetary(string="Đơn giá bán/m2", help="Đơn giá bán trước thuế theo m2")
-    bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán trước thuế của sản phẩm")
-    bsd_qsdd_m2 = fields.Monetary(string="QSDĐ/ m2", help="Giá trị quyền sử dụng đất theo m2")
+                             help="Diện tích tim tường", required=True,
+                             readonly=True,
+                             states={'chuan_bi': [('readonly', False)]})
+    bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế", required=True,
+                             readonly=True,
+                             states={'chuan_bi': [('readonly', False)]})
+    bsd_dt_tt = fields.Float(string="Diện tích thực tế", help="Diện tích thông thủy thực tế",
+                             readonly=True,
+                             states={'chuan_bi': [('readonly', False)]})
+    bsd_dt_sh = fields.Float(string="Diện tích sổ hồng", help="Diện tích sổ hồng",
+                             readonly=True,
+                             states={'chuan_bi': [('readonly', False)]})
+    bsd_don_gia = fields.Monetary(string="Đơn giá bán/m2", help="Đơn giá bán trước thuế theo m2",
+                                  readonly=True,
+                                  states={'chuan_bi': [('readonly', False)]})
+    bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán trước thuế của sản phẩm",
+                                  readonly=True,
+                                  states={'chuan_bi': [('readonly', False)]})
+    bsd_qsdd_m2 = fields.Monetary(string="QSDĐ/ m2", help="Giá trị quyền sử dụng đất theo m2",
+                                  readonly=True,
+                                  states={'chuan_bi': [('readonly', False)]})
     bsd_tien_qsdd = fields.Monetary(string="Giá trị QSDĐ", help="""
                                                                     Tổng giá trị sử dụng đất của sản phẩm được tính theo
                                                                     công thức: diện tích sử dụng(thông thủy) * 
                                                                     QSDĐ/m2
                                                                     """,
                                     readonly=True, compute='_compute_bsd_tong_gtsd_dat', store=True)
-    bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì", required=True)
+    bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì", required=True,
+                              readonly=True,
+                              states={'chuan_bi': [('readonly', False)]})
     bsd_tien_pbt = fields.Monetary(string="Phí bảo trì", help="""
                                                                 Tổng tiền phí bảo trì được tính theo công thức:
                                                                 Tỷ lệ phí bảo trì * giá bán trước thuế
                                                                 """,
                                    compute='_compute_bsd_phi_bao_tri', store=True)
-    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất")
+    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất",
+                                 readonly=True,
+                                 states={'chuan_bi': [('readonly', False)]})
     bsd_tien_thue = fields.Monetary(string="Tiền thuế", help="""Tiền thuế của sản phẩm được tính theo công thức:
                                                             (giá bán - Giá trị QSDĐ)* thuế suất""",
                                     readonly=True, compute='_compute_tien_thue', store=True)
@@ -117,20 +175,34 @@ class ProductTemplate(models.Model):
     bsd_ngay_huy = fields.Datetime(string="Ngày hủy ưu tiên", readonly=True, help="Ngày hủy ưu tiên")
     bsd_tt_vay = fields.Selection([('0', 'Không'),
                                    ('1', 'Có')], string="Tình trạng vay", default='0',
-                                  help="Tình trạng vay ngân hàng của sản phẩm")
-    bsd_ngay_dkbg = fields.Date(string="Ngày dự kiến bàn giao", help="Ngày dự kiến bàn giao")
-    bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý", help="Số tháng đóng phí quản lý")
+                                  help="Tình trạng vay ngân hàng của sản phẩm",
+                                  readonly=True,
+                                  states={'chuan_bi': [('readonly', False)]})
+    bsd_ngay_dkbg = fields.Date(string="Ngày dự kiến bàn giao", help="Ngày dự kiến bàn giao",
+                                readonly=True,
+                                states={'chuan_bi': [('readonly', False)]})
+    bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý", help="Số tháng đóng phí quản lý",
+                                   readonly=True,
+                                   states={'chuan_bi': [('readonly', False)]})
     bsd_don_gia_pql = fields.Monetary(string="Đơn giá PQL", help="Đơn giá Phí quản lý m2/tháng", required=True)
     bsd_tien_pql = fields.Monetary(string="Phí quản lý", help="Số tiền phí quản lý",
                                    compute="_compute_tien_pql", store=True)
     bsd_dk_bg = fields.Float(string="Điều kiện bàn giao",
-                             help="% thanh toán đủ điều kiện bàn giao(tối thiểu")
+                             help="% thanh toán đủ điều kiện bàn giao(tối thiểu",
+                             readonly=True,
+                             states={'chuan_bi': [('readonly', False)]})
     bsd_ngay_bg = fields.Date(string="Ngày bàn giao",
-                              help="Ngày bàn giao thực tế sản phẩm cho khách hàng")
+                              help="Ngày bàn giao thực tế sản phẩm cho khách hàng",
+                              readonly=True,
+                              states={'chuan_bi': [('readonly', False)]})
     bsd_ngay_cn = fields.Date(string="Ngày ht cất nóc",
-                              help="Ngày chứng nhận cất nóc (bê tông tầng mái)")
+                              help="Ngày chứng nhận cất nóc (bê tông tầng mái)",
+                              readonly=True,
+                              states={'chuan_bi': [('readonly', False)]})
     bsd_ngay_cap_sh = fields.Date(string="Ngày cấp sổ hồng",
-                                  help="Ngày khách hàng nhận sổ hồng")
+                                  help="Ngày khách hàng nhận sổ hồng",
+                                  readonly=True,
+                                  states={'chuan_bi': [('readonly', False)]})
     state = fields.Selection([('chuan_bi', 'Chuẩn bị'),
                               ('san_sang', 'Sẵn sàng'),
                               ('dat_cho', 'Đặt chỗ'),
@@ -146,7 +218,7 @@ class ProductTemplate(models.Model):
                               ('du_dkbg', 'Đủ ĐKBG'),
                               ('ht_tt', 'Hoàn tất TT'),
                               ('da_ht', 'Đã hoàn tất')], string="Trạng thái",
-                             default="chuan_bi", tracking=1, help="Trạng thái", required=True)
+                             default="chuan_bi", tracking=1, help="Trạng thái", required=True, readonly=True)
 
     @api.onchange('bsd_du_an_id')
     def _onchange_du_an(self):
