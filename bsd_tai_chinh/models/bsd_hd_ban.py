@@ -166,9 +166,9 @@ class BsdHdBan(models.Model):
             'state': 'du_dkbg'
         })
         # Cập nhật trạng thái unit
-        self.bsd_unit_id.write({
-            'state': 'du_dkbg'
-        })
+        # self.bsd_unit_id.write({
+        #     'state': 'du_dkbg'
+        # })
 
     # DV.01.23 Cập nhật trạng thái hoàn tất thanh toán
     def action_ht_tt(self):
@@ -189,6 +189,6 @@ class BsdHdBan(models.Model):
             'state': 'ht_tt'
         })
         # Cập nhật trạng thái hoàn tất thanh toán cho sản phẩm
-        self.bsd_unit_id.write({
-            'state': 'ht_tt'
-        })
+        # self.bsd_unit_id.write({
+        #     'state': 'ht_tt'
+        # })
