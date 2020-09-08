@@ -206,8 +206,8 @@
                 <tr>
                     <td>Mã giữ chỗ</td>
                     <td>Khách hàng</td>
-                    <td>Số thứ tự </td>
-                    <td>Hạn ưu tiên</td>
+                    <td>Ưu tiên</td>
+                    <td>Hết hạn</td>
                     <td>Nhân viên</td>
                 </tr>
             </thead>
@@ -216,7 +216,7 @@
                     <tr>
                         <td><span t-esc="giu_cho.bsd_ma_gc"/> </td>
                         <td><span t-esc="giu_cho.bsd_khach_hang_id[1]"/> </td>
-                        <td><span t-esc="giu_cho.bsd_stt_bg"/> </td>
+                        <td class="text-center"><span t-esc="giu_cho.bsd_stt_bg"/> </td>
                         <td><span t-esc="giu_cho.bsd_ngay_hh_bg"/> </td>
                         <td><span t-esc="giu_cho.bsd_nvbh_id[1]"/> </td>
                     </tr>

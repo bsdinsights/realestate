@@ -216,16 +216,20 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     args: [self.filter],
                     context: self.context,
             }).then(function (data){
-                var format_curency = ((money) => {
-                        money = money.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
-                        return money;
+                var format_number = ((x) => {
+                    var parts = x.toString().split(".");
+                    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    return parts.join(",");
                 });
                 self.data= _.each(data, function(item,index,data){
                     if (item[7] === null){
                         item[7] = 0
                     }
                     if (item[8] !== null){
-                        item[8] = format_curency(item[8])
+                        item[8] = format_number(item[8])
+                    }
+                    if (item[9] !== null){
+                        item[9] = format_number(item[9])
                     }
                     if (item[10] === null){
                         item[10] = ''
@@ -369,7 +373,8 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             event.stopPropagation();
             var temp = $(event.currentTarget).val()
             if (temp){
-                this.filter.bsd_tu_dt =  parseInt(temp)
+                this.filter.bsd_tu_dt =  Number(temp.replace(/[^0-9.-]+/g,""))
+                $(event.currentTarget).val(this.filter.bsd_tu_dt)
             }
             else {
                 this.filter.bsd_tu_dt =  null
@@ -383,7 +388,8 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             event.stopPropagation();
             var temp = $(event.currentTarget).val()
             if (temp){
-                this.filter.bsd_den_dt =  parseInt(temp)
+                this.filter.bsd_den_dt =  Number(temp.replace(/[^0-9.-]+/g,""))
+                $(event.currentTarget).val(this.filter.bsd_den_dt)
             }
             else {
                 this.filter.bsd_den_dt =  null
@@ -488,8 +494,14 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 }
                 else {
                     _.each(giu_cho, function(item,index,giu_cho){
+                          console.log(item.bsd_khach_hang_id[1].split("]"))
+                        item.bsd_khach_hang_id[1] = item.bsd_khach_hang_id[1].split("]")[1]
                         if (item.bsd_ngay_hh_bg === false){
                             item.bsd_ngay_hh_bg = ''
+                        }
+                        else {
+                            item.bsd_ngay_hh_bg
+                            item.bsd_ngay_hh_bg = new moment(item.bsd_ngay_hh_bg).format('DD/MM/YYYY HH:mm')
                         }
                     })
                     data.giu_cho = giu_cho
