@@ -58,7 +58,7 @@
 <!--    Tạo icon màn hình menu -->
     <menuitem id="bsd_du_an_menu_2"
               name="Dự án"
-              sequence="19"
+              sequence="1"
               web_icon="fa fa-building-o ,#FFFFFF,#cb6483"/>
         <menuitem id="bsd_du_an_menu_action_2"
                   name="Dự án"
@@ -77,7 +77,7 @@
                   parent="bsd_du_an_menu_2"/>
     <menuitem id="bsd_unit_menu_2"
           name="Sản phẩm"
-          sequence="20"
+          sequence="2"
           web_icon="fa fa-home,#FFFFFF,#80aac1"/>
         <menuitem id="bsd_unit_menu_action_2"
                   name="Sản phẩm"

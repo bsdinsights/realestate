@@ -91,8 +91,9 @@ class BsdPhieuThu(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
-    state = fields.Selection([('nhap', 'Nháp'), ('da_xn', 'Đã xác nhận'),
-                              ('da_gs', 'Đã ghi sổ'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
+    state = fields.Selection([('nhap', 'Nháp'),
+                              ('da_gs', 'Đã xác nhận'),
+                              ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
                              required=True, readonly=True, default='nhap', tracking=1)
 
     @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien')
@@ -156,12 +157,7 @@ class BsdPhieuThu(models.Model):
         if self.bsd_loai_pt in ['pql', 'pbt']:
             if not self.bsd_unit_id.bsd_ngay_cn:
                 raise UserError(_('Vui lòng kiểm tra thông tin sản phẩm trên hợp đồng'))
-        self.write({
-            'state': 'da_xn',
-        })
-
-    # Nút vào sổ
-    def action_vao_so(self):
+        # thực hiện ghi nhận thanh toán
         if self.bsd_loai_pt == 'tra_truoc':
             self._gs_pt_tra_truoc()
         elif self.bsd_loai_pt == 'khac':
@@ -178,6 +174,7 @@ class BsdPhieuThu(models.Model):
             self._gs_pt_pps()
         else:
             pass
+
         self.write({
             'state': 'da_gs',
         })

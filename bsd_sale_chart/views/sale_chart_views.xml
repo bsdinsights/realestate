@@ -12,7 +12,7 @@
 <!--    />-->
     <menuitem id="bsd_sale_chart_menu_2"
               name="Giỏ hàng"
-              sequence="1"
+              sequence="7"
               action="bsd_sale_chart.bsd_sale_chart_action"
               web_icon="fa fa-shopping-cart,#FFFFFF,#cb6383"
     />

@@ -174,7 +174,7 @@
 <!--    Tạo menu icon -->
     <menuitem id="bsd_cs_tt_menu_2"
               name="CS thanh toán"
-              sequence="21"
+              sequence="3"
               web_icon="fa fa-codepen,#FFFFFF,#a45858"/>
         <menuitem id="bsd_cs_tt_menu_action_2"
                   name="CS thanh toán"
@@ -188,13 +188,13 @@
                   parent="bsd_cs_tt_menu_2"/>
     <menuitem id="bsd_dk_bg_menu_action_2"
               name="ĐK bàn giao"
-              sequence="22"
+              sequence="4"
               web_icon="fa fa-puzzle-piece,#FFFFFF,#238c90"
               action="bsd_dk_bg_action"/>
 
     <menuitem id="bsd_chiet_khau_menu_2"
               name="Chiết khấu"
-              sequence="23"
+              sequence="5"
               web_icon="fa fa-hand-o-down,#FFFFFF,#c0b66e"/>
         <menuitem id="bsd_chiet_khau_menu_action_2"
                   name="Chiết khấu"
@@ -239,7 +239,7 @@
 
     <menuitem id="bsd_khuyen_mai_menu_action_2"
               name="CT khuyến mãi"
-              sequence="24"
+              sequence="6"
               action="bsd_khuyen_mai_action"
               web_icon="fa fa-gift,#FFFFFF,#717499"/>
 

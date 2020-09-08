@@ -132,13 +132,13 @@
 <!--    Tạo icon màn hình -->
     <menuitem id="bsd_hd_ban_menu_action_2"
               name="Hợp đồng"
-              sequence="7"
+              sequence="13"
               action="bsd_dich_vu.bsd_hd_ban_action"
               web_icon="fa fa-handshake-o,#FFFFFF,#c0b66d"
     />
     <menuitem id="bsd_phu_luc_menu_2"
               name="Phụ lục"
-              sequence="13"
+              sequence="19"
               web_icon="fa fa-code-fork,#FFFFFF,#6c3d3d"
     />
         <menuitem id="bsd_pl_dsh_menu_action_2"
@@ -158,7 +158,7 @@
                   parent="bsd_phu_luc_menu_2"/>
     <menuitem id="bsd_thong_bao_menu_2"
               name="Thông báo"
-              sequence="14"
+              sequence="20"
               web_icon="fa fa-bullhorn,#FFFFFF,#75b28e"
     />
         <menuitem id="bsd_tb_nt_menu_action_2"
@@ -178,17 +178,17 @@
                   parent="bsd_thong_bao_menu_2"/>
     <menuitem id="bsd_hd_ban_cn_menu_action_2"
               name="Chuyển nhượng HĐ"
-              sequence="15"
+              sequence="21"
               action="bsd_hd_ban_cn_action"
               web_icon="fa fa-share,#FFFFFF,#c0b66d"/>
     <menuitem id="bsd_nghiem_thu_menu_action_2"
               name="Nghiệm thu"
-              sequence="16"
+              sequence="22"
               action="bsd_nghiem_thu_action"
               web_icon="fa fa-share-alt,#FFFFFF,#d38455"/>
     <menuitem id="bsd_bao_giao_menu_2"
               name="Bàn giao"
-              sequence="17"
+              sequence="23"
               web_icon="fa fa-tty,#FFFFFF,#656765"/>
         <menuitem id="bsd_bg_sp_menu_action_2"
                   name="Bàn giao sản phẩm"
@@ -202,7 +202,7 @@
                   parent="bsd_bao_giao_menu_2"/>
     <menuitem id="bsd_ds_td_menu_action_2"
               name="DS theo dõi"
-              sequence="18"
+              sequence="24"
               action="bsd_ds_td_action"
               web_icon="fa fa-tags,#FFFFFF,#cb6382"/>
 </odoo>

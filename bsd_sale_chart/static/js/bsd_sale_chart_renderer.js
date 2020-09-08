@@ -537,7 +537,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             event.stopPropagation()
             var self = this
             this.do_action({
-                name: "Tạo báo giá",
+                name: "Tạo bảng tính giá",
                 res_model: 'bsd.bao_gia',
                 views: [[false, 'form']],
                 type: 'ir.actions.act_window',

@@ -97,7 +97,7 @@
 <!--    Cấu hình icon ngoài màn hình chính     -->
     <menuitem id="bsd_giu_cho_menu_2"
               name="Giữ chỗ"
-              sequence="2"
+              sequence="8"
               web_icon="fa fa-bars,#FFFFFF,#c1b76f"/>
         <menuitem id="bsd_gc_tc_menu_action_2"
                   name="Giữ chỗ thiện chí"
@@ -126,7 +126,7 @@
                   parent="bsd_giu_cho_menu_2"/>
     <menuitem id="bsd_bao_gia_menu_2"
               name="Bảng tính giá"
-              sequence="3"
+              sequence="9"
               web_icon="fa fa-pencil-square-o,#FFFFFF,#676967" />
         <menuitem id="bsd_bao_gia_menu_action_2"
                   name="Bảng tính giá"
@@ -140,19 +140,19 @@
                   parent="bsd_bao_gia_menu_2"/>
     <menuitem id="bsd_dat_coc_menu_action_2"
               name="Đặt cọc"
-              sequence="4"
+              sequence="10"
               action="bsd_kinh_doanh.bsd_dat_coc_action"
               web_icon="fa fa-file-text-o,#FFFFFF,#238c8f"
     />
     <menuitem id="bsd_cho_tt_menu_action_2"
               name="Chờ thanh toán"
-              sequence="5"
+              sequence="11"
               action="bsd_kinh_doanh.bsd_dat_coc_action"
               web_icon="fa fa-pause,#FFFFFF,#6f7296"
     />
     <menuitem id="bsd_dot_mb_menu_2"
               name="Đợt mở bán"
-              sequence="6"
+              sequence="12"
               web_icon="fa fa-gg,#FFFFFF,#d38354"/>
 
         <menuitem id="bsd_dot_mb_menu_action_2"

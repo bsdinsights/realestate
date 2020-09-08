@@ -12,11 +12,6 @@
                             attrs="{'invisible': ['|',('id', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
-                    <button string="Vào sổ"
-                            name="action_vao_so"
-                            states="da_xn"
-                            type="object"
-                            class="oe_highlight"/>
                     <button string="Cấn trừ"
                             name="action_can_tru"
                             type="object"
@@ -158,11 +153,11 @@
     </record>
 
     <record model="ir.actions.act_window" id="bsd_phieu_thu_action">
-        <field name="name">Phiếu thu</field>
+        <field name="name">Thanh toán</field>
         <field name="res_model">bsd.phieu_thu</field>
         <field name="view_mode">tree,pivot,graph,form</field>
         <field name="help" type="xml">
-            <p>Tạo mới phiếu thu</p>
+            <p>Tạo mới thanh toán</p>
         </field>
     </record>
 </odoo>

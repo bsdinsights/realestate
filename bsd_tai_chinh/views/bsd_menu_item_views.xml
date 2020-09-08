@@ -68,31 +68,31 @@
 <!--    Tạo icon màn hình-->
     <menuitem id="bsd_phieu_thu_menu_action_2"
               name="Thanh toán"
-              sequence="8"
+              sequence="14"
               action="bsd_tai_chinh.bsd_phieu_thu_action"
               web_icon="fa fa-money,#FFFFFF,#238c8f"
     />
     <menuitem id="bsd_lai_phat_menu_action_2"
               name="Lãi phạt"
-              sequence="9"
+              sequence="15"
               action="bsd_tai_chinh.bsd_phieu_thu_action"
               web_icon="fa fa-th-list,#FFFFFF,#cb6483"
     />
     <menuitem id="bsd_hoan_tien_menu_action_2"
               name="Hoàn tiền"
-              sequence="10"
+              sequence="16"
               action="bsd_tai_chinh.bsd_hoan_tien_action"
               web_icon="fa fa-undo,#FFFFFF,	#686968"
     />
     <menuitem id="bsd_can_tru_menu_action_2"
               name="Cấn trừ"
-              sequence="11"
+              sequence="17"
               action="bsd_tai_chinh.bsd_can_tru_action"
               web_icon="fa fa-credit-card,#FFFFFF,#d38252"
     />
     <menuitem id="bsd_phi_ps_menu_action_2"
               name="Phí phát sinh"
-              sequence="12"
+              sequence="18"
               action="bsd_tai_chinh.bsd_phi_ps_action"
               web_icon="fa fa-plus-circle ,#FFFFFF,#7da8c0"
     />
