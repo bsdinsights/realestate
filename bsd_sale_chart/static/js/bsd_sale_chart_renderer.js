@@ -351,7 +351,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 temp = temp.replaceAll(".","")
                 var temp_so = temp.replaceAll(",",".")
                 this.filter.bsd_tu_gia =  Number(temp_so.replace(/[^0-9.-]+/g,""));
-                $(event.currentTarget).val(this._format_number(temp))
+                $(event.currentTarget).val(this._format_number(temp.replace(/[^0-9.,-]+/g,"")))
             }
             else {
                 this.filter.bsd_tu_gia =  null
@@ -368,7 +368,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 temp = temp.replaceAll(".","")
                 var temp_so = temp.replaceAll(",",".")
                 this.filter.bsd_den_gia =  Number(temp_so.replace(/[^0-9.-]+/g,""));
-                $(event.currentTarget).val(this._format_number(temp))
+                $(event.currentTarget).val(this._format_number(temp.replace(/[^0-9.,-]+/g,"")))
             }
             else {
                 this.filter.bsd_den_gia =  null
@@ -385,7 +385,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 temp = temp.replaceAll(".","")
                 var temp_so = temp.replaceAll(",",".")
                 this.filter.bsd_tu_dt =  Number(temp_so.replace(/[^0-9.-]+/g,""))
-                $(event.currentTarget).val(this._format_number(temp))
+                $(event.currentTarget).val(this._format_number(temp.replace(/[^0-9.,-]+/g,"")))
             }
             else {
                 this.filter.bsd_tu_dt =  null
@@ -402,7 +402,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 temp = temp.replaceAll(".","")
                 var temp_so = temp.replaceAll(",",".")
                 this.filter.bsd_den_dt =  Number(temp_so.replace(/[^0-9.-]+/g,""))
-                $(event.currentTarget).val(this._format_number(temp))
+                $(event.currentTarget).val(this._format_number(temp.replace(/[^0-9.,-]+/g,"")))
             }
             else {
                 this.filter.bsd_den_dt =  null

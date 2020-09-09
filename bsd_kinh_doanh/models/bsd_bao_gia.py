@@ -32,7 +32,7 @@ class BsdBaoGia(models.Model):
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
-    bsd_giu_cho_id = fields.Many2one('bsd.giu_cho', string="Giữ chỗ", help="Tên giữ chỗ", required=True,
+    bsd_giu_cho_id = fields.Many2one('bsd.giu_cho', string="Giữ chỗ", help="Tên giữ chỗ",
                                      readonly=True,
                                      states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án",
@@ -40,8 +40,7 @@ class BsdBaoGia(models.Model):
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Tên đợt mở bán")
     bsd_bang_gia_id = fields.Many2one('product.pricelist', string="Bảng giá", help="Bảng giá bán",
                                       related="bsd_dot_mb_id.bsd_bang_gia_id", store=True)
-    bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ",
-                                  related="bsd_giu_cho_id.bsd_tien_gc", store=True)
+    bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ")
     bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc", compute='_compute_tien_dc', store=True)
 
     def _get_nhan_vien(self):
@@ -153,17 +152,6 @@ class BsdBaoGia(models.Model):
             so_ngay = datetime.timedelta(days=each.bsd_du_an_id.bsd_hh_bg)
             each.bsd_ngay_hl_bg = each.bsd_ngay_bao_gia + so_ngay
 
-    # KD.09.02 Ưu tiên báo giá theo Giữ chỗ
-    # @api.constrains('bsd_giu_cho_id')
-    # def _constrain_gc_tc(self):
-    #     if self.bsd_giu_cho_id:
-    #         giu_cho = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-    #                                                   ('state', '=', 'giu_cho'),
-    #                                                   ('bsd_unit_id', '=', self.bsd_unit_id.id),
-    #                                                   ('bsd_ngay_hh_bg', '<', self.bsd_giu_cho_id.bsd_ngay_hh_bg)])
-    #         if giu_cho:
-    #             raise UserError("Có Giữ chỗ cần được Báo giá trước .\n Vui lòng chờ đến lược của bạn!")
-
     @api.depends('bsd_tien_gc', 'bsd_unit_id')
     def _compute_tien_dc(self):
         for each in self:
@@ -219,6 +207,7 @@ class BsdBaoGia(models.Model):
     def _onchange_giu_cho(self):
         self.bsd_unit_id = self.bsd_giu_cho_id.bsd_unit_id
         self.bsd_dot_mb_id = self.bsd_giu_cho_id.bsd_dot_mb_id
+        self.bsd_tien_gc = self.bsd_giu_cho_id.bsd_tien_gc
 
     @api.onchange('bsd_unit_id')
     def _onchange_phi(self):
@@ -450,11 +439,11 @@ class BsdBaoGia(models.Model):
     @api.model
     def create(self, vals):
         sequence = False
-        if 'bsd_giu_cho_id' in vals:
-            giu_cho = self.env['bsd.giu_cho'].browse(vals['bsd_giu_cho_id'])
-            sequence = giu_cho.bsd_du_an_id.get_ma_bo_cn(loai_cn=self._name)
+        if 'bsd_unit_id' in vals:
+            unit = self.env['product.product'].browse(vals['bsd_unit_id'])
+            sequence = unit.bsd_du_an_id.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã phiếu báo giá'))
+            raise UserError(_('Dự án chưa có mã bảng tính giá'))
         vals['bsd_ma_bao_gia'] = sequence.next_by_id()
         return super(BsdBaoGia, self).create(vals)
 
