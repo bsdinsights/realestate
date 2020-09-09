@@ -49,7 +49,7 @@
                 <footer>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
-                            class="oe_highlight"git
+                            class="oe_highlight"
                             type="object"/>
                     <button special="cancel" string="Hủy bỏ"/>
                 </footer>

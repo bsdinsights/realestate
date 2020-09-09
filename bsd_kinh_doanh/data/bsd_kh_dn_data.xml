@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="bsd_khach_hang" model="bsd.loai_cong_ty">
+            <field name="bsd_ten">Khách hàng</field>
+        </record>
+        <record id="bsd_doi_tac" model="bsd.loai_cong_ty">
+            <field name="bsd_ten">Đối tác</field>
+        </record>
+        <record id="bsd_san" model="bsd.loai_cong_ty">
+            <field name="bsd_ten">Sàn - Đại lý</field>
+        </record>
+        <record id="bsd_chu_dt" model="bsd.loai_cong_ty">
+            <field name="bsd_ten">Chủ đầu tư</field>
+        </record>
+    </data>
+</odoo>

@@ -20,3 +20,6 @@ bsd_them_unit_cb_manager, Thêm căn hộ của đợt mở bán chi tiết,mode
 bsd_huy_gc_manager, Phiếu đề nghị hủy giữ chỗ,model_bsd_huy_gc,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_ck_db, Chiết khấu đặc biệt,model_bsd_ck_db,bsd_kinh_doanh.group_manager,1,1,1,1
 
+bsd_loai_cty_manager, Loại công ty,model_bsd_loai_cong_ty,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_cty_nganh_nghe_manager, Ngành nghề hoạt động của công ty,model_bsd_cty_nganh_nghe,bsd_kinh_doanh.group_manager,1,1,1,1
+

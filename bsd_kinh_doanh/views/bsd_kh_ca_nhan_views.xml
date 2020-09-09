@@ -35,7 +35,7 @@
                             <field name="bsd_gioi_tinh"/>
                             <field name="phone"/>
                             <field name="mobile" required="1"/>
-                            <field name="email" string="Email"/>
+                            <field name="email" string=" Email "/>
                             <field name="bsd_loai_kh"/>
                             <field name="bsd_nguoi_bh"/>
                             <field name="is_company" invisible="1"/>
