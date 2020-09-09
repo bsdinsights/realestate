@@ -48,4 +48,5 @@
         'reports/report_bsd_dat_coc_views.xml',
     ],
     'application': True,
+    'auto_install': True,
 }
