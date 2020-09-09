@@ -180,12 +180,15 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     _.each(data,function(item,index,data){
                         if (item[0] != null){
                             var id = '#' + item[0].toString()
-                            var state = $(id).attr('class').replace("bsd_unit", "")
-                            if (item[2] === null) {
-                                item[2] = 0
+                            if ($(id).attr('class')){
+                                var state = $(id).attr('class').replace("bsd_unit", "")
+                                if (item[2] === null) {
+                                    item[2] = 0
+                                }
+                                $(id).removeClass(state).addClass(item[1])
+                                $(id).find(".so_giu_cho").text(item[2].toString())
                             }
-                            $(id).removeClass(state).addClass(item[1])
-                            $(id).find(".so_giu_cho").text(item[2].toString())
+
                         }
                     })
                     }
@@ -564,7 +567,9 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          _clickBaoGia: function(event){
             event.stopPropagation()
             var self = this
-            this._loadAction('bsd_kinh_doanh.bsd_bao_gia_action_popup').then(function(action){
+            let unit_id = parseInt($(event.currentTarget).parent().attr('id'))
+            this._loadAction('bsd_sale_chart.bsd_bao_gia_action_popup_2').then(function(action){
+                action.context={default_bsd_unit_id:unit_id}
                 self.do_action(action)
             })
 //            this.do_action({

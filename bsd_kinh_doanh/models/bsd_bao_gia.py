@@ -59,7 +59,7 @@ class BsdBaoGia(models.Model):
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
 
-    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Tên Sản phẩm")
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Tên Sản phẩm", required=True)
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích tim tường",
                              related="bsd_unit_id.bsd_dt_xd", store=True)
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",
@@ -203,14 +203,16 @@ class BsdBaoGia(models.Model):
         for each in self:
             each.bsd_tien_thue = (each.bsd_gia_truoc_thue - each.bsd_tien_qsdd) * each.bsd_thue_suat / 100
 
-    @api.onchange('bsd_giu_cho_id')
-    def _onchange_giu_cho(self):
-        self.bsd_unit_id = self.bsd_giu_cho_id.bsd_unit_id
-        self.bsd_dot_mb_id = self.bsd_giu_cho_id.bsd_dot_mb_id
-        self.bsd_tien_gc = self.bsd_giu_cho_id.bsd_tien_gc
+    # @api.onchange('bsd_giu_cho_id')
+    # def _onchange_giu_cho(self):
+    #     self.bsd_unit_id = self.bsd_giu_cho_id.bsd_unit_id
+    #     self.bsd_dot_mb_id = self.bsd_giu_cho_id.bsd_dot_mb_id
+    #     self.bsd_tien_gc = self.bsd_giu_cho_id.bsd_tien_gc
 
     @api.onchange('bsd_unit_id')
     def _onchange_phi(self):
+        self.bsd_ten_bao_gia = 'Bảng tính giá sản phẩm ' + self.bsd_unit_id.name
+        self.bsd_dot_mb_id = self.bsd_unit_id.bsd_dot_mb_id
         for each in self:
             if each.bsd_unit_id.bsd_thang_pql != 0:
                 each.bsd_thang_pql = each.bsd_unit_id.bsd_thang_pql
