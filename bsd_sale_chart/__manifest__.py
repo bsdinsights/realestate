@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 {
-    'name': 'BSD Sale Chart',
+    'name': 'BSD Giỏ hàng',
     'version': '0.1',
     'category': 'App',
     'author': 'Thịnh Lưu',

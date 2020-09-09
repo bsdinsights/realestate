@@ -6,21 +6,7 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button string="Xác nhận"
-                            name="action_xac_nhan"
-                            class="oe_highlight"
-                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
-                            type="object"/>
-                    <button string="Hủy"
-                            type="object"
-                            name="action_huy_chua_tt"
-                            confirm="Bạn có muốn hủy Giữ chỗ này không?"
-                            attrs="{'invisible': ['|',('state','in',['huy','nhap']),('bsd_thanh_toan','!=', 'chua_tt')]}"/>
-                    <button string="Hủy"
-                            attrs="{'invisible': ['|',('state','in',['huy','nhap']),('bsd_thanh_toan','!=', 'da_tt')]}"
-                            name="action_huy"
-                            confirm="Bạn có muốn hủy Giữ chỗ này không?"
-                            type="object"/>
+
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
@@ -60,6 +46,13 @@
                     <field name="bsd_thanh_toan" invisible="1"/>
                     <field name="bsd_ngay_hh_stt" invisible="1"/>
                 </sheet>
+                <footer>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            class="oe_highlight"git
+                            type="object"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
             </form>
         </field>
     </record>
