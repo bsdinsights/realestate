@@ -8,7 +8,7 @@ _logger = logging.getLogger(__name__)
 
 class BsdSaleChartWidget(models.AbstractModel):
     _name = 'bsd.sale_chart.widget'
-    _description = 'Sale chart widget'
+    _description = 'Giỏ hàng'
 
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án")
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Đợt mở bán")
@@ -17,15 +17,15 @@ class BsdSaleChartWidget(models.AbstractModel):
     bsd_den_gia = fields.Char(string="Giá đến", help="Giá đến")
     bsd_tu_dt = fields.Char(string="Từ diện tích")
     bsd_den_dt = fields.Char(string="Đến diện tích")
-    bsd_view = fields.Selection([('1', 'Phố'),
-                                 ('2', 'Hồ bơi'),
-                                 ('3', 'Công viên'),
-                                 ('4', 'Mặt tiền'),
-                                 ('5', 'Bãi biển/sông/hồ/núi'),
-                                 ('6', 'Rừng'),
-                                 ('7', 'Cao tốc'),
-                                 ('8', 'Hồ'),
-                                 ('9', 'Biển')], string="Hướng nhìn", help="Góc nhìn của căn hộ")
+    # bsd_view = fields.Selection([('1', 'Phố'),
+    #                              ('2', 'Hồ bơi'),
+    #                              ('3', 'Công viên'),
+    #                              ('4', 'Mặt tiền'),
+    #                              ('5', 'Bãi biển/sông/hồ/núi'),
+    #                              ('6', 'Rừng'),
+    #                              ('7', 'Cao tốc'),
+    #                              ('8', 'Hồ'),
+    #                              ('9', 'Biển')], string="Hướng nhìn", help="Góc nhìn của căn hộ")
     bsd_huong = fields.Selection([('1', 'Đông'),
                                   ('2', 'Tây'),
                                   ('3', 'Nam'),
@@ -34,6 +34,7 @@ class BsdSaleChartWidget(models.AbstractModel):
                                   ('6', 'Đông bắc'),
                                   ('7', 'Tây nam'),
                                   ('8', 'Tây bắc')], string="Hướng", help="Hướng nhà")
+    bsd_view_ids = fields.Many2many('bsd.view', string="Hướng nhìn 2")
 
     @api.model
     def action_search(self, data):
@@ -44,8 +45,11 @@ class BsdSaleChartWidget(models.AbstractModel):
             where += 'AND (unit.bsd_dot_mb_id = {0}) '.format(data['bsd_dot_mb_id'])
         if data['bsd_unit']:
             where += "AND (unit.bsd_ten_unit LIKE '{0}%') ".format(data['bsd_unit'])
-        if data['bsd_view']:
-            where += "AND (unit.bsd_view = '{0}') ".format(data['bsd_view'])
+        # if data['bsd_view']:
+        #     where += "AND (unit.bsd_view = '{0}') ".format(data['bsd_view'])
+        if data['bsd_view_ids']:
+            _logger.debug("hướng nhìn")
+            _logger.debug(data['bsd_view_ids'])
         if data['bsd_huong']:
             where += "AND (unit.bsd_huong = '{0}') ".format(data['bsd_huong'])
         if data['bsd_tu_gia']:

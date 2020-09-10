@@ -11,6 +11,7 @@ odoo.define('bsd_sale_chart.SaleChartAction', function(require){
         custom_events:{
             change_du_an: '_onAction',
             change_dot_mb: '_onAction',
+            change_view: '_onAction',
         },
         contentTemplate: 'bsd_sale_chart.gio_hang',
         config: _.extend({}, AbstractAction.prototype.config,{
@@ -38,12 +39,22 @@ odoo.define('bsd_sale_chart.SaleChartAction', function(require){
 
         _onAction: function(event){
             var self = this;
+            if (event.data.data.operation === 'FORGET'){
+                let id_view = self.model.localData[event.data.data.ids[0]].ref
+                event.data.data.ids = id_view
+            }
             if (event.name === 'change_du_an'){
                 event.data.field = 'bsd_du_an_id',
                 self.renderer.update(event.data)
             }
             else if (event.name === 'change_dot_mb'){
                 event.data.field = 'bsd_dot_mb_id',
+                self.renderer.update(event.data)
+            }
+            else if (event.name === 'change_view'){
+                console.log("goi change view")
+                event.data.field = 'bsd_view_ids',
+                console.log(event)
                 self.renderer.update(event.data)
             }
         },

@@ -4,6 +4,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
     var FieldManagerMixin = require('web.FieldManagerMixin');
     var relational_fields = require('web.relational_fields');
     var basic_fields = require('web.basic_fields');
+    var BasicModel = require('web.BasicModel');
     var core = require('web.core');
     var time = require('web.time');
     var session = require('web.session');
@@ -47,6 +48,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 bsd_dot_mb_id: null,
                 bsd_unit: null,
                 bsd_view: null,
+                bsd_view_ids: [],
                 bsd_huong: null,
                 bsd_tu_gia: null,
                 bsd_den_gia: null,
@@ -61,6 +63,9 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
         start: function () {
             var self = this;
             var def1 = this._makeRecord().then(function (recordID) {
+                console.log("tao record")
+                console.log(recordID)
+                console.log(self.model.get(recordID))
                 self.fields = {
                     bsd_du_an_id : new relational_fields.FieldMany2One(self,
                         'bsd_du_an_id',
@@ -96,6 +101,16 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                         self.model.get(recordID), {
                             mode: 'edit',
                             attrs: {
+                            }
+                        }
+                    ),
+                    bsd_view_ids : new relational_fields.FieldMany2ManyTags(self,
+                        'bsd_view_ids',
+                        self.model.get(recordID), {
+                            mode: 'edit',
+                            attrs: {
+                                placeholder: _t('Chọn hướng nhìn'),
+                                can_create: false,
                             }
                         }
                     ),
@@ -155,7 +170,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 self.fields.bsd_tu_dt.appendTo(self.$('.create_tu_dt .o_td_field'))
                 self.fields.bsd_den_dt.appendTo(self.$('.create_den_dt .o_td_field'))
                 self.fields.bsd_unit.appendTo(self.$('.create_unit .o_td_field'))
-
+                self.fields.bsd_view_ids.appendTo(self.$('.create_view_ids .o_td_field'))
             });
             var def2 = this._super.apply(this, arguments);
             return Promise.all([def1, def2]);
@@ -347,9 +362,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
          _onChangeTuGia: function(event){
             event.stopPropagation();
             var temp = $(event.currentTarget).val()
-            console.log("change giá")
-            console.log(typeof temp)
-            console.log(temp)
             if (temp){
                 temp = temp.replaceAll(".","")
                 var temp_so = temp.replaceAll(",",".")
@@ -587,6 +599,8 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
         _onFieldChange: function(event){
             event.stopPropagation();
             var fieldName = event.target.name;
+            console.log("field name")
+            console.log(fieldName)
             if (fieldName === 'bsd_du_an_id'){
                 if (event.data.changes.bsd_du_an_id !== false){
                     var bsd_du_an_id = event.data.changes.bsd_du_an_id;
@@ -611,12 +625,22 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     this.trigger_up('change_dot_mb', {'data':bsd_dot_mb_id})
                 }
             }
+            else if (fieldName === 'bsd_view_ids'){
+                if (event.data.changes.bsd_view_ids !== false){
+                    var bsd_view_ids = event.data.changes.bsd_view_ids;
+                    this.trigger_up('change_view', {'data':bsd_view_ids})
+                }
+                else {
+                    var bsd_view_ids = event.data.changes.bsd_view_ids;
+                    this.trigger_up('change_view', {'data':bsd_view_ids})
+                }
+                console.log("goi trigger_up")
+            }
         },
         update: function(dataChange){
             var self = this;
             if (dataChange.field === 'bsd_dot_mb_id'){
                 this._makeRecord(dataChange).then(function (recordID) {
-
                     self.fields.bsd_dot_mb_id.reset(self.model.get(recordID));
                 });
             };
@@ -626,12 +650,19 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     self.fields.bsd_dot_mb_id.reset(self.model.get(recordID));
                 });
             };
+            if (dataChange.field === 'bsd_view_ids'){
+                this._makeRecord(dataChange).then(function (recordID) {
+                    self.fields.bsd_view_ids.reset(self.model.get(recordID));
+                });
+            };
         },
     /**
      * @private
      * @returns {string} local id of the dataPoint
      */
         _makeRecord: function (data = null) {
+            console.log("tao record")
+            console.log(data)
             var self = this
             var field = [{
                     relation: 'bsd.du_an',
@@ -643,6 +674,12 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     type: 'many2one',
                     name: 'bsd_dot_mb_id',
                     domain: [['bsd_du_an_id', '=', self.filter.bsd_du_an_id]]
+                },
+                {
+                    relation: 'bsd.view',
+                    type: 'many2many',
+                    name: 'bsd_view_ids',
+                    value: []
                 },
                 {
                     type: 'char',
@@ -690,13 +727,23 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     name: 'bsd_den_dt',
                 },
             ];
-            if (data != null && data.data !== false){
+            if (data != null && data.data != null){
                 if (data.field === 'bsd_dot_mb_id'){
                     field[1].value = [data.data.id, data.data.display_name];
                 }
                 if (data.field === 'bsd_du_an_id'){
                     field[0].value = [data.data.id, data.data.display_name];
                     field[1].domain = [['bsd_du_an_id', '=', data.data.id]]
+                }
+                if (data.field === 'bsd_view_ids'){
+                    console.log("chạy vào change view")
+                    if (data.data.operation === 'ADD_M2M'){
+                        self.filter.bsd_view_ids.push(data.data.ids)
+                    }
+                    if (data.data.operation === 'FORGET'){
+                        self.filter.bsd_view_ids = self.filter.bsd_view_ids.filter(el => el.id != data.data.ids )
+                    }
+                    field[2].value = self.filter.bsd_view_ids
                 }
             }
             return this.model.makeRecord('bsd.sale_chart.widget', field, {});

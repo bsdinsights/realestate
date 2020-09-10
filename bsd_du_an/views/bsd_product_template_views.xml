@@ -223,4 +223,22 @@
                       (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_product_template_form')})]"/>
         <field name="search_view_id" ref="bsd_product_template_filter"/>
     </record>
+
+    <record model="ir.ui.view" id="bsd_view_tree">
+        <field name="name">bsd.view.tree</field>
+        <field name="model">bsd.view</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ten"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_view_action">
+        <field name="name">Hướng nhìn</field>
+        <field name="res_model">bsd.view</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo mới hướng nhìn</p>
+        </field>
+    </record>
 </odoo>
