@@ -32,8 +32,8 @@
                             <group string="PHÂN NHÓM">
                                 <group>
                                     <field name="bsd_huong" readonly="1"/>
-                                    <field name="bsd_view" readonly="1"/>
-<!--                                    <field name="bsd_view_ids" readonly="1"/>-->
+<!--                                    <field name="bsd_view" readonly="1"/>-->
+                                    <field name="bsd_view_ids" readonly="1"/>
                                     <field name="bsd_so_pn" readonly="1"/>
                                 </group>
                                 <group>

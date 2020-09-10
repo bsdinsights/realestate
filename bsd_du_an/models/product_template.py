@@ -75,20 +75,23 @@ class ProductTemplate(models.Model):
                                   ('8', 'Tây bắc')], string="Hướng", help="Hướng nhà",
                                  readonly=True,
                                  states={'chuan_bi': [('readonly', False)]})
-    bsd_view = fields.Selection([('1', 'Phố'),
-                                 ('2', 'Hồ bơi'),
-                                 ('3', 'Công viên'),
-                                 ('4', 'Mặt tiền'),
-                                 ('5', 'Bãi biển/sông/hồ/núi'),
-                                 ('6', 'Rừng'),
-                                 ('7', 'Cao tốc'),
-                                 ('8', 'Hồ'),
-                                 ('9', 'Biển')], string="Hướng nhìn", help="Góc nhìn của sản phẩm",
-                                readonly=True,
-                                states={'chuan_bi': [('readonly', False)]})
-    # bsd_view_ids = fields.Many2many('bsd.view', string="Hướng nhìn",
-    #                       readonly=True,
-    #                       states={'chuan_bi': [('readonly', False)]})
+    # bsd_view = fields.Selection([('1', 'Phố'),
+    #                              ('2', 'Hồ bơi'),
+    #                              ('3', 'Công viên'),
+    #                              ('4', 'Mặt tiền'),
+    #                              ('5', 'Bãi biển/sông/hồ/núi'),
+    #                              ('6', 'Rừng'),
+    #                              ('7', 'Cao tốc'),
+    #                              ('8', 'Hồ'),
+    #                              ('9', 'Biển')], string="Hướng nhìn", help="Góc nhìn của sản phẩm",
+    #                             readonly=True,
+    #                             states={'chuan_bi': [('readonly', False)]})
+    bsd_view_ids = fields.Many2many('bsd.view', string="Hướng nhìn",
+                                    relation="bsd_view_unit_rel",
+                                    column1="bsd_unit_id",
+                                    column2="bsd_view_id",
+                                    readonly=True,
+                                    states={'chuan_bi': [('readonly', False)]})
     bsd_so_pn = fields.Integer(string="Số phòng ngủ", help="Số phòng ngủ của sản phẩm",
                                readonly=True,
                                states={'chuan_bi': [('readonly', False)]})

@@ -736,7 +736,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     field[1].domain = [['bsd_du_an_id', '=', data.data.id]]
                 }
                 if (data.field === 'bsd_view_ids'){
-                    console.log("chạy vào change view")
                     if (data.data.operation === 'ADD_M2M'){
                         self.filter.bsd_view_ids.push(data.data.ids)
                     }

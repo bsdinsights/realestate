@@ -46,8 +46,8 @@
                     <group string="PHÂN NHÓM">
                         <group>
                             <field name="bsd_huong"/>
-                            <field name="bsd_view"/>
-<!--                            <field name="bsd_view_ids" widget="many2many_tags"/>-->
+<!--                            <field name="bsd_view"/>-->
+                            <field name="bsd_view_ids" widget="many2many_tags"/>
                             <field name="bsd_so_pn"/>
                         </group>
                         <group>

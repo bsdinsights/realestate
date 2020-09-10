@@ -50,6 +50,24 @@ class BsdSaleChartWidget(models.AbstractModel):
         if data['bsd_view_ids']:
             _logger.debug("hướng nhìn")
             _logger.debug(data['bsd_view_ids'])
+            first = data['bsd_view_ids'][0]['id']
+            select = """SELECT view{0}.bsd_unit_id from bsd_view_unit_rel AS view{0} """\
+                .format(first)
+            for view in data['bsd_view_ids'][1:]:
+                join = """JOIN bsd_view_unit_rel AS view{1} ON view{1}.bsd_unit_id = view{0}.bsd_unit_id """\
+                    .format(first, view["id"])
+                select += join
+            select += """WHERE view{0}.bsd_view_id = {0}""".format(first)
+            for view in data['bsd_view_ids'][1:]:
+                a = """ AND view{0}.bsd_view_id = {0}""".format(view["id"])
+                select += a
+            select += ';'
+            _logger.debug(select)
+            self.env.cr.execute(select)
+            unit_ids = (str(x[0]) for x in self.env.cr.fetchall())
+            unit_ids_str = ','.join(unit_ids)
+            _logger.debug(unit_ids_str)
+            where += "AND (unit.id IN ({0})) ".format(unit_ids_str)
         if data['bsd_huong']:
             where += "AND (unit.bsd_huong = '{0}') ".format(data['bsd_huong'])
         if data['bsd_tu_gia']:
