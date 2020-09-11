@@ -120,7 +120,7 @@ class BsdSaleChartWidget(models.AbstractModel):
                 FROM bsd_toa_nha AS toa
                 LEFT JOIN bsd_tang AS tang 
                     ON toa.id = tang.bsd_toa_nha_id
-                LEFT JOIN product_template AS unit 
+                JOIN product_template AS unit 
                     ON tang.id = unit.bsd_tang_id
                 LEFT JOIN (SELECT unit.product_tmpl_id,COUNT(*) AS so_giu_cho_unit 
                                             FROM bsd_giu_cho AS giu_cho
