@@ -56,7 +56,9 @@
                             <field name="bsd_khach_hang_id"
                                    context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
                                    options="{'no_create':true}"/>
-                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                            <field name="bsd_du_an_id"
+                                   domain="[('state','=','phat_hanh')]"
+                                   options="{'no_create':true}"/>
                             <field name="bsd_unit_id"
                                    context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                    options="{'no_create':true}"

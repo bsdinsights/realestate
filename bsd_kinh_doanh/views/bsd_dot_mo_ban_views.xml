@@ -45,7 +45,9 @@
                                 <group>
                                     <field name="bsd_ma_dot_mb"/>
                                     <field name="bsd_ten_dot_mb"/>
-                                    <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                                    <field name="bsd_du_an_id"
+                                           domain="[('state', '=', 'phat_hanh')]"
+                                           options="{'no_create':true}"/>
                                     <field name="bsd_bang_gia_id"
                                            domain="[('bsd_du_an_id', 'in', [bsd_du_an_id])]"
                                            options="{'no_create':true}"/>

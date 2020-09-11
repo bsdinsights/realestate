@@ -10,11 +10,7 @@ _logger = logging.getLogger(__name__)
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    # bsd_loai_cty = fields.Selection([('kh', 'Khách hàng'),
-    #                                  ('doi_tac', 'Đối tác'),
-    #                                  ('san', 'Sàn - Đại lý'),
-    #                                  ('chu_dt', 'Chủ đầu tư')],
-    #                                 string="Loại công ty", help="Loại công ty", default='kh')
+    bsd_ten_cty_en = fields.Char(string="Tên công ty (en)", help="Tên công ty bằng tiếng anh")
     bsd_loai_cty_ids = fields.Many2many('bsd.loai_cong_ty', help="Loại công ty", string="Loại công ty")
     bsd_cty_me = fields.Char(string="Công ty mẹ")
     bsd_phan_loai = fields.Selection([('trong_nuoc', 'Trong nước'),
@@ -31,7 +27,7 @@ class ResPartner(models.Model):
     bsd_so_gpkd = fields.Char(string="Số giấp phép ĐKKD", help="Mã số giấy phép đăng ký kinh doanh")
     bsd_ngay_gpkd = fields.Date(string="Ngày cấp", help="Ngày cấp giấy phép đăng ký kinh doanh")
     bsd_noi_gpkd = fields.Char(string="Nơi cấp", help="Nơi cấp giấy phép đăng ký kinh doanh")
-    bsd_mt_gpkd = fields.Char(string="Mô tả(GP.ĐKKD)", help="Thêm thông tin về giấy phép kinh doanh")
+    bsd_mt_gpkd = fields.Char(string="Mô tả (GP.ĐKKD)", help="Thêm thông tin về giấy phép kinh doanh")
 
     bsd_ngay_vat = fields.Date(string="Ngày cấp (VAT)", help="Ngày cấp mã số thuế")
     bsd_noi_vat = fields.Char(string="Nơi cấp (VAT)", help="Nơi cấp mã số thuế")
@@ -43,7 +39,7 @@ class ResPartner(models.Model):
     bsd_ma_sic = fields.Char(string="Mã SIC", help="Thông tin mã SIC của công ty")
     bsd_quyen_sh = fields.Selection([('chung', 'Chung (Nhà nước)'), ('rieng', 'Riêng (Tư nhân)'),
                                      ('cty_con', 'Công ty con'), ('khac', 'Khác')],
-                                    string="Quyền sỏ hữu", help="Quyền sở hữu")
+                                    string="Quyền sở hữu", help="Quyền sở hữu")
 
 
 class BsdLoaiCty(models.Model):

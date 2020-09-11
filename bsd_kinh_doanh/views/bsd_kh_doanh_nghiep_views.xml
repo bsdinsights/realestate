@@ -4,7 +4,7 @@
         <field name="name">bsd.res.partner.dn.form</field>
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
@@ -16,11 +16,9 @@
                     </div>
                     <field name="image_1920" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;: &quot;image_128&quot;}"/>
                     <div class="oe_title">
-                        <div class="o_row no-gutters d-flex">
-                            <h2>
-                                <field name="name" required="1"/>
-                            </h2>
-                        </div>
+                        <h2>
+                            <field name="name" required="1"/>
+                        </h2>
                         <div class="o_row no-gutters d-flex">
                             <label for="bsd_ma_kh"/>
                             <field name="bsd_ma_kh"/>
@@ -30,8 +28,10 @@
                         <group>
                             <field name="bsd_la_kh" invisible="1"/>
                             <field name="is_company" invisible="1"/>
+                            <field name="bsd_ten_cty_en"/>
                             <field name="bsd_loai_cty_ids"
                                    widget="many2many_tags"
+                                   required="1"
                                    options="{'no_create': true}"/>
                             <field name="bsd_cty_me"/>
                             <field name="bsd_phan_loai"/>
@@ -64,16 +64,16 @@
                     <group string="ĐỊA CHỈ">
                         <group>
                             <field name="bsd_dia_chi_lh"/>
-                            <field name="bsd_quoc_gia_lh_id" options="{'no_create':true}"/>
+                            <field name="bsd_quoc_gia_lh_id" options="{'no_create':true}" required="1"/>
                             <field name="bsd_tinh_lh_id" domain="[('country_id', 'in',[bsd_quoc_gia_lh_id])]"
-                                   options="{'no_create':true}"/>
+                                   options="{'no_create':true}" required="1"/>
                         </group>
                         <group>
                             <field name="bsd_quan_lh_id" domain="[('bsd_tinh_thanh_id', 'in',[bsd_tinh_lh_id])]"
-                                   options="{'no_create':true}"/>
+                                   options="{'no_create':true}" required="1"/>
                             <field name="bsd_phuong_lh_id" domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_lh_id])]"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_so_nha_lh"/>
+                                   options="{'no_create':true}" required="1"/>
+                            <field name="bsd_so_nha_lh" required="1"/>
                         </group>
                     </group>
                 </sheet>
@@ -90,7 +90,7 @@
         <field name="name">bsd.res.partner.dn.tree</field>
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree duplicate="false">
                 <field name="bsd_ma_kh"/>
                 <field name="name"/>
 
@@ -113,7 +113,6 @@
                     <field name="image_128"/>
                     <field name="parent_id"/>
                     <field name="type"/>
-                    <field name="bsd_ten"/>
                     <field name="bsd_dia_chi_lh"/>
                     <field name="bsd_sl_giu_cho"/>
                     <templates>
@@ -135,13 +134,14 @@
                                     <div class="o_kanban_image_fill_left o_kanban_image_full" t-attf-style="background-image: url(#{kanban_image('res.partner', 'image_128', record.id.raw_value, placeholder)})" role="img"/>
                                 </t>
                                 <div class="oe_kanban_details">
-                                    <strong class="o_kanban_record_title oe_partner_heading"><field name="bsd_ten"/></strong>
+                                    <strong class="o_kanban_record_title oe_partner_heading"><field name="name"/></strong>
                                     <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
                                     <div><span>Mã:</span><field name="bsd_ma_kh"/></div>
+                                    <div><field name="bsd_loai_cty_ids" widget="many2many_tags"/></div>
                                     <ul>
-                                        <li t-if="record.mobile.raw_value" class="o_text_overflow"><field name="mobile"/></li>
+                                        <li t-if="record.phone.raw_value" class="o_text_overflow"><field name="phone"/></li>
                                         <li t-if="record.email.raw_value" class="o_text_overflow"><field name="email"/></li>
-                                        <li t-if="record.bsd_dia_chi_lh.raw_value" class="o_text_overflow"><field name="bsd_dia_chi_lh"/></li>
+<!--                                        <li t-if="record.bsd_dia_chi_lh.raw_value" class="o_text_overflow"><field name="bsd_dia_chi_lh"/></li>-->
                                         <li name="tien_ich">
                                             <span class="badge badge-pill" modifiers="{}">
                                                 <i class="fa fa-fw fa-usd" aria-label="Giữ chỗ" role="img" title="Giữ chỗ" modifiers="{}"></i>
@@ -172,7 +172,7 @@
         <field name="name">Khách hàng doanh nghiệp</field>
         <field name="res_model">res.partner</field>
         <field name="view_mode">kanban,tree,form</field>
-        <field name="domain">[('is_company','=',True),('bsd_la_kh', '=', True)]</field>
+        <field name="domain">[('is_company','=',True)]</field>
         <field name="help" type="xml">
             <p>Tạo mới khách hàng doanh nghiệp</p>
         </field>

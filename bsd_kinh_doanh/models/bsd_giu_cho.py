@@ -139,10 +139,26 @@ class BsdGiuCho(models.Model):
         if len(gc_in_unit) > self.bsd_du_an_id.bsd_gc_unit_nv:
             raise UserError("Tổng số giữ chỗ trên Sản phẩm của bạn đã vượt quá quy định!")
 
+    # Kiểm tra khách hàng đã giữ chỗ căn hộ này chưa
+    @api.constrains('bsd_unit_id', 'bsd_khach_hang_id')
+    def _constrain_kh(self):
+        gc_kh = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                ('id', '!=', self.id),
+                                                ('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
+                                                ('state', 'not in', ['huy', 'dong'])])
+        if gc_kh:
+            raise UserError(_("Khách hàng đã tạo giữ chỗ sản phẩm này."))
+
+    # Kiểm tra sản phẩm có thuộc dự án đã chọn hay ko
+    @api.constrains('bsd_unit_id', 'bsd_du_an_id')
+    def _constrain_da(self):
+        _logger.debug("kiểm tra lỗi")
+        if self.bsd_unit_id.bsd_du_an_id != self.bsd_du_an_id:
+            raise UserError(_("Sản phẩm không nằm trong dự án"))
+
     # KD.07.03 Ràng buộc số giữ chỗ theo Sản phẩm
     @api.constrains('bsd_unit_id')
     def _constrain_unit(self):
-
         gc_in_unit = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                      ('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                      ('state', 'in', ['nhap', 'giu_cho', 'dat_cho'])])

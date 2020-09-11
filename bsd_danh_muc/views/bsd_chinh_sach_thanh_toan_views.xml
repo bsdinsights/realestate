@@ -13,7 +13,9 @@
                                     <field name="bsd_ma_cstt"/>
                                     <field name="bsd_ten_cstt"/>
                                     <field name="bsd_dien_giai"/>
-                                    <field name="bsd_du_an_id"/>
+                                    <field name="bsd_du_an_id"
+                                           domain="[('state', '=', 'phat_hanh')]"
+                                           options="{'no_create':true}"/>
                                     <field name="bsd_tu_ngay"/>
                                     <field name="bsd_den_ngay"/>
                                 </group>
