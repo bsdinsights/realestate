@@ -48,8 +48,6 @@ class BsdSaleChartWidget(models.AbstractModel):
         # if data['bsd_view']:
         #     where += "AND (unit.bsd_view = '{0}') ".format(data['bsd_view'])
         if data['bsd_view_ids']:
-            _logger.debug("hướng nhìn")
-            _logger.debug(data['bsd_view_ids'])
             first = data['bsd_view_ids'][0]['id']
             select = """SELECT view{0}.bsd_unit_id from bsd_view_unit_rel AS view{0} """\
                 .format(first)
@@ -78,7 +76,9 @@ class BsdSaleChartWidget(models.AbstractModel):
             where += 'AND (unit.bsd_dt_sd >= {0}) '.format(data['bsd_tu_dt'])
         if data['bsd_den_dt']:
             where += 'AND (unit.bsd_dt_sd <= {0}) '.format(data['bsd_den_dt'])
-        _logger.debug(where)
+        if data['bsd_state']:
+            state_str = "','".join(data['bsd_state'])
+            where += "AND (unit.state IN ('{0}')) ".format(state_str)
         self.env.cr.execute(
             """
         WITH price AS (WITH max_pricelist AS (SELECT item.id,item.product_tmpl_id,item.fixed_price 
@@ -145,7 +145,6 @@ class BsdSaleChartWidget(models.AbstractModel):
             where = "where unit.id in {0}".format(tuple(filter(None, data)))
         elif len(data) == 1:
             where = "where unit.id = {0}".format(data[0] if data[0] else 0)
-        _logger.debug(where)
         query = """SELECT unit.id, unit.state, giu_cho.so_giu_cho_unit
                     FROM product_template AS unit
                     LEFT JOIN (SELECT unit.product_tmpl_id,COUNT(*) AS so_giu_cho_unit 

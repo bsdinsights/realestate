@@ -49,6 +49,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 bsd_unit: null,
                 bsd_view: null,
                 bsd_view_ids: [],
+                bsd_state: [],
                 bsd_huong: null,
                 bsd_tu_gia: null,
                 bsd_den_gia: null,
@@ -63,9 +64,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
         start: function () {
             var self = this;
             var def1 = this._makeRecord().then(function (recordID) {
-                console.log("tao record")
-                console.log(recordID)
-                console.log(self.model.get(recordID))
                 self.fields = {
                     bsd_du_an_id : new relational_fields.FieldMany2One(self,
                         'bsd_du_an_id',
@@ -171,6 +169,10 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 self.fields.bsd_den_dt.appendTo(self.$('.create_den_dt .o_td_field'))
                 self.fields.bsd_unit.appendTo(self.$('.create_unit .o_td_field'))
                 self.fields.bsd_view_ids.appendTo(self.$('.create_view_ids .o_td_field'))
+                self.$("#select_state").bsMultiSelect({
+                      placeholder: 'Chọn trạng thái',
+                      cssPatch : {choices: {columnCount:'2' }}
+                })
             });
             var def2 = this._super.apply(this, arguments);
             return Promise.all([def1, def2]);
@@ -229,6 +231,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             var self = this
             var data_show = [];
             var $chart = self.$('#chart').empty();
+            self.filter.bsd_state = self.$('#select_state').val()
             self._rpc({
                     model: 'bsd.sale_chart.widget',
                     method: 'action_search',
