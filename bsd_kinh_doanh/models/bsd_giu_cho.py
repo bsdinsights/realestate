@@ -73,6 +73,7 @@ class BsdGiuCho(models.Model):
                               ('giu_cho', 'Giữ chỗ'),
                               ('bao_gia', 'Báo giá'),
                               ('dong', 'Đóng'),
+                              ('het_han', 'Hết hạn'),
                               ('huy', 'Hủy')], default='nhap', string="Trạng thái",
                              tracking=1, help="Trạng thái", required=True, readonly=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
@@ -273,15 +274,17 @@ class BsdGiuCho(models.Model):
 
     # KD.07.07 Tự động hủy giữ chỗ quá hạn thanh toán
     def auto_huy_gc(self):
-        self.write({
-            'state': 'huy',
-        })
+        if self.state == 'xac_nhan' and self.bsd_thanh_toan in ['chua_tt']:
+            self.write({
+                'state': 'het_han'
+            })
 
     # KD.07.08 Tự động đánh dấu hết hạn giữ chỗ
     def auto_danh_dau_hh_gc(self):
-        self.write({
-            'bsd_het_han_gc': True
-        })
+        if self.state == 'xac_nhan' and self.bsd_thanh_toan in ['da_tt', 'dang_tt']:
+            self.write({
+                'bsd_het_han_gc': True
+            })
 
     # R7 Ghi nhận thông tin trước mở bán
     @api.model

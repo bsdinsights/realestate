@@ -63,6 +63,7 @@ class BsdGiuChoThienChi(models.Model):
                               ('xac_nhan', 'Xác nhận'),
                               ('giu_cho', 'Giữ chỗ'),
                               ('dong', 'Đóng'),
+                              ('het_han', 'Hết hạn'),
                               ('huy', 'Hủy')], string="Trạng thái", default="nhap", tracking=1,
                              required=True, readonly=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
@@ -176,7 +177,7 @@ class BsdGiuChoThienChi(models.Model):
     def auto_huy_giu_cho(self):
         if self.state == 'xac_nhan' and self.bsd_thanh_toan in ['chua_tt']:
             self.write({
-                'state': 'huy'
+                'state': 'het_han'
             })
 
     # KD.05.04 Tự động đánh dấu hết hạn giữ chỗ
