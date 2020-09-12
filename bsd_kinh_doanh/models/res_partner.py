@@ -53,8 +53,12 @@ class ResPartner(models.Model):
                               ('inactive', 'Không sử dụng')],
                              string="Trạng thái", default='active', required=True, tracking=1)
 
-    bsd_giu_cho_ids = fields.One2many('bsd.giu_cho', 'bsd_kh_moi_id', string="Danh sách giữ chỗ", domain=[('state', '!=', 'nhap')])
-
+    bsd_giu_cho_ids = fields.One2many('bsd.giu_cho', 'bsd_kh_moi_id', string="DS giữ chỗ",
+                                      domain=[('state', '!=', 'nhap')])
+    bsd_bao_gia_ids = fields.One2many('bsd.bao_gia', 'bsd_khach_hang_id', string="DS bảng tính giá",
+                                      domain=[('state', '!=', 'nhap')])
+    bsd_dat_coc_ids = fields.One2many('bsd.dat_coc', 'bsd_khach_hang_id', string="DS đặt cọc",
+                                      domain=[('state', '!=', 'nhap')])
     bsd_sl_giu_cho = fields.Integer(string="# Giữ chỗ", compute="_compute_sl_gc", store=True)
 
     @api.constrains('bsd_cmnd')

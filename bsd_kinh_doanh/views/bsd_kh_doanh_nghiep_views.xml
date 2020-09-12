@@ -24,58 +24,105 @@
                             <field name="bsd_ma_kh"/>
                         </div>
                     </div>
-                    <group string="THÔNG TIN CÔNG TY">
-                        <group>
-                            <field name="bsd_la_kh" invisible="1"/>
-                            <field name="is_company" invisible="1"/>
-                            <field name="bsd_ten_cty_en"/>
-                            <field name="bsd_loai_cty_ids"
-                                   widget="many2many_tags"
-                                   required="1"
-                                   options="{'no_create': true}"/>
-                            <field name="bsd_cty_me"/>
-                            <field name="bsd_phan_loai"/>
-                            <field name="bsd_nguoi_dd_id"
-                                   options="{'no_create': true}"
-                                   domain="[('is_company', '=', False),('bsd_la_kh', '=', True)]"/>
-                            <field name="bsd_nguoi_uq"/>
-                            <field name="phone" required="1"/>
-                            <field name="bsd_phone_2"/>
-                            <field name="email" string="Email"/>
-                            <field name="bsd_email_2"/>
-                            <field name="bsd_fax"/>
-                            <field name="website" string="Website"/>
-                        </group>
-                        <group>
-                            <field name="bsd_so_gpkd" required="1"/>
-                            <field name="bsd_ngay_gpkd"/>
-                            <field name="bsd_noi_gpkd"/>
-                            <field name="bsd_mt_gpkd"/>
-                            <field name="vat"/>
-                            <field name="bsd_ngay_vat"/>
-                            <field name="bsd_noi_vat"/>
-                            <field name="bsd_ngay_tl"/>
-                            <field name="bsd_nganh_nghe" widget="many2many_tags"/>
-                            <field name="bsd_mt_cty"/>
-                            <field name="bsd_ma_sic"/>
-                            <field name="bsd_quyen_sh"/>
-                        </group>
-                    </group>
-                    <group string="ĐỊA CHỈ">
-                        <group>
-                            <field name="bsd_dia_chi_lh"/>
-                            <field name="bsd_quoc_gia_lh_id" options="{'no_create':true}" required="1"/>
-                            <field name="bsd_tinh_lh_id" domain="[('country_id', 'in',[bsd_quoc_gia_lh_id])]"
-                                   options="{'no_create':true}" required="1"/>
-                        </group>
-                        <group>
-                            <field name="bsd_quan_lh_id" domain="[('bsd_tinh_thanh_id', 'in',[bsd_tinh_lh_id])]"
-                                   options="{'no_create':true}" required="1"/>
-                            <field name="bsd_phuong_lh_id" domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_lh_id])]"
-                                   options="{'no_create':true}" required="1"/>
-                            <field name="bsd_so_nha_lh" required="1"/>
-                        </group>
-                    </group>
+                    <notebook>
+                        <page string="THÔNG TIN CÔNG TY">
+                            <group>
+                                <group>
+                                    <field name="bsd_la_kh" invisible="1"/>
+                                    <field name="is_company" invisible="1"/>
+                                    <field name="bsd_ten_cty_en"/>
+                                    <field name="bsd_loai_cty_ids"
+                                           widget="many2many_tags"
+                                           required="1"
+                                           options="{'no_create': true}"/>
+                                    <field name="bsd_cty_me"/>
+                                    <field name="bsd_phan_loai"/>
+                                    <field name="bsd_nguoi_dd_id"
+                                           options="{'no_create': true}"
+                                           domain="[('is_company', '=', False),('bsd_la_kh', '=', True)]"/>
+                                    <field name="bsd_nguoi_uq"/>
+                                    <field name="phone" required="1"/>
+                                    <field name="bsd_phone_2"/>
+                                    <field name="email" string="Email"/>
+                                    <field name="bsd_email_2"/>
+                                    <field name="bsd_fax"/>
+                                    <field name="website" string="Website"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_so_gpkd" required="1"/>
+                                    <field name="bsd_ngay_gpkd"/>
+                                    <field name="bsd_noi_gpkd"/>
+                                    <field name="bsd_mt_gpkd"/>
+                                    <field name="vat"/>
+                                    <field name="bsd_ngay_vat"/>
+                                    <field name="bsd_noi_vat"/>
+                                    <field name="bsd_ngay_tl"/>
+                                    <field name="bsd_nganh_nghe" widget="many2many_tags"/>
+                                    <field name="bsd_mt_cty"/>
+                                    <field name="bsd_ma_sic"/>
+                                    <field name="bsd_quyen_sh"/>
+                                </group>
+                            </group>
+                            <group string="ĐỊA CHỈ">
+                                <group>
+                                    <field name="bsd_dia_chi_lh"/>
+                                    <field name="bsd_quoc_gia_lh_id" options="{'no_create':true}" required="1"/>
+                                    <field name="bsd_tinh_lh_id" domain="[('country_id', 'in',[bsd_quoc_gia_lh_id])]"
+                                           options="{'no_create':true}" required="1"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_quan_lh_id" domain="[('bsd_tinh_thanh_id', 'in',[bsd_tinh_lh_id])]"
+                                           options="{'no_create':true}" required="1"/>
+                                    <field name="bsd_phuong_lh_id" domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_lh_id])]"
+                                           options="{'no_create':true}" required="1"/>
+                                    <field name="bsd_so_nha_lh" required="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Giữ chỗ">
+                            <field name="bsd_giu_cho_ids">
+                                <tree create="false">
+                                    <field name="bsd_ma_gc"/>
+                                    <field name="bsd_du_an_id"/>
+                                    <field name="bsd_unit_id"/>
+                                    <field name="bsd_ngay_hh_gc"/>
+                                    <field name="bsd_stt_bg"/>
+                                    <field name="bsd_ngay_hh_bg"/>
+                                    <field name="state"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Báo giá">
+                            <field name="bsd_bao_gia_ids">
+                                <tree create="false" duplicate="false" delete="false">
+                                    <field name="bsd_ma_bao_gia"/>
+                                    <field name="bsd_giu_cho_id"/>
+                                    <field name="bsd_du_an_id"/>
+                                    <field name="bsd_unit_id"/>
+                                    <field name="bsd_cs_tt_id"/>
+                                    <field name="bsd_tong_gia"/>
+                                    <field name="state"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="company_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Đặt cọc">
+                            <field name="bsd_dat_coc_ids">
+                                <tree create="false" duplicate="false" delete="false">
+                                    <field name="bsd_ma_dat_coc"/>
+                                    <field name="bsd_du_an_id"/>
+                                    <field name="bsd_unit_id"/>
+                                    <field name="bsd_ngay_ky_dc"/>
+                                    <field name="bsd_thanh_toan"/>
+                                    <field name="state"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>

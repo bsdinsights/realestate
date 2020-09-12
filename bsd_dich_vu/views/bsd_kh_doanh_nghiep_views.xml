@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_res_partner_cn_kanban_inherit">
-        <field name="name">bsd.res.partner.cn.kanban.inherit</field>
+    <record model="ir.ui.view" id="bsd_res_partner_dn_kanban_inherit">
+        <field name="name">bsd.res.partner.dn.kanban.inherit</field>
         <field name="model">res.partner</field>
-        <field name="inherit_id" ref="bsd_kinh_doanh.bsd_res_partner_cn_kanban"/>
+        <field name="inherit_id" ref="bsd_kinh_doanh.bsd_res_partner_dn_kanban"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='email']" position="after">
                 <field name="bsd_sl_hd_ban"/>
@@ -17,10 +17,10 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="bsd_res_partner_cn_form_inherit">
-        <field name="name">bsd.res.partner.cn.form.inherit</field>
+    <record model="ir.ui.view" id="bsd_res_partner_dn_form_inherit">
+        <field name="name">bsd.res.partner.dn.form.inherit</field>
         <field name="model">res.partner</field>
-        <field name="inherit_id" ref="bsd_kinh_doanh.bsd_res_partner_cn_form"/>
+        <field name="inherit_id" ref="bsd_kinh_doanh.bsd_res_partner_dn_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@name='button_box']" position="inside">
                 <button name="action_view_hd_ban" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_sl_hd_ban', '=', 0)]}">
