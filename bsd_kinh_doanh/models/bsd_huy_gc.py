@@ -99,10 +99,8 @@ class BsdHuyGC(models.Model):
                     self.bsd_giu_cho_id.bsd_rap_can_id.write({'state': 'huy'})
                 # Cập nhật trạng thái unit
                 giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
-                                                          ('state', 'not in', ['huy', 'nhap', 'dong']),
+                                                          ('state', 'in', ['dat_cho', 'giu_cho']),
                                                           ('id', '!=', self.id)])
-                _logger.debug("duyệt hủy giữ chỗ")
-                _logger.debug(giu_cho)
                 if not self.bsd_unit_id.bsd_dot_mb_id:
                     if not giu_cho:
                         self.bsd_unit_id.write({

@@ -27,7 +27,9 @@
                             confirm="Bạn có muốn hủy Giữ chỗ này không?"
                             type="object"/>
                     <button string="Hủy"
-                            attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),('bsd_truoc_mb','=',True)]}"
+                            attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),
+                                                  '|',('bsd_truoc_mb','=',True),
+                                                      ('bsd_thanh_toan','=', 'chua_tt')]}"
                             name="action_huy"
                             confirm="Bạn có muốn hủy Giữ chỗ này không?"
                             type="object"/>
