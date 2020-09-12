@@ -4,7 +4,7 @@
         <field name="name">bsd.cn_ndc.form</field>
         <field name="model">bsd.cn_ndc</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
@@ -67,7 +67,7 @@
                                     <field name="bsd_ly_do_huy"/>
                                     <field name="bsd_cn_ndc_id" invisible="1"/>
                                 </tree>
-                                <form>
+                                <form duplicate="false">
                                     <header>
                                         <field name="state" widget="statusbar" statusbar_visible="0"/>
                                     </header>

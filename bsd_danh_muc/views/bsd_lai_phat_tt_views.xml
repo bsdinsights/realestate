@@ -4,7 +4,7 @@
         <field name="name">bsd.lai_phat_tt.form</field>
         <field name="model">bsd.lai_phat_tt</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <sheet>
                     <group>
                         <group>

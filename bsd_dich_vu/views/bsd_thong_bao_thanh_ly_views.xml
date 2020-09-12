@@ -6,7 +6,7 @@
             <field name="name">bsd.tb_tl.form</field>
             <field name="model">bsd.tb_tl</field>
             <field name="arch" type="xml">
-                <form string="Thông báo thanh lý">
+                <form duplicate="false">
                     <header>
                         <button string="Xác nhận"
                                 name="action_xac_nhan"

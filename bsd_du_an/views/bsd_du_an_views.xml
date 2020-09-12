@@ -4,7 +4,7 @@
         <field name="name">bsd.du_an.form</field>
         <field name="model">bsd.du_an</field>
         <field name="arch" type="xml">
-            <form duplicate="0">
+            <form duplicate="false">
                 <header>
                     <field name="state" widget="statusbar" options="{'clickable':1}"/>
                 </header>
@@ -175,7 +175,7 @@
                                                    domain="[('partner_id', '=', parent.bsd_chu_dt_id)]"/>
                                             <field name="bsd_ngan_hang_id"/>
                                         </tree>
-                                        <form>
+                                        <form duplicate="false">
                                             <sheet>
                                                 <group>
                                                     <group>

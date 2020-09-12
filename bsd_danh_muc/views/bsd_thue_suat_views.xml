@@ -4,7 +4,7 @@
         <field name="name">bsd.thue_suat.form</field>
         <field name="model">bsd.thue_suat</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <sheet>
                     <group>
                         <group>

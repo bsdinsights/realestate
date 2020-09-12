@@ -4,7 +4,7 @@
         <field name="name">bsd.product.template.form</field>
         <field name="model">product.template</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button string="Ưu tiên"
                             name="action_uu_tien"

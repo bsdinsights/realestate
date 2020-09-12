@@ -265,7 +265,7 @@
                                             type="object"
                                             confirm="Bạn có muốn Từ chối yêu cầu không?"/>
                                 </tree>
-                                <form>
+                                <form duplicate="false">
                                     <header>
                                         <field name="state" widget="statusbar" statusbar_visible="0"/>
                                     </header>
@@ -365,7 +365,7 @@
         <field name="name">bsd.lich_thanh_toan.form</field>
         <field name="model">bsd.lich_thanh_toan</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <sheet>
                     <notebook>
                         <page string="Thông tin đợt">
@@ -428,7 +428,7 @@
         <field name="name">bsd.bao_gia.form</field>
         <field name="model">bsd.bao_gia</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <sheet>
                     <notebook>
                         <page string="Thông tin chung">
@@ -638,7 +638,7 @@
                                             type="object"
                                             confirm="Bạn có muốn Từ chối yêu cầu không?"/>
                                 </tree>
-                                <form>
+                                <form duplicate="false">
                                     <header>
                                         <field name="state" widget="statusbar" statusbar_visible="0"/>
                                     </header>

@@ -4,7 +4,7 @@
         <field name="name">bsd.ck_db.form</field>
         <field name="model">bsd.ck_db</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"

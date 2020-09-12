@@ -4,7 +4,7 @@
         <field name="name">bsd.hd_ban_cn.form</field>
         <field name="model">bsd.hd_ban_cn</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"

@@ -4,7 +4,7 @@
         <field name="name">bsd.quan_huyen.form</field>
         <field name="model">bsd.quan_huyen</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <sheet>
                     <group>
                         <group>

@@ -4,7 +4,7 @@
         <field name="name">bsd.ck_cstt.form</field>
         <field name="model">bsd.ck_cstt</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"

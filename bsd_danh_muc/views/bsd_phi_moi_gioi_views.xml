@@ -4,7 +4,7 @@
         <field name="name">bsd.pmg_ttc.form</field>
         <field name="model">bsd.pmg_ttc</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <sheet>
                     <notebook>
                         <page string="Thông tin chung">

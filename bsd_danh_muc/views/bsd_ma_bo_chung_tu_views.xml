@@ -4,7 +4,7 @@
         <field name="name">bsd.ma_bo_cn.form</field>
         <field name="model">bsd.ma_bo_cn</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>

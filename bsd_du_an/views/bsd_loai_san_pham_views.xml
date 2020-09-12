@@ -4,7 +4,7 @@
         <field name="name">bsd.loai_sp.form</field>
         <field name="model">bsd.loai_sp</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <sheet>
                     <group>
                         <group>

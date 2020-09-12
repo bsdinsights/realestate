@@ -4,7 +4,7 @@
         <field name="name">bsd.tang.form</field>
         <field name="model">bsd.tang</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <sheet>
                     <group>
                         <group>

@@ -4,7 +4,7 @@
         <field name="name">bsd.them_unit.form</field>
         <field name="model">bsd.them_unit</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button string="Chuẩn bị"
                             name="action_chuan_bi"
@@ -79,7 +79,7 @@
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"/>
                                     <field name="bsd_gia_ban"/>
                                 </tree>
-                                <form>
+                                <form duplicate="false">
                                     <sheet>
                                         <group>
                                             <group>

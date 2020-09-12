@@ -4,7 +4,7 @@
         <field name="name">bsd.dot_mb.form</field>
         <field name="model">bsd.dot_mb</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button string="Lọc căn hộ"
                             name="action_loc_unit"

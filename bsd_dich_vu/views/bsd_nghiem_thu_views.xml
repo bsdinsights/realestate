@@ -4,7 +4,7 @@
         <field name="name">bsd.nghiem_thu.form</field>
         <field name="model">bsd.nghiem_thu</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"

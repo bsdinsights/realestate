@@ -4,7 +4,7 @@
         <field name="name">bsd.cs_tt.form</field>
         <field name="model">bsd.cs_tt</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <sheet>
                     <notebook>
                         <page string="Thông tin chung">
@@ -125,7 +125,7 @@
         <field name="name">bsd.cs_tt_ct.form</field>
         <field name="model">bsd.cs_tt_ct</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <sheet>
                     <group>
                         <group>

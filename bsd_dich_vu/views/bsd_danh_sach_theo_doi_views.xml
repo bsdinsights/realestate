@@ -4,7 +4,7 @@
         <field name="name">bsd.ds_td.form</field>
         <field name="model">bsd.ds_td</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button name="action_xac_nhan"
                             type="object"

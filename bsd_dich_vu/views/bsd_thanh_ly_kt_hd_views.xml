@@ -4,7 +4,7 @@
         <field name="name">bsd.tl_kt_hd.form</field>
         <field name="model">bsd.tl_kt_hd</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"

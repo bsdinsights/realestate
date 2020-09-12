@@ -4,7 +4,7 @@
         <field name="name">bsd.dat_coc.form</field>
         <field name="model">bsd.dat_coc</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
@@ -245,7 +245,7 @@
                                     <field name="state"/>
                                     <field name="bsd_bao_gia_id" invisible="1"/>
                                 </tree>
-                                <form>
+                                <form duplicate="false">
                                     <header>
                                         <field name="state" widget="statusbar" statusbar_visible="0"/>
                                     </header>

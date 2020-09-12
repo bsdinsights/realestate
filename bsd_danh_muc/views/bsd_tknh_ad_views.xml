@@ -4,7 +4,7 @@
         <field name="name">bsd.tknh_ad.form</field>
         <field name="model">bsd.tknh_ad</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <sheet>
                     <group>
                         <group>

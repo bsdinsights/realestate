@@ -4,7 +4,7 @@
         <field name="name">bsd.pl_tti.form</field>
         <field name="model">bsd.pl_tti</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"

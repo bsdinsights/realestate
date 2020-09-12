@@ -4,7 +4,7 @@
         <field name="name">bsd.thanh_ly.form</field>
         <field name="model">bsd.thanh_ly</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button name="action_xac_nhan"
                             type="object"

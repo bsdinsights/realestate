@@ -4,7 +4,7 @@
         <field name="name">bsd.dk_bg.form</field>
         <field name="model">bsd.dk_bg</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <sheet>
                     <group>
                         <group>

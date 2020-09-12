@@ -4,7 +4,7 @@
         <field name="name">bsd.toa_nha.form</field>
         <field name="model">bsd.toa_nha</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <sheet>
                     <group>
                         <group>

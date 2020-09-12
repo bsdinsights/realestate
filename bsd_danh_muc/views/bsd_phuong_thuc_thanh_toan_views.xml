@@ -4,7 +4,7 @@
         <field name="name">bsd.pt_tt.form</field>
         <field name="model">bsd.pt_tt</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <sheet>
                     <group>
                         <group>

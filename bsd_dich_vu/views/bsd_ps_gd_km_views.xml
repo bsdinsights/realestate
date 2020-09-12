@@ -4,7 +4,7 @@
         <field name="name">bsd.ps_gd_km.form</field>
         <field name="model">bsd.ps_gd_km</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"

@@ -4,7 +4,7 @@
         <field name="name">bsd.thu_hoi.form</field>
         <field name="model">bsd.thu_hoi</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
@@ -116,7 +116,7 @@
         <field name="name">bsd.thu_hoi.form</field>
         <field name="model">bsd.thu_hoi</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"

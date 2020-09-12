@@ -4,7 +4,7 @@
         <field name="name">bsd.huy_gc.form</field>
         <field name="model">bsd.huy_gc</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
@@ -129,7 +129,7 @@
         <field name="name">bsd.huy_gc.form</field>
         <field name="model">bsd.huy_gc</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
