@@ -47,7 +47,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 bsd_du_an_id: null,
                 bsd_dot_mb_id: null,
                 bsd_unit: null,
-                bsd_view: null,
                 bsd_view_ids: [],
                 bsd_state: [],
                 bsd_huong: null,
@@ -91,14 +90,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                             mode: 'edit',
                             attrs: {
                                 placeholder: _t('Chọn căn hộ')
-                            }
-                        }
-                    ),
-                    bsd_view : new relational_fields.FieldSelection(self,
-                        'bsd_view',
-                        self.model.get(recordID), {
-                            mode: 'edit',
-                            attrs: {
                             }
                         }
                     ),
@@ -160,8 +151,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 };
                 self.fields.bsd_du_an_id.appendTo(self.$('.create_du_an_id .o_td_field'))
                 self.fields.bsd_dot_mb_id.appendTo(self.$('.create_dot_mb_id .o_td_field'))
-
-                self.fields.bsd_view.appendTo(self.$('.create_view .o_td_field'))
                 self.fields.bsd_huong.appendTo(self.$('.create_huong .o_td_field'))
                 self.fields.bsd_tu_gia.appendTo(self.$('.create_tu_gia .o_td_field'))
                 self.fields.bsd_den_gia.appendTo(self.$('.create_den_gia .o_td_field'))
@@ -442,20 +431,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
 
          },
         /**
-         * @private Lấy giá trị khi thay đổi view căn hộ
-         */
-         _onChangeView: function(event){
-            event.stopPropagation();
-            var temp = $(event.currentTarget).find('.o_input')[0].value
-            if (temp !== 'false'){
-                this.filter.bsd_view =  temp
-            }
-            else {
-                this.filter.bsd_view =  null
-            }
-
-         },
-        /**
          * @private Lấy giá trị khi thay đổi hướng căn hộ
          */
          _onChangeHuong: function(event){
@@ -671,6 +646,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     relation: 'bsd.du_an',
                     type: 'many2one',
                     name: 'bsd_du_an_id',
+                    domain: [['state', '=', 'phat_hanh']]
                 },
                 {
                     relation: 'bsd.dot_mb',
@@ -687,19 +663,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 {
                     type: 'char',
                     name: 'bsd_unit',
-                },
-                 {
-                    type: 'selection',
-                    name: 'bsd_view',
-                    selection: [[1, 'Phố'],
-                                 [2, 'Hồ bơi'],
-                                 [3, 'Công viên'],
-                                 [4, 'Mặt tiền'],
-                                 [5, 'Bãi biển/sông/hồ/núi'],
-                                 [6, 'Rừng'],
-                                 [7, 'Cao tốc'],
-                                 [8, 'Hồ'],
-                                 [9, 'Biển']]
                 },
                  {
                     type: 'selection',

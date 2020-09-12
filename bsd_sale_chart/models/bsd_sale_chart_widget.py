@@ -17,15 +17,6 @@ class BsdSaleChartWidget(models.AbstractModel):
     bsd_den_gia = fields.Char(string="Giá đến", help="Giá đến")
     bsd_tu_dt = fields.Char(string="Từ diện tích")
     bsd_den_dt = fields.Char(string="Đến diện tích")
-    # bsd_view = fields.Selection([('1', 'Phố'),
-    #                              ('2', 'Hồ bơi'),
-    #                              ('3', 'Công viên'),
-    #                              ('4', 'Mặt tiền'),
-    #                              ('5', 'Bãi biển/sông/hồ/núi'),
-    #                              ('6', 'Rừng'),
-    #                              ('7', 'Cao tốc'),
-    #                              ('8', 'Hồ'),
-    #                              ('9', 'Biển')], string="Hướng nhìn", help="Góc nhìn của căn hộ")
     bsd_huong = fields.Selection([('1', 'Đông'),
                                   ('2', 'Tây'),
                                   ('3', 'Nam'),
@@ -60,11 +51,9 @@ class BsdSaleChartWidget(models.AbstractModel):
                 a = """ AND view{0}.bsd_view_id = {0}""".format(view["id"])
                 select += a
             select += ';'
-            _logger.debug(select)
             self.env.cr.execute(select)
             unit_ids = (str(x[0]) for x in self.env.cr.fetchall())
             unit_ids_str = ','.join(unit_ids)
-            _logger.debug(unit_ids_str)
             where += "AND (unit.id IN ({0})) ".format(unit_ids_str)
         if data['bsd_huong']:
             where += "AND (unit.bsd_huong = '{0}') ".format(data['bsd_huong'])

@@ -15,14 +15,20 @@
                             <field name="bsd_ma_gc"/>
                             <field name="bsd_ngay_gc"/>
                             <field name="bsd_khach_hang_id"
-                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form',
+                                             'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree'}"
                                    options="{'no_create':true}"/>
 
                         </group>
                         <group>
-                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                            <field name="bsd_du_an_id"
+                                   invisible="1"/>
+                            <field name="bsd_du_an_id"
+                                   readonly="1" force_save="1"
+                                   options="{'no_create':true}"/>
                             <field name="bsd_unit_id"
-                                   context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                   context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form',
+                                             'tree_view_ref': 'bsd_du_an.bsd_product_template_tree'}"
                                    options="{'no_create':true}"
                                    domain="[('bsd_du_an_id', 'in',[bsd_du_an_id]),
                                             ('state','in',['chuan_bi','san_sang','dat_cho','giu_cho'])]"/>
@@ -121,11 +127,15 @@
                             <field name="bsd_ngay_gc" readonly="1"/>
                             <field name="bsd_ngay_gc" invisible="1"/>
                             <field name="bsd_khach_hang_id"
-                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form',
+                                             'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree'}"
                                    options="{'no_create':true}"/>
-                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                            <field name="bsd_du_an_id"
+                                   readonly="1"
+                                   options="{'no_create':true}"/>
                             <field name="bsd_unit_id"
-                                   context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                   context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form',
+                                             'tree_view_ref': 'bsd_du_an.bsd_product_template_tree'}"
                                    options="{'no_create':true}"
                                    domain="[('bsd_du_an_id', 'in',[bsd_du_an_id]),
                                             ('state','in',['chuan_bi','san_sang','dat_cho','giu_cho'])]"/>
