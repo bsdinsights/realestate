@@ -10,6 +10,13 @@
                     <field name="bsd_dot_mb_id"/>
                 </group>
             </xpath>
+            <xpath expr="//header" position="inside">
+                <button string="Tạo giữ chỗ"
+                        name="action_tao_gc"
+                        class="oe_highlight"
+                        type="object"
+                        sequence="50"/>
+            </xpath>
         </field>
     </record>
 </odoo>

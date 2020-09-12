@@ -12,3 +12,10 @@ class ProductTemplate(models.Model):
     bsd_giu_cho_ids = fields.One2many('bsd.giu_cho', 'bsd_product_tmpl_id', string="Danh sách giữ chỗ",
                                       domain=[('state', 'in', ['giu_cho', 'dat_cho'])],
                                       readonly=True)
+
+    # Tạo giữ chỗ từ sản phẩm
+    def action_tao_gc(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_giu_cho_action_popup').read()[0]
+        action['context'] = {'default_bsd_du_an_id': self.bsd_du_an_id.id,
+                             'default_bsd_unit_id': self.id}
+        return action
