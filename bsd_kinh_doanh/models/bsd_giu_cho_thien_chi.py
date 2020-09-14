@@ -17,7 +17,6 @@ class BsdGiuChoThienChi(models.Model):
                               required=True, readonly=True, copy=False, default='/')
     _sql_constraints = [
         ('bsd_ma_gctc_unique', 'unique (bsd_ma_gctc)', 'Mã giữ chỗ thiện chí đã tồn tại !'),
-        ('bsd_stt_unique', 'unique (bsd_stt)', 'Số thứ tự bị trùng !')
     ]
     bsd_stt = fields.Integer(string="Số thứ tự", readonly=1)
     bsd_ngay_gctc = fields.Datetime(string="Ngày giữ chỗ", required=True, help="Ngày giữ chỗ thiện chí",
@@ -164,6 +163,7 @@ class BsdGiuChoThienChi(models.Model):
     # KD.05.01 Xác nhận giữ chỗ thiện chí
     def action_xac_nhan(self):
         self._tao_rec_cong_no()
+        vals['bsd_stt'] = self.bsd_du_an_id.bsd_sequence_gc_tc_id.next_by_code(self.bsd_du_an_id.bsd_ma_da)
         self.write({
             'state': 'xac_nhan',
             'bsd_ngay_gctc': datetime.datetime.now(),
@@ -203,12 +203,14 @@ class BsdGiuChoThienChi(models.Model):
 
     @api.model
     def create(self, vals):
+        sequence = False
         if 'bsd_du_an_id' in vals:
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
             raise UserError(_('Dự án chưa có mã giữ chỗ thiện chí'))
         vals['bsd_ma_gctc'] = sequence.next_by_id()
+
         res = super(BsdGiuChoThienChi, self).create(vals)
         # R11 Chuyển nhượng khách hàng
         res.write({

@@ -20,6 +20,7 @@ class BsdGiuChoThienChi(models.Model):
 
     bsd_ngay_tt = fields.Datetime(compute='_compute_tien_tt', store=True)
     bsd_thanh_toan = fields.Selection(compute='_compute_tien_tt', store=True)
+    bsd_sequence_gc_tc_id = fields.Many2one('ir.sequence', string="STT giữ chỗ thiện chí")
 
     @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien_gc')
     def _compute_tien_tt(self):
@@ -53,15 +54,7 @@ class BsdGiuChoThienChi(models.Model):
 
     # Sinh số thứ tự cho phiếu
     def create_stt(self):
-        self.env.cr.execute("SELECT MAX(bsd_stt) FROM bsd_gc_tc Where bsd_du_an_id={0};".format(self.bsd_du_an_id.id))
-        last_stt = self.env.cr.fetchone()
-        if last_stt[0]:
-            _logger.debug("Sinh số tự động")
-            _logger.debug(last_stt)
-            self.write({
-                'bsd_stt': last_stt[0] + 1,
-            })
-        else:
-            self.write({
-                'bsd_stt': 1,
-            })
+        stt = self.bsd_du_an_id.bsd_sequence_gc_tc_id.next_by_code(self.bsd_du_an_id.bsd_ma_da)
+        self.write({
+            'bsd_stt': stt,
+        })

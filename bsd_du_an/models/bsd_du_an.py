@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
 
@@ -103,7 +103,8 @@ class BsdProject(models.Model):
     bsd_unit_ids = fields.One2many('product.template', 'bsd_du_an_id', string="Danh sách căn hộ", readonly=True)
     bsd_sl_unit = fields.Integer(string="# Căn hộ", compute="_compute_sl_unit")
     active = fields.Boolean(default=True)
-    bsd_tong_dt = fields.Float(string="Tổng diện tích", help="Tổng diện tích dự án", digits=(14,0))
+    bsd_tong_dt = fields.Float(string="Tổng diện tích", help="Tổng diện tích dự án", digits=(14, 0))
+    bsd_sequence_gc_tc_id = fields.Many2one('ir.sequence', string="STT giữ chỗ thiện chí", readonly=1)
 
     @api.constrains('bsd_tl_dc')
     def _check_ty_le_coc(self):
@@ -169,6 +170,23 @@ class BsdProject(models.Model):
         action["context"] = {'group_by': 'bsd_toa_nha_id'}
         action["domain"] = [('bsd_du_an_id', '=', self.id)]
         return action
+
+    @api.model
+    def _create_sequence(self, vals,):
+        seq = {
+            'name': _('%s - cách sinh số thứ tự giữ chỗ thiện chí') % vals['bsd_ma_da'],
+            'implementation': 'no_gap',
+            'padding': 1,
+            'code': vals['bsd_ma_da'],
+            'number_increment': 1,
+        }
+        seq = self.env['ir.sequence'].create(seq)
+        return seq
+
+    @api.model_create_single
+    def create(self, vals):
+        vals['bsd_sequence_gc_tc_id'] = self._create_sequence(vals).id
+        return super(BsdProject, self).create(vals)
 
 
 class BsdDuanNganHangTaiTro(models.Model):
