@@ -29,7 +29,9 @@ class BsdChietKhauNoiBo(models.Model):
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng chiết khấu nội bộ",
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True)
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True,
+                               readonly=True,
+                               states={'nhap': [('readonly', False)]})
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
                               ('duyet', 'Duyệt'),
@@ -60,6 +62,10 @@ class BsdChietKhauNoiBo(models.Model):
 
     # DM.16.03 Hủy chiết khấu
     def action_huy(self):
+        dot_mb_dang_ph = self.env['bsd.dot_mb'].search([('state', '=', 'ph'),
+                                                        ('bsd_ck_nb_id', '=', self.id)])
+        if self.state == 'duyet' and dot_mb_dang_ph:
+            raise UserError(_("Danh sách chiết khấu nội bộ đang nằm trong đợt mở bán đã phát hành"))
         self.write({
             'state': 'huy',
         })
