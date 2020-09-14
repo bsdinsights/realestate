@@ -49,7 +49,7 @@ class BsdRapCan(models.Model):
     def _constrain_gc_tc(self):
         if self.bsd_gc_tc_id:
             gc_tc = self.env['bsd.gc_tc'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-                                                  ('state', '=', 'xac_nhan'),
+                                                  ('state', '=', 'cho_rc'),
                                                   ('bsd_thanh_toan', '=', 'da_tt'),
                                                   ('bsd_ngay_ut', '<', self.bsd_gc_tc_id.bsd_ngay_ut)])
             if gc_tc:
@@ -81,6 +81,33 @@ class BsdRapCan(models.Model):
             'bsd_rap_can_id': self.id,
             'bsd_ngay_rc': fields.Datetime.now(),
         })
+        # Kiểm tra số lượng giữ chỗ thiện chí
+        self.env.cr.execute("SELECT MAX(bsd_stt) FROM bsd_gc_tc WHERE bsd_du_an_id = {0}".format(self.bsd_du_an_id.id))
+        max_stt = self.env.cr.fetchone()[0]
+        _logger.debug("stt lớn nhất")
+        _logger.debug(max_stt)
+        # lấy số thứ tự giữ chỗ thiện chí tiếp theo đang ở trạng thái chờ
+        next_stt = self.bsd_gc_tc_id.bsd_stt + 1
+        # cờ bật lên khi tìm thấy giữ chỗ tiếp theo ở trạng thái chờ
+        flag = True
+        while flag:
+            next_gc_tc = self.env['bsd.gc_tc'].search([('bsd_stt', '=', next_stt)])
+            if next_gc_tc:
+                if next_gc_tc.state == 'cho_rc':
+                    next_gc_tc.write({
+                        'state': 'giu_cho'
+                    })
+                    flag = False
+                else:
+                    if max_stt <= next_stt:
+                        flag = False
+                    else:
+                        next_stt += 1
+            else:
+                if next_stt >= max_stt:
+                    flag = False
+
+        # Cập nhật trạng thái unit
         self.bsd_unit_id.write({
             'state': 'giu_cho',
         })
@@ -120,7 +147,6 @@ class BsdRapCan(models.Model):
             'bsd_nguoi_huy_id': self.env.uid,
         })
         self.bsd_gc_tc_id.write({
-            'state': 'xac_nhan',
             'bsd_ngay_huy_rc': fields.Datetime.now(),
         })
         self.bsd_unit_id.write({

@@ -54,7 +54,7 @@ class BsdCongNoCT(models.Model):
                 raise UserError("Không thể thực hiện thanh toán dư")
             elif self.bsd_gc_tc_id.bsd_tien_gc == tien:
                 gc_th_rap_can = self.env['bsd.gc_tc'].search([('bsd_du_an_id', '=', self.bsd_gc_tc_id.bsd_du_an_id.id),
-                                                              ('state', '=', 'rap_can')])
+                                                              ('state', '=', 'giu_cho')])
                 if gc_th_rap_can:
                     self.bsd_gc_tc_id.write({
                         'state': 'cho_rc',

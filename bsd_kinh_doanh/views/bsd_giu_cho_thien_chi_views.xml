@@ -17,7 +17,7 @@
                             type="object"
                             sequence="50"
                             confirm="Bạn có muốn hủy giữ chỗ không?"
-                            states="xac_nhan"
+                            states="xac_nhan,cho_rc,giu_cho"
                             attrs="{'invisible':['|',('bsd_thanh_toan', '=','chua_tt')]}"/>
                     <button string="Hủy"
                             name="action_huy"
@@ -26,12 +26,20 @@
                             confirm="Bạn có muốn hủy giữ chỗ không?"
                             states="xac_nhan"
                             attrs="{'invisible':['|',('bsd_thanh_toan', '!=','chua_tt')]}"/>
+                    <button string="Ráp căn"
+                            name="action_rap_can"
+                            type="object"
+                            states="giu_cho"
+                            class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_huy_gc" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_huy_gc', '=', 0)]}">
                             <field name="bsd_so_huy_gc" widget="statinfo" string="Đề nghị hủy"/>
+                        </button>
+                        <button name="action_view_rap_can" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_rap_can', '=', 0)]}">
+                            <field name="bsd_so_rap_can" widget="statinfo" string="Ráp căn"/>
                         </button>
                     </div>
                     <group>

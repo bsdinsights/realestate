@@ -82,6 +82,7 @@ class BsdGiuChoThienChi(models.Model):
     bsd_huy_gc_id = fields.Many2one('bsd.huy_gc', string="Hủy giữ chỗ",
                                     help="Mã phiếu hủy giữ chỗ thiện chí được duyệt", readonly=1)
     bsd_so_huy_gc = fields.Integer(string="# Hủy giữ chỗ", compute='_compute_huy_gc')
+    bsd_so_rap_can = fields.Integer(string="# Ráp căn", compute='_compute_rap_can')
 
     @api.constrains('bsd_tien_gc')
     def _check_bsd_tien_gc(self):
@@ -107,6 +108,34 @@ class BsdGiuChoThienChi(models.Model):
             else:
                 action['views'] = form_view
             action['res_id'] = huy_gc.id
+        # Prepare the context.
+        context = {
+            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'default_bsd_gc_tc_id': self.id,
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_loai_gc': 'gc_tc'
+        }
+        action['context'] = context
+        return action
+
+    def _compute_rap_can(self):
+        for each in self:
+            rap_can = self.env['bsd.rap_can'].search([('bsd_gc_tc_id', '=', self.id)])
+            each.bsd_so_rap_can = len(rap_can)
+
+    def action_view_rap_can(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_rap_can_action').read()[0]
+
+        rap_can = self.env['bsd.rap_can'].search([('bsd_gc_tc_id', '=', self.id)])
+        if len(rap_can) > 1:
+            action['domain'] = [('id', 'in', rap_can.ids)]
+        elif rap_can:
+            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_rap_can_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = rap_can.id
         # Prepare the context.
         context = {
             'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
@@ -163,7 +192,6 @@ class BsdGiuChoThienChi(models.Model):
     # KD.05.01 Xác nhận giữ chỗ thiện chí
     def action_xac_nhan(self):
         self._tao_rec_cong_no()
-        vals['bsd_stt'] = self.bsd_du_an_id.bsd_sequence_gc_tc_id.next_by_code(self.bsd_du_an_id.bsd_ma_da)
         self.write({
             'state': 'xac_nhan',
             'bsd_ngay_gctc': datetime.datetime.now(),
@@ -199,6 +227,16 @@ class BsdGiuChoThienChi(models.Model):
         }
         action = self.env.ref('bsd_kinh_doanh.bsd_huy_gc_action_popup').read()[0]
         action['context'] = context
+        return action
+
+    # tiện ích ráp căn
+    def action_rap_can(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_rap_can_action_popup').read()[0]
+        action['context'] = {
+            'default_bsd_gc_tc_id': self.id,
+            'default_bsd_khach_hang_id': self.bsd_kh_moi_id.id,
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+        }
         return action
 
     @api.model

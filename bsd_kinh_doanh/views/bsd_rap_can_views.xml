@@ -115,4 +115,54 @@
             <p>Tạo phiếu ráp căn</p>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_rap_can_form_popup">
+        <field name="name">bsd.rap_can.form</field>
+        <field name="model">bsd.rap_can</field>
+        <field name="arch" type="xml">
+            <form duplicate="false">
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            class="oe_highlight"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                            type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma_rc"/>
+                            <field name="bsd_ngay_rc"/>
+                            <field name="bsd_gc_tc_id"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_thanh_toan', '=','da_tt'), ('state','=','xac_nhan')]"/>
+                            <field name="bsd_khach_hang_id"
+                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                   options="{'no_create':true}"/>
+                        </group>
+                        <group>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                            <field name="bsd_unit_id"
+                                   context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                   options="{'no_create':true}"
+                                   domain="[('state','in',['chuan_bi','san_sang','dat_cho','giu_cho']),
+                                            ('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
+                            <field name="bsd_dien_giai"/>
+                        </group>
+                    </group>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_rap_can_action_popup">
+    <field name="name">Ráp căn</field>
+    <field name="res_model">bsd.rap_can</field>
+    <field name="view_mode">tree,form</field>
+    <field name="target">new</field>
+    <field name="view_ids"
+           eval="[(5, 0, 0),
+                  (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_rap_can_form_popup')})]"/>
+</record>
 </odoo>
