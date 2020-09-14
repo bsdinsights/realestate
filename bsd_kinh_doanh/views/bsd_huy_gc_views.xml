@@ -175,7 +175,7 @@
                             />
                             <field name="bsd_tien"/>
                             <field name="bsd_tien_da_tt"/>
-                            <field name="bsd_hoan_tien"/>
+                            <field name="bsd_hoan_tien" readonly="1" force_save="1"/>
                             <field name="bsd_tien_ht"
                                    attrs="{'invisible':[('bsd_hoan_tien', '=', False)],
                                            'required':[('bsd_hoan_tien', '=', True)]}"/>

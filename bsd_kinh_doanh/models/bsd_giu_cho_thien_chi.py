@@ -223,7 +223,8 @@ class BsdGiuChoThienChi(models.Model):
             'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
             'default_bsd_gc_tc_id': self.id,
             'default_bsd_du_an_id': self.bsd_du_an_id.id,
-            'default_loai_gc': 'gc_tc'
+            'default_loai_gc': 'gc_tc',
+            'default_bsd_hoan_tien': True
         }
         action = self.env.ref('bsd_kinh_doanh.bsd_huy_gc_action_popup').read()[0]
         action['context'] = context
