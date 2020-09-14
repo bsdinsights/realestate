@@ -50,3 +50,18 @@ class BsdGiuChoThienChi(models.Model):
         action = self.env.ref('bsd_tai_chinh.bsd_phieu_thu_action_popup').read()[0]
         action['context'] = context
         return action
+
+    # Sinh số thứ tự cho phiếu
+    def create_stt(self):
+        self.env.cr.execute("SELECT MAX(bsd_stt) FROM bsd_gc_tc Where bsd_du_an_id={0};".format(self.bsd_du_an_id.id))
+        last_stt = self.env.cr.fetchone()
+        if last_stt[0]:
+            _logger.debug("Sinh số tự động")
+            _logger.debug(last_stt)
+            self.write({
+                'bsd_stt': last_stt[0] + 1,
+            })
+        else:
+            self.write({
+                'bsd_stt': 1,
+            })

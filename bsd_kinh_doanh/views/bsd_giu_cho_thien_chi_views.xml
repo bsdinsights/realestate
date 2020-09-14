@@ -69,6 +69,7 @@
                             <field name="bsd_ngay_hh_gctc"/>
                             <field name="bsd_thanh_toan" attrs="{'invisible':[('id', '=', False)]}"/>
                             <field name="bsd_ngay_tt" attrs="{'invisible':[('id', '=', False)]}"/>
+                            <field name="bsd_stt"/>
                         </group>
                         <group>
                             <field name="bsd_ngay_ut"/>
@@ -96,11 +97,18 @@
         <field name="name">bsd.gc_tc.tree</field>
         <field name="model">bsd.gc_tc</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree default_order="bsd_ngay_ut asc"
+                  decoration-warning="state=='xac_nhan'"
+                  decoration-info="state=='cho_rc'"
+                  decoration-primary="state=='giu_cho'"
+                  decoration-bf="state=='giu_cho'"
+                  decoration-success="state=='dong_gc'"
+                  decoration-muted="state=='huy' or state=='het_han'">
                 <field name="bsd_ma_gctc"/>
                 <field name="bsd_ngay_gctc"/>
                 <field name="bsd_khach_hang_id"/>
                 <field name="bsd_du_an_id"/>
+                <field name="bsd_stt"/>
                 <field name="bsd_tien_gc"/>
                 <field name="bsd_thanh_toan"/>
                 <field name="bsd_ngay_ut"/>

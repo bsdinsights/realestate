@@ -16,9 +16,10 @@ class BsdGiuChoThienChi(models.Model):
     bsd_ma_gctc = fields.Char(string="Mã giữ chỗ", help="Mã giữ chỗ thiện chí",
                               required=True, readonly=True, copy=False, default='/')
     _sql_constraints = [
-        ('bsd_ma_gctc_unique', 'unique (bsd_ma_gctc)',
-         'Mã giữ chỗ thiện chí đã tồn tại !'),
+        ('bsd_ma_gctc_unique', 'unique (bsd_ma_gctc)', 'Mã giữ chỗ thiện chí đã tồn tại !'),
+        ('bsd_stt_unique', 'unique (bsd_stt)', 'Số thứ tự bị trùng !')
     ]
+    bsd_stt = fields.Integer(string="Số thứ tự", readonly=1)
     bsd_ngay_gctc = fields.Datetime(string="Ngày giữ chỗ", required=True, help="Ngày giữ chỗ thiện chí",
                                     readonly=True, default=lambda self: fields.Datetime.now(),
                                     states={'nhap': [('readonly', False)]})
@@ -61,8 +62,9 @@ class BsdGiuChoThienChi(models.Model):
     bsd_rap_can_id = fields.Many2one('bsd.rap_can', string="Ráp căn", help="Phiếu ráp căn", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
+                              ('cho_rc', 'Đang chờ'),
                               ('giu_cho', 'Giữ chỗ'),
-                              ('dong', 'Đóng'),
+                              ('dong_gc', 'Đóng'),
                               ('het_han', 'Hết hạn'),
                               ('huy', 'Hủy')], string="Trạng thái", default="nhap", tracking=1,
                              required=True, readonly=True)
@@ -204,8 +206,6 @@ class BsdGiuChoThienChi(models.Model):
         if 'bsd_du_an_id' in vals:
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
-        _logger.debug("Tạo giữ chỗ")
-        _logger.debug(sequence)
         if not sequence:
             raise UserError(_('Dự án chưa có mã giữ chỗ thiện chí'))
         vals['bsd_ma_gctc'] = sequence.next_by_id()

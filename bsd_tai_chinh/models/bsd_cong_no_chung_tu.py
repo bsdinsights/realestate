@@ -52,6 +52,19 @@ class BsdCongNoCT(models.Model):
             _logger.debug(self.bsd_gc_tc_id.bsd_tien_gc)
             if self.bsd_gc_tc_id.bsd_tien_gc < tien:
                 raise UserError("Không thể thực hiện thanh toán dư")
+            elif self.bsd_gc_tc_id.bsd_tien_gc == tien:
+                gc_th_rap_can = self.env['bsd.gc_tc'].search([('bsd_du_an_id', '=', self.bsd_gc_tc_id.bsd_du_an_id.id),
+                                                              ('state', '=', 'rap_can')])
+                if gc_th_rap_can:
+                    self.bsd_gc_tc_id.write({
+                        'state': 'cho_rc',
+                    })
+                else:
+                    self.bsd_gc_tc_id.write({
+                        'state': 'giu_cho',
+                    })
+                # Sinh số thứ tự cho giữ chỗ thiện chí sau khi thanh toán
+                self.bsd_gc_tc_id.create_stt()
 
         elif self.bsd_loai == 'pt_gc':
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_giu_cho_id', '=', self.bsd_giu_cho_id.id)])

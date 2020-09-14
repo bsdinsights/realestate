@@ -77,7 +77,7 @@ class BsdRapCan(models.Model):
             'bsd_nguoi_duyet_id': self.env.uid,
         })
         self.bsd_gc_tc_id.write({
-            'state': 'giu_cho',
+            'state': 'dong_gc',
             'bsd_rap_can_id': self.id,
             'bsd_ngay_rc': fields.Datetime.now(),
         })
