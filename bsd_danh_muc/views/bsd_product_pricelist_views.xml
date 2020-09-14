@@ -23,15 +23,15 @@
                   <field name="item_ids" nolabel="1" context="{'default_base':'list_price', 'default_date_start':bsd_ngay_bd, 'default_date_end':bsd_ngay_kt}" groups="product.group_product_pricelist">
                       <tree string="Pricelist Items">
                           <field name="product_tmpl_id" domain="[('bsd_du_an_id','in',[parent.bsd_du_an_id])]"/>
-                          <field name="fixed_price" string="Giá bán"/>
+                          <field name="fixed_price" string="Giá bán" class="oe_inline" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                           <field name="date_start"/>
                           <field name="date_end"/>
                           <field name="base" invisible="1"/>
                           <field name="price_discount" invisible="1"/>
                           <field name="applied_on" invisible="1"/>
                           <field name="compute_price" invisible="1"/>
-                          <field name="company_id" invisible="1"/>
                           <field name="currency_id" invisible="1"/>
+                          <field name="company_id" invisible="1"/>
                       </tree>
                   </field>
             </xpath>
@@ -51,9 +51,18 @@
             <xpath expr="//field[@name='date_end']" position="attributes">
                 <attribute name="readonly">1</attribute>
             </xpath>
+            <xpath expr="//field[@name='fixed_price']" position="attributes">
+                <attribute name="class">oe_inline</attribute>
+                <attribute name="widget">monetary</attribute>
+                <attribute name="options">{'currency_field': 'currency_id'}</attribute>
+            </xpath>
             <xpath expr="//field[@name='product_tmpl_id']" position="attributes">
                 <attribute name="domain">[('bsd_du_an_id','in',[parent.bsd_du_an_id])]</attribute>
                 <attribute name="context">{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_tmpl_id']" position="before">
+                <field name="currency_id" invisible="0"/>
+                <field name="company_id" invisible="0"/>
             </xpath>
         </field>
     </record>
