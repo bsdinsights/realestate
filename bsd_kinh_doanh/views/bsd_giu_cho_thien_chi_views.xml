@@ -9,22 +9,23 @@
                     <button string="Xác nhận"
                             name="action_xac_nhan"
                             type="object"
+                            sequence="1"
                             attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
                             class="oe_highlight"/>
                     <button string="Đề nghị hủy"
                             name="action_de_nghi_huy"
                             type="object"
+                            sequence="50"
                             confirm="Bạn có muốn hủy giữ chỗ không?"
                             states="xac_nhan"
-                            attrs="{'invisible':['|',('bsd_thanh_toan', '=','chua_tt')]}"
-                            class="oe_highlight"/>
+                            attrs="{'invisible':['|',('bsd_thanh_toan', '=','chua_tt')]}"/>
                     <button string="Hủy"
                             name="action_huy"
                             type="object"
+                            sequence="50"
                             confirm="Bạn có muốn hủy giữ chỗ không?"
                             states="xac_nhan"
-                            attrs="{'invisible':['|',('bsd_thanh_toan', '!=','chua_tt')]}"
-                            class="oe_highlight"/>
+                            attrs="{'invisible':['|',('bsd_thanh_toan', '!=','chua_tt')]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>

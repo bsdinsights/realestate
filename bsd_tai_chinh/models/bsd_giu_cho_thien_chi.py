@@ -38,3 +38,15 @@ class BsdGiuChoThienChi(models.Model):
                 each.bsd_ngay_tt = max(each.bsd_ct_ids.mapped('bsd_ngay_pb'))
             else:
                 each.bsd_ngay_tt = None
+
+    # Tạo thanh toán
+    def action_thanh_toan(self):
+        context = {
+            'default_bsd_loai_pt': 'gc_tc',
+            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_gc_tc_id': self.id,
+        }
+        action = self.env.ref('bsd_tai_chinh.bsd_phieu_thu_action_popup').read()[0]
+        action['context'] = context
+        return action
