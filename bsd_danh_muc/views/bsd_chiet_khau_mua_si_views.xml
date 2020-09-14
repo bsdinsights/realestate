@@ -56,6 +56,25 @@
                                 <field name="bsd_tien_ck"/>
                                 <field name="bsd_tl_ck"/>
                             </tree>
+                            <form>
+                                <group>
+                                    <group>
+                                        <field name="bsd_ma_ck"/>
+                                        <field name="bsd_chiet_khau_id" options="{'no_create':true}"/>
+                                        <field name="bsd_tu_ngay"/>
+                                        <field name="bsd_den_ngay"/>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_cach_tinh"/>
+                                        <field name="bsd_tien_ck"/>
+                                        <label for="bsd_tl_ck"/>
+                                        <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_tl_ck" class="mr-1"/>
+                                            <span>%</span>
+                                        </div>
+                                    </group>
+                                </group>
+                            </form>
                         </field>
                     </group>
 
