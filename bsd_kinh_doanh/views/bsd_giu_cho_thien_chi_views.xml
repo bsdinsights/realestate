@@ -17,7 +17,7 @@
                             type="object"
                             sequence="50"
                             confirm="Bạn có muốn hủy giữ chỗ không?"
-                            states="xac_nhan,cho_rc,giu_cho"
+                            states="xac_nhan,cho_rc,giu_cho,dong_gc"
                             attrs="{'invisible':['|',('bsd_thanh_toan', '=','chua_tt')]}"/>
                     <button string="Hủy"
                             name="action_huy"
