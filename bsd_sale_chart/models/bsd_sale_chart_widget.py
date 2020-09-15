@@ -48,7 +48,7 @@ class BsdSaleChartWidget(models.AbstractModel):
                 select += join
             select += """WHERE view{0}.bsd_view_id = {0}""".format(first)
             for view in data['bsd_view_ids'][1:]:
-                a = """ AND view{0}.bsd_view_id = {0}""".format(view["id"])
+                a = """ OR view{0}.bsd_view_id = {0}""".format(view["id"])
                 select += a
             select += ';'
             self.env.cr.execute(select)
