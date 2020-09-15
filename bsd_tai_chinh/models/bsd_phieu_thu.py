@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+import datetime
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -18,9 +19,16 @@ class BsdPhieuThu(models.Model):
         ('bsd_so_pt_unique', 'unique (bsd_so_pt)',
          'Số phiếu thu đã tồn tại !'),
     ]
-    bsd_ngay_pt = fields.Datetime(string="Ngày", help="Ngày phiếu thu", required=True,
+    bsd_ngay_pt = fields.Datetime(string="Ngày thanh toán", help="Ngày thanh toán", required=True,
                                   readonly=True, default=lambda self: fields.Datetime.now(),
                                   states={'nhap': [('readonly', False)]})
+
+    @api.constrains('bsd_ngay_pt')
+    def _onchange_ngay_pt(self):
+        today = datetime.date.today()
+        if self.bsd_ngay_pt.date() > today:
+            raise UserError(_("Ngày thanh toán không được lớn hơn ngày hiện tại"))
+
     bsd_loai_pt = fields.Selection([('tra_truoc', 'Trả trước'),
                                     ('gc_tc', 'Giữ chỗ thiện chí'),
                                     ('giu_cho', 'Giữ chỗ'),
@@ -157,6 +165,17 @@ class BsdPhieuThu(models.Model):
         if self.bsd_loai_pt in ['pql', 'pbt']:
             if not self.bsd_unit_id.bsd_ngay_cn:
                 raise UserError(_('Vui lòng kiểm tra thông tin sản phẩm trên hợp đồng'))
+
+        # Ghi nhận giờ ngày thanh toán
+        now = datetime.datetime.now()
+        get_time = self.bsd_ngay_pt.replace(hour=now.hour,
+                                            minute=now.minute,
+                                            second=now.second,
+                                            microsecond=now.microsecond)
+        self.write({
+            'bsd_ngay_pt': get_time
+        })
+
         # thực hiện ghi nhận thanh toán
         if self.bsd_loai_pt == 'tra_truoc':
             self._gs_pt_tra_truoc()
