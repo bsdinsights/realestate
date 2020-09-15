@@ -64,7 +64,8 @@
                     <group string="MÔI GIỚI">
                         <group>
                             <field name="bsd_nvbh_id" options="{'no_create':true}"/>
-                            <field name="bsd_san_gd_id" options="{'no_create':true}"/>
+                            <field name="bsd_san_gd_id"
+                                   options="{'no_create':true}"/>
                         </group>
                         <group>
                             <field name="bsd_ctv_id" options="{'no_create':true}"/>

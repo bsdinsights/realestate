@@ -11,7 +11,11 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     bsd_ten_cty_en = fields.Char(string="Tên công ty (en)", help="Tên công ty bằng tiếng anh")
-    bsd_loai_cty_ids = fields.Many2many('bsd.loai_cong_ty', help="Loại công ty", string="Loại công ty")
+    bsd_loai_cty_ids = fields.Many2many('bsd.loai_cong_ty',
+                                        relation="bsd_loai_dn_rel",
+                                        column1="bsd_dn_id",
+                                        column2="bsd_loai_id",
+                                        help="Loại công ty", string="Loại công ty")
     bsd_cty_me = fields.Char(string="Công ty mẹ")
     bsd_phan_loai = fields.Selection([('trong_nuoc', 'Trong nước'),
                                       ('ngoai_nuoc', 'Ngoài nước')], string="Phân loại")

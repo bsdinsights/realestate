@@ -17,6 +17,11 @@ class ResPartner(models.Model):
         ('bsd_ma_kh_unique', 'unique (bsd_ma_kh)',
          'Mã khách hàng đã tồn tại !'),
     ]
+    bsd_loai_kh_cn_ids = fields.Many2many('bsd.loai_kh_cn',
+                                          relation="bsd_loai_cn_rel",
+                                          column1="bsd_cn_id",
+                                          column2="bsd_loai_id",
+                                          help="Loại khách hàng cá nhân", string="Loại khách hàng")
     bsd_la_kh = fields.Boolean(string="Khách hàng")
     bsd_ngay_sinh = fields.Date(string="Ngày sinh", help="Ngày sinh")
     bsd_gioi_tinh = fields.Selection([('nam', 'Nam'), ('nu', 'Nữ')], string="Giới tính", help="Giới tính", default='nam')
@@ -186,3 +191,10 @@ class ResPartner(models.Model):
                 else:
                     res.append((partner.id, "%s" % partner.name))
         return res
+
+
+class BsdLoaikhcn(models.Model):
+    _name = 'bsd.loai_kh_cn'
+    _rec_name = 'bsd_ten'
+
+    bsd_ten = fields.Char(string="Loại khách hàng", required=True)

@@ -13,5 +13,18 @@
         <record id="bsd_chu_dt" model="bsd.loai_cong_ty">
             <field name="bsd_ten">Chủ đầu tư</field>
         </record>
+
+        <record id="bsd_khach_hang" model="bsd.loai_kh_cn">
+            <field name="bsd_ten">Khách hàng</field>
+        </record>
+        <record id="bsd_ctv" model="bsd.loai_kh_cn">
+            <field name="bsd_ten">Cộng tác viên</field>
+        </record>
+        <record id="bsd_dd_cty" model="bsd.loai_kh_cn">
+            <field name="bsd_ten">Đại diện công ty</field>
+        </record>
+        <record id="bsd_uy_quyen" model="bsd.loai_kh_cn">
+            <field name="bsd_ten">Ủy quyền</field>
+        </record>
     </data>
 </odoo>

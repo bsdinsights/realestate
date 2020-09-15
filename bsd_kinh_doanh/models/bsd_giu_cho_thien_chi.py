@@ -37,7 +37,7 @@ class BsdGiuChoThienChi(models.Model):
     def _get_nhan_vien(self):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)])
 
-    bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên BH", help="Nhân viên bán hàng",
+    bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên KD", help="Nhân viên kinh doanh",
                                   readonly=True, required=True, default=_get_nhan_vien,
                                   states={'nhap': [('readonly', False)]})
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch", domain=[('is_company', '=', True)],
@@ -83,6 +83,35 @@ class BsdGiuChoThienChi(models.Model):
                                     help="Mã phiếu hủy giữ chỗ thiện chí được duyệt", readonly=1)
     bsd_so_huy_gc = fields.Integer(string="# Hủy giữ chỗ", compute='_compute_huy_gc')
     bsd_so_rap_can = fields.Integer(string="# Ráp căn", compute='_compute_rap_can')
+
+    @api.onchange('bsd_nvbh_id')
+    def _onchange_san_ctv(self):
+        res = {}
+        self.env.cr.execute("""SELECT bsd_cn_id FROM bsd_loai_cn_rel 
+                                WHERE bsd_loai_id = {0}
+                            """.format(self.env.ref('bsd_kinh_doanh.bsd_ctv').id))
+        list_cn = self.env.cr.fetchall()[0]
+        _logger.debug(list_cn)
+        self.env.cr.execute("""SELECT bsd_dn_id FROM bsd_loai_dn_rel 
+                                WHERE bsd_loai_id = {0}
+                            """.format(self.env.ref('bsd_kinh_doanh.bsd_san').id))
+        list_dn = self.env.cr.fetchall()[0]
+        _logger.debug(list_dn)
+        res.update({
+            'domain': {
+                'bsd_ctv_id': [('id', 'in', list_cn)],
+                'bsd_san_gd_id': [('id', 'in', list_dn)]
+            }
+        })
+        return res
+
+    # 3 field ctv , sàn gd, giới thiệu không tồn tại đồng thời
+    @api.constrains('bsd_ctv_id', 'bsd_san_gd_id', 'bsd_gioi_thieu_id')
+    def _constrains_mo_gioi(self):
+        if (self.bsd_ctv_id and self.bsd_san_gd_id) \
+            or (self.bsd_ctv_id and self.bsd_gioi_thieu_id) \
+               or (self.bsd_san_gd_id and self.bsd_gioi_thieu_id):
+            raise UserError("Chỉ được chọn 1 trong Sàn GD , Công tác viên, Khách hàng giới thiệu ")
 
     @api.constrains('bsd_tien_gc')
     def _check_bsd_tien_gc(self):
