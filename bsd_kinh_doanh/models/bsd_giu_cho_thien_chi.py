@@ -107,12 +107,17 @@ class BsdGiuChoThienChi(models.Model):
         return res
 
     # 3 field ctv , sàn gd, giới thiệu không tồn tại đồng thời
-    @api.constrains('bsd_ctv_id', 'bsd_san_gd_id', 'bsd_gioi_thieu_id')
+    # Khách hàng không được trùng với mô giới
+    @api.constrains('bsd_ctv_id', 'bsd_san_gd_id', 'bsd_gioi_thieu_id', 'bsd_khach_hang_id')
     def _constrains_mo_gioi(self):
         if (self.bsd_ctv_id and self.bsd_san_gd_id) \
             or (self.bsd_ctv_id and self.bsd_gioi_thieu_id) \
                or (self.bsd_san_gd_id and self.bsd_gioi_thieu_id):
-            raise UserError("Chỉ được chọn 1 trong Sàn GD , Công tác viên, Khách hàng giới thiệu ")
+            raise UserError("Vui lòng chọn 1 trong 3 giá trị: Sàn giao dịch, Công tác viên, Khách hàng giới thiệu, ")
+        if self.bsd_khach_hang_id == self.bsd_ctv_id \
+            or self.bsd_khach_hang_id == self.bsd_san_gd_id \
+                or self.bsd_khach_hang_id == self.bsd_gioi_thieu_id:
+            raise UserError("Khách hàng không thể trùng với người môi giới")
 
     @api.constrains('bsd_tien_gc')
     def _check_bsd_tien_gc(self):
