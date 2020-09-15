@@ -129,6 +129,12 @@ class BsdGiuCho(models.Model):
             if record.bsd_tien_gc < 0:
                 raise ValidationError("Tiền giữ chỗ phải lớn hơn 0")
 
+    # Kiểm tra căn hộ có đang ưu tiên hay ko
+    @api.constrains('bsd_unit_id')
+    def _constraint_unit_ut(self):
+        if self.bsd_unit_id.bsd_uu_tien == '1':
+            raise UserError(_("Không thể thực hiện giữ chỗ cho sản phẩm: {0}".format(self.bsd_unit_id.bsd_ten_unit)))
+
     # KD.07.02 Ràng buộc số giữ chỗ theo Sản phẩm/ NVBH
     @api.constrains('bsd_nvbh_id', 'bsd_unit_id')
     def _constrain_unit_nv(self):
