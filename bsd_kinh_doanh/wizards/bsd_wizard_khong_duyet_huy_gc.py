@@ -20,6 +20,6 @@ class BsdHuyGC(models.TransientModel):
     def action_xac_nhan(self):
         self.bsd_huy_gc_id.write({
             'bsd_ly_do': self.bsd_ly_do,
-            'state': 'huy',
+            'state': 'khong_duyet',
         })
 

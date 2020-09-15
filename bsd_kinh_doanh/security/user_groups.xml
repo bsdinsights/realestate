@@ -17,4 +17,8 @@
         <field name="implied_ids" eval="[(4,ref('bsd_kinh_doanh.group_user'))]"/>
         <field name="category_id" ref="module_bsd_kinh_doanh"/>
     </record>
+
+    <record id="base.default_user" model="res.users">
+            <field name="groups_id" eval="[(4,ref('bsd_kinh_doanh.group_manager'))]"/>
+    </record>
 </odoo>

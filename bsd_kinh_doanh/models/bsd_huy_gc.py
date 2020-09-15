@@ -40,29 +40,37 @@ class BsdHuyGC(models.Model):
     bsd_giu_cho_id = fields.Many2one('bsd.giu_cho', string="Giữ chỗ", help="Giữ chỗ",
                                      readonly=True,
                                      states={'nhap': [('readonly', False)]})
-    bsd_tien = fields.Monetary(string="Số tiền", help="Số tiền", compute='_compute_tien', store=True)
-    bsd_tien_da_tt = fields.Monetary(string="Đã thanh toán", help="Số tiền đã thanh toán",
-                                     compute='_compute_tien', store=True)
+    bsd_tien = fields.Monetary(string="Số tiền", help="Số tiền", required=True,                              readonly=True,
+                               states={'nhap': [('readonly', False)]})
+    bsd_tien_da_tt = fields.Monetary(string="Đã thanh toán", help="Số tiền đã thanh toán", required=True,
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
     bsd_hoan_tien = fields.Boolean(string="Hoàn tiền", help="Hoàn tiền",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_tien_ht = fields.Monetary(string="Số tiền hoàn", help="Số tiền hoàn")
-    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
+    bsd_tien_ht = fields.Monetary(string="Số tiền hoàn", help="Số tiền hoàn", required=True,
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
+    state = fields.Selection([('nhap', 'Nháp'),
+                              ('xac_nhan', 'Xác nhận'),
+                              ('khong_duyet', 'Không duyệt'),
                               ('duyet', 'Duyệt'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
                              tracking=1, default="nhap", required=True)
     bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
-    @api.depends('bsd_gc_tc_id', 'bsd_giu_cho_id', 'bsd_loai_gc')
+    @api.onchange('bsd_gc_tc_id', 'bsd_giu_cho_id', 'bsd_loai_gc')
     def _compute_tien(self):
         for each in self:
             if each.bsd_loai_gc == 'gc_tc':
                 each.bsd_tien = each.bsd_gc_tc_id.bsd_tien_gc
                 each.bsd_tien_da_tt = each.bsd_gc_tc_id.bsd_tien_da_tt
+                each.bsd_tien_ht = each.bsd_gc_tc_id.bsd_tien_da_tt
             elif each.bsd_loai_gc == 'giu_cho':
                 each.bsd_tien = each.bsd_giu_cho_id.bsd_tien_gc
                 each.bsd_tien_da_tt = each.bsd_giu_cho_id.bsd_tien_da_tt
+                each.bsd_tien_ht = each.bsd_giu_cho_id.bsd_tien_da_tt
 
     # KD.14.01 Xác nhận hủy giữ chỗ
     def action_xac_nhan(self):

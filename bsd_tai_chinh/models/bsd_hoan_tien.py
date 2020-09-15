@@ -49,7 +49,7 @@ class BsdHoanTien(models.Model):
                    ('tl_dc_hd', 'Thanh lý đặt cọc - Chuẩn bị HĐ'),
                    ('tl_ttdc', 'Thanh lý TTĐC'),
                    ('tl_hd', 'Thanh lý hợp đồng')]
-        if self.env['res.users'].has_group('base.group_system'):
+        if self.env['res.users'].has_group('bsd_kinh_doanh.group_manager'):
             choices += [('dc_giam', 'Điều chỉnh giảm')]
         return choices
 

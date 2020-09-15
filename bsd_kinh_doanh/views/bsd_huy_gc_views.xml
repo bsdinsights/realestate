@@ -42,6 +42,8 @@
                             <field name="bsd_loai_gc"/>
                             <field name="company_id" invisible="1"/>
                             <field name="currency_id" invisible="1"/>
+                            <field name="bsd_ly_do"
+                                   attrs="{'invisible': [('state', '!=', 'khong_duyet')]}"/>
                         </group>
                         <group>
                             <field name="bsd_unit_id"
@@ -65,8 +67,8 @@
                                    attrs="{'invisible':[('bsd_loai_gc', '!=','giu_cho')],
                                            'required':[('bsd_loai_gc', '=', 'giu_cho')]}"
                             />
-                            <field name="bsd_tien"/>
-                            <field name="bsd_tien_da_tt"/>
+                            <field name="bsd_tien" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_da_tt" readonly="1" force_save="1"/>
                             <field name="bsd_hoan_tien"/>
                             <field name="bsd_tien_ht"
                                    attrs="{'invisible':[('bsd_hoan_tien', '=', False)],
@@ -173,10 +175,10 @@
                                    attrs="{'invisible':[('bsd_loai_gc', '!=','giu_cho')],
                                            'required':[('bsd_loai_gc', '=', 'giu_cho')]}"
                             />
-                            <field name="bsd_tien"/>
-                            <field name="bsd_tien_da_tt"/>
+                            <field name="bsd_tien" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_da_tt" readonly="1" force_save="1"/>
                             <field name="bsd_hoan_tien" readonly="1" force_save="1"/>
-                            <field name="bsd_tien_ht"
+                            <field name="bsd_tien_ht" readonly="1" force_save="1"
                                    attrs="{'invisible':[('bsd_hoan_tien', '=', False)],
                                            'required':[('bsd_hoan_tien', '=', True)]}"/>
                         </group>
