@@ -55,6 +55,26 @@ class BsdGiuChoThienChi(models.Model):
     # Sinh số thứ tự cho phiếu
     def create_stt(self):
         stt = self.bsd_du_an_id.bsd_sequence_gc_tc_id.next_by_code(self.bsd_du_an_id.bsd_ma_da)
+        # KD.05.05 Tính lại ngày ưu tiên làm ráp căn
+        ngay_ut = self.bsd_ngay_tt + datetime.timedelta(days=self.bsd_du_an_id.bsd_gc_tmb)
         self.write({
             'bsd_stt': stt,
+            'bsd_ngay_ut': ngay_ut
         })
+
+        # Kiểm tra lại ngày ưu tiên của giữ chỗ thiện chí
+        # Lấy giữ chỗ thiện chí đang ở trạng thái giữ chỗ
+        gc_tc_dang_giu_cho = self.env['bsd.gc_tc'].search([('state', '=', 'giu_cho'),
+                                                           ('bsd_du_an_id', '=', self.bsd_du_an_id.id)], limit=1)
+        _logger.debug("gc_tc đang giữ chỗ")
+        _logger.debug(gc_tc_dang_giu_cho.bsd_ngay_ut)
+        _logger.debug(self.bsd_ngay_ut)
+        if self.bsd_ngay_ut < gc_tc_dang_giu_cho.bsd_ngay_ut:
+            self.write({
+                'state': 'giu_cho'
+            })
+            gc_tc_dang_giu_cho.write({
+                'state': 'cho_rc'
+            })
+
+

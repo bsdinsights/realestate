@@ -81,31 +81,18 @@ class BsdRapCan(models.Model):
             'bsd_rap_can_id': self.id,
             'bsd_ngay_rc': fields.Datetime.now(),
         })
-        # Kiểm tra số lượng giữ chỗ thiện chí
-        self.env.cr.execute("SELECT MAX(bsd_stt) FROM bsd_gc_tc WHERE bsd_du_an_id = {0}".format(self.bsd_du_an_id.id))
-        max_stt = self.env.cr.fetchone()[0]
-        _logger.debug("stt lớn nhất")
-        _logger.debug(max_stt)
-        # lấy số thứ tự giữ chỗ thiện chí tiếp theo đang ở trạng thái chờ
-        next_stt = self.bsd_gc_tc_id.bsd_stt + 1
-        # cờ bật lên khi tìm thấy giữ chỗ tiếp theo ở trạng thái chờ
-        flag = True
-        while flag:
-            next_gc_tc = self.env['bsd.gc_tc'].search([('bsd_stt', '=', next_stt)])
-            if next_gc_tc:
-                if next_gc_tc.state == 'cho_rc':
-                    next_gc_tc.write({
-                        'state': 'giu_cho'
-                    })
-                    flag = False
-                else:
-                    if max_stt <= next_stt:
-                        flag = False
-                    else:
-                        next_stt += 1
-            else:
-                if next_stt >= max_stt:
-                    flag = False
+        # Kiểm tra ngày ưu tiên ráp căn nhỏ nhất
+        self.env.cr.execute("""SELECT MIN(bsd_ngay_ut) FROM bsd_gc_tc 
+                                WHERE bsd_du_an_id = {0} AND state = 'cho_rc'
+                            """.format(self.bsd_du_an_id.id))
+        min_ngay_ut = self.env.cr.fetchone()[0]
+        if min_ngay_ut:
+            # lấy số thứ tự giữ chỗ thiện chí tiếp theo đang ở trạng thái chờ
+            next_gc_tc = self.env['bsd.gc_tc'].search([('bsd_ngay_ut', '=', min_ngay_ut)])
+            _logger.debug(next_gc_tc)
+            next_gc_tc.write({
+                'state': 'giu_cho'
+            })
 
         # Cập nhật trạng thái unit
         self.bsd_unit_id.write({
@@ -158,7 +145,6 @@ class BsdRapCan(models.Model):
     def create(self, vals):
         rap_can = self.env['bsd.rap_can'].search([('bsd_gc_tc_id', '=', vals['bsd_gc_tc_id']),
                                                   ('state', '!=', 'huy')])
-        _logger.debug(rap_can)
         if rap_can:
             raise UserError("Giữ chỗ thiện chí thuộc một ráp căn khác.\n Vui lòng kiểm tra lại.")
         # Sinh mã tự động cho phiếu ráp căn
