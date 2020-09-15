@@ -60,8 +60,8 @@ class ProductTemplate(models.Model):
                                     help="Sàn giao dịch đang bán(sản phẩm) theo đợt mở bán",
                                     readonly=True,
                                     states={'chuan_bi': [('readonly', False)]})
-
-    bsd_loai_sp_id = fields.Many2one('bsd.loai_sp', string="Phân nhóm",
+    bsd_loai_sd_ids = fields.Many2many('bsd.lh_sd', string="Loại hình sử dụng", help="Loại hình sử dụng")
+    bsd_loai_sp_id = fields.Many2one('bsd.loai_sp', string="Loại sản phẩm",
                                      help="Phân nhóm đặc tính kỹ thuật của sản phẩm",
                                      readonly=True,
                                      states={'chuan_bi': [('readonly', False)]})
@@ -75,17 +75,6 @@ class ProductTemplate(models.Model):
                                   ('8', 'Tây bắc')], string="Hướng", help="Hướng nhà",
                                  readonly=True,
                                  states={'chuan_bi': [('readonly', False)]})
-    # bsd_view = fields.Selection([('1', 'Phố'),
-    #                              ('2', 'Hồ bơi'),
-    #                              ('3', 'Công viên'),
-    #                              ('4', 'Mặt tiền'),
-    #                              ('5', 'Bãi biển/sông/hồ/núi'),
-    #                              ('6', 'Rừng'),
-    #                              ('7', 'Cao tốc'),
-    #                              ('8', 'Hồ'),
-    #                              ('9', 'Biển')], string="Hướng nhìn", help="Góc nhìn của sản phẩm",
-    #                             readonly=True,
-    #                             states={'chuan_bi': [('readonly', False)]})
     bsd_view_ids = fields.Many2many('bsd.view', string="Hướng nhìn",
                                     relation="bsd_view_unit_rel",
                                     column1="bsd_unit_id",
@@ -95,24 +84,24 @@ class ProductTemplate(models.Model):
     bsd_so_pn = fields.Integer(string="Số phòng ngủ", help="Số phòng ngủ của sản phẩm",
                                readonly=True,
                                states={'chuan_bi': [('readonly', False)]})
-    bsd_loai_bds = fields.Selection([('1', 'Liền thổ(đất)'),
-                                     ('2', 'Căn hộ'),
-                                     ('3', 'Phức hợp'),
-                                     ('4', 'Nghỉ dưỡng')],
-                                    help="Loại hình sử dụng của sản phẩm",
-                                    string="Loại bất động sản",
-                                    readonly=True,
-                                    states={'chuan_bi': [('readonly', False)]})
-    bsd_phan_loai = fields.Selection([('1', 'Condotel'),
-                                      ('2', 'Apartment')], string="Phân loại", help="Phân loại",
-                                     readonly=True,
-                                     states={'chuan_bi': [('readonly', False)]})
-    bsd_loai_unit = fields.Selection([('1', 'Căn hộ'),
-                                      ('2', 'Căn hộ nhiều tầng'),
-                                      ('3', 'Siêu thị/cửa hàng'),
-                                      ('4', 'Penthouse')], string="Loại sản phẩm", help="Loại sản phẩm",
-                                     readonly=True,
-                                     states={'chuan_bi': [('readonly', False)]})
+    # bsd_loai_bds = fields.Selection([('1', 'Liền thổ(đất)'),
+    #                                  ('2', 'Căn hộ'),
+    #                                  ('3', 'Phức hợp'),
+    #                                  ('4', 'Nghỉ dưỡng')],
+    #                                 help="Loại hình sử dụng của sản phẩm",
+    #                                 string="Loại bất động sản",
+    #                                 readonly=True,
+    #                                 states={'chuan_bi': [('readonly', False)]})
+    # bsd_phan_loai = fields.Selection([('1', 'Condotel'),
+    #                                   ('2', 'Apartment')], string="Phân loại", help="Phân loại",
+    #                                  readonly=True,
+    #                                  states={'chuan_bi': [('readonly', False)]})
+    # bsd_loai_unit = fields.Selection([('1', 'Căn hộ'),
+    #                                   ('2', 'Căn hộ nhiều tầng'),
+    #                                   ('3', 'Siêu thị/cửa hàng'),
+    #                                   ('4', 'Penthouse')], string="Loại sản phẩm", help="Loại sản phẩm",
+    #                                  readonly=True,
+    #                                  states={'chuan_bi': [('readonly', False)]})
     bsd_tl_tc = fields.Float(string="Tỷ lệ tiền cọc",
                              help="Tỷ lệ thanh toán tối thiểu để ký thỏa thuận đặt cọc",
                              readonly=True,

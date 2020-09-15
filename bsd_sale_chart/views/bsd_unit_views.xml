@@ -36,9 +36,9 @@
                                     <field name="bsd_so_pn" readonly="1"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_loai_bds" readonly="1"/>
-                                    <field name="bsd_phan_loai" readonly="1"/>
-                                    <field name="bsd_loai_unit" readonly="1"/>
+                                    <field name="bsd_loai_sd_ids"
+                                           options="{'no_create': true}"
+                                           widget="many2many_tags" readonly="1"/>
                                     <field name="bsd_loai_sp_id" readonly="1"
                                            domain="[('bsd_du_an_id', 'in',[bsd_du_an_id]),
                                                     '|',('bsd_toa_nha_id','in',[bsd_toa_nha_id]),
@@ -128,24 +128,7 @@
             </form>
         </field>
     </record>
-    <record model="ir.ui.view" id="bsd_product_template_tree">
-        <field name="name">bsd.product.template.tree</field>
-        <field name="model">product.template</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="bsd_ma_unit"/>
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_toa_nha_id"/>
-                <field name="bsd_tang_id"/>
-                <field name="bsd_stt"/>
-                <field name="bsd_loai_bds"/>
-                <field name="bsd_loai_unit"/>
-                <field name="bsd_tong_gb"/>
-                <field name="bsd_uu_tien"/>
-                <field name="state"/>
-            </tree>
-        </field>
-    </record>
+
     <record model="ir.actions.act_window" id="bsd_product_template_gio_hang_action">
         <field name="name">Thông tin căn hộ</field>
         <field name="res_model">product.template</field>

@@ -13,6 +13,7 @@
         'security/user_groups.xml',
         'security/ir.model.access.csv',
         'security/bsd_security.xml',
+        'data/bsd_loai_hinh_su_dung_data.xml',
         'views/bsd_du_an_views.xml',
         'views/bsd_toa_nha_views.xml',
         'views/bsd_tang_views.xml',

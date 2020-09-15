@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="bsd_can_ho_chung_cu" model="bsd.lh_sd">
+            <field name="bsd_ten">Căn hộ chung cư</field>
+        </record>
+        <record id="bsd_nha_pho" model="bsd.lh_sd">
+            <field name="bsd_ten">Nhà phố</field>
+        </record>
+        <record id="bsd_dat_nen" model="bsd.lh_sd">
+            <field name="bsd_ten">Đất nền</field>
+        </record>
+        <record id="bsd_nghi_duong" model="bsd.lh_sd">
+            <field name="bsd_ten">Nghỉ dưỡng</field>
+        </record>
+        <record id="bsd_shop" model="bsd.lh_sd">
+            <field name="bsd_ten">Shophouse và Officetel</field>
+        </record>
+        <record id="bsd_xuong_kho" model="bsd.lh_sd">
+            <field name="bsd_ten">Xưởng/ Kho</field>
+        </record>
+    </data>
+</odoo>
