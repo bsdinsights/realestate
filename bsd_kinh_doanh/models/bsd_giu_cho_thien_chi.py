@@ -89,12 +89,14 @@ class BsdGiuChoThienChi(models.Model):
         self.env.cr.execute("""SELECT bsd_cn_id FROM bsd_loai_cn_rel 
                                 WHERE bsd_loai_id = {0}
                             """.format(self.env.ref('bsd_kinh_doanh.bsd_ctv').id))
-        list_cn = self.env.cr.fetchall()[0]
+        _logger.debug("onchange san ctv")
+        list_cn = [cn[0] for cn in self.env.cr.fetchall()]
+        _logger.debug("onchange san ctv")
         _logger.debug(list_cn)
         self.env.cr.execute("""SELECT bsd_dn_id FROM bsd_loai_dn_rel 
                                 WHERE bsd_loai_id = {0}
                             """.format(self.env.ref('bsd_kinh_doanh.bsd_san').id))
-        list_dn = self.env.cr.fetchall()[0]
+        list_dn = [cn[0] for cn in self.env.cr.fetchall()]
         _logger.debug(list_dn)
         res.update({
             'domain': {
