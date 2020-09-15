@@ -133,10 +133,28 @@ class BsdHuyGC(models.Model):
             if self.bsd_gc_tc_id.bsd_rap_can_id:
                 if self.bsd_gc_tc_id.bsd_rap_can_id.state not in ['huy', 'nhap']:
                     raise UserError("Giữ chỗ thiện chí đã ráp căn. Vui lòng kiểm tra lại!")
-            self.bsd_gc_tc_id.write({
-                'state': 'huy',
-                'bsd_huy_gc_id': self.id
-            })
+            if self.bsd_gc_tc_id.state == 'giu_cho':
+                self.bsd_gc_tc_id.write({
+                    'state': 'huy',
+                    'bsd_huy_gc_id': self.id
+                })
+                # Kiểm tra ngày ưu tiên ráp căn nhỏ nhất
+                self.env.cr.execute("""SELECT MIN(bsd_ngay_ut) FROM bsd_gc_tc 
+                                        WHERE bsd_du_an_id = {0} AND state = 'cho_rc'
+                                    """.format(self.bsd_du_an_id.id))
+                min_ngay_ut = self.env.cr.fetchone()[0]
+                if min_ngay_ut:
+                    # lấy số thứ tự giữ chỗ thiện chí tiếp theo đang ở trạng thái chờ
+                    next_gc_tc = self.env['bsd.gc_tc'].search([('bsd_ngay_ut', '=', min_ngay_ut)])
+                    _logger.debug(next_gc_tc)
+                    next_gc_tc.write({
+                        'state': 'giu_cho'
+                    })
+            else:
+                self.bsd_gc_tc_id.write({
+                    'state': 'huy',
+                    'bsd_huy_gc_id': self.id
+                })
         # Cập nhật trạng thái phiếu hủy
         self.write({
             'state': 'duyet',
