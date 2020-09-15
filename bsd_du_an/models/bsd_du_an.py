@@ -6,7 +6,7 @@ from odoo.exceptions import ValidationError
 
 class BsdProject(models.Model):
     _name = "bsd.du_an"
-    _rec_name = "bsd_ten_da"
+    _rec_name = "display_name"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Thông tin dự án"
 
@@ -16,6 +16,13 @@ class BsdProject(models.Model):
         ('bsd_ma_da_unique', 'unique (bsd_ma_da)',
          'Mã dự án đã tồn tại !'),
     ]
+    display_name = fields.Char(string="Tên tìm kiếm", compute="_compute_name", store=True)
+
+    @api.depends('bsd_ma_da','bsd_ten_da')
+    def _compute_name(self):
+        for each in self:
+            each.display_name = each.bsd_ma_da + ' - ' + each.bsd_ten_da
+
     bsd_chu_dt_id = fields.Many2one('res.partner', string="Chủ dự án", required=True, help="Tên chủ đầu tư của dự án")
     bsd_loai_da = fields.Selection([('da_rieng', 'Dự án riêng'),
                                     ('da_ph', 'Dự án phức hợp')], string="Loại dự án", help="Loại hình dự án")
@@ -170,6 +177,12 @@ class BsdProject(models.Model):
         action["context"] = {'group_by': 'bsd_toa_nha_id'}
         action["domain"] = [('bsd_du_an_id', '=', self.id)]
         return action
+
+    def name_get(self):
+        res = []
+        for du_an in self:
+            res.append((du_an.id, "{0}".format(du_an.bsd_ten_da)))
+        return res
 
     @api.model
     def _create_sequence(self, vals,):
