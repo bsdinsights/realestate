@@ -88,8 +88,8 @@ class BsdGiuCho(models.Model):
                                       help="Thanh toán",
                                       required=True, readonly=True)
     bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ",readonly=True)
-    bsd_stt_bg = fields.Integer(string="STT báo giá", readonly=True, help="Số thứ tự ưu tiên làm báo giá")
-    bsd_ngay_hh_bg = fields.Datetime(string="Ưu tiên báo giá", help="Ưu tiên làm báo giá", readonly=True)
+    bsd_stt_bg = fields.Integer(string="Số thứ tự", readonly=True, help="Số thứ tự giữ chỗ")
+    bsd_ngay_hh_bg = fields.Datetime(string="ngày ưu tiên ", help="Ưu tiên làm bảng tính giá", readonly=True)
     # bsd_het_han_bg = fields.Boolean(string="Hết hạn báo giá", readonly=True, default=False,
     #                                 help="Thông tin ghi nhận thời gian làm báo giá có bok hết hiệu lực hay chưa")
     # bsd_ngay_hh_stt = fields.Datetime(string="Hạn GC sau TT",
@@ -379,12 +379,12 @@ class BsdGiuCho(models.Model):
         if self.bsd_thanh_toan == 'da_tt' and not self.bsd_truoc_mb:
             self.write({'state': 'huy'})
             giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
-                                                      ('state', 'in', ['dat_cho', 'giu_cho'])])
+                                                      ('state', 'in', ['dat_cho', 'dang_cho', 'giu_cho'])])
             if not giu_cho:
                 self.bsd_unit_id.write({
                     'state': 'san_sang',
                 })
-            elif not giu_cho.filtered(lambda g: g.state == 'giu_cho'):
+            elif not giu_cho.filtered(lambda g: g.state in ['dang_cho', 'giu_cho']):
                 self.bsd_unit_id.write({
                     'state': 'dat_cho'
                 })
@@ -394,13 +394,13 @@ class BsdGiuCho(models.Model):
             self.write({'state': 'huy'})
             self.bsd_rap_can_id.write({'state': 'huy'})
             giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
-                                                      ('state', 'in', ['dat_cho', 'giu_cho'])])
+                                                      ('state', 'in', ['dat_cho', 'dang_cho', 'giu_cho'])])
             if not self.bsd_dot_mb_id:
                 if not giu_cho:
                     self.bsd_unit_id.write({
                         'state': 'chuan_bi',
                     })
-                elif not giu_cho.filtered(lambda g: g.state == 'giu_cho'):
+                elif not giu_cho.filtered(lambda g: g.state in ['dang_cho', 'giu_cho']):
                     self.bsd_unit_id.write({
                         'state': 'dat_cho'
                     })
@@ -409,7 +409,7 @@ class BsdGiuCho(models.Model):
                     self.bsd_unit_id.write({
                         'state': 'san_sang',
                     })
-                elif not giu_cho.filtered(lambda g: g.state == 'giu_cho'):
+                elif not giu_cho.filtered(lambda g: g.state in ['dang_cho', 'giu_cho']):
                     self.bsd_unit_id.write({
                         'state': 'dat_cho'
                     })
@@ -426,14 +426,14 @@ class BsdGiuCho(models.Model):
         # cập nhật Sản phẩm trên phiếu giữ chỗ
         if not self.bsd_dot_mb_id:
             giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
-                                                      ('state', 'in', ['dat_cho', 'giu_cho'])])
+                                                      ('state', 'in', ['dat_cho', 'dang_cho', 'giu_cho'])])
             if not giu_cho:
                 self.bsd_unit_id.write({
                     'state': 'chuan_bi',
                 })
         else:
             giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
-                                                      ('state', 'in', ['dat_cho', 'giu_cho'])])
+                                                      ('state', 'in', ['dat_cho', 'dang_cho', 'giu_cho'])])
             if not giu_cho:
                 self.bsd_unit_id.write({
                     'state': 'san_sang',
@@ -533,12 +533,6 @@ class BsdGiuCho(models.Model):
             'default_bsd_loai_gc': 'giu_cho',
             'default_bsd_unit_id': self.bsd_unit_id.id,
         }
-        return {
-            "name": "Tạo đề nghị hủy",
-            "res_model": 'bsd.huy_gc',
-            "view": [[False, 'form']],
-            "type": 'ir.actions.act_window',
-            "view_mode": "form",
-            "context": context,
-            "target": "new"
-        }
+        action = self.env.ref('bsd_kinh_doanh.bsd_huy_gc_action_popup_2').read()[0]
+        action['context'] = context
+        return action

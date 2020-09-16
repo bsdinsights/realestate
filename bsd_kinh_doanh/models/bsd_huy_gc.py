@@ -98,23 +98,43 @@ class BsdHuyGC(models.Model):
                 raise UserError("Giữ chỗ đã bị hủy. Vui lòng kiểm tra lại.")
             else:
                 # Cập nhật phiếu giữ chỗ
-                self.bsd_giu_cho_id.write({
-                    'state': 'huy',
-                    'bsd_huy_gc_id': self.id
-                })
+                if self.bsd_giu_cho_id.state == 'giu_cho':
+                    self.bsd_giu_cho_id.write({
+                        'state': 'huy',
+                        'bsd_huy_gc_id': self.id
+                    })
+
+                    # Kiểm tra ngày ưu tiên báo giá nhỏ nhất
+                    self.env.cr.execute("""SELECT MIN(bsd_ngay_hh_bg) FROM bsd_giu_cho
+                                            WHERE bsd_unit_id = {0} AND state = 'dang_cho'
+                                        """.format(self.bsd_unit_id.id))
+                    min_ngay_ut = self.env.cr.fetchone()[0]
+                    if min_ngay_ut:
+                        # lấy số thứ tự giữ chỗ thiện chí tiếp theo đang ở trạng thái chờ
+                        next_giu_cho = self.env['bsd.giu_cho'].search([('bsd_ngay_hh_bg', '=', min_ngay_ut)])
+                        _logger.debug(next_giu_cho)
+                        next_giu_cho.write({
+                            'state': 'giu_cho'
+                        })
+                else:
+                    self.bsd_giu_cho_id.write({
+                        'state': 'huy',
+                        'bsd_huy_gc_id': self.id
+                    })
+
                 # hủy ráp căn nếu có của giữ chỗ
                 if self.bsd_giu_cho_id.bsd_rap_can_id:
                     self.bsd_giu_cho_id.bsd_rap_can_id.write({'state': 'huy'})
                 # Cập nhật trạng thái unit
                 giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
-                                                          ('state', 'in', ['dat_cho', 'giu_cho']),
+                                                          ('state', 'in', ['dat_cho', 'dang_cho', 'giu_cho']),
                                                           ('id', '!=', self.id)])
                 if not self.bsd_unit_id.bsd_dot_mb_id:
                     if not giu_cho:
                         self.bsd_unit_id.write({
                             'state': 'chuan_bi',
                         })
-                    elif not giu_cho.filtered(lambda g: g.state == 'giu_cho'):
+                    elif not giu_cho.filtered(lambda g: g.state in ['dang_cho', 'giu_cho']):
                         self.bsd_unit_id.write({
                             'state': 'dat_cho'
                         })
@@ -123,7 +143,7 @@ class BsdHuyGC(models.Model):
                         self.bsd_unit_id.write({
                             'state': 'san_sang',
                         })
-                    elif not giu_cho.filtered(lambda g: g.state == 'giu_cho'):
+                    elif not giu_cho.filtered(lambda g: g.state in ['dang_cho', 'giu_cho']):
                         self.bsd_unit_id.write({
                             'state': 'dat_cho'
                         })
