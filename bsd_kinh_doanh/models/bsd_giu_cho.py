@@ -39,7 +39,7 @@ class BsdGiuCho(models.Model):
                                   help="Thông tin xác định Giữ chỗ được tạo trước hay sau khi unit có đợt mở bán",
                                   readonly=True)
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', help="Đợt mở bán", string="Đợt mở bán",
-                                    readonly=True,states={'nhap': [('readonly', False)]})
+                                    readonly=True, states={'nhap': [('readonly', False)]})
 
     bsd_bang_gia_id = fields.Many2one('product.pricelist', related="bsd_dot_mb_id.bsd_bang_gia_id", store=True,
                                       string="Bảng giá", help="Bảng giá bán")
@@ -62,7 +62,10 @@ class BsdGiuCho(models.Model):
     bsd_gioi_thieu_id = fields.Many2one('res.partner', string="Giới thiệu", help="Cá nhân hoặc đơn vị giới thiệu",
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
-    bsd_ngay_hh_gc = fields.Datetime(string="Hạn giữ chỗ", help="Hiệu lực của giữ chỗ")
+    bsd_ngay_hh_gc = fields.Datetime(string="Hạn giữ chỗ", help="Hiệu lực của giữ chỗ",
+                                     readonly=True,
+                                     required=True, tracking=3)
+
     bsd_gc_da = fields.Boolean(string="Giữ chỗ dự án", help="""Thông tin ghi nhận Giữ chỗ được tự động tạo từ 
                                                                 giữ chỗ thiện chí hay không""", readonly=True)
     bsd_gc_tc_id = fields.Many2one('bsd.gc_tc', string="Giữ chỗ thiện chí", readonly=True,
@@ -72,7 +75,7 @@ class BsdGiuCho(models.Model):
                               ('dat_cho', 'Đặt chỗ'),
                               ('dang_cho', "Đang chờ"),
                               ('giu_cho', 'Giữ chỗ'),
-                              ('dong', 'Đóng'),
+                              ('dong_gc', 'Đóng'),
                               ('het_han', 'Hết hạn'),
                               ('huy', 'Hủy')], default='nhap', string="Trạng thái",
                              tracking=1, help="Trạng thái", required=True, readonly=True)
@@ -162,6 +165,10 @@ class BsdGiuCho(models.Model):
         if self.bsd_unit_id.bsd_du_an_id != self.bsd_du_an_id:
             raise UserError(_("Sản phẩm không nằm trong dự án"))
 
+    @api.onchange('bsd_ngay_gc', 'bsd_du_an_id',)
+    def _onchange_ngay_gctc(self):
+        self.bsd_ngay_hh_gc = self.bsd_ngay_gc + datetime.timedelta(hours=self.bsd_du_an_id.bsd_gc_smb)
+
     # KD.07.03 Ràng buộc số giữ chỗ theo Sản phẩm
     @api.constrains('bsd_unit_id')
     def _constrain_unit(self):
@@ -246,9 +253,13 @@ class BsdGiuCho(models.Model):
     def action_xac_nhan(self):
         if not self.bsd_dot_mb_id:
             self._tao_rec_cong_no()
+            now = datetime.datetime.now()
+            self.bsd_ngay_hh_gc = self.bsd_ngay_gc + datetime.timedelta(hours=self.bsd_du_an_id.bsd_gc_smb)
             self.write({
                 'state': 'dat_cho',
-                'bsd_ngay_gc': datetime.datetime.now(),
+                'bsd_ngay_gc': now,
+                'bsd_ngay_hh_gc': now + datetime.timedelta(hours=self.bsd_du_an_id.bsd_gc_smb)
+
             })
             # Cập nhật lại trạng thái unit
             if self.bsd_unit_id.state in ['giu_cho', 'dat_cho']:
@@ -427,13 +438,6 @@ class BsdGiuCho(models.Model):
                 self.bsd_unit_id.write({
                     'state': 'san_sang',
                 })
-
-    # KD.07.10 Tự động tính Hạn báo giá của Giữ chỗ thanh toán sau mở bán
-    def tinh_lai_hbg(self):
-        if not self.bsd_dot_mb_id:
-            pass
-        else:
-            pass
 
     # KD.07.11 Tạo Bảng tính giá từ màn hình Giữ chỗ
     def action_tao_bao_gia(self):

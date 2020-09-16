@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import datetime
 import logging
@@ -37,3 +37,43 @@ class BsdGiuCho(models.Model):
                 each.bsd_ngay_tt = max(each.bsd_ct_ids.mapped('bsd_ngay_pb'))
             else:
                 each.bsd_ngay_tt = None
+
+    # Tạo thanh toán
+    def action_thanh_toan(self):
+        context = {
+            'default_bsd_loai_pt': 'giu_cho',
+            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_giu_cho_id': self.id,
+            'default_bsd_unit_id': self.bsd_unit_id.id
+        }
+        action = self.env.ref('bsd_tai_chinh.bsd_phieu_thu_action_popup').read()[0]
+        action['context'] = context
+        return action
+
+    # Tính lại hạn ưu tiên báo giá khi thanh toán tiền giữ chỗ
+    def tinh_lai_hbg(self):
+        # Chỉ ghi lại hạn ưu tiên khi chưa có đợt mở bán
+        if self.bsd_dot_mb_id:
+            pass
+        else:
+            giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                           ('state', '=', 'giu_cho')])
+            time_gc = self.bsd_du_an_id.bsd_gc_tmb
+            ngay_hh_bg = self.bsd_ngay_tt
+            ngay_hh_gc = self.bsd_ngay_tt + datetime.timedelta(hours=time_gc)
+            stt = self.env['ir.sequence'].next_by_code(self.bsd_unit_id.bsd_ma_unit)
+            if giu_cho_unit:
+                self.write({
+                    'bsd_ngay_hh_bg': ngay_hh_bg,
+                    'bsd_ngay_hh_gc': ngay_hh_gc,
+                    'state': 'dang_cho',
+                    'bsd_stt_bg': stt
+                })
+            else:
+                self.write({
+                    'bsd_ngay_hh_bg': ngay_hh_bg,
+                    'bsd_ngay_hh_gc': ngay_hh_gc,
+                    'state': 'giu_cho',
+                    'bsd_stt_bg': stt
+                })

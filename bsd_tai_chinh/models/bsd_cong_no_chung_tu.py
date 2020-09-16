@@ -74,10 +74,8 @@ class BsdCongNoCT(models.Model):
             # Kiểm tra nếu là giữ chỗ trước mở bán nếu thanh toán đủ thì chuyển trạng thái sang giữ chỗ
             if self.bsd_giu_cho_id.bsd_truoc_mb and not self.bsd_giu_cho_id.bsd_gc_da:
                 if self.bsd_giu_cho_id.bsd_tien_gc == tien:
-                    self.bsd_giu_cho_id.write({
-                        'state': 'giu_cho',
-                    })
                     # Tính lại hạn báo giá
+                    # Chuyển trạng thái của giữ chỗ
                     self.bsd_giu_cho_id.tinh_lai_hbg()
                     if self.bsd_giu_cho_id.bsd_unit_id.state == 'dat_cho':
                         self.bsd_giu_cho_id.bsd_unit_id.write({

@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from datetime import datetime
 import logging
@@ -355,11 +355,20 @@ class ProductTemplate(models.Model):
             'bsd_ngay_huy': datetime.today(),
         })
 
+    def _create_sequence(self):
+        seq = {
+            'name': _('Trình tự giữ chỗ %s') % self.bsd_ma_unit,
+            'implementation': 'no_gap',
+            'padding': 1,
+            'code': self.bsd_ma_unit,
+            'number_increment': 1,
+        }
+        seq = self.env['ir.sequence'].create(seq)
+        return seq
+
     @api.model_create_multi
     def create(self, vals_list):
         templates = super(ProductTemplate, self).create(vals_list)
-        _logger.debug("tạo product")
-        _logger.debug(templates)
         for template in templates:
             du_an = template.bsd_du_an_id
             toa_nha = template.bsd_toa_nha_id
@@ -375,6 +384,7 @@ class ProductTemplate(models.Model):
                     'bsd_ten_unit': toa_nha.bsd_ma_tn + du_an.bsd_dd_khu +
                                     tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_stt
                 })
+            template._create_sequence()
         return templates
 
 

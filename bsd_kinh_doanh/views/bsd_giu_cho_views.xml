@@ -93,11 +93,10 @@
                     </group>
                     <group string="HIỆU LỰC">
                         <group>
-                            <field name="bsd_ngay_hh_gc"/>
+                            <field name="bsd_ngay_hh_gc" force_save="1"/>
                             <field name="bsd_het_han_gc"/>
                             <field name="bsd_stt_bg"/>
                             <field name="bsd_ngay_hh_bg"/>
-
                         </group>
                         <group>
                             <field name="bsd_thanh_toan" attrs="{'invisible':[('id', '=', False)]}"/>
@@ -133,7 +132,13 @@
         <field name="name">bsd.giu_cho.tree</field>
         <field name="model">bsd.giu_cho</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree default_order="bsd_ngay_hh_bg asc"
+                  decoration-warning="state=='dat_cho'"
+                  decoration-info="state=='dang_cho'"
+                  decoration-primary="state=='giu_cho'"
+                  decoration-bf="state=='giu_cho'"
+                  decoration-success="state=='dong_gc'"
+                  decoration-muted="state=='huy' or state=='het_han'">
                 <field name="bsd_ma_gc"/>
                 <field name="bsd_khach_hang_id"/>
                 <field name="bsd_du_an_id"/>
