@@ -20,16 +20,19 @@ class BsdGiuChoThienChi(models.Model):
     ]
     bsd_stt = fields.Integer(string="Số thứ tự", readonly=1)
     bsd_ngay_gctc = fields.Datetime(string="Ngày giữ chỗ", required=True, help="Ngày giữ chỗ thiện chí",
-                                    readonly=True, default=lambda self: fields.Datetime.now(),
-                                    states={'nhap': [('readonly', False)]})
+                                    readonly=True, default=lambda self: fields.Datetime.now())
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", required=True,
                                         readonly=True, help="Khách hàng",
                                         states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True,
                                    readonly=True, help="Tên dự án",
                                    states={'nhap': [('readonly', False)]})
-    bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ thiện chí",
-                                  related='bsd_du_an_id.bsd_tien_gc', store=True)
+    bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ thiện chí", required=True)
+
+    @api.onchange('bsd_du_an_id')
+    def _onchange_tien_gc(self):
+        self.bsd_tien_gc = self.bsd_du_an_id.bsd_tien_gc
+
     bsd_dien_giai = fields.Char(string="Diễn giải",
                                 readonly=True, help="Diễn giải",
                                 states={'nhap': [('readonly', False)]})
@@ -50,7 +53,14 @@ class BsdGiuChoThienChi(models.Model):
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
     bsd_ngay_hh_gctc = fields.Datetime(string="Hạn giữ chỗ", help="Hiệu lực của giữ chỗ",
-                                       readonly=True, compute='_compute_htgc', store=True)
+                                       readonly=True,
+                                       required=True,
+                                       tracking=3)
+
+    @api.onchange('bsd_ngay_gctc', 'bsd_du_an_id')
+    def _onchange_ngay_gctc(self):
+        self.bsd_ngay_hh_gctc = self.bsd_ngay_gctc + + datetime.timedelta(hours=self.bsd_du_an_id.bsd_gc_smb)
+
     bsd_ngay_ut = fields.Datetime(string="Ưu tiên ráp căn", readonly=True,
                                   help="Thời gian được sử dụng để xét ưu tiên khi làm phiếu ráp căn")
     bsd_het_han = fields.Boolean(string="Hết hạn", help="Giữ chỗ bị hết hạn sau khi thanh toán đủ",
@@ -181,11 +191,6 @@ class BsdGiuChoThienChi(models.Model):
         action['context'] = context
         return action
 
-    @api.depends('bsd_ngay_gctc')
-    def _compute_htgc(self):
-        for each in self:
-            each.bsd_ngay_hh_gctc = each.bsd_ngay_gctc + datetime.timedelta(hours=each.bsd_du_an_id.bsd_gc_smb)
-
     # KD.05.06 Quản lý số lượng giữ chỗ theo nhân viên bán hàng
     @api.constrains('bsd_nvbh_id')
     def _constrain_nv_bh(self):
@@ -218,9 +223,13 @@ class BsdGiuChoThienChi(models.Model):
     # KD.05.01 Xác nhận giữ chỗ thiện chí
     def action_xac_nhan(self):
         self._tao_rec_cong_no()
+        now = datetime.datetime.now()
+        ngay_gctc = now
+        ngay_hh_gctc = ngay_gctc + datetime.timedelta(hours=self.bsd_du_an_id.bsd_gc_smb)
         self.write({
             'state': 'xac_nhan',
-            'bsd_ngay_gctc': datetime.datetime.now(),
+            'bsd_ngay_gctc': ngay_gctc,
+            'bsd_ngay_hh_gctc': ngay_hh_gctc,
         })
 
     # KD.05.02 Hủy giữ chỗ thiện chí
@@ -274,6 +283,7 @@ class BsdGiuChoThienChi(models.Model):
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
             raise UserError(_('Dự án chưa có mã giữ chỗ thiện chí'))
+        # Cập nhật thời gian hết hạn giữ chỗ thiện chí khi tạo mới
         vals['bsd_ma_gctc'] = sequence.next_by_id()
 
         res = super(BsdGiuChoThienChi, self).create(vals)
