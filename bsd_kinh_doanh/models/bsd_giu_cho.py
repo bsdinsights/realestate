@@ -133,7 +133,8 @@ class BsdGiuCho(models.Model):
     @api.constrains('bsd_unit_id')
     def _constraint_unit_ut(self):
         if self.bsd_unit_id.bsd_uu_tien == '1':
-            raise UserError(_("Không thể thực hiện giữ chỗ cho sản phẩm: {0}".format(self.bsd_unit_id.bsd_ten_unit)))
+            raise UserError(_("""Sản phẩm {0} đang được ưu tiên.\n 
+            Vui lòng chọn sản phẩm khác để giao dịch""".format(self.bsd_unit_id.bsd_ma_unit)))
 
     # KD.07.02 Ràng buộc số giữ chỗ theo Sản phẩm/ NVBH
     @api.constrains('bsd_nvbh_id', 'bsd_unit_id')

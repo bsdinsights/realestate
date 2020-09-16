@@ -27,7 +27,7 @@ class BsdPhieuThu(models.Model):
     def _onchange_ngay_pt(self):
         today = datetime.date.today()
         if self.bsd_ngay_pt.date() > today:
-            raise UserError(_("Ngày thanh toán không được lớn hơn ngày hiện tại"))
+            raise UserError(_("Ngày thanh toán không được lớn hơn ngày hiện tại."))
 
     bsd_loai_pt = fields.Selection([('tra_truoc', 'Trả trước'),
                                     ('gc_tc', 'Giữ chỗ thiện chí'),
