@@ -31,6 +31,7 @@ class BsdBlock(models.Model):
     bsd_so_unit = fields.Integer(string="Số căn hộ", help="Số căn hộ")
     bsd_dia_chi = fields.Text(string="Địa chỉ", help="Địa chỉ tòa nhà")
     active = fields.Boolean(default=True)
+    bsd_tang_ids = fields.One2many('bsd.tang', 'bsd_toa_nha_id', string="Danh sách tầng/ dãy", readonly=1)
 
     def name_get(self):
         res = []

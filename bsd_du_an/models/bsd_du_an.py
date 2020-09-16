@@ -6,7 +6,7 @@ from odoo.exceptions import ValidationError
 
 class BsdProject(models.Model):
     _name = "bsd.du_an"
-    _rec_name = "display_name"
+    _rec_name = "bsd_ten_da"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Thông tin dự án"
 
@@ -16,12 +16,12 @@ class BsdProject(models.Model):
         ('bsd_ma_da_unique', 'unique (bsd_ma_da)',
          'Mã dự án đã tồn tại !'),
     ]
-    display_name = fields.Char(string="Tên tìm kiếm", compute="_compute_name", store=True)
+    bsd_search_ten = fields.Char(string="Tên tìm kiếm", compute="_compute_name", store=True)
 
     @api.depends('bsd_ma_da','bsd_ten_da')
     def _compute_name(self):
         for each in self:
-            each.display_name = each.bsd_ma_da + ' - ' + each.bsd_ten_da
+            each.bsd_search_ten = each.bsd_ma_da + ' - ' + each.bsd_ten_da
 
     bsd_chu_dt_id = fields.Many2one('res.partner', string="Chủ dự án", required=True, help="Tên chủ đầu tư của dự án")
     bsd_loai_da = fields.Selection([('da_rieng', 'Dự án riêng'),
@@ -200,6 +200,16 @@ class BsdProject(models.Model):
     def create(self, vals):
         vals['bsd_sequence_gc_tc_id'] = self._create_sequence(vals).id
         return super(BsdProject, self).create(vals)
+
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        args = list(args or [])
+        if not (name == '' and operator == 'ilike'):
+            args += [('bsd_search_ten', operator, name)]
+        access_rights_uid = name_get_uid or self._uid
+        ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
+        recs = self.browse(ids)
+        return models.lazy_name_get(recs.with_user(access_rights_uid))
 
 
 class BsdDuanNganHangTaiTro(models.Model):
