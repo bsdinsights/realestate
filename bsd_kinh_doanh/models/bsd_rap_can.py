@@ -65,8 +65,15 @@ class BsdRapCan(models.Model):
 
     # KD.06.01 xác nhận ráp căn
     def action_xac_nhan(self):
+        # Ghi nhận giờ ngày thanh toán
+        now = datetime.datetime.now()
+        get_time = self.bsd_ngay_rc.replace(hour=now.hour,
+                                            minute=now.minute,
+                                            second=now.second,
+                                            microsecond=now.microsecond)
         self.write({
             'state': 'xac_nhan',
+            'bsd_ngay_rc': get_time
         })
 
     # KD.06.02 duyệt phiếu ráp căn
@@ -98,10 +105,25 @@ class BsdRapCan(models.Model):
         self.bsd_unit_id.write({
             'state': 'giu_cho',
         })
+        # Sinh số thứ tự giữ chỗ
+        self.env.cr.execute("""SELECT MAX(bsd_stt_bg) 
+                                FROM bsd_giu_cho 
+                                  WHERE bsd_unit_id = {0}
+                            """.format(self.bsd_unit_id.id))
+        max_stt = self.env.cr.fetchone()[0]
+        if not max_stt:
+            stt_bg = 1
+        else:
+            stt_bg = max_stt + 1
+        _logger.debug("Max stt")
+        _logger.debug(max_stt)
         # KD.06.05 Tự động tạo giữ chỗ khi ráp căn
         gc = self.env['bsd.giu_cho'].create({
                     'bsd_ma_gc': self.bsd_gc_tc_id.bsd_ma_gctc + '-' + self.bsd_ma_rc,
-                    'bsd_ngay_gc': datetime.datetime.now(),
+                    'bsd_ngay_gc': self.bsd_gc_tc_id.bsd_ngay_gctc,
+                    'bsd_ngay_hh_gc': self.bsd_gc_tc_id.bsd_ngay_hh_gctc,
+                    'bsd_ngay_hh_bg': self.bsd_ngay_duyet_rc,
+                    'bsd_stt_bg': stt_bg,
                     'bsd_khach_hang_id': self.bsd_gc_tc_id.bsd_kh_moi_id.id,
                     'bsd_du_an_id': self.bsd_gc_tc_id.bsd_du_an_id.id,
                     'bsd_unit_id': self.bsd_unit_id.id,

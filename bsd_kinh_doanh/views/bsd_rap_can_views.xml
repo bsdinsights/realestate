@@ -29,7 +29,7 @@
                     <group>
                         <group>
                             <field name="bsd_ma_rc"/>
-                            <field name="bsd_ngay_rc"/>
+                            <field name="bsd_ngay_rc" widget="date"/>
                             <field name="bsd_gc_tc_id"
                                    options="{'no_create':true}"
                                    domain="[('bsd_thanh_toan', '=','da_tt'), ('state','=','xac_nhan')]"/>
@@ -137,7 +137,7 @@
                     <group>
                         <group>
                             <field name="bsd_ma_rc"/>
-                            <field name="bsd_ngay_rc"/>
+                            <field name="bsd_ngay_rc" widget="date"/>
                             <field name="bsd_gc_tc_id"
                                    options="{'no_create':true}"
                                    domain="[('bsd_thanh_toan', '=','da_tt'), ('state','=','xac_nhan')]"/>

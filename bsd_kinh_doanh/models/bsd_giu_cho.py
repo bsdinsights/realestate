@@ -62,7 +62,7 @@ class BsdGiuCho(models.Model):
     bsd_gioi_thieu_id = fields.Many2one('res.partner', string="Giới thiệu", help="Cá nhân hoặc đơn vị giới thiệu",
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
-    bsd_ngay_hh_gc = fields.Datetime(string="Hạn giữ chỗ", help="Hiệu lực của giữ chỗ", compute='_compute_hl_gc', store=True)
+    bsd_ngay_hh_gc = fields.Datetime(string="Hạn giữ chỗ", help="Hiệu lực của giữ chỗ")
     bsd_gc_da = fields.Boolean(string="Giữ chỗ dự án", help="""Thông tin ghi nhận Giữ chỗ được tự động tạo từ 
                                                                 giữ chỗ thiện chí hay không""", readonly=True)
     bsd_gc_tc_id = fields.Many2one('bsd.gc_tc', string="Giữ chỗ thiện chí", readonly=True,
@@ -70,8 +70,8 @@ class BsdGiuCho(models.Model):
     bsd_rap_can_id = fields.Many2one('bsd.rap_can', string="Ráp căn", help="Phiếu ráp căn", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'),
                               ('dat_cho', 'Đặt chỗ'),
+                              ('dang_cho', "Đang chờ"),
                               ('giu_cho', 'Giữ chỗ'),
-                              ('bao_gia', 'Báo giá'),
                               ('dong', 'Đóng'),
                               ('het_han', 'Hết hạn'),
                               ('huy', 'Hủy')], default='nhap', string="Trạng thái",
@@ -86,11 +86,11 @@ class BsdGiuCho(models.Model):
                                       required=True, readonly=True)
     bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ",readonly=True)
     bsd_stt_bg = fields.Integer(string="STT báo giá", readonly=True, help="Số thứ tự ưu tiên làm báo giá")
-    bsd_ngay_hh_bg = fields.Datetime(string="Hạn báo giá", help="Hiệu lực được làm báo giá", readonly=True)
-    bsd_het_han_bg = fields.Boolean(string="Hết hạn báo giá", readonly=True, default=False,
-                                    help="Thông tin ghi nhận thời gian làm báo giá có bok hết hiệu lực hay chưa")
-    bsd_ngay_hh_stt = fields.Datetime(string="Hạn GC sau TT", compute="_compute_ngay_hh_stt", store=True,
-                                      help="Ngày hết hạn giữ chỗ sau khi thanh toán tiền giữ chỗ")
+    bsd_ngay_hh_bg = fields.Datetime(string="Ưu tiên báo giá", help="Ưu tiên làm báo giá", readonly=True)
+    # bsd_het_han_bg = fields.Boolean(string="Hết hạn báo giá", readonly=True, default=False,
+    #                                 help="Thông tin ghi nhận thời gian làm báo giá có bok hết hiệu lực hay chưa")
+    # bsd_ngay_hh_stt = fields.Datetime(string="Hạn GC sau TT",
+    #                                   help="Ngày hết hạn giữ chỗ sau khi thanh toán tiền giữ chỗ")
     bsd_het_han_gc = fields.Boolean(string="Hết hạn giữ chỗ", readonly=True,
                                     help="""Thông tin ghi nhận giữ chỗ bị hết hiệu lực sau khi đã thanh toán giữ chỗ""")
 
@@ -113,8 +113,6 @@ class BsdGiuCho(models.Model):
     
     @api.model
     def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
-        # private implementation of name_search, allows passing a dedicated user
-        # for the name_get part to solve some access rights issues
         args = list(args or [])
         if not (name == '' and operator == 'ilike'):
             args += [('bsd_ten_sp', operator, name)]
@@ -214,19 +212,19 @@ class BsdGiuCho(models.Model):
             self.bsd_tien_gc = 0
 
     # R.05 Tính hạn hiệu lực giữ chỗ
-    @api.depends('bsd_ngay_gc', 'bsd_du_an_id.bsd_gc_smb')
-    def _compute_hl_gc(self):
-        for each in self:
-            if each.bsd_ngay_gc:
-                hours = each.bsd_du_an_id.bsd_gc_smb or 0 if each.bsd_du_an_id else 0
-                each.bsd_ngay_hh_gc = each.bsd_ngay_gc + datetime.timedelta(hours=hours)
+    # @api.depends('bsd_ngay_gc', 'bsd_du_an_id.bsd_gc_smb')
+    # def _compute_hl_gc(self):
+    #     for each in self:
+    #         if each.bsd_ngay_gc:
+    #             hours = each.bsd_du_an_id.bsd_gc_smb or 0 if each.bsd_du_an_id else 0
+    #             each.bsd_ngay_hh_gc = each.bsd_ngay_gc + datetime.timedelta(hours=hours)
 
     # R.08 Tính hạn hiệu lực giữ chỗ sau thanh toán
-    @api.depends('bsd_ngay_tt', 'bsd_du_an_id.bsd_gc_tmb')
-    def _compute_ngay_hh_stt(self):
-        for each in self:
-            if each.bsd_ngay_tt:
-                each.bsd_ngay_hh_stt = each.bsd_ngay_tt + datetime.timedelta(days=each.bsd_du_an_id.bsd_gc_tmb)
+    # @api.depends('bsd_ngay_tt', 'bsd_du_an_id.bsd_gc_tmb')
+    # def _compute_ngay_hh_stt(self):
+    #     for each in self:
+    #         if each.bsd_ngay_tt:
+    #             each.bsd_ngay_hh_stt = each.bsd_ngay_tt + datetime.timedelta(days=each.bsd_du_an_id.bsd_gc_tmb)
 
     # KD.07.09 Theo dõi công nợ giữ chỗ
     def _tao_rec_cong_no(self):
