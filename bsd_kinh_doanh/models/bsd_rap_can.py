@@ -105,18 +105,9 @@ class BsdRapCan(models.Model):
         self.bsd_unit_id.write({
             'state': 'giu_cho',
         })
-        # Sinh số thứ tự giữ chỗ
-        self.env.cr.execute("""SELECT MAX(bsd_stt_bg) 
-                                FROM bsd_giu_cho 
-                                  WHERE bsd_unit_id = {0}
-                            """.format(self.bsd_unit_id.id))
-        max_stt = self.env.cr.fetchone()[0]
-        if not max_stt:
-            stt_bg = 1
-        else:
-            stt_bg = max_stt + 1
-        _logger.debug("Max stt")
-        _logger.debug(max_stt)
+        giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                       ('state', '=', 'giu_cho')])
+        stt_bg = self.env['ir.sequence'].next_by_code(self.bsd_unit_id.bsd_ma_unit)
         # KD.06.05 Tự động tạo giữ chỗ khi ráp căn
         gc = self.env['bsd.giu_cho'].create({
                     'bsd_ma_gc': self.bsd_gc_tc_id.bsd_ma_gctc + '-' + self.bsd_ma_rc,
@@ -135,7 +126,7 @@ class BsdRapCan(models.Model):
                     'bsd_gc_da': True,
                     'bsd_gc_tc_id': self.bsd_gc_tc_id.id,
                     'bsd_rap_can_id': self.id,
-                    'state': 'giu_cho',
+                    'state': 'dang_cho' if giu_cho_unit else 'giu_cho',
                     'bsd_truoc_mb': True,
         })
         # cập nhật lại field giữ chỗ cho phiếu ráp căn
