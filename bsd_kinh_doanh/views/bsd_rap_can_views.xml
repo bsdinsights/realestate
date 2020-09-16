@@ -72,7 +72,11 @@
         <field name="name">bsd.rap_can.tree</field>
         <field name="model">bsd.rap_can</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree default_order="bsd_ngay_rc desc"
+                  decoration-warning="state=='xac_nhan'"
+                  decoration-bf="state=='xac_nhan'"
+                  decoration-success="state=='duyet'"
+                  decoration-muted="state=='huy'">
                 <field name="bsd_ma_rc"/>
                 <field name="bsd_ngay_rc"/>
                 <field name="bsd_khach_hang_id"/>

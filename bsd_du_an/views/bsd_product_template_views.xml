@@ -19,7 +19,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
-                    <widget name="bsd_uu_tien" text="Ưu tiên" attrs="{'invisible':[('bsd_uu_tien', '=', '0')]}"/>
+                    <widget name="web_ribbon" text="Ưu tiên" attrs="{'invisible':[('bsd_uu_tien', '=', '0')]}"/>
                     <group string="THÔNG TIN CHUNG">
                         <group>
                             <field name="bsd_du_an_id"

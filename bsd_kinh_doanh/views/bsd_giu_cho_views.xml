@@ -4,7 +4,7 @@
         <field name="name">bsd.giu_cho.form</field>
         <field name="model">bsd.giu_cho</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
