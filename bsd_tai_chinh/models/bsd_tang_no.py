@@ -36,11 +36,10 @@ class BsdTangNo(models.Model):
     bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Sản phẩm",
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
-    bsd_tien = fields.Monetary(string="Tiền", help="Tiền điều chỉnh", required=True,
+    bsd_tien = fields.Monetary(string="Tiền", help="Tiền điều chỉnh tăng", required=True,
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
-    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
-                              ('da_gs', 'Đã ghi sổ'), ('huy', 'Hủy')], string="Trạng thái", tracking=1,
+    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'), ('huy', 'Hủy')], string="Trạng thái", tracking=1,
                              required=True, default='nhap')
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
@@ -49,12 +48,6 @@ class BsdTangNo(models.Model):
     def action_xac_nhan(self):
         self.write({
             'state': 'xac_nhan',
-        })
-
-    # TC.09.03 Ghi sổ điều chỉnh
-    def action_vao_so(self):
-        self.write({
-            'state': 'da_gs',
         })
         self.env['bsd.cong_no'].create({
                 'bsd_chung_tu': self.bsd_so_ct,

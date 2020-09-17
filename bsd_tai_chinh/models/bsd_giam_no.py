@@ -45,40 +45,38 @@ class BsdGiamNo(models.Model):
     bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Sản phẩm",
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
-    bsd_tien = fields.Monetary(string="Tiền", help="Tiền điều chỉnh", required=True,
+    bsd_tien = fields.Monetary(string="Tiền", help="Tiền điều chỉnh giảm", required=True,
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
-    bsd_tien_da_tt = fields.Monetary(string="Tiền đã thanh toán", help="Tiền đã thanh toán",
-                                     compute='_compute_tien_ct', store=True)
-    bsd_tien_con_lai = fields.Monetary(string="Tiền còn lại", help="Tiền còn lại",
-                                       compute='_compute_tien_ct', store=True)
-    bsd_ps_gd_ck_id = fields.Many2one('bsd.ps_gd_ck', string="Giao dịch chiết khấu", help="Giao dịch chiết khấu",
-                                      readonly=True,
-                                      states={'nhap': [('readonly', False)]})
-    bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_giam_no_id', string="Công nợ chứng tự", readonly=True)
-
-    @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien')
-    def _compute_tien_ct(self):
-        for each in self:
-            each.bsd_tien_da_tt = sum(each.bsd_ct_ids.mapped('bsd_tien_pb'))
-            each.bsd_tien_con_lai = each.bsd_tien - each.bsd_tien_da_tt
-
-    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
-                              ('da_gs', 'Đã ghi sổ'), ('huy', 'Hủy')], string="Trạng thái", tracking=1,
+    state = fields.Selection([('nhap', 'Nháp'),
+                              ('xac_nhan', 'Xác nhận'),
+                              ('huy', 'Hủy')], string="Trạng thái", tracking=1,
                              required=True, default='nhap')
+
+    # bsd_tien_da_tt = fields.Monetary(string="Tiền đã thanh toán", help="Tiền đã thanh toán",
+    #                                  compute='_compute_tien_ct', store=True)
+    # bsd_tien_con_lai = fields.Monetary(string="Tiền còn lại", help="Tiền còn lại",
+    #                                    compute='_compute_tien_ct', store=True)
+    # bsd_ps_gd_ck_id = fields.Many2one('bsd.ps_gd_ck', string="Giao dịch chiết khấu", help="Giao dịch chiết khấu",
+    #                                   readonly=True,
+    #                                   states={'nhap': [('readonly', False)]})
+    # bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_giam_no_id', string="Công nợ chứng tự", readonly=True)
+
+    # @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien')
+    # def _compute_tien_ct(self):
+    #     for each in self:
+    #         each.bsd_tien_da_tt = sum(each.bsd_ct_ids.mapped('bsd_tien_pb'))
+    #         each.bsd_tien_con_lai = each.bsd_tien - each.bsd_tien_da_tt
+    #
+
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
     # TC.08.01 Xác nhận điều chỉnh giảm
+    # TC.08.03 Ghi sổ điều chỉnh
     def action_xac_nhan(self):
         self.write({
             'state': 'xac_nhan',
-        })
-
-    # TC.08.03 Ghi sổ điều chỉnh
-    def action_vao_so(self):
-        self.write({
-            'state': 'da_gs',
         })
         self.env['bsd.cong_no'].create({
                 'bsd_chung_tu': self.bsd_so_ct,

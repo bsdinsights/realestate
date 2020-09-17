@@ -9,18 +9,15 @@
                     <button string="Xác nhận"
                             name="action_xac_nhan"
                             type="object"
+                            confirm="Bạn có muốn Xác nhận chứng từ không?"
                             attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
                             class="oe_highlight"/>
-                    <button string="Vào sổ"
-                            name="action_vao_so"
-                            type="object"
-                            states="xac_nhan"
-                            class="oe_highlight"/>
+
                     <button string="Hủy"
                             name="action_huy"
                             type="object"
                             confirm="Bạn có muốn Hủy chứng từ không?"
-                            states="xac_nhan"/>
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>

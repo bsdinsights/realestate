@@ -77,10 +77,10 @@ class BsdChuyenTien(models.Model):
                 'bsd_khach_hang_id': self.bsd_nguoi_nhan_id.id,
                 'bsd_du_an_id': self.bsd_du_an_id.id,
                 'bsd_tien': self.bsd_tien,
-                'state': 'xac_nhan',
+                'state': 'nhap',
         })
         # Tạo công nợ khách hàng
-        giam.action_vao_so()
+        giam.action_xac_nhan()
 
     # TC.05.02 Hủy chuyển tiền
     def action_huy(self):

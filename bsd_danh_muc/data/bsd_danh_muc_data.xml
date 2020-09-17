@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="bsd_tien_mat" model="bsd.pt_tt">
+            <field name="bsd_ten">Tiền mặt</field>
+            <field name="bsd_ma">TM</field>
+        </record>
+    </data>
+</odoo>

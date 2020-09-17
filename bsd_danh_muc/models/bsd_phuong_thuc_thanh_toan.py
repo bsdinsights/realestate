@@ -16,6 +16,4 @@ class BsdPttt(models.Model):
          'Mã phương thức thanh toán đã tồn tại !'),
     ]
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
-    state = fields.Selection([('active', "Đang sử dụng"),
-                              ('inactive', "Không sử dụng")], string='Trạng thái',
-                             default='active', tracking=1, help="Trạng thái")
+

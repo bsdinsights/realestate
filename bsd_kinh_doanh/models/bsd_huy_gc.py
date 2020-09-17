@@ -210,32 +210,32 @@ class BsdHuyGC(models.Model):
             })
             giam_no.action_xac_nhan()
             # Tạo công nợ
-            giam_no.action_vao_so()
+            # giam_no.action_vao_so()
             # Tạo công nợ chứng từ
-            if self.bsd_tien > self.bsd_tien_da_tt:
-                # tạo record trong bảng công nợ chứng từ
-                self.env['bsd.cong_no_ct'].create({
-                    'bsd_ngay_pb': self.bsd_ngay_huy_gc,
-                    'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                    'bsd_gc_tc_id': self.bsd_gc_tc_id.id,
-                    'bsd_giam_no_id': giam_no.id,
-                    'bsd_tien_pb': self.bsd_tien - self.bsd_tien_da_tt,
-                    'bsd_loai': 'giam_gctc',
-                    'state': 'hoan_thanh',
-                })
+            # if self.bsd_tien > self.bsd_tien_da_tt:
+            #     # tạo record trong bảng công nợ chứng từ
+            #     self.env['bsd.cong_no_ct'].create({
+            #         'bsd_ngay_pb': self.bsd_ngay_huy_gc,
+            #         'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            #         'bsd_gc_tc_id': self.bsd_gc_tc_id.id,
+            #         'bsd_giam_no_id': giam_no.id,
+            #         'bsd_tien_pb': self.bsd_tien - self.bsd_tien_da_tt,
+            #         'bsd_loai': 'giam_gctc',
+            #         'state': 'hoan_thanh',
+            #     })
             # Tạo hoàn tiền nếu được check
             if self.bsd_hoan_tien:
-                # tạo record trong bảng hoàn tiền
                 self.env['bsd.hoan_tien'].create({
                     'bsd_ngay_ct': self.bsd_ngay_huy_gc,
                     'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                     'bsd_du_an_id': self.bsd_du_an_id.id,
-                    'bsd_loai': 'dc_giam',
-                    'bsd_giam_no_id': giam_no.id,
+                    'bsd_loai': 'gc_tc',
+                    'bsd_gc_tc_id': self.bsd_gc_tc_id.id,
                     'bsd_tien': self.bsd_tien_ht,
                     'bsd_dien_giai': 'Hoàn tiền cho đề nghị hủy ' + self.bsd_ma_huy_gc,
                     'state': 'nhap',
                 })
+
         # Theo dõi công nợ hủy giữ chỗ
         if self.bsd_giu_cho_id and self.bsd_loai_gc == 'giu_cho':
             # Tạo điều chỉnh giảm
@@ -252,19 +252,19 @@ class BsdHuyGC(models.Model):
             })
             giam_no.action_xac_nhan()
             # Tạo công nợ
-            giam_no.action_vao_so()
+            # giam_no.action_vao_so()
             # Tạo công nợ chứng từ
-            if self.bsd_tien > self.bsd_tien_da_tt:
-                # tạo record trong bảng công nợ chứng từ
-                self.env['bsd.cong_no_ct'].create({
-                    'bsd_ngay_pb': self.bsd_ngay_huy_gc,
-                    'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                    'bsd_giu_cho_id': self.bsd_giu_cho_id.id,
-                    'bsd_giam_no_id': giam_no.id,
-                    'bsd_tien_pb': self.bsd_tien - self.bsd_tien_da_tt,
-                    'bsd_loai': 'giam_gc',
-                    'state': 'hoan_thanh',
-                })
+            # if self.bsd_tien > self.bsd_tien_da_tt:
+            #     # tạo record trong bảng công nợ chứng từ
+            #     self.env['bsd.cong_no_ct'].create({
+            #         'bsd_ngay_pb': self.bsd_ngay_huy_gc,
+            #         'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            #         'bsd_giu_cho_id': self.bsd_giu_cho_id.id,
+            #         'bsd_giam_no_id': giam_no.id,
+            #         'bsd_tien_pb': self.bsd_tien - self.bsd_tien_da_tt,
+            #         'bsd_loai': 'giam_gc',
+            #         'state': 'hoan_thanh',
+            #     })
             # Tạo hoàn tiền nếu được check
             if self.bsd_hoan_tien:
                 # tạo record trong bảng hoàn tiền
@@ -273,8 +273,8 @@ class BsdHuyGC(models.Model):
                     'bsd_ngay_ct': self.bsd_ngay_huy_gc,
                     'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                     'bsd_du_an_id': self.bsd_du_an_id.id,
-                    'bsd_loai': 'dc_giam',
-                    'bsd_giam_no_id': giam_no.id,
+                    'bsd_loai': 'giu_cho',
+                    'bsd_giu_cho': self.bsd_giu_cho_id.id,
                     'bsd_tien': self.bsd_tien_ht,
                     'bsd_dien_giai': 'Hoàn tiền cho đề nghị hủy ' + self.bsd_ma_huy_gc,
                     'state': 'nhap',

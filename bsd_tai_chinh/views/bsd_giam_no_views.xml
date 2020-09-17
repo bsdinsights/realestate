@@ -10,17 +10,13 @@
                             name="action_xac_nhan"
                             type="object"
                             attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
-                            class="oe_highlight"/>
-                    <button string="Vào sổ"
-                            name="action_vao_so"
-                            type="object"
-                            states="xac_nhan"
+                            confirm="Bạn có muốn xác nhận chứng từ không?"
                             class="oe_highlight"/>
                     <button string="Hủy"
                             name="action_huy"
                             type="object"
-                            confirm="Bạn có muốn Hủy chứng từ không?"
-                            states="xac_nhan"/>
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                            confirm="Bạn có muốn Hủy chứng từ không?"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
@@ -41,7 +37,6 @@
                                    options="{'no_create':true}"
                                    domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
                             <field name="bsd_tien"/>
-                            <field name="bsd_tien_con_lai"/>
                             <field name="company_id" invisible="1"/>
                             <field name="currency_id"/>
                         </group>

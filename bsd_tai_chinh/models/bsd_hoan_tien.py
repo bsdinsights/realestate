@@ -83,13 +83,12 @@ class BsdHoanTien(models.Model):
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
-    # Kiểm tra lại 3 field giam nợ, giao dịch chiết khấu, thanh lý
-    bsd_giam_no_id = fields.Many2one('bsd.giam_no', string="Điều chỉnh giảm", help="Điều chỉnh giảm",
-                                     readonly=True,
-                                     states={'nhap': [('readonly', False)]})
-    bsd_ps_gd_ck_id = fields.Many2one('bsd.ps_gd_ck', string="Giao dịch chiết khấu", help="Giao dịch chiết khấu",
-                                      readonly=True,
-                                      states={'nhap': [('readonly', False)]})
+    # bsd_giam_no_id = fields.Many2one('bsd.giam_no', string="Điều chỉnh giảm", help="Điều chỉnh giảm",
+    #                                  readonly=True,
+    #                                  states={'nhap': [('readonly', False)]})
+    # bsd_ps_gd_ck_id = fields.Many2one('bsd.ps_gd_ck', string="Giao dịch chiết khấu", help="Giao dịch chiết khấu",
+    #                                   readonly=True,
+    #                                   states={'nhap': [('readonly', False)]})
     bsd_thanh_ly_id = fields.Many2one('bsd.thanh_ly', string="Thanh lý", help="Thanh lý")
 
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
@@ -121,6 +120,18 @@ class BsdHoanTien(models.Model):
                 'bsd_hoan_tien_id': self.id,
                 'state': 'da_gs',
             })
+
+        # Tạo thanh toán trả trước
+        if self.bsd_chuyen_pt:
+            self.env['bsd.phieu_thu'].create({
+                'bsd_loai_pt': 'tra_truoc',
+                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                'bsd_du_an_id': self.bsd_du_an_id.id,
+                'bsd_pt_tt_id': self.env.ref('bsd_danh_muc.bsd_tien_mat').id,
+                'bsd_tien': self.bsd_tien,
+            }).action_xac_nhan()
+
+
         # tạo record trong bảng công nợ chứng từ
         if self.bsd_loai == 'phieu_thu':
             self.env['bsd.cong_no_ct'].create({
@@ -130,16 +141,6 @@ class BsdHoanTien(models.Model):
                 'bsd_hoan_tien_id': self.id,
                 'bsd_tien_pb': self.bsd_tien,
                 'bsd_loai': 'pt_ht',
-                'state': 'hoan_thanh'
-            })
-        elif self.bsd_loai == 'dc_giam':
-            self.env['bsd.cong_no_ct'].create({
-                'bsd_ngay_pb': self.bsd_ngay_ct,
-                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                'bsd_giam_no_id': self.bsd_giam_no_id.id,
-                'bsd_hoan_tien_id': self.id,
-                'bsd_tien_pb': self.bsd_tien,
-                'bsd_loai': 'giam_ht',
                 'state': 'hoan_thanh'
             })
 
