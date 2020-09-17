@@ -66,6 +66,7 @@
                                    context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                    options="{'no_create':true}"
                                    domain="[('bsd_du_an_id', 'in',[bsd_du_an_id]),
+                                            ('bsd_uu_tien', '=', '0'),
                                             ('state','in',['chuan_bi','san_sang','dat_cho','giu_cho'])]"/>
                         </group>
                         <group>
@@ -244,6 +245,7 @@
                                              'tree_view_ref': 'bsd_du_an.bsd_product_template_tree'}"
                                    options="{'no_create':true}"
                                    domain="[('bsd_du_an_id', 'in',[bsd_du_an_id]),
+                                            ('bsd_uu_tien', '=', '0'),
                                             ('state','in',['chuan_bi','san_sang','dat_cho','giu_cho'])]"/>
                             <field name="bsd_dot_mb_id" invisible="1"/>
                             <field name="bsd_tien_gc"/>

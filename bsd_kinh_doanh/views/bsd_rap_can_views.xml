@@ -43,7 +43,8 @@
                                    context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                    options="{'no_create':true}"
                                    domain="[('state','in',['chuan_bi','san_sang','dat_cho','giu_cho']),
-                                            ('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
+                                            ('bsd_du_an_id', 'in',[bsd_du_an_id]),
+                                            ('bsd_uu_tien', '=', '0')]"/>
                             <field name="bsd_dien_giai"/>
                             <!--<field name="state"/>-->
                         </group>
@@ -151,7 +152,8 @@
                                    context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                    options="{'no_create':true}"
                                    domain="[('state','in',['chuan_bi','san_sang','dat_cho','giu_cho']),
-                                            ('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
+                                            ('bsd_du_an_id', 'in',[bsd_du_an_id]),
+                                            ('bsd_uu_tien', '=', '0')]"/>
                             <field name="bsd_dien_giai"/>
                         </group>
                     </group>
