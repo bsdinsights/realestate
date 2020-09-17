@@ -16,7 +16,7 @@
                             name="action_de_nghi_huy"
                             type="object"
                             sequence="50"
-                            states="xac_nhan,cho_rc,giu_cho,dong_gc"
+                            states="xac_nhan,cho_rc,giu_cho"
                             attrs="{'invisible':['|',('bsd_thanh_toan', '=','chua_tt')]}"/>
                     <button string="Hủy"
                             name="action_huy"
@@ -78,14 +78,14 @@
                             <field name="bsd_ngay_hh_gctc" force_save="1"/>
                             <field name="bsd_thanh_toan" attrs="{'invisible':[('id', '=', False)]}"/>
                             <field name="bsd_ngay_tt" attrs="{'invisible':[('id', '=', False)]}"/>
-                            <field name="bsd_stt"/>
+
                         </group>
                         <group>
+                            <field name="bsd_stt"/>
                             <field name="bsd_ngay_ut"/>
                             <field name="bsd_ngay_rc"/>
                             <field name="bsd_rap_can_id" options="{'no_create':true}"/>
                             <field name="bsd_het_han"/>
-                            <field name="bsd_ngay_huy_rc"/>
                         </group>
                     </group>
                     <group string="CHUYỂN TÊN">
@@ -112,7 +112,9 @@
                   decoration-primary="state=='giu_cho'"
                   decoration-bf="state=='giu_cho'"
                   decoration-success="state=='dong_gc'"
-                  decoration-muted="state=='huy' or state=='het_han'">
+                  decoration-muted="state=='huy' or state=='het_han'"
+                  decoration-danger="bsd_het_han == True"
+            >
                 <field name="bsd_ma_gctc"/>
                 <field name="bsd_ngay_gctc"/>
                 <field name="bsd_khach_hang_id"/>
@@ -123,6 +125,7 @@
                 <field name="bsd_ngay_ut"/>
                 <field name="bsd_rap_can_id"/>
                 <field name="state"/>
+                <field name="bsd_het_han" invisible="1"/>
                 <field name="currency_id" invisible="1"/>
             </tree>
         </field>

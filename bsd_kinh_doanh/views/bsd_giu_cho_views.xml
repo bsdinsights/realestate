@@ -138,7 +138,9 @@
                   decoration-primary="state=='giu_cho'"
                   decoration-bf="state=='giu_cho'"
                   decoration-success="state=='dong_gc'"
-                  decoration-muted="state=='huy' or state=='het_han'">
+                  decoration-muted="state=='huy' or state=='het_han'"
+                  decoration-danger="bsd_het_han == True"
+            >
                 <field name="bsd_ma_gc"/>
                 <field name="bsd_khach_hang_id"/>
                 <field name="bsd_du_an_id"/>
@@ -147,6 +149,7 @@
                 <field name="bsd_stt_bg"/>
                 <field name="bsd_ngay_hh_bg"/>
                 <field name="state"/>
+                <field name="bsd_het_han" invisible="1"/>
                 <field name="currency_id" invisible="1"/>
             </tree>
         </field>
@@ -178,7 +181,7 @@
                 <group expand="0" string="Group by">
                     <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
                     <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
-                    <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
+                    <filter string="Sản phẩm" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
                 </group>
             </search>
         </field>

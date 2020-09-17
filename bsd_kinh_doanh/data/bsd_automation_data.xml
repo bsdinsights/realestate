@@ -5,7 +5,7 @@
             <field name="name">Hủy giữ chỗ thiện chí</field>
             <field name="model_id" ref="bsd_kinh_doanh.model_bsd_gc_tc"></field>
             <field name="trigger">on_time</field>
-            <field name="filter_domain">[('state', '=','xac_nhan'),('bsd_thanh_toan','in',['chua_tt'])]</field>
+            <field name="filter_domain">[('state', 'in',['xac_nhan','cho_rc','giu_cho'])]</field>
             <field name="trg_date_id" ref="bsd_kinh_doanh.field_bsd_gc_tc__bsd_ngay_hh_gctc"></field>
             <field name="state">code</field>
             <field name="code">
@@ -14,42 +14,16 @@ record.auto_huy_giu_cho()
             </field>
         </record>
 
-        <record model="base.automation" id="bsd_gc_tc_het_han_gc">
-            <field name="name">Hết hạn giữ chỗ thiện chí</field>
-            <field name="model_id" ref="bsd_kinh_doanh.model_bsd_gc_tc"></field>
-            <field name="trigger">on_time</field>
-            <field name="filter_domain">[('state','=','xac_nhan'),('bsd_ngay_ut','!=',False),('bsd_thanh_toan','in',['da_tt','dang_tt']),('bsd_het_han','=',False)]</field>
-            <field name="trg_date_id" ref="bsd_kinh_doanh.field_bsd_gc_tc__bsd_ngay_ut"></field>
-            <field name="state">code</field>
-            <field name="code">
-record = model.browse(env.context['active_id'])
-record.auto_danh_dau_hh_gc()
-            </field>
-        </record>
-
         <record model="base.automation" id="bsd_giu_cho_huy_gc">
-            <field name="name">Hủy giữ chỗ quá hạn thanh toán</field>
+            <field name="name">Hủy giữ chỗ</field>
             <field name="model_id" ref="bsd_kinh_doanh.model_bsd_giu_cho"/>
             <field name="trigger">on_time</field>
-            <field name="filter_domain">[('bsd_truoc_mb','=',True),('bsd_thanh_toan', '=','chua_tt'),('state','=','dat_cho')]</field>
+            <field name="filter_domain">[('bsd_truoc_mb','=',True),('state','in',['dat_cho','dang_cho','giu_cho'])]</field>
             <field name="trg_date_id" ref="bsd_kinh_doanh.field_bsd_giu_cho__bsd_ngay_hh_gc"/>
             <field name="state">code</field>
             <field name="code">
 record = model.browse(env.context['active_id'])
 record.auto_huy_gc()
-            </field>
-        </record>
-
-        <record model="base.automation" id="bsd_giu_cho_hh_gc">
-            <field name="name">Hết hạn giữ chỗ đã sau thanh toán</field>
-            <field name="model_id" ref="bsd_kinh_doanh.model_bsd_giu_cho"/>
-            <field name="trigger">on_time</field>
-            <field name="filter_domain">[('state','=','dat_cho'),('bsd_thanh_toan','=','da_tt'),('bsd_het_han_gc','=',False)]</field>
-            <field name="trg_date_id" ref="bsd_kinh_doanh.field_bsd_giu_cho__bsd_ngay_hh_stt"/>
-            <field name="state">code</field>
-            <field name="code">
-record = model.browse(env.context['active_id'])
-record.auto_danh_dau_hh_gc()
             </field>
         </record>
     </data>

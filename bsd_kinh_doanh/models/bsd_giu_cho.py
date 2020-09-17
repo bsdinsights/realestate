@@ -75,6 +75,7 @@ class BsdGiuCho(models.Model):
                               ('dat_cho', 'Đặt chỗ'),
                               ('dang_cho', "Đang chờ"),
                               ('giu_cho', 'Giữ chỗ'),
+                              ('hoan_thanh', 'Hoàn thành'),
                               ('dong_gc', 'Đóng'),
                               ('het_han', 'Hết hạn'),
                               ('huy', 'Hủy')], default='nhap', string="Trạng thái",
@@ -289,6 +290,7 @@ class BsdGiuCho(models.Model):
             })
 
     # KD.07.07 Tự động hủy giữ chỗ quá hạn thanh toán
+    # KD.07.08 Tự động đánh dấu hết hạn giữ chỗ
     def auto_huy_gc(self):
         if self.bsd_thanh_toan == 'chua_tt':
             self.write({
@@ -296,14 +298,14 @@ class BsdGiuCho(models.Model):
             })
             # Cập nhật trạng thái unit
             giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
-                                                      ('state', 'in', ['dat_cho', 'giu_cho']),
+                                                      ('state', 'in', ['dat_cho', 'dang_cho', 'giu_cho']),
                                                       ('id', '!=', self.id)])
             if not self.bsd_unit_id.bsd_dot_mb_id:
                 if not giu_cho:
                     self.bsd_unit_id.write({
                         'state': 'chuan_bi',
                     })
-                elif not giu_cho.filtered(lambda g: g.state == 'giu_cho'):
+                elif not giu_cho.filtered(lambda g: g.state in ['dang_cho', 'giu_cho']):
                     self.bsd_unit_id.write({
                         'state': 'dat_cho'
                     })
@@ -312,14 +314,11 @@ class BsdGiuCho(models.Model):
                     self.bsd_unit_id.write({
                         'state': 'san_sang',
                     })
-                elif not giu_cho.filtered(lambda g: g.state == 'giu_cho'):
+                elif not giu_cho.filtered(lambda g: g.state in ['dang_cho', 'giu_cho']):
                     self.bsd_unit_id.write({
                         'state': 'dat_cho'
                     })
-
-    # KD.07.08 Tự động đánh dấu hết hạn giữ chỗ
-    def auto_danh_dau_hh_gc(self):
-        if self.bsd_thanh_toan in ['da_tt', 'dang_tt']:
+        else:
             self.write({
                 'bsd_het_han_gc': True
             })
