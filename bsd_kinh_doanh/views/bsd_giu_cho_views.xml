@@ -139,7 +139,7 @@
                   decoration-bf="state=='giu_cho'"
                   decoration-success="state=='dong_gc'"
                   decoration-muted="state=='huy' or state=='het_han'"
-                  decoration-danger="bsd_het_han == True"
+                  decoration-danger="bsd_het_han_gc == True"
             >
                 <field name="bsd_ma_gc"/>
                 <field name="bsd_khach_hang_id"/>
@@ -149,7 +149,7 @@
                 <field name="bsd_stt_bg"/>
                 <field name="bsd_ngay_hh_bg"/>
                 <field name="state"/>
-                <field name="bsd_het_han" invisible="1"/>
+                <field name="bsd_het_han_gc" invisible="1"/>
                 <field name="currency_id" invisible="1"/>
             </tree>
         </field>

@@ -5,22 +5,38 @@
         <field name="model">bsd.tang</field>
         <field name="arch" type="xml">
             <form duplicate="false">
-                <sheet>
+                <notebook>
+                    <page string="Thông tin chung">
+                        <group>
                     <group>
-                        <group>
-                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
-                            <field name="bsd_toa_nha_id"
-                                   options="{'no_create':true}"
-                                   domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
-                            <field name="bsd_ten_tang"/>
-                        </group>
-                        <group>
-                            <field name="bsd_ma_tang"/>
-                            <field name="bsd_stt"/>
-                            <field name="bsd_dien_giai"/>
-                        </group>
+                        <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                        <field name="bsd_toa_nha_id"
+                               options="{'no_create':true}"
+                               domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
+                        <field name="bsd_ten_tang"/>
                     </group>
-                </sheet>
+                    <group>
+                        <field name="bsd_ma_tang"/>
+                        <field name="bsd_stt"/>
+                        <field name="bsd_dien_giai"/>
+                    </group>
+                </group>
+                    </page>
+                    <page string="Danh sách sản phẩm">
+                        <field name="bsd_unit_ids">
+                            <tree>
+                                <field name="bsd_ma_unit"/>
+                                <field name="bsd_du_an_id"/>
+                                <field name="bsd_toa_nha_id"/>
+                                <field name="bsd_tang_id"/>
+                                <field name="bsd_stt"/>
+                                <field name="bsd_tong_gb"/>
+                                <field name="bsd_uu_tien"/>
+                                <field name="state"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="activity_ids" widget="mail_activity"/>
