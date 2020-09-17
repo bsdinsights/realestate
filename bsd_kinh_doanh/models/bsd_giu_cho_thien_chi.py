@@ -59,7 +59,7 @@ class BsdGiuChoThienChi(models.Model):
 
     @api.onchange('bsd_ngay_gctc', 'bsd_du_an_id')
     def _onchange_ngay_gctc(self):
-        self.bsd_ngay_hh_gctc = self.bsd_ngay_gctc + + datetime.timedelta(hours=self.bsd_du_an_id.bsd_gc_smb)
+        self.bsd_ngay_hh_gctc = self.bsd_ngay_gctc + datetime.timedelta(hours=self.bsd_du_an_id.bsd_gc_smb)
 
     bsd_ngay_ut = fields.Datetime(string="Ưu tiên ráp căn", readonly=True,
                                   help="Thời gian được sử dụng để xét ưu tiên khi làm phiếu ráp căn")
@@ -101,13 +101,10 @@ class BsdGiuChoThienChi(models.Model):
                             """.format(self.env.ref('bsd_kinh_doanh.bsd_ctv').id))
         _logger.debug("onchange san ctv")
         list_cn = [cn[0] for cn in self.env.cr.fetchall()]
-        _logger.debug("onchange san ctv")
-        _logger.debug(list_cn)
         self.env.cr.execute("""SELECT bsd_dn_id FROM bsd_loai_dn_rel 
                                 WHERE bsd_loai_id = {0}
                             """.format(self.env.ref('bsd_kinh_doanh.bsd_san').id))
         list_dn = [cn[0] for cn in self.env.cr.fetchall()]
-        _logger.debug(list_dn)
         res.update({
             'domain': {
                 'bsd_ctv_id': [('id', 'in', list_cn)],

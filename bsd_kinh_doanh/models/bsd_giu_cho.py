@@ -108,6 +108,26 @@ class BsdGiuCho(models.Model):
     bsd_so_bao_gia = fields.Integer(string="# Báo giá", compute='_compute_bao_gia')
     bsd_so_huy_gc = fields.Integer(string="# Hủy giữ chỗ", compute='_compute_huy_gc')
 
+    @api.onchange('bsd_nvbh_id')
+    def _onchange_san_ctv(self):
+        res = {}
+        self.env.cr.execute("""SELECT bsd_cn_id FROM bsd_loai_cn_rel 
+                                WHERE bsd_loai_id = {0}
+                            """.format(self.env.ref('bsd_kinh_doanh.bsd_ctv').id))
+        _logger.debug("onchange san ctv")
+        list_cn = [cn[0] for cn in self.env.cr.fetchall()]
+        self.env.cr.execute("""SELECT bsd_dn_id FROM bsd_loai_dn_rel 
+                                WHERE bsd_loai_id = {0}
+                            """.format(self.env.ref('bsd_kinh_doanh.bsd_san').id))
+        list_dn = [cn[0] for cn in self.env.cr.fetchall()]
+        res.update({
+            'domain': {
+                'bsd_ctv_id': [('id', 'in', list_cn)],
+                'bsd_san_gd_id': [('id', 'in', list_dn)]
+            }
+        })
+        return res
+
     # Tên hiện thị record
     def name_get(self):
         res = []

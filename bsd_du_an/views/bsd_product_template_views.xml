@@ -129,7 +129,7 @@
                     <group string="MỞ BÁN" name="mo_ban">
                         <group name="san_gd">
                             <field name="bsd_san_gd_id"
-                                   domain="[('is_company', '=',)]"
+                                   domain="[('is_company', '=',True)]"
                                    options="{'no_create':true}"/>
                         </group>
                     </group>
