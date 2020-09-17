@@ -1,9 +1,10 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from datetime import datetime
 import logging
+
 _logger = logging.getLogger(__name__)
 
 
@@ -386,6 +387,11 @@ class ProductTemplate(models.Model):
                 })
             template._create_sequence()
         return templates
+
+    def unlink(self):
+        if self.env['bsd.giu_cho'].search([('bsd_product_tmpl_id', '=' , self.id)], limit=1):
+            raise UserError(_("Sản phẩm đã phát sinh giữ chỗ. Không thể xóa sản phẩm"))
+        return super(ProductTemplate, self).unlink()
 
 
 class BsdHuongNhin(models.Model):
