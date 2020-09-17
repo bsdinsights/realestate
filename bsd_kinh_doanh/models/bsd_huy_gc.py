@@ -123,8 +123,8 @@ class BsdHuyGC(models.Model):
                     })
 
                 # hủy ráp căn nếu có của giữ chỗ
-                if self.bsd_giu_cho_id.bsd_rap_can_id:
-                    self.bsd_giu_cho_id.bsd_rap_can_id.write({'state': 'huy'})
+                # if self.bsd_giu_cho_id.bsd_rap_can_id:
+                #     self.bsd_giu_cho_id.bsd_rap_can_id.write({'state': 'huy'})
                 # Cập nhật trạng thái unit
                 giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                           ('state', 'in', ['dat_cho', 'dang_cho', 'giu_cho']),

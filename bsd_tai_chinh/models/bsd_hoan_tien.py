@@ -40,22 +40,50 @@ class BsdHoanTien(models.Model):
                                 default='phieu_thu',
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
+    bsd_pt_tt_id = fields.Many2one('bsd.pt_tt', string="Phương thức", help="Phương thức thanh toán",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_chuyen_pt = fields.Boolean(string="Chuyển TT trả trước",
+                                   help="Đánh dấu hoàn tiền có chuyển sang thanh toán trả trước hay không")
+    bsd_ngay_ht_tt = fields.Date(string="Ngày HT thực tế", help="Ngày hoàn tiền thực tế")
+    bsd_tk_nh_id = fields.Many2one('res.partner.bank', string="Tài khoản ngân hàng",
+                                   help="Số tài khoản ngân hàng của khách hàng",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_ngan_hang_id = fields.Many2one('res.bank', string="Tên ngân hàng", help="Tên ngân hàng",
+                                       readonly=True,
+                                       states={'nhap': [('readonly', False)]})
 
     @api.model
     def _method_choice(self):
-        choices = [('phieu_thu', 'Phiếu thu'),
-                   ('gd_ck', 'Giao dịch chiết khấu'),
+        choices = [('gc_tc', 'Giữ chỗ thiện chí'),
+                   ('giu_cho', 'Giữ chỗ'),
                    ('tl_dc', 'Thanh lý đặt cọc'),
-                   ('tl_dc_hd', 'Thanh lý đặt cọc - Chuẩn bị HĐ'),
-                   ('tl_ttdc', 'Thanh lý TTĐC'),
-                   ('tl_hd', 'Thanh lý hợp đồng')]
+                   ('phieu_thu', 'Thanh toán trả trước'),
+                   ('tl_ttdc', 'Thanh lý TTĐC/ HĐĐC'),
+                   ('tl_hd', 'Thanh lý HĐMB'),
+                   ('vp_hd', 'Vi phạm hợp đồng'),
+                   ('pl_hd', 'Phụ lục hợp đồng')]
         if self.env['res.users'].has_group('bsd_kinh_doanh.group_manager'):
             choices += [('dc_giam', 'Điều chỉnh giảm')]
         return choices
 
-    bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thu", help="Phiếu thu",
+    bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Thanh toán trả trước", help="Thanh toán trả trước",
                                        readonly=True,
                                        states={'nhap': [('readonly', False)]})
+    bsd_gc_tc_id = fields.Many2one('bsd.gc_tc', string="Giữ chỗ thiện chí", help="Giữ chỗ thiện chí",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_giu_cho_id = fields.Many2one('bsd.giu_cho', string="Giữ chỗ", help="Giữ chỗ",
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
+    bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Đặt cọc",
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng",
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]})
+    # Kiểm tra lại 3 field giam nợ, giao dịch chiết khấu, thanh lý
     bsd_giam_no_id = fields.Many2one('bsd.giam_no', string="Điều chỉnh giảm", help="Điều chỉnh giảm",
                                      readonly=True,
                                      states={'nhap': [('readonly', False)]})
@@ -63,22 +91,22 @@ class BsdHoanTien(models.Model):
                                       readonly=True,
                                       states={'nhap': [('readonly', False)]})
     bsd_thanh_ly_id = fields.Many2one('bsd.thanh_ly', string="Thanh lý", help="Thanh lý")
+
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
-                              ('da_gs', 'Đã ghi sổ'), ('huy', 'Hủy')], string="Trạng thái", tracking=1,
+                              ('huy', 'Hủy')], string="Trạng thái", tracking=1,
                              required=True, default='nhap')
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
+    @api.onchange('bsd_thanh_ly_id')
+    def _onchange_tl(self):
+        self.bsd_hd_ban_id = self.bsd_thanh_ly_id.bsd_hd_ban_id
+
     # TC.07.01 Xác nhận hoàn tiền
+    # TC.07.03 Ghi sổ hoàn tiền
     def action_xac_nhan(self):
         self.write({
             'state': 'xac_nhan',
-        })
-
-    # TC.07.03 Ghi sổ hoàn tiền
-    def action_vao_so(self):
-        self.write({
-            'state': 'da_gs',
         })
         # Ghi sổ công nợ hoàn tiền
         self.env['bsd.cong_no'].create({

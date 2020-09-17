@@ -76,7 +76,6 @@ class BsdGiuCho(models.Model):
                               ('dang_cho', "Đang chờ"),
                               ('giu_cho', 'Giữ chỗ'),
                               ('hoan_thanh', 'Hoàn thành'),
-                              ('dong_gc', 'Đóng'),
                               ('het_han', 'Hết hạn'),
                               ('huy', 'Hủy')], default='nhap', string="Trạng thái",
                              tracking=1, help="Trạng thái", required=True, readonly=True)

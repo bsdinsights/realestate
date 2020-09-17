@@ -36,8 +36,7 @@ class BsdPhieuThu(models.Model):
                                     ('dot_tt', 'Đợt thanh toán'),
                                     ('pql', 'Phí quản lý'),
                                     ('pbt', 'Phí bảo trì'),
-                                    ('pps', 'Phí phát sinh'),
-                                    ('khac', 'Khác')], default="tra_truoc", required=True, string="Loại phiếu thu",
+                                    ('pps', 'Phí phát sinh')], default="tra_truoc", required=True, string="Loại phiếu thu",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     # bsd_loai_hd = fields.Selection([('dat_coc', 'Đặt cọc'),
@@ -57,7 +56,7 @@ class BsdPhieuThu(models.Model):
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]}, default="tien_mat")
     bsd_tk_nh_id = fields.Many2one('res.partner.bank', string="Tài khoản ngân hàng",
-                                   help="Số tài khoản ngân hàng của chủ sở hữu",
+                                   help="Số tài khoản ngân hàng của khách hàng",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_ngan_hang_id = fields.Many2one('res.bank', string="Tên ngân hàng", help="Tên ngân hàng",
