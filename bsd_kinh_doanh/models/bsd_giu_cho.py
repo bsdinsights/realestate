@@ -114,7 +114,6 @@ class BsdGiuCho(models.Model):
         self.env.cr.execute("""SELECT bsd_cn_id FROM bsd_loai_cn_rel 
                                 WHERE bsd_loai_id = {0}
                             """.format(self.env.ref('bsd_kinh_doanh.bsd_ctv').id))
-        _logger.debug("onchange san ctv")
         list_cn = [cn[0] for cn in self.env.cr.fetchall()]
         self.env.cr.execute("""SELECT bsd_dn_id FROM bsd_loai_dn_rel 
                                 WHERE bsd_loai_id = {0}

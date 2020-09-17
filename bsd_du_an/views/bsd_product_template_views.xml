@@ -189,6 +189,7 @@
                 <field name="bsd_tong_gb"/>
                 <field name="bsd_uu_tien"/>
                 <field name="state"/>
+                <field name="currency_id" invisible="1"/>
             </tree>
         </field>
     </record>

@@ -22,11 +22,6 @@
                             name="action_tao_bao_gia"
                             attrs="{'invisible': ['|',('state','not in',['giu_cho']),('bsd_dot_mb_id','=', False)]}"/>
                     <button string="Hủy"
-                            attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),('bsd_gc_da','=',False)]}"
-                            name="action_huy"
-                            confirm="Bạn có muốn hủy Giữ chỗ này không?"
-                            type="object"/>
-                    <button string="Hủy"
                             attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),
                                                   '|',('bsd_truoc_mb','=',True),
                                                       ('bsd_thanh_toan','=', 'chua_tt')]}"
@@ -34,9 +29,9 @@
                             confirm="Bạn có muốn hủy Giữ chỗ này không?"
                             type="object"/>
                     <button string="Đề nghị hủy"
-                            attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),
+                            attrs="{'invisible': ['|',('state','not in',['dat_cho', 'dang_cho', 'giu_cho']),
                                                     '|',('bsd_thanh_toan','=', 'chua_tt'),
-                                                    '|',('bsd_truoc_mb','=',False),('bsd_gc_da', '=', True)]}"
+                                                    '|',('bsd_truoc_mb','=',False),('bsd_gc_da', '=', False)]}"
                             name="action_de_nghi_huy"
                             type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
