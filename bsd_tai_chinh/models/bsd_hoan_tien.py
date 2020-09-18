@@ -44,8 +44,12 @@ class BsdHoanTien(models.Model):
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_chuyen_pt = fields.Boolean(string="Chuyển TT trả trước",
-                                   help="Đánh dấu hoàn tiền có chuyển sang thanh toán trả trước hay không")
-    bsd_ngay_ht_tt = fields.Date(string="Ngày HT thực tế", help="Ngày hoàn tiền thực tế")
+                                   help="Đánh dấu hoàn tiền có chuyển sang thanh toán trả trước hay không",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_ngay_ht_tt = fields.Date(string="Ngày HT thực tế", help="Ngày hoàn tiền thực tế",
+                                 readonly=True,
+                                 states={'nhap': [('readonly', False)]})
     bsd_tk_nh_id = fields.Many2one('res.partner.bank', string="Tài khoản ngân hàng",
                                    help="Số tài khoản ngân hàng của khách hàng",
                                    readonly=True,
@@ -128,9 +132,8 @@ class BsdHoanTien(models.Model):
                 'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                 'bsd_du_an_id': self.bsd_du_an_id.id,
                 'bsd_pt_tt_id': self.env.ref('bsd_danh_muc.bsd_tien_mat').id,
-                'bsd_tien': self.bsd_tien,
+                'bsd_tien_kh': self.bsd_tien,
             }).action_xac_nhan()
-
 
         # tạo record trong bảng công nợ chứng từ
         if self.bsd_loai == 'phieu_thu':

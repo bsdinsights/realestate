@@ -89,7 +89,7 @@ class BsdGiuCho(models.Model):
                                       required=True, readonly=True)
     bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ",readonly=True)
     bsd_stt_bg = fields.Integer(string="Số thứ tự", readonly=True, help="Số thứ tự giữ chỗ")
-    bsd_ngay_hh_bg = fields.Datetime(string="ngày ưu tiên ", help="Ưu tiên làm bảng tính giá", readonly=True)
+    bsd_ngay_hh_bg = fields.Datetime(string="Ngày ưu tiên ", help="Ưu tiên làm bảng tính giá", readonly=True)
     # bsd_het_han_bg = fields.Boolean(string="Hết hạn báo giá", readonly=True, default=False,
     #                                 help="Thông tin ghi nhận thời gian làm báo giá có bok hết hiệu lực hay chưa")
     # bsd_ngay_hh_stt = fields.Datetime(string="Hạn GC sau TT",

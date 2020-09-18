@@ -274,7 +274,7 @@ class BsdHuyGC(models.Model):
                     'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                     'bsd_du_an_id': self.bsd_du_an_id.id,
                     'bsd_loai': 'giu_cho',
-                    'bsd_giu_cho': self.bsd_giu_cho_id.id,
+                    'bsd_giu_cho_id': self.bsd_giu_cho_id.id,
                     'bsd_tien': self.bsd_tien_ht,
                     'bsd_dien_giai': 'Hoàn tiền cho đề nghị hủy ' + self.bsd_ma_huy_gc,
                     'state': 'nhap',

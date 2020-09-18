@@ -23,10 +23,10 @@ class BsdCanTru(models.Model):
                                        default=lambda self: fields.Datetime.now(), readonly=True,
                                        states={'nhap': [('readonly', False)]})
     bsd_tien_can_tru = fields.Monetary(string="Tiền cấn trừ", compute='_compute_tien_can_tru', store=True)
-    bsd_loai_ct = fields.Selection([('phieu_thu', 'Phiếu thu')], string="Loại chứng từ", help="Loại chứng từ",
+    bsd_loai_ct = fields.Selection([('phieu_thu', 'Phiếu thanh toán')], string="Loại chứng từ", help="Loại chứng từ",
                                    required=True, readonly=True, default='phieu_thu',
                                    states={'nhap': [('readonly', False)]})
-    bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thu", help="Phiếu thu", readonly=True,
+    bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thanh toán", help="Phiếu thanh toán", readonly=True,
                                        states={'nhap': [('readonly', False)]})
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Điều kiện lọc thêm hợp đồng")
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán", help="Lọc phí phát sinh theo đợt")

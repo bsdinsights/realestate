@@ -51,7 +51,7 @@
         <field name="name">bsd.cong_no.tree</field>
         <field name="model">bsd.cong_no</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree default_order="bsd_ngay desc">
                 <field name="bsd_ngay"/>
                 <field name="bsd_khach_hang_id"/>
                 <field name="bsd_du_an_id"/>
@@ -68,6 +68,7 @@
                 <field name="bsd_tang_no_id"/>
                 <field name="bsd_chuyen_tien_id"/>
                 <field name="state"/>
+                <field name="currency_id" invisible="1"/>
             </tree>
         </field>
     </record>

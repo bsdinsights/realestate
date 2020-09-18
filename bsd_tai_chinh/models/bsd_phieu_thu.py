@@ -83,9 +83,10 @@ class BsdPhieuThu(models.Model):
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
-    bsd_tien = fields.Monetary(string="Tiền", help="Tiền", required=True,
-                               readonly=True,
-                               states={'nhap': [('readonly', False)]})
+    bsd_tien_kh = fields.Monetary(string="Tiền", help="Tiền", required=True,
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
+    bsd_tien = fields.Monetary(string="Tiền thanh toán", help="Tiền thanh toán", readonly=1)
     bsd_tien_da_tt = fields.Monetary(string="Tiền đã thanh toán", help="Tiền đã thanh toán",
                                      compute='_compute_tien_ct', store=True)
     bsd_tien_con_lai = fields.Monetary(string="Tiền còn lại", help="Tiền còn lại",
@@ -115,19 +116,19 @@ class BsdPhieuThu(models.Model):
         _logger.debug("onchange tiền")
         if self.bsd_loai_pt == 'gc_tc' and self.bsd_gc_tc_id:
             gc_tc = self.env['bsd.gc_tc'].search([('id', '=', self.bsd_gc_tc_id.id)])
-            self.bsd_tien = gc_tc.bsd_tien_phai_tt
+            self.bsd_tien_kh = gc_tc.bsd_tien_phai_tt
 
         if self.bsd_loai_pt == 'giu_cho' and self.bsd_giu_cho_id:
             giu_cho = self.env['bsd.giu_cho'].search([('id', '=', self.bsd_giu_cho_id.id)])
-            self.bsd_tien = giu_cho.bsd_tien_phai_tt
+            self.bsd_tien_kh = giu_cho.bsd_tien_phai_tt
 
         if self.bsd_loai_pt == 'dat_coc' and self.bsd_dat_coc_id:
             dat_coc = self.env['bsd.dat_coc'].search([('id', '=', self.bsd_dat_coc_id.id)])
-            self.bsd_tien = dat_coc.bsd_tien_phai_tt
+            self.bsd_tien_kh = dat_coc.bsd_tien_phai_tt
 
         if self.bsd_loai_pt in ['dot_tt', 'pql', 'pbt'] and self.bsd_dot_tt_id:
             dot_tt = self.env['bsd.lich_thanh_toan'].search([('id', '=', self.bsd_dot_tt_id.id)])
-            self.bsd_tien = dot_tt.bsd_tien_phai_tt
+            self.bsd_tien_kh = dot_tt.bsd_tien_phai_tt
 
     @api.onchange('bsd_hd_ban_id', 'bsd_loai_pt')
     def _onchange_dot_tt(self):
@@ -171,10 +172,20 @@ class BsdPhieuThu(models.Model):
                                             minute=now.minute,
                                             second=now.second,
                                             microsecond=now.microsecond)
+
+        # Kiểm tra thanh toán dư để tạo thanh toán trả trước
+        co_tt_du, tien_tt_du, tien_tt = self._kiem_tra_tt_du()
+        _logger.debug("xác nhận")
+        _logger.debug(co_tt_du)
+        _logger.debug(tien_tt_du)
+        _logger.debug(tien_tt)
+        if co_tt_du:
+            self.tao_tt_tra_truoc(tien_du=tien_tt_du)
         self.write({
+            'bsd_tien': tien_tt,
+            'state': 'da_gs',
             'bsd_ngay_pt': get_time
         })
-
         # thực hiện ghi nhận thanh toán
         if self.bsd_loai_pt == 'tra_truoc':
             self._gs_pt_tra_truoc()
@@ -192,10 +203,6 @@ class BsdPhieuThu(models.Model):
             self._gs_pt_pps()
         else:
             pass
-
-        self.write({
-            'state': 'da_gs',
-        })
 
     # TC.01.02 Ghi sổ phiếu thu trả trước
     def _gs_pt_tra_truoc(self):
@@ -340,27 +347,37 @@ class BsdPhieuThu(models.Model):
             })
 
     # TC.01.08 - Kiểm tra thanh toán dư
-    @api.constrains('bsd_tien')
-    def _constrain_tien(self):
-        _logger.debug("Kiểm tra field tiền")
-        bsd_tien_phai_tt = 0
+    def _kiem_tra_tt_du(self):
+        bsd_tien_tt_du = 0
+        bsd_tien_tt = 0
         flag = False
+        if self.bsd_loai_pt == 'tra_truoc':
+            bsd_tien_tt = self.bsd_tien_kh
+            bsd_tien_tt_du = 0
         if self.bsd_loai_pt == 'gc_tc' and self.bsd_gc_tc_id:
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_gc_tc_id', '=', self.bsd_gc_tc_id.id)])
             if cong_no_ct:
                 bsd_tien_phai_tt = self.bsd_gc_tc_id.bsd_tien_gc - sum(cong_no_ct.mapped('bsd_tien_pb'))
             else:
                 bsd_tien_phai_tt = self.bsd_gc_tc_id.bsd_tien_gc
-            if self.bsd_tien > bsd_tien_phai_tt:
+            if self.bsd_tien_kh > bsd_tien_phai_tt:
                 flag = True
+                bsd_tien_tt_du = self.bsd_tien_kh - bsd_tien_phai_tt
+                bsd_tien_tt = bsd_tien_phai_tt
+            else:
+                bsd_tien_tt = self.bsd_tien_kh
         if self.bsd_loai_pt == 'giu_cho' and self.bsd_giu_cho_id:
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_giu_cho_id', '=', self.bsd_giu_cho_id.id)])
             if cong_no_ct:
                 bsd_tien_phai_tt = self.bsd_giu_cho_id.bsd_tien_gc - sum(cong_no_ct.mapped('bsd_tien_pb'))
             else:
                 bsd_tien_phai_tt = self.bsd_giu_cho_id.bsd_tien_gc
-            if self.bsd_tien > bsd_tien_phai_tt:
+            if self.bsd_tien_kh > bsd_tien_phai_tt:
                 flag = True
+                bsd_tien_tt_du = self.bsd_tien_kh - bsd_tien_phai_tt
+                bsd_tien_tt = bsd_tien_phai_tt
+            else:
+                bsd_tien_tt = self.bsd_tien_kh
         if self.bsd_loai_pt == 'dat_coc' and self.bsd_dat_coc_id:
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id),
                                                             ('bsd_dot_tt_id', '=', False)])
@@ -368,18 +385,25 @@ class BsdPhieuThu(models.Model):
                 bsd_tien_phai_tt = self.bsd_dat_coc_id.bsd_tien_dc - sum(cong_no_ct.mapped('bsd_tien_pb'))
             else:
                 bsd_tien_phai_tt = self.bsd_dat_coc_id.bsd_tien_dc
-            if self.bsd_tien > bsd_tien_phai_tt:
+            if self.bsd_tien_kh > bsd_tien_phai_tt:
                 flag = True
+                bsd_tien_tt_du = self.bsd_tien_kh - bsd_tien_phai_tt
+                bsd_tien_tt = bsd_tien_phai_tt
+            else:
+                bsd_tien_tt = self.bsd_tien_kh
         if self.bsd_loai_pt == 'dot_tt' and self.bsd_dot_tt_id:
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)])
             if cong_no_ct:
                 bsd_tien_phai_tt = self.bsd_dot_tt_id.bsd_tien_dot_tt - sum(cong_no_ct.mapped('bsd_tien_pb'))
             else:
                 bsd_tien_phai_tt = self.bsd_dot_tt_id.bsd_tien_dot_tt
-            if self.bsd_tien > bsd_tien_phai_tt:
+            if self.bsd_tien_kh > bsd_tien_phai_tt:
                 flag = True
-        if flag:
-            raise UserError("Tiền phải thu vượt quá số tiền còn lại. Vui lòng kiểm tra lại!")
+                bsd_tien_tt_du = self.bsd_tien_kh - bsd_tien_phai_tt
+                bsd_tien_tt = bsd_tien_phai_tt
+            else:
+                bsd_tien_tt = self.bsd_tien_kh
+        return flag, bsd_tien_tt_du, bsd_tien_tt
 
     # TC.01.11 - Ghi sổ phiếu thu phí phát sinh
     def _gs_pt_pps(self):
@@ -447,3 +471,13 @@ class BsdPhieuThu(models.Model):
             raise UserError(_('Dự án chưa có mã phiếu thu'))
         vals['bsd_so_pt'] = sequence.next_by_id()
         return super(BsdPhieuThu, self).create(vals)
+
+    # Tạo ra thanh toán trả trước khi thanh toán dư
+    def tao_tt_tra_truoc(self, tien_du=0):
+        self.env['bsd.phieu_thu'].create({
+            'bsd_loai_pt': 'tra_truoc',
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_du_an_id': self.bsd_du_an_id.id,
+            'bsd_pt_tt_id': self.bsd_pt_tt_id.id,
+            'bsd_tien_kh': tien_du,
+        }).action_xac_nhan()

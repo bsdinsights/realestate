@@ -82,7 +82,8 @@
                             />
                             <field name="currency_id"/>
                             <field name="company_id" invisible="1"/>
-                            <field name="bsd_tien"/>
+                            <field name="bsd_tien_kh"/>
+                            <field name="bsd_tien" readonly="1"/>
                             <field name="bsd_tien_da_tt"/>
                             <field name="bsd_tien_con_lai"/>
                             <field name="bsd_dien_giai"/>
@@ -101,7 +102,7 @@
         <field name="name">bsd.phieu_thu.tree</field>
         <field name="model">bsd.phieu_thu</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree default_order="bsd_ngay_pt desc">
                 <field name="bsd_so_pt"/>
                 <field name="bsd_ngay_pt"/>
                 <field name="bsd_loai_pt"/>
@@ -254,6 +255,7 @@
                             />
                             <field name="currency_id"/>
                             <field name="company_id" invisible="1"/>
+                            <field name="bsd_tien_kh"/>
                             <field name="bsd_tien"/>
                             <field name="bsd_tien_da_tt"/>
                             <field name="bsd_tien_con_lai"/>

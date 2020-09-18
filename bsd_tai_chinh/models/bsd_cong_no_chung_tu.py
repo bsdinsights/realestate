@@ -22,7 +22,7 @@ class BsdCongNoCT(models.Model):
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Đặt cọc")
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng")
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán")
-    bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thu", help="Phiếu thu")
+    bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thanh toán", help="Phiếu thanh toán")
     bsd_hoan_tien_id = fields.Many2one('bsd.hoan_tien', string="Hoàn tiền", help="Hoàn tiền")
     bsd_giam_no_id = fields.Many2one('bsd.giam_no', string="Điều chỉnh giảm", help="Điều chỉnh giảm")
     bsd_phi_ps_id = fields.Many2one('bsd.phi_ps', string="Phí phát sinh", help="Phí phát sinh")
@@ -31,12 +31,12 @@ class BsdCongNoCT(models.Model):
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     state = fields.Selection([('hoan_thanh', 'Hoàn thành'), ('huy', 'Hủy')])
 
-    bsd_loai = fields.Selection([('pt_gctc', 'Phiếu thu - Giữ chỗ thiện chí'),
-                                 ('pt_gc', 'Phiếu thu - Giữ chỗ'),
-                                 ('pt_dc', 'Phiếu thu - Đặt cọc'),
-                                 ('pt_dtt', 'Phiếu thu - Đợt thanh toán'),
-                                 ('pt_ht', 'Phiếu thu - Hoàn tiền'),
-                                 ('pt_pps', 'Phiếu thu - Phí phát sinh'),
+    bsd_loai = fields.Selection([('pt_gctc', 'Phiếu thanh toán - Giữ chỗ thiện chí'),
+                                 ('pt_gc', 'Phiếu thanh toán - Giữ chỗ'),
+                                 ('pt_dc', 'Phiếu thanh toán - Đặt cọc'),
+                                 ('pt_dtt', 'Phiếu thanh toán - Đợt thanh toán'),
+                                 ('pt_ht', 'Phiếu thanh toán - Hoàn tiền'),
+                                 ('pt_pps', 'Phiếu thanh toán - Phí phát sinh'),
                                  ('giam_ht', 'Điều chỉnh giảm - Hoàn tiền'),
                                  ('giam_gctc', 'Điều chỉnh giảm - Giữ chỗ thiện chí'),
                                  ('giam_gc', 'Điều chỉnh giảm - Giữ chỗ'),

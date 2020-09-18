@@ -20,7 +20,7 @@ class BsdCongNo(models.Model):
                                     ('giu_cho', 'Giữ chỗ'),
                                     ('dat_coc', 'Đặt cọc'),
                                     ('dot_tt', 'Đợt thanh toán'),
-                                    ('phieu_thu', 'Phiếu thu'),
+                                    ('phieu_thu', 'phiếu thanh toán'),
                                     ('pql', 'Phí quản lý'),
                                     ('pbt', 'Phí bảo trì'),
                                     ('dc_giam', 'Điều chỉnh giảm'),
@@ -36,7 +36,7 @@ class BsdCongNo(models.Model):
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Đặt cọc")
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng")
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán")
-    bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thu", help="Phiếu thu")
+    bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Thanh toán ", help="Thanh toán")
     bsd_chuyen_tien_id = fields.Many2one('bsd.chuyen_tien', string="Chuyển tiền", help="Chuyển tiền")
     bsd_hoan_tien_id = fields.Many2one('bsd.hoan_tien', string="Hoàn tiền", help="Hoàn tiền")
     bsd_thanh_ly_id = fields.Many2one('bsd.thanh_ly', string="Thanh lý", help="Thanh lý")
