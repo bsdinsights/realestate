@@ -105,7 +105,8 @@ class BsdSaleChartWidget(models.AbstractModel):
                     price.chot_gia AS gia_ban,
                     unit.bsd_dt_sd AS dien_tich,
                     loai.bsd_ten_nhom AS loai,
-                    unit_product.id AS product
+                    unit_product.id AS product,
+                    unit.bsd_dot_mb_id AS dot_mb
                 FROM bsd_toa_nha AS toa
                 LEFT JOIN bsd_tang AS tang 
                     ON toa.id = tang.bsd_toa_nha_id

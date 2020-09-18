@@ -253,7 +253,7 @@
             <div class="bsd_tooltip_action" t-attf-id="{{data[11]}}">
                 <span class="bsd_quan_tam">Quan tâm</span>
                 <span class="bsd_giu_cho ml-4">Giữ chỗ</span>
-                <t t-if="data[6] != 'chuan_bi'">
+                <t t-if="data[12] != False">
                     <span class="bsd_bao_gia ml-4">Bảng tính giá</span>
                 </t>
             </div>
