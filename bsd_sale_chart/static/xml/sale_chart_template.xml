@@ -219,14 +219,15 @@
         <div>Diện tích sử dụng: <span t-esc="data.dien_tich"/> m2</div>
         <div>Loại căn hộ: <span t-esc="data.loai_ch"/> </div>
         <t t-if="data.giu_cho">
-            <table class="table table-bordered table-sm" style="color:#fff">
+            <table class="table table-bordered table-sm mt-16 mb-16" style="color:#fff">
             <thead>
                 <tr>
                     <td>Mã giữ chỗ</td>
                     <td>Khách hàng</td>
                     <td>Ưu tiên</td>
                     <td>Hết hạn</td>
-                    <td>Nhân viên</td>
+                    <td>NV.KD</td>
+                    <td>Môi giới</td>
                 </tr>
             </thead>
             <tbody>
@@ -235,8 +236,9 @@
                         <td><div class="mo_giu_cho" t-attf-id="{{giu_cho.id}}"><span t-esc="giu_cho.bsd_ma_gc"/></div></td>
                         <td><span t-esc="giu_cho.bsd_khach_hang_id[1]"/> </td>
                         <td class="text-center"><span t-esc="giu_cho.bsd_stt_bg"/> </td>
-                        <td><span t-esc="giu_cho.bsd_ngay_hh_bg"/> </td>
-                        <td><span t-esc="giu_cho.bsd_nvbh_id[1]"/> </td>
+                        <td><span t-esc="giu_cho.bsd_ngay_hh_gc"/> </td>
+                        <td><span t-esc="giu_cho.bsd_nvbh_id[1]"/></td>
+                        <td><span t-esc="giu_cho.moi_gioi"/></td>
                     </tr>
                 </t>
             </tbody>

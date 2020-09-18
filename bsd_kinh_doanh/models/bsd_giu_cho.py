@@ -56,7 +56,7 @@ class BsdGiuCho(models.Model):
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch", domain=[('is_company', '=', True)],
                                     readonly=True, help="Sàn giao dịch",
                                     states={'nhap': [('readonly', False)]})
-    bsd_ctv_id = fields.Many2one('res.partner', string="Công tác viên", domain=[('is_company', '=', False)],
+    bsd_ctv_id = fields.Many2one('res.partner', string="Cộng tác viên", domain=[('is_company', '=', False)],
                                  readonly=True, help="Cộng tác viên",
                                  states={'nhap': [('readonly', False)]})
     bsd_gioi_thieu_id = fields.Many2one('res.partner', string="Giới thiệu", help="Cá nhân hoặc đơn vị giới thiệu",

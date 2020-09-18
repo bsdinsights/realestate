@@ -492,23 +492,52 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             this._rpc({
                 model: 'bsd.giu_cho',
                 method: 'search_read',
-                fields: ['bsd_ma_gc', 'bsd_khach_hang_id', 'bsd_stt_bg', 'bsd_ngay_hh_bg', 'state', 'bsd_nvbh_id'],
-                domain: [['state', 'in', ['dat_cho','giu_cho']], ['bsd_unit_id', '=', data_unit[11]]]
+                fields: ['bsd_ma_gc', 'bsd_khach_hang_id', 'bsd_stt_bg',
+                         'bsd_ngay_hh_gc', 'state', 'bsd_nvbh_id',
+                         'bsd_san_gd_id','bsd_ctv_id','bsd_gioi_thieu_id'],
+                domain: [['state', 'in', ['dat_cho','dang_cho','giu_cho']], ['bsd_unit_id', '=', data_unit[11]]]
             }).then(function(giu_cho){
                 if (_.isEmpty(giu_cho)){
                     data.giu_cho = null
                 }
                 else {
                     _.each(giu_cho, function(item,index,giu_cho){
-                          console.log(item.bsd_khach_hang_id[1].split("]"))
                         item.bsd_khach_hang_id[1] = item.bsd_khach_hang_id[1].split("]")[1]
-                        if (item.bsd_ngay_hh_bg === false){
-                            item.bsd_ngay_hh_bg = ''
+                        if (item.bsd_stt_bg === 0){
+                            item.bsd_stt_bg = ''
+                        }
+                        if (item.bsd_ngay_hh_gc === false){
+                            item.bsd_ngay_hh_gc = ''
                         }
                         else {
-                            item.bsd_ngay_hh_bg
-                            item.bsd_ngay_hh_bg = new moment(item.bsd_ngay_hh_bg).format('DD/MM/YYYY HH:mm')
+                            let time = new moment.utc(item.bsd_ngay_hh_gc)
+                            item.bsd_ngay_hh_gc = time.local().format('DD/MM/YYYY HH:mm')
                         }
+                        // Cập nhật môi giới
+                        console.log("môi giới")
+                        console.log(item)
+                        if (item.bsd_san_gd_id !== false){
+                            console.log(item.bsd_san_gd_id)
+                            item.moi_gioi = item.bsd_san_gd_id[1].split("]")[1]
+                        }
+                        else if (item.bsd_ctv_id !== false){
+                            console.log(item.bsd_ctv_id)
+                            item.moi_gioi = item.bsd_ctv_id[1].split("]")[1]
+                        }
+                        else if (item.bsd_gioi_thieu_id !== false){
+                            console.log(item.bsd_gioi_thieu_id)
+                            let moi_gioi = item.bsd_gioi_thieu_id[1].split("]")
+                            if (moi_gioi.length > 1) {
+                                item.moi_gioi = moi_gioi[1]
+                            }
+                            else {
+                                item.moi_gioi = moi_gioi[0]
+                            }
+                        }
+                        else {
+                            item.moi_gioi = ''
+                        }
+                        console.log(item.moi_gioi)
                     })
                     data.giu_cho = giu_cho
                 }

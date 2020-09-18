@@ -48,6 +48,18 @@
                             <field name="bsd_gioi_thieu_id" options="{'no_create':true}"/>
                         </group>
                     </group>
+                    <group string="HIỆU LỰC">
+                        <group>
+                            <field name="bsd_ngay_hh_gc" force_save="1"/>
+                            <field name="bsd_het_han_gc"/>
+                            <field name="bsd_stt_bg"/>
+                            <field name="bsd_ngay_hh_bg"/>
+                        </group>
+                        <group>
+                            <field name="bsd_thanh_toan" attrs="{'invisible':[('id', '=', False)]}"/>
+                            <field name="bsd_ngay_tt" attrs="{'invisible':[('id', '=', False)]}"/>
+                        </group>
+                    </group>
                     <field name="currency_id" invisible="1"/>
                     <field name="company_id" invisible="1"/>
                     <field name="bsd_thanh_toan" invisible="1"/>
