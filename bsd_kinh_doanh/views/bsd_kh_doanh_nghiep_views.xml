@@ -39,7 +39,8 @@
                                     <field name="bsd_phan_loai"/>
                                     <field name="bsd_nguoi_dd_id"
                                            options="{'no_create': true}"
-                                           domain="[('is_company', '=', False),('bsd_la_kh', '=', True)]"/>
+                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                    />
                                     <field name="bsd_nguoi_uq"/>
                                     <field name="phone" required="1"/>
                                     <field name="bsd_phone_2"/>

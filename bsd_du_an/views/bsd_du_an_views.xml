@@ -22,7 +22,7 @@
                                     <field name="company_id" invisible="1"/>
                                     <field name="bsd_ma_da"/>
                                     <field name="bsd_chu_dt_id"
-                                           domain="[('is_company', '=', True)]"
+                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_dn_form'}"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_ten_da"/>
                                     <field name="bsd_loai_da"/>

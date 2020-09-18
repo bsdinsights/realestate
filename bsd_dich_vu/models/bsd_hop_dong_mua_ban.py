@@ -511,7 +511,7 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     bsd_hd_ban_ids = fields.One2many('bsd.hd_ban', 'bsd_khach_hang_id', string="Danh sách hợp đồng",
-                                     domain=[('state', '!=', 'nhap')])
+                                     domain=[('state', '!=', 'nhap')], readonly=True)
 
     bsd_sl_hd_ban = fields.Integer(string="# Hợp đồng", compute="_compute_sl_hd", store=True)
 

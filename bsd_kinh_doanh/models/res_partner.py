@@ -14,10 +14,10 @@ class ResPartner(models.Model):
     bsd_ten = fields.Char(string="Họ và tên", help="Tên khách hàng")
     bsd_search_ten = fields.Char(string="Search tên", compute='_compute_search_name', store=True)
 
-    @api.depends('name', 'bsd_cmnd', 'bsd_ma_kh')
+    @api.depends('bsd_ten', 'bsd_cmnd', 'bsd_ma_kh')
     def _compute_search_name(self):
         for each in self:
-            each.bsd_search_ten = each.bsd_cmnd or '' + ' - ' + each.bsd_ma_kh or '' + ' - ' + each.name or ''
+            each.bsd_search_ten = (each.bsd_cmnd or '') + ' - ' + (each.bsd_ma_kh or '') + ' - ' + (each.bsd_ten or '')
 
     bsd_ma_kh = fields.Char(string="Mã khách hàng", required=True, readonly=True, copy=False, default='/')
     _sql_constraints = [
@@ -66,11 +66,11 @@ class ResPartner(models.Model):
                              string="Trạng thái", default='active', required=True, tracking=1)
 
     bsd_giu_cho_ids = fields.One2many('bsd.giu_cho', 'bsd_kh_moi_id', string="DS giữ chỗ",
-                                      domain=[('state', '!=', 'nhap')])
+                                      domain=[('state', '!=', 'nhap')], readonly=True)
     bsd_bao_gia_ids = fields.One2many('bsd.bao_gia', 'bsd_khach_hang_id', string="DS bảng tính giá",
-                                      domain=[('state', '!=', 'nhap')])
+                                      domain=[('state', '!=', 'nhap')], readonly=True)
     bsd_dat_coc_ids = fields.One2many('bsd.dat_coc', 'bsd_khach_hang_id', string="DS đặt cọc",
-                                      domain=[('state', '!=', 'nhap')])
+                                      domain=[('state', '!=', 'nhap')], reaonly=True)
     bsd_sl_giu_cho = fields.Integer(string="# Giữ chỗ", compute="_compute_sl_gc", store=True)
 
     @api.constrains('bsd_cmnd')

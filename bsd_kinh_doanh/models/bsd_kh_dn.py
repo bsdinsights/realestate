@@ -45,6 +45,20 @@ class ResPartner(models.Model):
                                      ('cty_con', 'Công ty con'), ('khac', 'Khác')],
                                     string="Quyền sở hữu", help="Quyền sở hữu")
 
+    @api.onchange('name')
+    def _onchange_ma_da(self):
+        res = {}
+        self.env.cr.execute("""SELECT bsd_cn_id FROM bsd_loai_cn_rel 
+                                WHERE bsd_loai_id = {0}
+                            """.format(self.env.ref('bsd_kinh_doanh.bsd_dd_cty').id))
+        list_cn = [cn[0] for cn in self.env.cr.fetchall()]
+        res.update({
+            'domain': {
+                'bsd_nguoi_dd_id': [('id', 'in', list_cn)],
+            }
+        })
+        return res
+
 
 class BsdLoaiCty(models.Model):
     _name = 'bsd.loai_cong_ty'

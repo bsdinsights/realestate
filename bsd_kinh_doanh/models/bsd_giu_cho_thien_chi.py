@@ -27,7 +27,9 @@ class BsdGiuChoThienChi(models.Model):
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True,
                                    readonly=True, help="Tên dự án",
                                    states={'nhap': [('readonly', False)]})
-    bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ thiện chí", required=True)
+    bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ thiện chí", required=True,
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
 
     @api.onchange('bsd_du_an_id')
     def _onchange_tien_gc(self):

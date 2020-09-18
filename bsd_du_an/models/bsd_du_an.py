@@ -18,10 +18,10 @@ class BsdProject(models.Model):
     ]
     bsd_search_ten = fields.Char(string="Tên tìm kiếm", compute="_compute_name", store=True)
 
-    @api.depends('bsd_ma_da','bsd_ten_da')
+    @api.depends('bsd_ma_da', 'bsd_ten_da')
     def _compute_name(self):
         for each in self:
-            each.bsd_search_ten = each.bsd_ma_da + ' - ' + each.bsd_ten_da
+            each.bsd_search_ten = (each.bsd_ma_da or '') + ' - ' + (each.bsd_ten_da or '')
 
     bsd_chu_dt_id = fields.Many2one('res.partner', string="Chủ dự án", required=True, help="Tên chủ đầu tư của dự án")
     bsd_loai_da = fields.Selection([('da_rieng', 'Dự án riêng'),
@@ -167,6 +167,20 @@ class BsdProject(models.Model):
             if record.bsd_tien_dc <= 0:
                 raise ValidationError("Tiền đặt cọc phải lớn hơn 0")
 
+    @api.onchange('bsd_ma_da')
+    def _onchange_ma_da(self):
+        res = {}
+        self.env.cr.execute("""SELECT bsd_dn_id FROM bsd_loai_dn_rel 
+                                WHERE bsd_loai_id = {0}
+                            """.format(self.env.ref('bsd_kinh_doanh.bsd_chu_dt').id))
+        list_cn = [cn[0] for cn in self.env.cr.fetchall()]
+        res.update({
+            'domain': {
+                'bsd_chu_dt_id': [('id', 'in', list_cn)],
+            }
+        })
+        return res
+
     @api.depends('bsd_unit_ids')
     def _compute_sl_unit(self):
         for each in self:
@@ -198,7 +212,7 @@ class BsdProject(models.Model):
 
     @api.model_create_single
     def create(self, vals):
-        vals['bsd_sequence_gc_tc_id'] = self._create_sequence(vals).id
+        vals['bsd_sequence_gc_tc_id'] = self.sudo()._create_sequence(vals).id
         return super(BsdProject, self).create(vals)
 
     @api.model
