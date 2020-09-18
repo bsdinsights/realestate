@@ -103,7 +103,7 @@
                             confirm="Bạn có muốn hủy Giữ chỗ này không?"
                             attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),('bsd_thanh_toan','!=', 'chua_tt')]}"/>
                     <button string="Tính giá"
-                            confirm="Bạn có muốn tạo Bảng tính giá không?"
+                            class="oe_highlight"
                             type="object"
                             name="action_tao_bao_gia"
                             attrs="{'invisible': ['|',('state','not in',['giu_cho']),('bsd_dot_mb_id','=', False)]}"/>

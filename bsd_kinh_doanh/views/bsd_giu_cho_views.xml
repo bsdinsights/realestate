@@ -16,10 +16,10 @@
                             name="action_huy_chua_tt"
                             confirm="Bạn có muốn hủy Giữ chỗ này không?"
                             attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),('bsd_thanh_toan','!=', 'chua_tt')]}"/>
-                    <button string="Tính giá"
-                            confirm="Bạn có muốn tạo Bảng tính giá không?"
+                    <button string="Bảng tính giá"
                             type="object"
                             name="action_tao_bao_gia"
+                            class="oe_highlight"
                             attrs="{'invisible': ['|',('state','not in',['giu_cho']),('bsd_dot_mb_id','=', False)]}"/>
                     <button string="Hủy"
                             attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),
@@ -30,8 +30,7 @@
                             type="object"/>
                     <button string="Đề nghị hủy"
                             attrs="{'invisible': ['|',('state','not in',['dat_cho', 'dang_cho', 'giu_cho']),
-                                                    '|',('bsd_thanh_toan','=', 'chua_tt'),
-                                                    '|',('bsd_truoc_mb','=',False),('bsd_gc_da', '=', False)]}"
+                                                    '|',('bsd_thanh_toan','=', 'chua_tt'),('bsd_truoc_mb','=',False)]}"
                             name="action_de_nghi_huy"
                             type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
