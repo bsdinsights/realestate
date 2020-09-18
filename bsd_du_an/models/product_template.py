@@ -61,7 +61,9 @@ class ProductTemplate(models.Model):
                                     help="Sàn giao dịch đang bán(sản phẩm) theo đợt mở bán",
                                     readonly=True,
                                     states={'chuan_bi': [('readonly', False)]})
-    bsd_loai_sd_ids = fields.Many2many('bsd.lh_sd', string="Loại hình sử dụng", help="Loại hình sử dụng")
+    bsd_loai_sd_ids = fields.Many2many('bsd.lh_sd', string="Loại hình sử dụng", help="Loại hình sử dụng",
+                                       readonly=True,
+                                       states={'chuan_bi': [('readonly', False)]})
     bsd_loai_sp_id = fields.Many2one('bsd.loai_sp', string="Loại sản phẩm",
                                      help="Phân nhóm đặc tính kỹ thuật của sản phẩm",
                                      readonly=True,
@@ -175,7 +177,7 @@ class ProductTemplate(models.Model):
     bsd_ngay_dkbg = fields.Date(string="Ngày dự kiến bàn giao", help="Ngày dự kiến bàn giao",
                                 readonly=True,
                                 states={'chuan_bi': [('readonly', False)]})
-    bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý", help="Số tháng đóng phí quản lý",
+    bsd_thang_pql = fields.Integer(string="Số tháng đóng PQL", help="Số tháng đóng phí quản lý",
                                    readonly=True,
                                    states={'chuan_bi': [('readonly', False)]})
     bsd_don_gia_pql = fields.Monetary(string="Đơn giá PQL", help="Đơn giá Phí quản lý m2/tháng", required=True,

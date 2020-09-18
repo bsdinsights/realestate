@@ -221,7 +221,7 @@
                     <group>
                         <group>
                             <field name="bsd_ma_gc"/>
-                            <field name="bsd_ngay_gc"/>
+                            <field name="bsd_ngay_gc" readonly="1" force_save="1"/>
                             <field name="bsd_khach_hang_id"
                                    context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form',
                                              'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree'}"
@@ -236,6 +236,7 @@
                                    readonly="1" force_save="1"
                                    options="{'no_create':true}"/>
                             <field name="bsd_unit_id"
+                                   readonly="1" force_save="1"
                                    context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form',
                                              'tree_view_ref': 'bsd_du_an.bsd_product_template_tree'}"
                                    options="{'no_create':true}"
@@ -243,7 +244,7 @@
                                             ('bsd_uu_tien', '=', '0'),
                                             ('state','in',['chuan_bi','san_sang','dat_cho','giu_cho'])]"/>
                             <field name="bsd_dot_mb_id" invisible="1"/>
-                            <field name="bsd_tien_gc"/>
+                            <field name="bsd_tien_gc" readonly="1" force_save="1"/>
                             <field name="bsd_dien_giai"/>
                         </group>
                     </group>
@@ -255,6 +256,18 @@
                         <group>
                             <field name="bsd_ctv_id" options="{'no_create':true}"/>
                             <field name="bsd_gioi_thieu_id" options="{'no_create':true}"/>
+                        </group>
+                    </group>
+                    <group string="HIỆU LỰC">
+                        <group>
+                            <field name="bsd_ngay_hh_gc" force_save="1"/>
+                            <field name="bsd_het_han_gc"/>
+                            <field name="bsd_stt_bg"/>
+                            <field name="bsd_ngay_hh_bg"/>
+                        </group>
+                        <group>
+                            <field name="bsd_thanh_toan" attrs="{'invisible':[('id', '=', False)]}"/>
+                            <field name="bsd_ngay_tt" attrs="{'invisible':[('id', '=', False)]}"/>
                         </group>
                     </group>
                     <field name="currency_id" invisible="1"/>

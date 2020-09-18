@@ -26,6 +26,7 @@
                                            options="{'no_create':true}"/>
                                     <field name="bsd_ten_da"/>
                                     <field name="bsd_loai_da"/>
+                                    <field name="bsd_mh_kd"/>
                                     <field name="bsd_loai_sd_ids"
                                            options="{'no_create': true}"
                                            widget="many2many_tags"/>
