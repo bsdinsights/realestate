@@ -83,6 +83,7 @@
                                     <field name="bsd_tong_gt_hd" invisible="1"/>
                                     <field name="bsd_tien_da_tt" readonly="1"/>
                                     <field name="bsd_tien_da_tt" invisible="1"/>
+                                    <field name="bsd_nguoi_pt_id"/>
                                 </group>
                             </group>
                             <group string="MỞ BÁN">

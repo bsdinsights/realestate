@@ -25,6 +25,11 @@ class BsdThanhLy(models.Model):
     bsd_ten = fields.Char(string="Tiêu đề", required=True, help="Tiêu đề",
                           readonly=True,
                           states={'nhap': [('readonly', False)]})
+    bsd_nguoi_pt_id = fields.Many2one('res.users', string="Người phụ trách",
+                                      help="Người phụ trách thanh lý chấm dứt hợp đồng hợp đồng",
+                                      tracking=3,
+                                      readonly=True,
+                                      states={'nhap': [('readonly', False)]})
     bsd_loai_dt = fields.Selection([('dat_coc', 'Đặt cọc'),
                                     ('dc_cb', 'Đặt cọc - Chuẩn bị HĐ'),
                                     ('tt_dc', 'Thỏa thuận đặt cọc'),

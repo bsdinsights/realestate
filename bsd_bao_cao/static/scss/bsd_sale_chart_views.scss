@@ -1,0 +1,183 @@
+.bsd_header_toa{
+    font-size: 1.5rem;
+    background: #00008B;
+    color: #FFF;
+    .bsd_state{
+        border-radius: 4px;
+        color: #FFF !important;
+    }
+    > i {
+        pointer-events:none;
+    }
+    > a {
+        pointer-events:none;
+    }
+  //  > div {
+   //     pointer-events:none;
+   // }
+}
+.bsd_header_tang{
+    font-size: 1.25rem;
+    margin-left: 1rem;
+    background: #D3D3D3;
+    .bsd_title{
+        color: #666666 !important;
+    }
+    .bsd_state{
+        border-radius: 4px;
+        color: #FFF !important;
+    }
+}
+.bsd_unit{
+    color: #FFF !important;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    width: 160px;
+    height:100px;
+    .bsd_title{
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    .bsd_gia{
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+    .bsd_inner_unit{
+        margin:5px;
+    }
+    > div {
+        pointer-events:none;
+    }
+}
+// 1
+.chuan_bi{
+    background: #FFC000;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+    cursor: default;
+}
+// 2
+.san_sang{
+    background: #00B050;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+    cursor: default;
+}
+// 3
+.dat_cho{
+    background: #00d1d4;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+    cursor: default;
+}
+// 4
+.giu_cho{
+    background: #00B0F0;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+    cursor: default;
+}
+// 5
+.dat_coc{
+    background: #339966;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+    cursor: default;
+}
+// 6
+.chuyen_coc{
+    background: #7030A0;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+    cursor: default;
+}
+// 7
+.da_tc{
+    background: #ED7D31;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+    cursor: default;
+}
+// 8
+.ht_dc{
+    background: #C7D367;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+    cursor: default;
+}
+// 9
+.tt_dot_1{
+    background: #D4A03A;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+    cursor: default;
+}
+// 10
+.ky_tt_coc{
+    background: #939393;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+    cursor: default;
+}
+// 11
+.du_dk{
+    background: #904B28;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+    cursor: default;
+}
+// 12
+.da_ban{
+    background: #B30000;
+    padding: 0 2px;
+    font-size:13px;
+    min-width:20px;
+    cursor: default;
+}
+.bsd_tooltip_action {
+    background-color: black;
+    .bsd_quan_tam{
+        color: #4169E1 ;
+        cursor: pointer;
+        text-decoration: underline;
+        &:hover {
+            color:#fff;
+        }
+    };
+    .bsd_giu_cho{
+        color: #4169E1 ;
+        cursor: pointer;
+        text-decoration: underline;
+        &:hover {
+            color:#fff;
+        }
+    };
+    .bsd_bao_gia{
+        color: #4169E1 ;
+        cursor: pointer;
+        text-decoration: underline;
+        &:hover {
+            color:#fff;
+        }
+    };
+}
+
+.mo_giu_cho{
+        color: #fff;
+        cursor: pointer;
+        text-decoration: underline;
+        &:hover {
+            color:#4169E1;
+        }
+}

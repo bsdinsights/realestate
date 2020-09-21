@@ -31,16 +31,6 @@
 <!--                  sequence="14"-->
 <!--                  action="bsd_bg_gt_action"-->
 <!--                  parent="bsd_hd_ban_menu"/>-->
-<!--        <menuitem id="bsd_tl_kt_hd_menu_action"-->
-<!--                  name="Thanh lý kết thúc hợp đồng"-->
-<!--                  sequence="15"-->
-<!--                  action="bsd_tl_kt_hd_action"-->
-<!--                  parent="bsd_hd_ban_menu"/>-->
-<!--        <menuitem id="bsd_thanh_ly_menu_action"-->
-<!--                  name="Thanh lý chấm dứt hợp đồng"-->
-<!--                  sequence="16"-->
-<!--                  action="bsd_thanh_ly_action"-->
-<!--                  parent="bsd_hd_ban_menu"/>-->
 
 <!--    <menuitem id="bsd_phu_luc_menu"-->
 <!--              name="Phụ lục HĐ"-->
@@ -130,12 +120,26 @@
 <!--    </record>-->
 
 <!--    Tạo icon màn hình -->
-    <menuitem id="bsd_hd_ban_menu_action_2"
-              name="Hợp đồng"
-              sequence="13"
-              action="bsd_dich_vu.bsd_hd_ban_action"
-              web_icon="fa fa-handshake-o,#FFFFFF,#c0b66d"
-    />
+        <menuitem id="bsd_hd_ban_menu_2"
+                  name="Hợp đồng"
+                  sequence="13"
+                  web_icon="fa fa-handshake-o,#FFFFFF,#c0b66d"/>
+        <menuitem id="bsd_hd_ban_menu_action_2"
+                  name="Hợp đồng"
+                  sequence="1"
+                  action="bsd_dich_vu.bsd_hd_ban_action"
+                  parent="bsd_hd_ban_menu_2"/>
+        <menuitem id="bsd_tl_kt_hd_menu_action"
+                  name="Thanh lý kết thúc hợp đồng"
+                  sequence="2"
+                  action="bsd_tl_kt_hd_action"
+                  parent="bsd_hd_ban_menu_2"/>
+        <menuitem id="bsd_thanh_ly_menu_action"
+                  name="Thanh lý chấm dứt hợp đồng"
+                  sequence="3"
+                  action="bsd_thanh_ly_action"
+                  parent="bsd_hd_ban_menu_2"/>
+
     <menuitem id="bsd_phu_luc_menu_2"
               name="Phụ lục"
               sequence="19"

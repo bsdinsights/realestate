@@ -149,6 +149,7 @@ class BsdHopDongMuaBan(models.Model):
 
     bsd_tl_tt_hd = fields.Float(string="Tỷ lệ thanh toán HĐ", help="Tỷ lệ thanh toán hợp đồng", digits=(10, 1))
     bsd_tien_tt_hd = fields.Monetary(string="Tiền thanh toán HĐ", help="Tiền thanh toán hợp đồng")
+    bsd_ngay_cd_hd = fields.Datetime(string="Ngày chấm dứt hợp đồng")
 
     @api.onchange('bsd_unit_id')
     def _onchange_unit(self):
