@@ -35,6 +35,7 @@
                                     <field name="bsd_cty_me"/>
                                     <field name="bsd_phan_loai"/>
                                     <field name="bsd_nguoi_dd_id"
+                                           options="{'no_quick_create': True}"
                                            context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form',
                                                      'default_is_company': False,'default_bsd_la_kh': True}"
                                     />
