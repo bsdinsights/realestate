@@ -93,7 +93,7 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Báo giá">
+                        <page string="Bảng tính giá">
                             <field name="bsd_bao_gia_ids">
                                 <tree create="false" duplicate="false" delete="false">
                                     <field name="bsd_ma_bao_gia"/>

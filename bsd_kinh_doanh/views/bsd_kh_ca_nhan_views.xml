@@ -40,6 +40,9 @@
                                     <field name="email" string=" Email "/>
                                     <field name="bsd_loai_kh"/>
                                     <field name="bsd_nguoi_bh"/>
+                                    <field name="bsd_nguoi_bh_id"
+                                           attrs="{'invisible':[('bsd_nguoi_bh', '=', False)]}"
+                                           domain="[('bsd_nguoi_bh', '=', False)]"/>
                                     <field name="is_company" invisible="1"/>
                                     <field name="bsd_la_kh" invisible="1"/>
                                 </group>
@@ -117,7 +120,7 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Báo giá">
+                        <page string="Bảng tính giá">
                             <field name="bsd_bao_gia_ids">
                                 <tree create="false" duplicate="false" delete="false">
                                     <field name="bsd_ma_bao_gia"/>

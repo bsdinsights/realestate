@@ -114,11 +114,10 @@
             <tree default_order="bsd_ngay_ut asc"
                   decoration-warning="state=='xac_nhan'"
                   decoration-info="state=='cho_rc'"
-                  decoration-primary="state=='giu_cho'"
-                  decoration-bf="state=='giu_cho'"
+                  decoration-danger="state=='giu_cho'"
+                  decoration-bf="state=='giu_cho' or state=='cho_rc'"
                   decoration-success="state=='dong_gc'"
                   decoration-muted="state=='huy' or state=='het_han'"
-                  decoration-danger="bsd_het_han == True"
             >
                 <field name="bsd_ma_gctc"/>
                 <field name="bsd_ngay_gctc"/>
@@ -128,9 +127,9 @@
                 <field name="bsd_tien_gc"/>
                 <field name="bsd_thanh_toan"/>
                 <field name="bsd_ngay_ut"/>
-                <field name="bsd_rap_can_id"/>
+<!--                <field name="bsd_rap_can_id"/>-->
                 <field name="state"/>
-                <field name="bsd_het_han" invisible="1"/>
+                <field name="bsd_het_han"/>
                 <field name="currency_id" invisible="1"/>
             </tree>
         </field>

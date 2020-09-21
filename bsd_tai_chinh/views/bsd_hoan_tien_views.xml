@@ -4,7 +4,7 @@
         <field name="name">bsd.hoan_tien.form</field>
         <field name="model">bsd.hoan_tien</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
@@ -15,7 +15,7 @@
                             name="action_huy"
                             type="object"
                             confirm="Bạn có muốn Hủy chứng từ không?"
-                            states="xac_nhan"/>
+                            states="nhap"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>

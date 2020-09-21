@@ -36,7 +36,7 @@ class ResPartner(models.Model):
                                     ('nc', 'Người nước ngoài')], string="Quốc tịch",
                                    help="Khách hàng là công dân Việt Nam hay Người nước ngoài",
                                    required=True, default='vn')
-    bsd_nguoi_bh = fields.Boolean(string="Người bảo hộ", help="Khách hàng có người bảo hộ")
+    bsd_nguoi_bh = fields.Boolean(string="Có người bh", help="Khách hàng có người bảo hộ")
     bsd_cmnd = fields.Char(string="CMND/ CCCD", help="Số CMND/ CCCD")
     bsd_ngay_cap_cmnd = fields.Date(string="Ngày cấp CMND", help="Ngày cấp CMND/ CCCD")
     bsd_noi_cap_cmnd = fields.Char(string="Nơi cấp CMND", help="Nơi cấp CMND")
@@ -73,6 +73,8 @@ class ResPartner(models.Model):
                                       domain=[('state', '!=', 'nhap')], reaonly=True)
     bsd_sl_giu_cho = fields.Integer(string="# Giữ chỗ", compute="_compute_sl_gc", store=True)
 
+    bsd_nguoi_bh_id = fields.Many2one('res.partner', string="Người bảo hộ", help="Người bảo hộ")
+
     @api.constrains('bsd_cmnd')
     def _constrains_cmnd(self):
         if self.env['res.users'].has_group('bsd_kinh_doanh.group_manager'):
@@ -81,7 +83,7 @@ class ResPartner(models.Model):
             khach_hang = self.env['res.partner'].search([('bsd_cmnd', '=', self.bsd_cmnd),
                                                          ('id', '!=', self.id)])
             if khach_hang:
-                raise UserError("Chứng minh nhân dân đã được sử dụng")
+                raise UserError("Chứng minh nhân dân đã được sử dụng.")
 
     @api.constrains('bsd_ngay_sinh')
     def _constrains_ngay_sinh(self):
@@ -89,7 +91,7 @@ class ResPartner(models.Model):
             nam_ht = fields.Date.today().year
             nam_sinh = self.bsd_ngay_sinh.year
             if nam_ht - nam_sinh < 18:
-                raise UserError(_("Khách hàng chưa đủ 18 tuổi, vui lòng kiểm tra lại"))
+                raise UserError(_("Khách hàng chưa đủ 18 tuổi, vui lòng kiểm tra lại."))
 
     @api.constrains('email')
     def _constrains_email(self):
@@ -97,7 +99,7 @@ class ResPartner(models.Model):
             match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', self.email)
             _logger.debug(match)
             if not match:
-                raise ValidationError('Nhập thông tin email không đúng')
+                raise ValidationError('Nhập thông tin email không đúng.')
 
     @api.depends('bsd_giu_cho_ids', 'bsd_giu_cho_ids.state')
     def _compute_sl_gc(self):
@@ -166,7 +168,7 @@ class ResPartner(models.Model):
     def _compute_dia_chi_lh(self):
         for each in self:
             each.bsd_dia_chi_lh = ''
-            if each.bsd_so_nha_tt:
+            if each.bsd_so_nha_lh:
                 each.bsd_dia_chi_lh += each.bsd_so_nha_lh + ', '
             if each.bsd_phuong_lh_id:
                 each.bsd_dia_chi_lh += each.bsd_phuong_lh_id.bsd_ten + ', '
@@ -189,7 +191,7 @@ class ResPartner(models.Model):
         if vals.get('bsd_ma_kh', '/') == '/' and vals.get('is_company') and vals.get('bsd_la_kh'):
             sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.kh_dn')], limit=1).bsd_ma_tt_id
         if not sequence and vals.get('bsd_la_kh'):
-            raise UserError(_('Danh mục mã chưa khai báo mã khách hàng'))
+            raise UserError(_('Danh mục mã chưa khai báo mã khách hàng.'))
         if sequence:
             vals['bsd_ma_kh'] = sequence.next_by_id()
         return super(ResPartner, self).create(vals)
