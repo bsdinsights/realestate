@@ -172,76 +172,76 @@
     </record>
 
 <!--    Tạo menu icon -->
-    <menuitem id="bsd_cs_tt_menu_2"
-              name="CS thanh toán"
-              sequence="3"
+    <menuitem id="bsd_cs_bh_menu_2"
+              name="CS bán hàng"
+              sequence="4"
               web_icon="fa fa-codepen,#FFFFFF,#a45858"/>
         <menuitem id="bsd_cs_tt_menu_action_2"
                   name="CS thanh toán"
-                  sequence="101"
+                  sequence="1"
                   action="bsd_cs_tt_action"
-                  parent="bsd_cs_tt_menu_2"/>
+                  parent="bsd_cs_bh_menu_2"/>
         <menuitem id="bsd_lai_phat_tt_menu_action_2"
-                  name="Lãi phạt thanh toán"
-                  sequence="102"
+                  name="Lãi phạt TT"
+                  sequence="2"
                   action="bsd_lai_phat_tt_action"
-                  parent="bsd_cs_tt_menu_2"/>
-    <menuitem id="bsd_dk_bg_menu_action_2"
-              name="ĐK bàn giao"
-              sequence="4"
-              web_icon="fa fa-puzzle-piece,#FFFFFF,#238c90"
-              action="bsd_dk_bg_action"/>
-
-    <menuitem id="bsd_chiet_khau_menu_2"
-              name="Chiết khấu"
-              sequence="5"
-              web_icon="fa fa-hand-o-down,#FFFFFF,#c0b66e"/>
-        <menuitem id="bsd_chiet_khau_menu_action_2"
+                  parent="bsd_cs_bh_menu_2"/>
+        <menuitem id="bsd_dk_bg_menu_action_2"
+                  name="ĐK bàn giao"
+                  sequence="3"
+                  parent="bsd_cs_bh_menu_2"
+                  action="bsd_dk_bg_action"/>
+        <menuitem id="bsd_chiet_khau_menu_2"
                   name="Chiết khấu"
-                  sequence="101"
-                  action="bsd_chiet_khau_action"
-                  parent="bsd_chiet_khau_menu_2"/>
+                  parent="bsd_cs_bh_menu_2"
+                  sequence="4"/>
+            <menuitem id="bsd_chiet_khau_menu_action_2"
+                      name="Chiết khấu"
+                      sequence="101"
+                      action="bsd_chiet_khau_action"
+                      parent="bsd_chiet_khau_menu_2"/>
+            <menuitem id="bsd_chiet_khau_chung_menu_action_2"
+                      name="CK chung"
+                      sequence="102"
+                      action="bsd_chiet_khau_chung_action"
+                      parent="bsd_chiet_khau_menu_2"/>
 
-        <menuitem id="bsd_chiet_khau_chung_menu_action_2"
-                  name="CK chung"
-                  sequence="102"
-                  action="bsd_chiet_khau_chung_action"
-                  parent="bsd_chiet_khau_menu_2"/>
+            <menuitem id="bsd_chiet_khau_mua_si_menu_action_2"
+                      name="CK mua sỉ"
+                      sequence="103"
+                      action="bsd_chiet_khau_mua_si_action"
+                      parent="bsd_chiet_khau_menu_2"/>
 
-        <menuitem id="bsd_chiet_khau_mua_si_menu_action_2"
-                  name="CK mua sỉ"
-                  sequence="103"
-                  action="bsd_chiet_khau_mua_si_action"
-                  parent="bsd_chiet_khau_menu_2"/>
+            <menuitem id="bsd_chiet_khau_noi_bo_menu_action_2"
+                      name="CK nội bộ"
+                      sequence="104"
+                      action="bsd_chiet_khau_noi_bo_action"
+                      parent="bsd_chiet_khau_menu_2"/>
 
-        <menuitem id="bsd_chiet_khau_noi_bo_menu_action_2"
-                  name="CK nội bộ"
-                  sequence="104"
-                  action="bsd_chiet_khau_noi_bo_action"
-                  parent="bsd_chiet_khau_menu_2"/>
-
-        <menuitem id="bsd_chiet_khau_ttth_menu_action_2"
-                  name="CK thanh toán trước hạn"
-                  sequence="105"
-                  action="bsd_chiet_khau_ttth_action"
-                  parent="bsd_chiet_khau_menu_2"/>
-        <menuitem id="bsd_chiet_khau_cstt_menu_action_2"
-                  name="CK theo CSTT"
-                  sequence="106"
-                  action="bsd_chiet_khau_cstt_action"
-                  parent="bsd_chiet_khau_menu_2"/>
-
-        <menuitem id="bsd_chiet_khau_ttn_menu_action"
-                  name="CK thanh toán nhanh"
-                  sequence="107"
-                  action="bsd_chiet_khau_ttn_action"
-                  parent="bsd_chiet_khau_menu_2"/>
-
+            <menuitem id="bsd_chiet_khau_ttth_menu_action_2"
+                      name="CK thanh toán trước hạn"
+                      sequence="105"
+                      action="bsd_chiet_khau_ttth_action"
+                      parent="bsd_chiet_khau_menu_2"/>
+            <menuitem id="bsd_chiet_khau_cstt_menu_action_2"
+                      name="CK theo CSTT"
+                      sequence="106"
+                      action="bsd_chiet_khau_cstt_action"
+                      parent="bsd_chiet_khau_menu_2"/>
+            <menuitem id="bsd_chiet_khau_ttn_menu_action"
+                      name="CK thanh toán nhanh"
+                      sequence="107"
+                      action="bsd_chiet_khau_ttn_action"
+                      parent="bsd_chiet_khau_menu_2"/>
     <menuitem id="bsd_khuyen_mai_menu_action_2"
               name="CT khuyến mãi"
-              sequence="6"
-              action="bsd_khuyen_mai_action"
-              web_icon="fa fa-gift,#FFFFFF,#717499"/>
+              sequence="5"
+              parent="bsd_cs_bh_menu_2"
+              action="bsd_khuyen_mai_action"/>
 
-
+    <menuitem id="bsd_pmg_ttc_menu_action"
+          name="Phí môi giới"
+          sequence="12"
+          action="bsd_pmg_ttc_action"
+          web_icon="fa fa-codepen,#FFFFFF,#a45858"/>
 </odoo>

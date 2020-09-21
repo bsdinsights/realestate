@@ -51,7 +51,6 @@
                             <field name="bsd_ngay_gc" invisible="1"/>
                             <field name="bsd_khach_hang_id"
                                    context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
-                                   domain="[('bsd_la_kh', '=', True)]"
                                    options="{'no_create':true}"/>
                             <field name="bsd_du_an_id"
                                    domain="[('state','=','phat_hanh')]"

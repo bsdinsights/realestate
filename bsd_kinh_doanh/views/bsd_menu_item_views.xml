@@ -144,15 +144,9 @@
               action="bsd_kinh_doanh.bsd_dat_coc_action"
               web_icon="fa fa-file-text-o,#FFFFFF,#238c8f"
     />
-    <menuitem id="bsd_cho_tt_menu_action_2"
-              name="Chờ thanh toán"
-              sequence="11"
-              action="bsd_kinh_doanh.bsd_dat_coc_action"
-              web_icon="fa fa-pause,#FFFFFF,#6f7296"
-    />
     <menuitem id="bsd_dot_mb_menu_2"
               name="Đợt mở bán"
-              sequence="12"
+              sequence="3"
               web_icon="fa fa-gg,#FFFFFF,#d38354"/>
 
         <menuitem id="bsd_dot_mb_menu_action_2"
@@ -173,12 +167,12 @@
 
     <menuitem id="bsd_kh_cn_action_menu_2"
               name="Khách hàng"
-              sequence="25"
+              sequence="5"
               action="bsd_res_partner_cn_action"
               web_icon="fa fa-user-circle-o,#FFFFFF,#238d90"/>
     <menuitem id="bsd_kh_dn_action_menu_2"
               name="Doanh nghiệp"
-              sequence="26"
+              sequence="6"
               action="bsd_kh_dn_action"
               web_icon="fa fa-address-card-o,#FFFFFF,#6c6f92"/>
 </odoo>
