@@ -12,12 +12,13 @@ class ResPartner(models.Model):
 
     bsd_ho_tl = fields.Char(string="Họ và tên lót", help="Họ và tên lót")
     bsd_ten = fields.Char(string="Họ và tên", help="Tên khách hàng")
-    bsd_search_name = fields.Char(string="Search name", compute='_compute_search_name', store=True)
+    bsd_search_ten = fields.Char(string="Search tên", compute='_compute_search_name', store=True)
 
-    @api.depends('display_name', 'bsd_cmnd', 'bsd_ma_kh',)
+    @api.depends('display_name', 'bsd_cmnd', 'bsd_ma_kh', 'bsd_so_gpkd')
     def _compute_search_name(self):
         for each in self:
-            each.bsd_search_name = (each.bsd_cmnd or '') + ' - ' + (each.bsd_ma_kh or '') + ' - ' + (each.display_name or '')
+            each.bsd_search_ten = (each.bsd_cmnd or '') + (each.bsd_ma_kh or '') + \
+                                   (each.display_name or '') + (each.bsd_so_gpkd or '')
 
     bsd_ma_kh = fields.Char(string="Mã khách hàng", required=True, readonly=True, copy=False, default='/')
     _sql_constraints = [
@@ -211,7 +212,7 @@ class ResPartner(models.Model):
     def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
         args = list(args or [])
         if not (name == '' and operator == 'ilike'):
-            args += [('bsd_search_name', operator, name)]
+            args += [('bsd_search_ten', operator, name)]
         access_rights_uid = name_get_uid or self._uid
         ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
         recs = self.browse(ids)
