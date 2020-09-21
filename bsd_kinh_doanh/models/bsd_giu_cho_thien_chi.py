@@ -63,7 +63,7 @@ class BsdGiuChoThienChi(models.Model):
     def _onchange_ngay_gctc(self):
         self.bsd_ngay_hh_gctc = self.bsd_ngay_gctc + datetime.timedelta(hours=self.bsd_du_an_id.bsd_gc_smb)
 
-    bsd_ngay_ut = fields.Datetime(string="Ưu tiên ráp căn", readonly=True,
+    bsd_ngay_ut = fields.Datetime(string="Ngày thứ tự", readonly=True,
                                   help="Thời gian được sử dụng để xét ưu tiên khi làm phiếu ráp căn")
     bsd_het_han = fields.Boolean(string="Hết hạn", help="Giữ chỗ bị hết hạn sau khi thanh toán đủ",
                                  readonly=True)
