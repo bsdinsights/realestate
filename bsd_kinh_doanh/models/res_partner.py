@@ -39,10 +39,10 @@ class ResPartner(models.Model):
     bsd_nguoi_bh = fields.Boolean(string="Người bảo hộ", help="Khách hàng có người bảo hộ")
     bsd_cmnd = fields.Char(string="CMND/ CCCD", help="Số CMND/ CCCD")
     bsd_ngay_cap_cmnd = fields.Date(string="Ngày cấp CMND", help="Ngày cấp CMND/ CCCD")
-    bsd_noi_cap_cmnd = fields.Many2one('res.country.state', string="Nơi cấp CMND", help="Nơi cấp CMND")
+    bsd_noi_cap_cmnd = fields.Char(string="Nơi cấp CMND", help="Nơi cấp CMND")
     bsd_ho_chieu = fields.Char(string="Hộ chiếu", help="Số hộ chiếu")
     bsd_ngay_cap_hc = fields.Date(string="Ngày cấp hộ chiếu", help="Ngày cấp hộ chiếu")
-    bsd_noi_cap_hc = fields.Many2one('res.country.state', string="Nơi cấp hộ chiếu", help="Nơi cấp hộ chiếu")
+    bsd_noi_cap_hc = fields.Char(string="Nơi cấp hộ chiếu", help="Nơi cấp hộ chiếu")
     bsd_mst = fields.Char(string="Mã số thuế", help="Mã số thuế khách hàng")
     bsd_dia_chi_tt = fields.Char(string="Địa chỉ thường trú", help="Địa chỉ thường trú",
                                  compute="_compute_dia_chi_tt", store=True)
@@ -85,7 +85,7 @@ class ResPartner(models.Model):
 
     @api.constrains('bsd_ngay_sinh')
     def _constrains_ngay_sinh(self):
-        if not self.bsd_nguoi_bh:
+        if not self.bsd_nguoi_bh and self.bsd_ngay_sinh:
             nam_ht = fields.Date.today().year
             nam_sinh = self.bsd_ngay_sinh.year
             if nam_ht - nam_sinh < 18:
@@ -144,28 +144,38 @@ class ResPartner(models.Model):
             self.bsd_quan_lh_id = self.bsd_quan_tt_id
             self.bsd_phuong_lh_id = self.bsd_phuong_tt_id
             self.bsd_so_nha_lh = self.bsd_so_nha_tt
-        else:
-            self.bsd_quoc_gia_lh_id = False
-            self.bsd_tinh_lh_id = False
-            self.bsd_quan_lh_id = False
-            self.bsd_phuong_lh_id = False
-            self.bsd_so_nha_lh = False
 
     # R.02 Tạo thông tin địa chỉ thường chú
     @api.depends('bsd_quoc_gia_tt_id', 'bsd_tinh_tt_id', 'bsd_quan_tt_id', 'bsd_phuong_tt_id', 'bsd_so_nha_tt')
     def _compute_dia_chi_tt(self):
         for each in self:
-            each.bsd_dia_chi_tt = (each.bsd_so_nha_tt or ' ') + ', ' + (each.bsd_phuong_tt_id.bsd_ten or ' ') + ', ' + \
-                                  (each.bsd_quan_tt_id.bsd_ten or ' ') + ', ' + (each.bsd_tinh_tt_id.name or ' ') + ', ' + \
-                                  (each.bsd_quoc_gia_tt_id.name or ' ')
+            each.bsd_dia_chi_tt = ''
+            if each.bsd_so_nha_tt:
+                each.bsd_dia_chi_tt += each.bsd_so_nha_tt + ', '
+            if each.bsd_phuong_tt_id:
+                each.bsd_dia_chi_tt += each.bsd_phuong_tt_id.bsd_ten + ', '
+            if each.bsd_quan_tt_id:
+                each.bsd_dia_chi_tt += each.bsd_quan_tt_id.bsd_ten + ', '
+            if each.bsd_tinh_tt_id:
+                each.bsd_dia_chi_tt += each.bsd_tinh_tt_id.name + ', '
+            if each.bsd_quoc_gia_tt_id:
+                each.bsd_dia_chi_tt += each.bsd_quoc_gia_tt_id.name
 
     # R.03 Tạo thông tin địa chỉ liên hệ
     @api.depends('bsd_quoc_gia_lh_id', 'bsd_tinh_lh_id', 'bsd_quan_lh_id', 'bsd_phuong_lh_id', 'bsd_so_nha_lh')
     def _compute_dia_chi_lh(self):
         for each in self:
-            each.bsd_dia_chi_lh = (each.bsd_so_nha_lh or ' ') + ', ' + (each.bsd_phuong_lh_id.bsd_ten or ' ') + ', ' + \
-                                  (each.bsd_quan_lh_id.bsd_ten or ' ') + ', ' + (each.bsd_tinh_lh_id.name or ' ') + ', ' + \
-                                  (each.bsd_quoc_gia_lh_id.name or ' ')
+            each.bsd_dia_chi_lh = ''
+            if each.bsd_so_nha_tt:
+                each.bsd_dia_chi_lh += each.bsd_so_nha_lh + ', '
+            if each.bsd_phuong_lh_id:
+                each.bsd_dia_chi_lh += each.bsd_phuong_lh_id.bsd_ten + ', '
+            if each.bsd_quan_lh_id:
+                each.bsd_dia_chi_lh += each.bsd_quan_lh_id.bsd_ten + ', '
+            if each.bsd_tinh_lh_id:
+                each.bsd_dia_chi_lh += each.bsd_tinh_lh_id.name + ', '
+            if each.bsd_quoc_gia_lh_id:
+                each.bsd_dia_chi_lh += each.bsd_quoc_gia_lh_id.name
 
     @api.model
     def create(self, vals):
