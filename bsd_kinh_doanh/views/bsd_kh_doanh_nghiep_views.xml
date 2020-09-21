@@ -5,9 +5,6 @@
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <form duplicate="false">
-                <header>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
-                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_giu_cho" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_sl_giu_cho', '=', 0)]}">
@@ -38,7 +35,8 @@
                                     <field name="bsd_cty_me"/>
                                     <field name="bsd_phan_loai"/>
                                     <field name="bsd_nguoi_dd_id"
-                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form',
+                                                     'default_is_company': False,'default_bsd_la_kh': True}"
                                     />
                                     <field name="bsd_nguoi_uq"/>
                                     <field name="phone" required="1"/>

@@ -5,9 +5,6 @@
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <form duplicate="false">
-                <header>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
-                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_giu_cho" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_sl_giu_cho', '=', 0)]}">
@@ -31,7 +28,7 @@
                         <page string="THÔNG TIN CÁ NHÂN">
                             <group>
                                 <group>
-                                    <field name="bsd_ho_tl" required="1"/>
+                                    <field name="bsd_ho_tl"/>
                                     <field name="name" required="1"/>
                                     <field name="bsd_ngay_sinh"/>
                                     <field name="bsd_gioi_tinh"/>
@@ -63,7 +60,6 @@
                                            options="{'no_create':true}"
                                            domain="[('country_id', '=', %(base.vn)d)]"/>
                                     <field name="bsd_mst"/>
-                                    <!--<field name="state"/>-->
                                 </group>
                             </group>
                             <group string="ĐỊA CHỈ">
@@ -170,7 +166,6 @@
                 <field name="bsd_cmnd"/>
                 <field name="bsd_ho_chieu"/>
                 <field name="mobile"/>
-                <field name="state"/>
             </tree>
         </field>
     </record>

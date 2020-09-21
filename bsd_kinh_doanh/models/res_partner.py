@@ -12,12 +12,12 @@ class ResPartner(models.Model):
 
     bsd_ho_tl = fields.Char(string="Họ và tên lót", help="Họ và tên lót")
     bsd_ten = fields.Char(string="Họ và tên", help="Tên khách hàng")
-    bsd_search_ten = fields.Char(string="Search tên", compute='_compute_search_name', store=True)
+    bsd_search_name = fields.Char(string="Search name", compute='_compute_search_name', store=True)
 
-    @api.depends('bsd_ten', 'bsd_cmnd', 'bsd_ma_kh')
+    @api.depends('display_name', 'bsd_cmnd', 'bsd_ma_kh',)
     def _compute_search_name(self):
         for each in self:
-            each.bsd_search_ten = (each.bsd_cmnd or '') + ' - ' + (each.bsd_ma_kh or '') + ' - ' + (each.bsd_ten or '')
+            each.bsd_search_name = (each.bsd_cmnd or '') + ' - ' + (each.bsd_ma_kh or '') + ' - ' + (each.display_name or '')
 
     bsd_ma_kh = fields.Char(string="Mã khách hàng", required=True, readonly=True, copy=False, default='/')
     _sql_constraints = [
@@ -60,10 +60,6 @@ class ResPartner(models.Model):
     bsd_so_nha_lh = fields.Char(string="Số nhà", help="Số nhà, tên đường")
 
     bsd_cung_dc = fields.Boolean(string="Đây là địa chỉ liên hệ", help="Đây là địa chỉ liên hệ")
-
-    state = fields.Selection([('active', 'Đang sử dụng'),
-                              ('inactive', 'Không sử dụng')],
-                             string="Trạng thái", default='active', required=True, tracking=1)
 
     bsd_giu_cho_ids = fields.One2many('bsd.giu_cho', 'bsd_kh_moi_id', string="DS giữ chỗ",
                                       domain=[('state', '!=', 'nhap')], readonly=True)
@@ -215,7 +211,7 @@ class ResPartner(models.Model):
     def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
         args = list(args or [])
         if not (name == '' and operator == 'ilike'):
-            args += [('bsd_search_ten', operator, name)]
+            args += [('bsd_search_name', operator, name)]
         access_rights_uid = name_get_uid or self._uid
         ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
         recs = self.browse(ids)
