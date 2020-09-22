@@ -61,7 +61,7 @@
         <field name="groups_id" eval="[(6, 0, [])]"/>
         <field name="name">Tài chính</field>
         <field name="parent_id" eval="False"/>
-        <field name="sequence">50</field>
+        <field name="sequence">34</field>
         <field name="web_icon">fa fa-file-text,#FFFFFF,#D2691E</field>
     </record>
 
@@ -94,6 +94,21 @@
               name="Miễn giảm"
               sequence="23"
               action="bsd_tai_chinh.bsd_phieu_thu_action"
-              web_icon="fa fa-th-list,#FFFFFF,#cb6483"
+              web_icon="fa fa-life-ring,#FFFFFF,#c0b66d"
     />
+
+    <menuitem id="bsd_bao_cao_menu_action_2"
+              name="Báo cáo"
+              sequence="31"
+              action="bsd_tai_chinh.bsd_phieu_thu_action"
+              web_icon="fa fa-bar-chart,#FFFFFF,#c0b66d"
+    />
+
+    <menuitem id="bsd_dashboard_menu_action_2"
+              name="Dashboard"
+              sequence="32"
+              action="bsd_tai_chinh.bsd_phieu_thu_action"
+              web_icon="fa fa-tachometer,#FFFFFF,#cb6483"
+    />
+
 </odoo>

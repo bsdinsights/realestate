@@ -167,7 +167,7 @@
         <field name="groups_id" eval="[(6, 0, [])]"/>
         <field name="name">Danh mục</field>
         <field name="parent_id" eval="False"/>
-        <field name="sequence">50</field>
+        <field name="sequence">33</field>
         <field name="web_icon">fa fa-file,#FFFFFF,#ffaa00</field>
     </record>
 
@@ -243,5 +243,5 @@
           name="Phí môi giới"
           sequence="12"
           action="bsd_pmg_ttc_action"
-          web_icon="fa fa-codepen,#FFFFFF,#a45858"/>
+          web_icon="fa fa-percent,#FFFFFF,#a45858"/>
 </odoo>

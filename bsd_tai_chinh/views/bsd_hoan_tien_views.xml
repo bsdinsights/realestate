@@ -4,7 +4,7 @@
         <field name="name">bsd.hoan_tien.form</field>
         <field name="model">bsd.hoan_tien</field>
         <field name="arch" type="xml">
-            <form duplicate="false">
+            <form duplicate="false" create="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
@@ -22,35 +22,46 @@
                     <group>
                         <group>
                             <field name="bsd_so_ct"/>
-                            <field name="bsd_ngay_ct"/>
+                            <field name="bsd_ngay_ct" readonly="1" force_save="1"/>
                             <field name="bsd_khach_hang_id"
+                                   readonly="1" force_save="1"
                                    context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
                                    options="{'no_create':true}"/>
-                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
-                            <field name="bsd_loai" required="1"/>
+                            <field name="bsd_du_an_id"
+                                    readonly="1" force_save="1"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_loai"
+                                    readonly="1" force_save="1"
+                                   required="1"/>
                             <field name="bsd_gc_tc_id"
+                                   readonly="1" force_save="1"
                                    attrs="{'invisible':[('bsd_loai', '!=', 'gc_tc')],
                                             'required':[('bsd_loai', '=', 'gc_tc')]}"
                                    options="{'no_create':true}"/>
                             <field name="bsd_giu_cho_id"
+                                   readonly="1" force_save="1"
                                    attrs="{'invisible':[('bsd_loai', '!=', 'giu_cho')],
                                             'required':[('bsd_loai', '=', 'giu_cho')]}"
                                    options="{'no_create':true}"/>
                             <field name="bsd_dat_coc_id"
+                                   readonly="1" force_save="1"
                                    attrs="{'invisible':[('bsd_loai', '!=', 'tl_dc')],
                                            'required':[('bsd_loai', '=', 'tl_dc')]}"
                                    options="{'no_create':true}"/>
                             <field name="bsd_phieu_thu_id"
+                                   readonly="1" force_save="1"
                                    attrs="{'invisible':[('bsd_loai', '!=', 'phieu_thu')],
                                            'required':[('bsd_loai', '=', 'phieu_thu')]}"
                                    options="{'no_create':true}"
                                    domain="[('bsd_loai_pt', 'in', ['tra_truoc']),('bsd_tien_con_lai','>',0),
                                    ('bsd_khach_hang_id', 'in', [bsd_khach_hang_id]),('state', '!=', 'nhap')]"/>
                             <field name="bsd_thanh_ly_id"
+                                   readonly="1" force_save="1"
                                    attrs="{'invisible':[('bsd_loai', 'not in', ['tl_ttdc','tl_hd'])],
                                            'required':[('bsd_loai', 'in', ['tl_ttdc','tl_hd'])]}"
                                    options="{'no_create':true}"/>
                             <field name="bsd_hd_ban_id"
+                                   readonly="1" force_save="1"
                                    attrs="{'invisible':[('bsd_loai', 'not in', ['tl_ttdc','tl_hd','vp_hd'])],
                                            'required':[('bsd_loai', 'in', ['tl_ttdc','tl_hd','vp_hd'])]}"
                                    options="{'no_create':true}"/>
@@ -86,13 +97,13 @@
         <field name="name">bsd.hoan_tien.tree</field>
         <field name="model">bsd.hoan_tien</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree create="false" duplicate="false">
                 <field name="bsd_so_ct"/>
                 <field name="bsd_ngay_ct"/>
                 <field name="bsd_khach_hang_id"/>
                 <field name="bsd_du_an_id"/>
+                <field name="bsd_loai"/>
                 <field name="bsd_tien"/>
-                <field name="bsd_phieu_thu_id"/>
                 <field name="state"/>
                 <field name="currency_id" invisible="1"/>
             </tree>
