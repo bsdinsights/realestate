@@ -215,6 +215,14 @@ class BsdProject(models.Model):
         vals['bsd_sequence_gc_tc_id'] = self.sudo()._create_sequence(vals).id
         return super(BsdProject, self).create(vals)
 
+    def write(self, vals):
+        # cập nhật lại code trong sequence
+        if 'bsd_ma_da' in vals.keys():
+            self.bsd_sequence_gc_tc_id.write({
+                'code': vals['bsd_ma_da']
+            })
+        return super(BsdProject, self).write(vals)
+
     @api.model
     def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
         args = list(args or [])

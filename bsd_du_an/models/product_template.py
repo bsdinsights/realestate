@@ -390,6 +390,14 @@ class ProductTemplate(models.Model):
             template._create_sequence()
         return templates
 
+    def write(self, vals):
+        # cập nhật lại code trong sequence
+        if 'bsd_ma_unit' in vals.keys():
+            self.env['ir.sequence'].search([('code', '=', self.bsd_ma_unit)]).write({
+                'code': vals['bsd_ma_unit']
+            })
+        return super(ProductTemplate, self).write(vals)
+
     def unlink(self):
         if self.env['bsd.giu_cho'].search([('bsd_product_tmpl_id', '=' , self.id)], limit=1):
             raise UserError(_("Sản phẩm đã phát sinh giữ chỗ. Không thể xóa sản phẩm"))
