@@ -84,8 +84,10 @@
                             <field name="company_id" invisible="1"/>
                             <field name="bsd_tien_kh"/>
                             <field name="bsd_tien" readonly="1"/>
-                            <field name="bsd_tien_da_tt"/>
-                            <field name="bsd_tien_con_lai"/>
+                            <field name="bsd_tien_da_tt"
+                                   attrs="{'invisible':[('bsd_loai_pt', 'not in', ['tra_truoc','pps'])]}"/>
+                            <field name="bsd_tien_con_lai"
+                                   attrs="{'invisible':[('bsd_loai_pt', 'not in', ['tra_truoc','pps'])]}"/>
                             <field name="bsd_dien_giai"/>
                         </group>
                     </group>
@@ -182,7 +184,7 @@
                             states="da_gs"
                             confirm="Bạn có muốn cấn trừ công nợ cho chứng từ này không?"
                             attrs="{'invisible':['|',('bsd_tien_con_lai', '=', 0),
-                                                 '|',('bsd_loai_pt', 'not in',['tra_truoc','khac','pps'])]}"
+                                                 '|',('bsd_loai_pt', 'not in',['tra_truoc','pps'])]}"
                             class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
@@ -257,8 +259,8 @@
                             <field name="company_id" invisible="1"/>
                             <field name="bsd_tien_kh"/>
                             <field name="bsd_tien"/>
-                            <field name="bsd_tien_da_tt"/>
-                            <field name="bsd_tien_con_lai"/>
+                            <field name="bsd_tien_da_tt" invisible="1"/>
+                            <field name="bsd_tien_con_lai" invisible="1"/>
                             <field name="bsd_dien_giai"/>
                         </group>
                     </group>
