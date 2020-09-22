@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+        <record model="ir.ui.view" id="bsd_gc_tc_report_wizard_form">
+            <field name="name">bsd.gc_tc.report.wizard.form</field>
+            <field name="model">bsd.gc_tc.report.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="In giữ chỗ thiện chí">
+                    <group>
+                        <group>
+                            <field name="bsd_mau_in"/>
+                            <field name="bsd_gc_tc_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_in" string="In" type="object" class="oe_highlight"/>
+                        <button string="Hủy" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="bsd_giay_in_gc_tc" model="report.paperformat">
+            <field name="name">Giấy in giữ chỗ thiện chí</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <act_window id="bsd_gc_tc_report_action"
+                    name="Chọn mẫu in báo giá"
+                    res_model="bsd.gc_tc.report.wizard"
+                    view_mode="form"
+                    target="new"/>
+
+        <record id="bsd_mau_in_gc_tc_chuan_html" model="ir.actions.report">
+            <field name="name">Phiếu giữ chỗ thiện chí</field>
+            <field name="model">bsd.gc_tc.report.wizard</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">bsd_kinh_doanh.bsd_gc_tc_view</field>
+            <field name="multi">False</field>
+            <field name="paperformat_id" ref="bsd_kinh_doanh.bsd_giay_in_gc_tc"/>
+        </record>
+
+        <record id="bsd_mau_in_gc_tc_chuan" model="ir.actions.report">
+            <field name="name">phiếu giữ chỗ thiện chí</field>
+            <field name="model">bsd.gc_tc.report.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">bsd_kinh_doanh.bsd_gc_tc_view</field>
+            <field name="multi">False</field>
+            <field name="paperformat_id" ref="bsd_kinh_doanh.bsd_giay_in_gc_tc"/>
+        </record>
+
+        <template id="bsd_gc_tc_view">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="doc" t-value="doc.with_context(lang=lang)" />
+                    <t t-call="web.external_layout">
+                        <div class="page bsd_font">
+                            <div class="row">
+                                <div class="col-12">
+                                    <p>Số phiếu giữ chỗ thiện chí: <strong t-field="doc.bsd_ma_gctc"/></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p>Nhân viên kinh doanh: <strong t-field="doc.bsd_nvbh_id.name"/></p>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-12">
+                                    <H3>PHIẾU GIỮ CHỖ THIỆN CHÍ</H3>
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-12">
+                                    <p><strong>I. <u>Thông tin khách hàng</u></strong></p>
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-12">
+                                    <t t-if="doc.bsd_kh_moi_id.is_company">
+                                        <p>Tên công ty: <strong t-field="doc.bsd_kh_moi_id.name"/>
+                                        </p>
+                                    </t>
+                                    <t t-else="">
+                                        <p>Họ và tên: <strong t-field="doc.bsd_kh_moi_id.bsd_ten"/></p>
+                                    </t>
+                                </div>
+                            </div>
+                            <t t-if="not doc.bsd_kh_moi_id.is_company">
+                                <div class="row mt16">
+                                    <div class="col-7">
+                                        <p>Số Hộ chiếu: <strong t-field="doc.bsd_kh_moi_id.bsd_ho_chieu"/></p>
+                                    </div>
+                                    <div class="col-5">
+                                        <p>Cấp ngày: <strong t-field="doc.bsd_kh_moi_id.bsd_ngay_cap_hc"/> </p>
+                                    </div>
+                                </div>
+                            </t>
+                            <div class="row mt16">
+                                <t t-if="doc.bsd_kh_moi_id.is_company">
+                                    <div class="col-7">
+                                        <p>Số đăng ký: <strong t-field="doc.bsd_kh_moi_id.bsd_so_gpkd"/></p>
+                                    </div>
+                                    <div class="col-5">
+                                        <p>Cấp ngày: <strong t-field="doc.bsd_kh_moi_id.bsd_ngay_gpkd"/> </p>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="col-7">
+                                        <p>Số CMND: <strong t-field="doc.bsd_kh_moi_id.bsd_cmnd"/></p>
+                                    </div>
+                                    <div class="col-5">
+                                        <p>Cấp ngày: <strong t-field="doc.bsd_kh_moi_id.bsd_ngay_cap_cmnd"/> </p>
+                                    </div>
+                                </t>
+                            </div>
+                            <div class="row mt16">
+                                <t t-if="doc.bsd_kh_moi_id.is_company">
+                                    <div class="col-7">
+                                        <p>Số điện thoại: <strong t-field="doc.bsd_kh_moi_id.phone"/></p>
+                                    </div>
+                                    <div class="col-5">
+                                        <p>Email: <strong t-field="doc.bsd_kh_moi_id.email"/> </p>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="col-7">
+                                        <p>Số điện thoại: <strong t-field="doc.bsd_kh_moi_id.mobile"/></p>
+                                    </div>
+                                    <div class="col-5">
+                                        <p>Email: <strong t-field="doc.bsd_kh_moi_id.email"/> </p>
+                                    </div>
+                                </t>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-12">
+                                    <p>Địa chỉ liên lạc: <span t-field="doc.bsd_kh_moi_id.bsd_dia_chi_lh"/></p>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-12">
+                                    <p><strong>Thông tin tài khoản hoàn phí Giữ chỗ thiện chí</strong></p>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-3">
+                                    <p>Chủ tài khoản</p>
+                                </div>
+                                <div class="col-9">
+                                    <p>:</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <p>Số tài khoản</p>
+                                </div>
+                                <div class="col-9">
+                                    <p>:</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <p>Ngân hàng</p>
+                                </div>
+                                <div class="col-9">
+                                    <p>:</p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+</odoo>

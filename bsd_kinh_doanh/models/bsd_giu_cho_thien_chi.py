@@ -272,6 +272,10 @@ class BsdGiuChoThienChi(models.Model):
         }
         return action
 
+    # Nút nhấn in
+    def action_in(self):
+        return self.env.ref('bsd_kinh_doanh.bsd_gc_tc_report_action').read()[0]
+
     @api.model
     def create(self, vals):
         sequence = False
