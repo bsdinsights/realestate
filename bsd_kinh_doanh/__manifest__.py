@@ -46,7 +46,7 @@
         'wizards/bsd_wizard_khong_duyet_chiet_khau_dac_biet_views.xml',
         'reports/report_bsd_bao_gia_views.xml',
         'reports/report_bsd_dat_coc_views.xml',
+        'views/bsd_du_an_views.xml'
     ],
     'application': True,
-    'auto_install': True,
 }

@@ -20,6 +20,12 @@ class BsdGiuCho(models.Model):
     bsd_ngay_tt = fields.Datetime(compute='_compute_tien_tt', store=True)
     bsd_thanh_toan = fields.Selection(compute='_compute_tien_tt', store=True)
 
+    bsd_tt_ht = fields.Selection([('khong', 'Không có'),
+                                  ('chua_ht', 'Chưa hoàn tiền'),
+                                  ('da_ht', 'Đã hoàn tiền')], string="Hoàn tiền GC",
+                                 help="Hoàn tiền giữ chỗ", default="khong",
+                                 readonly=True)
+
     @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien_gc', 'bsd_tien_gctc')
     def _compute_tien_tt(self):
         for each in self:

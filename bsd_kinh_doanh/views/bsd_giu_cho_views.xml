@@ -149,7 +149,7 @@
                 <field name="bsd_ngay_hh_bg"/>
                 <field name="state"/>
                 <field name="bsd_ngay_hh_gc"/>
-                <field name="bsd_het_han_gc" invisible="1"/>
+                <field name="bsd_het_han_gc"/>
                 <field name="currency_id" invisible="1"/>
             </tree>
         </field>

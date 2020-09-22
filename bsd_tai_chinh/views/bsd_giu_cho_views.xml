@@ -8,6 +8,7 @@
             <xpath expr="//field[@name='bsd_ngay_tt']" position="after">
                 <field name="bsd_tien_da_tt"/>
                 <field name="bsd_tien_phai_tt"/>
+                <field name="bsd_tt_ht" force_save="1"/>
             </xpath>
             <xpath expr="//header" position="inside">
                 <button string="Thanh toán"
@@ -19,4 +20,16 @@
             </xpath>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_giu_cho_tree_inherit">
+        <field name="name">bsd.giu_cho.tree.inherit</field>
+        <field name="model">bsd.giu_cho</field>
+        <field name="inherit_id" ref="bsd_kinh_doanh.bsd_giu_cho_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bsd_het_han_gc']" position="after">
+                <field name="bsd_tt_ht"/>
+            </xpath>
+        </field>
+    </record>
+
 </odoo>

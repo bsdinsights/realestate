@@ -125,7 +125,6 @@
                 <field name="bsd_tien_gc"/>
                 <field name="bsd_thanh_toan"/>
                 <field name="bsd_ngay_ut"/>
-<!--                <field name="bsd_rap_can_id"/>-->
                 <field name="state"/>
                 <field name="bsd_het_han"/>
                 <field name="currency_id" invisible="1"/>

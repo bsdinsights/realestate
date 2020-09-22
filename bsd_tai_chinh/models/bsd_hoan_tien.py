@@ -111,6 +111,18 @@ class BsdHoanTien(models.Model):
         self.write({
             'state': 'xac_nhan',
         })
+
+        # Cập nhật trạng thái hoàn tiền giữ chỗ thiện chí
+        if self.bsd_loai == 'gc_tc':
+            self.bsd_gc_tc_id.write({
+                'bsd_tt_ht': 'da_ht'
+            })
+        # Cập nhật trạng thái hoàn tiền giữ chỗ
+        if self.bsd_loai == 'giu_cho':
+            self.bsd_giu_cho_id.write({
+                'bsd_tt_ht': 'da_ht'
+            })
+
         # Ghi sổ công nợ hoàn tiền
         self.env['bsd.cong_no'].create({
                 'bsd_chung_tu': self.bsd_so_ct,

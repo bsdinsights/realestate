@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_huy_gc_form_inherit">
+        <field name="name">bsd.huy_gc.form.inherit</field>
+        <field name="model">bsd.huy_gc</field>
+        <field name="inherit_id" ref="bsd_kinh_doanh.bsd_huy_gc_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bsd_loai_gc']" position="after">
+                <field name="bsd_hoan_tien_id" attrs="{'invisible': ('state', '=', 'duyet')}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
