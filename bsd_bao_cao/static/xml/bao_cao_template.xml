@@ -51,4 +51,26 @@
         </div>
     </t>
 
+    <t t-name="bsd_bao_cao.dot_tt">
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered table-sm"
+                       style="table-layout:fixed;border: 1px !important;" >
+                        <tr>
+                            <th class="text-center">Dự án</th>
+                            <th class="text-center">Tòa/ dãy</th>
+                            <th class="text-center">Sản phẩm</th>
+                            <th class="text-center">Trạng thái SP</th>
+                            <th class="text-center">Mã hợp đồng</th>
+                            <th class="text-center">Mã CS.TT</th>
+                            <th class="text-center">Đợt thanh toán</th>
+                            <th class="text-center">Tiền đợt TT (VNĐ)</th>
+                            <th class="text-center">Tỷ lệ (%)</th>
+                            <th class="text-center">Hạn thanh toán</th>
+                            <th class="text-center">Diễn giải</th>
+                        </tr>
+                </table>
+            </div>
+        </div>
+    </t>
 </templates>

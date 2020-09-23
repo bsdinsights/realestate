@@ -116,16 +116,19 @@ odoo.define('bsd_bao_cao.SaleChartRenderer', function(require){
                     args: [self.filter],
                     context: self.context,
             }).then(function (data){
+                console.log(data)
+                $chart.append($(qweb.render("bsd_bao_cao.dot_tt", {'data': data_show})))
             })
+
         },
         /**
          * @private Lấy giá trị khi thay đổi loại báo cáo
          */
          _onChangeLoai: function(event){
             event.stopPropagation();
-            var temp = $(event.currentTarget).find('.o_input')[0].value
+            let temp = $(event.currentTarget).find('.o_input')[0].value
             if (temp !== 'false'){
-                this.filter.bsd_loai =  temp
+                this.filter.bsd_loai =  temp.replaceAll('"','')
             }
             else {
                 this.filter.bsd_loai =  null
