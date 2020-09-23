@@ -49,6 +49,7 @@
                                            options="{'no_create': true}"
                                            required="1"
                                     />
+                                    <field name="function"/>
                                     <field name="bsd_cmnd"/>
                                     <field name="bsd_ngay_cap_cmnd"/>
                                     <field name="bsd_noi_cap_cmnd"/>

@@ -2,7 +2,9 @@
 
 from odoo import api, models, fields
 import logging
+from num2words import num2words
 import datetime
+from dateutil import tz
 _logger = logging.getLogger(__name__)
 
 
@@ -36,8 +38,18 @@ class ReportBsdGCTG(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
+        gc_tc = self.env['bsd.gc_tc'].browse(data['ids'])
+        tien_gc_tc = num2words(gc_tc.bsd_du_an_id.bsd_tien_gc, lang='vi_VN') + ' ' + 'đồng'
+        ngay_hien_tai = datetime.datetime.now()
+        from_zone = tz.gettz('UTC')
+        to_zone = tz.gettz('Asia/Ho_Chi_Minh')
+        ngay_hien_tai = ngay_hien_tai.replace(tzinfo=from_zone)
+        ngay_hien_tai = ngay_hien_tai.astimezone(to_zone)
+        _logger.debug(ngay_hien_tai)
         return {
             'doc_ids': data['ids'],
             'doc_model': data['model'],
-            'docs': self.env['bsd.gc_tc'].browse(data['ids']),
+            'docs': gc_tc,
+            'tien_gc_tc_chu': tien_gc_tc,
+            'ngay_hien_tai': ngay_hien_tai.strftime("%d/%m/%y")
         }
