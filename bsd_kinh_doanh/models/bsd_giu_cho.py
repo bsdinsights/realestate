@@ -472,15 +472,10 @@ class BsdGiuCho(models.Model):
         action = self.env.ref('bsd_kinh_doanh.bsd_bao_gia_action_popup').read()[0]
         action['context'] = context
         return action
-        # return {
-        #     "name": "Tạo bảng tính giá",
-        #     "res_model": 'bsd.bao_gia',
-        #     "view": [[False, 'form']],
-        #     "type": 'ir.actions.act_window',
-        #     "view_mode": "form",
-        #     "context": context,
-        #     "target": "new"
-        # }
+
+    # Nút nhấn in
+    def action_in(self):
+        return self.env.ref('bsd_kinh_doanh.bsd_giu_cho_report_action').read()[0]
 
     def _compute_bao_gia(self):
         for each in self:

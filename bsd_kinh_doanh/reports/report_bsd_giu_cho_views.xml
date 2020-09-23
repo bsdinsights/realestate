@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+        <record model="ir.ui.view" id="bsd_giu_cho_report_wizard_form">
+            <field name="name">bsd.giu_cho.report.wizard.form</field>
+            <field name="model">bsd.giu_cho.report.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="In giữ chỗ">
+                    <group>
+                        <group>
+                            <field name="bsd_mau_in"/>
+                            <field name="bsd_giu_cho_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_in" string="In" type="object" class="oe_highlight"/>
+                        <button string="Hủy" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="bsd_giay_in_giu_cho" model="report.paperformat">
+            <field name="name">Giấy in giữ chỗ</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <act_window id="bsd_giu_cho_report_action"
+                    name="Chọn mẫu in báo giá"
+                    res_model="bsd.giu_cho.report.wizard"
+                    view_mode="form"
+                    target="new"/>
+
+        <record id="bsd_mau_in_giu_cho_chuan_html" model="ir.actions.report">
+            <field name="name">Phiếu giữ chỗ</field>
+            <field name="model">bsd.giu_cho.report.wizard</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">bsd_kinh_doanh.bsd_giu_cho_view</field>
+            <field name="multi">False</field>
+            <field name="paperformat_id" ref="bsd_kinh_doanh.bsd_giay_in_giu_cho"/>
+        </record>
+
+        <record id="bsd_mau_in_giu_cho_chuan" model="ir.actions.report">
+            <field name="name">phiếu giữ chỗ</field>
+            <field name="model">bsd.giu_cho.report.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">bsd_kinh_doanh.bsd_giu_cho_view</field>
+            <field name="multi">False</field>
+            <field name="paperformat_id" ref="bsd_kinh_doanh.bsd_giay_in_giu_cho"/>
+        </record>
+
+        <template id="bsd_giu_cho_view">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="doc" t-value="doc.with_context(lang=lang)" />
+                    <t t-call="web.external_layout">
+                        <div class="page bsd_font">
+                            <div class="row">
+                                <div class="col-12">
+                                    <p>Số phiếu giữ chỗ: <strong t-field="doc.bsd_ma_gc"/></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p>Nhân viên kinh doanh: <strong t-field="doc.bsd_nvbh_id.name"/></p>
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-12">
+                                    <H3>PHIẾU GIỮ CHỖ CÓ HOÀN TIỀN</H3>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <p><strong>I.<u class="ml16">Thông tin khách hàng</u></strong></p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <t t-if="doc.bsd_kh_moi_id.is_company">
+                                        <p>Tên công ty: <strong t-field="doc.bsd_kh_moi_id.name"/>
+                                        </p>
+                                    </t>
+                                    <t t-else="">
+                                        <p>Họ và tên: <strong t-field="doc.bsd_kh_moi_id.bsd_ten"/></p>
+                                    </t>
+                                </div>
+                            </div>
+                            <t t-if="not doc.bsd_kh_moi_id.is_company">
+                                <div class="row mt8">
+                                    <div class="col-7">
+                                        <p>Số Hộ chiếu: <strong t-field="doc.bsd_kh_moi_id.bsd_ho_chieu"/></p>
+                                    </div>
+                                    <div class="col-5">
+                                        <p>Cấp ngày: <strong t-field="doc.bsd_kh_moi_id.bsd_ngay_cap_hc"/> </p>
+                                    </div>
+                                </div>
+                            </t>
+                            <div class="row mt8">
+                                <t t-if="doc.bsd_kh_moi_id.is_company">
+                                    <div class="col-7">
+                                        <p>Số đăng ký: <strong t-field="doc.bsd_kh_moi_id.bsd_so_gpkd"/></p>
+                                    </div>
+                                    <div class="col-5">
+                                        <p>Cấp ngày: <strong t-field="doc.bsd_kh_moi_id.bsd_ngay_gpkd"/> </p>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="col-7">
+                                        <p>Số CMND: <strong t-field="doc.bsd_kh_moi_id.bsd_cmnd"/></p>
+                                    </div>
+                                    <div class="col-5">
+                                        <p>Cấp ngày: <strong t-field="doc.bsd_kh_moi_id.bsd_ngay_cap_cmnd"/> </p>
+                                    </div>
+                                </t>
+                            </div>
+                            <div class="row mt8">
+                                <t t-if="doc.bsd_kh_moi_id.is_company">
+                                    <div class="col-7">
+                                        <p>Số điện thoại: <strong t-field="doc.bsd_kh_moi_id.phone"/></p>
+                                    </div>
+                                    <div class="col-5">
+                                        <p>Email: <strong t-field="doc.bsd_kh_moi_id.email"/> </p>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="col-7">
+                                        <p>Số điện thoại: <strong t-field="doc.bsd_kh_moi_id.mobile"/></p>
+                                    </div>
+                                    <div class="col-5">
+                                        <p>Email: <strong t-field="doc.bsd_kh_moi_id.email"/> </p>
+                                    </div>
+                                </t>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <p>Địa chỉ liên lạc: <span t-field="doc.bsd_kh_moi_id.bsd_dia_chi_lh"/></p>
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-12">
+                                    <p><strong>Thông tin tài khoản hoàn phí Giữ chỗ</strong></p>
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-3">
+                                    <p>Chủ tài khoản</p>
+                                </div>
+                                <div class="col-9">
+                                    <p>:</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <p>Số tài khoản</p>
+                                </div>
+                                <div class="col-9">
+                                    <p>:</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <p>Ngân hàng</p>
+                                </div>
+                                <div class="col-9">
+                                    <p>:</p>
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-12">
+                                    <p><strong>II.<u class="ml16">Thỏa thuận chung:</u></strong></p>
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-12">
+                                     <p>
+                                        Tôi xác nhận đặt chỗ để mua sản phẩm
+                                         <span t-field="doc.bsd_unit_id.bsd_ten_unit"/> tại dự án
+                                         <span t-field="doc.bsd_du_an_id.bsd_ten_da"/> do
+                                         <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/> làm Chủ Đầu Tư
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <p><strong>Bằng việc xác nhận vào phiếu này, Tôi hiểu rằng</strong></p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <p>
+                                        <span>(i)</span>
+                                        <span class="ml16">Giá trị giữ chỗ:
+                                            <span t-field="doc.bsd_tien_gc"/>/chỗ (<span t-esc="tien_giu_cho_chu"/>/chỗ)
+                                            và Thanh toán có thể thự hiện qua bằng tiền mặt, chuyển khoản hoặc thẻ.
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-1">
+                                    <p class="ml16">
+                                        <span>(i)</span>
+                                    </p>
+                                </div>
+                                <div class="col-11">
+                                    <p>
+                                        <span> Tôi có quyền quyết định mua hoặc không mua căn hộ trong ngày Mở bán nội bộ</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-1">
+                                    <p class="ml16">
+                                        <span>(ii)</span>
+                                    </p>
+                                </div>
+                                <div class="col-11">
+                                    <p>
+                                        <span>Phiếu giữ chỗ này không còn giá trị khi tôi đã chính thức chuyển sang đặt cọc hoặc nhận lại tiền nếu không giao dịch.</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-1">
+                                    <p class="ml16">
+                                        <span>(iii)</span>
+                                    </p>
+                                </div>
+                                <div class="col-11">
+                                    <p>
+                                        <span>
+                                            Trong trường hợp mà tôi không xác nhận mua căn hộ thì khoản tiền đặt cọc sẽ
+                                            được hoàn trả lại không lãi suất cho tôi bằng chuyển khoản trong vòng 10
+                                            (mười) làm việc kể từ ngày xác nhận không mua. Trong trường hợp ban đầu tôi
+                                            thanh toán bằng thẻ thì khi hoàn lại tiền giữ chỗ tôi sẽ chịu chi phí khi
+                                            thanh toán bằng thẻ trước đó.
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-1">
+                                    <p class="ml16">
+                                        <span>(iv)</span>
+                                    </p>
+                                </div>
+                                <div class="col-11">
+                                    <p>
+                                        <span>
+                                            Phiếu giữ chỗ có hoàn lại này là bằng chứng đảm bảo về giao
+                                            dịch cho khách hàng. Phiếu giữ chỗ này chỉ có giá trị khi có phiếu thu tiền
+                                            giữ chỗ có chữ kí của các bên.
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-1">
+                                    <p class="ml16">
+                                        <span>(v)</span>
+                                    </p>
+                                </div>
+                                <div class="col-11">
+                                    <p>
+                                        <span>
+                                            Phiếu này được lập thành 02 (hai) bản có giá trị như nhau. Khách hàng giữ 1
+                                            bản và Chủ Đầu Tư giữ 01 bản.
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-6"></div>
+                                <div class="col-6">
+                                    <p>Tp.Hồ Chí Minh, ngày <span t-esc="ngay_hien_tai"/></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p><strong>Xác nhận bởi khách hàng</strong></p>
+                                    <t t-if="doc.bsd_kh_moi_id.is_company">
+                                        <p style="margin-top:100px">Tên công ty: <span t-field="doc.bsd_kh_moi_id.name"/>
+                                        </p>
+                                    </t>
+                                    <t t-else="">
+                                        <p style="margin-top:100px">Họ và tên: <span t-field="doc.bsd_kh_moi_id.bsd_ten"/></p>
+                                    </t>
+                                </div>
+                                <div class="col-6">
+                                    <p><strong>Xác nhận bởi Chủ Đầu Tư</strong></p>
+                                    <p style="margin-top:100px">
+                                        Họ và tên: <span t-esc="doc.bsd_du_an_id.bsd_chu_dt_id.bsd_nguoi_dd_id.bsd_ten"/>
+                                    </p>
+                                    <p>
+                                        Chức vụ: <span t-esc="doc.bsd_du_an_id.bsd_chu_dt_id.bsd_nguoi_dd_id.function"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+</odoo>

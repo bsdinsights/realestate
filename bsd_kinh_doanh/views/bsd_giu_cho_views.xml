@@ -11,6 +11,11 @@
                             class="oe_highlight"
                             attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
                             type="object"/>
+                    <button string="In"
+                            name="action_in"
+                            states="dang_cho,giu_cho,hoan_thanh"
+                            type="object"
+                            class="oe_highlight"/>
                     <button string="Hủy"
                             type="object"
                             name="action_huy_chua_tt"
