@@ -1,4 +1,4 @@
-odoo.define('bsd_sale_chart.SaleChartModel', function (require) {
+odoo.define('bsd_bao_cao.SaleChartModel', function (require) {
 "use strict";
 
     var BasicModel = require('web.BasicModel');
@@ -17,7 +17,6 @@ odoo.define('bsd_sale_chart.SaleChartModel', function (require) {
         }
 
     });
-
     return {
         SaleChartModel: SaleChartModel,
     };

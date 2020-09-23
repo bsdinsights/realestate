@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="bsd_bao_cao_action" model="ir.actions.client">
+         <field name="name">Báo cáo</field>
+         <field name="tag">bao_cao_view</field>
+    </record>
+<!--    <menuitem id="bsd_sale_chart_menu"-->
+<!--              name="Giỏ hàng"-->
+<!--              parent="bsd_kinh_doanh.bsd_main_kinh_doanh_root"-->
+<!--              sequence="100"-->
+<!--              action="bsd_sale_chart.bsd_sale_chart_action"-->
+<!--    />-->
+    <menuitem id="bsd_bao_cao_menu_action_2"
+              name="Báo cáo"
+              sequence="31"
+              action="bsd_bao_cao.bsd_bao_cao_action"
+              web_icon="fa fa-bar-chart,#FFFFFF,#c0b66d"
+    />
+</odoo>

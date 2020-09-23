@@ -1,19 +1,17 @@
-odoo.define('bsd_sale_chart.SaleChartAction', function(require){
+odoo.define('bsd_bao_cao.BaoCaoAction', function(require){
     "use strict";
     var AbstractAction = require('web.AbstractAction');
-    var SaleChartRenderer = require('bsd_sale_chart.SaleChartRenderer')
-    var SaleChartModel = require('bsd_sale_chart.SaleChartModel')
+    var SaleChartRenderer = require('bsd_bao_cao.SaleChartRenderer')
+    var SaleChartModel = require('bsd_bao_cao.SaleChartModel')
     var core = require('web.core');
     var Qweb = core.qweb;
 
-    var SaleChartAction = AbstractAction.extend({
+    var BaoCaoAction = AbstractAction.extend({
         hasControlPanel: false,
         custom_events:{
             change_du_an: '_onAction',
-            change_dot_mb: '_onAction',
-            change_view: '_onAction',
         },
-        contentTemplate: 'bsd_sale_chart.gio_hang',
+        contentTemplate: 'bsd_bao_cao.bao_cao',
         config: _.extend({}, AbstractAction.prototype.config,{
             SaleChartRenderer: SaleChartRenderer.SaleChartRenderer,
             Model: SaleChartModel.SaleChartModel,
@@ -21,7 +19,7 @@ odoo.define('bsd_sale_chart.SaleChartAction', function(require){
         init: function(parent,params){
             this._super.apply(this, arguments);
             this.model = new this.config.Model(this, {
-                modelName: "bsd.sale_chart.widget"
+                modelName: "bsd.bao_cao.widget"
             });
             this.renderer = new this.config.SaleChartRenderer(this, this.model);
             this.widgets = [];
@@ -39,34 +37,19 @@ odoo.define('bsd_sale_chart.SaleChartAction', function(require){
 
         _onAction: function(event){
             var self = this;
-            if (event.data.data.operation === 'FORGET'){
-                let id_view = self.model.localData[event.data.data.ids[0]].ref
-                event.data.data.ids = id_view
-            }
             if (event.name === 'change_du_an'){
                 event.data.field = 'bsd_du_an_id',
                 self.renderer.update(event.data)
             }
-            else if (event.name === 'change_dot_mb'){
-                event.data.field = 'bsd_dot_mb_id',
-                self.renderer.update(event.data)
-            }
-            else if (event.name === 'change_view'){
-                console.log("goi change view")
-                event.data.field = 'bsd_view_ids',
-                console.log(event)
-                self.renderer.update(event.data)
-            }
         },
-
         reload: function () {
             window.location.href = this.href;
         },
     });
-    core.action_registry.add('sale_chart_view', SaleChartAction);
+    core.action_registry.add('bao_cao_view', BaoCaoAction);
 
     return {
-        SaleChartAction: SaleChartAction,
+        BaoCaoAction: BaoCaoAction,
     }
 });
 

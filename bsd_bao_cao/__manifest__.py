@@ -11,6 +11,8 @@
         'bsd_tai_chinh',
     ],
     'data': [
+        'views/assets.xml',
+        'views/bao_cao_views.xml',
     ],
-    'application': True,
+    'qweb': ['static/xml/*.xml'],
 }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<templates>
+    <div t-name="bsd_bao_cao.bao_cao">
+        <div class="o_form_view">
+            <div class="o_form_sheet_bg"/>
+        </div>
+    </div>
+    <t t-name="bsd_bao_cao.data_filter">
+        <div class="o_form_view">
+            <div class="o_form_view">
+                <div class="o_form_sheet_bg">
+                    <div class="clearfix position_relative o_form_sheet">
+                        <div class="o_group">
+                            <table class="o_group o_inner_group o_group_col_4">
+                                <tbody>
+                                    <tr class="create_du_an_id">
+                                        <td class="o_td_label" style="min-width:60px;padding:0 0 0 0;"><label class="o_form_label">Dự án</label></td>
+                                        <td class="o_td_field"></td>
+                                    </tr>
+                                    <tr class="create_loai">
+                                        <td class="o_td_label" style="min-width:60px;padding:0 0 0 0;"><label class="o_form_label">Loại</label></td>
+                                        <td class="o_td_field"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="o_group o_inner_group o_group_col_4">
+                                <tbody>
+                                    <tr class="create_tu_ngay">
+                                        <td class="o_td_label" style="min-width:80px;padding:0 0 0 0;"><label class="o_form_label">Từ ngày</label></td>
+                                        <td class="o_td_field"></td>
+                                    </tr>
+                                    <tr class="create_den_ngay">
+                                        <td class="o_td_label" style="min-width:80px;padding:0 0 0 0;"><label class="o_form_label">Đến ngày</label></td>
+                                        <td class="o_td_field"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="o_group o_inner_group o_group_col_4">
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn btn-primary oe_right" id="search">Báo cáo</button>
+                    </div>
+                </div>
+                <div id="chart">
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>
