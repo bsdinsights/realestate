@@ -56,6 +56,7 @@
             <div class="col-12">
                 <table class="table table-bordered table-sm"
                        style="table-layout:fixed;border: 1px !important;" >
+                    <thead>
                         <tr>
                             <th class="text-center">Dự án</th>
                             <th class="text-center">Tòa/ dãy</th>
@@ -69,6 +70,40 @@
                             <th class="text-center">Hạn thanh toán</th>
                             <th class="text-center">Diễn giải</th>
                         </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="data" t-as="line">
+                            <tr>
+                                <td><div t-esc="line[0]"/></td>
+                                <td><div t-esc="line[1]"/></td>
+                                <td><div t-esc="line[2]"/></td>
+                                <td><div t-esc="line[3]"/></td>
+                                <td><div t-esc="line[4]"/></td>
+                                <td><div t-esc="line[5]"/></td>
+                                <td>
+                                    <t t-foreach="line[6]" t-as="dot_tt">
+                                        <div t-esc="dot_tt[0]"/>
+                                    </t>
+                                </td>
+                                <td>
+                                    <t t-foreach="line[6]" t-as="dot_tt">
+                                        <div class="text-right" t-esc="dot_tt[1]"/>
+                                    </t>
+                                </td>
+                                <td>
+                                    <t t-foreach="line[6]" t-as="dot_tt">
+                                        <div class="text-right" t-esc="dot_tt[2]"/>
+                                    </t>
+                                </td>
+                                <td>
+                                    <t t-foreach="line[6]" t-as="dot_tt">
+                                        <div class="text-right" t-esc="dot_tt[3]"/>
+                                    </t>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </t>
+                    </tbody>
                 </table>
             </div>
         </div>

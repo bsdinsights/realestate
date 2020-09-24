@@ -87,24 +87,6 @@ class ProductTemplate(models.Model):
     bsd_so_pn = fields.Integer(string="Số phòng ngủ", help="Số phòng ngủ của sản phẩm",
                                readonly=True,
                                states={'chuan_bi': [('readonly', False)]})
-    # bsd_loai_bds = fields.Selection([('1', 'Liền thổ(đất)'),
-    #                                  ('2', 'Căn hộ'),
-    #                                  ('3', 'Phức hợp'),
-    #                                  ('4', 'Nghỉ dưỡng')],
-    #                                 help="Loại hình sử dụng của sản phẩm",
-    #                                 string="Loại bất động sản",
-    #                                 readonly=True,
-    #                                 states={'chuan_bi': [('readonly', False)]})
-    # bsd_phan_loai = fields.Selection([('1', 'Condotel'),
-    #                                   ('2', 'Apartment')], string="Phân loại", help="Phân loại",
-    #                                  readonly=True,
-    #                                  states={'chuan_bi': [('readonly', False)]})
-    # bsd_loai_unit = fields.Selection([('1', 'Căn hộ'),
-    #                                   ('2', 'Căn hộ nhiều tầng'),
-    #                                   ('3', 'Siêu thị/cửa hàng'),
-    #                                   ('4', 'Penthouse')], string="Loại sản phẩm", help="Loại sản phẩm",
-    #                                  readonly=True,
-    #                                  states={'chuan_bi': [('readonly', False)]})
     bsd_tl_tc = fields.Float(string="Tỷ lệ tiền cọc",
                              help="Tỷ lệ thanh toán tối thiểu để ký thỏa thuận đặt cọc",
                              readonly=True,

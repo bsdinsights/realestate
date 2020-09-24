@@ -107,7 +107,6 @@ odoo.define('bsd_bao_cao.SaleChartRenderer', function(require){
          */
         _onSearch: function(event){
             var self = this
-            var data_show = [];
             var $chart = self.$('#chart').empty();
             self.filter.bsd_state = self.$('#select_state').val()
             self._rpc({
@@ -116,8 +115,58 @@ odoo.define('bsd_bao_cao.SaleChartRenderer', function(require){
                     args: [self.filter],
                     context: self.context,
             }).then(function (data){
-                console.log(data)
-                $chart.append($(qweb.render("bsd_bao_cao.dot_tt", {'data': data_show})))
+                var format_number = ((x) => {
+                    var parts = x.toString().split(".");
+                    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    return parts.join(",");
+                    })
+                _.each(data, function(item, index, data){
+                    if (item[3] == 'chuan_bi'){
+                        item[3] = 'Chuẩn bị'
+                    }
+                    else if (item[3] == 'san_sang'){
+                        item[3] = 'Sẵn sàng'
+                    }
+                    else if (item[3] == 'dat_cho'){
+                        item[3] = 'Đặt chỗ'
+                    }
+                    else if (item[3] == 'giu_cho'){
+                        item[3] = 'Giữ chỗ'
+                    }
+                    else if (item[3] == 'dat_coc'){
+                        item[3] = 'Đặt cọc'
+                    }
+                    else if (item[3] == 'chuyen_coc'){
+                        item[3] = 'Chuyển cọc'
+                    }
+                    else if (item[3] == 'da_tc'){
+                        item[3] = 'Đã thu cọc'
+                    }
+                    else if (item[3] == 'ht_dc'){
+                        item[3] = 'Hoàn tất đặt cọc'
+                    }
+                    else if (item[3] == 'tt_dot_1'){
+                        item[3] = 'Thanh toán đợt 1'
+                    }
+                    else if (item[3] == 'ky_tt_coc'){
+                        item[3] = 'Ký thỏa thuận cọc'
+                    }
+                    else if (item[3] == 'du_dk'){
+                        item[3] = 'Đủ điều kiện'
+                    }
+                    else if (item[3] == 'da_ban'){
+                        item[3] = 'Đã bán'
+                    }
+                    _.each(item[6], function(item_b,index_b,data_n){
+                        console.log(item_b[3])
+                        item_b[1] = format_number(item_b[1])
+                        if (item_b[3] !== null){
+                            let time = new moment.utc(item_b[3])
+                            item_b[3] = time.local().format('DD/MM/YYYY')
+                        }
+                    })
+                })
+                $chart.append($(qweb.render("bsd_bao_cao.dot_tt", {'data': data})))
             })
 
         },
@@ -148,7 +197,6 @@ odoo.define('bsd_bao_cao.SaleChartRenderer', function(require){
                 this.filter.bsd_tu_ngay =  null
             }
          },
-
         /**
          * @private Lấy giá trị khi thay đổi đến ngày
          */

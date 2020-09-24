@@ -2,6 +2,7 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
+import itertools
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -31,7 +32,9 @@ class BsdBaoCaoWidget(models.AbstractModel):
     @api.model
     def _bao_cao_dot_tt(self, where):
         self.env.cr.execute("""
-                SELECT du_an.bsd_ten_da, 
+                SELECT 
+                        hd.id,
+                        du_an.bsd_ten_da, 
                         toa.bsd_ten_tn,
                         sp.bsd_ten_unit, 
                         sp.state, 
@@ -39,8 +42,8 @@ class BsdBaoCaoWidget(models.AbstractModel):
                         cs.bsd_ma_cstt,
                         lich_tt.bsd_ten_dtt,
                         lich_tt.bsd_tien_dot_tt,
-                        lich_tt.bsd_ngay_hh_tt,
-                        chi_tiet.bsd_tl_tt
+                        chi_tiet.bsd_tl_tt,
+                        lich_tt.bsd_ngay_hh_tt
                         FROM bsd_du_an AS du_an
                     JOIN bsd_toa_nha AS toa ON toa.bsd_du_an_id = du_an.id
                     JOIN product_template AS sp ON sp.bsd_toa_nha_id = toa.id
@@ -49,5 +52,15 @@ class BsdBaoCaoWidget(models.AbstractModel):
                     LEFT JOIN bsd_cs_tt AS cs ON hd.bsd_cs_tt_id = cs.id
                     LEFT JOIN bsd_lich_thanh_toan AS lich_tt ON lich_tt.bsd_hd_ban_id = hd.id
                     LEFT JOIN bsd_cs_tt_ct AS chi_tiet ON lich_tt.bsd_cs_tt_ct_id = chi_tiet.id        
-                """ + where + "ORDER BY toa.id, sp.bsd_stt")
-        return [x for x in self.env.cr.fetchall()]
+                """ + where + "AND lich_tt.bsd_loai = 'dtt' " + "ORDER BY toa.id, sp.bsd_stt, lich_tt.bsd_stt")
+        raw_data = [x for x in self.env.cr.fetchall()]
+        _logger.debug("dữ liệu group")
+        data = []
+        for key, group in itertools.groupby(raw_data, key=lambda x: x[0]):
+            lich_tt = []
+            list_group = list(group)
+            for items in list_group:
+                lich_tt.append(items[7:])
+            key_and_group = list(list_group[0])[1:7] + [lich_tt]
+            data.append(key_and_group)
+        return data
