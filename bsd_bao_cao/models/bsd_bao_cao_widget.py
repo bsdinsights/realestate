@@ -16,6 +16,21 @@ class BsdBaoCaoWidget(models.AbstractModel):
     bsd_den_ngay = fields.Date(string="Đến ngày")
 
     @api.model
+    def action_export_xlsx(self, data):
+        if not data['bsd_du_an_id']:
+            raise UserError("Vui lòng điền trường dự án")
+        where = ' WHERE (du_an.id = {0}) '.format(data['bsd_du_an_id'])
+        if data['bsd_tu_ngay']:
+            where += 'AND (hd.bsd_ngay_hd_ban >= {0}) '.format(data['bsd_tu_ngay'])
+        if data['bsd_den_ngay']:
+            where += 'AND (hd.bsd_ngay_hd_ban <= {0}) '.format(data['bsd_den_ngay'])
+        if not data['bsd_loai']:
+            raise UserError("Vui lòng chọn loại báo cáo")
+        elif data['bsd_loai'] == 'dot_tt':
+            rp_dtt = self._bao_cao_dot_tt(where=where)
+            _logger.debug(rp_dtt)
+
+    @api.model
     def action_search(self, data):
         if not data['bsd_du_an_id']:
             raise UserError("Vui lòng điền trường dự án")
@@ -62,5 +77,30 @@ class BsdBaoCaoWidget(models.AbstractModel):
             for items in list_group:
                 lich_tt.append(items[7:])
             key_and_group = list(list_group[0])[1:7] + [lich_tt]
+            if key_and_group[3] == 'chuan_bi':
+                key_and_group[3] = 'Chuẩn bị'
+            elif key_and_group[3] == 'san_sang':
+                key_and_group[3] = 'Sẵn sàng'
+            elif key_and_group[3] == 'dat_cho':
+                key_and_group[3] = 'Đặt chỗ'
+            elif key_and_group[3] == 'giu_cho':
+                key_and_group[3] = 'Giữ chỗ'
+            elif key_and_group[3] == 'dat_coc':
+                key_and_group[3] = 'Đặt cọc'
+            elif key_and_group[3] == 'chuyen_coc':
+                key_and_group[3] = 'Chuyển cọc'
+            elif key_and_group[3] == 'da_tc':
+                key_and_group[3] = 'Đã thu cọc'
+            elif key_and_group[3] == 'ht_dc':
+                key_and_group[3] = 'Hoàn tất đặt cọc'
+            elif key_and_group[3] == 'tt_dot_1':
+                key_and_group[3] = 'Thanh toán đợt 1'
+            elif key_and_group[3] == 'ky_tt_coc':
+                key_and_group[3] = 'Ký thỏa thuận cọc'
+            elif key_and_group[3] == 'du_dk':
+                key_and_group[3] = 'Đủ điều kiện'
+            elif key_and_group[3] == 'da_ban':
+                key_and_group[3] = 'Đã bán'
+            
             data.append(key_and_group)
         return data

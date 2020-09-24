@@ -15,6 +15,7 @@ odoo.define('bsd_bao_cao.SaleChartRenderer', function(require){
         template: 'bsd_bao_cao.data_filter',
         events: {
             'click #search' : '_onSearch',
+            'click #excel' : '_onExportExcel',
             'change .create_loai .o_td_field': '_onChangeLoai',
             'keyup .create_tu_ngay .o_td_field': '_onChangeTuNgay',
             'keyup .create_den_ngay .o_td_field': '_onChangeDenNgay',
@@ -103,12 +104,11 @@ odoo.define('bsd_bao_cao.SaleChartRenderer', function(require){
         },
 
         /**
-         * @private
+         * @private hiện thị báo cáo
          */
         _onSearch: function(event){
             var self = this
             var $chart = self.$('#chart').empty();
-            self.filter.bsd_state = self.$('#select_state').val()
             self._rpc({
                     model: 'bsd.bao_cao.widget',
                     method: 'action_search',
@@ -167,6 +167,20 @@ odoo.define('bsd_bao_cao.SaleChartRenderer', function(require){
                     })
                 })
                 $chart.append($(qweb.render("bsd_bao_cao.dot_tt", {'data': data})))
+            })
+
+        },
+         /**
+         * @private xuất dữ liệu excel
+         */
+        _onExportExcel: function(event){
+            var self = this
+            self._rpc({
+                    model: 'bsd.bao_cao.widget',
+                    method: 'action_export_xlsx',
+                    args: [self.filter],
+                    context: self.context,
+            }).then(function (data){
             })
 
         },

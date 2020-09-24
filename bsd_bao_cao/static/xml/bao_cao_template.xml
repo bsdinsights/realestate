@@ -42,6 +42,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        <button class="btn btn-primary oe_right ml8" id="excel">Xuất excel</button>
                         <button class="btn btn-primary oe_right" id="search">Báo cáo</button>
                     </div>
                 </div>
