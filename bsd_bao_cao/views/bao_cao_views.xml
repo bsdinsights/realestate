@@ -16,4 +16,32 @@
               action="bsd_bao_cao.bsd_bao_cao_action"
               web_icon="fa fa-bar-chart,#FFFFFF,#c0b66d"
     />
+    <record model="ir.ui.view" id="bsd_wizard_export_excel_form">
+        <field name="name">bsd.wizard.export.excel</field>
+        <field name="model">wizard.excel.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="file_name" invisible="1"/>
+                            <field name="excel_file" filename="file_name"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Đóng" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+
+    </record>
+    <record model="ir.actions.act_window" id="bsd_wizard_export_excel_action">
+        <field name="name">Xuất excel</field>
+        <field name="res_model">wizard.excel.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
 </odoo>

@@ -17,8 +17,8 @@ odoo.define('bsd_bao_cao.SaleChartRenderer', function(require){
             'click #search' : '_onSearch',
             'click #excel' : '_onExportExcel',
             'change .create_loai .o_td_field': '_onChangeLoai',
-            'keyup .create_tu_ngay .o_td_field': '_onChangeTuNgay',
-            'keyup .create_den_ngay .o_td_field': '_onChangeDenNgay',
+            'input .create_tu_ngay .o_td_field': '_onChangeTuNgay',
+            'input .create_den_ngay .o_td_field': '_onChangeDenNgay',
         },
         custom_events: _.extend({}, FieldManagerMixin.custom_events,{
             'field_changed': '_onFieldChange',
@@ -104,6 +104,26 @@ odoo.define('bsd_bao_cao.SaleChartRenderer', function(require){
         },
 
         /**
+         * Loads an action from the database given its ID.
+         *
+         * @todo: turn this in a service (DataManager)
+         * @private
+         * @param {integer|string} action's ID or xml ID
+         * @param {Object} context
+         * @returns {Promise<Object>} resolved with the description of the action
+         */
+        _loadAction: function (actionID, context) {
+            var self = this;
+            return new Promise(function (resolve, reject) {
+                self.trigger_up('load_action', {
+                    actionID: actionID,
+                    context: context,
+                    on_success: resolve,
+                });
+            });
+        },
+
+        /**
          * @private hiện thị báo cáo
          */
         _onSearch: function(event){
@@ -181,6 +201,11 @@ odoo.define('bsd_bao_cao.SaleChartRenderer', function(require){
                     args: [self.filter],
                     context: self.context,
             }).then(function (data){
+                self._loadAction('bsd_bao_cao.bsd_wizard_export_excel_action').then(function(action){
+                    action.res_id = data.res_id
+                    action.flags={'mode': 'readonly'}
+                    self.do_action(action)
+                })
             })
 
         },
@@ -204,6 +229,8 @@ odoo.define('bsd_bao_cao.SaleChartRenderer', function(require){
          _onChangeTuNgay: function(event){
             event.stopPropagation();
             var temp = $(event.currentTarget).find('.o_input')[0].value
+            console.log("thay đổi từ ngày")
+            console.log(temp)
             if (temp !== 'false'){
                 this.filter.bsd_tu_ngay =  temp
             }

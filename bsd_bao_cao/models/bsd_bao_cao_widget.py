@@ -5,10 +5,8 @@ from odoo.exceptions import UserError
 from odoo.tools.misc import xlsxwriter
 import itertools
 import logging
-try:
-    import base64
-except ImportError:
-    base64 = None
+import base64
+import datetime
 from io import BytesIO
 _logger = logging.getLogger(__name__)
 
@@ -27,99 +25,53 @@ class BsdBaoCaoWidget(models.AbstractModel):
             raise UserError("Vui lòng điền trường dự án")
         where = ' WHERE (du_an.id = {0}) '.format(data['bsd_du_an_id'])
         if data['bsd_tu_ngay']:
-            where += 'AND (hd.bsd_ngay_hd_ban >= {0}) '.format(data['bsd_tu_ngay'])
+            tu_ngay = datetime.datetime.strptime(data['bsd_tu_ngay'], '%d/%m/%Y')
+            tu_ngay = tu_ngay.strftime("%Y-%m-%d, %H:%M:%S").replace(',', '')
+            _logger.debug(data['bsd_tu_ngay'])
+            where += "AND (hd.bsd_ngay_hd_ban >= timestamp '{0}') ".format(tu_ngay)
         if data['bsd_den_ngay']:
-            where += 'AND (hd.bsd_ngay_hd_ban <= {0}) '.format(data['bsd_den_ngay'])
+            den_ngay = datetime.datetime.strptime(data['bsd_den_ngay'], '%d/%m/%Y')
+            den_ngay = den_ngay.strftime("%Y-%m-%d, %H:%M:%S").replace(',', '')
+            where += "AND (hd.bsd_ngay_hd_ban <= timestamp '{0}') ".format(den_ngay)
         if not data['bsd_loai']:
             raise UserError("Vui lòng chọn loại báo cáo")
         elif data['bsd_loai'] == 'dot_tt':
             rp_dtt = self._bao_cao_dot_tt(where=where)
             _logger.debug(rp_dtt)
-            filename = "Đợt thanh toán.xlsx"
-            workbook = xlsxwriter.Workbook(filename)
+            output = BytesIO()
+            workbook = xlsxwriter.Workbook(output, {'in_memory': True})
             worksheet = workbook.add_worksheet()
             title = workbook.add_format({'bold': True})
             worksheet.write('A1', 'Báo cáo đợt thanh toán của dự án số 1', title)
-            fp = BytesIO()
-            workbook.save(fp)
+            workbook.close()
+            output.seek(0)
+            generated_file = base64.encodebytes(output.read())
+            output.close()
+            _logger.debug(generated_file)
+            du_an_name = self.env['bsd.du_an'].browse(data['bsd_du_an_id']).bsd_ma_da
             record_id = self.env['wizard.excel.report'].create({
-                'excel_file': base64.encodestring(fp.getvalue()),
-                'file_name': filename
+                'excel_file': generated_file,
+                'file_name': du_an_name + " - Đợt thanh toán " + (data['bsd_tu_ngay'] or '') + ' - ' + (data['bsd_den_ngay'] or '') + '.xlsx'
             })
-            fp.close()
-            return {'view_mode': 'form',
-                    'res_id': record_id,
-                    'res_model': 'wizard.excel.report',
-                    'view_type': 'form',
-                    'type': 'ir.actions.act_window',
-                    'target': 'new',
+            return {
+                'res_id': record_id.id,
            }
 
-    # def action_in_report(self):
-    #     filename = 'Product Report ' + str(self.name) + '.xls'
-    #     workbook = xlwt.Workbook()
-    #
-    #     worksheet = workbook.add_sheet('Product Report')
-    #     font = xlwt.Font()
-    #     font.bold = True
-    #     for_left = xlwt.easyxf(
-    #         "font: bold 1, color black; borders: top double, bottom double, left double, right double; align: horiz left")
-    #     for_left_not_bold = xlwt.easyxf("font: color black; align: horiz left")
-    #     for_center_bold = xlwt.easyxf("font: bold 1, color black; align: horiz center")
-    #     GREEN_TABLE_HEADER = xlwt.easyxf(
-    #         'font: bold 1, name Tahoma, height 250;'
-    #         'align: vertical center, horizontal center, wrap on;'
-    #         'borders: top double, bottom double, left double, right double;'
-    #     )
-    #     style = xlwt.easyxf(
-    #         'font:height 400, bold True, name Arial; align: horiz center, vert center;borders: top medium,right medium,bottom medium,left medium')
-    #
-    #     alignment = xlwt.Alignment()  # Create Alignment
-    #     alignment.horz = xlwt.Alignment.HORZ_RIGHT
-    #     style = xlwt.easyxf('align: wrap yes')
-    #     style.num_format_str = '0.00'
-    #
-    #     worksheet.row(0).height = 320
-    #     worksheet.col(0).width = 4000
-    #     worksheet.col(1).width = 4000
-    #     borders = xlwt.Borders()
-    #     borders.bottom = xlwt.Borders.MEDIUM
-    #     border_style = xlwt.XFStyle()  # Create Style
-    #     border_style.borders = borders
-    #
-    #     product_title = 'Product Report ' + str(self.name)
-    #     worksheet.write_merge(0, 1, 0, 2, product_title, GREEN_TABLE_HEADER)
-    #
-    #     row = 2
-    #
-    #     worksheet.write(row, 0, 'Product Name' or '', for_left)
-    #     worksheet.write(row, 1, 'Sales Price' or '', for_left)
-    #
-    #     row = row + 1
-    #     worksheet.write(row, 0, self.name or '', for_left_not_bold)
-    #
-    #     fp = io.BytesIO()
-    #     workbook.save(fp)
-    #     self.write({'bsd_report': base64.encodestring(fp.getvalue()), 'bsd_filename': filename})
-    #
-    #     in_memory = io.BytesIO()
-    #     with pyzipper.AESZipFile(in_memory, "w", compression=pyzipper.ZIP_LZMA) as zf:
-    #         zf.setpassword(b'1234')
-    #         zf.setencryption(pyzipper.WZ_AES, nbits=128)
-    #         zf.writestr('aa123.xls', fp.getvalue())
-    #     zf.close()
-    #     self.write({'bsd_zip': base64.encodestring(in_memory.getvalue()), 'bsd_zip_filename': 'sample.zip'})
-    #     in_memory.close()
-    #     fp.close()
     @api.model
     def action_search(self, data):
         if not data['bsd_du_an_id']:
             raise UserError("Vui lòng điền trường dự án")
         where = ' WHERE (du_an.id = {0}) '.format(data['bsd_du_an_id'])
         if data['bsd_tu_ngay']:
-            where += 'AND (hd.bsd_ngay_hd_ban >= {0}) '.format(data['bsd_tu_ngay'])
+            tu_ngay = datetime.datetime.strptime(data['bsd_tu_ngay'], '%d/%m/%Y')
+            tu_ngay = tu_ngay.strftime("%Y-%m-%d, %H:%M:%S").replace(',', '')
+            where += "AND (hd.bsd_ngay_hd_ban >= timestamp '{0}') ".format(tu_ngay)
+            _logger.debug(where)
         if data['bsd_den_ngay']:
-            where += 'AND (hd.bsd_ngay_hd_ban <= {0}) '.format(data['bsd_den_ngay'])
+            den_ngay = datetime.datetime.strptime(data['bsd_den_ngay'], '%d/%m/%Y') + datetime.timedelta(days=1)
+            den_ngay = den_ngay.strftime("%Y-%m-%d, %H:%M:%S").replace(',', '')
+            where += "AND (hd.bsd_ngay_hd_ban <= timestamp '{0}') ".format(den_ngay)
+            _logger.debug(where)
         if not data['bsd_loai']:
             raise UserError("Vui lòng chọn loại báo cáo")
         elif data['bsd_loai'] == 'dot_tt':
@@ -189,5 +141,5 @@ class BsdBaoCaoWidget(models.AbstractModel):
 
 class WizardExceReport(models.TransientModel):
     _name = "wizard.excel.report"
-    excel_file = fields.Binary('File')
-    file_name = fields.Char('Tên file', size=64)
+    excel_file = fields.Binary('Báo cáo')
+    file_name = fields.Char('Tên báo cáo', size=64 )
