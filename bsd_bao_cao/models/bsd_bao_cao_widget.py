@@ -36,22 +36,53 @@ class BsdBaoCaoWidget(models.AbstractModel):
         if not data['bsd_loai']:
             raise UserError("Vui lòng chọn loại báo cáo")
         elif data['bsd_loai'] == 'dot_tt':
-            rp_dtt = self._bao_cao_dot_tt(where=where)
-            _logger.debug(rp_dtt)
+            du_an_id = self.env['bsd.du_an'].browse(data['bsd_du_an_id'])
+            bao_cao_dtt = self._bao_cao_dot_tt(where=where)
             output = BytesIO()
             workbook = xlsxwriter.Workbook(output, {'in_memory': True})
             worksheet = workbook.add_worksheet()
             title = workbook.add_format({'bold': True})
-            worksheet.write('A1', 'Báo cáo đợt thanh toán của dự án số 1', title)
+            date_format = workbook.add_format({'num_format': 'dd/mm/yyyy'})
+            money_format = workbook.add_format({'num_format': '#,##0 VNĐ'})
+            worksheet.write('A1', 'Báo cáo đợt thanh toán của dự án {0}'.format(du_an_id.bsd_ten_da), title)
+            worksheet.write('A2', 'Từ ngày')
+            worksheet.write('B2', data['bsd_tu_ngay'])
+            worksheet.write('C2', 'Đến ngày')
+            worksheet.write('D2', data['bsd_den_ngay'])
+            worksheet.write('A3', 'Dự án')
+            worksheet.write('B3', 'Tòa/ khu')
+            worksheet.write('C3', 'Sản phẩm')
+            worksheet.write('D3', 'Trạng thái SP')
+            worksheet.write('E3', 'Mã hợp đồng')
+            worksheet.write('F3', 'Mã CS.TT')
+            worksheet.write('G3', 'Đợt thanh toán')
+            worksheet.write('H3', 'Tiền đợt TT (VNĐ)')
+            worksheet.write('I3', 'Tỷ lệ (%)')
+            worksheet.write('J3', 'Hạn thanh toán')
+            worksheet.write('K3', 'Diễn giải')
+            row = 3
+            col = 0
+            for du_an, toa, sp, trang_thai, ma_hd, ma_cs, dot_tt in bao_cao_dtt:
+                worksheet.write(row, col, du_an)
+                worksheet.write(row, col + 1, toa)
+                worksheet.write(row, col + 2, sp)
+                worksheet.write(row, col + 3, trang_thai)
+                worksheet.write(row, col + 4, ma_hd)
+                worksheet.write(row, col + 5, ma_cs)
+                for ten_dtt,tien_dtt, tl_dtt, han_dtt in dot_tt:
+                    worksheet.write(row, col + 6, ten_dtt)
+                    worksheet.write(row, col + 7, tien_dtt, money_format)
+                    worksheet.write(row, col + 8, tl_dtt)
+                    worksheet.write(row, col + 9, han_dtt, date_format)
+                    row += 1
             workbook.close()
             output.seek(0)
             generated_file = base64.encodebytes(output.read())
             output.close()
             _logger.debug(generated_file)
-            du_an_name = self.env['bsd.du_an'].browse(data['bsd_du_an_id']).bsd_ma_da
             record_id = self.env['wizard.excel.report'].create({
                 'excel_file': generated_file,
-                'file_name': du_an_name + " - Đợt thanh toán " + (data['bsd_tu_ngay'] or '') + ' - ' + (data['bsd_den_ngay'] or '') + '.xlsx'
+                'file_name': du_an_id.bsd_ma_da + " - Đợt thanh toán " + (data['bsd_tu_ngay'] or '') + ' - ' + (data['bsd_den_ngay'] or '') + '.xlsx'
             })
             return {
                 'res_id': record_id.id,
