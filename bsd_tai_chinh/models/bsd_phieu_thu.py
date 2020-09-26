@@ -446,6 +446,10 @@ class BsdPhieuThu(models.Model):
                         }
         }
 
+    # Action in phiếu thu
+    def action_in(self):
+        return self.env.ref('bsd_tai_chinh.bsd_phieu_thu_report_action').read()[0]
+
     @api.model
     def create(self, vals):
         if 'bsd_du_an_id' in vals:

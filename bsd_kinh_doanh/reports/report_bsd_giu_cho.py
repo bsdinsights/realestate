@@ -42,7 +42,7 @@ class ReportBsdGiuCho(models.AbstractModel):
         tien_giu_cho = num2words(giu_cho.bsd_tien_gc, lang='vi_VN') + ' ' + 'đồng'
         ngay_hien_tai = datetime.datetime.now()
         from_zone = tz.gettz('UTC')
-        to_zone = tz.gettz('Asia/Ho_Chi_Minh')
+        to_zone = tz.gettz(self._context['tz'])
         ngay_hien_tai = ngay_hien_tai.replace(tzinfo=from_zone)
         ngay_hien_tai = ngay_hien_tai.astimezone(to_zone)
         _logger.debug(ngay_hien_tai)

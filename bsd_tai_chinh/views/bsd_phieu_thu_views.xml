@@ -20,6 +20,11 @@
                             attrs="{'invisible':['|',('bsd_tien_con_lai', '=', 0),
                                                  '|',('bsd_loai_pt', 'not in',['tra_truoc','khac','pps'])]}"
                             class="oe_highlight"/>
+                    <button string="In"
+                            name="action_in"
+                            states="da_gs"
+                            type="object"
+                            class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>

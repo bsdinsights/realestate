@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="bsd_phieu_thu_report_wizard_form">
+            <field name="name">bsd.phieu_thu.report.wizard.form</field>
+            <field name="model">bsd.phieu_thu.report.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="In phiếu thu">
+                    <group>
+                        <group>
+                            <field name="bsd_mau_in"/>
+                            <field name="bsd_phieu_thu_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_in" string="In" type="object" class="oe_highlight"/>
+                        <button string="Hủy" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="bsd_phieu_thu_report_action"
+                    name="Chọn mẫu in Phiếu thu"
+                    res_model="bsd.phieu_thu.report.wizard"
+                    view_mode="form"
+                    target="new"/>
+
+        <record id="bsd_giay_in_phieu_thu" model="report.paperformat">
+            <field name="name">Giấy in Phiếu thu</field>
+            <field name="default" eval="True"/>
+            <field name="format">A5</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="bsd_mau_in_phieu_thu_chuan_html" model="ir.actions.report">
+            <field name="name">Phiếu thu (html)</field>
+            <field name="model">bsd.phieu_thu.report.wizard</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">bsd_tai_chinh.bsd_phieu_thu_view</field>
+            <field name="multi">False</field>
+            <field name="paperformat_id" ref="bsd_tai_chinh.bsd_giay_in_phieu_thu"/>
+        </record>
+
+        <record id="bsd_mau_in_phieu_thu_chuan" model="ir.actions.report">
+            <field name="name">Phiếu thu</field>
+            <field name="model">bsd.phieu_thu.report.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">bsd_tai_chinh.bsd_phieu_thu_view</field>
+            <field name="multi">False</field>
+            <field name="paperformat_id" ref="bsd_tai_chinh.bsd_giay_in_phieu_thu"/>
+        </record>
+
+        <template id="bsd_phieu_thu_view">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="doc" t-value="doc.with_context(lang=lang)" />
+                    <t t-call="web.external_layout">
+                        <div class="page bsd_font mt8">
+                            <div class="row" style="line-height:8px">
+                                <div class="col-4 mt16">
+                                    <p><b>Đơn vị: <span t-field="doc.company_id.name"/></b></p>
+                                    <p><b>Bộ phận: Kế toán</b></p>
+                                </div>
+                                <div class="col-4"/>
+                                <div class="col-4 mt16">
+                                    <p class="text-center"><b>Mẫu số: 01 - TT</b></p>
+                                    <p class="text-center">(Ban hành theo QĐ số: 48/2006/QĐ - BTC</p>
+                                    <p class="text-center"> Ngày 14/09/2006 của Bộ trưởng BTC)</p>
+                                </div>
+                            </div>
+                            <div class="row mt32" style="line-height:8px">
+                                <div class="col-12">
+                                    <h3 class="text-center">PHIẾU THU</h3>
+                                    <p class="text-center">
+                                        Ngày <span t-esc="ngay_pt.day"/>
+                                        tháng <span t-esc="ngay_pt.month"/>
+                                        năm <span t-esc="ngay_pt.year"/>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row" style="line-height:8px">
+                                <div class="col-9"/>
+                                <div class="col-3">
+                                    <p>Quyển số:..................................</p>
+                                    <p>Số:...............................................</p>
+                                    <p>Nợ:...............................................</p>
+                                    <p>Có:...............................................</p>
+                                </div>
+                            </div>
+                            <div class="row" style="line-height:8px">
+                                <div class="col-12 ml32">
+                                    <t t-if="doc.bsd_khach_hang_id.is_company">
+                                        <p>Họ và tên người nộp tiền: <strong t-field="doc.bsd_khach_hang_id.name"/></p>
+                                    </t>
+                                    <t t-else="">
+                                        <p>Họ và tên người nộp tiền: <strong t-field="doc.bsd_khach_hang_id.bsd_ten"/></p>
+                                    </t>
+                                    <p class="mt8">Địa chỉ: <span t-field="doc.bsd_khach_hang_id.bsd_dia_chi_lh"/></p>
+                                    <p>Lý do nộp: <span t-field="doc.bsd_dien_giai"/></p>
+                                    <p>Số tiền: <span t-field="doc.bsd_tien_kh"/> đ</p>
+                                    <p>(Viết bằng chữ): <span t-esc="tien_chu"/></p>
+                                    <p>Kèm theo:...........................Chứng từ gốc.</p>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-11">
+                                    <div class="text-right">
+                                        Ngày <span t-esc="ngay_ht.day"/>
+                                        tháng <span t-esc="ngay_ht.month"/>
+                                        năm <span t-esc="ngay_ht.year"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt16" style="line-height:8px">
+                                <div class="col-2 offset-1">
+                                    <p class="text-center"><b>Giám đốc</b></p>
+                                    <p class="text-center">(Ký, họ tên, đóng dấu)</p>
+                                </div>
+                                <div class="col-2">
+                                    <p class="text-center"><b>Kế toán trưởng</b></p>
+                                    <p class="text-center">(Ký, họ tên)</p>
+                                </div>
+                                <div class="col-2">
+                                    <p class="text-center"><b>Người nộp tiền</b></p>
+                                    <p class="text-center">(Ký, họ tên)</p>
+                                </div>
+                                <div class="col-2">
+                                    <p class="text-center"><b>Người lập phiếu</b></p>
+                                    <p class="text-center">(Ký, họ tên)</p>
+                                </div>
+                                <div class="col-2">
+                                    <p class="text-center"><b>Thủ quỹ</b></p>
+                                    <p class="text-center">(Ký, họ tên)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
