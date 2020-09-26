@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="bsd_hoan_tien_report_wizard_form">
+            <field name="name">bsd.hoan_tien.report.wizard.form</field>
+            <field name="model">bsd.hoan_tien.report.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="In Phiếu chi">
+                    <group>
+                        <group>
+                            <field name="bsd_mau_in"/>
+                            <field name="bsd_hoan_tien_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_in" string="In" type="object" class="oe_highlight"/>
+                        <button string="Hủy" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="bsd_hoan_tien_report_action"
+                    name="Chọn mẫu in Phiếu chi"
+                    res_model="bsd.hoan_tien.report.wizard"
+                    view_mode="form"
+                    target="new"/>
+
+        <record id="bsd_giay_in_hoan_tien" model="report.paperformat">
+            <field name="name">Giấy in Phiếu chi</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="bsd_mau_in_hoan_tien_chuan_html" model="ir.actions.report">
+            <field name="name">Phiếu chi (html)</field>
+            <field name="model">bsd.hoan_tien.report.wizard</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">bsd_tai_chinh.bsd_hoan_tien_view</field>
+            <field name="multi">False</field>
+            <field name="paperformat_id" ref="bsd_tai_chinh.bsd_giay_in_hoan_tien"/>
+        </record>
+
+        <record id="bsd_mau_in_hoan_tien_chuan" model="ir.actions.report">
+            <field name="name">Phiếu chi</field>
+            <field name="model">bsd.hoan_tien.report.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">bsd_tai_chinh.bsd_hoan_tien_view</field>
+            <field name="multi">False</field>
+            <field name="paperformat_id" ref="bsd_tai_chinh.bsd_giay_in_hoan_tien"/>
+        </record>
+
+        <template id="bsd_hoan_tien_view">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="doc" t-value="doc.with_context(lang=lang)" />
+                    <t t-call="web.external_layout">
+                        <div class="page bsd_font mt8">
+                            <div class="row" style="line-height:8px">
+                                <div class="col-8 mt16">
+                                    <p><b><span t-field="doc.company_id.name"/></b></p>
+                                    <p><span t-field="doc.company_id.partner_id.bsd_dia_chi_lh"/> </p>
+                                    <p>Số ĐKDN(Môn bài): <span t-field="doc.company_id.partner_id.bsd_so_gpkd"/> </p>
+                                    <p>ĐT - Fax: <span t-field="doc.company_id.partner_id.phone"/> -
+                                        <span t-field="doc.company_id.partner_id.bsd_fax"/> </p>
+                                    <div class="row mt32" style="line-height:8px">
+                                        <div class="col-6 offset-6">
+                                            <h3 class="text-center">PHIẾU CHI</h3>
+                                            <p class="text-center">
+                                                Ngày <span t-esc="ngay_pc.day"/>
+                                                tháng <span t-esc="ngay_pc.month"/>
+                                                năm <span t-esc="ngay_pc.year"/>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4 mt16">
+                                    <p class="text-left"><b>Mẫu số: 01 - TT</b></p>
+                                    <p class="text-left">Ban hành theo TT số 200/2014/TT - BTC</p>
+                                    <p class="text-left">Ngày 22/12/2014 của Bộ trưởng</p>
+                                    <p>Quyển số:..................................</p>
+                                    <p>Số:...............................................</p>
+                                    <p>Nợ:...............................................</p>
+                                    <p>Có:...............................................</p>
+                                </div>
+                            </div>
+                            <div class="row mt32" style="line-height:8px">
+                                <div class="col-3 ml32">
+                                    <div class="mt8" style="text-align:center">
+                                        <span style="float:left">Họ và tên người nhận tiền</span>
+                                        <span style="float:right">:</span>
+                                    </div>
+                                    <div class="clearfix"/>
+                                    <br/>
+                                    <div class="mt8" style="text-align:center">
+                                        <span style="float:left">Địa chỉ</span>
+                                        <span style="float:right">:</span>
+                                    </div>
+                                    <div class="clearfix"/>
+                                    <br/>
+                                    <div class="mt8" style="text-align:center">
+                                        <span style="float:left">Số CMND</span>
+                                        <span style="float:right">:</span>
+                                    </div>
+                                    <div class="clearfix"/>
+                                    <br/>
+                                    <div class="mt8" style="text-align:center">
+                                        <span style="float:left">Lý do chi</span>
+                                        <span style="float:right">:</span>
+                                    </div>
+                                    <div class="clearfix"/>
+                                    <br/>
+                                    <div class="mt8" style="text-align:center">
+                                        <span style="float:left">Số tiền</span>
+                                        <span style="float:right">:</span>
+                                    </div>
+                                    <div class="clearfix"/>
+                                    <br/>
+                                    <div class="mt8" style="text-align:center">
+                                        <span style="float:left">Viết bằng chữ</span>
+                                        <span style="float:right">:</span>
+                                    </div>
+                                    <div class="clearfix"/>
+                                    <br/>
+                                </div>
+                                <div class="col-9 ml8">
+                                    <t t-if="doc.bsd_khach_hang_id.is_company">
+                                        <div class="mt8"><strong t-field="doc.bsd_khach_hang_id.name"/></div><br/>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="mt8"><strong t-field="doc.bsd_khach_hang_id.bsd_ten"/></div><br/>
+                                    </t>
+                                    <div class="mt8" t-field="doc.bsd_khach_hang_id.bsd_dia_chi_lh"></div><br/>
+                                    <div class="mt8"><span t-field="doc.bsd_khach_hang_id.bsd_cmnd"/>
+                                        ngày cấp: <span t-field="doc.bsd_khach_hang_id.bsd_ngay_cap_cmnd"/>
+                                        nơi cấp: <span t-field="doc.bsd_khach_hang_id.bsd_noi_cap_cmnd"/>
+                                    </div><br/>
+                                    <div class="mt8" t-esc="ly_do"></div><br/>
+                                    <div class="mt8" t-field="doc.bsd_tien"/><br/>
+                                    <div class="mt8" t-esc="tien_chu"/><br/>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12 ml32">
+                                    <div>Kèm theo:............................................Chứng từ gốc.</div>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-11">
+                                    <div class="text-right">
+                                        Ngày <span t-esc="ngay_ht.day"/>
+                                        tháng <span t-esc="ngay_ht.month"/>
+                                        năm <span t-esc="ngay_ht.year"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt16" style="line-height:8px">
+                                <div class="col-2 offset-1">
+                                    <p class="text-center"><b>Giám đốc</b></p>
+                                    <p class="text-center">(Ký, họ tên, đóng dấu)</p>
+                                </div>
+                                <div class="col-2">
+                                    <p class="text-center"><b>Kế toán trưởng</b></p>
+                                    <p class="text-center">(Ký, họ tên)</p>
+                                </div>
+                                <div class="col-2">
+                                    <p class="text-center"><b>Người nộp tiền</b></p>
+                                    <p class="text-center">(Ký, họ tên)</p>
+                                </div>
+                                <div class="col-2">
+                                    <p class="text-center"><b>Người lập phiếu</b></p>
+                                    <p class="text-center">(Ký, họ tên)</p>
+                                </div>
+                                <div class="col-2">
+                                    <p class="text-center"><b>Thủ quỹ</b></p>
+                                    <p class="text-center">(Ký, họ tên)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

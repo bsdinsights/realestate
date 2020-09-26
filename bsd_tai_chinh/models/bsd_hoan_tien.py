@@ -174,3 +174,7 @@ class BsdHoanTien(models.Model):
             raise UserError(_('Dự án chưa có mã phiếu hoàn tiền'))
         vals['bsd_so_ct'] = sequence.next_by_id()
         return super(BsdHoanTien, self).create(vals)
+
+    # Action in phiếu thu
+    def action_in(self):
+        return self.env.ref('bsd_tai_chinh.bsd_hoan_tien_report_action').read()[0]

@@ -106,7 +106,7 @@
                                     </t>
                                     <p class="mt8">Địa chỉ: <span t-field="doc.bsd_khach_hang_id.bsd_dia_chi_lh"/></p>
                                     <p>Lý do nộp: <span t-field="doc.bsd_dien_giai"/></p>
-                                    <p>Số tiền: <span t-field="doc.bsd_tien_kh"/> đ</p>
+                                    <p>Số tiền: <span t-field="doc.bsd_tien_kh"/></p>
                                     <p>(Viết bằng chữ): <span t-esc="tien_chu"/></p>
                                     <p>Kèm theo:...........................Chứng từ gốc.</p>
                                 </div>

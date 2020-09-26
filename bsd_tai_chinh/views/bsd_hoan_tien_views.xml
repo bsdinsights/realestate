@@ -16,6 +16,11 @@
                             type="object"
                             confirm="Bạn có muốn Hủy chứng từ không?"
                             states="nhap"/>
+                    <button string="In"
+                            name="action_in"
+                            states="xac_nhan"
+                            type="object"
+                            class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
