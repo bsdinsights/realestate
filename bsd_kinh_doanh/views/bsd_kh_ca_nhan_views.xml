@@ -213,7 +213,7 @@
                                         <li t-if="record.bsd_dia_chi_lh.raw_value" class="o_text_overflow"><field name="bsd_dia_chi_lh"/></li>
                                         <li name="tien_ich">
                                             <span class="badge badge-pill" modifiers="{}">
-                                                <i class="fa fa-fw fa-usd" aria-label="Giữ chỗ" role="img" title="Giữ chỗ" modifiers="{}"></i>
+                                                Giữ chỗ
                                                 <field name="bsd_sl_giu_cho"/>
                                             </span>
                                         </li>

@@ -10,7 +10,7 @@
             </xpath>
             <xpath expr="//li[@name='tien_ich']" position="inside">
                 <span class="badge badge-pill" modifiers="{}">
-                    <i class="fa fa-fw fa-edit" aria-label="Hợp đồng" role="img" title="Hợp đồng" modifiers="{}"></i>
+                    Hợp đồng
                     <field name="bsd_sl_hd_ban"/>
                 </span>
             </xpath>

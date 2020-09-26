@@ -9,10 +9,8 @@
                 <field name="bsd_unit_ids" invisible="1"/>
                 <button name="action_view_gc_tc" type="object"
                         class="oe_stat_button"
-                        attrs="{'invisible':[('bsd_unit_ids', '!=', 0)]}"
                         icon="fa-pencil-square-o">
                     <field name="bsd_so_gctc" widget="statinfo" string="GC.TC"/>
-                    <field name="bsd_unit_ids" invisible="1"/>
                 </button>
             </xpath>
         </field>
