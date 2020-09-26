@@ -20,23 +20,44 @@
                 </form>
             </field>
         </record>
+
         <act_window id="bsd_bao_gia_report_action"
-                    name="Chọn mẫu in báo giá"
+                    name="Chọn mẫu in bảng tính giá"
                     res_model="bsd.bao_gia.report.wizard"
                     view_mode="form"
                     target="new"/>
-        <report id="bsd_mau_in_bao_gia_chuan"
-                model="bsd.bao_gia.report.wizard"
-                string="Bảng tính giá"
-                report_type="qweb-pdf"
-                name="bsd_kinh_doanh.bsd_bao_gia_view"
-                menu="False"/>
-        <report id="bsd_mau_in_bao_gia_chuan_html"
-                model="bsd.bao_gia.report.wizard"
-                string="Bảng tính giá (html)"
-                report_type="qweb-html"
-                name="bsd_kinh_doanh.bsd_bao_gia_view"
-                menu="False"/>
+
+        <record id="bsd_giay_in_bao_gia" model="report.paperformat">
+            <field name="name">Giấy in Bảng tính giá</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="bsd_mau_in_bao_gia_chuan_html" model="ir.actions.report">
+            <field name="name">Bảng tính giá (html)</field>
+            <field name="model">bsd.bao_gia.report.wizard</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">bsd_kinh_doanh.bsd_bao_gia_view</field>
+            <field name="multi">False</field>
+            <field name="paperformat_id" ref="bsd_kinh_doanh.bsd_giay_in_bao_gia"/>
+        </record>
+
+        <record id="bsd_mau_in_bao_gia_chuan" model="ir.actions.report">
+            <field name="name">Bảng tính giá</field>
+            <field name="model">bsd.bao_gia.report.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">bsd_kinh_doanh.bsd_bao_gia_view</field>
+            <field name="multi">False</field>
+            <field name="paperformat_id" ref="bsd_kinh_doanh.bsd_giay_in_bao_gia"/>
+        </record>
 
         <template id="bsd_external_layout_standard">
             <t t-if="not o" t-set="o" t-value="doc"/>
