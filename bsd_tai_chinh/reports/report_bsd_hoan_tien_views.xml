@@ -68,7 +68,7 @@
                             <div class="row" style="line-height:8px">
                                 <div class="col-8 mt16">
                                     <div class="mt8"><b><span t-field="doc.company_id.name"/></b></div><br/>
-                                    <div class="mt8"><span t-field="doc.company_id.partner_id.bsd_dia_chi_lh"/> </div><br/>
+                                    <div class="mt8" t-field="doc.company_id.partner_id.bsd_dia_chi_lh"/><br/>
                                     <div class="mt8">Số ĐKDN(Môn bài): <span t-field="doc.company_id.partner_id.bsd_so_gpkd"/> </div><br/>
                                     <div class="mt8">ĐT - Fax: <span t-field="doc.company_id.partner_id.phone"/> -
                                         <span t-field="doc.company_id.partner_id.bsd_fax"/> </div>
