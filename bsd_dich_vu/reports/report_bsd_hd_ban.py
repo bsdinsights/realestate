@@ -3,6 +3,7 @@
 from odoo import api, models, fields
 import logging
 import datetime
+from dateutil import tz
 _logger = logging.getLogger(__name__)
 
 
@@ -63,10 +64,16 @@ class ReportBsdTTDC(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        _logger.debug("Chạy tới đây")
+        doc = self.env['bsd.hd_ban'].browse(data['ids'])
+        ngay_ht = datetime.datetime.now()
+        ten_da = doc.bsd_du_an_id.bsd_ten_da,
+        dia_chi_da = doc.bsd_du_an_id.bsd_dia_chi
         return {
             'doc_ids': data['ids'],
             'doc_model': data['model'],
             'docs': self.env['bsd.hd_ban'].browse(data['ids']),
+            'ngay_ht': ngay_ht,
+            'ten_da': ten_da,
+            'dia_chi_da': dia_chi_da,
         }
 

@@ -21,7 +21,7 @@
                             class="oe_highlight"/>
                     <button string="In hợp đồng"
                             name="action_in_hd"
-                            attrs="{'invisible': ['!','|',('state', 'in',['du_dk','tt_dot1']),'&amp;',('bsd_duyet_db','=',True),('state', '!=','nhap')]}"
+                            attrs="{'invisible': ['!','|',('state', 'in',['du_dk','tt_dot1','da_ky']),'&amp;',('bsd_duyet_db','=',True),('state', '!=','nhap')]}"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Upload hợp đồng"

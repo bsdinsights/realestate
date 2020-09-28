@@ -20,6 +20,21 @@
                 </form>
             </field>
         </record>
+
+        <record id="bsd_giay_in_ttdc" model="report.paperformat">
+            <field name="name">Giấy in TTĐC</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">17</field>
+            <field name="margin_right">17</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+        </record>
+
         <act_window id="bsd_hd_ban_report_action"
                     name="Chọn mẫu in hợp đồng"
                     res_model="bsd.hd_ban.report.wizard"
@@ -31,12 +46,14 @@
                 report_type="qweb-html"
                 name="bsd_dich_vu.bsd_hd_ban_view"
                 menu="False"/>
-        <report id="bsd_mau_in_ttdc"
-                model="bsd.hd_ban.report.wizard"
-                string="Thỏa thuận đặt cọc"
-                report_type="qweb-html"
-                name="bsd_dich_vu.bsd_ttdc_view"
-                menu="False"/>
+        <record id="bsd_mau_in_ttdc" model="ir.actions.report">
+            <field name="name">Thỏa thuận đặt cọc</field>
+            <field name="model">bsd.hd_ban.report.wizard</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">bsd_dich_vu.bsd_ttdc_view</field>
+            <field name="multi">False</field>
+            <field name="paperformat_id" ref="bsd_dich_vu.bsd_giay_in_ttdc"/>
+        </record>
         <template id="bsd_hd_ban_view">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
@@ -58,7 +75,98 @@
                     <t t-call="web.external_layout">
                         <div class="page bsd_font">
                             <div class="row">
-                                <div>Thỏa thuận đặt cọc</div>
+                                <div class="col-12 text-center">
+                                    <H4>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</H4>
+                                    <p><b>Độc lập - Tự do - Hạnh phúc</b></p>
+                                    <p>*****</p>
+                                    <p>Tp.Hồ Chí Minh, ngày <span t-esc="ngay_ht.day"/>
+                                        tháng <span t-esc="ngay_ht.month"/>
+                                        năm <span t-esc="ngay_ht.year"/></p>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-12">
+                                    <p>Số: ...../TTĐC</p>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-12 text-center">
+                                    <H4>THỎA THUẬN ĐẶT CỌC</H4>
+                                    <p>Dự án <span t-esc="ten_da"/>, <span t-esc="dia_chi_da"/> </p>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-12">
+                                    <p><b>Căn cứ:</b></p>
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-12">
+                                    <p>-   Bộ luật Dân sự số 91/2015/QH12 do Quốc hội nước Cộng hòa Xã hội Chủ nghĩa Việt nam ban hành ngày 24 tháng 11 năm 2015;</p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <p>-   Luật Nhà ở số 65/2014/QH13 do Quốc hội nước Cộng hòa Xã hội Chủ Nghĩa Việt Nam ban hành ngày 25 tháng 11 năm 2014;</p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <p>-   Luật Kinh doanh Bất động sản số 66/2014/QH13 do Quốc hội nước Cộng hòa Xã hội Chủ nghĩa Việt Nam ban hành ngày 25 thánh 11 năm 2014</p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <p>-   Nhu cầu của các bên</p>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-12">
+                                    <p><b>1. BÊN ĐẶT CỌC:</b></p>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-3">
+                                    <span>Họ và tên</span>
+                                </div>
+                                <div class="col-9">
+                                    : <span t-esc="ten_kh"/> ngày sinh: <span t-esc="ngay_sinh_kh"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <span>CMND/ Hộ chiếu</span>
+                                </div>
+                                <div class="col-9">
+                                    : <span t-esc="so_cmnd"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <span>Địa chỉ thường trú</span>
+                                </div>
+                                <div class="col-9">
+                                    : <span t-esc="dc_tt"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <span>Địa chỉ liên hệ</span>
+                                </div>
+                                <div class="col-9">
+                                    : <span t-esc="dc_lh"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <span>Điện thoại</span>
+                                </div>
+                                <div class="col-4">
+                                    : <span t-esc="so_dt"/>
+                                </div>
+                                <div class="col-5">
+                                    Email: <span t-esc="email_kh"/>
+                                </div>
                             </div>
                         </div>
                     </t>
