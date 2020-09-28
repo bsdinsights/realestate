@@ -25,20 +25,274 @@
                     res_model="bsd.thanh_ly.report.wizard"
                     view_mode="form"
                     target="new"/>
-        <report id="bsd_mau_in_thanh_ly_html"
-                model="bsd.thanh_ly.report.wizard"
-                string="Biên bản thanh lý"
-                report_type="qweb-html"
-                name="bsd_dich_vu.bsd_thanh_ly_view"
-                menu="False"/>
+        
+        <record id="bsd_giay_in_thanh_ly" model="report.paperformat">
+            <field name="name">Giấy in Thanh lý</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">17</field>
+            <field name="margin_right">17</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <act_window id="bsd_thanh_ly_report_action"
+                    name="Chọn mẫu in thanh lý"
+                    res_model="bsd.thanh_ly.report.wizard"
+                    view_mode="form"
+                    target="new"/>
+
+        <record id="bsd_mau_in_thanh_ly_html" model="ir.actions.report">
+            <field name="name">Biên bản Thanh lý</field>
+            <field name="model">bsd.thanh_ly.report.wizard</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">bsd_dich_vu.bsd_thanh_ly_view</field>
+            <field name="multi">False</field>
+            <field name="paperformat_id" ref="bsd_dich_vu.bsd_giay_in_thanh_ly"/>
+        </record>
+
+        <record id="bsd_mau_in_thanh_ly" model="ir.actions.report">
+            <field name="name">Biên bản thanh lý</field>
+            <field name="model">bsd.thanh_ly.report.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">bsd_dich_vu.bsd_thanh_ly_view</field>
+            <field name="multi">False</field>
+            <field name="paperformat_id" ref="bsd_dich_vu.bsd_giay_in_thanh_ly"/>
+        </record>
         <template id="bsd_thanh_ly_view">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
                     <t t-set="doc" t-value="doc.with_context(lang=lang)" />
                     <t t-call="web.external_layout">
                         <div class="page bsd_font">
+                            <div class="row mt32">
+                                <div class="col-12">
+                                    <h3 class="text-center"> BIÊN BẢN THANH LÝ </h3>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-12">
+                                    <p>Biên bản thanh lý ("<b>Biên bản Thanh Lý</b>") này được lập ngày
+                                        <span t-esc="ngay_tl.day"/> / <span t-esc="ngay_tl.month"/>/ <span t-esc="ngay_tl.year"/> bởi và giữa:</p>
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-12">
+                                    <p><b>1. <span t-esc="chu_dt"/></b></p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Giấy CNĐKDN</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+
+                                </div>
+                                <div class="col-10">
+                                    <p>Số <span t-esc="so_dkdn"/> do
+                                        <span t-esc="noi_cap"/> cấp lần đầu ngày
+                                        <span t-esc="ngay_dkdn"/> tháng <span t-esc="thang_dkdn"/> <span t-esc="nam_dkdn"/>.
+                                    </p>
+                                </div>
+                            </div>
                             <div class="row">
-                                <div>Biên bản thanh lý</div>
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Địa chỉ</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p> <span t-esc="dia_chi_tru_so"/></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Địa chỉ liên hệ</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p> <span t-esc="dia_chi_lien_he"/></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Điện thoại</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p> <span t-esc="so_dt"/></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Đại diện bởi</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p> <span t-esc="xung_ho"/> <b><span t-esc="nguoi_dai_dien"/></b>
+                                        Chức vụ: <span t-esc="chuc_vu"/>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Số tài khoản</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p> <span t-esc="so_tk"/> tại ngân hàng <span t-esc="ngan_hang"/></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Mã số thuế</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p> <span t-esc="ma_so_thue"/></p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12 ml16">
+                                    <p>(Sau đây được gọi là "<b>Chủ Đầu Tư</b>")</p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <div>
+                                        <b>2. Ông/bà: </b>
+                                    </div>
+                                </div>
+                                <div class="col-10">
+                                    <p> <span t-esc="ten_kh"/></p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Số CMND</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p>
+                                        <span t-esc="so_cmnd"/> cấp ngày
+                                        <span t-esc="ngay_cmnd"/> tại
+                                        <span t-esc="noi_cmnd"/>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Địa chỉ liên lạc</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p t-esc="dia_chi_lien_he"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Địa chỉ thường trú</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p t-esc="dia_chi_thuong_tru"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Email</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p t-esc="email"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Số điện thoại:</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p t-esc="so_dt_kh"/>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12 ml16">
+                                    <p>(Sau đây được gọi là "<b>Khách Hàng</b>")</p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <p>Khách hàng và Chủ Đầu Tư đã ký Phiếu đặt cọc <span t-esc="ma_dat_coc"/>
+                                        ký ngày <span t-esc="ngay_ky_dc"/> ("<b>Phiếu đặt cọc</b>"). Sau khi đã thảo
+                                        luận các bên đồng ký thanh lý đặt cọc như sau:
+                                    </p>
+                                    <p>1. Thanh lý đặt cọc sản phẩm <span t-esc="ten_sp"/> Phiếu đặt cọc <span t-esc="ma_dat_coc"/>
+                                        văn bản liên quan (nếu có) giữa 2 bên.
+                                    </p>
+                                    <p>2. Kể từ thời điểm lập biên bản này, hai bên xác nhận đã hoàn tất mọi vấn đề
+                                        liên quan đến quyền lợi và nghĩa vụ như đã thỏa thuận trong phiếu đặt cọc.
+                                        Do vậy, không còn trách nhiệm hay quyền lợi gì với nhau và cùng cam kết không
+                                        thắc mắc, khiếu nại bất kỳ vấn đề gì liên quan đến Phiếu đặt cọc <span t-esc="ma_dat_coc"/>.
+                                    </p>
+                                    <p>3. Biên bản thanh lý này được lập và ký 02(hai) bằng tiếng việt có giá trị hiệu
+                                        lực như nhau và mỗi bên giữ 01(một) bản.</p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <p>Thay mặt và đại diện cho:</p>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-6 text-center">
+                                    <p><b t-esc="chu_dt"></b></p>
+                                    <p style="margin-top:100px"><b t-esc="chuc_vu"/> </p>
+                                    <p><b t-esc="nguoi_dai_dien"></b></p>
+                                </div>
+                                <div class="col-6 text-center">
+                                    <p><b>Khách hàng</b></p>
+                                    <p style="margin-top:100px"></p>
+                                    <p><b t-esc="ten_kh"></b></p>
+                                </div>
                             </div>
                         </div>
                     </t>

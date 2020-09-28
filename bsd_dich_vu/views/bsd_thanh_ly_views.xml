@@ -204,7 +204,7 @@
         </field>
     </record>
     <record model="ir.actions.act_window" id="bsd_thanh_ly_action">
-        <field name="name">Thanh lý chấm dứt hợp đồng</field>
+        <field name="name">Thanh lý</field>
         <field name="res_model">bsd.thanh_ly</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
