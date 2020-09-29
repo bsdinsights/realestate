@@ -35,17 +35,33 @@
             <field name="dpi">90</field>
         </record>
 
+        <record id="bsd_giay_in_hd_ban" model="report.paperformat">
+            <field name="name">Giấy in Hợp đồng bán</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">17</field>
+            <field name="margin_right">17</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">45</field>
+        </record>
+
         <act_window id="bsd_hd_ban_report_action"
                     name="Chọn mẫu in hợp đồng"
                     res_model="bsd.hd_ban.report.wizard"
                     view_mode="form"
                     target="new"/>
-        <report id="bsd_mau_in_hdb"
-                model="bsd.hd_ban.report.wizard"
-                string="Hợp đồng"
-                report_type="qweb-html"
-                name="bsd_dich_vu.bsd_hd_ban_view"
-                menu="False"/>
+        <record id="bsd_mau_in_hdb" model="ir.actions.report">
+            <field name="name">Hợp đồng mua bán</field>
+            <field name="model">bsd.hd_ban.report.wizard</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">bsd_dich_vu.bsd_hd_ban_view</field>
+            <field name="multi">False</field>
+            <field name="paperformat_id" ref="bsd_dich_vu.bsd_giay_in_hd_ban"/>
+        </record>
         <record id="bsd_mau_in_ttdc" model="ir.actions.report">
             <field name="name">Thỏa thuận đặt cọc</field>
             <field name="model">bsd.hd_ban.report.wizard</field>
@@ -59,9 +75,222 @@
                 <t t-foreach="docs" t-as="doc">
                     <t t-set="doc" t-value="doc.with_context(lang=lang)" />
                     <t t-call="web.external_layout">
-                        <div class="page bsd_font">
+                        <div class="page bsd_font" style="font-size:2em;">
                             <div class="row">
-                                <div>Hợp đồng</div>
+                                <div class="col-12">
+                                    <b><u>Căn cứ:</u></b>
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-12">
+                                    <div class="ml16">
+                                        <p class="mt8">- Bộ luật Dân Sự ngày 24 tháng 11 năm 2015.</p>
+                                        <p class="mt8">- Luật Kinh Doanh Bất Động Sản ngày 25 tháng 11 năm 2014.</p>
+                                        <p class="mt8">- Nghị Định số 76/2015/NĐ-CP ngày 10 tháng 09 năm 2015 của Chính Phủ quy định
+                                            chi tiết thi hành một số điều của Luật Kinh Doanh Bất Động Sản.</p>
+                                        <p class="mt8">- Giấy Chứng Nhận Đầu Tư số <span t-esc="so_cndt"/> do
+                                            <span t-esc="noi_cap_cndt"/> cấp ngày <span t-esc="ngay_cap_cndt"/> </p>
+                                        <p class="mt8">- Giấy Chứng Nhận Quyền Sử Dụng Đất số <span t-esc="so_qsdd"/> do
+                                        <span t-esc="noi_cap_qsdd"/> cấp ngày <span t-esc="ngay_cap_qsdd"/>. </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-12">
+                                    HỢP ĐỒNG MUA BÁN CĂN HỘ này ("<b>Hợp Đồng Mua Bán</b>") được lập vào ngày .......
+                                    tháng ........ năm ........ ("<b>Ngày Ký</b>") bởi và giữa các bên sau:
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-12">
+                                    <h5><span t-esc="ten_cty"/> </h5>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Giấy CNĐKDN</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+
+                                </div>
+                                <div class="col-10">
+                                    <p>Số <span t-esc="so_dkdn"/> do
+                                        <span t-esc="noi_cap"/> cấp lần đầu ngày
+                                        <span t-esc="ngay_dkdn"/> tháng <span t-esc="thang_dkdn"/> <span t-esc="nam_dkdn"/>.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Địa chỉ</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p> <span t-esc="dia_chi_lien_he"/></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Điện thoại</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p> <span t-esc="so_dt"/></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Fax</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p> <span t-esc="so_fax_cty"/></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Đại diện bởi</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p> <span t-esc="xung_ho"/> <b><span t-esc="nguoi_dai_dien"/></b>
+                                        Chức vụ: <span t-esc="chuc_vu"/>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Số tài khoản</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p> <span t-esc="so_tk"/> tại ngân hàng <span t-esc="ngan_hang"/></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Mã số thuế</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p> <span t-esc="ma_so_thue"/></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 ml16">
+                                    <p>(Sau đây được gọi là "<b>Bên Bán</b>" hoặc "<b>Chủ Đầu Tư</b>")</p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <div>
+                                        <b>Ông/bà: </b>
+                                    </div>
+                                </div>
+                                <div class="col-10">
+                                    <p> <span t-esc="ten_kh"/></p>
+                                </div>
+                             </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Số CMND</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p>
+                                        <span t-esc="so_cmnd"/> cấp ngày
+                                        <span t-esc="ngay_cmnd"/> tại
+                                        <span t-esc="noi_cmnd"/>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Địa chỉ thường trú</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p t-esc="dia_chi_thuong_tru"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Địa chỉ liên hệ</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p t-esc="dia_chi_lien_he"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Số điện thoại:</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p t-esc="so_dt_kh"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 ml16">
+                                    <div>
+                                        <span class="float-left">Email</span>
+                                        <span class="float-right">:</span>
+                                    </div>
+                                    <div class="float-none"/>
+                                </div>
+                                <div class="col-10">
+                                    <p t-esc="email"/>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12 ml16">
+                                    <p>(Sau đây được gọi là "<b>Bên Mua</b>")</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p>Bên Bán và Bên Mua được gọi riêng là một "<b>Bên</b>" và gọi chung là "<b>Các Bên</b>".</p>
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-12">
+                                    <p>Các Bên thỏa thuận giao kết Hợp Đồng Mua Bán này (như được định nghĩa dưới đây)
+                                    theo các điều khoản và các điều kiện được quy định dưới đây:
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </t>

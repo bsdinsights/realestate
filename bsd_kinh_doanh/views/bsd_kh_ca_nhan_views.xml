@@ -95,7 +95,9 @@
                                            attrs="{'readonly':[('bsd_cung_dc', '=', True)]}"
                                            domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_lh_id])]"
                                            options="{'no_create':true}"/>
-                                    <field name="bsd_so_nha_lh" attrs="{'readonly':[('bsd_cung_dc', '=', True)]}"/>
+                                    <field name="bsd_so_nha_lh"
+                                           force_save="1"
+                                           attrs="{'readonly':[('bsd_cung_dc', '=', True)]}"/>
                                 </group>
                             </group>
                         </page>
