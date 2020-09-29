@@ -129,8 +129,11 @@
                                 <div class="col-3">
                                     <span>Họ và tên</span>
                                 </div>
-                                <div class="col-9">
-                                    : <span t-esc="ten_kh"/> ngày sinh: <span t-esc="ngay_sinh_kh"/>
+                                <div class="col-4">
+                                    : <span t-esc="ten_kh"/>
+                                </div>
+                                <div class="col-5">
+                                    ngày sinh: <span t-esc="ngay_sinh_kh"/>
                                 </div>
                             </div>
                             <div class="row">
@@ -168,6 +171,434 @@
                                     Email: <span t-esc="email_kh"/>
                                 </div>
                             </div>
+                            <div class="row mt32">
+                                <div class="col-12">
+                                    <b>2. BÊN NHẬN CỌC: <span t-esc="ten_cty"/></b>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-3">
+                                    <p>Địa chỉ</p>
+                                </div>
+                                <div class="col-9">
+                                    <p>: <span t-esc="dc_lh_cty"/> </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <p>Điện thoại</p>
+                                </div>
+                                <div class="col-9">
+                                    <p>: <span t-esc="so_dt_cty"/> </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <p>Mã số thuế</p>
+                                </div>
+                                <div class="col-9">
+                                    <p>: <span t-esc="ms_thue_cty"/> đăng ký lần đầu ngày <span t-esc="ngay_cap_vat"/></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <p>Người đại diện</p>
+                                </div>
+                                <div class="col-4">
+                                    <p>: <span t-esc="xung_ho"/> <span t-esc="nguoi_dd"/> </p>
+                                </div>
+                                <div class="col-5">
+                                    <p>Chức vụ: <span t-esc="chuc_vu"/> </p>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-12">
+                                    <p>Bên Đặt Cọc và Bên Nhận Cọc được gọi riêng là "<b>Bên</b>" và gọi chung là "<b>Các Bên</b>".</p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <b>Trên cơ sở:</b>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-1 ml16">
+                                    A.
+                                </div>
+                                <div class="col-11 ml16">
+                                    <p>Bên nhận Cọc là chủ đầu tư duy nhất của Dự án <span t-esc="ten_da"/>,
+                                        <span t-esc="dia_chi_da"/> (sau đây gọi tắt là "Dự Án"). </p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-1 ml16">
+                                    B.
+                                </div>
+                                <div class="col-11 ml16">
+                                    <p>Bên Đặt Cọc đã tìm hiểu các thông tin liên quan đến Dự Án và muốn đăng ký mua một
+                                        hoặc một số sản phẩm của Dự Án.</p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-1 ml16">
+                                    C.
+                                </div>
+                                <div class="col-11 ml16">
+                                    <p>Bên Nhận Cọc đồng ý sẽ bán cho Bên Đặt Cọc sản phẩm mà Bên Đặt Cọc đăng ký mua
+                                        theo Thỏa Thuận này phù hợp với quy định pháp luật liên quan</p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    Các Bên theo đây đồng ý ký Thỏa Thuận này với nội dung sau đây:
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <b>I. Thông tin sản phẩm đặt cọc:</b>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12 ml16">
+                                    <p>Thỏa Thuận này được ký kết nhằm đảm bảo cho bên Đặt Cọc được độc quyền mua từ Bên
+                                    Nhận Cọc và Bên Nhận Cọc phải đảm bảo Bên Đặt Cọc được độc quyền mua Sản phẩm thuộc
+                                    Dự Án như mô tả dưới đây ("<b>Quyền Mua</b>"). Bên Nhận Cọc và Bên Đặt Cọc sẽ thực
+                                    hiện Quyền Mua đối với Sản phẩm thuộc Dự án theo hợp đồng mua bán nhà ("<b>Hợp Đồng
+                                    Mua Bán Nhà</b>") được ký kết phù hợp với Thỏa Thuận này và pháp luật có liên quan.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt32" style="border:1px solid black;page-break-before: always;">
+                                <div class="col-12">
+                                    <p>
+                                        Loại sản phẩm: <span t-esc="loai_sp"/>
+                                    </p>
+                                    <p class="mt8">
+                                        Ký hiệu loại sản phẩm: <span t-esc="ma_sp"/>
+                                    </p>
+                                    <p class="mt-8">
+                                        Diện tích đất: <span t-esc="dt_dat"/> m2
+                                        Tổng diện tích sàn xây dựng: <span t-esc="dt_xd"/> m2
+                                    </p>
+                                    <p class="mt-8">
+                                        <p>Giá bán:
+                                            <b>
+                                                <span t-field="doc.bsd_tong_gia"/>
+                                                (Bằng chữ là:
+                                                <span t-esc="gia_ban_chu"/> đã bao gồm thuế VAT.
+                                            </b>
+                                        </p>
+                                    </p>
+                                    <p class="mt8">
+                                        (Giá bán trên đã bao gồm Thuế VAT, chưa bao gồm các khoản thuế, phí, lệ phí khác
+                                        mà Bên Đặt Cọc (sau khi mua sản phẩm theo Hợp Đồng) phải đóng khi làm thủ tục
+                                        đăng ký quyền sở hữu nhà cho Bên Đặt Cọc theo quy định của pháp luật và 1% quỹ
+                                        bảo trì các tiện ích sử dụng chung của Khu Nhà Phố/ Biệt thự (sau đây gọi là "
+                                        <b>Giá bán</b>") và các thông tin khác nêu tại bản thông tin Dự Án, Sản phẩm
+                                        (sau đây gọi tắt là "<b>Nhà phố/ Biệt thự</b>").
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-12">
+                                    Mọi sự điều chỉnh hoặc áp dụng các chương trình bán hàng của Bên Nhận Cọc, nếu có sẽ
+                                    được quy định tại phụ lục kèm theo Thỏa Thuận này.
+                                </div>
+                            </div>
+<!--                            <div class="row mt32">-->
+<!--                                <div class="col-12">-->
+<!--                                    <b>II. Thông tin điều kiện đặt cọc:</b>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row mt8">-->
+<!--                                <div class="col-12 ml16">-->
+<!--                                    <b>1. Đặt cọc</b>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row mt8">-->
+<!--                                <div class="col-1 offset-1">-->
+<!--                                    1.1-->
+<!--                                </div>-->
+<!--                                <div class="col-10">-->
+<!--                                    Bên Đặt Cọc sẽ đặt cọc cho Bên Nhận Cọc số tiền đặt cọc theo quy định tại Phụ luc I-->
+<!--                                    của Thỏa Thuận này để được bảo đảm Quyền Mua và sẽ được giao kết Hợp Đồng với Bên-->
+<!--                                    Nhận Cọc (Tiền Đặt Cọc). Bên Đặt Cọc và Bên Nhận Cọc đồng ý thanh toán Tiền Đặt Cọc-->
+<!--                                    theo chi tiết quy định Bảng tiến độ thanh toán được quy định tại Phụ Lục I của thỏa-->
+<!--                                    thuận này.-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row mt8">-->
+<!--                                <div class="col-1 offset-1">-->
+<!--                                    1.2-->
+<!--                                </div>-->
+<!--                                <div class="col-10">-->
+<!--                                    Bên Nhận Cọc chỉ đảm bảo Quyền Mua cho bên Đặt Cọc và sẽ ký kết Hợp Đồng Mua Bán Nhà-->
+<!--                                    với Bên Đặt Cọc theo quy định pháp luật sau khi Bên Đặt Cọc đã thanh toán đầy đủ và-->
+<!--                                    đúng hạn theo tiến độ các bên cam kết tại Phụ lục I của Thoả Thuận.-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row mt8">-->
+<!--                                <div class="col-1 offset-1">-->
+<!--                                    1.3-->
+<!--                                </div>-->
+<!--                                <div class="col-10">-->
+<!--                                    Hình thức đặt cọc: Bên Đặt Cọc có thể thanh toán Tiền Đặt Cọc cho Bên Nhận Cọc bằng-->
+<!--                                    tiền mặt hoặc chuyển khoản theo quy định dưới đây:-->
+<!--                                    <div class="row">-->
+<!--                                        <div class="col-1">-->
+<!--                                            (a)-->
+<!--                                        </div>-->
+<!--                                        <div class="col-11">-->
+<!--                                            Nếu thanh toán bằng tiền mặt, Bên Đặt Cọc sẽ thanh toán tại trụ sở của Bên-->
+<!--                                            Nhận Cọc hoặc tại địa điểm do Bên Nhận Cọc chỉ định.-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="row">-->
+<!--                                        <div class="col-1">-->
+<!--                                            (b)-->
+<!--                                        </div>-->
+<!--                                        <div class="col-11">-->
+<!--                                            <p>Nếu thanh toán bằng hình thức chuyển khoản, Bên Đặt Cọc sẽ thanh toán Tiền-->
+<!--                                                Đặt Cọc vào tài khoản ngân hàng của Bên Nhận Cọc theo chi tiết như sau:</p>-->
+<!--                                            <div class="row mt8">-->
+<!--                                                <div class="col-12">-->
+<!--                                                    <b><u>Tài khoản:</u></b>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                            <div class="row mt8">-->
+<!--                                                <div class="col-12">-->
+<!--                                                    <p>- Tên tài khoản: <b t-esc="ten_cty"/></p>-->
+<!--                                                    <p>- Số tài khoản: <b t-esc="so_tk_cty"/></p>-->
+<!--                                                    <p>- Tại Ngân hàng: <b t-esc="ten_nh"/></p>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                            <div class="row mt8">-->
+<!--                                                <div class="col-12">-->
+<!--                                                    <b><u>Hoặc tài khoản:</u></b>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                            <div class="row mt8">-->
+<!--                                                <div class="col-12">-->
+<!--                                                    <p>- Tên tài khoản: <b t-esc="ten_cty"/></p>-->
+<!--                                                    <p>- Số tài khoản: <b t-esc="so_tk_cty_2"/></p>-->
+<!--                                                    <p>- Tại Ngân hàng: <b t-esc="ten_nh_2"/></p>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                            <div class="row mt8">-->
+<!--                                                <div class="col-12">-->
+<!--                                                    <p><i>Nội dung chuyển khoản ghi rõ: Khách hàng, mã căn, Dự Án, đặt cọc-->
+<!--                                                        đợt thanh toán (KH[Họ tên] mã căn [...], Dự án DV, đợt[..])</i></p>-->
+<!--                                                    <p><i>Chi phí chuyển khoản do Bên Đặt Cọc chịu trách nhiệm thanh toán-->
+<!--                                                        cho Ngân hàng</i></p>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row mt8">-->
+<!--                                <div class="col-1 offset-1">-->
+<!--                                    1.4-->
+<!--                                </div>-->
+<!--                                <div class="col-10">-->
+<!--                                    Thời điểm xác định Bên Đặt Cọc đã nộp/ thanh toán đầy đủ Tiền Đặt Cọc là thời điểm-->
+<!--                                    Bên Nhận Cọc phát hành phiếu thu về khoản Tiền Đặt Cọc đã nhận thanh toán của Bên-->
+<!--                                    Đặt Cọc hoặc khoản Tiền Đặt Cọc chuyển khoản đã ghi có vào tài khoản của Bên Nhận-->
+<!--                                    Cọc theo xác nhận của Ngân hàng thương mại nơi Bên Nhận Cọc mở tài khoản.-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row mt8">-->
+<!--                                <div class="col-12 ml16">-->
+<!--                                    <b>2. Ký kết Hợp Đồng Mua Bán Nhà</b>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row mt8">-->
+<!--                                <div class="col-1 offset-1">-->
+<!--                                    2.1-->
+<!--                                </div>-->
+<!--                                <div class="col-10">-->
+<!--                                    <p>Ngoài những điều kiện theo quy định pháp luật, Hợp Đồng Mua Bán Nhà được ký kết khi-->
+<!--                                        đáp ứng 02 điều kiện sau đây:</p>-->
+<!--                                    <div class="row">-->
+<!--                                        <div class="col-1">-->
+<!--                                            (a)-->
+<!--                                        </div>-->
+<!--                                        <div class="col-11">-->
+<!--                                            Bên Nhận Cọc thông báo về việc ký kết Hợp Đồng Mua Bán Nhà cho Bên Đặt Cọc-->
+<!--                                            trước ngày ký kết Hợp Đồng Mua Bán Nhà (dự kiến vào ngày <span t-esc="ngay_ky_hd"/>-->
+<!--                                            , hoặc trước hoặc sau 30 ngày tính từ ngày dự kiến ký kết).-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="row">-->
+<!--                                        <div class="col-1">-->
+<!--                                            (b)-->
+<!--                                        </div>-->
+<!--                                        <div class="col-11">-->
+<!--                                            Bên Đặt Cọc đã thanh toán đầy đủ theo tiến độ quy định tại Phụ Lục I của-->
+<!--                                            Thỏa Thuận này)-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row mt8">-->
+<!--                                <div class="col-1 offset-1">-->
+<!--                                    2.2-->
+<!--                                </div>-->
+<!--                                <div class="col-10">-->
+<!--                                    <p>Tiền Đặt Cọc mà Bên Đặt Cọc đã thanh toán cho Bên Nhận Cọc theo Thỏa Thuận này sẽ-->
+<!--                                    tự động được kết chuyển thành (các) đợt thanh toán của Hợp Đồng Mua Bán Nhà.</p>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row mt8">-->
+<!--                                <div class="col-1 offset-1">-->
+<!--                                    2.3-->
+<!--                                </div>-->
+<!--                                <div class="col-10">-->
+<!--                                    <p>Bên Đặt Cọc có trách nhiệm thanh toán Giá Bán còn lại của Thỏa Thuận dựa trên-->
+<!--                                    cơ sở tiến độ quy định tại Thỏa Thuận này và / hoặc Thỏa Thuận của hai Bên (nếu có).-->
+<!--                                    </p>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row mt8">-->
+<!--                                <div class="col-12 ml16">-->
+<!--                                    <b>3. Vi phạm Thỏa Thuận</b>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row mt8">-->
+<!--                                <div class="col-1 offset-1">-->
+<!--                                    3.1-->
+<!--                                </div>-->
+<!--                                <div class="col-10">-->
+<!--                                    <p>Trong trường hợp Bên Nhận Cọc đơn phương chấm dứt Thoả thuận này mà không do lỗi-->
+<!--                                        của Bên Đặt Cọc hoặc không thuộc trường hợp sự kiện bất khả kháng thì Bên Nhận-->
+<!--                                        Cọc có trách nhiệm hoàn lại số tiền mà Bên Nhận Cọc đã nhận được từ Bên Đặt Cọc-->
+<!--                                        và bị phạt một khoản bằng số tiền đặt cọc mà Bên Đặt Cọc đã thanh toán cho Bên-->
+<!--                                        Nhận Cọc nhưng tối đa không quá 10% Giá Bán.-->
+<!--                                    </p>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row mt8">-->
+<!--                                <div class="col-1 offset-1">-->
+<!--                                    3.2-->
+<!--                                </div>-->
+<!--                                <div class="col-10">-->
+<!--                                    <p>Trường hợp Bên Đặt Cọc trễ hạn thanh toán Tiền Đặt Cọc của bất cứ đợt thanh toán-->
+<!--                                        nào quá <span t-esc="an_han"/> (<span t-esc="an_han_chu"/>) ngày kể từ ngày đến-->
+<!--                                        hạn thanh toán theo quy định tại Phụ lục I-->
+<!--                                        của Thoả Thuận này, Bên Đặt Cọc phải thanh toán thêm tiền lãi do chậm thanh toán-->
+<!--                                        bằng <span t-esc="lai_phat_ngay"/>/ngày (không phẩy không năm phần trăm trên ngày) tính trên số tiền chậm-->
+<!--                                        thanh toán cho mỗi ngày chậm thanh toán tính từ ngày đến hạn thanh toán cho đến-->
+<!--                                        ngày Bên Đặt Cọc đã thanh toán đầy đủ Tiền Đặt Cọc đến hạn thanh toán và tiền lãi-->
+<!--                                        do chậm thanh toán nêu tại Khoản này.-->
+<!--                                    </p>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row mt8">-->
+<!--                                <div class="col-1 offset-1">-->
+<!--                                    3.3-->
+<!--                                </div>-->
+<!--                                <div class="col-10">-->
+<!--                                    <p></p>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <div class="row" style="page-break-before: always;">
+                                <div class="col-12 text-center">
+                                    <h4>PHỤ LỤC I</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5>I. CÁC CHÍNH SÁCH BÁN HÀNG</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-11 offset-1">
+                                    <b>Theo chính sách báng hàng, Khách hàng có được hưởng các chính sách như sau:</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-11 offset-1">
+                                    <b>Theo chính sách báng hàng, Khách hàng có được hưởng các chính sách như sau:</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-11 offset-1">
+                                    <p>- Giá bán sau cùng là:<b>
+                                                <span t-field="doc.bsd_tong_gia"/>
+                                                (Bằng chữ là:
+                                                <span t-esc="gia_ban_chu"/> đã bao gồm thuế VAT.
+                                            </b>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-11 offset-1">
+                                    <t t-foreach="khuyen_mai_ids" t-as="km">
+                                        <p>- <span t-esc="km"/> </p>
+                                    </t>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5>II. BẢNG TIẾN ĐỘ THANH TOÁN</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 ml16">
+                                    <p>Bên Đặt Cọc đã được biết lịch thanh toán giá bán Nhà Phố/ Biệt thư như sau:</p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                            <div class="col-12">
+                                <table class="table table-bordered table-sm"
+                                 style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
+                            <thead>
+                              <tr>
+                                <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px;">
+                                  <th style="border: 1px solid black !important;" width="10%">
+                                    <div>STT</div>
+                                  </th>
+                                  <th style="border: 1px solid black !important;" width="20%">
+                                    <div>Đợt thanh toán</div>
+                                  </th>
+                                  <th style="border: 1px solid black !important;" width="10%">
+                                    <div>Tỷ lệ thanh toán</div>
+                                  </th>
+                                  <th style="border: 1px solid black !important;" width="20%">
+                                    <div>Số tiền thanh toán (Đã bao gồm VAT)(đồng)</div>
+                                  </th>
+                                  <th style="border: 1px solid black !important;" width="20%">
+                                    <div>Thời hạn thanh toán</div>
+                                  </th>
+                                  <th style="border: 1px solid black !important;" width="20%">
+                                    <div>Ghi chú</div>
+                                  </th>
+                                </tr>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <t t-foreach="doc.bsd_ltt_ids.filtered(lambda x: x.bsd_loai=='dtt').sorted(key=lambda l: l.bsd_stt)" t-as="line">
+                                  <t t-set="tien_tt" t-value="line.bsd_tien_dot_tt"/>
+                                  <tr class="text-center ">
+                                    <td style="border: 1px solid black !important;"><div t-field="line.bsd_stt"/></td>
+                                    <td style="border: 1px solid black !important;"><div t-field="line.bsd_ten_dtt"/></td>
+                                    <td style="border: 1px solid black !important;"><div t-field="line.bsd_cs_tt_ct_id.bsd_tl_tt"/></td>
+                                    <td style="border: 1px solid black !important;"><div t-esc="tien_tt"  t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    <td style="border: 1px solid black !important;"><div t-field="line.bsd_ngay_hh_tt"/></td>
+                                    <td style="border: 1px solid black !important;"></td>
+                                  </tr>
+                              </t>
+                              <tr>
+                                <td class="text-right" style="border: 1px solid black !important;"><b>Tổng cộng</b></td>
+                                <td class="text-center" style="border: 1px solid black !important;"><b>100%</b></td>
+                                <td class="text-center" style="border: 1px solid black !important;"><b t-esc="gia_ban"/></td>
+                                  <td class="text-center" style="border: 1px solid black !important;"></td>
+                                  <td class="text-center" style="border: 1px solid black !important;"></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                            </div>
+                        </div>
                         </div>
                     </t>
                 </t>

@@ -3,7 +3,7 @@
 from odoo import api, models, fields
 import logging
 import datetime
-from dateutil import tz
+from num2words import num2words
 _logger = logging.getLogger(__name__)
 
 
@@ -66,8 +66,30 @@ class ReportBsdTTDC(models.AbstractModel):
     def _get_report_values(self, docids, data=None):
         doc = self.env['bsd.hd_ban'].browse(data['ids'])
         ngay_ht = datetime.datetime.now()
-        ten_da = doc.bsd_du_an_id.bsd_ten_da,
+        ten_da = doc.bsd_du_an_id.bsd_ten_da
         dia_chi_da = doc.bsd_du_an_id.bsd_dia_chi
+        ten_kh = doc.bsd_khach_hang_id.bsd_ten
+        ngay_sinh_kh = doc.bsd_khach_hang_id.bsd_ngay_sinh
+        so_cmnd = doc.bsd_khach_hang_id.bsd_cmnd
+        dc_tt = doc.bsd_khach_hang_id.bsd_dia_chi_tt
+        dc_lh = doc.bsd_khach_hang_id.bsd_dia_chi_lh
+        so_dt = doc.bsd_khach_hang_id.mobile
+        email_kh = doc.bsd_khach_hang_id.email
+        ten_cty = doc.bsd_du_an_id.bsd_chu_dt_id.name
+        dc_lh_cty = doc.bsd_du_an_id.bsd_chu_dt_id.bsd_dia_chi_lh
+        so_dt_cty = doc.bsd_du_an_id.bsd_chu_dt_id.phone
+        ms_thue_cty = doc.bsd_du_an_id.bsd_chu_dt_id.vat
+        ngay_cap_vat = doc.bsd_du_an_id.bsd_chu_dt_id.bsd_ngay_vat
+        nguoi_dd_cty = doc.bsd_du_an_id.bsd_chu_dt_id.bsd_nguoi_dd_id
+        xung_ho = 'Ông' if nguoi_dd_cty.bsd_gioi_tinh == 'nam' else 'Bà'
+        nguoi_dd = nguoi_dd_cty.bsd_ten
+        chuc_vu = nguoi_dd_cty.function
+        loai_sp = doc.bsd_unit_id.bsd_loai_sp_id.bsd_ten_nhom
+        ma_sp = doc.bsd_unit_id.bsd_ten_unit
+        dt_dat = doc.bsd_unit_id.bsd_dt_xd
+        dt_xd = doc.bsd_unit_id.bsd_dt_sd
+        gia_ban_chu = num2words(doc.bsd_tong_gia, lang='vi_VN') + ' ' + 'đồng'
+        khuyen_mai_ids = doc.bsd_km_ids.mapped('bsd_khuyen_mai_id').mapped('bsd_ten_km')
         return {
             'doc_ids': data['ids'],
             'doc_model': data['model'],
@@ -75,5 +97,26 @@ class ReportBsdTTDC(models.AbstractModel):
             'ngay_ht': ngay_ht,
             'ten_da': ten_da,
             'dia_chi_da': dia_chi_da,
+            'ten_kh': ten_kh,
+            'ngay_sinh_kh': ngay_sinh_kh,
+            'so_cmnd': so_cmnd,
+            'dc_tt': dc_tt,
+            'dc_lh': dc_lh,
+            'so_dt': so_dt,
+            'email_kh': email_kh,
+            'ten_cty': ten_cty,
+            'dc_lh_cty': dc_lh_cty,
+            'so_dt_cty': so_dt_cty,
+            'ms_thue_cty': ms_thue_cty,
+            'ngay_cap_vat': ngay_cap_vat,
+            'xung_ho': xung_ho,
+            'nguoi_dd': nguoi_dd,
+            'chuc_vu': chuc_vu,
+            'loai_sp': loai_sp,
+            'ma_sp': ma_sp,
+            'dt_dat': dt_dat,
+            'dt_xd': dt_xd,
+            'gia_ban_chu': gia_ban_chu,
+            'khuyen_mai_ids': khuyen_mai_ids
         }
 
