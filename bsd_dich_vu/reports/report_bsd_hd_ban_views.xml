@@ -75,7 +75,7 @@
                 <t t-foreach="docs" t-as="doc">
                     <t t-set="doc" t-value="doc.with_context(lang=lang)" />
                     <t t-call="web.external_layout">
-                        <div class="page bsd_font" style="font-size:2em;">
+                        <div class="page bsd_font" style="font-size:1em;">
                             <div class="row">
                                 <div class="col-12">
                                     <b><u>Căn cứ:</u></b>
@@ -103,11 +103,11 @@
                             </div>
                             <div class="row mt16">
                                 <div class="col-12">
-                                    <h5><span t-esc="ten_cty"/> </h5>
+                                    <p><span t-esc="ten_cty"/> </p>
                                 </div>
                             </div>
                             <div class="row mt8">
-                                <div class="col-2 ml16">
+                                <div class="col-3 ml16">
                                     <div>
                                         <span class="float-left">Giấy CNĐKDN</span>
                                         <span class="float-right">:</span>
@@ -115,84 +115,84 @@
                                     <div class="float-none"/>
 
                                 </div>
-                                <div class="col-10">
+                                <div class="col-9">
                                     <p>Số <span t-esc="so_dkdn"/> do
                                         <span t-esc="noi_cap"/> cấp lần đầu ngày
-                                        <span t-esc="ngay_dkdn"/> tháng <span t-esc="thang_dkdn"/> <span t-esc="nam_dkdn"/>.
+                                        <span t-esc="ngay_dkdn.day"/> tháng <span t-esc="ngay_dkdn.month"/> <span t-esc="ngay_dkdn.year"/>.
                                     </p>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2 ml16">
+                                <div class="col-3 ml16">
                                     <div>
                                         <span class="float-left">Địa chỉ</span>
                                         <span class="float-right">:</span>
                                     </div>
                                     <div class="float-none"/>
                                 </div>
-                                <div class="col-10">
+                                <div class="col-9">
                                     <p> <span t-esc="dia_chi_lien_he"/></p>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2 ml16">
+                                <div class="col-3 ml16">
                                     <div>
                                         <span class="float-left">Điện thoại</span>
                                         <span class="float-right">:</span>
                                     </div>
                                     <div class="float-none"/>
                                 </div>
-                                <div class="col-10">
-                                    <p> <span t-esc="so_dt"/></p>
+                                <div class="col-9">
+                                    <p> <span t-esc="so_dt_cty"/></p>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2 ml16">
+                                <div class="col-3 ml16">
                                     <div>
                                         <span class="float-left">Fax</span>
                                         <span class="float-right">:</span>
                                     </div>
                                     <div class="float-none"/>
                                 </div>
-                                <div class="col-10">
+                                <div class="col-9">
                                     <p> <span t-esc="so_fax_cty"/></p>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2 ml16">
+                                <div class="col-3 ml16">
                                     <div>
                                         <span class="float-left">Đại diện bởi</span>
                                         <span class="float-right">:</span>
                                     </div>
                                     <div class="float-none"/>
                                 </div>
-                                <div class="col-10">
+                                <div class="col-9">
                                     <p> <span t-esc="xung_ho"/> <b><span t-esc="nguoi_dai_dien"/></b>
                                         Chức vụ: <span t-esc="chuc_vu"/>
                                     </p>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2 ml16">
+                                <div class="col-3 ml16">
                                     <div>
                                         <span class="float-left">Số tài khoản</span>
                                         <span class="float-right">:</span>
                                     </div>
                                     <div class="float-none"/>
                                 </div>
-                                <div class="col-10">
+                                <div class="col-9">
                                     <p> <span t-esc="so_tk"/> tại ngân hàng <span t-esc="ngan_hang"/></p>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2 ml16">
+                                <div class="col-3 ml16">
                                     <div>
                                         <span class="float-left">Mã số thuế</span>
                                         <span class="float-right">:</span>
                                     </div>
                                     <div class="float-none"/>
                                 </div>
-                                <div class="col-10">
+                                <div class="col-9">
                                     <p> <span t-esc="ma_so_thue"/></p>
                                 </div>
                             </div>
@@ -202,24 +202,24 @@
                                 </div>
                             </div>
                             <div class="row mt8">
-                                <div class="col-12">
+                                <div class="col-3">
                                     <div>
                                         <b>Ông/bà: </b>
                                     </div>
                                 </div>
-                                <div class="col-10">
+                                <div class="col-9">
                                     <p> <span t-esc="ten_kh"/></p>
                                 </div>
                              </div>
                             <div class="row">
-                                <div class="col-2 ml16">
+                                <div class="col-3 ml16">
                                     <div>
                                         <span class="float-left">Số CMND</span>
                                         <span class="float-right">:</span>
                                     </div>
                                     <div class="float-none"/>
                                 </div>
-                                <div class="col-10">
+                                <div class="col-9">
                                     <p>
                                         <span t-esc="so_cmnd"/> cấp ngày
                                         <span t-esc="ngay_cmnd"/> tại
@@ -228,50 +228,50 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2 ml16">
+                                <div class="col-3 ml16">
                                     <div>
                                         <span class="float-left">Địa chỉ thường trú</span>
                                         <span class="float-right">:</span>
                                     </div>
                                     <div class="float-none"/>
                                 </div>
-                                <div class="col-10">
+                                <div class="col-9">
                                     <p t-esc="dia_chi_thuong_tru"/>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2 ml16">
+                                <div class="col-3 ml16">
                                     <div>
                                         <span class="float-left">Địa chỉ liên hệ</span>
                                         <span class="float-right">:</span>
                                     </div>
                                     <div class="float-none"/>
                                 </div>
-                                <div class="col-10">
+                                <div class="col-9">
                                     <p t-esc="dia_chi_lien_he"/>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2 ml16">
+                                <div class="col-3 ml16">
                                     <div>
                                         <span class="float-left">Số điện thoại:</span>
                                         <span class="float-right">:</span>
                                     </div>
                                     <div class="float-none"/>
                                 </div>
-                                <div class="col-10">
+                                <div class="col-9">
                                     <p t-esc="so_dt_kh"/>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2 ml16">
+                                <div class="col-3 ml16">
                                     <div>
                                         <span class="float-left">Email</span>
                                         <span class="float-right">:</span>
                                     </div>
                                     <div class="float-none"/>
                                 </div>
-                                <div class="col-10">
+                                <div class="col-9">
                                     <p t-esc="email"/>
                                 </div>
                             </div>
@@ -292,6 +292,145 @@
                                     </p>
                                 </div>
                             </div>
+                            <div class="row mt32" style="page-break-before:always">
+                                <div class="col-12 text-center">
+                                    <b><u>Phụ đính 1</u></b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <b>Các đặc điểm của Căn Hộ</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p>1. Các đặt điểm của Căn hộ như sau:</p>
+                                        <table class="table table-bordered table-sm"
+                                           style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
+                                        <tr>
+                                            <td class="text-left" width="50%" style="border: 1px solid black !important;"><div>Mã số Căn Hộ</div></td>
+                                            <td width="50%" style="border: 1px solid black !important;"><div><span t-esc="ma_can_ho"/></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left" style="border: 1px solid black !important;"><div>Tầng (tầng có Căn Hộ)</div></td>
+                                            <td style="border: 1px solid black !important;"><div><span t-esc="tang_can_ho"/></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left" style="border: 1px solid black !important;"><div>Số Căn Hộ</div></td>
+                                            <td style="border: 1px solid black !important;"><div><span t-esc="stt_can_ho"/></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left" style="border: 1px solid black !important;"><div>Diện tích tim tường của Căn Hộ </div></td>
+                                            <td style="border: 1px solid black !important;"><div><span t-esc="dt_tim_tuong"/> m2</div></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left" style="border: 1px solid black !important;"><div>Diện tích thông thủy của Căn Hộ</div></td>
+                                            <td style="border: 1px solid black !important;"><div><span t-esc="dt_thong_thuy"/> m2</div></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+<!--                            Phụ lục 02-->
+                            <div class="row mt32" style="page-break-before:always">
+                                <div class="col-12 text-center">
+                                    <b><u>Phụ lục 2</u></b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <b>Giá bán và điều khoản thanh toán</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-1">
+                                    1.
+                                </div>
+                                <div class="col-11">
+                                    <p>Giá Mua Căn Hộ là <b><span t-field="doc.bsd_tong_gia"/> VNĐ (
+                                        Bằng chữ: <span t-esc="tong_gia_chu"/>)</b>. </p>
+                                    <p>Giá Mua Căn Hộ đã bao gồm Giá Mua Căn Hộ chưa VAT, VAT và Quỹ Bảo Trì.
+                                        Trong đó:</p>
+                                    <p> - Đơn giá (chưa bao gồm VAT): <b t-esc="don_gia_chua_vat"/> VNĐ</p>
+                                    <p> - Giá Mua căn hộ (chưa bao gồm VAT): <b t-esc="gia_chua_vat"/> VNĐ</p>
+                                    <p> - Quỹ Bảo Trì (2% Giá Bán Căn Hộ chưa VAT): <b t-esc="phi_bao_tri"/> VNĐ</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-1">
+                                    2.
+                                </div>
+                                <div class="col-11">
+                                    Bên Mua sẽ thanh toán cho Bên Bán Giá Mua Căn Hộ <b t-field="doc.bsd_tong_gia"/>
+                                    (Bằng chữ: <span t-esc="tong_gia_chu"/>) theo lịch thanh toán sau:
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                            <div class="col-12">
+                                <table class="table table-bordered table-sm"
+                                 style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
+                            <thead>
+                              <tr class="text-center " style="background-color:#EBEBEB !important;">
+                                <th colspan="4" style="border: 1px solid black !important;">LỊCH THANH TOÁN</th>
+                              </tr>
+                              <tr>
+                                <tr class="text-center " style="background-color:#EBEBEB !important;">
+                                  <th style="border: 1px solid black !important;" width="10%">
+                                    <div>STT</div>
+                                  </th>
+                                  <th style="border: 1px solid black !important;" width="20%">
+                                    <div>Đợt thanh toán</div>
+                                  </th>
+                                  <th style="border: 1px solid black !important;" width="50%">
+                                    <div>Chi tiết thanh toán</div>
+                                  </th>
+                                  <th style="border: 1px solid black !important;" width="20%">
+                                    <div>Số tiền (VNĐ)</div>
+                                  </th>
+                                </tr>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr class="text-center ">
+                                <td colspan="2" style="border: 1px solid black !important;">Đặt cọc</td>
+                                <td style="border: 1px solid black !important;"><div/></td>
+                                <td style="border: 1px solid black !important;"><div t-field="doc.bsd_du_an_id.bsd_tien_dc" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                              </tr>
+                              <t t-foreach="doc.bsd_ltt_ids.filtered(lambda x: x.bsd_loai=='dtt').sorted(key=lambda l: l.bsd_stt)" t-as="line">
+                                  <t t-set="tien_tt" t-value="line.bsd_tien_dot_tt"/>
+                                  <t t-if="line.bsd_tinh_pbt">
+                                      <tr class="text-center ">
+                                          <td rowspan="2" style="border: 1px solid black !important;"><div t-field="line.bsd_stt"/></td>
+                                          <td rowspan="2" style="border: 1px solid black !important;"><div t-field="line.bsd_ten_dtt"/></td>
+                                          <td style="border: 1px solid black !important;"><div t-field="line.bsd_cs_tt_ct_id.bsd_dien_giai"/></td>
+                                          <td style="border: 1px solid black !important;"><div t-esc="tien_tt"
+                                                                                             t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                      </tr>
+                                      <tr class="text-center ">
+                                          <td style="border: 1px solid black !important;">
+                                              <div>
+                                                 <span t-field="doc.bsd_tl_pbt"/><span>% Phí bảo trì</span>
+                                              </div>
+                                          </td>
+                                          <td style="border: 1px solid black !important;"><div t-field="doc.bsd_tien_pbt"/></td>
+                                      </tr>
+                                </t>
+                                  <t t-else="">
+                                  <tr class="text-center ">
+                                    <td style="border: 1px solid black !important;"><div t-field="line.bsd_stt"/></td>
+                                    <td style="border: 1px solid black !important;"><div t-field="line.bsd_ten_dtt"/></td>
+                                    <td style="border: 1px solid black !important;"><div t-field="line.bsd_cs_tt_ct_id.bsd_dien_giai"/></td>
+                                    <td style="border: 1px solid black !important;"><div t-esc="tien_tt"  t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                  </tr>
+                                </t>
+                              </t>
+                              <tr>
+                                <td class="text-right" colspan="3" style="border: 1px solid black !important;"><b>Tổng giá bán:</b></td>
+                                <td class="text-center" style="border: 1px solid black !important;"><div t-field="doc.bsd_tong_gia"/></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                            </div>
+                        </div>
                         </div>
                     </t>
                 </t>

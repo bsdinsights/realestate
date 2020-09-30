@@ -51,12 +51,45 @@ class ReportBsdHdBan(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        _logger.debug("Chạy tới đây")
-        return {
+        doc = self.env['bsd.hd_ban'].browse(data['ids'])
+        res = {
             'doc_ids': data['ids'],
             'doc_model': data['model'],
-            'docs': self.env['bsd.hd_ban'].browse(data['ids']),
+            'docs': doc,
+            'so_cndt': "...",
+            'noi_cap_cndt': "...",
+            'ngay_cap_cndt': "...",
+            'so_qsdd': "...",
+            'noi_cap_qsdd': "...",
+            'ngay_cap_qsdd': "...",
+            'ten_cty': doc.bsd_du_an_id.bsd_chu_dt_id.name,
+            'so_dkdn': doc.bsd_du_an_id.bsd_chu_dt_id.bsd_so_gpkd,
+            'noi_cap': doc.bsd_du_an_id.bsd_chu_dt_id.bsd_noi_gpkd,
+            'ngay_dkdn': doc.bsd_du_an_id.bsd_chu_dt_id.bsd_ngay_gpkd,
+            'dia_chi_lien_he': doc.bsd_du_an_id.bsd_chu_dt_id.bsd_dia_chi_lh,
+            'so_dt_cty': doc.bsd_du_an_id.bsd_chu_dt_id.phone,
+            'so_fax_cty': doc.bsd_du_an_id.bsd_chu_dt_id.bsd_fax,
+            'xung_ho': 'Ông' if doc.bsd_du_an_id.bsd_chu_dt_id.bsd_nguoi_dd_id.bsd_gioi_tinh == 'nam' else "Bà",
+            'nguoi_dai_dien': doc.bsd_du_an_id.bsd_chu_dt_id.bsd_nguoi_dd_id.bsd_ten,
+            'chuc_vu': doc.bsd_du_an_id.bsd_chu_dt_id.bsd_nguoi_dd_id.function,
+            'ma_so_thue': doc.bsd_du_an_id.bsd_chu_dt_id.vat,
+
+            'ten_kh': doc.bsd_khach_hang_id.bsd_ten,
+            'so_cmnd': doc.bsd_khach_hang_id.bsd_cmnd,
+            'ngay_cmnd': doc.bsd_khach_hang_id.bsd_ngay_cap_cmnd,
+            'noi_cmnd': doc.bsd_khach_hang_id.bsd_noi_cap_cmnd,
+            'dia_chi_thuong_tru': doc.bsd_khach_hang_id.bsd_dia_chi_tt,
+            'dia_chi_lien_he': doc.bsd_khach_hang_id.bsd_dia_chi_lh,
+            'so_dt_kh': doc.bsd_khach_hang_id.mobile,
+            'email': doc.bsd_khach_hang_id.email,
+            'ma_can_ho': doc.bsd_unit_id.bsd_ten_unit,
+            'tang_can_ho': doc.bsd_unit_id.bsd_tang_id.bsd_ten_tang,
+            'stt_can_ho': doc.bsd_unit_id.bsd_stt,
+            'dt_tim_tuong': doc.bsd_unit_id.bsd_dt_xd,
+            'dt_thong_thuy': doc.bsd_unit_id.bsd_dt_sd,
+            'tong_gia_chu': num2words(doc.bsd_tong_gia, lang='vi_VN') + ' ' + 'đồng'
         }
+        return res
 
 
 class ReportBsdTTDC(models.AbstractModel):
