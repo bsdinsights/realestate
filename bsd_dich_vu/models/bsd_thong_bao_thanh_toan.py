@@ -77,7 +77,7 @@ class BsdThongBaoThanhToan(models.Model):
             })
 
     def action_in_tb(self):
-        return self.env.ref('bsd_dich_vu.bsd_tb_bg_report_action').read()[0]
+        return self.env.ref('bsd_dich_vu.bsd_tb_tt_nn_report_action').read()[0]
 
     # DV.16.05 Hủy thông báo bàn giao
     def action_huy(self):

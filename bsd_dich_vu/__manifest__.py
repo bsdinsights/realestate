@@ -68,7 +68,8 @@
         'reports/report_bsd_bg_gt_views.xml',
         'reports/report_bsd_tl_kt_hd_views.xml',
         'reports/report_bsd_tb_tl_views.xml',
-        'reports/report_bsd_thanh_ly_views.xml'
+        'reports/report_bsd_thanh_ly_views.xml',
+        'reports/report_bsd_tb_tt_nn_views.xml',
     ],
     'application': True,
 }
