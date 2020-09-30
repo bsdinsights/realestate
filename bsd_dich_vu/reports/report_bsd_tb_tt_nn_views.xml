@@ -57,6 +57,16 @@
             <field name="multi">False</field>
             <field name="paperformat_id" ref="bsd_dich_vu.bsd_giay_in_tb_tt_nn"/>
         </record>
+
+        <record id="bsd_mau_in_tb_tt_dot_cuoi_html" model="ir.actions.report">
+            <field name="name">Thông báo thanh toán đợt cuối</field>
+            <field name="model">bsd.tb_tt_nn.report.wizard</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">bsd_dich_vu.bsd_tb_tt_nn_dot_cuoi_view</field>
+            <field name="multi">False</field>
+            <field name="paperformat_id" ref="bsd_dich_vu.bsd_giay_in_tb_tt_nn"/>
+        </record>
+
         <template id="bsd_tb_tt_nn_view">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
@@ -193,6 +203,167 @@
                                     </table>
                                 </div>
                             </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <p>Quý Khách hàng vui lòng thanh toán khoản tiền nêu trên trước ngày đến hạn thanh
+                                        toán theo các hình thức sau:</p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <p><b>Bằng tiền mặt</b>: Liên hệ Phòng kế toán <b t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/>, tại
+                                    địa chỉ <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.bsd_dia_chi_lh"/>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <b>Hoặc bằng chuyển khoản:</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3 ml16">
+                                    <p>Đơn vị thụ hưởng</p>
+                                </div>
+                                <div class="col-3">
+                                    <p>: <b t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/> </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3 ml16">
+                                    <p>Tài khoản số </p>
+                                </div>
+                                <div class="col-3">
+                                    <p>:</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3 ml16">
+                                    <p>Tại Ngân hàng</p>
+                                </div>
+                                <div class="col-3">
+                                    <p>:</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p><b>Quý Khách hàng cần biết thêm thông tin chi tiết, vui lòng liên hệ Bộ phận Chăm
+                                        sóc khách hàng theo số điện thoại di động:
+                                        <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.mobile"/> </b></p>
+                                    <p>Rất mong nhận được sự hợp tác của Quý Khách hàng. Một lần nữa, Công ty chúng tôi
+                                    chân thành cám ơn Quý khách đã luôn tin tưởng và đồng hành cùng chúng tôi.</p>
+                                    <p>Vui lòng bỏ qua thông báo này nếu Quý khách đã thanh toán.</p>
+                                    <p class="mt32">
+                                        Trân trọng.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p><u>Nơi nhận:</u></p>
+                                    <p> -   Như trên</p>
+                                    <p> -   Lưu bộ phận CSKH</p>
+                                </div>
+                                <div class="col-6 text-center">
+                                    <p><b t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/></p>
+                                    <p><b t-field="doc.bsd_du_an_id.bsd_chu_dt_id.bsd_nguoi_dd_id.function"/> </p>
+                                    <p style="margin-top: 100px">
+                                        <b t-field="doc.bsd_du_an_id.bsd_chu_dt_id.bsd_nguoi_dd_id.bsd_ten"/>
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <template id="bsd_tb_tt_nn_dot_cuoi_view">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="doc" t-value="doc.with_context(lang=lang)" />
+                    <t t-call="web.external_layout">
+                        <div class="page bsd_font">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <H4>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</H4>
+                                    <p><b>Độc lập - Tự do - Hạnh phúc</b></p>
+                                    <p>*****</p>
+                                    <p>Tp.Hồ Chí Minh, ngày <span t-esc="ngay_ht.day"/>
+                                        tháng <span t-esc="ngay_ht.month"/>
+                                        năm <span t-esc="ngay_ht.year"/></p>
+                                </div>
+                            </div>
+                            <div class="row mt32">
+                                <div class="col-12 text-center">
+                                    <h4>THƯ THÔNG BÁO</h4>
+                                    <p><b>Về việc thanh toán tiền mua căn hộ - Dự án <span t-field="doc.bsd_du_an_id.bsd_ten_da"/> </b></p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <p>Kính gửi:</p>
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-3 ml16">
+                                    <p>Quý Khách hàng</p>
+                                </div>
+                                <div class="col-9">
+                                    <p>:  <b t-field="doc.bsd_khach_hang_id.bsd_ten"></b></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3 ml16">
+                                    <p>Điện thoại</p>
+                                </div>
+                                <div class="col-9">
+                                    <p>:  <b t-field="doc.bsd_khach_hang_id.mobile"></b></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3 ml16">
+                                    <p>Email</p>
+                                </div>
+                                <div class="col-9">
+                                    <p>:  <b t-field="doc.bsd_khach_hang_id.email"></b></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3 ml16">
+                                    <p>Địa chỉ liên lạc</p>
+                                </div>
+                                <div class="col-9">
+                                    <p>:  <b t-field="doc.bsd_khach_hang_id.bsd_dia_chi_lh"></b></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3 ml16">
+                                    <p>Mã căn hộ</p>
+                                </div>
+                                <div class="col-9">
+                                    <p>:  <b t-field="doc.bsd_unit_id.bsd_ten_unit"></b></p>
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-12">
+                                    <p><span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/> kính gửi đến Quý Khách hàng lời
+                                    chúc sức khỏe và lời cám ơn chân thành về sự hợp tác của Quý Khách hàng cùng chúng tôi
+                                    trong thời gian qua.</p>
+                                </div>
+                            </div>
+                            <div class="row mt16">
+                                <div class="col-12">
+                                    <p>Theo hợp đồng <span t-field="doc.bsd_hd_ban_id.bsd_ma_hd_ban"/> về việc mua căn hộ
+                                        <b t-field="doc.bsd_unit_id.bsd_ten_unit"></b>
+                                    tại dự án <b t-field="doc.bsd_du_an_id.bsd_ten_da"/> mà Quý Khách hàng đã ký với
+                                    <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/> ngày
+                                    <span t-esc="ngay_ky_hd"/>, nay Công ty chúng tôi thông báo đến Quý Khách hàng
+                                    về việc thu tiền các đợt thanh toán với nội dung sau:
+                                    </p>
+                                </div>
+                            </div>
+<!--Làm tiếp tại đây-->
                             <div class="row mt8">
                                 <div class="col-12">
                                     <p>Quý Khách hàng vui lòng thanh toán khoản tiền nêu trên trước ngày đến hạn thanh

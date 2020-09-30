@@ -34,6 +34,7 @@ class BsdThongBaoThanhToan(models.Model):
                                   readonly=True)
     bsd_ngay_gui = fields.Datetime(string="Ngày gửi", help="Ngày gửi", readonly=True)
     bsd_loai = fields.Selection([('tb_tt', 'Thông báo thanh toán'),
+                                 ('tb_tt_dot_cuoi', 'Thông báo thanh toán đợt cuối'),
                                  ('tb_nn', 'Thông báo nhắc nợ')], string="Loại", required=True, help="Phân loại thông báo")
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True,
                                    readonly=True,

@@ -17,7 +17,8 @@ class BsdWizardReportThanhLy(models.TransientModel):
 
     bsd_tb_tt_nn_id = fields.Many2one('bsd.tb_tt_nn', string="Thông báo", default=_get_tb_tt_nn, readonly=True)
     bsd_mau_in = fields.Selection([('bsd_mau_in_tb_tt_nn_html', 'Thông báo thanh toán (html)'),
-                                   ('bsd_mau_in_tb_tt_nn', 'Thông báo thanh toán')], string="Mẫu in", required=True,
+                                   ('bsd_mau_in_tb_tt_nn', 'Thông báo thanh toán'),
+                                   ('bsd_mau_in_tb_tt_dot_cuoi_html', 'Thông báo thanh toán đợt cuối (html)'),], string="Mẫu in", required=True,
                                   default='bsd_mau_in_tb_tt_nn_html')
 
     def action_in(self):
@@ -34,8 +35,27 @@ class BsdWizardReportThanhLy(models.TransientModel):
         return self.env.ref(ref_id).report_action(self, data=data)
 
 
-class ReportBsdTBTL(models.AbstractModel):
+class ReportBsdTBTTNN(models.AbstractModel):
     _name = 'report.bsd_dich_vu.bsd_tb_tt_nn_view'
+
+    @api.model
+    def _get_report_values(self, docids, data=None):
+        doc = self.env['bsd.tb_tt_nn'].browse(data['ids'])
+        ngay_ht = datetime.datetime.now()
+        from_zone = tz.gettz('UTC')
+        to_zone = tz.gettz(self._context['tz'])
+        ngay_ht = ngay_ht.replace(tzinfo=from_zone)
+        ngay_ht = ngay_ht.astimezone(to_zone)
+        return {
+            'doc_ids': data['ids'],
+            'doc_model': data['model'],
+            'docs': doc,
+            'ngay_ht': ngay_ht,
+        }
+
+
+class ReportBsdTBTTNNDotCuoi(models.AbstractModel):
+    _name = 'report.bsd_dich_vu.bsd_tb_tt_nn_dot_cuoi_view'
 
     @api.model
     def _get_report_values(self, docids, data=None):
