@@ -118,4 +118,79 @@
             <p>Tạo phiếu ráp căn</p>
         </field>
     </record>
+
+<!--    Popup chuyển giữ chỗ   -->
+    <record model="ir.ui.view" id="bsd_chuyen_gc_form_popup">
+        <field name="name">bsd.chuyen_gc.form</field>
+        <field name="model">bsd.chuyen_gc</field>
+        <field name="arch" type="xml">
+            <form duplicate="false">
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            class="oe_highlight"
+                            confirm="Bạn có muốn Xác nhận yêu cầu không?"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                            type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma_chuyen_gc"/>
+                            <field name="bsd_ngay"/>
+                            <field name="bsd_du_an_id"
+                                    readonly="1" force_save="1"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_kh_ht_id" readonly="1" force_save="1"
+                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_loai_gc" readonly="1" force_save="1"/>
+                        </group>
+                        <group>
+                            <field name="bsd_gc_tc_id" readonly="1" force_save="1"
+                                   domain="[('bsd_du_an_id','=',bsd_du_an_id),('bsd_kh_moi_id', '=',bsd_kh_ht_id),
+                                            ('bsd_thanh_toan','=','da_tt'),('state','in', ['cho_rc','giu_cho'])]"
+                                   options="{'no_create':true}"
+                                   attrs="{'invisible':[('bsd_loai_gc', '!=','gc_tc')],
+                                           'required':[('bsd_loai_gc', '=', 'gc_tc')]}"
+                            />
+                            <field name="bsd_giu_cho_id" readonly="1" force_save="1"
+                                   domain="[('bsd_du_an_id','=',bsd_du_an_id),('bsd_kh_moi_id', '=',bsd_kh_ht_id),
+                                            ('bsd_thanh_toan','=','da_tt'),('state', 'in', ['dang_cho','giu_cho'])]"
+                                   options="{'no_create':true}"
+                                   attrs="{'invisible':[('bsd_loai_gc', '!=','giu_cho')],
+                                           'required':[('bsd_loai_gc', '=', 'giu_cho')]}"
+                            />
+                            <field name="bsd_unit_id" readonly="1" force_save="1"
+                                   context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                   options="{'no_create':true}"
+                                   attrs="{'invisible':[('bsd_loai_gc', '!=','giu_cho')],
+                                           'required':[('bsd_loai_gc', '=', 'giu_cho')]}"/>
+                            <field name="bsd_kh_moi_id"
+                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_dien_giai"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            class="oe_highlight"
+                            type="object"/>
+                    <button string="Hủy" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_chuyen_gc_action_popup">
+        <field name="name">Chuyển tên khách hàng giữ chỗ</field>
+        <field name="res_model">bsd.chuyen_gc</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="bsd_chuyen_gc_form_popup"/>
+        <field name="target">new</field>
+    </record>
 </odoo>

@@ -94,6 +94,7 @@ class BsdGiuChoThienChi(models.Model):
                                     help="Mã phiếu hủy giữ chỗ thiện chí được duyệt", readonly=1)
     bsd_so_huy_gc = fields.Integer(string="# Hủy giữ chỗ", compute='_compute_huy_gc')
     bsd_so_rap_can = fields.Integer(string="# Ráp căn", compute='_compute_rap_can')
+    bsd_so_chuyen_gc = fields.Integer(string="# Chuyển GC", compute='_compute_chuyen_gc')
 
     @api.onchange('bsd_nvbh_id')
     def _onchange_san_ctv(self):
@@ -134,6 +135,34 @@ class BsdGiuChoThienChi(models.Model):
             if record.bsd_tien_gc < 0:
                 raise ValidationError("Tiền giữ chỗ phải lớn hơn 0.")
 
+    def _compute_chuyen_gc(self):
+        for each in self:
+            chuyen_gc = self.env['bsd.chuyen_gc'].search([('bsd_gc_tc_id', '=', self.id)])
+            each.bsd_so_chuyen_gc = len(chuyen_gc)
+
+    def action_view_chuyen_gc(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_chuyen_gc_action').read()[0]
+
+        chuyen_gc = self.env['bsd.chuyen_gc'].search([('bsd_gc_tc_id', '=', self.id)])
+        if len(chuyen_gc) > 1:
+            action['domain'] = [('id', 'in', chuyen_gc.ids)]
+        elif chuyen_gc:
+            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_chuyen_gc_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = chuyen_gc.id
+        # Prepare the context.
+        context = {
+            'default_bsd_kh_ht_id': self.bsd_khach_hang_id.id,
+            'default_bsd_gc_tc_id': self.id,
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_loai_gc': 'gc_tc'
+        }
+        action['context'] = context
+        return action
+
     def _compute_huy_gc(self):
         for each in self:
             huy_gc = self.env['bsd.huy_gc'].search([('bsd_gc_tc_id', '=', self.id)])
@@ -157,7 +186,7 @@ class BsdGiuChoThienChi(models.Model):
             'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
             'default_bsd_gc_tc_id': self.id,
             'default_bsd_du_an_id': self.bsd_du_an_id.id,
-            'default_loai_gc': 'gc_tc'
+            'default_bsd_loai_gc': 'gc_tc'
         }
         action['context'] = context
         return action
@@ -185,7 +214,7 @@ class BsdGiuChoThienChi(models.Model):
             'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
             'default_bsd_gc_tc_id': self.id,
             'default_bsd_du_an_id': self.bsd_du_an_id.id,
-            'default_loai_gc': 'gc_tc'
+            'default_bsd_loai_gc': 'gc_tc'
         }
         action['context'] = context
         return action
@@ -256,10 +285,22 @@ class BsdGiuChoThienChi(models.Model):
             'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
             'default_bsd_gc_tc_id': self.id,
             'default_bsd_du_an_id': self.bsd_du_an_id.id,
-            'default_loai_gc': 'gc_tc',
+            'default_bsd_loai_gc': 'gc_tc',
             'default_bsd_hoan_tien': True
         }
         action = self.env.ref('bsd_kinh_doanh.bsd_huy_gc_action_popup').read()[0]
+        action['context'] = context
+        return action
+
+    # tiện ích chuyển gc
+    def action_chuyen_gc(self):
+        context = {
+            'default_bsd_kh_ht_id': self.bsd_khach_hang_id.id,
+            'default_bsd_gc_tc_id': self.id,
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_loai_gc': 'gc_tc',
+        }
+        action = self.env.ref('bsd_kinh_doanh.bsd_chuyen_gc_action_popup').read()[0]
         action['context'] = context
         return action
 

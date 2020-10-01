@@ -11,21 +11,26 @@
                             class="oe_highlight"
                             attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
                             type="object"/>
-                    <button string="In"
-                            name="action_in"
-                            states="dang_cho,giu_cho,hoan_thanh"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Hủy"
-                            type="object"
-                            name="action_huy_chua_tt"
-                            confirm="Bạn có muốn hủy Giữ chỗ này không?"
-                            attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),('bsd_thanh_toan','!=', 'chua_tt')]}"/>
                     <button string="Bảng tính giá"
                             type="object"
                             name="action_tao_bao_gia"
                             class="oe_highlight"
                             attrs="{'invisible': ['|',('state','not in',['giu_cho']),('bsd_dot_mb_id','=', False)]}"/>
+                    <button string="In"
+                            name="action_in"
+                            states="dang_cho,giu_cho,hoan_thanh"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Chuyển GC"
+                            name="action_chuyen_gc"
+                            type="object"
+                            sequence="40"
+                            states="dang_cho,giu_cho"/>
+                    <button string="Hủy"
+                            type="object"
+                            name="action_huy_chua_tt"
+                            confirm="Bạn có muốn hủy Giữ chỗ này không?"
+                            attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),('bsd_thanh_toan','!=', 'chua_tt')]}"/>
                     <button string="Hủy"
                             attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),
                                                   '|',('bsd_truoc_mb','=',True),
@@ -44,6 +49,9 @@
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_bao_gia" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_bao_gia', '=', 0)]}">
                             <field name="bsd_so_bao_gia" widget="statinfo" string="Báo giá"/>
+                        </button>
+                        <button name="action_view_chuyen_gc" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_chuyen_gc', '=', 0)]}">
+                            <field name="bsd_so_chuyen_gc" widget="statinfo" string="Chuyển GC"/>
                         </button>
                         <button name="action_view_huy_gc" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_huy_gc', '=', 0)]}">
                             <field name="bsd_so_huy_gc" widget="statinfo" string="Đề nghị hủy"/>

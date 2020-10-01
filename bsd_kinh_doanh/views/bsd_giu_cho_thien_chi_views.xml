@@ -12,6 +12,22 @@
                             sequence="1"
                             attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
                             class="oe_highlight"/>
+                    <button string="Ráp căn"
+                            name="action_rap_can"
+                            type="object"
+                            states="giu_cho"
+                            sequence="20"
+                            class="oe_highlight"/>
+                    <button string="Chuyển GC"
+                            name="action_chuyen_gc"
+                            type="object"
+                            sequence="40"
+                            states="cho_rc,giu_cho"/>
+                    <button string="In"
+                            name="action_in"
+                            states="cho_rc,giu_cho,dong_gc"
+                            sequence="20"
+                            type="object"/>
                     <button string="Đề nghị hủy"
                             name="action_de_nghi_huy"
                             type="object"
@@ -25,22 +41,15 @@
                             confirm="Bạn có muốn hủy giữ chỗ không?"
                             states="xac_nhan"
                             attrs="{'invisible':['|',('bsd_thanh_toan', '!=','chua_tt')]}"/>
-                    <button string="Ráp căn"
-                            name="action_rap_can"
-                            type="object"
-                            states="giu_cho"
-                            class="oe_highlight"/>
-                    <button string="In"
-                            name="action_in"
-                            states="cho_rc,giu_cho,dong_gc"
-                            type="object"
-                            class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_huy_gc" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_huy_gc', '=', 0)]}">
                             <field name="bsd_so_huy_gc" widget="statinfo" string="Đề nghị hủy"/>
+                        </button>
+                        <button name="action_view_chuyen_gc" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_chuyen_gc', '=', 0)]}">
+                            <field name="bsd_so_chuyen_gc" widget="statinfo" string="Chuyển GC"/>
                         </button>
                         <button name="action_view_rap_can" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_rap_can', '=', 0)]}">
                             <field name="bsd_so_rap_can" widget="statinfo" string="Ráp căn"/>
