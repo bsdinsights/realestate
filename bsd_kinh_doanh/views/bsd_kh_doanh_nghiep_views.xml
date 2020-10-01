@@ -89,6 +89,22 @@
                                 </tree>
                             </field>
                         </page>
+                        <page string="Giữ chỗ thiện chí">
+                            <field name="bsd_gc_tc_ids">
+                                <tree create="false">
+                                    <field name="bsd_ma_gctc"/>
+                                    <field name="bsd_ngay_gctc"/>
+                                    <field name="bsd_du_an_id"/>
+                                    <field name="bsd_stt"/>
+                                    <field name="bsd_tien_gc"/>
+                                    <field name="bsd_thanh_toan"/>
+                                    <field name="bsd_ngay_ut"/>
+                                    <field name="state"/>
+                                    <field name="bsd_het_han"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
                         <page string="Giữ chỗ">
                             <field name="bsd_giu_cho_ids">
                                 <tree create="false">

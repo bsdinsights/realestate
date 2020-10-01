@@ -64,6 +64,8 @@ class ResPartner(models.Model):
 
     bsd_giu_cho_ids = fields.One2many('bsd.giu_cho', 'bsd_kh_moi_id', string="DS giữ chỗ",
                                       domain=[('state', '!=', 'nhap')], readonly=True)
+    bsd_gc_tc_ids = fields.One2many('bsd.gc_tc', 'bsd_kh_moi_id', string="DS giữ chỗ thiện chí",
+                                    domain=[('state', '!=', 'nhap')], readonly=True)
     bsd_bao_gia_ids = fields.One2many('bsd.bao_gia', 'bsd_khach_hang_id', string="DS bảng tính giá",
                                       domain=[('state', '!=', 'nhap')], readonly=True)
     bsd_dat_coc_ids = fields.One2many('bsd.dat_coc', 'bsd_khach_hang_id', string="DS đặt cọc",
