@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
+    <data noupdate="1">
         <record id="bsd_tien_mat" model="bsd.pt_tt">
             <field name="bsd_ten">Tiền mặt</field>
-            <field name="bsd_ma">TM</field>
+            <field name="bsd_ma">CASH</field>
         </record>
         <record id="bsd_tt_ck" model="bsd.pt_tt">
-            <field name="bsd_ten">Thanh toán chuyển khoản</field>
-            <field name="bsd_ma">TTCK</field>
+            <field name="bsd_ten">Chuyển khoản</field>
+            <field name="bsd_ma">BNK</field>
         </record>
         <record id="bsd_tt_ck" model="bsd.pt_tt">
             <field name="bsd_ten">Séc (Chi phiếu)</field>

@@ -37,7 +37,9 @@
                             <field name="bsd_khach_hang_id"
                                    context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
                                    options="{'no_create':true}"/>
-                            <field name="bsd_pt_tt_id" options="{'no_create':true}"/>
+                            <field name="bsd_pt_tt_id"
+                                   attrs="{'required':True}"
+                                   options="{'no_create':true}"/>
                             <field name="bsd_so_nk"/>
                             <field name="bsd_tk_nh_id" attrs="{'invisible':[('bsd_so_nk','!=','ngan_hang')],
                                                               'required':[('bsd_so_nk','=','ngan_hang')]}"/>

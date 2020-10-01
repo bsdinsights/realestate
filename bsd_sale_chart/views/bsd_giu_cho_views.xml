@@ -6,7 +6,6 @@
         <field name="arch" type="xml">
             <form duplicate="false">
                 <header>
-
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
@@ -34,7 +33,9 @@
                                             ('bsd_uu_tien', '=', '0'),
                                             ('state','in',['chuan_bi','san_sang','dat_cho','giu_cho'])]"/>
                             <field name="bsd_dot_mb_id" invisible="1"/>
-                            <field name="bsd_tien_gc" attrs="{'readonly':[('bsd_dot_mb_id', '!=', False)]}"/>
+                            <field name="bsd_tien_gc"
+                                   force_save="1"
+                                   attrs="{'readonly':[('bsd_dot_mb_id', '!=', False)]}"/>
                             <field name="bsd_dien_giai"/>
                         </group>
                     </group>
@@ -102,16 +103,16 @@
                             states="dang_cho,giu_cho,hoan_thanh"
                             type="object"
                             class="oe_highlight"/>
-                    <button string="Hủy"
-                            type="object"
-                            name="action_huy_chua_tt"
-                            confirm="Bạn có muốn hủy Giữ chỗ này không?"
-                            attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),('bsd_thanh_toan','!=', 'chua_tt')]}"/>
                     <button string="Bảng tính giá"
                             type="object"
                             name="action_tao_bao_gia"
                             class="oe_highlight"
                             attrs="{'invisible': ['|',('state','not in',['giu_cho']),('bsd_dot_mb_id','=', False)]}"/>
+                    <button string="Hủy"
+                            type="object"
+                            name="action_huy_chua_tt"
+                            confirm="Bạn có muốn hủy Giữ chỗ này không?"
+                            attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),('bsd_thanh_toan','!=', 'chua_tt')]}"/>
                     <button string="Hủy"
                             attrs="{'invisible': ['|',('state','in',['huy','dong','nhap']),
                                                   '|',('bsd_truoc_mb','=',True),
@@ -200,7 +201,8 @@
                         </group>
                         <group>
                             <field name="bsd_rap_can_id"/>
-                            <field name="bsd_tien_gctc" attrs="{'invisible':[('bsd_gc_da', '=',False)]}"/>
+                            <field name="bsd_tien_gctc"
+                                   attrs="{'invisible':[('bsd_gc_da', '=',False)]}"/>
                         </group>
                     </group>
                     <group string="CHUYỂN TÊN">
