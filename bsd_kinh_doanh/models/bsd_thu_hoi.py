@@ -44,9 +44,9 @@ class BsdThuHoi(models.Model):
     # KD.04.04.03 - Xác nhận thu hồi Sản phẩm đợt mở bán
     def action_xac_nhan(self):
         if not self.bsd_unit_ids:
-            raise UserError("Chưa có Sản phẩm thu hồi. Vui lòng kiểm tra lại!")
+            raise UserError("Chưa có Sản phẩm thu hồi.\n Vui lòng kiểm tra lại!")
         if self.bsd_dot_mb_id.state != 'ph' or self.bsd_dot_mb_id.bsd_den_ngay < datetime.date.today():
-            raise UserError("Vui lòng kiểm tra lại thông tin đợt mở bán")
+            raise UserError("Vui lòng kiểm tra lại thông tin đợt mở bán.")
         self.write({
             'state': 'xac_nhan',
         })
@@ -54,7 +54,7 @@ class BsdThuHoi(models.Model):
     # KD.04.04.04 - Duyệt thu hồi Sản phẩm
     def action_duyet(self):
         if self.bsd_dot_mb_id.state != 'ph' or self.bsd_dot_mb_id.bsd_den_ngay < datetime.date.today():
-            raise UserError("Vui lòng kiểm tra lại thông tin đợt mở bán")
+            raise UserError("Vui lòng kiểm tra lại thông tin đợt mở bán.")
         # cập nhật thông tin phiếu thu hồi
         self.write({
             'state': 'duyet',
@@ -92,7 +92,7 @@ class BsdThuHoi(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã phiếu thu hồi Sản phẩm đợt mở bán'))
+            raise UserError(_('Dự án chưa có mã phiếu thu hồi Sản phẩm đợt mở bán.'))
         vals['bsd_ma_th'] = sequence.next_by_id()
         res = super(BsdThuHoi, self).create(vals)
         return res

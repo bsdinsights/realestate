@@ -44,7 +44,7 @@ class BsdThemUnit(models.Model):
     # KD.04.05.01 - Chuẩn bị Sản phẩm
     def action_chuan_bi(self):
         if not self.bsd_cb_ids:
-            raise UserError("Chưa có Sản phẩm được chọn. Vui lòng kiểm tra lại!")
+            raise UserError("Chưa có Sản phẩm được chọn. Vui lòng kiểm tra lại thông tin !")
         self.write({
             'state': 'cph',
         })
@@ -203,7 +203,7 @@ class BsdThemUnit(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã phiếu thêm Sản phẩm đợt mở bán'))
+            raise UserError(_('Dự án chưa có mã phiếu thêm Sản phẩm đợt mở bán.'))
         vals['bsd_ma_tu'] = sequence.next_by_id()
         res = super(BsdThemUnit, self).create(vals)
         return res
@@ -232,8 +232,8 @@ class BsdDotMoBanCB(models.Model):
     def create(self, vals):
         if 'bsd_unit_id' in vals.keys() and 'bsd_them_unit_id' in vals.keys():
             if self.env['bsd.them_unit_cb'].search([('bsd_unit_id', '=', vals['bsd_unit_id']),
-                                                 ('bsd_them_unit_id', '=', vals['bsd_them_unit_id'])]):
-                raise UserError("Phiếu thêm đã có unit")
+                                                  ('bsd_them_unit_id', '=', vals['bsd_them_unit_id'])]):
+                raise UserError("Phiếu thêm đã có sản phẩm.\n Vui lòng kiểm tra lại thông tin!")
         rec = super(BsdDotMoBanCB, self).create(vals)
         return rec
 
@@ -241,7 +241,7 @@ class BsdDotMoBanCB(models.Model):
         if 'bsd_unit_id' in vals.keys():
             if self.env['bsd.them_unit_cb'].search([('bsd_unit_id', '=', vals['bsd_unit_id']),
                                                     ('bsd_dot_mb_id', '=', self.bsd_dot_mb_id.id)]):
-                raise UserError("Phiếu thêm  đã có unit")
+                raise UserError("Phiếu thêm đã có sản phẩm.\n Vui lòng kiểm tra lại thông tin.")
         rec = super(BsdDotMoBanCB, self).write(vals)
         return rec
 

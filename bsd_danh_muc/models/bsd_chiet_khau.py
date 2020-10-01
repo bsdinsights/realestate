@@ -132,7 +132,7 @@ class BsdChietKhau(models.Model):
                             _logger.debug("Nằm trong khoảng cho phep")
                             flag_time = False
                 if flag_time:
-                    raise UserError("Đã tồn tại chiết khấu này. Vui lòng kiểm tra lại")
+                    raise UserError("Đã tồn tại chiết khấu này.\n Vui lòng kiểm tra lại thông tin.")
             mua_si_sl = mua_si.filtered(lambda m: not (m.bsd_den_ngay < self.bsd_tu_ngay < self.bsd_den_ngay
                                                        or self.bsd_tu_ngay < self.bsd_den_ngay < m.bsd_tu_ngay))
             if mua_si_sl:
@@ -151,7 +151,7 @@ class BsdChietKhau(models.Model):
                             _logger.debug("Nằm trong khoảng cho phep")
                             flag_sl = False
                 if flag_sl:
-                    raise UserError("Đã tồn tại chiết khấu mua sỉ. Vui lòng kiểm tra lại")
+                    raise UserError("Đã tồn tại chiết khấu mua sỉ.\n Vui lòng kiểm tra lại thông tin.")
 
         # DM.13.08 Kiểm tra điều kiện trùng lịch thanh toán
         if self.bsd_loai_ck == 'ltt':
@@ -160,7 +160,7 @@ class BsdChietKhau(models.Model):
                                                          ('bsd_cs_tt_id', '=', self.bsd_cs_tt_id.id),
                                                          ('state', '!=', 'huy')])
             if lich_tt:
-                raise UserError("Chính sách thanh toán đã có chiết khấu")
+                raise UserError("Chính sách thanh toán đã có chiết khấu.")
 
         # DM.13.09 Kiểm tra điều kiện trùng chiết khấu thanh toán trước hạn
         if self.bsd_loai_ck == 'ttth':
@@ -184,7 +184,7 @@ class BsdChietKhau(models.Model):
                             _logger.debug("Nằm trong khoảng cho phep")
                             flag_time = False
                 if flag_time:
-                    raise UserError("Đã tồn tại chiết khấu này. Vui lòng kiểm tra lại")
+                    raise UserError("Đã tồn tại chiết khấu này.\n Vui lòng kiểm tra lại thông tin.")
         # DM.13.10 Kiểm tra điều kiện trùng chiết khấu thanh toán nhanh
         if self.bsd_loai_ck == 'ttn':
             ttn = self.env['bsd.chiet_khau'].search([('bsd_loai_ck', '=', 'ttn'),
@@ -207,7 +207,7 @@ class BsdChietKhau(models.Model):
                             _logger.debug("Nằm trong khoảng cho phep")
                             flag_time = False
                 if flag_time:
-                    raise UserError("Đã tồn tại chiết khấu này. Vui lòng kiểm tra lại")
+                    raise UserError("Đã tồn tại chiết khấu này.\n Vui lòng kiểm tra lại thông tin.")
 
     @api.model
     def create(self, vals):
@@ -216,6 +216,6 @@ class BsdChietKhau(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã Chiết khấu'))
+            raise UserError(_('Dự án chưa có mã Chiết khấu.'))
         vals['bsd_ma_ck'] = sequence.next_by_id()
         return super(BsdChietKhau, self).create(vals)

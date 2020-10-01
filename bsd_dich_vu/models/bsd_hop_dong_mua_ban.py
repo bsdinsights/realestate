@@ -206,7 +206,7 @@ class BsdHopDongMuaBan(models.Model):
         _logger.debug(tl_con_tt)
         so_dot_tt = len(dot_phai_tt)
         if so_dot_tt < 1:
-            raise UserError("Không còn đợt chưa thanh toán")
+            raise UserError("Không còn đợt chưa thanh toán.\n Vui lòng kiểm tra lại thông tin.")
         elif so_dot_tt == 1:
             dot_phai_tt.bsd_tien_dot_tt = tong_tien_phai_tt
         else:
@@ -258,7 +258,7 @@ class BsdHopDongMuaBan(models.Model):
     @api.constrains('bsd_dat_coc_id')
     def _constrains_dat_coc(self):
         if len(self.env['bsd.hd_ban'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id)])) > 1:
-            raise UserError("Phiếu đặt cọc đã được tạo hợp đồng. Xin vui lòng kiểm tra lại.")
+            raise UserError("Phiếu đặt cọc đã được tạo hợp đồng.\n Vui lòng kiểm tra lại.")
 
     # DV.01.01 - Xác nhận hợp đồng
     def action_xac_nhan(self):
@@ -413,7 +413,7 @@ class BsdHopDongMuaBan(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã hợp đồng'))
+            raise UserError(_('Dự án chưa có mã hợp đồng.'))
         vals['bsd_ma_hd_ban'] = sequence.next_by_id()
         res = super(BsdHopDongMuaBan, self).create(vals)
         ids_bg = res.bsd_dat_coc_id.bsd_bg_ids.ids

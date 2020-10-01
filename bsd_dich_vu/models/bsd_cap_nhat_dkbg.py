@@ -156,7 +156,7 @@ class BsdCapNhatDKBG(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã cập nhật dự kiến bàn giao'))
+            raise UserError(_('Dự án chưa có mã cập nhật dự kiến bàn giao.'))
         vals['bsd_ma_cn_dkbg'] = sequence.next_by_id()
         return super(BsdCapNhatDKBG, self).create(vals)
 
@@ -314,6 +314,6 @@ class BsdCapNhatDKBGUnit(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã cập nhật dự kiến bàn giao chi tiết'))
+            raise UserError(_('Dự án chưa có mã cập nhật dự kiến bàn giao chi tiết.'))
         vals['bsd_ma_cn_unit'] = sequence.next_by_id()
         return super(BsdCapNhatDKBGUnit, self).create(vals)

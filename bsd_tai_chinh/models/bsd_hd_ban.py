@@ -96,7 +96,7 @@ class BsdHdBan(models.Model):
             return
         if self.bsd_co_ttdc:
             if self.state != 'da_ky_ttdc':
-                raise UserError("Hợp đồng chưa thực hiện ký thỏa thuận đặt cọc")
+                raise UserError("Hợp đồng chưa thực hiện ký thỏa thuận đặt cọc.")
             else:
                 self.write({
                     'state': 'du_dk'
@@ -129,24 +129,24 @@ class BsdHdBan(models.Model):
             return
         # Kiểm tra hợp đông đã được thanh toán phí bảo trì
         if not self.bsd_dot_pbt_ids:
-            raise UserError(_('Hợp đồng chưa ghi nhận thu phí bảo trì'))
+            raise UserError(_('Hợp đồng chưa ghi nhận thu phí bảo trì.'))
         if len(self.bsd_dot_pbt_ids) > 1:
-            raise UserError(_('Hợp đồng có nhiều hơn 1 đợt thu phí bảo trì'))
+            raise UserError(_('Hợp đồng có nhiều hơn 1 đợt thu phí bảo trì.'))
         if self.bsd_dot_pbt_ids.bsd_thanh_toan != 'da_tt':
             return
         # Kiểm tra hợp đông đã được thanh toán phí quản lý
         if not self.bsd_dot_pql_ids:
-            raise UserError(_('Hợp đồng chưa ghi nhận thu phí quản lý'))
+            raise UserError(_('Hợp đồng chưa ghi nhận thu phí quản lý.'))
         if len(self.bsd_dot_pql_ids) > 1:
-            raise UserError(_('Hợp đồng có nhiều hơn 1 đợt thu phí quản lý'))
+            raise UserError(_('Hợp đồng có nhiều hơn 1 đợt thu phí quản lý.'))
         if self.bsd_dot_pql_ids.bsd_thanh_toan != 'da_tt':
             return
         # Kiểm tra hợp đồng đã thanh toán đợt dự kiến bàn giao
         dot_dkbg = self.bsd_ltt_ids.filtered(lambda l: l.bsd_ma_dtt == 'DKBG')
         if not dot_dkbg:
-            raise UserError(_("Hợp đồng không có đợt dự kiến bàn giao"))
+            raise UserError(_("Hợp đồng không có đợt dự kiến bàn giao."))
         if len(dot_dkbg) > 1:
-            raise UserError(_("Hợp đồng có nhiều hơn 1 đợt dkbg"))
+            raise UserError(_("Hợp đồng có nhiều hơn 1 đợt dkbg."))
         if dot_dkbg.bsd_thanh_toan != 'da_tt':
             return
         # Kiểm tra các phí phát sinh từ đợt dkbg trở về trước

@@ -71,6 +71,6 @@ class BsdPSGDKM(models.Model):
             sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.ps_gd_km')], limit=1).bsd_ma_tt_id
             vals['bsd_ma_ht'] = self.env['ir.sequence'].next_by_code('bsd.ps_gd_km') or '/'
         if not sequence:
-            raise UserError(_('Danh mục mã chưa khai báo mã giao dịch khuyến mãi'))
+            raise UserError(_('Danh mục mã chưa khai báo mã giao dịch khuyến mãi.'))
         vals['bsd_ma_ht'] = sequence.next_by_id()
         return super(BsdPSGDKM, self).create(vals)

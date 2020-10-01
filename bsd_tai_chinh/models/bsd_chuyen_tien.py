@@ -94,6 +94,6 @@ class BsdChuyenTien(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã phiếu chuyển tiền'))
+            raise UserError(_('Dự án chưa có mã phiếu chuyển tiền.'))
         vals['bsd_so_ct'] = sequence.next_by_id()
         return super(BsdChuyenTien, self).create(vals)

@@ -160,11 +160,11 @@ class BsdPhieuThu(models.Model):
         # TC.01.09
         # Kiểm tra hợp đồng đã bị thanh lý chưa
         if self.bsd_hd_ban_id.state == 'thanh_ly':
-            raise UserError(_('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin hợp đồng'))
+            raise UserError(_('Hợp đồng đã bị thanh lý.\n Vui lòng kiểm tra lại thông tin hợp đồng.'))
         # Kiểm tra nếu thu phí quản lý, phí bảo trì Sản phẩm phải có ngày cất nóc
         if self.bsd_loai_pt in ['pql', 'pbt']:
             if not self.bsd_unit_id.bsd_ngay_cn:
-                raise UserError(_('Vui lòng kiểm tra thông tin sản phẩm trên hợp đồng'))
+                raise UserError(_('Vui lòng kiểm tra thông tin sản phẩm trên hợp đồng.'))
 
         # Ghi nhận giờ ngày thanh toán
         now = datetime.datetime.now()
@@ -300,11 +300,11 @@ class BsdPhieuThu(models.Model):
     def _gs_pt_dot_tt_hd(self, time):
         # Kiểm tra hợp đồng đã bị thanh lý chưa
         if self.bsd_hd_ban_id.state == 'thanh_ly':
-            raise UserError(_('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin hợp đồng'))
+            raise UserError(_('Hợp đồng đã bị thanh lý.\n Vui lòng kiểm tra lại thông tin hợp đồng.'))
         # Kiểm tra nếu thu phí quản lý, phí bảo trì Sản phẩm phải có ngày cất nóc
         if self.bsd_loai_pt in ['pql', 'pbt']:
             if not self.bsd_unit_id.bsd_ngay_cn:
-                raise UserError(_('Vui lòng kiểm tra thông tin sản phẩm trên hợp đồng'))
+                raise UserError(_('Vui lòng kiểm tra thông tin sản phẩm trên hợp đồng.'))
         # ghi công nợ giảm
         giam_id = self.env['bsd.cong_no'].create({
                         'bsd_chung_tu': self.bsd_so_pt,
@@ -393,7 +393,7 @@ class BsdPhieuThu(models.Model):
     def _gs_pt_pps(self, time):
         # Kiểm tra hợp đồng đã bị thanh lý chưa
         if self.bsd_hd_ban_id.state == 'thanh_ly':
-            raise UserError(_('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin hợp đồng'))
+            raise UserError(_('Hợp đồng đã bị thanh lý.\n Vui lòng kiểm tra lại thông tin hợp đồng.'))
         self.env['bsd.cong_no'].create({
                 'bsd_ngay': time,
                 'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
@@ -409,7 +409,7 @@ class BsdPhieuThu(models.Model):
     # TC.01.12 Cấn trừ công nợ phiếu thu
     def action_can_tru(self):    
         if self.bsd_hd_ban_id.state == 'thanh_ly':
-            raise UserError(_('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin!'))
+            raise UserError(_('Hợp đồng đã bị thanh lý.\n Vui lòng kiểm tra lại thông tin!'))
         list_ct = []
         if self.bsd_loai_pt == 'pps':
             if self.bsd_dot_tt_id:
@@ -456,7 +456,7 @@ class BsdPhieuThu(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã phiếu thu'))
+            raise UserError(_('Dự án chưa có mã phiếu thu.'))
         vals['bsd_so_pt'] = sequence.next_by_id()
         return super(BsdPhieuThu, self).create(vals)
 

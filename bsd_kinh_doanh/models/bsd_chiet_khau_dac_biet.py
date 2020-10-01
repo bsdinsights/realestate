@@ -100,6 +100,6 @@ class BsdChietKhauDacBiet(models.Model):
             sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.ck_db')], limit=1).bsd_ma_tt_id
             vals['bsd_ma_ck_db'] = self.env['ir.sequence'].next_by_code('bsd.ck_db') or '/'
         if not sequence:
-            raise UserError(_('Danh mục mã chưa khai báo mã danh sách chiết khấu đặc biệt'))
+            raise UserError(_('Danh mục mã chưa khai báo mã danh sách chiết khấu đặc biệt.'))
         vals['bsd_ma_ck_db'] = sequence.next_by_id()
         return super(BsdChietKhauDacBiet, self).create(vals)

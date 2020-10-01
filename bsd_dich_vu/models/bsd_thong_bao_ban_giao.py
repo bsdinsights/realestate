@@ -169,7 +169,7 @@ class BsdThongBaoBanGiao(models.Model):
     @api.constrains('bsd_hd_ban_id')
     def _constrains_hd_ban(self):
         if self.bsd_hd_ban_id.state == 'thanh_ly':
-            raise UserError(_('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại!'))
+            raise UserError(_('Hợp đồng đã bị thanh lý.\n Vui lòng kiểm tra lại!'))
 
     @api.model
     def create(self, vals):
@@ -178,6 +178,6 @@ class BsdThongBaoBanGiao(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã thông báo bàn giao'))
+            raise UserError(_('Dự án chưa có mã thông báo bàn giao.'))
         vals['bsd_ma_tb'] = sequence.next_by_id()
         return super(BsdThongBaoBanGiao, self).create(vals)

@@ -65,7 +65,7 @@ class BsdChietKhauTTN(models.Model):
         dot_mb_dang_ph = self.env['bsd.dot_mb'].search([('state', '=', 'ph'),
                                                         ('bsd_ck_ttn_id', '=', self.id)])
         if self.state == 'duyet' and dot_mb_dang_ph:
-            raise UserError(_("Danh sách chiết khấu thanh toán nhanh đang nằm trong đợt mở bán đã phát hành"))
+            raise UserError(_("Danh sách chiết khấu thanh toán nhanh đang nằm trong đợt mở bán đã phát hành."))
         self.write({
             'state': 'huy',
         })

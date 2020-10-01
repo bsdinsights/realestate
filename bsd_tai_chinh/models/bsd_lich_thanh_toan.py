@@ -57,7 +57,7 @@ class BsdBaoGiaLTT(models.Model):
         if not ck_ttth:
             return
         if len(ck_ttth) > 1:
-            raise UserError("Tìm thấy nhiều hơn 1 chiết khấu. Vui lòng kiểm tra lại")
+            raise UserError("Tìm thấy nhiều hơn 1 chiết khấu. Vui lòng kiểm tra lại.")
         so_ngay_th = (self.bsd_ngay_hh_tt - ngay_tt.date()).days
         if ck_ttth.bsd_chiet_khau_id.bsd_cach_tinh == 'tien':
             tien_ck = so_ngay_th * ck_ttth.bsd_chiet_khau_id.bsd_tien_ck
@@ -98,7 +98,7 @@ class BsdBaoGiaLTT(models.Model):
         if not ck_ttn:
             return
         if len(ck_ttn) > 1:
-            raise UserError("Tìm thấy nhiều hơn 1 chiết khấu. Vui lòng kiểm tra lại")
+            raise UserError("Tìm thấy nhiều hơn 1 chiết khấu. Vui lòng kiểm tra lại.")
         # Kiểm tra tỷ lệ thanh toán của hợp đồng
         if self.bsd_hd_ban_id.bsd_tl_tt_hd < ck_ttn.bsd_chiet_khau_id.bsd_tl_tt:
             return

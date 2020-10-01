@@ -229,7 +229,7 @@ class BsdBaoGia(models.Model):
     # KD.09.03 Xác nhận báo giá
     def action_xac_nhan(self):
         if not self.bsd_ltt_ids:
-            raise UserError("Bảng tính giá chưa có lịch thanh toán.\n Vui lòng kiểm tra lại")
+            raise UserError("Bảng tính giá chưa có lịch thanh toán.\n Vui lòng kiểm tra lại thông tin.")
         else:
             self.write({
                 'state': 'xac_nhan',
@@ -302,9 +302,9 @@ class BsdBaoGia(models.Model):
         tong_tien_dot_tt = 0
         # Kiểm tra chính sách thanh toán chi tiết
         if len(dot_tt_ids.filtered(lambda x: x.bsd_cach_tinh == 'dkbg')) > 1:
-            raise UserError(_("Chính sách thanh toán chi tiết có nhiều hơn 1 đợt dự kiến bàn giao"))
+            raise UserError(_("Chính sách thanh toán chi tiết có nhiều hơn 1 đợt dự kiến bàn giao."))
         if len(dot_tt_ids.filtered(lambda x: x.bsd_dot_cuoi)) > 1:
-            raise UserError(_("Chính sách thanh toán chi tiết có nhiều hơn 1 đợt dự thanh toán cuối"))
+            raise UserError(_("Chính sách thanh toán chi tiết có nhiều hơn 1 đợt dự thanh toán cuối."))
         # Tạo các đợt thanh toán
         for dot in dot_tt_ids.sorted('bsd_stt'):
             # Tạo dữ liệu đợt cố định
@@ -424,7 +424,7 @@ class BsdBaoGia(models.Model):
                                                       ('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                       ('bsd_stt_bg', '<', self.bsd_giu_cho_id.bsd_stt_bg)])
             if giu_cho:
-                raise UserError("Có giữ chỗ ưu tiên ký bảng giá trước.\n Vui lòng chờ đến lượt của bạn")
+                raise UserError("Có giữ chỗ ưu tiên ký bảng giá trước.\n Vui lòng chờ đến lượt của bạn.")
         action = self.env.ref('bsd_kinh_doanh.bsd_wizard_ky_bg_action').read()[0]
         return action
 
@@ -432,7 +432,7 @@ class BsdBaoGia(models.Model):
     def action_huy(self):
         dat_coc = self.env['bsd.dat_coc'].search([('state', '!=', 'huy'), ('bsd_bao_gia_id', '=', self.id)])
         if dat_coc:
-            raise UserError("Đã có phát sinh Phiếu cọc. Bạn không thể hủy Báo giá")
+            raise UserError("Đã có phát sinh Phiếu cọc, bạn không thể hủy Báo giá.")
         else:
             self.write({
                 'state': 'huy',
@@ -445,7 +445,7 @@ class BsdBaoGia(models.Model):
             unit = self.env['product.product'].browse(vals['bsd_unit_id'])
             sequence = unit.bsd_du_an_id.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã bảng tính giá'))
+            raise UserError(_('Dự án chưa có mã bảng tính giá.'))
         vals['bsd_ma_bao_gia'] = sequence.next_by_id()
         return super(BsdBaoGia, self).create(vals)
 

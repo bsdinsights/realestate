@@ -138,7 +138,7 @@ class BsdRapCan(models.Model):
     def action_huy(self):
         if self.bsd_giu_cho_id:
             if self.bsd_giu_cho_id.state != 'huy':
-                raise UserError("Bạn cần hủy Giữ chỗ trước khi hủy ráp căn")
+                raise UserError("Bạn cần hủy Giữ chỗ trước khi hủy ráp căn.")
         else:
             pass
         self.write({
@@ -166,7 +166,7 @@ class BsdRapCan(models.Model):
             unit = self.env['product.product'].browse(vals['bsd_unit_id'])
             sequence = unit.product_tmpl_id.bsd_du_an_id.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã phiếu ráp căn'))
+            raise UserError(_('Dự án chưa có mã phiếu ráp căn.'))
         vals['bsd_ma_rc'] = sequence.next_by_id()
         res = super(BsdRapCan, self).create(vals)
         return res

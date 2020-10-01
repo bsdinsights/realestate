@@ -64,7 +64,7 @@ class BsdChietKhauTTTH(models.Model):
         dot_mb_dang_ph = self.env['bsd.dot_mb'].search([('state', '=', 'ph'),
                                                         ('bsd_ck_ttth_id', '=', self.id)])
         if self.state == 'duyet' and dot_mb_dang_ph:
-            raise UserError(_("Danh sách chiết khấu thanh toán trước hạn đang nằm trong đợt mở bán đã phát hành"))
+            raise UserError(_("Danh sách chiết khấu thanh toán trước hạn đang nằm trong đợt mở bán đã phát hành."))
         self.write({
             'state': 'huy',
         })
@@ -76,7 +76,7 @@ class BsdChietKhauTTTH(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã chiết khấu thanh toán trước hạn'))
+            raise UserError(_('Dự án chưa có mã chiết khấu thanh toán trước hạn.'))
         vals['bsd_ma_ck_ttth'] = sequence.next_by_id()
         return super(BsdChietKhauTTTH, self).create(vals)
 

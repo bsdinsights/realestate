@@ -202,6 +202,6 @@ class BsdNghiemThu(models.Model):
             tb_nt = self.env['bsd.tb_nt'].browse(vals['bsd_tb_nt_id'])
             sequence = tb_nt.bsd_du_an_id.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã nghiệm thu'))
+            raise UserError(_('Dự án chưa có mã nghiệm thu.'))
         vals['bsd_ma_nt'] = sequence.next_by_id()
         return super(BsdNghiemThu, self).create(vals)

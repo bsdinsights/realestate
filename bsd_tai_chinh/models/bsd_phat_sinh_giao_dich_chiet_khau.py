@@ -172,6 +172,6 @@ class BsdPhatSinhGiaoDichChietKhau(models.Model):
             sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.ps_gd_ck')], limit=1).bsd_ma_tt_id
             vals['bsd_ma_ht'] = self.env['ir.sequence'].next_by_code('bsd.ps_gd_ck') or '/'
         if not sequence:
-            raise UserError(_('Danh mục mã chưa khai báo mã phát sinh giao dịch chiết khấu'))
+            raise UserError(_('Danh mục mã chưa khai báo mã phát sinh giao dịch chiết khấu.'))
         vals['bsd_ma_ht'] = sequence.next_by_id()
         return super(BsdPhatSinhGiaoDichChietKhau, self).create(vals)

@@ -53,7 +53,7 @@ class BsdCanTru(models.Model):
     @api.constrains('bsd_tien_can_tru')
     def _constrains_tien_can_tru(self):
         if self.bsd_tien_can_tru > self.bsd_tien_con_lai:
-            raise UserError("Tiền cấn trừ không thể lớn hơn tiền còn lại")
+            raise UserError("Tiền cấn trừ không thể lớn hơn tiền còn lại.")
 
     @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_can_tru')
     def _compute_tien_can_tru(self):
@@ -136,7 +136,7 @@ class BsdCanTru(models.Model):
                 })
         elif self.bsd_loai == 'dtt':
             if not self.bsd_hd_ban_id:
-                raise UserError(_('Vui lòng chọn hợp đồng'))
+                raise UserError(_('Vui lòng chọn hợp đồng.'))
             # Lấy chứng từ đợt thanh toán
             dot_tt_ids = self.env['bsd.cong_no'].search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
                                                          ('bsd_dot_tt_id', '!=', False),
@@ -276,5 +276,5 @@ class BsdCanTruChiTiet(models.Model):
     @api.constrains('bsd_tien_can_tru', 'bsd_tien_phai_tt')
     def _constrains_tien_can_tru(self):
         if self.bsd_tien_can_tru > self.bsd_tien_phai_tt:
-            raise UserError("Tiền cấn trừ không thể lớn hơn tiền phải thanh toán")
+            raise UserError("Tiền cấn trừ không thể lớn hơn tiền phải thanh toán.")
 

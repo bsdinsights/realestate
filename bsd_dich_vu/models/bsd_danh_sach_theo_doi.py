@@ -583,6 +583,6 @@ class BsdDanhSachTheoDoi(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã danh sách theo dõi'))
+            raise UserError(_('Dự án chưa có mã danh sách theo dõi.'))
         vals['bsd_ma'] = sequence.next_by_id()
         return super(BsdDanhSachTheoDoi, self).create(vals)

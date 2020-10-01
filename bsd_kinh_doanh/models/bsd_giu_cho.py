@@ -147,14 +147,14 @@ class BsdGiuCho(models.Model):
     def _check_bsd_tien_gc(self):
         for record in self:
             if record.bsd_tien_gc < 0:
-                raise ValidationError("Tiền giữ chỗ phải lớn hơn 0")
+                raise ValidationError("Tiền giữ chỗ phải lớn hơn 0.")
 
     # Kiểm tra căn hộ có đang ưu tiên hay ko
     @api.constrains('bsd_unit_id')
     def _constraint_unit_ut(self):
         if self.bsd_unit_id.bsd_uu_tien == '1':
             raise UserError(_("""Sản phẩm {0} đang được ưu tiên.\n 
-            Vui lòng chọn sản phẩm khác để giao dịch""".format(self.bsd_unit_id.bsd_ma_unit)))
+            Vui lòng chọn sản phẩm khác để giao dịch.""".format(self.bsd_unit_id.bsd_ma_unit)))
 
     # KD.07.02 Ràng buộc số giữ chỗ theo Sản phẩm/ NVBH
     @api.constrains('bsd_nvbh_id', 'bsd_unit_id')
@@ -175,14 +175,14 @@ class BsdGiuCho(models.Model):
                                                 ('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
                                                 ('state', 'not in', ['huy', 'het_han', 'dong'])])
         if gc_kh:
-            raise UserError(_("Khách hàng đã tạo giữ chỗ sản phẩm này."))
+            raise UserError(_("Khách hàng đã tạo giữ chỗ sản phẩm này.\n Vui lòng kiểm tra lại thông tin."))
 
     # Kiểm tra sản phẩm có thuộc dự án đã chọn hay ko
     @api.constrains('bsd_unit_id', 'bsd_du_an_id')
     def _constrain_da(self):
         _logger.debug("kiểm tra lỗi")
         if self.bsd_unit_id.bsd_du_an_id != self.bsd_du_an_id:
-            raise UserError(_("Sản phẩm không nằm trong dự án"))
+            raise UserError(_("Sản phẩm không nằm trong dự án.\n Vui lòng kiểm tra lại thông tin."))
 
     @api.onchange('bsd_ngay_gc', 'bsd_du_an_id',)
     def _onchange_ngay_gctc(self):
@@ -208,7 +208,7 @@ class BsdGiuCho(models.Model):
                                                    ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
                                                    ('state', 'in', ['nhap', 'giu_cho', 'dat_cho'])])
         if len(gc_in_day) > self.bsd_du_an_id.bsd_gc_nv_ngay:
-            raise UserError("Tổng số Giữ chỗ trên một ngày của bạn đã vượt quá quy định")
+            raise UserError("Tổng số Giữ chỗ trên một ngày của bạn đã vượt quá quy định.")
 
     # KD.07.05 Ràng buộc số giữ chỗ theo Sản phẩm/NVBH/ngày
     @api.constrains('bsd_nvbh_id', 'bsd_unit_id', 'bsd_ngay_gc')
@@ -222,7 +222,7 @@ class BsdGiuCho(models.Model):
                                                    ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
                                                    ('state', 'in', ['nhap', 'giu_cho', 'dat_cho'])])
         if len(gc_in_day) > self.bsd_du_an_id.bsd_gc_unit_nv_ngay:
-            raise UserError("Tổng số Giữ chỗ trong ngày theo Sản phẩm của bạn đã vượt quá quy định")
+            raise UserError("Tổng số Giữ chỗ trong ngày theo Sản phẩm của bạn đã vượt quá quy định.")
 
     @api.onchange('bsd_unit_id', 'bsd_du_an_id')
     def _onchange_tien_gc(self):
@@ -349,7 +349,7 @@ class BsdGiuCho(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã phiếu giữ chỗ'))
+            raise UserError(_('Dự án chưa có mã phiếu giữ chỗ.'))
         vals['bsd_ma_gc'] = sequence.next_by_id()
         res = super(BsdGiuCho, self).create(vals)
         if res.bsd_unit_id.bsd_dot_mb_id:

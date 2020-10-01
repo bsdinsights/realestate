@@ -117,55 +117,55 @@ class BsdProject(models.Model):
     def _check_ty_le_coc(self):
         for record in self:
             if record.bsd_tl_dc > 100 or record.bsd_tl_dc < 0:
-                raise ValidationError("Tỷ lệ đặt cọc nằm trong khoảng 0 đến 100")
+                raise ValidationError("Tỷ lệ đặt cọc nằm trong khoảng 0 đến 100.")
 
     @api.constrains('bsd_tl_pbt')
     def _check_bsd_phi_bao_tri(self):
         for record in self:
             if record.bsd_tl_pbt > 100 or record.bsd_tl_pbt < 0:
-                raise ValidationError("Phí bảo trì nằm trong khoảng 0 đến 100")
+                raise ValidationError("Phí bảo trì nằm trong khoảng 0 đến 100.")
 
     @api.constrains('bsd_hh_bg')
     def _check_bsd_int_hieu_luc_bao_gia(self):
         for record in self:
             if record.bsd_hh_bg > 100 or record.bsd_hh_bg < 0:
-                raise ValidationError("Hiệu lực báo giá nằm trong khoảng 0 đến 100")
+                raise ValidationError("Hiệu lực báo giá nằm trong khoảng 0 đến 100.")
 
     @api.constrains('bsd_hh_pc')
     def _check_bsd_int_het_han_ky_phieu_coc(self):
         for record in self:
             if record.bsd_hh_pc > 100 or record.bsd_hh_pc < 0:
-                raise ValidationError("Phiếu cọc nằm trong khoảng 0 đến 100")
+                raise ValidationError("Phiếu cọc nằm trong khoảng 0 đến 100.")
 
     @api.constrains('bsd_hh_hd')
     def _check_bsd_int_het_han_ky_hop_dong(self):
         for record in self:
             if record.bsd_hh_hd > 100 or record.bsd_hh_hd < 0:
-                raise ValidationError("Hợp đồng nằm trong khoảng 0 đến 100")
+                raise ValidationError("Hợp đồng nằm trong khoảng 0 đến 100.")
 
     @api.constrains('bsd_cb_gc')
     def _check_bsd_int_canh_bao_sau_giu_cho(self):
         for record in self:
             if record.bsd_cb_gc > 100 or record.bsd_cb_gc < 0:
-                raise ValidationError("Cảnh báo sau giữ chỗ nằm trong khoảng 0 đến 100")
+                raise ValidationError("Cảnh báo sau giữ chỗ nằm trong khoảng 0 đến 100.")
 
     @api.constrains('bsd_cb_dc')
     def _check_bsd_int_canh_bao_sau_dat_coc(self):
         for record in self:
             if record.bsd_cb_dc > 100 or record.bsd_cb_dc < 0:
-                raise ValidationError("Cảnh báo sau đặt cọc nằm trong khoảng 0 đến 100")
+                raise ValidationError("Cảnh báo sau đặt cọc nằm trong khoảng 0 đến 100.")
 
     @api.constrains('bsd_tien_gc')
     def _check_bsd_tien_gc(self):
         for record in self:
             if record.bsd_tien_gc <= 0:
-                raise ValidationError("Tiền giữ chỗ phải lớn hơn 0")
+                raise ValidationError("Tiền giữ chỗ phải lớn hơn 0.")
 
     @api.constrains('bsd_tien_dc')
     def _check_bsd_tien_dc(self):
         for record in self:
             if record.bsd_tien_dc <= 0:
-                raise ValidationError("Tiền đặt cọc phải lớn hơn 0")
+                raise ValidationError("Tiền đặt cọc phải lớn hơn 0.")
 
     @api.onchange('bsd_ma_da')
     def _onchange_ma_da(self):

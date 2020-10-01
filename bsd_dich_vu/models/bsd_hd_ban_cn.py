@@ -127,7 +127,7 @@ class BsdChuyenNhuong(models.Model):
     def action_duyet(self):
         # Kiểm tra trạng thái của hợp đồng
         if self.bsd_hd_ban_id.state in ['thanh_ly', 'huy']:
-            raise UserError("Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin hợp đồng")
+            raise UserError("Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin hợp đồng.")
         # Cập nhật trạng thái vào chuyến nhượng
         self.write({
             'state': 'duyet',
@@ -206,7 +206,7 @@ class BsdChuyenNhuong(models.Model):
     def _constrains_hd_ban(self):
         dot_dang_tt = self.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_thanh_toan == 'dang_tt')
         if dot_dang_tt:
-            raise UserError("Hợp đồng chưa hoàn tất công nợ. Vui lòng kiểm tra lại thông tin hợp đồng")
+            raise UserError("Hợp đồng chưa hoàn tất công nợ. Vui lòng kiểm tra lại thông tin hợp đồng.")
 
     @api.model
     def create(self, vals):
@@ -215,7 +215,7 @@ class BsdChuyenNhuong(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã chuyển nhượng hợp đồng'))
+            raise UserError(_('Dự án chưa có mã chuyển nhượng hợp đồng.'))
         vals['bsd_ma_cn'] = sequence.next_by_id()
         res = super(BsdChuyenNhuong, self).create(vals)
 

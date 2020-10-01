@@ -166,9 +166,9 @@ class BsdDotMoBan(models.Model):
         # Kiểm tra đầy đủ các field điều kiện lọc unit
         elif not tu_toa_nha_id or not tu_tang_id or \
                 not den_toa_nha_id or not den_tang_id:
-            raise UserError("field điều kiện lọc unit trống")
+            raise UserError("Trường điều kiện lọc sản phẩm trống.")
         elif tu_toa_nha_id.bsd_stt > den_toa_nha_id.bsd_stt:
-            raise UserError("Nhập sai số thứ tự 2 tòa nhà")
+            raise UserError("Nhập sai số thứ tự 2 tòa nhà.")
         else:
             ids_tang = []
             tu_tang_stt = tu_tang_id.bsd_stt
@@ -337,7 +337,7 @@ class BsdDotMoBan(models.Model):
             dk = self.bsd_ph_ids.filtered(lambda p: p.bsd_unit_id.state != 'san_sang')
             _logger.debug(dk)
             if dk:
-                raise UserError('Đợt mở bán đang có giao dịch. Vui lòng kiểm tra lại!')
+                raise UserError('Đợt mở bán đang có giao dịch.\n Vui lòng kiểm tra lại thông tin.')
             # chuyển trạng thái đợt phát hành
             self.write({
                 'state': 'thmb',
@@ -385,7 +385,7 @@ class BsdDotMoBan(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã đợt mở bán'))
+            raise UserError(_('Dự án chưa có mã đợt mở bán.'))
         vals['bsd_ma_dot_mb'] = sequence.next_by_id()
         res = super(BsdDotMoBan, self).create(vals)
         return res
@@ -432,7 +432,7 @@ class BsdDotMoBanCB(models.Model):
         if 'bsd_unit_id' in vals.keys() and 'bsd_dot_mb_id' in vals.keys():
             if self.env['bsd.dot_mb_cb'].search([('bsd_unit_id', '=', vals['bsd_unit_id']),
                                                  ('bsd_dot_mb_id', '=', vals['bsd_dot_mb_id'])]):
-                raise UserError("Đợt mở bán đã có unit")
+                raise UserError("Đợt mở bán đã có sản phẩm.")
         rec = super(BsdDotMoBanCB, self).create(vals)
         return rec
 
@@ -440,7 +440,7 @@ class BsdDotMoBanCB(models.Model):
         if 'bsd_unit_id' in vals.keys():
             if self.env['bsd.dot_mb_cb'].search([('bsd_unit_id', '=', vals['bsd_unit_id']),
                                                  ('bsd_dot_mb_id', '=', self.bsd_dot_mb_id.id)]):
-                raise UserError("Đợt mở bán đã có unit")
+                raise UserError("Đợt mở bán đã có sản phẩm.")
         rec = super(BsdDotMoBanCB, self).write(vals)
         return rec
 

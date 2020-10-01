@@ -65,7 +65,7 @@ class BsdChietKhauCSTT(models.Model):
         dot_mb_dang_ph = self.env['bsd.dot_mb'].search([('state', '=', 'ph'),
                                                         ('bsd_ck_cstt_id', '=', self.id)])
         if self.state == 'duyet' and dot_mb_dang_ph:
-            raise UserError(_("Danh sách chiết khấu theo chính sách thanh toán đang nằm trong đợt mở bán đã phát hành"))
+            raise UserError(_("Danh sách chiết khấu theo chính sách thanh toán đang nằm trong đợt mở bán đã phát hành."))
         self.write({
             'state': 'huy',
         })
@@ -77,7 +77,7 @@ class BsdChietKhauCSTT(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã chiết khấu chính sách thanh toán'))
+            raise UserError(_('Dự án chưa có mã chiết khấu chính sách thanh toán.'))
         vals['bsd_ma_ck_cstt'] = sequence.next_by_id()
         return super(BsdChietKhauCSTT, self).create(vals)
 

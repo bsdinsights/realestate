@@ -95,6 +95,6 @@ class BsdThongBaoThanhToan(models.Model):
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
             _logger.debug(du_an)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã thông báo thanh toán/ nhắc nợ'))
+            raise UserError(_('Dự án chưa có mã thông báo thanh toán/ nhắc nợ.'))
         vals['bsd_ma_tb'] = sequence.next_by_id()
         return super(BsdThongBaoThanhToan, self).create(vals)

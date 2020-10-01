@@ -141,7 +141,7 @@ class BsdDatCoc(models.Model):
     def _check_bsd_tien_dc(self):
         for record in self:
             if record.bsd_tien_dc < 0:
-                raise ValidationError("Tiền đặt cọc phải lớn hơn 0")
+                raise ValidationError("Tiền đặt cọc phải lớn hơn 0.")
 
     # Tên hiện thị record
     def name_get(self):
@@ -158,13 +158,13 @@ class BsdDatCoc(models.Model):
             dat_coc = self.env['bsd.dat_coc'].search([('bsd_bao_gia_id', '=', id_bao_gia)])
             _logger.debug(dat_coc)
             if dat_coc:
-                raise UserError("Bảng tính giá đã được tạo Đặt cọc. Vui lòng kiểm tra lại!")
+                raise UserError("Bảng tính giá đã được tạo Đặt cọc.\n Vui lòng kiểm tra lại thông tin!")
         sequence = False
         if 'bsd_bao_gia_id' in vals:
             bao_gia = self.env['bsd.bao_gia'].browse(vals['bsd_bao_gia_id'])
             sequence = bao_gia.bsd_du_an_id.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã phiếu đặt cọc'))
+            raise UserError(_('Dự án chưa có mã phiếu đặt cọc.'))
         vals['bsd_ma_dat_coc'] = sequence.next_by_id()
         res = super(BsdDatCoc, self).create(vals)
         ids_bg = res.bsd_bao_gia_id.bsd_bg_ids.ids

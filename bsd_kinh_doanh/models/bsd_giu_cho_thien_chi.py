@@ -122,17 +122,17 @@ class BsdGiuChoThienChi(models.Model):
         if (self.bsd_ctv_id and self.bsd_san_gd_id) \
             or (self.bsd_ctv_id and self.bsd_gioi_thieu_id) \
                or (self.bsd_san_gd_id and self.bsd_gioi_thieu_id):
-            raise UserError("Vui lòng chọn 1 trong 3 giá trị: Sàn giao dịch, Công tác viên, Khách hàng giới thiệu, ")
+            raise UserError("Vui lòng chọn 1 trong 3 giá trị: Sàn giao dịch, Công tác viên, Khách hàng giới thiệu.")
         if self.bsd_khach_hang_id == self.bsd_ctv_id \
             or self.bsd_khach_hang_id == self.bsd_san_gd_id \
                 or self.bsd_khach_hang_id == self.bsd_gioi_thieu_id:
-            raise UserError("Khách hàng không thể trùng với người môi giới")
+            raise UserError("Thông tin môi giới không được trùng với khách hàng.\n Vui lòng kiểm tra lại thông tin.")
 
     @api.constrains('bsd_tien_gc')
     def _check_bsd_tien_gc(self):
         for record in self:
             if record.bsd_tien_gc < 0:
-                raise ValidationError("Tiền giữ chỗ phải lớn hơn 0")
+                raise ValidationError("Tiền giữ chỗ phải lớn hơn 0.")
 
     def _compute_huy_gc(self):
         for each in self:
@@ -202,7 +202,8 @@ class BsdGiuChoThienChi(models.Model):
                                                   ('state', '=', 'xac_nhan'),
                                                   ('bsd_thanh_toan', 'in', ['chua_tt', 'dang_tt'])])
         if len(gc_in_day) >= self.bsd_du_an_id.bsd_gc_nv_ngay:
-            raise UserError("Số lượng giữ chỗ tối đa trên một ngày của bạn đã vượt mức.\n Vui lòng kiểm tra lại")
+            raise UserError("Số lượng giữ chỗ tối đa trên một ngày của bạn đã vượt mức.\n "
+                            "Vui lòng kiểm tra lại thông tin.")
 
     # KD.05.08 Theo dõi công nợ giữ chỗ thiện chí
     def _tao_rec_cong_no(self):
@@ -283,7 +284,7 @@ class BsdGiuChoThienChi(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã giữ chỗ thiện chí'))
+            raise UserError(_('Dự án chưa có mã giữ chỗ thiện chí.'))
         # Cập nhật thời gian hết hạn giữ chỗ thiện chí khi tạo mới
         vals['bsd_ma_gctc'] = sequence.next_by_id()
 

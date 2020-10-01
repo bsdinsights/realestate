@@ -78,6 +78,17 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="Tài khoản">
+                            <field name="bank_ids" context="{'default_partner_id': id}">
+                                <tree>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="acc_number"/>
+                                    <field name="bank_id"/>
+                                    <field name="acc_holder_name"/>
+                                    <field name="partner_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
                         <page string="Giữ chỗ">
                             <field name="bsd_giu_cho_ids">
                                 <tree create="false">

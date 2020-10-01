@@ -66,13 +66,13 @@ class BsdChuyenGiuCho(models.Model):
         })
         if self.bsd_loai_gc == 'gc_tc' and self.bsd_gc_tc_id:
             if self.bsd_gc_tc_id.bsd_thanh_toan != 'da_tt' and self.bsd_gc_tc_id.state not in ['nhap', 'dong', 'huy']:
-                raise UserError("Phiếu giữ chỗ thiện chí chưa thanh toán đủ. Vui lòng kiểm tra lại")
+                raise UserError("Phiếu giữ chỗ thiện chí chưa thanh toán đủ.\n Vui lòng kiểm tra lại thông tin.")
             self.bsd_gc_tc_id.write({
                 'bsd_kh_moi_id': self.bsd_kh_moi_id.id,
             })
         if self.bsd_loai_gc == 'giu_cho' and self.bsd_giu_cho_id:
             if self.bsd_giu_cho_id.bsd_thanh_toan != 'da_tt' and self.bsd_giu_cho_id.state not in ['nhap', 'dong', 'huy']:
-                raise UserError("Phiếu giữ chỗ chưa thanh toán đủ. Vui lòng kiểm tra lại")
+                raise UserError("Phiếu giữ chỗ chưa thanh toán đủ.\n Vui lòng kiểm tra lại thông tin.")
             self.bsd_giu_cho_id.write({
                 'bsd_kh_moi_id': self.bsd_kh_moi_id.id,
             })
@@ -96,6 +96,6 @@ class BsdChuyenGiuCho(models.Model):
             sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.chuyen_gc')], limit=1).bsd_ma_tt_id
             vals['bsd_ma_chuyen_gc'] = self.env['ir.sequence'].next_by_code('bsd.chuyen_gc') or '/'
         if not sequence:
-            raise UserError(_('Danh mục mã chưa khai báo mã chương trình khuyến mãi'))
+            raise UserError(_('Danh mục mã chưa khai báo mã chương trình khuyến mãi.'))
         vals['bsd_ma_chuyen_gc'] = sequence.next_by_id()
         return super(BsdChuyenGiuCho, self).create(vals)

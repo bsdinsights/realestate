@@ -51,7 +51,7 @@ class BsdCongNoCT(models.Model):
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             _logger.debug(self.bsd_gc_tc_id.bsd_tien_gc)
             if self.bsd_gc_tc_id.bsd_tien_gc < tien:
-                raise UserError("Không thể thực hiện thanh toán dư")
+                raise UserError("Không thể thực hiện thanh toán dư.")
             elif self.bsd_gc_tc_id.bsd_tien_gc == tien:
                 gc_th_rap_can = self.env['bsd.gc_tc'].search([('bsd_du_an_id', '=', self.bsd_gc_tc_id.bsd_du_an_id.id),
                                                               ('state', '=', 'giu_cho')])
@@ -70,7 +70,7 @@ class BsdCongNoCT(models.Model):
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_giu_cho_id', '=', self.bsd_giu_cho_id.id)])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             if self.bsd_giu_cho_id.bsd_tien_gc < tien:
-                raise UserError("Không thể thực hiện thanh toán dư")
+                raise UserError("Không thể thực hiện thanh toán dư.")
             # Kiểm tra nếu là giữ chỗ trước mở bán nếu thanh toán đủ thì chuyển trạng thái sang giữ chỗ
             if self.bsd_giu_cho_id.bsd_truoc_mb and not self.bsd_giu_cho_id.bsd_gc_da:
                 if self.bsd_giu_cho_id.bsd_tien_gc == tien:
@@ -87,7 +87,7 @@ class BsdCongNoCT(models.Model):
                                                             ('bsd_dot_tt_id', '=', False)])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             if self.bsd_dat_coc_id.bsd_tien_dc < tien:
-                raise UserError("Không thể thực hiện thanh toán dư")
+                raise UserError("Không thể thực hiện thanh toán dư.")
             if self.bsd_dat_coc_id.bsd_tien_dc == tien:
                 self.bsd_dat_coc_id.cap_nhat_trang_thai()
 
@@ -95,7 +95,7 @@ class BsdCongNoCT(models.Model):
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             if self.bsd_dot_tt_id.bsd_tien_dot_tt < tien:
-                raise UserError("Không thể thực hiện thanh toán dư")
+                raise UserError("Không thể thực hiện thanh toán dư.")
 
             hd_ban = self.bsd_dot_tt_id.bsd_hd_ban_id
             # Kiểm tra điều kiện đợt tt tạo giao dịch chiết khấu và khuyến mãi
@@ -129,12 +129,12 @@ class BsdCongNoCT(models.Model):
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_phieu_thu_id', '=', self.bsd_phieu_thu_id.id)])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             if self.bsd_phieu_thu_id.bsd_tien < tien:
-                raise UserError("Không thể thực hiện thanh toán dư")
+                raise UserError("Không thể thực hiện thanh toán dư.")
         elif self.bsd_loai == 'pt_pps':
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_phi_ps_id', '=', self.bsd_phi_ps_id.id)])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             if self.bsd_phi_ps_id.bsd_tong_tien < tien:
-                raise UserError("Không thể thực hiện thanh toán dư")
+                raise UserError("Không thể thực hiện thanh toán dư.")
             self.bsd_phi_ps_id.bsd_hd_ban_id.action_du_dkbg()
 
     @api.model

@@ -38,7 +38,7 @@ class BsdCapNhatNDC(models.Model):
     # DV22.01 Xác nhận cập nhật đến hạn thanh toán đợt cuối
     def action_xac_nhan(self):
         if not self.bsd_ct_ids:
-            raise UserError(_('Không có Hợp đồng cần được cập nhật đến hạn thanh toán của đợt cuối'))
+            raise UserError(_('Không có Hợp đồng cần được cập nhật đến hạn thanh toán của đợt cuối.'))
         else:
             ct = self.bsd_ct_ids.filtered(lambda x: x.bsd_hd_ban_id.state == 'thanh_ly')
             ct.write({
@@ -128,7 +128,7 @@ class BsdCapNhatNDC(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã cập nhật dự kiến bàn giao'))
+            raise UserError(_('Dự án chưa có mã cập nhật dự kiến bàn giao.'))
         vals['bsd_ma_cn'] = sequence.next_by_id()
         return super(BsdCapNhatNDC, self).create(vals)
 
@@ -162,7 +162,7 @@ class BsdCapNhatNDCChiTiet(models.Model):
             stt = each.bsd_dot_tt_id.bsd_stt - 1
             dot_lien_ke = each.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_stt == stt)
             if each.bsd_ngay_dtt < dot_lien_ke.bsd_ngay_hh_tt:
-                raise UserError(_('Ngày đến hạn nhỏ hơn ngày đến hạn của đợt thanh toán liền kề'))
+                raise UserError(_('Ngày đến hạn nhỏ hơn ngày đến hạn của đợt thanh toán liền kề.'))
 
     @api.onchange('bsd_cn_ndc_id')
     def _onchange_cn_ndc(self):
