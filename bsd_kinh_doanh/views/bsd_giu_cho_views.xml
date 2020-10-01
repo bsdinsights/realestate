@@ -228,7 +228,6 @@
                             <field name="bsd_khach_hang_id"
                                    context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form',
                                              'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree'}"
-                                   domain="[('bsd_la_kh', '=', True)]"
                                    options="{'no_create':true}"/>
 
                         </group>

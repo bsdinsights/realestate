@@ -5,5 +5,17 @@
             <field name="bsd_ten">Tiền mặt</field>
             <field name="bsd_ma">TM</field>
         </record>
+        <record id="bsd_tt_ck" model="bsd.pt_tt">
+            <field name="bsd_ten">Thanh toán chuyển khoản</field>
+            <field name="bsd_ma">TTCK</field>
+        </record>
+        <record id="bsd_tt_ck" model="bsd.pt_tt">
+            <field name="bsd_ten">Séc (Chi phiếu)</field>
+            <field name="bsd_ma">CP</field>
+        </record>
+        <record id="bsd_coa" model="bsd.pt_tt">
+            <field name="bsd_ten">Thanh toán trả trước</field>
+            <field name="bsd_ma">COA</field>
+        </record>
     </data>
 </odoo>
