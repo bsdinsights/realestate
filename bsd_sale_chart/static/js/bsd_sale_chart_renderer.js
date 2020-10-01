@@ -71,7 +71,9 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                             attrs: {
                                 placeholder: _t('Chọn dự án'),
                                 can_create: false,
-                            }
+                                can_write: false,
+                                noOpen: true,
+                            },
                         }
                     ),
                     bsd_dot_mb_id : new relational_fields.FieldMany2One(self,

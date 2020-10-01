@@ -6,7 +6,9 @@ from odoo import models, fields, api, _
 class BsdDuAn(models.Model):
     _inherit = 'bsd.du_an'
 
-    bsd_ma_bo_cn_ids = fields.Many2many('bsd.ma_bo_cn', string="Mã bộ chứng từ")
+    bsd_ma_bo_cn_ids = fields.Many2many('bsd.ma_bo_cn', string="Mã bộ chứng từ",
+                                        readonly=True,
+                                        states={'chuan_bi': [('readonly', False)]})
 
     def get_ma_bo_cn(self, loai_cn):
         if self.bsd_ma_bo_cn_ids:
