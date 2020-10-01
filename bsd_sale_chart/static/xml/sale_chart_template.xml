@@ -7,7 +7,7 @@
         </div>
     </div>
     <t t-name="bsd_sale_chart.data_filter">
-        <div class="o_form_view">
+        <div>
             <div class="o_form_view">
                 <div class="o_form_sheet_bg">
                     <div class="clearfix position_relative o_form_sheet">
@@ -88,9 +88,8 @@
                         <button class="btn btn-primary oe_right" id="search">Tìm</button>
                     </div>
                 </div>
-                <div id="chart">
-                </div>
             </div>
+            <div id="chart"/>
         </div>
     </t>
 
