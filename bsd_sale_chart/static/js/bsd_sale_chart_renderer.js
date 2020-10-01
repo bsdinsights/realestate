@@ -72,8 +72,10 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                                 placeholder: _t('Chọn dự án'),
                                 can_create: false,
                                 can_write: false,
-                                noOpen: true,
+                                string: "Dự án",
                             },
+//                            noOpen: true,
+                            additionalContext: {'form_view_ref': 'bsd_du_an.bsd_du_an_form_popup'},
                         }
                     ),
                     bsd_dot_mb_id : new relational_fields.FieldMany2One(self,

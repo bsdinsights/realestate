@@ -256,19 +256,12 @@
         <field name="model">bsd.du_an</field>
         <field name="arch" type="xml">
             <form duplicate="false">
-                <header>
-                    <field name="state" widget="statusbar"/>
-                </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button name="action_view_unit" type="object" class="oe_stat_button" icon="fa-home" attrs="{'invisible': [('bsd_sl_unit', '=', 0)]}">
-                            <field name="bsd_sl_unit" widget="statinfo" string="Căn hộ"/>
-                        </button>
-                    </div>
                     <notebook>
                         <page string="Thông tin chung">
                             <group>
                                 <group>
+                                    <field name="state" invisible="1"/>
                                     <field name="currency_id" invisible="1"/>
                                     <field name="company_id" invisible="1"/>
                                     <field name="bsd_ma_da" readonly="1"/>
