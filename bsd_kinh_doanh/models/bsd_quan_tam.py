@@ -57,4 +57,9 @@ class BsdQuanTam(models.Model):
             'state': 'het_han'
         })
 
-
+    @api.constrains('bsd_khach_hang_id')
+    def _constraint_kh(self):
+        quan_tam = self.search([('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
+                                ('id', '!=', self.id), ('state', '=', 'xac_nhan')])
+        if quan_tam:
+            raise UserError(_("Khách hàng đã quan tâm sảm phẩm này.\n Vui lòng kiểm tra lại thông tin."))

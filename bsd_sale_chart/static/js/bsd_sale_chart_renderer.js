@@ -28,6 +28,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             'click .bsd_unit': '_clickTooltip',
             'click .tooltip .bsd_giu_cho': '_clickGiuCho',
             'click .tooltip .bsd_bao_gia': '_clickBaoGia',
+            'click .tooltip .bsd_quan_tam': '_clickQuanTam',
             'click .mo_giu_cho': '_clickMoGiuCho',
             'scroll': '_scrollUnit',
         },
@@ -197,6 +198,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                                 }
                                 $(id).removeClass(state).addClass(item[1])
                                 $(id).find(".so_giu_cho").text(item[2].toString())
+                                $(id).find(".so_quan_tam").text(item[3].toString())
                             }
 
                         }
@@ -579,6 +581,20 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             var self = this
             var unit_id = parseInt($(event.currentTarget).parent().attr('id'))
             this._loadAction('bsd_sale_chart.bsd_giu_cho_action').then(function(action){
+                action.context={default_bsd_du_an_id:self.filter.bsd_du_an_id,
+                                default_bsd_unit_id:unit_id}
+                self.do_action(action)
+            })
+         },
+
+        /**
+         * @private tạo giữ chỗ
+         */
+         _clickQuanTam: function(event){
+            event.stopPropagation()
+            var self = this
+            var unit_id = parseInt($(event.currentTarget).parent().attr('id'))
+            this._loadAction('bsd_sale_chart.bsd_quan_tam_action').then(function(action){
                 action.context={default_bsd_du_an_id:self.filter.bsd_du_an_id,
                                 default_bsd_unit_id:unit_id}
                 self.do_action(action)

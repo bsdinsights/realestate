@@ -106,7 +106,8 @@ class BsdSaleChartWidget(models.AbstractModel):
                     unit.bsd_dt_sd AS dien_tich,
                     loai.bsd_ten_nhom AS loai,
                     unit_product.id AS product,
-                    unit.bsd_dot_mb_id AS dot_mb
+                    unit.bsd_dot_mb_id AS dot_mb,
+                    unit.bsd_so_qt
                 FROM bsd_toa_nha AS toa
                 LEFT JOIN bsd_tang AS tang 
                     ON toa.id = tang.bsd_toa_nha_id
@@ -135,7 +136,7 @@ class BsdSaleChartWidget(models.AbstractModel):
             where = "where unit.id in {0}".format(tuple(filter(None, data)))
         elif len(data) == 1:
             where = "where unit.id = {0}".format(data[0] if data[0] else 0)
-        query = """SELECT unit.id, unit.state, giu_cho.so_giu_cho_unit
+        query = """SELECT unit.id, unit.state, giu_cho.so_giu_cho_unit, unit.bsd_so_qt
                     FROM product_template AS unit
                     LEFT JOIN (SELECT unit.product_tmpl_id,COUNT(*) AS so_giu_cho_unit 
                                             FROM bsd_giu_cho AS giu_cho

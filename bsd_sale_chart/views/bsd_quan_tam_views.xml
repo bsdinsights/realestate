@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_quan_tam_form">
+        <field name="name">bsd.quan_tam.form</field>
+        <field name="model">bsd.quan_tam</field>
+        <field name="arch" type="xml">
+            <form duplicate="false">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ngay_qt" readonly="1" force_save="1"/>
+                            <field name="bsd_khach_hang_id"
+                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_nvbh_id" options="{'no_create':true}"/>
+                        </group>
+                        <group>
+                            <field name="bsd_du_an_id"
+                                   domain="[('state','=','phat_hanh')]"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_unit_id"
+                                   context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_du_an_id', 'in',[bsd_du_an_id]),
+                                            ('state','in',['chuan_bi','san_sang','dat_cho','giu_cho'])]"/>
+                            <field name="bsd_ngay_hh_qt"/>
+                            <field name="bsd_dien_giai"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            class="oe_highlight"
+                            type="object"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_quan_tam_action">
+        <field name="name">Quan tâm</field>
+        <field name="res_model">bsd.quan_tam</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_ids"
+               eval="[(5, 0, 0),
+                      (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_quan_tam_form')})]"/>
+    </record>
+</odoo>

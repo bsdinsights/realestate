@@ -11,6 +11,14 @@ class ProductTemplate(models.Model):
                                     readonly=True)
     bsd_giu_cho_ids = fields.One2many('bsd.giu_cho', 'bsd_product_tmpl_id', string="DS giữ chỗ",
                                       readonly=True)
+    bsd_quan_tam_ids = fields.One2many('bsd.quan_tam', 'bsd_product_tmpl_id', domain=[('state', '=', 'xac_nhan')],
+                                       string="DS quan tâm")
+    bsd_so_qt = fields.Integer(string="# Số quan tâm", compute="_compute_so_qt", store=True)
+
+    @api.depends('bsd_quan_tam_ids')
+    def _compute_so_qt(self):
+        for each in self:
+            each.bsd_so_qt = len(each.bsd_quan_tam_ids)
 
     # Tạo giữ chỗ từ sản phẩm
     def action_tao_gc(self):
