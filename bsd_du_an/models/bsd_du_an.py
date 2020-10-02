@@ -2,6 +2,8 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class BsdProject(models.Model):
@@ -318,8 +320,11 @@ class BsdProject(models.Model):
     @api.model
     def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
         args = list(args or [])
-        if not (name == '' and operator == 'ilike'):
-            args += [('bsd_search_ten', operator, name)]
+        if name:
+            if operator == 'ilike':
+                args += [('bsd_search_ten', operator, name)]
+            elif operator == '=':
+                args += [('bsd_ma_da', operator, name)]
         access_rights_uid = name_get_uid or self._uid
         ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
         recs = self.browse(ids)
