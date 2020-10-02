@@ -189,7 +189,7 @@ class BsdProject(models.Model):
     state = fields.Selection([('chuan_bi', 'Chuẩn bị'),
                               ('phat_hanh', 'Đã ban hành')],
                              string="Trạng thái", default='chuan_bi', required=True, tracking=1, help="Trạng thái")
-    bsd_tk_ng_ids = fields.One2many('bsd.da_tknh', 'bsd_du_an_id', string="Tài khoản ngân hàng",
+    bsd_tk_ng_ids = fields.One2many('res.partner.bank', 'bsd_du_an_id', string="Tài khoản ngân hàng",
                                     readonly=True,
                                     states={'chuan_bi': [('readonly', False)]})
     bsd_nh_tt_ids = fields.One2many('bsd.da_nh', 'bsd_du_an_id', string="Ngân hàng tài trợ",
@@ -366,7 +366,7 @@ class BsdDuanTaiKhoanNganHang(models.Model):
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án")
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng tài khoản ngân hàng")
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng tài khoản ngân hàng")
-    bsd_tk_chinh = fields.Boolean(string="Tài khoản chính", help="Tài khoản sử dụng mặc định của dự án")
+    bsd_tk_chinh = fields.Boolean(string="Tài khoản chính", help="Tài khoản sử dụng mặc định")
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Ngưng sử dụng')],
                              string="Trạng thái", default='active')
@@ -410,3 +410,4 @@ class BsdLoaiHinhSuDung(models.Model):
     _rec_name = 'bsd_ten'
 
     bsd_ten = fields.Char(string="Loại hình sử dụng", help="Loại hình sử dụng", required=True)
+

@@ -21,11 +21,3 @@ class ResCountryState(models.Model):
     state = fields.Selection([('active', "Đang sử dụng"),
                               ('inactive', "Không sử dụng")], string='Trạng thái',
                              default='active', tracking=1, help="Trạng thái")
-
-
-class ResPartnerBank(models.Model):
-    _inherit = 'res.partner.bank'
-
-    state = fields.Selection([('active', "Đang sử dụng"),
-                              ('inactive', "Không sử dụng")], string='Trạng thái',
-                             default='active', tracking=1, help="Trạng thái")

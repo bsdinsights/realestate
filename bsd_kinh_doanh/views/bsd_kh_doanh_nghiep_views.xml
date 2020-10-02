@@ -80,13 +80,31 @@
                         </page>
                         <page string="Tài khoản">
                             <field name="bank_ids" context="{'default_partner_id': id}">
-                                <tree>
-                                    <field name="sequence" widget="handle"/>
-                                    <field name="acc_number"/>
-                                    <field name="bank_id"/>
-                                    <field name="acc_holder_name"/>
-                                    <field name="partner_id" invisible="1"/>
-                                </tree>
+                                    <tree>
+                                        <field name="acc_number"/>
+                                        <field name="partner_id"/>
+                                        <field name="bank_id"/>
+                                        <field name="bsd_tu_ngay"/>
+                                        <field name="bsd_den_ngay"/>
+                                        <field name="bsd_tk_chinh"/>
+                                    </tree>
+                                    <form duplicate="false">
+                                        <sheet>
+                                            <group>
+                                                <group>
+                                                    <field name="acc_number"/>
+                                                    <field name="partner_id"/>
+                                                    <field name="bank_id"/>
+                                                    <field name="bsd_tk_chinh"/>
+                                                </group>
+                                                <group>
+                                                    <field name="acc_holder_name"/>
+                                                    <field name="bsd_tu_ngay"/>
+                                                    <field name="bsd_den_ngay"/>
+                                                </group>
+                                            </group>
+                                        </sheet>
+                                    </form>
                             </field>
                         </page>
                         <page string="Giữ chỗ thiện chí">
