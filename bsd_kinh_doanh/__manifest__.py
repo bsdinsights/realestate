@@ -33,6 +33,7 @@
         'views/bsd_them_unit_views.xml',
         'views/bsd_chiet_khau_dac_biet_views.xml',
         'views/bsd_chiet_khau_chung_views.xml',
+        'views/bsd_quan_tam_views.xml',
         'views/bsd_menu_item_views.xml',
         'data/bsd_automation_data.xml',
         'data/bsd_sequence_data.xml',

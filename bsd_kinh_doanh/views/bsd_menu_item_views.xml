@@ -119,6 +119,11 @@
                   sequence="105"
                   action="bsd_chuyen_gc_action"
                   parent="bsd_giu_cho_menu_2"/>
+        <menuitem id="bsd_quan_tam_menu_action_2"
+                  name="Quan tâm"
+                  sequence="107"
+                  action="bsd_quan_tam_action"
+                  parent="bsd_giu_cho_menu_2"/>
         <menuitem id="bsd_huy_gc_menu_action_2"
                   name="Hủy giữ chỗ"
                   sequence="106"

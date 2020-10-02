@@ -200,7 +200,7 @@
                                                         <div class="bsd_title" t-esc="unit[5]"/>
                                                         <div>Giữ chỗ: <span class="so_giu_cho" t-esc="unit[7]"/></div>
                                                         <div class="bsd_gia"><span t-esc="unit[8]"/><span> đ</span></div>
-                                                        <div>Quan tâm BĐS: 0</div>
+                                                        <div>Quan tâm : 0</div>
                                                     </div>
                                                 </div>
                                             </div>

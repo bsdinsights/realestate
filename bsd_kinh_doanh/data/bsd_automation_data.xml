@@ -26,5 +26,18 @@ record = model.browse(env.context['active_id'])
 record.auto_huy_gc()
             </field>
         </record>
+
+        <record model="base.automation" id="bsd_quan_tam_het_han">
+            <field name="name">Hết hạn quan tâm</field>
+            <field name="model_id" ref="bsd_kinh_doanh.model_bsd_quan_tam"/>
+            <field name="trigger">on_time</field>
+            <field name="filter_domain">[('state','=','xac_nhan')]</field>
+            <field name="trg_date_id" ref="bsd_kinh_doanh.field_bsd_quan_tam__bsd_ngay_hh_qt"/>
+            <field name="state">code</field>
+            <field name="code">
+record = model.browse(env.context['active_id'])
+record.auto_huy_qt()
+            </field>
+        </record>
     </data>
 </odoo>
