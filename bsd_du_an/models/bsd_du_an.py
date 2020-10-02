@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -364,9 +364,45 @@ class BsdDuanTaiKhoanNganHang(models.Model):
     bsd_tk_nh_id = fields.Many2one('res.partner.bank', string="Tài khoản ngân hàng", required=True)
     bsd_ngan_hang_id = fields.Many2one(related='bsd_tk_nh_id.bank_id', string="Ngân hàng")
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án")
+    bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng tài khoản ngân hàng")
+    bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng tài khoản ngân hàng")
+    bsd_tk_chinh = fields.Boolean(string="Tài khoản chính", help="Tài khoản sử dụng mặc định của dự án")
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Ngưng sử dụng')],
                              string="Trạng thái", default='active')
+
+    @api.constrains('bsd_du_an_id', 'bsd_tk_chinh')
+    def _constraint_tk_chinh(self):
+        for each in self:
+            if each.bsd_tk_chinh:
+                tk_ad = self.env['bsd.da_tknh'].search([('bsd_du_an_id', '=', each.bsd_du_an_id.id),
+                                                        ('id', '!=', each.id),
+                                                        ('bsd_tk_chinh', '=', True)])
+                if tk_ad:
+                    raise UserError("Dự án đã có tài khoản chính.\n "
+                                    " Vui lòng kiểm tra lại thông tin.")
+    # @api.constrains('bsd_tu_ngay', 'bsd_den_ngay', 'bsd_du_an_id')
+    # def _constraint_thoi_gian(self):
+    #     for each in self:
+    #         tk_ad = self.env['bsd.da_tknh'].search([('bsd_du_an_id', '=', each.bsd_du_an_id.id),
+    #                                                 ('id', '!=', each.id)])
+    #         if tk_ad:
+    #             khoang_time = [(t.bsd_tu_ngay, t.bsd_den_ngay) for t in tk_ad.sorted('bsd_tu_ngay')]
+    #             flag = True
+    #             if each.bsd_tu_ngay < each.bsd_den_ngay < khoang_time[0][0]:
+    #                 flag = False
+    #             elif khoang_time[-1][1] < each.bsd_tu_ngay < each.bsd_den_ngay:
+    #                 flag = False
+    #             else:
+    #                 l = len(khoang_time)
+    #                 for i in range(0, l-1):
+    #                     t_first = khoang_time[i][1]
+    #                     t_last = khoang_time[i+1][0]
+    #                     if t_first < each.bsd_tu_ngay < each.bsd_den_ngay < t_last:
+    #                         flag = False
+    #             if flag:
+    #                 raise UserError("Đã tồn tại một tài khoản ngân hàng đang được áp dụng \n "
+    #                                 "trong khoảng thời gian được lựa chọn. Vui lòng kiểm tra lại.")
 
 
 class BsdLoaiHinhSuDung(models.Model):

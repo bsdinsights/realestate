@@ -162,37 +162,13 @@
                             </group>
                         </page>
                         <page  string="Ngân hàng">
-                            <group>
-                                <group string="NGÂN HÀNG TÀI TRỢ">
-                                    <field name="bsd_nh_tt_ids" nolabel="1">
-                                        <tree editable="bottom">
-                                            <field name="bsd_ngan_hang_id" options="{'no_create':true}"/>
-                                            <field name="bsd_ma_nh"/>
-                                        </tree>
-                                    </field>
-                                </group>
-                                <group string="TÀI KHOẢN">
-                                    <field name="bsd_tk_ng_ids" nolabel="1">
-                                        <tree editable="bottom">
-                                            <field name="bsd_tk_nh_id"
-                                                   options="{'no_create':true}"
-                                                   domain="[('partner_id', '=', parent.bsd_chu_dt_id)]"/>
-                                            <field name="bsd_ngan_hang_id"/>
-                                        </tree>
-                                        <form duplicate="false">
-                                            <sheet>
-                                                <group>
-                                                    <group>
-                                                        <field name="bsd_tk_nh_id"/>
-                                                        <field name="bsd_ngan_hang_id"/>
-                                                    </group>
-                                                    <group>
-                                                    </group>
-                                                </group>
-                                            </sheet>
-                                        </form>
-                                    </field>
-                                </group>
+                            <group string="NGÂN HÀNG TÀI TRỢ" nolabel="1">
+                                <field name="bsd_nh_tt_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="bsd_ngan_hang_id" options="{'no_create':true}"/>
+                                        <field name="bsd_ma_nh"/>
+                                    </tree>
+                                </field>
                             </group>
                             <group>
                                 <group string="NGÂN HÀNG CHO VAY">
@@ -203,6 +179,33 @@
                                         </tree>
                                     </field>
                                 </group>
+                            </group>
+                            <group string="TÀI KHOẢN">
+                                <field name="bsd_tk_ng_ids" nolabel="1">
+                                    <tree>
+                                        <field name="bsd_tk_nh_id"
+                                               options="{'no_create':true}"/>
+                                        <field name="bsd_ngan_hang_id"/>
+                                        <field name="bsd_tu_ngay"/>
+                                        <field name="bsd_den_ngay"/>
+                                        <field name="bsd_tk_chinh"/>
+                                    </tree>
+                                    <form duplicate="false">
+                                        <sheet>
+                                            <group>
+                                                <group>
+                                                    <field name="bsd_tk_nh_id"/>
+                                                    <field name="bsd_ngan_hang_id"/>
+                                                    <field name="bsd_tk_chinh"/>
+                                                </group>
+                                                <group>
+                                                    <field name="bsd_tu_ngay"/>
+                                                    <field name="bsd_den_ngay"/>
+                                                </group>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
                             </group>
                         </page>
                     </notebook>
