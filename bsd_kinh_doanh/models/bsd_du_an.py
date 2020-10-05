@@ -21,7 +21,7 @@ class BsdDuAn(models.Model):
     def action_view_gc_tc(self):
         action = self.env.ref('bsd_kinh_doanh.bsd_gc_tc_action').read()[0]
 
-        gc_tc = self.env['bsd.gc_tc'].search([('bsd_gc_tc_id', '=', self.id)])
+        gc_tc = self.env['bsd.gc_tc'].search([('bsd_du_an_id', '=', self.id)])
         if len(gc_tc) > 1:
             action['domain'] = [('id', 'in', gc_tc.ids)]
         elif gc_tc:

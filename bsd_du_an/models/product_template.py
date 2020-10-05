@@ -133,7 +133,7 @@ class ProductTemplate(models.Model):
                                                                 """,
                                    compute='_compute_bsd_phi_bao_tri', store=True)
     bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất",
-                                 readonly=True,
+                                 readonly=True, default=10,
                                  states={'chuan_bi': [('readonly', False)]})
     bsd_tien_thue = fields.Monetary(string="Tiền thuế", help="""Tiền thuế của sản phẩm được tính theo công thức:
                                                             (giá bán - Giá trị QSDĐ)* thuế suất""",
@@ -376,6 +376,18 @@ class ProductTemplate(models.Model):
             if not template.bsd_qsdd_m2:
                 template.write(({
                     'bsd_qsdd_m2': du_an.bsd_qsdd_m2
+                }))
+            if not template.bsd_tl_pbt:
+                template.write(({
+                    'bsd_tl_pbt': du_an.bsd_tl_pbt
+                }))
+            if not template.bsd_tien_gc:
+                template.write(({
+                    'bsd_tien_gc': du_an.bsd_tien_gc
+                }))
+            if not template.bsd_tien_dc:
+                template.write(({
+                    'bsd_tien_dc': du_an.bsd_tien_dc
                 }))
             template._create_sequence()
         return templates
