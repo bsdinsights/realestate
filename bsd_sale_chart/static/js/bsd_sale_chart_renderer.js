@@ -251,6 +251,9 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     if (item[10] === null){
                         item[10] = ''
                     }
+                    if (item[12] === null){
+                        item[0] = 0
+                    }
                 })
                 var group_toa = _.groupBy(self.data, function(item) { return item[0]});
                 _.each(group_toa, function(item,index,group_toa){
