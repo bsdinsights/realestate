@@ -5,7 +5,8 @@
         <field name="model">bsd.tang</field>
         <field name="arch" type="xml">
             <form duplicate="false">
-                <notebook>
+                <sheet>
+                    <notebook>
                     <page string="Thông tin chung">
                         <group>
                     <group>
@@ -37,6 +38,7 @@
                         </field>
                     </page>
                 </notebook>
+                </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="activity_ids" widget="mail_activity"/>

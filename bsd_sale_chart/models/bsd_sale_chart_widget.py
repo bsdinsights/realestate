@@ -97,7 +97,7 @@ class BsdSaleChartWidget(models.AbstractModel):
                     toa.id AS id_toa,
                     toa.bsd_ten_tn,
                     tang.id AS id_tang,
-                    tang.bsd_ma_tang,
+                    tang.bsd_ten_tang,
                     unit.id AS id_unit,
                     unit.bsd_ten_unit,
                     unit.state, 
