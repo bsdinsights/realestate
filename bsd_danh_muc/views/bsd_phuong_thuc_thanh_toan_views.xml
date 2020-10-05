@@ -46,11 +46,11 @@
         </field>
     </record>
     <record model="ir.actions.act_window" id="bsd_pt_tt_action">
-        <field name="name">Phương thức thanh toán</field>
+        <field name="name">Hình thức thanh toán</field>
         <field name="res_model">bsd.pt_tt</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
-            <p>Tạo phuong thức thanh toán</p>
+            <p>Tạo Hình thức thanh toán</p>
         </field>
     </record>
 </odoo>

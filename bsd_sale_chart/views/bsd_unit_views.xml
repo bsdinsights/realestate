@@ -121,9 +121,7 @@
                     </notebook>
                 </sheet>
                 <footer>
-                    <button string="Quan tâm" name="action_quan_tam" type="object" class="oe_highlight"/>
-                    <button string="Giữ chỗ" name="action_giu_cho" type="object" class="oe_highlight"/>
-                    <button string="Báo giá" name="action_quan_tam" type="object" class="oe_highlight"/>
+                    <button string="Đóng" special="cancel"/>
                 </footer>
             </form>
         </field>
