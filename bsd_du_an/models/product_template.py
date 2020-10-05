@@ -348,7 +348,7 @@ class ProductTemplate(models.Model):
             'code': self.bsd_ma_unit,
             'number_increment': 1,
         }
-        seq = self.env['ir.sequence'].create(seq)
+        seq = self.env['ir.sequence'].sudo().create(seq)
         return seq
 
     @api.model_create_multi
