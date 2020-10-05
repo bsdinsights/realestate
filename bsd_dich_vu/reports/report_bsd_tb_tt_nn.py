@@ -89,22 +89,27 @@ class ReportBsdTBNN(models.AbstractModel):
         ngay_ht = ngay_ht.astimezone(to_zone)
         # Tính lãi phát sinh chậm thanh toán
         list_dot = []
-        for dot_tt in doc.bsd_ltt_ids.filtered(lambda x: x.bsd_thanh_toan != 'da_tt' and x.bsd_ngay_hh_tt < ngay_ht):
+        for dot_tt in doc.bsd_hd_ban_id.bsd_ltt_ids\
+                .filtered(lambda x: x.bsd_thanh_toan != 'da_tt' and x.bsd_ngay_hh_tt < datetime.date.today()):
             # Kiểm tra đợt thanh toán còn nằm trong thời gian ân hạn hay không
             if ngay_ht < dot_tt.bsd_ngay_ah:
                 so_ngay_tp = 0
             else:
                 if dot_tt.bsd_tinh_phat == 'htt':
-                    so_ngay_tp = ngay_ht - dot_tt.bsd_ngay_hh_tt
+                    so_ngay_tp = int(ngay_ht - dot_tt.bsd_ngay_hh_tt)
                 else:
-                    so_ngay_tp = ngay_ht - dot_tt.bsd_ngay_ah
+                    so_ngay_tp = int(ngay_ht - dot_tt.bsd_ngay_ah)
+            tien_phat = dot_tt.bsd_tien_phai_tt * so_ngay_tp * (dot_tt.bsd_lai_phat / 36500)
             list_dot.append({
                 'ten_dot': dot_tt.bsd_ten_dtt,
                 'ty_le': dot_tt.bsd_cs_tt_ct_id.bsd_tl_tt,
                 'tien_chua_tt': dot_tt.bsd_tien_phai_tt,
                 'ngay_den_han': dot_tt.bsd_ngay_hh_tt,
                 'so_ngay_tp': so_ngay_tp,
-                'lai_phat': doc.bsd_lai_phat
+                'lai_phat': dot_tt.bsd_lai_phat,
+                'tien_phat': tien_phat,
+                'tong_tien': tien_phat + dot_tt.bsd_tien_phai_tt,
+                'ghi_chu': "Đã quá hạn"
             })
         res = {
             'doc_ids': data['ids'],

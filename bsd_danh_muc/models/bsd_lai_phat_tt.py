@@ -27,7 +27,7 @@ class BsdLaiPhatTT(models.Model):
                                     Số ngày ân hạn tính lãi phạt. Nếu khách hàng đóng tiền trong thời gian ân hạn, 
                                     sẽ không bị phạt thanh toán chậm    
                                 """)
-    bsd_lai_phat = fields.Float(string="Lãi phạt (%/ngày)", help="Tỷ lệ đóng lãi phạt theo ngày")
+    bsd_lai_phat = fields.Float(string="Lãi phạt", help="Tỷ lệ đóng lãi phạt theo năm")
     bsd_tien_td = fields.Monetary(string="Tiền phạt tối đa", help="Tiền phạt chậm thanh toán tối đa")
     bsd_tl_td = fields.Float(string="Tỷ lệ phạt tối đa", help="Tỷ lệ tối đa phạt chậm thanh toán")
     state = fields.Selection([('active', 'Đang sử dụng'),

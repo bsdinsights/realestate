@@ -147,7 +147,7 @@
                                                 <th style="border: 1px solid black !important;" width="16%">
                                                     <div>
                                                         Lãi phát sinh chậm thanh toán đến ngày
-                                                        <span t-esc="ngay_tinh_lp"/> (đồng) (4) = (1)x (2)x [(3)/365] /100</div>
+                                                        <span t-esc="ngay_tinh_lp"/> (đồng) (4) = (1)x (2)x [(3)/365]/100</div>
                                                 </th>
                                                 <th style="border: 1px solid black !important;" width="10%">
                                                     <div>Tổng tiền phải thanh toán (Đồng)</div>
@@ -158,8 +158,19 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="text-center ">
+                                            <t t-foreach="list_dot" t-as="dot">
+                                            <tr class="text-center">
+                                                <td><span t-esc="dot.ten_dot"/></td>
+                                                <td><span t-esc="dot.ty_le"/></td>
+                                                <td><span t-esc="dot.tien_chua_tt"/></td>
+                                                <td><span t-esc="dot.ngay_den_han"/></td>
+                                                <td><span t-esc="dot.so_ngay_tp"/></td>
+                                                <td><span t-esc="dot.lai_phat"/></td>
+                                                <td><span t-esc="dot.tien_phat"/></td>
+                                                <td><span t-esc="dot.tong_tien"/></td>
+                                                <td><span t-esc="dot.ghi_chu"/></td>
                                             </tr>
+                                            </t>
                                         </tbody>
                                     </table>
                                 </div>
