@@ -369,6 +369,14 @@ class ProductTemplate(models.Model):
                     'bsd_ten_unit': toa_nha.bsd_ma_tn + du_an.bsd_dd_khu +
                                     tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_stt
                 })
+            if not template.bsd_ngay_dkbg:
+                template.write(({
+                    'bsd_ngay_dkbg': du_an.bsd_ngay_dkbg
+                }))
+            if not template.bsd_qsdd_m2:
+                template.write(({
+                    'bsd_qsdd_m2': du_an.bsd_qsdd_m2
+                }))
             template._create_sequence()
         return templates
 
