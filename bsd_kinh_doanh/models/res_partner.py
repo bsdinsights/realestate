@@ -200,12 +200,12 @@ class ResPartner(models.Model):
         for partner in self:
             if not partner.is_company:
                 if partner.bsd_la_kh:
-                    res.append((partner.id, "[%s]%s" % (partner.bsd_ma_kh, partner.bsd_ten)))
+                    res.append((partner.id, "[%s] %s" % (partner.bsd_ma_kh, partner.bsd_ten)))
                 else:
                     res.append((partner.id, "%s" % partner.name))
             else:
                 if partner.bsd_la_kh:
-                    res.append((partner.id, "[%s]%s" % (partner.bsd_ma_kh, partner.name)))
+                    res.append((partner.id, "[%s] %s" % (partner.bsd_ma_kh, partner.name)))
                 else:
                     res.append((partner.id, "%s" % partner.name))
         return res

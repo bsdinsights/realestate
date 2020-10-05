@@ -15,13 +15,13 @@
                             <field name="bsd_khach_hang_id"
                                    context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
                                    options="{'no_create':true}"/>
-                            <field name="bsd_nvbh_id" options="{'no_create':true}"/>
+                            <field name="bsd_nvbh_id" readonly="1" force_save="1" options="{'no_create':true}"/>
                         </group>
                         <group>
-                            <field name="bsd_du_an_id"
+                            <field name="bsd_du_an_id" readonly="1" force_save="1"
                                    domain="[('state','=','phat_hanh')]"
                                    options="{'no_create':true}"/>
-                            <field name="bsd_unit_id"
+                            <field name="bsd_unit_id" readonly="1" force_save="1"
                                    context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                    options="{'no_create':true}"
                                    domain="[('bsd_du_an_id', 'in',[bsd_du_an_id]),
@@ -42,7 +42,7 @@
     </record>
 
     <record model="ir.actions.act_window" id="bsd_quan_tam_action">
-        <field name="name">Quan tâm</field>
+        <field name="name">Quan tâm sản phẩm</field>
         <field name="res_model">bsd.quan_tam</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>

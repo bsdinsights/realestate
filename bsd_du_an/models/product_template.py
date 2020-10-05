@@ -162,7 +162,7 @@ class ProductTemplate(models.Model):
     bsd_thang_pql = fields.Integer(string="Số tháng đóng PQL", help="Số tháng đóng phí quản lý",
                                    readonly=True,
                                    states={'chuan_bi': [('readonly', False)]})
-    bsd_don_gia_pql = fields.Monetary(string="Đơn giá PQL", help="Đơn giá Phí quản lý m2/tháng", required=True,
+    bsd_don_gia_pql = fields.Monetary(string="Đơn giá PQL", help="Đơn giá Phí quản lý m2/tháng",
                                       readonly=True,
                                       states={'chuan_bi': [('readonly', False)]})
     bsd_tien_pql = fields.Monetary(string="Phí quản lý", help="Số tiền phí quản lý",
@@ -171,11 +171,11 @@ class ProductTemplate(models.Model):
                              help="% thanh toán đủ điều kiện bàn giao(tối thiểu",
                              readonly=True,
                              states={'chuan_bi': [('readonly', False)]})
-    bsd_ngay_bg = fields.Date(string="Ngày bàn giao",
+    bsd_ngay_bg = fields.Date(string="Ngày bàn giao thực tế",
                               help="Ngày bàn giao thực tế sản phẩm cho khách hàng",
                               readonly=True,
                               states={'chuan_bi': [('readonly', False)]})
-    bsd_ngay_cn = fields.Date(string="Ngày ht cất nóc",
+    bsd_ngay_cn = fields.Date(string="Ngày CN.NT cất nóc",
                               help="Ngày chứng nhận cất nóc (bê tông tầng mái)",
                               readonly=True,
                               states={'chuan_bi': [('readonly', False)]})
@@ -289,8 +289,8 @@ class ProductTemplate(models.Model):
     @api.constrains('bsd_thang_pql')
     def _check_bsd_thang_pql(self):
         for record in self:
-            if record.bsd_don_gia_pql <= 0:
-                raise ValidationError("Số tháng đóng phí quản lý phải lớn hơn 0.")
+            if record.bsd_don_gia_pql < 0:
+                raise ValidationError("Số tháng đóng phí quản lý phải lớn hơn bằng 0.")
 
     @api.onchange('bsd_du_an_id')
     def _onchange_du_an(self):
@@ -370,25 +370,49 @@ class ProductTemplate(models.Model):
                                     tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_stt
                 })
             if not template.bsd_ngay_dkbg:
-                template.write(({
+                template.write({
                     'bsd_ngay_dkbg': du_an.bsd_ngay_dkbg
-                }))
+                })
             if not template.bsd_qsdd_m2:
-                template.write(({
+                template.write({
                     'bsd_qsdd_m2': du_an.bsd_qsdd_m2
-                }))
+                })
             if not template.bsd_tl_pbt:
-                template.write(({
+                template.write({
                     'bsd_tl_pbt': du_an.bsd_tl_pbt
-                }))
+                })
             if not template.bsd_tien_gc:
-                template.write(({
+                template.write({
                     'bsd_tien_gc': du_an.bsd_tien_gc
-                }))
+                })
             if not template.bsd_tien_dc:
-                template.write(({
+                template.write({
                     'bsd_tien_dc': du_an.bsd_tien_dc
-                }))
+                })
+            if not template.bsd_tl_tc:
+                template.write({
+                    'bsd_tl_tc': du_an.bsd_tl_dc
+                })
+            if not template.bsd_tl_tc:
+                template.write({
+                    'bsd_tl_tc': du_an.bsd_tl_dc
+                })
+            if not template.bsd_thang_pql:
+                template.write({
+                    'bsd_thang_pql': du_an.bsd_thang_pql
+                })
+            if not template.bsd_don_gia_pql:
+                template.write({
+                    'bsd_don_gia_pql': du_an.bsd_pql_m2
+                })
+            if not template.bsd_dk_bg:
+                template.write({
+                    'bsd_dk_bg': du_an.bsd_dk_bg
+                })
+            if not template.bsd_loai_sd_ids:
+                template.write({
+                    'bsd_loai_sd_ids': [(6, 0, du_an.bsd_loai_sd_ids.ids)]
+                })
             template._create_sequence()
         return templates
 
@@ -401,8 +425,9 @@ class ProductTemplate(models.Model):
         return super(ProductTemplate, self).write(vals)
 
     def unlink(self):
-        if self.env['bsd.giu_cho'].search([('bsd_product_tmpl_id', '=' , self.id)], limit=1):
-            raise UserError(_("Sản phẩm đã phát sinh giữ chỗ. Không thể xóa sản phẩm."))
+        for each in self:
+            if each.env['bsd.giu_cho'].search([('bsd_product_tmpl_id', '=' , each.id)], limit=1):
+                raise UserError(_("Sản phẩm đã phát sinh giữ chỗ. Không thể xóa sản phẩm."))
         return super(ProductTemplate, self).unlink()
 
 

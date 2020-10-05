@@ -9,7 +9,7 @@
                     <button string="Ưu tiên"
                             name="action_uu_tien"
                             type="object"
-                            attrs="{'invisible':['|',('bsd_uu_tien','=','1'),('state','not in',['chuan_bi','san_sang'])]}"
+                            attrs="{'invisible':['|',('bsd_uu_tien','=','1'),('state','not in',['chuan_bi','san_sang','dat_cho','giu_cho'])]}"
                             class="oe_highlight"/>
                     <button string="Hủy ưu tiên"
                             name="action_huy_uu_tien"
@@ -135,18 +135,19 @@
                     </group>
                     <group string="BÀN GIAO">
                         <group>
-                            <field name="bsd_ngay_dkbg" readonly="1"/>
-                            <field name="bsd_ngay_dkbg" invisible="1"/>
-                            <field name="bsd_thang_pql"/>
-                            <field name="bsd_don_gia_pql"/>
-                            <field name="bsd_tien_pql"/>
                             <label for="bsd_dk_bg"/>
                             <div class="o_row no-gutters d-flex">
                                 <field name="bsd_dk_bg" class="mr-1"/>
                                 <span>%</span>
                             </div>
+                            <field name="bsd_thang_pql"/>
+                            <field name="bsd_don_gia_pql"/>
+                            <field name="bsd_tien_pql"/>
+
                         </group>
                         <group>
+                            <field name="bsd_ngay_dkbg" readonly="1"/>
+                            <field name="bsd_ngay_dkbg" invisible="1"/>
                             <field name="bsd_ngay_cn" readonly="1"/>
                             <field name="bsd_ngay_bg" readonly="1"/>
                             <field name="bsd_ngay_cap_sh"/>

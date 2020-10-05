@@ -250,10 +250,10 @@
             <div class="arrow"></div>
             <div class="tooltip-inner bsd_tooltip_title"></div>
             <div class="bsd_tooltip_action" t-attf-id="{{data[11]}}">
-                <span class="bsd_quan_tam">Quan tâm</span>
-                <span class="bsd_giu_cho ml-4">Giữ chỗ</span>
+                <span class="bsd_quan_tam ml-4" style="font-size:13px">Quan tâm</span>
+                <span class="bsd_giu_cho ml-4" style="font-size:13px">Giữ chỗ</span>
                 <t t-if="data[12] != False">
-                    <span class="bsd_bao_gia ml-4">Bảng tính giá</span>
+                    <span class="bsd_bao_gia ml-4" style="font-size:13px">Bảng tính giá</span>
                 </t>
             </div>
        </div>

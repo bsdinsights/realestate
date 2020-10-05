@@ -207,6 +207,11 @@ class BsdProject(models.Model):
                                states={'chuan_bi': [('readonly', False)]})
     bsd_sequence_gc_tc_id = fields.Many2one('ir.sequence', string="STT giữ chỗ thiện chí", readonly=1)
 
+    bsd_dk_bg = fields.Float(string="Điều kiện bàn giao",
+                             help="% thanh toán đủ điều kiện bàn giao(tối thiểu",
+                             readonly=True,
+                             states={'chuan_bi': [('readonly', False)]})
+
     @api.constrains('bsd_tl_dc')
     def _check_ty_le_coc(self):
         for record in self:

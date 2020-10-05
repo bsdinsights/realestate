@@ -79,17 +79,17 @@
                             </group>
                             <group string="BÀN GIAO">
                                 <group>
-                                    <field name="bsd_ngay_dkbg" readonly="1"/>
-                                    <field name="bsd_thang_pql" readonly="1"/>
-                                    <field name="bsd_don_gia_pql" readonly="1"/>
-                                    <field name="bsd_tien_pql" readonly="1"/>
                                     <label for="bsd_dk_bg"/>
                                     <div class="o_row no-gutters d-flex">
                                         <field name="bsd_dk_bg" class="mr-1" readonly="1"/>
                                         <span>%</span>
                                     </div>
+                                    <field name="bsd_thang_pql" readonly="1"/>
+                                    <field name="bsd_don_gia_pql" readonly="1"/>
+                                    <field name="bsd_tien_pql" readonly="1"/>
                                 </group>
                                 <group>
+                                    <field name="bsd_ngay_dkbg" readonly="1"/>
                                     <field name="bsd_ngay_cn" readonly="1"/>
                                     <field name="bsd_ngay_bg" readonly="1"/>
                                     <field name="currency_id" invisible="1"/>
