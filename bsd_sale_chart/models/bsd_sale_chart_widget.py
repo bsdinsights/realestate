@@ -83,8 +83,7 @@ class BsdSaleChartWidget(models.AbstractModel):
         SELECT 
             unit.id AS unit_id,
             CASE
-                WHEN dot_mb.id IS NOT NULL AND item.fixed_price IS NOT NULL THEN item.fixed_price
-                WHEN max_item.id IS NOT NULL AND max_item.fixed_price IS NOT NULL THEN max_item.fixed_price          
+                WHEN dot_mb.id IS NOT NULL AND item.fixed_price IS NOT NULL THEN item.fixed_price        
                 ELSE 0
                 END 
                 AS chot_gia
