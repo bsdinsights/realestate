@@ -531,4 +531,17 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="bsd_res_partner_cn_tree_search">
+        <field name="name">bsd.res.partner.cn.tree</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="display_name" string="Khách hàng"/>
+                <field name="mobile"/>
+                <field name="phone"/>
+                <field name="email" string="email"/>
+                <field name="bsd_dia_chi_lh"/>
+            </tree>
+        </field>
+    </record>
 </odoo>

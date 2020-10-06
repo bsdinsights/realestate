@@ -60,7 +60,8 @@
                             <field name="bsd_ma_gctc"/>
                             <field name="bsd_ngay_gctc" readonly="1" force_save="1"/>
                             <field name="bsd_khach_hang_id"
-                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_popup_form'}"
+                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_popup_form',
+                                             'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree_search'}"
                                    options="{'no_create':true}"/>
 
                         </group>
