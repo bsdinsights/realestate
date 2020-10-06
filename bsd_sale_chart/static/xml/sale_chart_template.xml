@@ -99,7 +99,7 @@
                 <t t-set="href" t-value="'#collapseToa'+ toa.headerToa[0]"/>
                 <t t-set="hrefId" t-value="'collapseToa'+ toa.headerToa[0]"/>
                 <div class="card-header bsd_header_toa" data-toggle="collapse" t-attf-href="{{href}}">
-                    <div class="d-inline-flex flex-row text-truncate" style="width:150px">
+                    <div class="d-inline-flex flex-row text-truncate align-items-center" style="width:150px">
                         <i class="fa fa-plus-circle"></i>
                         <a class="bsd_title ml-2">
                             <span t-esc="toa.headerToa[1]"/>
@@ -150,9 +150,9 @@
                             <t t-set="hrefTang" t-value="'#collapseTang'+ tang.headerTang[0]"/>
                             <t t-set="hrefIdTang" t-value="'collapseTang'+ tang.headerTang[0]"/>
                             <div class="card-header bsd_header_tang" data-toggle="collapse" t-attf-data-target="{{hrefTang}}">
-                                <div class="d-inline-flex flex-row text-truncate pl-4" style="width:150px">
+                                <div class="d-inline-flex flex-row text-truncate pl-3 align-items-center" style="width:150px">
                                     <i class="fa fa-chevron-circle-right"></i>
-                                    <a class="bsd_title">
+                                    <a class="bsd_title ml-2">
                                         Tầng/ dãy <span t-esc="tang.headerTang[1]"/>
                                     </a>
                                 </div>

@@ -50,8 +50,9 @@
 }
 .dashboardcode-bsmultiselect ul.form-control > li.badge button.close {
   float: none;
-  font-size: 1.5em;
+  font-size: 2em;
   line-height: 0.9em;
+  margin-left:3px;
 }
 .dashboardcode-bsmultiselect ul.form-control > li.badge span.disabled {
   opacity: 0.65;

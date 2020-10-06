@@ -436,3 +436,9 @@ class BsdHuongNhin(models.Model):
     _rec_name = "bsd_ten"
 
     bsd_ten = fields.Char(string="Hướng nhìn", help="Hướng nhìn", required=True)
+    display_name = fields.Char(compute='_compute_name', store=True)
+
+    @api.depends('bsd_ten')
+    def _compute_name(self):
+        for each in self:
+            each.display_name = each.bsd_ten

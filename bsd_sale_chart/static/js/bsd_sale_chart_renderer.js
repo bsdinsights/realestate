@@ -94,7 +94,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                         self.model.get(recordID), {
                             mode: 'edit',
                             attrs: {
-                                placeholder: _t('Chọn căn hộ')
+                                placeholder: _t('Chọn căn hộ'),
                             }
                         }
                     ),
@@ -104,7 +104,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                             mode: 'edit',
                             attrs: {
                                 placeholder: _t('Chọn hướng nhìn'),
-                                can_create: false,
+                                string: "Hướng nhìn",
                             }
                         }
                     ),
@@ -661,7 +661,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     var bsd_view_ids = event.data.changes.bsd_view_ids;
                     this.trigger_up('change_view', {'data':bsd_view_ids})
                 }
-                console.log("goi trigger_up")
             }
         },
         update: function(dataChange){
@@ -678,9 +677,38 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 });
             };
             if (dataChange.field === 'bsd_view_ids'){
-                this._makeRecord(dataChange).then(function (recordID) {
-                    self.fields.bsd_view_ids.reset(self.model.get(recordID));
-                });
+                var list_id = []
+                if (_.isArray(dataChange.data.ids)){
+                    _.each(dataChange.data.ids, function(item,index,data){
+                    list_id.push(item.id)
+                    })
+                }
+                else if (_.isObject(dataChange.data.ids)) {
+                    list_id.push(dataChange.data.ids.id)
+                }
+                else {
+                    list_id.push(dataChange.data.ids)
+                }
+                dataChange.data.ids = []
+                self._rpc({
+                    model: 'bsd.view',
+                    method: 'search_read',
+                    fields: ['bsd_ten'],
+                    domain: [['id', 'in', list_id]],
+                    context: self.context
+                }).then(function (data){
+                    _.each(data, function(item, index,data){
+                        let temp = {id:item.id, display_name:item.bsd_ten}
+                        dataChange.data.ids.push(temp)
+                    })
+                }).then(function(){
+                    console.log("dataChange")
+                    console.log(dataChange.data.ids)
+                    self._makeRecord(dataChange).then(function (recordID) {
+                        console.log("có chạy code ở đây ko")
+                        self.fields.bsd_view_ids.reset(self.model.get(recordID));
+                    });
+                })
             };
         },
     /**
@@ -688,8 +716,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
      * @returns {string} local id of the dataPoint
      */
         _makeRecord: function (data = null) {
-            console.log("tao record")
-            console.log(data)
             var self = this
             var field = [{
                     relation: 'bsd.du_an',
@@ -752,16 +778,21 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 }
                 if (data.field === 'bsd_view_ids'){
                     if (data.data.operation === 'ADD_M2M'){
-                        self.filter.bsd_view_ids.push(data.data.ids)
+
+//                        if (_.isArray(data.data.ids)){
+                        _.each(data.data.ids, function(item,index,data){
+                            self.filter.bsd_view_ids.push(item)
+                        })
+                        field[2].value = self.filter.bsd_view_ids
                     }
                     if (data.data.operation === 'FORGET'){
-                        self.filter.bsd_view_ids = self.filter.bsd_view_ids.filter(el => el.id != data.data.ids )
+                        self.filter.bsd_view_ids = self.filter.bsd_view_ids.filter(el => el.id != data.data.ids[0].id )
+                        field[2].value = self.filter.bsd_view_ids
                     }
-                    field[2].value = self.filter.bsd_view_ids
+
                 }
             }
             return this.model.makeRecord('bsd.sale_chart.widget', field, {});
-
         },
     });
     return {
