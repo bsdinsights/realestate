@@ -21,3 +21,4 @@ from . import bsd_wizard_tl_kt_hd
 from . import bsd_wizard_ds_td
 from . import bsd_wizard_tb_tl
 from . import bsd_wizard_thanh_ly
+from . import bsd_wizard_tao_tb_tt

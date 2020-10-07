@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
-        <record model="ir.ui.view" id="bsd_tb_tt_nn_report_wizard_form">
-            <field name="name">bsd.tb_tt_nn.report.wizard.form</field>
-            <field name="model">bsd.tb_tt_nn.report.wizard</field>
+        <record model="ir.ui.view" id="bsd_tb_tt_report_wizard_form">
+            <field name="name">bsd.tb_tt.report.wizard.form</field>
+            <field name="model">bsd.tb_tt.report.wizard</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="In thông báo thanh toán nhắc nợ">
+                <form string="In thông báo thanh toán">
                     <group>
                         <group>
                             <field name="bsd_mau_in"/>
-                            <field name="bsd_tb_tt_nn_id"/>
+                            <field name="bsd_tb_tt_id"/>
                         </group>
                     </group>
                     <footer>
@@ -20,9 +20,9 @@
                 </form>
             </field>
         </record>
-        <act_window id="bsd_tb_tt_nn_report_action"
+        <act_window id="bsd_tb_tt_report_action"
                     name="Chọn mẫu in thông báo"
-                    res_model="bsd.tb_tt_nn.report.wizard"
+                    res_model="bsd.tb_tt.report.wizard"
                     view_mode="form"
                     target="new"/>
         
@@ -40,34 +40,34 @@
             <field name="dpi">90</field>
         </record>
 
-        <record id="bsd_mau_in_tb_tt_nn_html" model="ir.actions.report">
+        <record id="bsd_mau_in_tb_tt_html" model="ir.actions.report">
             <field name="name">Thông báo thanh toán</field>
-            <field name="model">bsd.tb_tt_nn.report.wizard</field>
+            <field name="model">bsd.tb_tt.report.wizard</field>
             <field name="report_type">qweb-html</field>
-            <field name="report_name">bsd_dich_vu.bsd_tb_tt_nn_view</field>
+            <field name="report_name">bsd_dich_vu.bsd_tb_tt_view</field>
             <field name="multi">False</field>
             <field name="paperformat_id" ref="bsd_dich_vu.bsd_giay_in_tb_tt_nn"/>
         </record>
 
-        <record id="bsd_mau_in_tb_tt_nn" model="ir.actions.report">
+        <record id="bsd_mau_in_tb_tt" model="ir.actions.report">
             <field name="name">Thông báo thanh toán</field>
-            <field name="model">bsd.tb_tt_nn.report.wizard</field>
+            <field name="model">bsd.tb_tt.report.wizard</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">bsd_dich_vu.bsd_tb_tt_nn_view</field>
+            <field name="report_name">bsd_dich_vu.bsd_tb_tt_view</field>
             <field name="multi">False</field>
             <field name="paperformat_id" ref="bsd_dich_vu.bsd_giay_in_tb_tt_nn"/>
         </record>
 
         <record id="bsd_mau_in_tb_tt_dot_cuoi_html" model="ir.actions.report">
             <field name="name">Thông báo thanh toán đợt cuối</field>
-            <field name="model">bsd.tb_tt_nn.report.wizard</field>
+            <field name="model">bsd.tb_tt.report.wizard</field>
             <field name="report_type">qweb-html</field>
-            <field name="report_name">bsd_dich_vu.bsd_tb_tt_nn_dot_cuoi_view</field>
+            <field name="report_name">bsd_dich_vu.bsd_tb_tt_dot_cuoi_view</field>
             <field name="multi">False</field>
             <field name="paperformat_id" ref="bsd_dich_vu.bsd_giay_in_tb_tt_nn"/>
         </record>
 
-        <template id="bsd_tb_tt_nn_view">
+        <template id="bsd_tb_tt_view">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
                     <t t-set="doc" t-value="doc.with_context(lang=lang)" />
@@ -278,7 +278,7 @@
                 </t>
             </t>
         </template>
-        <template id="bsd_tb_tt_nn_dot_cuoi_view">
+        <template id="bsd_tb_tt_dot_cuoi_view">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
                     <t t-set="doc" t-value="doc.with_context(lang=lang)" />

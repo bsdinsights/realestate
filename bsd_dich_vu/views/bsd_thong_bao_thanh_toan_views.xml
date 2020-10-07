@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_tb_tt_nn_form">
-        <field name="name">bsd.tb_tt_nn.form</field>
-        <field name="model">bsd.tb_tt_nn</field>
+    <record model="ir.ui.view" id="bsd_tb_tt_form">
+        <field name="name">bsd.tb_tt.form</field>
+        <field name="model">bsd.tb_tt</field>
         <field name="arch" type="xml">
             <form duplicate="false">
                 <header>
@@ -75,9 +75,9 @@
             </form>
         </field>
     </record>
-    <record model="ir.ui.view" id="bsd_tb_tt_nn_tree">
-        <field name="name">bsd.tb_tt_nn.tree</field>
-        <field name="model">bsd.tb_tt_nn</field>
+    <record model="ir.ui.view" id="bsd_tb_tt_tree">
+        <field name="name">bsd.tb_tt.tree</field>
+        <field name="model">bsd.tb_tt</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="bsd_ma_tb"/>
@@ -88,12 +88,12 @@
             </tree>
         </field>
     </record>
-    <record model="ir.actions.act_window" id="bsd_tb_tt_nn_action">
-        <field name="name">Thông báo thanh toán/ nhắc nợ</field>
-        <field name="res_model">bsd.tb_tt_nn</field>
+    <record model="ir.actions.act_window" id="bsd_tb_tt_action">
+        <field name="name">Thông báo thanh toán</field>
+        <field name="res_model">bsd.tb_tt</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
-            <p>Tạo thông báo thanh toán nhắc nợ</p>
+            <p>Tạo thông báo thanh toán</p>
         </field>
     </record>
 </odoo>

@@ -36,8 +36,6 @@ class BsdSaleChartWidget(models.AbstractModel):
             where += 'AND (unit.bsd_dot_mb_id = {0}) '.format(data['bsd_dot_mb_id'])
         if data['bsd_unit']:
             where += "AND (unit.bsd_ten_unit LIKE '%{0}%') ".format(data['bsd_unit'])
-        # if data['bsd_view']:
-        #     where += "AND (unit.bsd_view = '{0}') ".format(data['bsd_view'])
         if data['bsd_view_ids']:
             first = data['bsd_view_ids'][0]['id']
             select = """SELECT view{0}.bsd_unit_id from bsd_view_unit_rel AS view{0} """\

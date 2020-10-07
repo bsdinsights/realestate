@@ -38,6 +38,8 @@ class BsdHopDongMuaBan(models.Model):
     bsd_bang_gia_id = fields.Many2one('product.pricelist', string="Bảng giá", help="Bảng giá bán",
                                       related="bsd_dat_coc_id.bsd_bang_gia_id", store=True)
     bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Tên Sản phẩm", required=True)
+    bsd_toa_nha_id = fields.Many2one(related='bsd_unit_id.bsd_toa_nha_id', store=True)
+    bsd_tang_id = fields.Many2one(related='bsd_unit_id.bsd_tang_id', store=True)
     bsd_ngay_cn = fields.Date(related='bsd_unit_id.bsd_ngay_cn', store=True)
     bsd_ten_sp = fields.Char(related="bsd_unit_id.name", store=True)
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích tim tường",

@@ -7,19 +7,19 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class BsdThongBaoThanhToan(models.Model):
-    _name = 'bsd.tb_tt'
-    _description = "Thông báo thanh toán"
+class BsdThongBaoNhacNo(models.Model):
+    _name = 'bsd.tb_nn'
+    _description = "Thông báo nhắc nợ"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma_tb'
 
-    bsd_ma_tb = fields.Char(string="Mã", help="Mã thông báo thanh toán", required=True, readonly=True,
+    bsd_ma_tb = fields.Char(string="Mã", help="Mã thông báo nhắc nợ", required=True, readonly=True,
                             copy=False, default='/')
     _sql_constraints = [
         ('bsd_ma_tb_unique', 'unique (bsd_ma_tb)',
          'Mã thông báo thanh toán đã tồn tại !')
     ]
-    bsd_ngay_tao_tb = fields.Datetime(string="Ngày", help="Ngày tạo thông báo thanh toán",
+    bsd_ngay_tao_tb = fields.Datetime(string="Ngày", help="Ngày tạo thông báo",
                                       required=True, default=lambda self: fields.Datetime.now(),
                                       readonly=True,
                                       states={'nhap': [('readonly', False)]})
@@ -29,15 +29,11 @@ class BsdThongBaoThanhToan(models.Model):
 
     bsd_ngay_in = fields.Datetime(string="Ngày in", help="Ngày in thông báo bàn giao", readonly=True)
     bsd_nguoi_xn_id = fields.Many2one('res.users', string="Người xác nhận",
-                                      help="Người xác nhận thông tin trên thông báo thanh toán", readonly=True)
-    bsd_ngay_xn = fields.Datetime(string="Ngày xác nhận", help="Ngày xác nhận thông tin thông báo",
+                                      help="Người xác nhận thông tin trên thông báo nhắc nợ", readonly=True)
+    bsd_ngay_xn = fields.Datetime(string="Ngày xác nhận", help="Ngày xác nhận thông tin thông báo nhắc nợ",
                                   readonly=True)
     bsd_ngay_gui = fields.Datetime(string="Ngày gửi", help="Ngày gửi", readonly=True)
-    bsd_loai = fields.Selection([('tb_tt', 'Thông báo thanh toán'),
-                                 ('tb_tt_dot_cuoi', 'Thông báo thanh toán đợt cuối')],
-                                string="Loại", required=True, help="Phân loại thông báo",
-                                readonly=True,
-                                states={'nhap': [('readonly', False)]})
+
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
@@ -55,6 +51,18 @@ class BsdThongBaoThanhToan(models.Model):
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
+    bsd_lan_nn = fields.Integer(string="Lần nhắc nợ", help="Lần nhắc nợ của đợt thanh toán",
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
+    bsd_ngay_ut = fields.Date(string="Ngày ước tính", help="Ngày ước tính lãi phạt chậm thanh toán",
+                              readonly=True,
+                              states={'nhap': [('readonly', False)]})
+    bsd_tien_dot = fields.Monetary(string="Tiền", help="Số tiền đợt còn phải thanh toán",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_ngay_hh_tt = fields.Date(string="Hạn thanh toán", help="Ngày hết hạn thanh toán của đợt",
+                                 readonly=True,
+                                 states={'nhap': [('readonly', False)]})
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
@@ -80,9 +88,8 @@ class BsdThongBaoThanhToan(models.Model):
             })
 
     def action_in_tb(self):
-        return self.env.ref('bsd_dich_vu.bsd_tb_tt_report_action').read()[0]
+        return self.env.ref('bsd_dich_vu.bsd_tb_nn_report_action').read()[0]
 
-    # DV.16.05 Hủy thông báo bàn giao
     def action_huy(self):
         if self.state == 'nhap':
             self.write({
@@ -97,6 +104,6 @@ class BsdThongBaoThanhToan(models.Model):
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
             _logger.debug(du_an)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã thông báo thanh toán.'))
+            raise UserError(_('Dự án chưa có mã thông báo nhắc nợ.'))
         vals['bsd_ma_tb'] = sequence.next_by_id()
-        return super(BsdThongBaoThanhToan, self).create(vals)
+        return super(BsdThongBaoNhacNo, self).create(vals)

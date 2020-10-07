@@ -19,6 +19,7 @@ from . import bsd_danh_sach_theo_doi
 from . import bsd_thong_bao_thanh_ly
 from . import bsd_thanh_ly
 from . import bsd_thong_bao_thanh_toan
+from . import bsd_thong_bao_nhac_no
 
 from . import bsd_dat_coc
 
