@@ -10,6 +10,24 @@ _logger = logging.getLogger(__name__)
 class BsdBaoGiaLTT(models.Model):
     _inherit = 'bsd.lich_thanh_toan'
 
+    bsd_tien_phat = fields.Monetary(string="Tiền phạt chậm tt", help="Tiền phạt chậm thanh toán",
+                                    compute="_compute_tien_phat", store=True)
+    bsd_tp_da_tt = fields.Monetary(string="Đã thanh toán", help="Tiền phạt đã thanh toán",
+                                          compute="_compute_tien_phat", store=True)
+    bsd_tp_phai_tt = fields.Monetary(string="Phải thanh toán", help="Tiền phạt phải thanh toán",
+                                     compute='_compute_tien_phat', store=True)
+    bsd_so_ngay_tre = fields.Integer(string="Số ngày trễ", help="Số ngày trễ của đợt",
+                                     compute='_compute_tien_phat', store=True)
+    bsd_lai_phat_ids = fields.One2many('bsd.lai_phat', 'bsd_dot_tt_id', string="DS lãi phạt")
+
+    @api.depends('bsd_lai_phat_ids')
+    def _compute_tien_phat(self):
+        for each in self:
+            each.bsd_tien_phat = sum(each.bsd_lai_phat_ids.mapped('bsd_tien_phat'))
+            each.bsd_tp_da_tt = sum(each.bsd_lai_phat_ids.mapped('bsd_tien_da_tt'))
+            each.bsd_tp_phai_tt = sum(each.bsd_lai_phat_ids.mapped('bsd_tien_phai_tt'))
+            each.bsd_so_ngay_tre = sum(each.bsd_lai_phat_ids.mapped('bsd_so_ngay'))
+
     bsd_tien_da_tt = fields.Monetary(string="Đã thanh toán", help="Đã thanh toán",
                                      compute="_compute_tien_tt", store=True)
     bsd_tien_phai_tt = fields.Monetary(string="Phải thanh toán", help="Đã thanh toán",

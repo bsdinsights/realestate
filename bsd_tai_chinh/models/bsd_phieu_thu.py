@@ -13,7 +13,7 @@ class BsdPhieuThu(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_so_pt'
 
-    bsd_so_pt = fields.Char(string="Số phiếu thu", help="Số phiếu thu", required=True, readonly=True, copy=False,
+    bsd_so_pt = fields.Char(string="Số", help="Số", required=True, readonly=True, copy=False,
                             default='/')
     _sql_constraints = [
         ('bsd_so_pt_unique', 'unique (bsd_so_pt)',
@@ -48,7 +48,7 @@ class BsdPhieuThu(models.Model):
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
-    bsd_pt_tt_id = fields.Many2one('bsd.pt_tt', string="Phương thức", help="Phương thức thanh toán",
+    bsd_pt_tt_id = fields.Many2one('bsd.pt_tt', string="Hình thức", help="Hình thức thanh toán",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_so_nk = fields.Selection([('tien_mat', 'Tiền mặt'), ('ngan_hang', 'Ngân hàng')], string="Sổ nhật ký",

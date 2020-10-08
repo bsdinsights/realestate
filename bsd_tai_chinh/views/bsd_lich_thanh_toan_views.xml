@@ -9,6 +9,21 @@
                 <field name="bsd_tien_da_tt"/>
                 <field name="bsd_tien_phai_tt"/>
             </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Lãi phạt"  attrs="{'invisible':[('bsd_loai','!=','dtt')]}">
+                    <group>
+                        <group>
+                            <field name="bsd_loai" invisible="1"/>
+                            <field name="bsd_tien_phat"/>
+                            <field name="bsd_so_ngay_tre"/>
+                        </group>
+                        <group>
+                            <field name="bsd_tp_da_tt"/>
+                            <field name="bsd_tp_phai_tt"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
         </field>
     </record>
 </odoo>

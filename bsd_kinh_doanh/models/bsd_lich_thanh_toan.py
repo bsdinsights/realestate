@@ -49,3 +49,24 @@ class BsdBaoGiaLTT(models.Model):
     bsd_loai = fields.Selection([('dtt', 'Đợt thanh toán'),
                                  ('pql', 'Phí quản lý'),
                                  ('pbt', 'Phí bảo trì')], string="Loại", help="Phân loại", readonly=True)
+
+    # Thông báo thanh toán nhắc nợ
+    bsd_tb_tt = fields.Boolean(string="TB thanh toán", readonly=True,
+                               help="Số ngày (trước khi đến hạn thanh toán) để gửi thông tin thanh toán")
+    bsd_ngay_tb_tt = fields.Date(string="Ngày TB thanh toán", readonly=True)
+    bsd_canh_bao1 = fields.Boolean(string="Cảnh báo 1", readonly=True,
+                                   help="Đánh dấu đã tạo thông báo")
+    bsd_canh_bao2 = fields.Boolean(string="Cảnh báo 2", readonly=True,
+                                   help="Đánh dấu đã tạo thông báo")
+    bsd_canh_bao3 = fields.Boolean(string="Cảnh báo 3", readonly=True,
+                                   help="Đánh dấu đã tạo thông báo")
+    bsd_canh_bao4 = fields.Boolean(string="Cảnh báo 4", readonly=True,
+                                   help="Đánh dấu đã tạo thông báo")
+    bsd_canh_bao5 = fields.Boolean(string="Cảnh báo 5", readonly=True,
+                                   help="Đánh dấu đã tạo thông báo")
+
+    bsd_ngay_cb1 = fields.Date(string="Ngày cảnh báo 1", readonly=True, help="Ngày tạo cảnh báo")
+    bsd_ngay_cb2 = fields.Date(string="Ngày cảnh báo 2", readonly=True, help="Ngày tạo cảnh báo")
+    bsd_ngay_cb3 = fields.Date(string="Ngày cảnh báo 3", readonly=True, help="Ngày tạo cảnh báo")
+    bsd_ngay_cb4 = fields.Date(string="Ngày cảnh báo 4", readonly=True, help="Ngày tạo cảnh báo")
+    bsd_ngay_cb5 = fields.Date(string="Ngày cảnh báo 5", readonly=True, help="Ngày tạo cảnh báo")

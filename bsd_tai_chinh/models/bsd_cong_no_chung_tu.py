@@ -27,6 +27,7 @@ class BsdCongNoCT(models.Model):
     bsd_giam_no_id = fields.Many2one('bsd.giam_no', string="Điều chỉnh giảm", help="Điều chỉnh giảm")
     bsd_phi_ps_id = fields.Many2one('bsd.phi_ps', string="Phí phát sinh", help="Phí phát sinh")
     bsd_thanh_ly_id = fields.Many2one('bsd.thanh_ly', string="Thanh lý", help="Thanh lý")
+    bsd_lai_phat_id = fields.Many2one('bsd.lai_phat', string="Lãi phạt", help="Lãi phạt")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     state = fields.Selection([('hoan_thanh', 'Hoàn thành'), ('huy', 'Hủy')])

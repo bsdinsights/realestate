@@ -27,7 +27,12 @@ class BsdWizardTBTT(models.TransientModel):
             where += ' AND (hd_ban.bsd_unit_id = {0})'.format(self.bsd_unit_id.id)
         where += ';'
         self.env.cr.execute("""
-        SELECT hd_ban.bsd_khach_hang_id,hd_ban.bsd_unit_id,hd_ban.bsd_du_an_id,hd_ban.id,dot_tt.id from bsd_hd_ban as hd_ban  
+        SELECT 
+            hd_ban.bsd_khach_hang_id,
+            hd_ban.bsd_unit_id,
+            hd_ban.bsd_du_an_id,
+            hd_ban.id,dot_tt.id 
+        FROM bsd_hd_ban as hd_ban  
             LEFT JOIN bsd_lich_thanh_toan as dot_tt ON dot_tt.bsd_hd_ban_id = hd_ban.id
         """ + where)
         for item in self.env.cr.fetchall():

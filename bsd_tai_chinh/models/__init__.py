@@ -16,3 +16,4 @@ from . import bsd_phat_sinh_giao_dich_chiet_khau
 from . import bsd_hd_ban
 from . import bsd_phi_phat_sinh
 from . import bsd_huy_gc
+from . import bsd_lai_phat
