@@ -78,6 +78,10 @@ class BsdThongBaoThanhToan(models.Model):
                 'bsd_nguoi_xn_id': self.env.uid,
                 'bsd_ngay_xn': fields.Datetime.now()
             })
+            self.bsd_dot_tt_id.write({
+                'bsd_tb_tt': True,
+                'bsd_ngay_tb_tt': fields.Datetime.now(),
+            })
 
     def action_in_tb(self):
         return self.env.ref('bsd_dich_vu.bsd_tb_tt_report_action').read()[0]
@@ -95,7 +99,6 @@ class BsdThongBaoThanhToan(models.Model):
         if 'bsd_du_an_id' in vals:
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
-            _logger.debug(du_an)
         if not sequence:
             raise UserError(_('Dự án chưa có mã thông báo thanh toán.'))
         vals['bsd_ma_tb'] = sequence.next_by_id()

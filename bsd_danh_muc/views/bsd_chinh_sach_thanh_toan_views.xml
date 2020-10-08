@@ -47,11 +47,31 @@
                                     <field name="bsd_qh_tt"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_canh_bao1"/>
-                                    <field name="bsd_canh_bao2"/>
-                                    <field name="bsd_canh_bao3"/>
-                                    <field name="bsd_canh_bao4"/>
-                                    <field name="bsd_canh_bao5"/>
+                                    <label for="bsd_canh_bao1"/>
+                                    <div class="o_row d-flex no-gutters">
+                                        <field name="bsd_tl_cb1" class="mr-1"/>
+                                        <field name="bsd_canh_bao1" attrs="{'invisible':[('bsd_tl_cb1','=',False)]}"/>
+                                    </div>
+                                    <label for="bsd_canh_bao2"/>
+                                    <div class="o_row d-flex no-gutters">
+                                        <field name="bsd_tl_cb2" class="mr-1"/>
+                                        <field name="bsd_canh_bao2" attrs="{'invisible':[('bsd_tl_cb2','=',False)]}"/>
+                                    </div>
+                                    <label for="bsd_canh_bao3"/>
+                                    <div class="o_row d-flex no-gutters">
+                                        <field name="bsd_tl_cb3" class="mr-1"/>
+                                        <field name="bsd_canh_bao3" attrs="{'invisible':[('bsd_tl_cb3','=',False)]}"/>
+                                    </div>
+                                    <label for="bsd_canh_bao4"/>
+                                    <div class="o_row d-flex no-gutters">
+                                        <field name="bsd_tl_cb4" class="mr-1"/>
+                                        <field name="bsd_canh_bao4" attrs="{'invisible':[('bsd_tl_cb4','=',False)]}"/>
+                                    </div>
+                                    <label for="bsd_canh_bao5"/>
+                                    <div class="o_row d-flex no-gutters">
+                                        <field name="bsd_tl_cb5" class="mr-1"/>
+                                        <field name="bsd_canh_bao5" attrs="{'invisible':[('bsd_tl_cb5','=',False)]}"/>
+                                    </div>
                                 </group>
                             </group>
                         </page>

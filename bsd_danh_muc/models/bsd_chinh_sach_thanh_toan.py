@@ -55,7 +55,11 @@ class BsdChinhSachThanhToan(models.Model):
                                    help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo quá hạn thanh toán lần 4")
     bsd_canh_bao5 = fields.Integer(string="Cảnh báo 5",
                                    help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo quá hạn thanh toán lần 5")
-
+    bsd_tl_cb1 = fields.Boolean(string="Thiết lập cảnh báo 1")
+    bsd_tl_cb2 = fields.Boolean(string="Thiết lập cảnh báo 2")
+    bsd_tl_cb3 = fields.Boolean(string="Thiết lập cảnh báo 3")
+    bsd_tl_cb4 = fields.Boolean(string="Thiết lập cảnh báo 4")
+    bsd_tl_cb5 = fields.Boolean(string="Thiết lập cảnh báo 5")
     state = fields.Selection([('active', 'Đang sử dụng'),
                               ('inactive', 'Không sử dụng')],
                              string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")

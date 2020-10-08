@@ -22,8 +22,8 @@
                             name="action_huy"
                             type="object"
                             confirm="Bạn có muốn hủy yêu cầu này không ?"
-                            attrs="{'invisible': ['|',('bsd_ngay_gui', '!=',False)]}"
-                            states="xac_nhan,nhap"/>
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            states="nhap"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
@@ -82,7 +82,9 @@
             <tree>
                 <field name="bsd_ma_tb"/>
                 <field name="bsd_du_an_id"/>
+                <field name="bsd_unit_id"/>
                 <field name="bsd_hd_ban_id"/>
+                <field name="bsd_dot_tt_id"/>
                 <field name="bsd_khach_hang_id"/>
                 <field name="state"/>
             </tree>

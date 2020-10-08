@@ -8,6 +8,7 @@
                 <sheet>
                     <group>
                         <group>
+                            <field name="bsd_loai"/>
                             <field name="bsd_du_an_id" options="{'no_create':true}"/>
                             <field name="bsd_toa_nha_id"
                                    domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"
@@ -25,7 +26,7 @@
                 </sheet>
                 <footer>
                     <button name="action_tao_tb" type="object"
-                            string="Tạo thông báo" class="oe_highlight"/>
+                            string="Tạo" class="oe_highlight"/>
                     <button special="cancel" string="Hủy bỏ"/>
                 </footer>
             </form>
