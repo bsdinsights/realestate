@@ -86,6 +86,10 @@ class BsdThongBaoNhacNo(models.Model):
                 'bsd_nguoi_xn_id': self.env.uid,
                 'bsd_ngay_xn': fields.Datetime.now()
             })
+            self.bsd_dot_tt_id.write({
+                'bsd_canh_bao' + str(self.bsd_lan_nn): True,
+                'bsd_ngay_cb' + str(self.bsd_lan_nn): fields.Datetime.now()
+            })
 
     def action_in_tb(self):
         return self.env.ref('bsd_dich_vu.bsd_tb_nn_report_action').read()[0]

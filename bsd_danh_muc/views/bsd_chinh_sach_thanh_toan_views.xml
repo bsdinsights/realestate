@@ -37,40 +37,56 @@
                                         <field name="bsd_phat_shd" class="mr-1"/>
                                         <span>%</span>
                                     </div>
-                                    <field name="state"/>
                                 </group>
                             </group >
                             <group string="Thông báo">
                                 <group>
-                                    <field name="bsd_tb_tt"/>
-                                    <field name="bsd_tl_hd"/>
-                                    <field name="bsd_qh_tt"/>
+                                    <label for="bsd_tb_tt"/>
+                                    <div class="o_row d-flex no-gutters">
+                                        <field name="bsd_tb_tt" class="mr-1"/>
+                                        <span>ngày</span>
+                                    </div>
+                                    <label for="bsd_tl_hd"/>
+                                    <div class="o_row d-flex no-gutters">
+                                        <field name="bsd_tl_hd" class="mr-1"/>
+                                        <span>ngày</span>
+                                    </div>
+                                    <label for="bsd_qh_tt"/>
+                                    <div class="o_row d-flex no-gutters">
+                                        <field name="bsd_qh_tt" class="mr-1"/>
+                                        <span>ngày</span>
+                                    </div>
                                 </group>
                                 <group>
                                     <label for="bsd_canh_bao1"/>
                                     <div class="o_row d-flex no-gutters">
                                         <field name="bsd_tl_cb1" class="mr-1"/>
-                                        <field name="bsd_canh_bao1" attrs="{'invisible':[('bsd_tl_cb1','=',False)]}"/>
+                                        <field name="bsd_canh_bao1" class="mr-1" attrs="{'readonly':[('bsd_tl_cb1','=',False)]}"/>
+                                        <span>ngày</span>
                                     </div>
                                     <label for="bsd_canh_bao2"/>
                                     <div class="o_row d-flex no-gutters">
                                         <field name="bsd_tl_cb2" class="mr-1"/>
-                                        <field name="bsd_canh_bao2" attrs="{'invisible':[('bsd_tl_cb2','=',False)]}"/>
+                                        <field name="bsd_canh_bao2" class="mr-1" attrs="{'readonly':[('bsd_tl_cb2','=',False)]}"/>
+                                        <span>ngày</span>
                                     </div>
                                     <label for="bsd_canh_bao3"/>
                                     <div class="o_row d-flex no-gutters">
                                         <field name="bsd_tl_cb3" class="mr-1"/>
-                                        <field name="bsd_canh_bao3" attrs="{'invisible':[('bsd_tl_cb3','=',False)]}"/>
+                                        <field name="bsd_canh_bao3" class="mr-1" attrs="{'readonly':[('bsd_tl_cb3','=',False)]}"/>
+                                        <span>ngày</span>
                                     </div>
                                     <label for="bsd_canh_bao4"/>
                                     <div class="o_row d-flex no-gutters">
                                         <field name="bsd_tl_cb4" class="mr-1"/>
-                                        <field name="bsd_canh_bao4" attrs="{'invisible':[('bsd_tl_cb4','=',False)]}"/>
+                                        <field name="bsd_canh_bao4" class="mr-1" attrs="{'readonly':[('bsd_tl_cb4','=',False)]}"/>
+                                        <span>ngày</span>
                                     </div>
                                     <label for="bsd_canh_bao5"/>
                                     <div class="o_row d-flex no-gutters">
                                         <field name="bsd_tl_cb5" class="mr-1"/>
-                                        <field name="bsd_canh_bao5" attrs="{'invisible':[('bsd_tl_cb5','=',False)]}"/>
+                                        <field name="bsd_canh_bao5" class="mr-1" attrs="{'readonly':[('bsd_tl_cb5','=',False)]}"/>
+                                        <span>ngày</span>
                                     </div>
                                 </group>
                             </group>
@@ -111,7 +127,6 @@
                 <field name="bsd_dk_hd"/>
                 <field name="bsd_tu_ngay"/>
                 <field name="bsd_den_ngay"/>
-                <field name="state"/>
             </tree>
         </field>
     </record>

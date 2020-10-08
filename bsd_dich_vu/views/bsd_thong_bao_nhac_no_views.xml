@@ -22,8 +22,8 @@
                             name="action_huy"
                             type="object"
                             confirm="Bạn có muốn hủy yêu cầu này không ?"
-                            attrs="{'invisible': ['|',('bsd_ngay_gui', '!=',False)]}"
-                            states="xac_nhan,nhap"/>
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            states="nhap"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
