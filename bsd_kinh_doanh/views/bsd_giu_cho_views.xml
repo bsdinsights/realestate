@@ -48,7 +48,7 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_bao_gia" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_bao_gia', '=', 0)]}">
-                            <field name="bsd_so_bao_gia" widget="statinfo" string="Báo giá"/>
+                            <field name="bsd_so_bao_gia" widget="statinfo" string="Bảng tính giá"/>
                         </button>
                         <button name="action_view_chuyen_gc" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_chuyen_gc', '=', 0)]}">
                             <field name="bsd_so_chuyen_gc" widget="statinfo" string="Chuyển GC"/>
