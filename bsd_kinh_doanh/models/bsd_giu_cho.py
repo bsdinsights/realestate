@@ -462,6 +462,7 @@ class BsdGiuCho(models.Model):
         context = {
             'default_bsd_ten_bao_gia': 'Bảng tính giá sản phẩm ' + self.bsd_unit_id.name,
             'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
             'default_bsd_giu_cho_id': self.id,
             'default_bsd_unit_id': self.bsd_unit_id.id,
             'default_bsd_nvbh_id': self.bsd_nvbh_id.id,

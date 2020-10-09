@@ -35,8 +35,7 @@ class BsdBaoGia(models.Model):
     bsd_giu_cho_id = fields.Many2one('bsd.giu_cho', string="Giữ chỗ", help="Tên giữ chỗ",
                                      readonly=True,
                                      states={'nhap': [('readonly', False)]})
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án",
-                                   related="bsd_unit_id.bsd_du_an_id", store=True)
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True)
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Tên đợt mở bán")
     bsd_bang_gia_id = fields.Many2one('product.pricelist', string="Bảng giá", help="Bảng giá bán",
                                       related="bsd_dot_mb_id.bsd_bang_gia_id", store=True)
@@ -46,7 +45,7 @@ class BsdBaoGia(models.Model):
     def _get_nhan_vien(self):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)])
 
-    bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên BH", help="Nhân viên bán hàng",
+    bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên KD", help="Nhân viên kinh doanh",
                                   readonly=True, required=True, default=_get_nhan_vien,
                                   states={'nhap': [('readonly', False)]})
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch", domain=[('is_company', '=', True)],
@@ -203,12 +202,6 @@ class BsdBaoGia(models.Model):
     def _compute_tien_thue(self):
         for each in self:
             each.bsd_tien_thue = (each.bsd_gia_truoc_thue - each.bsd_tien_qsdd) * each.bsd_thue_suat / 100
-
-    # @api.onchange('bsd_giu_cho_id')
-    # def _onchange_giu_cho(self):
-    #     self.bsd_unit_id = self.bsd_giu_cho_id.bsd_unit_id
-    #     self.bsd_dot_mb_id = self.bsd_giu_cho_id.bsd_dot_mb_id
-    #     self.bsd_tien_gc = self.bsd_giu_cho_id.bsd_tien_gc
 
     @api.onchange('bsd_unit_id')
     def _onchange_phi(self):
@@ -453,9 +446,9 @@ class BsdBaoGia(models.Model):
     @api.model
     def create(self, vals):
         sequence = False
-        if 'bsd_unit_id' in vals:
-            unit = self.env['product.product'].browse(vals['bsd_unit_id'])
-            sequence = unit.bsd_du_an_id.get_ma_bo_cn(loai_cn=self._name)
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
             raise UserError(_('Dự án chưa có mã bảng tính giá.'))
         vals['bsd_ma_bao_gia'] = sequence.next_by_id()
