@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -62,7 +63,6 @@ class BsdPsCk(models.Model):
                 'bsd_chiet_khau_id': [('id', 'in', list_id)]
             }
         })
-        _logger.debug(res)
         return res
 
     @api.onchange('bsd_chiet_khau_id')

@@ -112,6 +112,7 @@ class BsdBaoGia(models.Model):
     bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_bao_gia_id', string="Bàn giao",
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
+
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_bao_gia_id', string="Lịch thanh toán",
                                   readonly=True, domain=[('bsd_loai', 'in', ['dtt'])])
 
@@ -123,6 +124,17 @@ class BsdBaoGia(models.Model):
     bsd_ps_ck_ids = fields.One2many('bsd.ps_ck', 'bsd_bao_gia_id', string="Phát sinh chiết khấu",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
+
+    @api.constrains('bsd_ps_ck_ids')
+    def _constrains_ck(self):
+        _logger.debug("Kiểm tra thông tin chiết khấu")
+        for each in self:
+            record = each.bsd_ps_ck_ids
+            _logger.debug(record)
+            ck = each.bsd_ps_ck_ids.mapped('bsd_chiet_khau_id')
+            _logger.debug(ck)
+            if len(record) > len(ck):
+                raise UserError("Có Chiết khâu bị trùng.\n Vui lòng kiểm tra lại thông tin chiết khấu.")
 
     bsd_ngay_in_bg = fields.Datetime(string="Ngày in BTG", help="Ngày in báo giá", readonly=True)
     bsd_ngay_hh_kbg = fields.Datetime(string="Hết hạn ký BTG", help="Ngày hết hiệu lực ký báo giá", readonly=True)
