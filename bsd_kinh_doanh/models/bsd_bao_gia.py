@@ -76,7 +76,7 @@ class BsdBaoGia(models.Model):
     bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", related="bsd_thue_id.bsd_thue_suat", store=True,
                                  digits=(12, 2))
     bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì", compute='_compute_tl_pbt', store=True)
-    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="CS thanh toán", help="Chính sách thanh toán", required=True,
+    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="PT thanh toán", help="Phương thức thanh toán", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán", compute="_compute_gia_ban", store=True)
@@ -144,6 +144,7 @@ class BsdBaoGia(models.Model):
     bsd_ck_db_ids = fields.One2many('bsd.ck_db', 'bsd_bao_gia_id', string="Danh sách chiết khấu đặt biệt",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
+    bsd_da_co_lich = fields.Boolean(default=False)
 
     # R.33 Hiệu lực báo giá
     @api.depends('bsd_ngay_bao_gia')
@@ -282,8 +283,9 @@ class BsdBaoGia(models.Model):
         self.bsd_ltt_ids.unlink()
         self.bsd_dot_pbt_ids.unlink()
         self.bsd_dot_pql_ids.unlink()
-        _logger.debug("Tao tu dong lich thanh toan")
-
+        self.write({
+            'bsd_da_co_lich': True
+        })
         # hàm cộng tháng
         def add_months(sourcedate, months):
             month = sourcedate.month - 1 + months
@@ -416,6 +418,16 @@ class BsdBaoGia(models.Model):
         #     'type': 'ir.actions.act_window',
         #     'target': 'new',
         # }
+
+    # Xóa lịch thanh toán
+    def action_xoa_lich_tt(self):
+        # Xóa lịch thanh toán hiện tại
+        self.bsd_ltt_ids.unlink()
+        self.bsd_dot_pbt_ids.unlink()
+        self.bsd_dot_pql_ids.unlink()
+        self.write({
+            'bsd_da_co_lich': False
+        })
 
     # KD.09.06 Ký báo giá
     def action_ky_bg(self):
