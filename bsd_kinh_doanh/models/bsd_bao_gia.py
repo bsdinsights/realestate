@@ -113,6 +113,14 @@ class BsdBaoGia(models.Model):
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
 
+    @api.constrains('bsd_bg_ids')
+    def _constrains_dk_bg(self):
+        for each in self:
+            record = each.bsd_bg_ids
+            dk_bg = each.bsd_bg_ids.mapped('bsd_dk_bg_id')
+            if len(record) > len(dk_bg):
+                raise UserError("Có Điều kiện bàn giao bị trùng.\n Vui lòng kiểm tra lại thông tin điều kiện bàn giao.")
+
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_bao_gia_id', string="Lịch thanh toán",
                                   readonly=True, domain=[('bsd_loai', 'in', ['dtt'])])
 
@@ -127,12 +135,9 @@ class BsdBaoGia(models.Model):
 
     @api.constrains('bsd_ps_ck_ids')
     def _constrains_ck(self):
-        _logger.debug("Kiểm tra thông tin chiết khấu")
         for each in self:
             record = each.bsd_ps_ck_ids
-            _logger.debug(record)
             ck = each.bsd_ps_ck_ids.mapped('bsd_chiet_khau_id')
-            _logger.debug(ck)
             if len(record) > len(ck):
                 raise UserError("Có Chiết khâu bị trùng.\n Vui lòng kiểm tra lại thông tin chiết khấu.")
 
@@ -152,6 +157,14 @@ class BsdBaoGia(models.Model):
                                  help="Danh sách khuyến mãi",
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
+
+    @api.constrains('bsd_km_ids')
+    def _constrains_km(self):
+        for each in self:
+            record = each.bsd_km_ids
+            km = each.bsd_km_ids.mapped('bsd_khuyen_mai_id')
+            if len(record) > len(km):
+                raise UserError("Có Khuyến mãi bị trùng.\n Vui lòng kiểm tra lại thông tin khuyến mãi.")
     bsd_ck_db_ids = fields.One2many('bsd.ck_db', 'bsd_bao_gia_id', string="Danh sách chiết khấu đặt biệt",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
