@@ -151,30 +151,22 @@
                                     <p><strong>Thông tin tài khoản hoàn phí Giữ chỗ thiện chí</strong></p>
                                 </div>
                             </div>
-                            <div class="row mt16">
-                                <div class="col-3">
-                                    <p>Chủ tài khoản</p>
+                            <ul class="mt16">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <li><span>Chủ tài khoản</span></li>
+                                        <li><span>Số tài khoản</span></li>
+                                        <li><span>Ngân hàng</span></li>
+                                        <li><span>Chi nhánh</span></li>
+                                    </div>
+                                    <div class="col-10">
+                                        <div>: <span t-esc="chu_tk"/></div>
+                                        <div>: <span t-esc="so_tk"/></div>
+                                        <div>: <span t-esc="ngan_hang"/></div>
+                                        <div>: <span t-esc="chi_nhanh"/></div>
+                                    </div>
                                 </div>
-                                <div class="col-9">
-                                    <p>:</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-3">
-                                    <p>Số tài khoản</p>
-                                </div>
-                                <div class="col-9">
-                                    <p>:</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-3">
-                                    <p>Ngân hàng</p>
-                                </div>
-                                <div class="col-9">
-                                    <p>:</p>
-                                </div>
-                            </div>
+                            </ul>
                             <div class="row mt16">
                                 <div class="col-12">
                                     <p><strong>II.<u class="ml16">Thỏa thuận chung:</u></strong></p>

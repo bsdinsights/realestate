@@ -404,7 +404,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-5">
-                                    <span>Họ và tên: </span><span t-field="doc.bsd_khach_hang_id.name"/><br/>
+                                    <span>Họ và tên: </span><span t-field="doc.bsd_khach_hang_id.bsd_ten"/><br/>
                                     <span>Hộ chiếu: </span><span t-field="doc.bsd_khach_hang_id.bsd_ho_chieu"/><br/>
                                     <span>CMND/ CCCD: </span><span t-field="doc.bsd_khach_hang_id.bsd_cmnd"/><br/>
                                 </div>

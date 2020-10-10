@@ -491,15 +491,9 @@ class BsdBaoGia(models.Model):
             'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
             'default_bsd_bao_gia_id': self.id,
         }
-        return {
-            "name": "Tạo đặt cọc",
-            "res_model": 'bsd.dat_coc',
-            "view": [[False, 'form']],
-            "type": 'ir.actions.act_window',
-            "view_mode": "form",
-            "context": context,
-            "target": "new"
-        }
+        action = self.env.ref('bsd_kinh_doanh.bsd_dat_coc_action_popup').read()[0]
+        action['context'] = context
+        return action
 
     def _compute_dat_coc(self):
         for each in self:
