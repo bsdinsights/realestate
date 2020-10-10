@@ -118,8 +118,46 @@
                                     </table>
                                 </div>
                             </div>
-                            <!-- Người mua-->
-                            <div class="row mt4">
+                            <!-- Người mua nếu là khách hàng doanh nghiệp-->
+                            <t t-if="doc.bsd_khach_hang_id.is_company">
+                                <div class="row mt4">
+                                <div class="col-12">
+                                    <table class="table table-bordered table-sm"
+                                           style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
+                                        <tr class="text-center">
+                                            <td rowspan="6" width="10%"
+                                                style="border: 1px solid black !important;vertical-align: middle;"><b>Người mua 1</b></td>
+                                            <td class="text-left" width="20%" style="border: 1px solid black !important;"><div>Tên công ty:</div></td>
+                                            <td width="80%" style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.name"/></div></td>
+
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="text-left" style="border: 1px solid black !important;"><div>Số đăng ký:</div></td>
+                                            <td style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.bsd_so_gpkd"/></div></td>
+                                            <td class="text-left" style="border: 1px solid black !important;"><div>Ngày cấp:</div></td>
+                                            <td style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.bsd_ngay_gpkd"/></div></td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="text-left" style="border: 1px solid black !important;"><div>Emai:</div></td>
+                                            <td style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.email"/></div></td>
+                                            <td class="text-left" style="border: 1px solid black !important;"><div>Điện thoại:</div></td>
+                                            <td style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.phone"/></div></td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="text-left" style="border: 1px solid black !important;"><div>Địa chỉ trụ sở:</div></td>
+                                            <td style="border: 1px solid black !important;" colspan="3"><div><span t-field="doc.bsd_khach_hang_id.bsd_dia_chi_tt"/></div></td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="text-left" style="border: 1px solid black !important;"><div>Địa chỉ liên hệ:</div></td>
+                                            <td style="border: 1px solid black !important;" colspan="3"><div><span t-field="doc.bsd_khach_hang_id.bsd_dia_chi_lh"/></div></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            </t>
+                            <t t-else="">
+                            <!-- Người mua nếu là khách hàng cá nhân-->
+                                <div class="row mt4">
                                 <div class="col-12">
                                     <table class="table table-bordered table-sm"
                                            style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
@@ -158,6 +196,7 @@
                                     </table>
                                 </div>
                             </div>
+                            </t>
                             <!-- Thông tin căn hộ -->
                             <div class="row mt8">
                                 <div class="col-12">
