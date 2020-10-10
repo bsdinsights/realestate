@@ -139,7 +139,7 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_bao_gia" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_bao_gia', '=', 0)]}">
-                            <field name="bsd_so_bao_gia" widget="statinfo" string="Báo giá"/>
+                            <field name="bsd_so_bao_gia" widget="statinfo" string="Bảng tính giá"/>
                         </button>
                         <button name="action_view_huy_gc" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_huy_gc', '=', 0)]}">
                             <field name="bsd_so_huy_gc" widget="statinfo" string="Đề nghị hủy"/>
@@ -231,7 +231,7 @@
         <field name="name">Giữ chỗ</field>
         <field name="res_model">bsd.giu_cho</field>
         <field name="view_mode">form</field>
-        <field name="target">new</field>
+        <field name="target">current</field>
         <field name="view_ids"
                eval="[(5, 0, 0),
                       (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_giu_cho_form_2')})]"/>

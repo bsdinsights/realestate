@@ -225,6 +225,12 @@ class BsdGiuCho(models.Model):
         if len(gc_in_day) > self.bsd_du_an_id.bsd_gc_unit_nv_ngay:
             raise UserError("Tổng số Giữ chỗ trong ngày theo Sản phẩm của bạn đã vượt quá quy định.")
 
+    # Kiểm tra trạng thái unit trước khi tạo giữ chỗ
+    @api.constrains('bsd_unit_id')
+    def _constrains_state_giu_cho(self):
+        if self.bsd_unit_id.state not in ['chuan_bi', 'san_sang', 'dat_cho', 'giu_cho']:
+            raise UserError(_("Sản phẩm đã có giao dịch.\n Vui lòng kiểm tra lại thông tin sản phẩm."))
+
     @api.onchange('bsd_unit_id', 'bsd_du_an_id')
     def _onchange_tien_gc(self):
         if self.bsd_unit_id:
@@ -237,21 +243,6 @@ class BsdGiuCho(models.Model):
 
         if self.bsd_dot_mb_id:
             self.bsd_tien_gc = 0
-
-    # R.05 Tính hạn hiệu lực giữ chỗ
-    # @api.depends('bsd_ngay_gc', 'bsd_du_an_id.bsd_gc_smb')
-    # def _compute_hl_gc(self):
-    #     for each in self:
-    #         if each.bsd_ngay_gc:
-    #             hours = each.bsd_du_an_id.bsd_gc_smb or 0 if each.bsd_du_an_id else 0
-    #             each.bsd_ngay_hh_gc = each.bsd_ngay_gc + datetime.timedelta(hours=hours)
-
-    # R.08 Tính hạn hiệu lực giữ chỗ sau thanh toán
-    # @api.depends('bsd_ngay_tt', 'bsd_du_an_id.bsd_gc_tmb')
-    # def _compute_ngay_hh_stt(self):
-    #     for each in self:
-    #         if each.bsd_ngay_tt:
-    #             each.bsd_ngay_hh_stt = each.bsd_ngay_tt + datetime.timedelta(days=each.bsd_du_an_id.bsd_gc_tmb)
 
     # KD.07.09 Theo dõi công nợ giữ chỗ
     def _tao_rec_cong_no(self):

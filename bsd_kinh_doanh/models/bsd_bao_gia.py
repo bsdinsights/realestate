@@ -170,6 +170,12 @@ class BsdBaoGia(models.Model):
                                     states={'nhap': [('readonly', False)]})
     bsd_da_co_lich = fields.Boolean(default=False)
 
+    # Kiểm tra sản phẩm đã được ký bảng tính giá hay chưa
+    @api.constrains('bsd_unit_id')
+    def _constraint_state_unit(self):
+        if self.bsd_unit_id.state not in ['chuan_bi', 'san_sang', 'dat_cho', 'giu_cho']:
+            raise UserError(_("Sản phẩm đã có giao dịch.\n Vui lòng kiểm tra lại thông tin sản phẩm."))
+
     # R.33 Hiệu lực báo giá
     @api.depends('bsd_ngay_bao_gia')
     def _compute_ngay_hl(self):

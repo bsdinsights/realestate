@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api, _
-
+from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -18,6 +18,9 @@ class BsdKyBG(models.TransientModel):
     bsd_ngay_ky_bg = fields.Datetime(string="Ngày ký báo giá", required=True)
 
     def action_xac_nhan(self):
+        # Kiểm tra trạng thái unit trước khi ký bảng tính giá
+        if self.bsd_bao_gia_id.bsd_unit_id.state != 'giu_cho':
+            raise UserError(_("Sản phẩm đã có giao dịch.\n Vui lòng kiểm tra lại thông tin."))
         self.bsd_bao_gia_id.write({
             'bsd_ngay_ky_bg': self.bsd_ngay_ky_bg,
             'state': 'da_ky'
