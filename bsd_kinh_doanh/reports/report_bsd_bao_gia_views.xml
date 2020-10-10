@@ -290,10 +290,20 @@
                                   và hoàn thành đặt cọc số tiền <span t-field="doc.bsd_tien_dc"/> bằng tiền mặt, thẻ tín dụng hoặc chuyển khoản đến tài khoản
                                   công ty dự án theo thông tin dưới đây:</span>
                                 <ul>
-                                  <li><span>Chủ tài khoản           : </span></li>
-                                  <li><span>Số tài khoản            : </span></li>
-                                  <li><span>Tên tài khoản           : </span></li>
-                                  <li><span>Chi nhánh               : </span></li>
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <li><span>Chủ tài khoản</span></li>
+                                            <li><span>Số tài khoản</span></li>
+                                            <li><span>Ngân hàng</span></li>
+                                            <li><span>Chi nhánh</span></li>
+                                        </div>
+                                        <div class="col-10">
+                                            <div>: <span t-esc="chu_tk"/></div>
+                                            <div>: <span t-esc="so_tk"/></div>
+                                            <div>: <span t-esc="ngan_hang"/></div>
+                                            <div>: <span t-esc="chi_nhanh"/></div>
+                                        </div>
+                                    </div>
                                 </ul>
                             </div>
                         </div>
@@ -303,7 +313,7 @@
                                Giá trị QSDĐ không bị tính thuế GTGT</span>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" style="page-break-inside: avoid">
                             <div class="col-12">
                                 <span>4. Người nước ngoài được yêu cầu có mặt tại Việt Nam để ký Hợp đồng mua bán.</span>
                             </div>

@@ -15,3 +15,4 @@ class ResPartnerBank(models.Model):
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng tài khoản ngân hàng")
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng tài khoản ngân hàng")
     bsd_tk_chinh = fields.Boolean(string="Tài khoản chính", help="Tài khoản sử dụng mặc định")
+    bsd_chi_nhanh = fields.Char(string="Chi nhánh", help="Chi nhánh của ngân hàng")

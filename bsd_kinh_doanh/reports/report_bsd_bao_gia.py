@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from odoo import api, models, fields
+from odoo.exceptions import UserError
 import logging
 import datetime
 _logger = logging.getLogger(__name__)
@@ -40,8 +41,21 @@ class ReportBsdBaoGia(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        return {
+        bao_gia = self.env['bsd.bao_gia'].browse(data['ids'])
+        tai_khoan = bao_gia.bsd_du_an_id.bsd_tk_ng_ids
+        tai_khoan = tai_khoan.filtered(lambda t: t.bsd_tk_chinh)
+        if not tai_khoan:
+            raise UserError("Dự án chưa cấu hình tài khoản chính.\n Vui lòng chọn tài khoản chính cho dự án.")
+        if len(tai_khoan) > 1:
+            raise UserError("Dự án cấu hình nhiều hơn 1 tài khoản chính.\n Vui lòng kiểm tra lại thông tin.")
+        res = {
             'doc_ids': data['ids'],
             'doc_model': data['model'],
-            'docs': self.env['bsd.bao_gia'].browse(data['ids']),
+            'docs': bao_gia,
+            'chu_tk': tai_khoan.acc_holder_name,
+            'so_tk': tai_khoan.acc_number,
+            'ngan_hang': tai_khoan.bank_id.name,
+            'chi_nhanh': tai_khoan.bsd_chi_nhanh
+
         }
+        return res
