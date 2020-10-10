@@ -195,6 +195,7 @@ class ProductTemplate(models.Model):
                               ('du_dk', 'Đủ điều kiện'),
                               ('da_ban', 'Đã bán')], string="Trạng thái",
                              default="chuan_bi", tracking=1, help="Trạng thái", required=True, readonly=True)
+    bsd_sequence_gc_id = fields.Many2one('ir.sequence', string="STT giữ chỗ", readonly=1)
 
     @api.constrains('bsd_tl_pbt')
     def _check_bsd_phi_bao_tri(self):
@@ -413,21 +414,24 @@ class ProductTemplate(models.Model):
                 template.write({
                     'bsd_loai_sd_ids': [(6, 0, du_an.bsd_loai_sd_ids.ids)]
                 })
-            template._create_sequence()
+            template.write({
+                'bsd_sequence_gc_id': template._create_sequence().id
+            })
         return templates
 
     def write(self, vals):
         # cập nhật lại code trong sequence
         if 'bsd_ma_unit' in vals.keys():
-            self.env['ir.sequence'].search([('code', '=', self.bsd_ma_unit)]).write({
+            self.env['ir.sequence'].search([('id', '=', self.bsd_sequence_gc_id.id)]).write({
                 'code': vals['bsd_ma_unit']
             })
         return super(ProductTemplate, self).write(vals)
 
     def unlink(self):
         for each in self:
-            if each.env['bsd.giu_cho'].search([('bsd_product_tmpl_id', '=' , each.id)], limit=1):
+            if each.env['bsd.giu_cho'].search([('bsd_product_tmpl_id', '=', each.id)], limit=1):
                 raise UserError(_("Sản phẩm đã phát sinh giữ chỗ. Không thể xóa sản phẩm."))
+            each.env['ir.sequence'].search([('id', '=', each.bsd_sequence_gc_id.id)]).unlink()
         return super(ProductTemplate, self).unlink()
 
 

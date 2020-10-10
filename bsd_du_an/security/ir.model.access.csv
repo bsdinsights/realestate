@@ -12,3 +12,4 @@ bsd_tt_kt_ct_manager,Quản lý thông tin kỹ thuật chi tiết ,model_bsd_tt
 
 bsd_view_manager, Hướng nhìn của sản phẩm,model_bsd_view,bsd_du_an.group_manager,1,1,1,1
 bsd_lh_sd_manager, Loại hình sử dụng của dự án,model_bsd_lh_sd,bsd_du_an.group_manager,1,1,1,1
+bsd_trinh_tu,Sequence,base.model_ir_sequence,bsd_du_an.group_manager,1,1,1,1

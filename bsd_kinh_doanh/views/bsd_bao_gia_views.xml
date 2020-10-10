@@ -348,7 +348,12 @@
         <field name="name">bsd.bao_gia.tree</field>
         <field name="model">bsd.bao_gia</field>
         <field name="arch" type="xml">
-            <tree create="false" duplicate="false" delete="false">
+            <tree default_order="bsd_unit_id asc"
+                  decoration-warning="state=='xac_nhan'"
+                  decoration-success="state=='da_ky'"
+                  decoration-bf="state=='da_ky'"
+                  decoration-muted="state=='huy'"
+                  create="false" duplicate="false" delete="false">
                 <field name="bsd_ma_bao_gia"/>
                 <field name="bsd_khach_hang_id"/>
                 <field name="bsd_giu_cho_id"/>
@@ -378,7 +383,7 @@
                 <group expand="0" string="Group by">
                     <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
                     <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
-                    <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
+                    <filter string="Sản phẩm" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
                 </group>
             </search>
         </field>
