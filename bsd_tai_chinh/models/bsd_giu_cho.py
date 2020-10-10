@@ -68,7 +68,7 @@ class BsdGiuCho(models.Model):
             time_gc = self.bsd_du_an_id.bsd_gc_tmb
             ngay_hh_bg = self.bsd_ngay_tt
             ngay_hh_gc = self.bsd_ngay_tt + datetime.timedelta(days=time_gc)
-            stt = self.env['ir.sequence'].next_by_code(self.bsd_unit_id.bsd_ma_unit)
+            stt = self.bsd_unit_id.bsd_sequence_gc_id.next_by_id()
             if giu_cho_unit:
                 self.write({
                     'bsd_ngay_hh_bg': ngay_hh_bg,

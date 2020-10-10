@@ -279,21 +279,30 @@ class BsdGiuCho(models.Model):
                 self.bsd_unit_id.write({
                     'state': 'dat_cho',
                 })
+        # Khi đã có đợt mở bán xem sản phẩm đã có đặt cọc chưa
         else:
+            if self.bsd_unit_id.state not in ['chuan_bi', 'san_sang', 'dat_coc', 'giu_cho']:
+                raise UserError(_("Sản phẩm đã có giao dịch.\n Vui lòng kiểm tra lại thông tin."))
             giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
-                                                           ('bsd_stt_bg', '>', 0)])
-            stt = 1
-            time_gc = self.bsd_du_an_id.bsd_gc_smb
-            ngay_hh_bg = datetime.datetime.now() + datetime.timedelta(hours=time_gc)
+                                                           ('state', '=', 'giu_cho')])
+            time_gc = self.bsd_du_an_id.bsd_gc_tmb
+            ngay_hh_bg = self.bsd_ngay_gc
+            ngay_hh_gc = self.bsd_ngay_gc + datetime.timedelta(days=time_gc)
+            stt = self.bsd_unit_id.bsd_sequence_gc_id.next_by_id()
             if giu_cho_unit:
-                stt = max(filter(None, giu_cho_unit.mapped('bsd_stt_bg'))) + 1
-                ngay_hh_bg = max(filter(None, giu_cho_unit.mapped('bsd_ngay_hh_bg'))) + datetime.timedelta(hours=time_gc)
-            self.write({
-                'state': 'giu_cho',
-                'bsd_ngay_gc': datetime.datetime.now(),
-                'bsd_stt_bg': stt,
-                'bsd_ngay_hh_bg': ngay_hh_bg,
-            })
+                self.write({
+                    'bsd_ngay_hh_bg': ngay_hh_bg,
+                    'bsd_ngay_hh_gc': ngay_hh_gc,
+                    'state': 'dang_cho',
+                    'bsd_stt_bg': stt
+                })
+            else:
+                self.write({
+                    'bsd_ngay_hh_bg': ngay_hh_bg,
+                    'bsd_ngay_hh_gc': ngay_hh_gc,
+                    'state': 'giu_cho',
+                    'bsd_stt_bg': stt
+                })
             # Cập nhật lại trạng thái unit
             self.bsd_unit_id.write({
                 'state': 'giu_cho',

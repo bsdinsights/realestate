@@ -58,7 +58,7 @@ class BsdGiuChoThienChi(models.Model):
 
     # Sinh số thứ tự cho phiếu
     def create_stt(self):
-        stt = self.bsd_du_an_id.bsd_sequence_gc_tc_id.next_by_code(self.bsd_du_an_id.bsd_ma_da)
+        stt = self.bsd_du_an_id.bsd_sequence_gc_tc_id.next_by_id()
         # Tính ngày ưu tiên ráp căn
         # Cập nhật lại hạn giữ chỗ thiện chí khi thanh toán
         bsd_ngay_hh_gctc = self.bsd_ngay_tt + datetime.timedelta(days=self.bsd_du_an_id.bsd_gc_tmb)
