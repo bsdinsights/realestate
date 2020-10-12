@@ -14,7 +14,7 @@ class BsdWizardCSTT(models.TransientModel):
         cs_tt = self.env['bsd.cs_tt'].browse(self._context.get('active_ids', []))
         return cs_tt
 
-    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="Chiết khấu", default=_get_cs_tt, readonly=True)
+    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="Phương thức thanh toán", default=_get_cs_tt, readonly=True)
     bsd_ly_do = fields.Char(string="Lý do", required=True)
 
     def action_xac_nhan(self):

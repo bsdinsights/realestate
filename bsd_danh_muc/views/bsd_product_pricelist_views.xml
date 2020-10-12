@@ -5,6 +5,35 @@
         <field name="model">product.pricelist</field>
         <field name="inherit_id" ref="product.product_pricelist_view"/>
         <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            class="oe_highlight"
+                            confirm="Bạn có muốn Xác nhận yêu cầu không?"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                            type="object"/>
+                    <button string="Duyệt"
+                            name="action_duyet"
+                            class="oe_highlight"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn Duyệt yêu cầu không?"
+                            type="object"/>
+                    <button string="Không duyệt"
+                            name="action_khong_duyet"
+                            class="oe_highlight"
+                            states="xac_nhan"
+                            type="object"
+                            confirm="Bạn có muốn Từ chối yêu cầu không?"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            states="xac_nhan,nhap"
+                            confirm="Bạn có muốn Hủy yêu cầu không?"
+                            type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+            </xpath>
+
             <xpath expr="//group[@name='pricelist_settings']" position="replace">
                     <group>
                         <field name="bsd_ma_bg"/>
@@ -14,9 +43,9 @@
                     <group>
                         <field name="bsd_ngay_bd"/>
                         <field name="bsd_ngay_kt"/>
-                        <field name="currency_id"/>
-                        <field name="state"/>
+                        <field name="currency_id" readonly="1" force_save="1"/>
                         <field name="active" invisible="1"/>
+                        <field name="bsd_ly_do" readonly="1"/>
                     </group>
             </xpath>
             <xpath expr="//field[@name='item_ids']" position="replace">
@@ -24,8 +53,6 @@
                       <tree string="Pricelist Items">
                           <field name="product_tmpl_id" domain="[('bsd_du_an_id','in',[parent.bsd_du_an_id])]"/>
                           <field name="fixed_price" string="Giá bán" class="oe_inline" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                          <field name="date_start"/>
-                          <field name="date_end"/>
                           <field name="base" invisible="1"/>
                           <field name="price_discount" invisible="1"/>
                           <field name="applied_on" invisible="1"/>
