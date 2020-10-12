@@ -78,7 +78,7 @@
                                     <field name="bsd_dot_mb_id" readonly="1"/>
                                     <field name="bsd_bang_gia_id"/>
                                     <field name="bsd_tien_gc" readonly="1"/>
-                                    <field name="bsd_tien_dc"/>
+                                    <field name="bsd_tien_dc" readonly="1"/>
                                 </group>
                             </group>
                             <group string="MÔI GIỚI">
@@ -157,7 +157,7 @@
                                     </div>
                                 </group>
                                 <group>
-                                    <field name="bsd_gia_ban"/>
+                                    <field name="bsd_gia_ban" readonly="1" force_save="1"/>
                                     <field name="bsd_tien_ck"/>
                                     <field name="bsd_tien_bg"/>
                                     <field name="bsd_gia_truoc_thue"/>
@@ -435,7 +435,7 @@
                                     <field name="bsd_dot_mb_id" readonly="1" force_save="1"/>
                                     <field name="bsd_bang_gia_id"/>
                                     <field name="bsd_tien_gc" readonly="1" force_save="1"/>
-                                    <field name="bsd_tien_dc"/>
+                                    <field name="bsd_tien_dc" readonly="1" force_save="1"/>
                                 </group>
                             </group>
                             <group string="MÔI GIỚI">

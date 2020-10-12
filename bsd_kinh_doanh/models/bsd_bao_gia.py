@@ -35,12 +35,18 @@ class BsdBaoGia(models.Model):
     bsd_giu_cho_id = fields.Many2one('bsd.giu_cho', string="Giữ chỗ", help="Tên giữ chỗ",
                                      readonly=True,
                                      states={'nhap': [('readonly', False)]})
+
+    @api.onchange('bsd_giu_cho_id')
+    def _onchange_giu_cho(self):
+        if self.bsd_giu_cho_id:
+            self.bsd_tien_gc = self.bsd_giu_cho_id.bsd_tien_gc
+
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True)
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Tên đợt mở bán")
     bsd_bang_gia_id = fields.Many2one('product.pricelist', string="Bảng giá", help="Bảng giá bán",
                                       related="bsd_dot_mb_id.bsd_bang_gia_id", store=True)
     bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ")
-    bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc", compute='_compute_tien_dc', store=True)
+    bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc")
 
     def _get_nhan_vien(self):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)])
@@ -78,7 +84,7 @@ class BsdBaoGia(models.Model):
     bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="PT thanh toán", help="Phương thức thanh toán", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán", compute="_compute_gia_ban", store=True)
+    bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán")
     bsd_tien_ck = fields.Monetary(string="Chiết khấu", help="Tổng tiền chiết khấu", compute="_compute_tien_ck", store=True)
     bsd_tien_bg = fields.Monetary(string="Giá trị ĐKBG", help="Tổng tiền bàn giao",
                                   compute='_compute_tien_bg', store=True)
@@ -183,15 +189,6 @@ class BsdBaoGia(models.Model):
             so_ngay = datetime.timedelta(days=each.bsd_du_an_id.bsd_hh_bg)
             each.bsd_ngay_hl_bg = each.bsd_ngay_bao_gia + so_ngay
 
-    @api.depends('bsd_tien_gc', 'bsd_unit_id')
-    def _compute_tien_dc(self):
-        for each in self:
-            if each.bsd_unit_id.bsd_tien_dc != 0:
-                each.bsd_tien_dc = each.bsd_unit_id.bsd_tien_dc
-            else:
-                each.bsd_tien_dc = each.bsd_unit_id.bsd_du_an_id.bsd_tien_dc
-            each.bsd_tien_dc = each.bsd_tien_dc - each.bsd_tien_gc
-
     @api.depends('bsd_unit_id.bsd_tl_pbt')
     def _compute_tl_pbt(self):
         for each in self:
@@ -205,12 +202,15 @@ class BsdBaoGia(models.Model):
         for each in self:
             each.bsd_tien_pbt = each.bsd_gia_ban * each.bsd_tl_pbt / 100
 
-    @api.depends('bsd_unit_id', 'bsd_bang_gia_id.item_ids.fixed_price')
-    def _compute_gia_ban(self):
+    @api.onchange('bsd_unit_id', 'bsd_bang_gia_id')
+    def _onchange_gia_ban(self):
         for each in self:
             item = each.bsd_bang_gia_id.item_ids.filtered(
                 lambda x: x.product_tmpl_id == each.bsd_unit_id.product_tmpl_id)
-            each.bsd_gia_ban = item.fixed_price
+            if item:
+                each.bsd_gia_ban = item.fixed_price
+            else:
+                each.bsd_gia_ban = 0
 
     @api.depends('bsd_bg_ids.bsd_tien_bg')
     def _compute_tien_bg(self):
@@ -235,9 +235,11 @@ class BsdBaoGia(models.Model):
             each.bsd_tien_thue = (each.bsd_gia_truoc_thue - each.bsd_tien_qsdd) * each.bsd_thue_suat / 100
 
     @api.onchange('bsd_unit_id')
-    def _onchange_phi(self):
+    def _onchange_unit(self):
         self.bsd_ten_bao_gia = 'Bảng tính giá sản phẩm ' + self.bsd_unit_id.name
         self.bsd_dot_mb_id = self.bsd_unit_id.bsd_dot_mb_id
+        self.bsd_tien_dc = self.bsd_unit_id.bsd_tien_dc
+        self.bsd_du_an_id = self.bsd_unit_id.bsd_du_an_id
         for each in self:
             if each.bsd_unit_id.bsd_thang_pql != 0:
                 each.bsd_thang_pql = each.bsd_unit_id.bsd_thang_pql
