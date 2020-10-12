@@ -13,12 +13,12 @@ class BsdDotMoBan(models.Model):
     _rec_name = 'bsd_ten_dot_mb'
     _description = 'Thông tin đợt mở bán'
 
-    bsd_ma_dot_mb = fields.Char(string="Mã đợt mở bán", required=True, readonly=True, copy=False, default='/')
+    bsd_ma_dot_mb = fields.Char(string="Mã", required=True, readonly=True, copy=False, default='/')
     _sql_constraints = [
         ('bsd_ma_dot_mb_unique', 'unique (bsd_ma_dot_mb)',
          'Mã đợt mở bán đã tồn tại !'),
     ]
-    bsd_ten_dot_mb = fields.Char(string="Tên đợt mở bán", required=True,
+    bsd_ten_dot_mb = fields.Char(string="Tên", required=True,
                                  readonly=True,
                                  states={'cph': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True,
@@ -28,7 +28,7 @@ class BsdDotMoBan(models.Model):
                                       readonly=True, required=True,
                                       states={'cph': [('readonly', False)]})
     bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="CK chung",
-                                   readonly=True,
+                                   readonly=True, required=True,
                                    states={'cph': [('readonly', False)]})
     bsd_ck_nb_id = fields.Many2one('bsd.ck_nb', string="CK nội bộ",
                                    readonly=True,
@@ -42,7 +42,7 @@ class BsdDotMoBan(models.Model):
     bsd_ck_ttn_id = fields.Many2one('bsd.ck_ttn', string="CK TT nhanh",
                                     readonly=True,
                                     states={'cph': [('readonly', False)]})
-    bsd_ck_cstt_id = fields.Many2one('bsd.ck_cstt', string="CK chính sách TT",
+    bsd_ck_cstt_id = fields.Many2one('bsd.ck_cstt', string="CK phương thức TT",
                                      readonly=True,
                                      states={'cph': [('readonly', False)]})
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng của đợt mở bán",

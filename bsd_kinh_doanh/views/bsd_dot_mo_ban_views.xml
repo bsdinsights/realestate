@@ -10,10 +10,12 @@
                             name="action_loc_unit"
                             type="object"
                             states="cph"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
                             class="oe_highlight"/>
                     <button string="Phát hành"
                             type="object"
                             states="cph"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
                             class="oe_highlight"
                             name="action_phat_hanh"/>
                     <button string="Thu hồi ĐMB"
@@ -41,7 +43,7 @@
                     </div>
                     <notebook>
                         <page string="Thông tin chung">
-                            <group>
+                            <group string="THÔNG TIN ĐỢT MỞ BÁN">
                                 <group>
                                     <field name="bsd_ma_dot_mb"/>
                                     <field name="bsd_ten_dot_mb"/>
@@ -51,6 +53,17 @@
                                     <field name="bsd_bang_gia_id"
                                            domain="[('bsd_du_an_id', 'in', [bsd_du_an_id])]"
                                            options="{'no_create':true}"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_tu_ngay"/>
+                                    <field name="bsd_den_ngay"/>
+                                    <field name="bsd_ngay_ph"/>
+                                    <field name="bsd_nguoi_ph"/>
+                                    <field name="bsd_dien_giai"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="CHÍNH SÁCH CHIẾT KHẤU">
                                     <field name="bsd_ck_ch_id"
                                            domain="[('bsd_dot_mb_id', '=', False),('state', '=', 'duyet')]"
                                            options="{'no_create':true}"/>
@@ -60,21 +73,17 @@
                                     <field name="bsd_ck_ms_id"
                                            domain="[('bsd_dot_mb_id', '=', False),('state', '=', 'duyet')]"
                                            options="{'no_create':true}"/>
+                                    <field name="bsd_ck_cstt_id"
+                                           domain="[('bsd_dot_mb_id', '=', False),('state', '=', 'duyet')]"
+                                           options="{'no_create':true}"/>
                                     <field name="bsd_ck_ttth_id"
                                            domain="[('bsd_dot_mb_id', '=', False),('state', '=', 'duyet')]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_ck_ttn_id"
                                            domain="[('bsd_dot_mb_id', '=', False),('state', '=', 'duyet')]"
                                            options="{'no_create':true}"/>
-                                    <field name="bsd_ck_cstt_id"
-                                           domain="[('bsd_dot_mb_id', '=', False),('state', '=', 'duyet')]"
-                                           options="{'no_create':true}"/>
                                 </group>
-                                <group>
-                                    <field name="bsd_tu_ngay"/>
-                                    <field name="bsd_den_ngay"/>
-                                    <field name="bsd_ngay_ph"/>
-                                    <field name="bsd_nguoi_ph"/>
+                                <group string="BỘ LỌC">
                                     <field name="bsd_tu_toa_nha_id"
                                            domain="[('bsd_du_an_id', 'in', [bsd_du_an_id])]"
                                            options="{'no_create':true}"/>
@@ -87,7 +96,6 @@
                                     <field name="bsd_den_tang_id"
                                            domain="[('bsd_toa_nha_id', 'in', [bsd_den_toa_nha_id])]"
                                            options="{'no_create':true}"/>
-                                    <field name="bsd_dien_giai"/>
                                 </group>
                             </group>
                         </page>
