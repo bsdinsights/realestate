@@ -19,7 +19,7 @@ class BsdKyBG(models.TransientModel):
 
     def action_xac_nhan(self):
         # Kiểm tra trạng thái unit trước khi ký bảng tính giá
-        if self.bsd_bao_gia_id.bsd_unit_id.state != 'giu_cho':
+        if self.bsd_bao_gia_id.bsd_unit_id.state not in ['giu_cho', 'san_sang']:
             raise UserError(_("Sản phẩm đã có giao dịch.\n Vui lòng kiểm tra lại thông tin."))
         self.bsd_bao_gia_id.write({
             'bsd_ngay_ky_bg': self.bsd_ngay_ky_bg,

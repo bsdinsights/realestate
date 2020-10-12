@@ -25,7 +25,7 @@ class BsdDatCoc(models.Model):
     def _compute_tien_tt(self):
         for each in self:
             each.bsd_tien_da_tt = sum(each.bsd_ct_ids.filtered(lambda x: not x.bsd_dot_tt_id).mapped('bsd_tien_pb'))
-            each.bsd_tien_phai_tt = each.bsd_tien_dc - each.bsd_tien_da_tt
+            each.bsd_tien_phai_tt = each.bsd_tien_dc - each.bsd_tien_gc - each.bsd_tien_da_tt
 
             if each.bsd_tien_phai_tt == 0:
                 each.bsd_thanh_toan = 'da_tt'
@@ -49,3 +49,16 @@ class BsdDatCoc(models.Model):
             self.bsd_unit_id.write({
                 'state': 'da_tc'
             })
+
+    # Tạo thanh toán
+    def action_thanh_toan(self):
+        context = {
+            'default_bsd_loai_pt': 'dat_coc',
+            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_dat_coc_id': self.id,
+            'default_bsd_unit_id': self.bsd_unit_id.id
+        }
+        action = self.env.ref('bsd_tai_chinh.bsd_phieu_thu_action_popup').read()[0]
+        action['context'] = context
+        return action

@@ -49,7 +49,7 @@ class BsdPhieuThu(models.Model):
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
     bsd_pt_tt_id = fields.Many2one('bsd.pt_tt', string="Hình thức", help="Hình thức thanh toán",
-                                   readonly=True,
+                                   readonly=True,required=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_so_nk = fields.Selection([('tien_mat', 'Tiền mặt'), ('ngan_hang', 'Ngân hàng')], string="Sổ nhật ký",
                                  required=True,

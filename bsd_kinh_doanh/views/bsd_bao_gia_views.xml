@@ -36,9 +36,10 @@
                             confirm="Bạn có chắc muốn Hủy bảng tính giá không?"
                             name="action_huy"
                             type="object"/>
-                    <button string="Đặt cọc"
+                    <button string="Tạo đặt cọc"
                             type="object"
                             name="action_tao_dat_coc"
+                            class="oe_highlight"
                             attrs="{'invisible': ['|',('state','not in',['da_ky']),('bsd_ngay_ky_bg','=', False)]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>

@@ -11,6 +11,14 @@
             <xpath expr="//field[@name='bsd_thanh_toan']" position="after">
                 <field name="bsd_tien_phai_tt"/>
             </xpath>
+            <xpath expr="//header" position="inside">
+                <button string="Thanh toán"
+                        name="action_thanh_toan"
+                        sequence="30"
+                        states="xac_nhan"
+                        type="object"
+                        class="oe_highlight"/>
+            </xpath>
         </field>
     </record>
 </odoo>

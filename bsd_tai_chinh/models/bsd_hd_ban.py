@@ -19,10 +19,13 @@ class BsdHdBan(models.Model):
     @api.depends('bsd_ltt_ids.bsd_tien_da_tt', 'bsd_tong_gia')
     def _compute_tl_tt(self):
         for each in self:
-            if each.bsd_tong_gia > 0:
+            if each.bsd_tong_gia > 0 and each.bsd_ltt_ids:
                 each.bsd_tien_tt_hd = sum(each.bsd_ltt_ids.mapped('bsd_tien_da_tt')) + \
                                       each.bsd_ltt_ids.filtered(lambda x: x.bsd_stt == 1).bsd_tien_dc
                 each.bsd_tl_tt_hd = each.bsd_tien_tt_hd / (each.bsd_tong_gia - each.bsd_tien_pbt) * 100
+            else:
+                each.bsd_tien_tt_hd = 0
+                each.bsd_tl_tt_hd = 0
 
     # DV.01.13 Theo dõi giao dịch khuyến mãi
     def tao_giao_dich_khuyen_mai(self, ngay_tt):

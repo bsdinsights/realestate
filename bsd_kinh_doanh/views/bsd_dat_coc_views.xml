@@ -29,15 +29,22 @@
                             attrs="{'invisible':['|',('bsd_ngay_up_dc', '=',False),'|',('bsd_ngay_ky_dc', '=',True)]}"
                             type="object"
                             class="oe_highlight"/>
+                    <button string="Tạo hợp đồng"
+                            type="object"
+                            name="action_tao_hd_ban"
+                            class="oe_highlight"
+                            attrs="{'invisible': ['|',('state','not in',['dat_coc']),('bsd_ngay_ky_dc','=', False)]}"/>
                     <button string="Hủy"
                             name="action_huy"
-                            states="nhap,xac_nhan"
-                            attrs="{'invisible':['|',('bsd_thanh_toan', '!=', 'chua_tt')]}"
+                            sequence="100"
+                            states="xac_nhan"
+                            attrs="{'invisible':['|',('bsd_thanh_toan', '=', 'da_tt')]}"
                             type="object"/>
-
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
                     <notebook>
                         <page string="Thông tin chung">
                             <group>
@@ -373,26 +380,30 @@
                                            domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id]),
                                                     ('state', '=','da_ky'),
                                                     ('bsd_ngay_ky_bg','!=',False)]"/>
-                                    <field name="bsd_giu_cho_id"/>
-                                    <field name="bsd_du_an_id"/>
+                                    <field name="bsd_giu_cho_id" readonly="1" force_save="1"/>
+                                    <field name="bsd_du_an_id" readonly="1" force_save="1"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_co_ttdc"/>
-                                    <field name="bsd_dot_mb_id"/>
+                                    <field name="bsd_co_ttdc" readonly="1" force_save="1"/>
+                                    <field name="bsd_dot_mb_id" readonly="1" force_save="1"/>
                                     <field name="bsd_bang_gia_id"/>
-                                    <field name="bsd_tien_gc"/>
-                                    <field name="bsd_tien_dc"/>
-                                    <field name="bsd_dien_giai"/>
+                                    <field name="bsd_tien_gc" readonly="1" force_save="1"/>
+                                    <field name="bsd_tien_dc" readonly="1" force_save="1"/>
+                                    <field name="bsd_dien_giai" readonly="0"/>
                                 </group>
                             </group>
                             <group string="MÔI GIỚI">
                                 <group>
-                                    <field name="bsd_nvbh_id" options="{'no_create':true}"/>
-                                    <field name="bsd_san_gd_id" options="{'no_create':true}"/>
+                                    <field name="bsd_nvbh_id" options="{'no_create':true}"
+                                           readonly="1" force_save="1"/>
+                                    <field name="bsd_san_gd_id" options="{'no_create':true}"
+                                           readonly="1" force_save="1"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_ctv_id" options="{'no_create':true}"/>
-                                    <field name="bsd_gioi_thieu_id" options="{'no_create':true}"/>
+                                    <field name="bsd_ctv_id" options="{'no_create':true}"
+                                           readonly="1" force_save="1"/>
+                                    <field name="bsd_gioi_thieu_id" options="{'no_create':true}"
+                                           readonly="1" force_save="1"/>
                                 </group>
                             </group>
                             <group string="XÁC NHẬN">
@@ -420,12 +431,14 @@
                             <group>
                                 <group>
                                     <field name="bsd_unit_id"
+                                            readonly="1" force_save="1"
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                            options="{'no_create':true}"/>
                                     <label for="bsd_dt_xd"/>
                                     <div class="o_row no-gutters d-flex">
                                         <div class="col">
-                                            <field name="bsd_dt_xd" class="mr-1"/>
+                                            <field name="bsd_dt_xd"
+                                                   class="mr-1"/>
                                             <span>m2</span>
                                         </div>
                                     </div>
@@ -437,7 +450,9 @@
                                         </div>
                                     </div>
                                     <field name="bsd_qsdd_m2"/>
-                                    <field name="bsd_thue_id" options="{'no_create':true}"/>
+                                    <field name="bsd_thue_id"
+                                            readonly="1" force_save="1"
+                                           options="{'no_create':true}"/>
                                     <label for="bsd_thue_suat"/>
                                     <div class="o_row no-gutters d-flex">
                                         <div class="col">
@@ -452,10 +467,12 @@
                                             <span>%</span>
                                         </div>
                                     </div>
-                                    <field name="bsd_cs_tt_id" options="{'no_create':true}"/>
+                                    <field name="bsd_cs_tt_id"
+                                            readonly="1" force_save="1"
+                                           options="{'no_create':true}"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_gia_ban"/>
+                                    <field name="bsd_gia_ban" readonly="1" force_save="1"/>
                                     <field name="bsd_tien_ck"/>
                                     <field name="bsd_tien_bg"/>
                                     <field name="bsd_gia_truoc_thue"/>
@@ -467,10 +484,10 @@
                             </group>
                             <group string="PHÍ QUẢN LÝ">
                                 <group>
-                                    <field name="bsd_thang_pql"/>
+                                    <field name="bsd_thang_pql" readonly="1" force_save="1"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_tien_pql"/>
+                                    <field name="bsd_tien_pql" readonly="1" force_save="1"/>
                                 </group>
                             </group>
                         </page>
@@ -614,7 +631,6 @@
                 <footer>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
-                            states="nhap"
                             type="object"
                             class="oe_highlight"/>
                 </footer>

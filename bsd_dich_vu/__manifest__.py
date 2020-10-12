@@ -37,6 +37,7 @@
         'views/bsd_thanh_ly_views.xml',
         'views/bsd_thong_bao_thanh_toan_views.xml',
         'views/bsd_thong_bao_nhac_no_views.xml',
+        'views/bsd_dat_coc_views.xml',
         'wizards/bsd_wizard_tao_thong_bao_tt_nn_views.xml',
         'views/bsd_menu_item_views.xml',
         'views/product_template_views.xml',
