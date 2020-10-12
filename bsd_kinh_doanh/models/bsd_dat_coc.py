@@ -87,8 +87,8 @@ class BsdDatCoc(models.Model):
 
     bsd_qsdd_m2 = fields.Monetary(string="Giá trị QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2",
                                   related="bsd_unit_id.bsd_qsdd_m2", store=True)
-    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", related="bsd_unit_id.bsd_thue_suat",
-                                 store=True, digits=(12, 2))
+    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", related="bsd_thue_id.bsd_thue_suat", store=True,
+                                 digits=(12, 2))
     bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì",
                               related="bsd_unit_id.bsd_tl_pbt", store=True)
     bsd_tien_ck = fields.Monetary(string="Chiết khấu", help="Tổng tiền chiết khấu", compute="_compute_tien_ck", store=True)
@@ -256,9 +256,9 @@ class BsdDatCoc(models.Model):
 
     # KD.10.01 Xác nhận đặt cọc
     def action_xac_nhan(self):
-        self.write({
-            'state': 'xac_nhan',
-        })
+        # self.write({
+        #     'state': 'xac_nhan',
+        # })
         self._tao_rec_cong_no()
 
     # KD.10.02 In đặt cọc

@@ -4,7 +4,7 @@
         <field name="name">bsd.hd_ban.form</field>
         <field name="model">bsd.hd_ban</field>
         <field name="arch" type="xml">
-            <form duplicate="false">
+            <form duplicate="false" create="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
@@ -82,14 +82,14 @@
                                            domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id]),
                                                     ('state', '=', 'dat_coc'),('bsd_ngay_ky_dc', '!=',False)]"
                                     />
+                                    <field name="bsd_bao_gia_id"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_bao_gia_id"/>
                                     <field name="bsd_du_an_id" readonly="1"/>
-                                    <field name="bsd_du_an_id" invisible="1"/>
                                     <field name="bsd_dot_mb_id" readonly="1"/>
-                                    <field name="bsd_dot_mb_id" invisible="1"/>
                                     <field name="bsd_bang_gia_id"/>
+                                    <field name="bsd_unit_id" readonly="1"/>
+                                    <field name="bsd_cs_tt_id" readonly="1"/>
                                 </group>
                             </group>
                             <field name="bsd_co_ttdc" invisible="1"/>
@@ -380,7 +380,7 @@
         <field name="name">bsd.hd_ban.tree</field>
         <field name="model">bsd.hd_ban</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree duplicate="false" create="false" delete="false">
                 <field name="bsd_ma_hd_ban"/>
                 <field name="bsd_du_an_id"/>
                 <field name="bsd_unit_id"/>
@@ -446,7 +446,7 @@
         <field name="name">bsd.hd_ban.form</field>
         <field name="model">bsd.hd_ban</field>
         <field name="arch" type="xml">
-            <form duplicate="false">
+            <form duplicate="false" create="false" delete="false">
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
@@ -459,22 +459,22 @@
                                     <field name="company_id" invisible="1"/>
                                     <field name="bsd_ma_hd_ban"/>
                                     <field name="bsd_ngay_hd_ban"/>
-                                    <field name="bsd_khach_hang_id"
+                                    <field name="bsd_khach_hang_id" readonly="1" force_save="1"
                                            context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
                                            options="{'no_create':true}"/>
-                                    <field name="bsd_dat_coc_id"
+                                    <field name="bsd_dat_coc_id" readonly="1" force_save="1"
                                            options="{'no_create':true}"
                                            domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id]),
                                                     ('state', '=', 'dat_coc'),('bsd_ngay_ky_dc', '!=',False)]"
                                     />
+                                    <field name="bsd_bao_gia_id"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_bao_gia_id"/>
-                                    <field name="bsd_du_an_id" readonly="1"/>
-                                    <field name="bsd_du_an_id" invisible="1"/>
-                                    <field name="bsd_dot_mb_id" readonly="1"/>
-                                    <field name="bsd_dot_mb_id" invisible="1"/>
+                                    <field name="bsd_du_an_id"  readonly="1" force_save="1"/>
+                                    <field name="bsd_dot_mb_id" readonly="1" force_save="1"/>
                                     <field name="bsd_bang_gia_id"/>
+                                    <field name="bsd_unit_id" readonly="1" force_save="1"/>
+                                    <field name="bsd_cs_tt_id" readonly="1" force_save="1"/>
                                 </group>
                             </group>
                             <field name="bsd_co_ttdc" invisible="1"/>
@@ -510,15 +510,9 @@
                         <page string="Sản phẩm">
                             <group>
                                 <group>
-                                    <field name="bsd_unit_id"
+                                    <field name="bsd_unit_id" readonly="1" force_save="1"
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                            options="{'no_create':true}"
-                                           readonly="1"
-                                    />
-                                    <field name="bsd_unit_id"
-                                           context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
-                                           options="{'no_create':true}"
-                                           invisible="1"
                                     />
                                     <label for="bsd_dt_xd"/>
                                     <div class="o_row no-gutters d-flex">
@@ -535,7 +529,9 @@
                                         </div>
                                     </div>
                                     <field name="bsd_qsdd_m2"/>
-                                    <field name="bsd_thue_id" options="{'no_create':true}"/>
+                                    <field name="bsd_thue_id"
+                                            readonly="1" force_save="1"
+                                           options="{'no_create':true}"/>
                                     <label for="bsd_thue_suat"/>
                                     <div class="o_row no-gutters d-flex">
                                         <div class="col">
@@ -550,10 +546,12 @@
                                             <span>%</span>
                                         </div>
                                     </div>
-                                    <field name="bsd_cs_tt_id" options="{'no_create':true}"/>
+                                    <field name="bsd_cs_tt_id"
+                                            readonly="1" force_save="1"
+                                           options="{'no_create':true}"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_gia_ban"/>
+                                    <field name="bsd_gia_ban" readonly="1" force_save="1"/>
                                     <field name="bsd_tien_ck"/>
                                     <field name="bsd_tien_bg"/>
                                     <field name="bsd_gia_truoc_thue"/>
@@ -565,10 +563,10 @@
                             </group>
                             <group string="PHÍ QUẢN LÝ">
                                 <group>
-                                    <field name="bsd_thang_pql"/>
+                                    <field name="bsd_thang_pql" readonly="1" force_save="1"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_tien_pql"/>
+                                    <field name="bsd_tien_pql" readonly="1" force_save="1"/>
                                 </group>
                             </group>
                         </page>
