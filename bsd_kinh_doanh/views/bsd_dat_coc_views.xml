@@ -29,6 +29,11 @@
                             attrs="{'invisible':['|',('bsd_ngay_up_dc', '=',False),'|',('bsd_ngay_ky_dc', '=',True)]}"
                             type="object"
                             class="oe_highlight"/>
+                    <button string="Thay đổi người ký TTĐC/HĐ"
+                            name="action_tao_thay_doi"
+                            states="da_tc,dat_coc"
+                            type="object"
+                            class="oe_highlight"/>
                     <button string="Tạo hợp đồng"
                             type="object"
                             name="action_tao_hd_ban"
@@ -44,6 +49,9 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <button name="action_view_chuyen_dd" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_chuyen_dd', '=', 0)]}">
+                            <field name="bsd_so_chuyen_dd" widget="statinfo" string="Phiếu thay đổi thông tin"/>
+                        </button>
                     </div>
                     <notebook>
                         <page string="Thông tin chung">
@@ -70,6 +78,7 @@
                                     <field name="bsd_bang_gia_id"/>
                                     <field name="bsd_tien_gc"/>
                                     <field name="bsd_tien_dc"/>
+                                    <field name="bsd_nguoi_dd_id" readonly="1"/>
                                     <field name="bsd_dien_giai"/>
                                 </group>
                             </group>
@@ -389,6 +398,7 @@
                                     <field name="bsd_bang_gia_id"/>
                                     <field name="bsd_tien_gc" readonly="1" force_save="1"/>
                                     <field name="bsd_tien_dc" readonly="1" force_save="1"/>
+                                    <field name="bsd_nguoi_dd_id" readonly="1" force_save="1"/>
                                     <field name="bsd_dien_giai" readonly="0"/>
                                 </group>
                             </group>

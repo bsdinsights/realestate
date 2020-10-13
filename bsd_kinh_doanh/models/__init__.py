@@ -22,4 +22,5 @@ from . import bsd_chiet_khau_chung
 from . import bsd_kh_dn
 from . import bsd_du_an
 from . import bsd_quan_tam
+from . import bsd_thay_doi_nguoi_ky_ttdd_hd
 

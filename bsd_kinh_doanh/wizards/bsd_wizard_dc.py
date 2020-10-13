@@ -61,3 +61,21 @@ class BsdHuyDC(models.TransientModel):
                 'state': 'giu_cho'
             })
         self.bsd_dat_coc_id.tao_tb_huy_gc()
+
+
+class BsdWizardChuyenDD(models.TransientModel):
+    _name = 'bsd.wizard.chuyen_dd'
+    _description = "Không duyệt chuyển người đại diện ký TTĐC/HĐMB"
+
+    def _get_chuyen_dd(self):
+        chuyen_dd = self.env['bsd.dat_coc.chuyen_dd'].browse(self._context.get('active_ids', []))
+        return chuyen_dd
+
+    bsd_chuyen_dd_id = fields.Many2one('bsd.dat_coc.chuyen_dd', string="Phiếu", default=_get_chuyen_dd, readonly=True)
+    bsd_ly_do = fields.Char(string="Lý do", required=True)
+
+    def action_xac_nhan(self):
+        self.bsd_chuyen_dd_id.write({
+            'bsd_ly_do': self.bsd_ly_do,
+            'state': 'nhap',
+        })

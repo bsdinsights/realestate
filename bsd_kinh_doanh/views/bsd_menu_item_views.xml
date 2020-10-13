@@ -1,99 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <!--Top menu-->
-<!--    <menuitem id="bsd_main_kinh_doanh_root" name="Kinh doanh"/>-->
-
-<!--    &lt;!&ndash;Khách hàng menu&ndash;&gt;-->
-<!--    <menuitem id="bsd_khach_hang_menu"-->
-<!--              name="Khách hàng"-->
-<!--              sequence="10"-->
-<!--              parent="bsd_main_kinh_doanh_root"/>-->
-<!--    <menuitem id="bsd_kh_cn_action_menu"-->
-<!--              name="Khách hàng cá nhân"-->
-<!--              sequence="10"-->
-<!--              action="bsd_res_partner_cn_action"-->
-<!--              parent="bsd_khach_hang_menu"/>-->
-<!--    <menuitem id="bsd_kh_dn_action_menu"-->
-<!--              name="Khách hàng doanh nghiệp"-->
-<!--              sequence="11"-->
-<!--              action="bsd_kh_dn_action"-->
-<!--              parent="bsd_khach_hang_menu"/>-->
-
-<!--    <menuitem id="bsd_dot_mb_menu"-->
-<!--              name="Đợt mở bán"-->
-<!--              sequence="11"-->
-<!--              parent="bsd_main_kinh_doanh_root"/>-->
-
-<!--        <menuitem id="bsd_dot_mb_menu_action"-->
-<!--                  name="Đợt mở bán"-->
-<!--                  sequence="10"-->
-<!--                  action="bsd_dot_mb_action"-->
-<!--                  parent="bsd_dot_mb_menu"/>-->
-<!--        <menuitem id="bsd_thu_hoi_menu_action"-->
-<!--                  name="Thu hồi căn hộ"-->
-<!--                  sequence="11"-->
-<!--                  action="bsd_thu_hoi_action"-->
-<!--                  parent="bsd_dot_mb_menu"/>-->
-<!--        <menuitem id="bsd_them_unit_menu_action"-->
-<!--                  name="Thêm căn hộ"-->
-<!--                  sequence="12"-->
-<!--                  action="bsd_them_unit_action"-->
-<!--                  parent="bsd_dot_mb_menu"/>-->
-<!--    <menuitem id="bsd_giu_cho_menu"-->
-<!--              name="Giữ chỗ"-->
-<!--              sequence="12"-->
-<!--              parent="bsd_main_kinh_doanh_root"/>-->
-<!--        <menuitem id="bsd_gc_tc_menu_action"-->
-<!--                  name="Giữ chỗ thiện chí"-->
-<!--                  sequence="102"-->
-<!--                  action="bsd_gc_tc_action"-->
-<!--                  parent="bsd_giu_cho_menu"/>-->
-<!--        <menuitem id="bsd_rap_can_menu_action"-->
-<!--                  name="Ráp căn"-->
-<!--                  sequence="103"-->
-<!--                  action="bsd_rap_can_action"-->
-<!--                  parent="bsd_giu_cho_menu"/>-->
-<!--        <menuitem id="bsd_giu_cho_menu_action"-->
-<!--                  name="Giữ chỗ"-->
-<!--                  sequence="104"-->
-<!--                  action="bsd_giu_cho_action"-->
-<!--                  parent="bsd_giu_cho_menu"/>-->
-<!--        <menuitem id="bsd_chuyen_gc_menu_action"-->
-<!--                  name="Chuyển giữ chỗ"-->
-<!--                  sequence="105"-->
-<!--                  action="bsd_chuyen_gc_action"-->
-<!--                  parent="bsd_giu_cho_menu"/>-->
-<!--        <menuitem id="bsd_huy_gc_menu_action"-->
-<!--                  name="Hủy giữ chỗ"-->
-<!--                  sequence="106"-->
-<!--                  action="bsd_huy_gc_action"-->
-<!--                  parent="bsd_giu_cho_menu"/>-->
-
-<!--    <menuitem id="bsd_bao_gia_menu_action"-->
-<!--              name="Bảng tính giá"-->
-<!--              sequence="15"-->
-<!--              action="bsd_bao_gia_action"-->
-<!--              parent="bsd_main_kinh_doanh_root"/>-->
-<!--    <menuitem id="bsd_dat_coc_menu_action"-->
-<!--              name="Đặt cọc"-->
-<!--              sequence="16"-->
-<!--              action="bsd_dat_coc_action"-->
-<!--              parent="bsd_main_kinh_doanh_root"/>-->
-<!--    <menuitem id="bsd_ck_db_menu_action"-->
-<!--              name="Chiết khấu đặt biệt"-->
-<!--              sequence="17"-->
-<!--              action="bsd_ck_db_action"-->
-<!--              parent="bsd_main_kinh_doanh_root"/>-->
-
-<!--    <record id="bsd_kinh_doanh.bsd_main_kinh_doanh_root" model="ir.ui.menu">-->
-<!--        <field name="action" eval="False"/>-->
-<!--        <field name="active" eval="True"/>-->
-<!--        <field name="groups_id" eval="[(6, 0, [])]"/>-->
-<!--        <field name="name">Kinh doanh</field>-->
-<!--        <field name="parent_id" eval="False"/>-->
-<!--        <field name="sequence">50</field>-->
-<!--        <field name="web_icon">fa fa-dollar,#FFFFFF,#002080</field>-->
-<!--    </record>-->
 <!--    Cấu hình icon ngoài màn hình chính     -->
     <menuitem id="bsd_giu_cho_menu_2"
               name="Giữ chỗ"
@@ -143,12 +49,20 @@
                   sequence="102"
                   action="bsd_ck_db_action"
                   parent="bsd_bao_gia_menu_2"/>
-    <menuitem id="bsd_dat_coc_menu_action_2"
+    <menuitem id="bsd_dat_coc_menu_2"
               name="Đặt cọc"
               sequence="10"
-              action="bsd_kinh_doanh.bsd_dat_coc_action"
-              web_icon="fa fa-file-text-o,#FFFFFF,#238c8f"
-    />
+              web_icon="fa fa-file-text-o,#FFFFFF,#238c8f"/>
+        <menuitem id="bsd_dat_coc_menu_action_2"
+                  name="Đặt cọc"
+                  sequence="1"
+                  action="bsd_kinh_doanh.bsd_dat_coc_action"
+                  parent="bsd_dat_coc_menu_2"/>
+        <menuitem id="bsd_dat_coc_chuyen_dd_menu_action_2"
+                  name="Thay đổi người ký TTĐC/HĐMB"
+                  sequence="2"
+                  action="bsd_kinh_doanh.bsd_dat_coc_chuyen_dd_action"
+                  parent="bsd_dat_coc_menu_2"/>
     <menuitem id="bsd_dot_mb_menu_2"
               name="Đợt mở bán"
               sequence="3"

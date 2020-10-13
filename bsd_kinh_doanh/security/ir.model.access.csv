@@ -23,6 +23,8 @@ bsd_ck_db, Chiết khấu đặc biệt,model_bsd_ck_db,bsd_kinh_doanh.group_man
 bsd_loai_cty_manager, Loại công ty,model_bsd_loai_cong_ty,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_cty_nganh_nghe_manager, Ngành nghề hoạt động của công ty,model_bsd_cty_nganh_nghe,bsd_kinh_doanh.group_manager,1,1,1,1
 
-bsd_loai_kh_cn, Loại khách hàng cá nhân,model_bsd_loai_kh_cn,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_quan_tam,  Phiếu quan tâm,model_bsd_quan_tam,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_loai_kh_cn_manager,Loại khách hàng cá nhân,model_bsd_loai_kh_cn,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_quan_tam_manager,Phiếu quan tâm,model_bsd_quan_tam,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_dat_coc_chuyen_dd,Phiếu thay đổi đại diện ký TTĐC/HĐMB,model_bsd_dat_coc_chuyen_dd,bsd_kinh_doanh.group_manager,1,1,1,1
+
 

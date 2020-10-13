@@ -232,7 +232,7 @@ class BsdDotMoBanCB(models.Model):
     def create(self, vals):
         if 'bsd_unit_id' in vals.keys() and 'bsd_them_unit_id' in vals.keys():
             if self.env['bsd.them_unit_cb'].search([('bsd_unit_id', '=', vals['bsd_unit_id']),
-                                                  ('bsd_them_unit_id', '=', vals['bsd_them_unit_id'])]):
+                                                    ('bsd_them_unit_id', '=', vals['bsd_them_unit_id'])]):
                 raise UserError("Phiếu thêm đã có sản phẩm.\n Vui lòng kiểm tra lại thông tin!")
         rec = super(BsdDotMoBanCB, self).create(vals)
         return rec

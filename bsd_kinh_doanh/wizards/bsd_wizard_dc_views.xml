@@ -62,4 +62,35 @@
         <field name="target">new</field>
         <field name="view_mode">form</field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_wizard_chuyen_dd_form">
+        <field name="name">bsd.wizard.chuyen_dd.form</field>
+        <field name="model">bsd.wizard.chuyen_dd</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_chuyen_dd_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ly_do"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_chuyen_dd_action">
+        <field name="name">Ghi nhận lý do</field>
+        <field name="res_model">bsd.wizard.chuyen_dd</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
 </odoo>
