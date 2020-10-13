@@ -508,7 +508,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 }
                 else {
                     _.each(giu_cho, function(item,index,giu_cho){
-                        item.bsd_khach_hang_id[1] = item.bsd_khach_hang_id[1].split("]")[1]
                         if (item.bsd_stt_bg === 0){
                             item.bsd_stt_bg = ''
                         }
@@ -520,19 +519,17 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                             item.bsd_ngay_hh_gc = time.local().format('DD/MM/YYYY HH:mm')
                         }
                         // Cập nhật môi giới
-                        console.log("môi giới")
-                        console.log(item)
                         if (item.bsd_san_gd_id !== false){
                             console.log(item.bsd_san_gd_id)
-                            item.moi_gioi = item.bsd_san_gd_id[1].split("]")[1]
+                            item.moi_gioi = item.bsd_san_gd_id[1]
                         }
                         else if (item.bsd_ctv_id !== false){
                             console.log(item.bsd_ctv_id)
-                            item.moi_gioi = item.bsd_ctv_id[1].split("]")[1]
+                            item.moi_gioi = item.bsd_ctv_id[1]
                         }
                         else if (item.bsd_gioi_thieu_id !== false){
                             console.log(item.bsd_gioi_thieu_id)
-                            let moi_gioi = item.bsd_gioi_thieu_id[1].split("]")
+                            let moi_gioi = item.bsd_gioi_thieu_id[1]
                             if (moi_gioi.length > 1) {
                                 item.moi_gioi = moi_gioi[1]
                             }
