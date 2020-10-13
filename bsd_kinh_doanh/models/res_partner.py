@@ -11,7 +11,6 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     bsd_ho_tl = fields.Char(string="Họ và tên lót", help="Họ và tên lót")
-    bsd_ten = fields.Char(string="Họ và tên", help="Tên khách hàng")
     bsd_search_ten = fields.Char(string="Search tên", compute='_compute_search_name', store=True)
 
     @api.depends('display_name', 'bsd_cmnd', 'bsd_ma_kh', 'bsd_so_gpkd')
@@ -180,9 +179,6 @@ class ResPartner(models.Model):
 
     @api.model
     def create(self, vals):
-        _logger.debug("tạo partner")
-        _logger.debug(vals)
-        _logger.debug(vals.get('bsd_la_kh'))
         sequence = False
         if vals.get('bsd_ma_kh', '/') == '/' and not vals.get('is_company') and vals.get('bsd_la_kh'):
             sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.kh_cn')], limit=1).bsd_ma_tt_id
@@ -195,20 +191,27 @@ class ResPartner(models.Model):
             vals['bsd_ma_kh'] = sequence.next_by_id()
         return super(ResPartner, self).create(vals)
 
+    def _get_name(self):
+        partner = self
+        name = partner.display_name or ''
+        if self._context.get('show_ma_kh') and partner.bsd_ma_kh:
+            name = "%s <%s>" % (name, partner.bsd_ma_kh)
+        return name
+
     def name_get(self):
         res = []
         for partner in self:
-            if not partner.is_company:
-                if partner.bsd_la_kh:
-                    res.append((partner.id, "[%s] %s" % (partner.bsd_ma_kh, partner.bsd_ten)))
-                else:
-                    res.append((partner.id, "%s" % partner.name))
-            else:
-                if partner.bsd_la_kh:
-                    res.append((partner.id, "[%s] %s" % (partner.bsd_ma_kh, partner.name)))
-                else:
-                    res.append((partner.id, "%s" % partner.name))
+            name = partner._get_name()
+            res.append((partner.id, name))
         return res
+
+    @api.depends('is_company', 'name', 'bsd_ho_tl')
+    def _compute_display_name(self):
+        for partner in self:
+            if partner.is_company:
+                partner.display_name = partner.name
+            else:
+                partner.display_name = (partner.bsd_ho_tl or '') + (' ' + (partner.name or ''))
 
     @api.model
     def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):

@@ -310,7 +310,6 @@
                                     <field name="bsd_ten_cty_en"/>
                                     <field name="bsd_loai_cty_ids"
                                            widget="many2many_tags"
-                                           required="1"
                                            options="{'no_create': true}"/>
                                     <field name="bsd_cty_me"/>
                                     <field name="bsd_phan_loai"/>
@@ -320,15 +319,15 @@
                                                      'default_is_company': False,'default_bsd_la_kh': True}"
                                     />
                                     <field name="bsd_nguoi_uq"/>
-                                    <field name="phone" required="1"/>
+                                    <field name="phone"/>
                                     <field name="bsd_phone_2"/>
-                                    <field name="email" string="Email"/>
+                                    <field name="email" string="Email Cty"/>
                                     <field name="bsd_email_2"/>
                                     <field name="bsd_fax"/>
                                     <field name="website" string="Website"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_so_gpkd" required="1"/>
+                                    <field name="bsd_so_gpkd"/>
                                     <field name="bsd_ngay_gpkd"/>
                                     <field name="bsd_noi_gpkd"/>
                                     <field name="bsd_mt_gpkd"/>
@@ -362,12 +361,12 @@
                             <group>
                                 <group>
                                     <field name="bsd_ho_tl"/>
-                                    <field name="name" required="1"/>
+                                    <field name="name"/>
                                     <field name="bsd_ngay_sinh"/>
                                     <field name="bsd_gioi_tinh"/>
                                     <field name="phone"/>
-                                    <field name="mobile" required="1"/>
-                                    <field name="email" string=" Email "/>
+                                    <field name="mobile"/>
+                                    <field name="email" string=" Email cá nhân"/>
                                     <field name="bsd_loai_kh"/>
                                     <field name="bsd_nguoi_bh"/>
                                     <field name="bsd_nguoi_bh_id"
@@ -538,6 +537,7 @@
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="bsd_ma_kh"/>
                 <field name="display_name" string="Khách hàng"/>
                 <field name="mobile"/>
                 <field name="phone"/>

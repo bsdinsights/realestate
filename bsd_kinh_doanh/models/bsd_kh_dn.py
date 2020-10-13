@@ -19,8 +19,7 @@ class ResPartner(models.Model):
     bsd_cty_me = fields.Char(string="Công ty mẹ")
     bsd_phan_loai = fields.Selection([('trong_nuoc', 'Trong nước'),
                                       ('ngoai_nuoc', 'Ngoài nước')], string="Phân loại")
-    bsd_nguoi_dd_id = fields.Many2one('res.partner', string="Người đại diện", help="Người đại diện pháp luật",
-                                      required=True)
+    bsd_nguoi_dd_id = fields.Many2one('res.partner', string="Người đại diện", help="Người đại diện pháp luật")
     bsd_nguoi_uq = fields.Selection([('khong', 'Không'), ('co', 'Có')],
                                     string="Người ủy quyền",
                                     help="Doanh nghiệp (Chủ đầu tư) – người đại diện hiện tại"
