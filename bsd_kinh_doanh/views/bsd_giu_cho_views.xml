@@ -194,7 +194,7 @@
                 <field name="bsd_unit_id"/>
 
                 <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_rap_can_filter"/>
-
+                <filter name="filter_bsd_ngay_hh_gc" date="bsd_ngay_hh_gc" string="Hạn giữ chỗ"/>
                 <group expand="0" string="Group by">
                     <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
                     <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>

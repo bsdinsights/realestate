@@ -26,5 +26,6 @@ bsd_cty_nganh_nghe_manager, Ngành nghề hoạt động của công ty,model_bs
 bsd_loai_kh_cn_manager,Loại khách hàng cá nhân,model_bsd_loai_kh_cn,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_quan_tam_manager,Phiếu quan tâm,model_bsd_quan_tam,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_dat_coc_chuyen_dd,Phiếu thay đổi đại diện ký TTĐC/HĐMB,model_bsd_dat_coc_chuyen_dd,bsd_kinh_doanh.group_manager,1,1,1,1
-
+bsd_gia_han_gc_manager,Phiếu gia hạn giữ chỗ,model_bsd_gia_han_gc,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_gia_han_gc_ct_manager,Chi tiết giữ chỗ gia hạn,model_bsd_gia_han_gc_ct,bsd_kinh_doanh.group_manager,1,1,1,1
 

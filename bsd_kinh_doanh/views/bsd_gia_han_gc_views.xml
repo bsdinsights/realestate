@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_gia_han_gc_form">
+        <field name="name">bsd.gia_han_gc.form</field>
+        <field name="model">bsd.gia_han_gc</field>
+        <field name="arch" type="xml">
+            <form duplicate="false">
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            class="oe_highlight"
+                            confirm="Bạn có muốn Xác nhận yêu cầu không?"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                            type="object"/>
+                    <button string="Duyệt"
+                            name="action_duyet"
+                            class="oe_highlight"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn Duyệt yêu cầu không?"
+                            type="object"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn Hủy yêu cầu không?"
+                            type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <notebook>
+                        <page string="Thông tin chung">
+                            <group>
+                                <group>
+                                    <field name="bsd_ma"/>
+                                    <field name="bsd_ngay"/>
+                                    <field name="bsd_tieu_de"/>
+                                    <field name="bsd_du_an_id"
+                                           domain="[('state', '!=','chuan_bi')]"
+                                           options="{'no_create':true}"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_loai_gh"/>
+                                    <field name="bsd_so_ngay"/>
+                                    <field name="bsd_dien_giai"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Danh sách giữ chỗ">
+                            <field name="bsd_ct_ids">
+                                <tree>
+                                    <field name="bsd_giu_cho_id"/>
+                                    <field name="bsd_ly_do"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_gia_han_gc_tree">
+        <field name="name">bsd.gia_han_gc.tree</field>
+        <field name="model">bsd.gia_han_gc</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma"/>
+                <field name="bsd_ngay"/>
+                <field name="bsd_tieu_de"/>
+                <field name="bsd_du_an_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_gia_han_gc_filter">
+        <field name="name">bsd.gia_han_gc.list.filter</field>
+        <field name="model">bsd.gia_han_gc</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_ma"/>
+                <field name="bsd_du_an_id"/>
+                <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="bsd_my_gia_han_gc_filter"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_gia_han_gc_action">
+        <field name="name">Gia hạn giữ chỗ</field>
+        <field name="res_model">bsd.gia_han_gc</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Gia hạn giữ chỗ</p>
+        </field>
+    </record>
+
+<!--    Popup chuyển giữ chỗ   -->
+    <record model="ir.ui.view" id="bsd_gia_han_gc_form_popup">
+        <field name="name">bsd.gia_han_gc.form</field>
+        <field name="model">bsd.gia_han_gc</field>
+        <field name="arch" type="xml">
+            <form duplicate="false">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <notebook>
+                        <page string="Thông tin chung">
+                            <group>
+                                <group>
+                                    <field name="bsd_ma"/>
+                                    <field name="bsd_ngay"/>
+                                    <field name="bsd_tieu_de"/>
+                                    <field name="bsd_loai_gh" readonly="1" force_save="1"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_du_an_id" readonly="1" force_save="1"
+                                           domain="[('state', '!=','chuan_bi')]"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_so_ngay"/>
+                                    <field name="bsd_dien_giai"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Danh sách giữ chỗ">
+                            <field name="bsd_ct_ids">
+                                <tree>
+                                    <field name="bsd_giu_cho_id"/>
+                                    <field name="bsd_ly_do"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan_popup"
+                            class="oe_highlight"
+                            type="object"/>
+                    <button string="Hủy" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="bsd_gia_han_gc_action_popup" model="ir.actions.act_window">
+        <field name="name">Gia hạn</field>
+        <field name="res_model">bsd.gia_han_gc</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="bsd_gia_han_gc_form_popup"/>
+        <field name="binding_model_id" ref="model_bsd_giu_cho"/>
+        <field name="context">{'default_bsd_loai_gh':'san_pham'}</field>
+    </record>
+</odoo>

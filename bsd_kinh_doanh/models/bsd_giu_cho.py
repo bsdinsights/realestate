@@ -131,7 +131,7 @@ class BsdGiuCho(models.Model):
     def name_get(self):
         res = []
         for gc in self:
-            res.append((gc.id, "%s" % gc.bsd_ten_sp))
+            res.append((gc.id, "{0} - {1}".format(gc.bsd_ma_gc, gc.bsd_ten_sp)))
         return res
     
     @api.model

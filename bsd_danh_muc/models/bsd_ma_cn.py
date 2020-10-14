@@ -15,6 +15,7 @@ class BsdMaBoChungTu(models.Model):
                                     ('bsd.gc_tc', 'Giữ chỗ thiện chí'),
                                     ('bsd.rap_can', 'Ráp căn'),
                                     ('bsd.giu_cho', 'Giữ chỗ'),
+                                    ('bsd.gia_han_gc', 'Gia hạn giữ chỗ'),
                                     ('bsd.bao_gia', 'Bảng tính giá'),
                                     ('bsd.dat_coc', 'Đặt cọc'),
                                     ('bsd.dat_coc.chuyen_dd', 'Thay đổi đại diện ký TTĐC/HĐMB'),

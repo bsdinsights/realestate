@@ -96,10 +96,10 @@ class BsdChuyenGiuCho(models.Model):
     @api.model
     def create(self, vals):
         sequence = False
-        if vals.get('bsd_ma_chuyen_gc', '/') == '/':
-            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.chuyen_gc')], limit=1).bsd_ma_tt_id
-            vals['bsd_ma_chuyen_gc'] = self.env['ir.sequence'].next_by_code('bsd.chuyen_gc') or '/'
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Danh mục mã chưa khai báo mã chương trình khuyến mãi.'))
+            raise UserError(_('Dự án chưa có mã phiếu chuyển tên giữ chỗ.'))
         vals['bsd_ma_chuyen_gc'] = sequence.next_by_id()
         return super(BsdChuyenGiuCho, self).create(vals)
