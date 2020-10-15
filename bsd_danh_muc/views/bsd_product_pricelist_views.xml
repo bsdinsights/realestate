@@ -27,29 +27,40 @@
                             confirm="Bạn có muốn Từ chối yêu cầu không?"/>
                     <button string="Hủy"
                             name="action_huy"
-                            states="xac_nhan,nhap"
+                            states="xac_nhan"
                             confirm="Bạn có muốn Hủy yêu cầu không?"
                             type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
             </xpath>
-
+            <xpath expr="//div[@class='oe_title']" position="attributes">
+                <attribute name="attrs">{'invisible':1}</attribute>
+            </xpath>
+            <xpath expr="//page[@name='pricelist_config']" position="attributes">
+                <attribute name="attrs">{'invisible':1}</attribute>
+            </xpath>
             <xpath expr="//group[@name='pricelist_settings']" position="replace">
                     <group>
                         <field name="bsd_ma_bg"/>
+                        <field name="name"/>
                         <field name="bsd_du_an_id"/>
-                        <field name="bsd_dien_giai"/>
-                    </group>
-                    <group>
                         <field name="bsd_ngay_bd"/>
                         <field name="bsd_ngay_kt"/>
+                    </group>
+                    <group>
                         <field name="currency_id" readonly="1" force_save="1"/>
+                        <field name="bsd_nguoi_duyet_id"/>
+                        <field name="bsd_ngay_duyet"/>
                         <field name="active" invisible="1"/>
-                        <field name="bsd_ly_do" readonly="1"/>
+                        <field name="bsd_dien_giai"/>
+                        <field name="bsd_ly_do"
+                               attrs="{'invisible':[('state', 'not in', ['nhap','xac_nhan'])]}"/>
                     </group>
             </xpath>
             <xpath expr="//field[@name='item_ids']" position="replace">
-                  <field name="item_ids" nolabel="1" context="{'default_base':'list_price', 'default_date_start':bsd_ngay_bd, 'default_date_end':bsd_ngay_kt}" groups="product.group_product_pricelist">
+                  <field name="item_ids" nolabel="1"
+                         attrs="{'invisible':[('id', '=', False)]}"
+                         context="{'default_base':'list_price', 'default_date_start':bsd_ngay_bd, 'default_date_end':bsd_ngay_kt}" groups="product.group_product_pricelist">
                       <tree string="Pricelist Items">
                           <field name="product_tmpl_id" domain="[('bsd_du_an_id','in',[parent.bsd_du_an_id])]"/>
                           <field name="fixed_price" string="Giá bán" class="oe_inline" widget="monetary" options="{'currency_field': 'currency_id'}"/>
@@ -123,7 +134,6 @@
                     <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
                 </group>
             </xpath>
-
         </field>
     </record>
 </odoo>

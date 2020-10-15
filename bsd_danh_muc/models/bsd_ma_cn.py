@@ -12,6 +12,7 @@ class BsdMaBoChungTu(models.Model):
     bsd_ten_cn = fields.Char(string="Tên", help="Tên bộ chứng từ", required=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án")
     bsd_loai_cn = fields.Selection([('bsd.du_an', 'Dự án'),
+                                    ('product.pricelist', 'Bảng giá'),
                                     ('bsd.gc_tc', 'Giữ chỗ thiện chí'),
                                     ('bsd.rap_can', 'Ráp căn'),
                                     ('bsd.giu_cho', 'Giữ chỗ'),

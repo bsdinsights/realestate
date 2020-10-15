@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 
 class ProductPriceList(models.Model):
     _inherit = 'product.pricelist'
-    bsd_ma_bg = fields.Char(string="Mã bảng giá", required=True,
-                            readonly=True,
-                            states={'nhap': [('readonly', False)]})
+    bsd_ma_bg = fields.Char(string="Mã", help="Mã chiết khấu", required=True, readonly=True, copy=False,
+                            default='/')
     _sql_constraints = [
         ('bsd_ma_bg_unique', 'unique (bsd_ma_bg)',
          'Mã bảng giá đã tồn tại !'),
@@ -25,6 +25,8 @@ class ProductPriceList(models.Model):
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
     bsd_ly_do = fields.Char(string="Lý do", help="Lý do không duyệt phương thức thanh toán", tracking=2)
+    bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
+    bsd_ngay_duyet = fields.Date(string="Ngày duyệt", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('duyet', 'Duyệt'), ('het_han', 'Hết hạn'), ('huy', 'Hủy')],
                              string="Trạng thái", required=True, default='nhap', tracking=1)
@@ -34,6 +36,8 @@ class ProductPriceList(models.Model):
 
     # Xác nhận bảng giá
     def action_xac_nhan(self):
+        if not self.item_ids:
+            raise UserError(_('Bạn chưa khai báo chi tiết bảng giá.\n Vui lòng kiểm tra lại'))
         if self.state == 'nhap':
             self.write({
                 'state': 'xac_nhan'
@@ -41,9 +45,13 @@ class ProductPriceList(models.Model):
 
     # Duyệt bảng giá
     def action_duyet(self):
+        if not self.item_ids:
+            raise UserError(_('Bạn chưa khai báo chi tiết bảng giá.\n Vui lòng kiểm tra lại'))
         if self.state == 'xac_nhan':
             self.write({
                 'state': 'duyet',
+                'bsd_ngay_duyet': fields.Date.today(),
+                'bsd_nguoi_duyet_id': self.env.uid,
             })
 
     # Không duyệt bảng giá
@@ -57,6 +65,17 @@ class ProductPriceList(models.Model):
             self.write({
                 'state': 'huy',
             })
+
+    @api.model
+    def create(self, vals):
+        sequence = False
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
+        if not sequence:
+            raise UserError(_('Dự án chưa có mã bảng giá.'))
+        vals['bsd_ma_bg'] = sequence.next_by_id()
+        return super(ProductPriceList, self).create(vals)
 
 
 class ProductPriceListItem(models.Model):

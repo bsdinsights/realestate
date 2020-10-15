@@ -100,7 +100,7 @@
               sequence="4"
               web_icon="fa fa-codepen,#FFFFFF,#a45858"/>
         <menuitem id="bsd_product_pricelist_menu_action"
-              name="Bảng giá bán"
+              name="Bảng giá"
               sequence="1"
               action="product.product_pricelist_action2"
               parent="bsd_cs_bh_menu_2"/>
