@@ -71,11 +71,6 @@
                       sequence="203"
                       action="bsd_pt_tt_action"
                       parent="bsd_thanh_toan_menu"/>
-            <menuitem id="bsd_lai_phat_tt_menu_action_2"
-                      name="Lãi phạt thanh toán"
-                      sequence="204"
-                      action="bsd_lai_phat_tt_action"
-                      parent="bsd_thanh_toan_menu"/>
     <menuitem id="bsd_ma_bo_cn_menu_action"
               name="Mã bộ chứng từ"
               sequence="14"
@@ -160,6 +155,11 @@
               sequence="5"
               parent="bsd_cs_bh_menu_2"
               action="bsd_khuyen_mai_action"/>
+    <menuitem id="bsd_lai_phat_tt_menu_action_2"
+          name="Lãi phạt chậm thanh toán"
+          sequence="6"
+          action="bsd_lai_phat_tt_action"
+          parent="bsd_cs_bh_menu_2"/>
 
     <menuitem id="bsd_pmg_ttc_menu_action"
           name="Phí môi giới"

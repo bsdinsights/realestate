@@ -41,7 +41,9 @@
                                     <field name="bsd_du_an_id"
                                            domain="[('state', '=', 'phat_hanh')]"
                                            options="{'no_create':true}"/>
-                                    <field name="bsd_lai_phat_tt_id" options="{'no_create':true}"/>
+                                    <field name="bsd_lai_phat_tt_id"
+                                           domain="[('state', '=', 'active')]"
+                                           options="{'no_create':true}"/>
                                     <field name="bsd_ngay_tinh"/>
                                 </group>
                                 <group>

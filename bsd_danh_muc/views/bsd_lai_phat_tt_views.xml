@@ -5,22 +5,33 @@
         <field name="model">bsd.lai_phat_tt</field>
         <field name="arch" type="xml">
             <form duplicate="false">
+                <header>
+                    <field name="state" widget="statusbar" options="{'clickable':1}"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
                             <field name="currency_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
                             <field name="bsd_ma_lptt"/>
                             <field name="bsd_ten_lptt"/>
-                            <field name="bsd_du_an_id"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true, 'no_option':true}"/>
                             <field name="bsd_tinh_phat"/>
-                            <field name="bsd_dien_giai"/>
+                            <field name="bsd_an_han"/>
                         </group>
                         <group>
-                            <field name="bsd_an_han"/>
-                            <field name="bsd_lai_phat"/>
+                            <label for="bsd_lai_phat"/>
+                            <div class="o_row d-flex no-gutters">
+                                <field name="bsd_lai_phat" class="mr-1"/>
+                                <span>%</span>
+                            </div>
                             <field name="bsd_tien_td"/>
-                            <field name="bsd_tl_td"/>
-                            <field name="state"/>
+                            <label for="bsd_tl_td"/>
+                            <div class="o_row d-flex no-gutters">
+                                <field name="bsd_tl_td" class="mr-1"/>
+                                <span>%</span>
+                            </div>
+                            <field name="bsd_dien_giai"/>
                         </group>
                     </group>
                 </sheet>
@@ -64,11 +75,11 @@
     </record>
 
     <record model="ir.actions.act_window" id="bsd_lai_phat_tt_action">
-        <field name="name">Lãi phạt thanh toán</field>
+        <field name="name">Lãi phạt chậm thanh toán</field>
         <field name="res_model">bsd.lai_phat_tt</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
-            <p>Tạo lãi phạt thanh toán</p>
+            <p>Tạo lãi phạt chậm thanh toán</p>
         </field>
     </record>
 </odoo>
