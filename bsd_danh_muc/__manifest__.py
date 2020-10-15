@@ -46,7 +46,8 @@
         'wizards/bsd_wizard_khong_duyet_ck_cstt_views.xml',
         'wizards/bsd_wizard_khong_duyet_ck_ttn_views.xml',
         'wizards/bsd_wizard_khong_duyet_cs_tt_views.xml',
-        'wizards/bsd_wizard_khong_duyet_bang_gia_views.xml'
+        'wizards/bsd_wizard_khong_duyet_bang_gia_views.xml',
+        'reports/bsd_report_phuong_thuc_tt_views.xml',
     ],
     'application': True,
 }

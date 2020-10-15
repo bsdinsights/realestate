@@ -4,7 +4,7 @@
         <field name="name">bsd.cs_tt.form</field>
         <field name="model">bsd.cs_tt</field>
         <field name="arch" type="xml">
-            <form duplicate="false">
+            <form>
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
@@ -42,7 +42,8 @@
                                            domain="[('state', '=', 'phat_hanh')]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_lai_phat_tt_id"
-                                           domain="[('state', '=', 'active')]"
+                                           domain="[('state', '=', 'active'),
+                                                    ('bsd_du_an_id', '=', bsd_du_an_id)]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_ngay_tinh"/>
                                 </group>
@@ -144,7 +145,6 @@
                             </field>
                         </page>
                     </notebook>
-
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
@@ -163,7 +163,6 @@
                 <field name="bsd_ten_cstt"/>
                 <field name="bsd_du_an_id"/>
                 <field name="bsd_ngay_tinh"/>
-                <field name="bsd_dk_hd"/>
                 <field name="bsd_tu_ngay"/>
                 <field name="bsd_den_ngay"/>
                 <field name="state"/>
@@ -206,7 +205,6 @@
                         <group>
                             <field name="bsd_stt"/>
                             <field name="bsd_dot_tt"/>
-                            <!--<field name="bsd_gd_tt"/>-->
                             <field name="bsd_dot_cuoi"/>
                             <field name="bsd_dot_ky_hd"/>
 
@@ -224,7 +222,6 @@
                     </group>
                     <group string="Hạn thanh toán">
                         <group>
-                            <field name="bsd_tu_nc" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')]}"/>
                             <field name="bsd_tiep_theo" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
                                                                 'required':[('bsd_cach_tinh', '=','td')]}"/>
                             <field name="bsd_so_ngay"
@@ -235,12 +232,6 @@
                             <field name="bsd_so_thang"
                                    attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_tiep_theo','=','ngay')],
                                             'required':[('bsd_tiep_theo','=','thang')]}"/>
-                            <field name="bsd_ngay_tbvn"
-                                   attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_tu_nc','=',False)],
-                                            'required':[('bsd_tu_nc','=',True)]}"/>
-                            <field name="bsd_ngay_tbnn"
-                                   attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_tu_nc','=',False)],
-                                            'required':[('bsd_tu_nc','=',True)]}"/>
                         </group>
                     </group>
                     <group string="Đợt thanh toán">

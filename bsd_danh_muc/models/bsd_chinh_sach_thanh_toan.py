@@ -13,8 +13,7 @@ class BsdChinhSachThanhToan(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     bsd_ma_cstt = fields.Char(string="Mã", help="Mã chính sách thanh toán", required=True,
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                              readonly=True, copy=False, default="/")
     _sql_constraints = [
         ('bsd_ma_cstt_unique', 'unique (bsd_ma_cstt)',
          'Mã chính sách thanh toán đã tồn tại !'),
@@ -111,13 +110,30 @@ class BsdChinhSachThanhToan(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     bsd_ct_ids = fields.One2many('bsd.cs_tt_ct', 'bsd_cs_tt_id', string="Chi tiết",
-                                 readonly=True,
+                                 readonly=True, copy=True,
                                  states={'nhap': [('readonly', False)]})
     active = fields.Boolean(default=True)
     bsd_ly_do = fields.Char(string="Lý do", help="Lý do không duyệt phương thức thanh toán", tracking=2)
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('duyet', 'Duyệt'), ('het_han', 'Hết hạn'), ('huy', 'Hủy')],
                              string="Trạng thái", required=True, default='nhap', tracking=1)
+
+    # Kiểm tra tổng phần trăm của các đợt thanh toán
+    @api.constrains('bsd_ct_ids')
+    def _constrains_ct(self):
+        if self.bsd_ct_ids:
+            tong_pt = sum(self.bsd_ct_ids.filtered(lambda x: x.bsd_cach_tinh != 'td').mapped('bsd_tl_tt'))
+            _logger.debug(tong_pt)
+            for ct in self.bsd_ct_ids.filtered(lambda x: x.bsd_cach_tinh == 'td'):
+                if ct.bsd_so_dot > 0:
+                    tong_pt += (ct.bsd_tl_tt * ct.bsd_so_dot)
+                else:
+                    tong_pt += ct.bsd_tl_tt
+            _logger.debug("Tổng phần trăm thanh toán")
+            _logger.debug(tong_pt)
+            if tong_pt != 100:
+                raise UserError(_("Tỷ lệ của đợt thanh toán không bằng 100%.\n "
+                                  "Vui lòng kiểm tra lại thông tin."))
 
     # Xác nhận phương thúc thanh toán
     def action_xac_nhan(self):
@@ -151,6 +167,17 @@ class BsdChinhSachThanhToan(models.Model):
                 'state': 'huy',
             })
 
+    @api.model
+    def create(self, vals):
+        sequence = False
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
+        if not sequence:
+            raise UserError(_('Dự án chưa có mã phương thức thanh toán.'))
+        vals['bsd_ma_cstt'] = sequence.next_by_id()
+        return super(BsdChinhSachThanhToan, self).create(vals)
+
 
 class BsdChinhSachThanhToanChiTiet(models.Model):
     _name = 'bsd.cs_tt_ct'
@@ -181,9 +208,6 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
                                   default=False)
     bsd_tinh_pql = fields.Boolean(string="Phí quản lý", help="Có tính phí quản lý trong đợt thanh toán hay không?",
                                   default=False)
-    bsd_tu_nc = fields.Boolean(string="Từ ngày cọc",
-                               help="""Thông tin quy định: hạn thanh toán của đợt thanh toán tính
-                                theo ngày cọc hay ngày ký hợp đồng""", default=False)
     bsd_tiep_theo = fields.Selection([('ngay', 'Theo ngày'), ('thang', 'Theo tháng')], string="Đợt tiếp theo", default='ngay',
                                      help="""Cách xác định hạn thanh toán của đợt tiếp theo, được tính
                                      theo số ngày hoặc số tháng
@@ -192,12 +216,6 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
                                                     của đợt thanh toán tiếp theo""")
     bsd_so_thang = fields.Integer(string="Số tháng", help="""Số tháng được sử dụng để tính hạn thanh toán
                                                     của đợt thanh toán tiếp theo""")
-    bsd_ngay_tbvn = fields.Integer(string="Ngày thông báo VN", help="""Số ngày được cộng thêm khi tính hạn thanh toán
-                                                                        của mỗi đợt thanh toán đối với khách hàng 
-                                                                        trong nước""")
-    bsd_ngay_tbnn = fields.Integer(string="Ngày thông báo NN", help="""Số ngày được cộng thêm khi tính hạn thanh toán
-                                                                        của mỗi đợt thanh toán đối với khách hàng 
-                                                                        nước ngoài""")
     bsd_lap_lai = fields.Selection([('0', 'Không'), ('1', 'Có')], string="Lặp lại",
                                    default="0", help="Cách tính của đợt thanh toán có được lặp lại hay không")
 
@@ -216,3 +234,9 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
     @api.onchange('bsd_dot_cuoi')
     def _onchange_bsd_dot_cuoi(self):
         self.bsd_cach_tinh = None
+
+    @api.constrains('bsd_ngay_thang')
+    def _constraint_ngay_thang(self):
+        for each in self:
+            if each.bsd_ngay_thang > 31:
+                raise UserError(_("Ngày trong tháng không được lớn hơn 31"))

@@ -14,6 +14,7 @@ class BsdMaBoChungTu(models.Model):
     bsd_loai_cn = fields.Selection([('bsd.du_an', 'Dự án'),
                                     ('product.pricelist', 'Bảng giá'),
                                     ('bsd.lai_phat_tt', 'Lãi phạt chậm thanh toán'),
+                                    ('bsd.cs_tt', 'Phương thức thanh toán'),
                                     ('bsd.gc_tc', 'Giữ chỗ thiện chí'),
                                     ('bsd.rap_can', 'Ráp căn'),
                                     ('bsd.giu_cho', 'Giữ chỗ'),

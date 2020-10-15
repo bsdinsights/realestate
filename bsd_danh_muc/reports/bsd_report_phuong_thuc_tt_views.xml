@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="bsd_giay_in_ltt" model="report.paperformat">
+            <field name="name">Giấy in lịch thanh toán</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="bsd_mau_in_ltt" model="ir.actions.report">
+            <field name="name">Lịch thanh toán</field>
+            <field name="model">bsd.cs_tt</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">bsd_danh_muc.bsd_ltt_view</field>
+            <field name="multi">False</field>
+            <field name="paperformat_id" ref="bsd_danh_muc.bsd_giay_in_ltt"/>
+            <field name="binding_model_id" ref="model_bsd_cs_tt"/>
+        </record>
+
+        <template id="bsd_ltt_view">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="doc" t-value="doc.with_context(lang=lang)" />
+                    <t t-call="web.external_layout">
+                        <div class="page bsd_font">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h3>Xem trước lịch thanh toán</h3>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p><b>Dự án: </b><span t-field="doc.bsd_du_an_id.bsd_ten_da"/></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p><b>Mã lịch thanh toán: </b><span t-field="doc.bsd_ma_cstt"/></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p><b>Tên lịch thanh toán: </b><span t-field="doc.bsd_ten_cstt"/></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p><b>Ngày áp dụng lịch thanh toán: </b><span t-esc="ngay_ht"/></p>
+                                </div>
+                            </div>
+                        <!-- Lịch thanh toán -->
+                            <div class="row mt8">
+                                <div class="col-12">
+                                    <table class="table table-bordered table-sm"
+                                           style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
+                                        <thead>
+                                            <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px;">
+                                                <th style="border: 1px solid black !important;" width="30%">
+                                                    <div>Đợt thanh toán</div>
+                                                </th>
+                                                <th style="border: 1px solid black !important;" width="35%">
+                                                    <div>Thời gian thanh toán</div>
+                                                </th>
+                                                <th style="border: 1px solid black !important;" width="35%">
+                                                    <div>Tỷ lệ thanh toán (%)</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                            <t t-foreach="list_tt" t-as="dot_tt">
+                                                <tr>
+                                                    <td class="text-center"><span t-esc="dot_tt[0]"/></td>
+                                                    <td class="text-right"><span t-esc="dot_tt[1]"/></td>
+                                                    <td class="text-right"><span t-esc="dot_tt[2]"/></td>
+                                                </tr>
+                                            </t>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
