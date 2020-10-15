@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -44,68 +45,67 @@ class BsdChinhSachThanhToan(models.Model):
     bsd_dk_hd = fields.Float(string="Điều kiện hợp đồng", help="Điều kiện thanh toán để làm hợp đồng mua bán",
                              readonly=True,
                              states={'nhap': [('readonly', False)]})
-    bsd_lai_phat_tt_id = fields.Many2one('bsd.lai_phat_tt', string="Lãi phạt", required=True,
+    bsd_lai_phat_tt_id = fields.Many2one('bsd.lai_phat_tt', string="Lãi phạt chậm TT", required=True,
                                          help="Phương thức tính lãi suất trong trường hợp chậm thanh toán",
                                          readonly=True,
                                          states={'nhap': [('readonly', False)]})
 
-    bsd_phat_thd = fields.Float(string="Phạt trước hợp đồng", required=True,
-                                help="""Phần trăm phí phạt (theo giá trị hợp đồng)
-                                        trong trường hợp chấm dứt giao dịch trước khi ký hợp đồng
-                                """,
-                                readonly=True,
-                                states={'nhap': [('readonly', False)]})
-    bsd_phat_shd = fields.Float(string="Phạt sau hợp đồng", required=True,
-                                help="""Phần trăm phí phạt (theo giá trì hợp đồng) 
-                                        trong trường hợp chấm dứt giao dịch sau khi ký hợp đồng
-                                """,
-                                readonly=True,
-                                states={'nhap': [('readonly', False)]})
+    bsd_phat_dc = fields.Float(string="Phạt thanh lý đặt cọc", required=True,
+                               help="""Phần trăm phí phạt thanh lý đặt cọc""",
+                               readonly=True,
+                               states={'nhap': [('readonly', False)]})
+    bsd_phat_ttdc = fields.Float(string="Phạt thanh lý TTĐC", required=True,
+                                 help="""Phần trăm phí phạt thanh lý thỏa thuận đặt cọc""",
+                                 readonly=True,
+                                 states={'nhap': [('readonly', False)]})
+    bsd_phat_hd = fields.Float(string="Phạt thanh lý HĐ", required=True,
+                               help="""Phần trăm phí phạt thanh lý hợp đồng mua bán""",
+                               readonly=True,
+                               states={'nhap': [('readonly', False)]})
     bsd_tb_tt = fields.Integer(string="Thông báo thanh toán",
                                help="Số ngày (trước khi đến hạn thanh toán) để gửi thông tin thanh toán",
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
-
-    bsd_tl_hd = fields.Integer(string="Số ngày trễ",
+    bsd_tl_hd = fields.Integer(string="Tổng số ngày TL",
                                help="Tổng số ngày trễ tối đa để thanh lý hợp đồng",
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
-    bsd_qh_tt = fields.Integer(string="Số ngày trễ/ Đợt", help="Số ngày trễ tối đa của mỗi đợt thanh toán",
+    bsd_qh_tt = fields.Integer(string="Tổng sô ngày TL/ Đợt", help="Số ngày trễ tối đa của mỗi đợt thanh toán",
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
-    bsd_canh_bao1 = fields.Integer(string="Cảnh báo 1",
+    bsd_canh_bao1 = fields.Integer(string="Thông báo nhắc nợ 1",
                                    help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo quá hạn thanh toán lần 1",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_canh_bao2 = fields.Integer(string="Cảnh báo 2",
+    bsd_canh_bao2 = fields.Integer(string="Thông báo nhắc nợ 2",
                                    help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo quá hạn thanh toán lần 2",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_canh_bao3 = fields.Integer(string="Cảnh báo 3",
+    bsd_canh_bao3 = fields.Integer(string="Thông báo nhắc nợ 3",
                                    help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo quá hạn thanh toán lần 3",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_canh_bao4 = fields.Integer(string="Cảnh báo 4",
+    bsd_canh_bao4 = fields.Integer(string="Thông báo nhắc nợ 4",
                                    help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo quá hạn thanh toán lần 4",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_canh_bao5 = fields.Integer(string="Cảnh báo 5",
+    bsd_canh_bao5 = fields.Integer(string="Thông báo nhắc nợ 5",
                                    help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo quá hạn thanh toán lần 5",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_tl_cb1 = fields.Boolean(string="Thiết lập cảnh báo 1",
+    bsd_tl_cb1 = fields.Boolean(string="Thiết lập 1",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_tl_cb2 = fields.Boolean(string="Thiết lập cảnh báo 2",
+    bsd_tl_cb2 = fields.Boolean(string="Thiết lập 2",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_tl_cb3 = fields.Boolean(string="Thiết lập cảnh báo 3",
+    bsd_tl_cb3 = fields.Boolean(string="Thiết lập 3",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_tl_cb4 = fields.Boolean(string="Thiết lập cảnh báo 4",
+    bsd_tl_cb4 = fields.Boolean(string="Thiết lập 4",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_tl_cb5 = fields.Boolean(string="Thiết lập cảnh báo 5",
+    bsd_tl_cb5 = fields.Boolean(string="Thiết lập 5",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
@@ -121,6 +121,9 @@ class BsdChinhSachThanhToan(models.Model):
 
     # Xác nhận phương thúc thanh toán
     def action_xac_nhan(self):
+        if not self.bsd_ct_ids:
+            raise UserError(_("Bạn chưa nhập thông tin khai báo đợt thanh toán.\n "
+                              "Vui lòng kiểm tra lại thông tin."))
         if self.state == 'nhap':
             self.write({
                 'state': 'xac_nhan'
@@ -128,6 +131,9 @@ class BsdChinhSachThanhToan(models.Model):
 
     # Duyệt phương thức thanh toán
     def action_duyet(self):
+        if not self.bsd_ct_ids:
+            raise UserError(_("Bạn chưa nhập thông tin khai báo đợt thanh toán.\n "
+                              "Vui lòng kiểm tra lại thông tin."))
         if self.state == 'xac_nhan':
             self.write({
                 'state': 'duyet',

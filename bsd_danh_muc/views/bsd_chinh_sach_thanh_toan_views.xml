@@ -26,7 +26,7 @@
                             confirm="Bạn có muốn Từ chối yêu cầu không?"/>
                     <button string="Hủy"
                             name="action_huy"
-                            states="xac_nhan,nhap"
+                            states="xac_nhan"
                             confirm="Bạn có muốn Hủy yêu cầu không?"
                             type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
@@ -38,33 +38,44 @@
                                 <group>
                                     <field name="bsd_ma_cstt"/>
                                     <field name="bsd_ten_cstt"/>
-                                    <field name="bsd_dien_giai"/>
                                     <field name="bsd_du_an_id"
                                            domain="[('state', '=', 'phat_hanh')]"
                                            options="{'no_create':true}"/>
-                                    <field name="bsd_tu_ngay"/>
-                                    <field name="bsd_den_ngay"/>
+                                    <field name="bsd_lai_phat_tt_id" options="{'no_create':true}"/>
+                                    <field name="bsd_ngay_tinh"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_ngay_tinh"/>
                                     <label for="bsd_dk_hd"/>
                                     <div class="o_row d-flex no-gutters">
                                         <field name="bsd_dk_hd" class="mr-1"/>
                                         <span>%</span>
                                     </div>
-                                    <field name="bsd_lai_phat_tt_id" options="{'no_create':true}"/>
-                                    <label for="bsd_phat_thd"/>
+                                    <field name="bsd_tu_ngay"/>
+                                    <field name="bsd_den_ngay"/>
+                                    <field name="bsd_dien_giai"/>
+                                </group>
+                            </group >
+                            <group string="PHẠT THANH LÝ">
+                                <group>
+                                    <label for="bsd_phat_dc"/>
                                     <div class="o_row d-flex no-gutters">
-                                        <field name="bsd_phat_thd" class="mr-1"/>
+                                        <field name="bsd_phat_dc" class="mr-1"/>
                                         <span>%</span>
                                     </div>
-                                    <label for="bsd_phat_shd"/>
+                                    <label for="bsd_phat_ttdc"/>
                                     <div class="o_row d-flex no-gutters">
-                                        <field name="bsd_phat_shd" class="mr-1"/>
+                                        <field name="bsd_phat_ttdc" class="mr-1"/>
                                         <span>%</span>
                                     </div>
                                 </group>
-                            </group >
+                                <group>
+                                    <label for="bsd_phat_hd"/>
+                                    <div class="o_row d-flex no-gutters">
+                                        <field name="bsd_phat_hd" class="mr-1"/>
+                                        <span>%</span>
+                                    </div>
+                                </group>
+                            </group>
                             <group string="Thông báo">
                                 <group>
                                     <label for="bsd_tb_tt"/>
@@ -117,7 +128,7 @@
                                 </group>
                             </group>
                         </page>
-                        <page string="Đợt thanh toán">
+                        <page string="Đợt thanh toán" attrs="{'invisible':[('id', '=', False)]}">
                             <field name="bsd_ct_ids">
                                 <tree>
                                     <field name="bsd_stt"/>
@@ -175,11 +186,11 @@
     </record>
 
     <record model="ir.actions.act_window" id="bsd_cs_tt_action">
-        <field name="name">Chính sách thanh toán</field>
+        <field name="name">Phương thức thanh toán</field>
         <field name="res_model">bsd.cs_tt</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
-            <p>Tạo Chính sách thanh toán</p>
+            <p>Tạo phương thức thanh toán</p>
         </field>
     </record>
 
