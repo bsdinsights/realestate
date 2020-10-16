@@ -42,7 +42,7 @@ class ReportLTT(models.AbstractModel):
                 ngay_hh_tt_td = ngay_hh_tt
                 list_ngay_hh_tt_td = []
                 if dot_td.bsd_lap_lai == '1':
-                    for dot_i in range(0, dot_td.bsd_so_dot + 1):
+                    for dot_i in range(0, dot_td.bsd_so_dot):
                         if dot_td.bsd_tiep_theo == 'ngay':
                             ngay_hh_tt_td += datetime.timedelta(days=dot_td.bsd_so_ngay)
                         else:

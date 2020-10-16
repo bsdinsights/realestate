@@ -272,28 +272,25 @@ class BsdBaoGia(models.Model):
     def action_in_bg(self):
         return self.env.ref('bsd_kinh_doanh.bsd_bao_gia_report_action').read()[0]
 
-    def _cb_du_lieu_dtt(self, stt, ma_dtt, dot_tt, lai_phat, ngay_hh_tt, cs_tt, tien_dot_tt):
+    def _cb_du_lieu_dtt(self, stt, ma_dtt, dot_tt, lai_phat, ngay_hh_tt, cs_tt, tien_dot_tt, tinh_pql, tinh_pbt):
         res = {}
         if ngay_hh_tt:
             ngay_ah_cd = ngay_hh_tt + datetime.timedelta(days=lai_phat.bsd_an_han)
         else:
             ngay_ah_cd = False
-
         res.update({
             'bsd_stt': stt,
             'bsd_ma_dtt': ma_dtt,
             'bsd_ten_dtt': 'Đợt ' + str(stt),
             'bsd_ngay_hh_tt': ngay_hh_tt,
             'bsd_tien_dot_tt': tien_dot_tt,
-            'bsd_tinh_pql': dot_tt.bsd_tinh_pql,
-            'bsd_tinh_pbt': dot_tt.bsd_tinh_pbt,
+            'bsd_tinh_pql': tinh_pql,
+            'bsd_tinh_pbt': tinh_pbt,
             'bsd_ngay_ah': ngay_ah_cd,
             'bsd_tinh_phat': lai_phat.bsd_tinh_phat,
             'bsd_lai_phat': lai_phat.bsd_lai_phat,
             'bsd_tien_td': lai_phat.bsd_tien_td,
             'bsd_tl_td': lai_phat.bsd_tl_td,
-            'bsd_phat_thd': cs_tt.bsd_phat_thd,
-            'bsd_phat_shd': cs_tt.bsd_phat_shd,
             'bsd_cs_tt_id': cs_tt.id,
             'bsd_cs_tt_ct_id': dot_tt.id,
             'bsd_bao_gia_id': self.id,
@@ -347,14 +344,16 @@ class BsdBaoGia(models.Model):
                 tien_dot_tt = tien_dot_tt - (tien_dot_tt % 1000)
                 # cộng tiền đợt thanh toán
                 tong_tien_dot_tt += tien_dot_tt
-                self.bsd_ltt_ids.create(self._cb_du_lieu_dtt(stt, 'CD', dot_cd, lai_phat, ngay_hh_tt, cs_tt, tien_dot_tt))
+                self.bsd_ltt_ids.\
+                    create(self._cb_du_lieu_dtt(stt, 'CD', dot_cd, lai_phat, ngay_hh_tt, cs_tt,
+                                                tien_dot_tt, dot_cd.bsd_tinh_pql, dot_cd.bsd_tinh_pbt))
             # Tạo dữ liệu đợt tự động
             elif dot.bsd_cach_tinh == 'td':
                 dot_td = dot
                 ngay_hh_tt_td = ngay_hh_tt
                 list_ngay_hh_tt_td = []
                 if dot_td.bsd_lap_lai == '1':
-                    for dot_i in range(0, dot_td.bsd_so_dot + 1):
+                    for dot_i in range(0, dot_td.bsd_so_dot):
                         if dot_td.bsd_tiep_theo == 'ngay':
                             ngay_hh_tt_td += datetime.timedelta(days=dot_td.bsd_so_ngay)
                         else:
@@ -366,17 +365,44 @@ class BsdBaoGia(models.Model):
                     else:
                         ngay_hh_tt_td = add_months(ngay_hh_tt_td, dot_td.bsd_so_thang)
                     list_ngay_hh_tt_td.append(ngay_hh_tt_td)
-
+                # cộng thời gian gia hạn cuối của đợt tự động
+                list_ngay_hh_tt_td[-1] += datetime.timedelta(days=dot_td.bsd_ngay_gh)
                 # Gán lại ngày cuối cùng tự động thanh toán
                 ngay_hh_tt = list_ngay_hh_tt_td[-1]
+                # Kiểm tra nếu đợt tự động có tích chọn thu phí quản lý hoặc phí bảo trì
+                # thì gắn vào đợt tự động đầu tiên
+                da_tao_pql = False
+                da_tao_pbt = False
                 for ngay in list_ngay_hh_tt_td:
                     stt += 1
+                    if dot_td.bsd_ngay_thang > 0:
+                        last_day = calendar.monthrange(ngay.year, ngay.month)[1]
+
+                        if dot_td.bsd_ngay_thang > last_day:
+                            ngay = ngay.replace(day=last_day)
+                        else:
+                            ngay = ngay.replace(day=dot_td.bsd_ngay_thang)
                     tien_dot_tt = dot_td.bsd_tl_tt * (self.bsd_tong_gia - self.bsd_tien_pbt) / 100
                     # làm trong tiền đợt thanh toán
                     tien_dot_tt = tien_dot_tt - (tien_dot_tt % 1000)
                     # cộng tiền đợt thanh toán
                     tong_tien_dot_tt += tien_dot_tt
-                    self.bsd_ltt_ids.create(self._cb_du_lieu_dtt(stt, 'TD', dot_td, lai_phat, ngay, cs_tt,tien_dot_tt))
+                    if dot_td.bsd_tinh_pql and not dot_td.bsd_tinh_qbt and not da_tao_pql:
+                        self.bsd_ltt_ids.create(
+                            self._cb_du_lieu_dtt(stt, 'TD', dot_td, lai_phat, ngay, cs_tt, tien_dot_tt, True, False))
+                        da_tao_pql = True
+                    elif not dot_td.bsd_tinh_pql and dot_td.bsd_tinh_qbt and not da_tao_pbt:
+                        self.bsd_ltt_ids.create(
+                            self._cb_du_lieu_dtt(stt, 'TD', dot_td, lai_phat, ngay, cs_tt, tien_dot_tt, False, True))
+                        da_tao_pbt = True
+                    elif dot_td.bsd_tinh_pql and dot_td.bsd_tinh_qbt and not da_tao_pbt and not da_tao_pql:
+                        self.bsd_ltt_ids.create(
+                            self._cb_du_lieu_dtt(stt, 'TD', dot_td, lai_phat, ngay, cs_tt, tien_dot_tt, True, True))
+                        da_tao_pql = True
+                        da_tao_pbt = True
+                    else:
+                        self.bsd_ltt_ids.create(
+                            self._cb_du_lieu_dtt(stt, 'TD', dot_td, lai_phat, ngay, cs_tt, tien_dot_tt, False, False))
 
             # Tạo đợt thanh toán theo dự kiến bàn giao
             elif dot.bsd_cach_tinh == 'dkbg':
@@ -390,16 +416,18 @@ class BsdBaoGia(models.Model):
                 tien_dot_tt = tien_dot_tt - (tien_dot_tt % 1000)
                 # cộng tiền đợt thanh toán
                 tong_tien_dot_tt += tien_dot_tt
-                self.bsd_ltt_ids.create(self._cb_du_lieu_dtt(stt, 'DKBG', dot_dkbg, lai_phat, ngay_hh_tt_dkbg, cs_tt,
-                                                             tien_dot_tt))
+                self.bsd_ltt_ids.\
+                    create(self._cb_du_lieu_dtt(stt, 'DKBG', dot_dkbg, lai_phat, ngay_hh_tt_dkbg, cs_tt,
+                                                tien_dot_tt, dot_dkbg.bsd_tinh_pql, dot_dkbg.bsd_tinh_pbt))
 
             # Tạo đợt thanh toán cuối
             elif dot.bsd_dot_cuoi:
                 dot_cuoi = dot
                 stt += 1
                 tien_dot_tt = (self.bsd_tong_gia - self.bsd_tien_pbt) - tong_tien_dot_tt
-                self.bsd_ltt_ids.create(self._cb_du_lieu_dtt(stt, 'DBGC', dot_cuoi, lai_phat, False, cs_tt,
-                                                             tien_dot_tt))
+                self.bsd_ltt_ids.\
+                    create(self._cb_du_lieu_dtt(stt, 'DBGC', dot_cuoi, lai_phat, False, cs_tt,
+                                                tien_dot_tt, dot_cuoi.bsd_tinh_pql, dot_cuoi.bsd_tinh_pbt))
 
         # Tạo đợt thu phí quản lý
         dot_pql = self.bsd_ltt_ids.filtered(lambda d: d.bsd_tinh_pql)
