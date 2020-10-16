@@ -57,15 +57,17 @@ class BsdKhuyenMai(models.Model):
 
     # DM.12.01 Xác nhận khuyến mãi
     def action_xac_nhan(self):
-        self.write({
-            'state': 'xac_nhan'
-        })
+        if self.state == 'nhap':
+            self.write({
+                'state': 'xac_nhan'
+            })
 
     # DM.12.02 Duyệt khuyến mãi
     def action_duyet(self):
-        self.write({
-            'state': 'duyet',
-        })
+        if self.state == 'xac_nhan':
+            self.write({
+                'state': 'duyet',
+            })
 
     # DM.12.04 Không duyệt khuyến mãi
     def action_khong_duyet(self):
@@ -74,9 +76,10 @@ class BsdKhuyenMai(models.Model):
 
     # DM.12.03 Hủy khuyến mãi
     def action_huy(self):
-        self.write({
-            'state': 'huy',
-        })
+        if self.state == 'xac_nhan':
+            self.write({
+                'state': 'huy',
+            })
 
     @api.model
     def create(self, vals):

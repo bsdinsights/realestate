@@ -85,15 +85,17 @@ class BsdChietKhau(models.Model):
 
     # DM.13.01 Xác nhận chiết khấu
     def action_xac_nhan(self):
-        self.write({
-            'state': 'xac_nhan'
-        })
+        if self.state == 'nhap':
+            self.write({
+                'state': 'xac_nhan'
+            })
 
     # DM.13.02 Duyệt chiết khấu
     def action_duyet(self):
-        self.write({
-            'state': 'duyet',
-        })
+        if self.state == 'xac_nhan':
+            self.write({
+                'state': 'duyet',
+            })
 
     # DM.13.04 Không duyệt chiết khấu
     def action_khong_duyet(self):
@@ -102,9 +104,10 @@ class BsdChietKhau(models.Model):
 
     # DM.13.03 Hủy chiết khấu
     def action_huy(self):
-        self.write({
-            'state': 'huy',
-        })
+        if self.state == 'xac_nhan':
+            self.write({
+                'state': 'huy',
+            })
 
     @api.constrains('bsd_loai_ck', 'bsd_tu_ngay', 'bsd_den_ngay', 'bsd_sl_tu', 'bsd_sl_den')
     def constrains_ck(self):

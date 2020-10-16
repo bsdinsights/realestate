@@ -46,15 +46,17 @@ class BsdChietKhauChung(models.Model):
 
     # DM.14.01 Xác nhận chiết khấu
     def action_xac_nhan(self):
-        self.write({
-            'state': 'xac_nhan'
-        })
+        if self.state == 'nhap':
+            self.write({
+                'state': 'xac_nhan'
+            })
 
     # DM.14.02 Duyệt chiết khấu
     def action_duyet(self):
-        self.write({
-            'state': 'duyet',
-        })
+        if self.state == 'xac_nhan':
+            self.write({
+                'state': 'duyet',
+            })
 
     # DM.14.04 Không duyệt chiết khấu
     def action_khong_duyet(self):
@@ -67,9 +69,10 @@ class BsdChietKhauChung(models.Model):
                                                         ('bsd_ck_ch_id', '=', self.id)])
         if self.state == 'duyet' and dot_mb_dang_ph:
             raise UserError(_("Danh sách chiết khấu chung đang nằm trong đợt mở bán đã phát hành."))
-        self.write({
-            'state': 'huy',
-        })
+        if self.state == 'xac_nhan':
+            self.write({
+                'state': 'huy',
+            })
 
     @api.model
     def create(self, vals):

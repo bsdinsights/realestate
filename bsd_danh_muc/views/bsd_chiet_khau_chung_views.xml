@@ -26,7 +26,7 @@
                             confirm="Bạn có muốn Từ chối yêu cầu không?"/>
                     <button string="Hủy"
                             name="action_huy"
-                            states="xac_nhan,duyet"
+                            states="xac_nhan"
                             confirm="Bạn có muốn Hủy yêu cầu không?"
                             type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>

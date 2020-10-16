@@ -162,7 +162,7 @@ class BsdChinhSachThanhToan(models.Model):
 
     # Hủy phương thức thanh toán
     def action_huy(self):
-        if self.state in ['nhap', 'xac_nhan']:
+        if self.state in ['xac_nhan']:
             self.write({
                 'state': 'huy',
             })
