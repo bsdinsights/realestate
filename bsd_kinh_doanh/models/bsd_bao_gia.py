@@ -81,7 +81,7 @@ class BsdBaoGia(models.Model):
     bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", related="bsd_thue_id.bsd_thue_suat", store=True,
                                  digits=(12, 2))
     bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì", compute='_compute_tl_pbt', store=True)
-    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="PT thanh toán", help="Phương thức thanh toán", required=True,
+    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="Phương thức TT", help="Phương thức thanh toán", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán")
@@ -209,8 +209,12 @@ class BsdBaoGia(models.Model):
                 lambda x: x.product_tmpl_id == each.bsd_unit_id.product_tmpl_id)
             if item:
                 each.bsd_gia_ban = item.fixed_price
-            else:
-                each.bsd_gia_ban = 0
+
+    @api.constrains('bsd_gia_ban')
+    def _constraint_gia_ban(self):
+        for each in self:
+            if each.bsd_gia_ban == 0:
+                raise UserError(_("Vui lòng kiểm tra lại giá bán của sản phẩm."))
 
     @api.depends('bsd_bg_ids.bsd_tien_bg')
     def _compute_tien_bg(self):
@@ -261,12 +265,6 @@ class BsdBaoGia(models.Model):
             self.write({
                 'state': 'xac_nhan',
             })
-
-    # KD.09.04 Duyệt báo giá
-    # def action_duyet(self):
-    #     self.write({
-    #         'state': 'da_duyet',
-    #     })
 
     # KD.09.05 In báo giá
     def action_in_bg(self):
@@ -461,17 +459,6 @@ class BsdBaoGia(models.Model):
                 'bsd_parent_id': dot_pbt.id,
                 'bsd_loai': 'pbt'
             })
-        # return {
-        #     'name': "Bảng tính giá"
-        #     'context': self.env.context,
-        #     'view_type': 'form',
-        #     'view_mode': 'form',
-        #     'res_model': 'bsd.bao_gia',
-        #     'res_id': self.id,
-        #     'view_id': False,
-        #     'type': 'ir.actions.act_window',
-        #     'target': 'new',
-        # }
 
     # Xóa lịch thanh toán
     def action_xoa_lich_tt(self):
@@ -554,6 +541,16 @@ class BsdBaoGia(models.Model):
     # Sử dụng trên popup
     def action_luu(self):
         pass
+
+    def action_chon_ck(self):
+        _logger.debug("Chọn ck")
+        action = self.env.ref('bsd_kinh_doanh.bsd_wizard_chon_ck_action').read()[0]
+        return action
+
+    def action_chon_dkbg(self):
+        _logger.debug("Chọn ck")
+        action = self.env.ref('bsd_kinh_doanh.bsd_wizard_chon_dkbg_action').read()[0]
+        return action
 
 
 class BsdBaoGiaKhuyenMai(models.Model):

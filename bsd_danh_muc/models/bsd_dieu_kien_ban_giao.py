@@ -43,5 +43,24 @@ class BsdDkbg(models.Model):
                              string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+    
+    def _get_name(self):
+        dk_bg = self
+        name = dk_bg.bsd_ten_dkbg or ''
+        if self._context.get('show_info'):
+            if dk_bg.bsd_dk_tt == 'tien':
+                name = "%s - %s - %s đ" % (dk_bg.bsd_ten_dkbg, "Tiền", dk_bg.bsd_tien)
+            elif dk_bg.bsd_dk_tt == 'ty_le':
+                name = "%s - %s - %s %s" % (dk_bg.bsd_ten_dkbg, "Phần trăm", dk_bg.bsd_ty_le, "%")
+            else:
+                name = "%s - %s - %s đ" % (dk_bg.bsd_ten_dkbg, "Đơn giá", dk_bg.bsd_gia_m2)
+        return name
+
+    def name_get(self):
+        res = []
+        for dk_bg in self:
+            name = dk_bg._get_name()
+            res.append((dk_bg.id, name))
+        return res
 
 

@@ -63,7 +63,6 @@
                                            context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_popup_form',
                                                      'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree_search'}"
                                            options="{'no_create':true}"/>
-<!--                                    <field name="bsd_giu_cho_id" />-->
                                     <field name="bsd_cs_tt_id"
                                            domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"
                                            options="{'no_create':true}"/>
@@ -118,9 +117,6 @@
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                            options="{'no_create':true}"
                                     />
-<!--                                    <field name="bsd_unit_id"-->
-<!--                                           context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"-->
-<!--                                           invisible="1"/>-->
                                     <label for="bsd_dt_xd"/>
                                     <div class="o_row no-gutters d-flex">
                                         <div class="col">
@@ -154,9 +150,25 @@
                                     </div>
                                 </group>
                                 <group>
-                                    <field name="bsd_gia_ban"/>
-                                    <field name="bsd_tien_ck"/>
-                                    <field name="bsd_tien_bg"/>
+                                    <field name="bsd_gia_ban" readonly="1" force_save="1"/>
+                                    <label for="bsd_tien_bg"/>
+                                    <div class="o_row no_gutters d-flex">
+                                        <field name="bsd_tien_bg" class="oe_inline text-left"/>
+                                        <button type="object"
+                                                string="Chọn ĐK bàn giao"
+                                                name="action_chon_dkbg"
+                                                class="oe_link oe_inline"
+                                                attrs="{'invisible': ['|', ('state', 'not in', ['nhap']), ('id', '=', False)]}"/>
+                                    </div>
+                                    <label for="bsd_tien_ck"/>
+                                    <div class="o_row no_gutters d-flex">
+                                        <field name="bsd_tien_ck" class="oe_inline text-left"/>
+                                        <button type="object"
+                                                string="Chọn chiết khấu"
+                                                name="action_chon_ck"
+                                                class="oe_link oe_inline"
+                                                attrs="{'invisible': ['|', ('state', 'not in', ['nhap']), ('id', '=', False)]}"/>
+                                    </div>
                                     <field name="bsd_gia_truoc_thue"/>
                                     <field name="bsd_tien_qsdd"/>
                                     <field name="bsd_tien_thue"/>
@@ -173,7 +185,7 @@
                                 </group>
                             </group>
                         </page>
-                        <page string="Đồng sở hữu">
+                        <page string="Đồng sở hữu" attrs="{'invisible':[('id','=',False)]}">
                             <field name="bsd_dsh_ids"
                                    domain="[('id', '!=',bsd_khach_hang_id)]"
                                    context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}">
@@ -185,7 +197,7 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Điều kiện bàn giao">
+                        <page string="Điều kiện bàn giao" attrs="{'invisible':[('id','=',False)]}">
                             <field name="bsd_bg_ids"
                                    attrs="{'readonly':[('bsd_da_co_lich','=',True)]}"
                                    context="{'default_bsd_bao_gia_id': id}">
@@ -204,7 +216,7 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Khuyến mãi">
+                        <page string="Khuyến mãi" attrs="{'invisible':[('id','=',False)]}">
                             <field name="bsd_km_ids"
                                    attrs="{'readonly':[('bsd_da_co_lich','=',True)]}"
                                    nolabel="1" context="{'default_bsd_dot_mb_id':bsd_dot_mb_id}">
@@ -223,7 +235,7 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Chiết khấu">
+                        <page string="Chiết khấu" attrs="{'invisible':[('id','=',False)]}">
                             <field name="bsd_ps_ck_ids"
                                    attrs="{'readonly':[('bsd_da_co_lich','=',True)]}">
                                 <tree editable="bottom">
@@ -248,7 +260,7 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Chiết khấu đặc biệt">
+                        <page string="Chiết khấu đặc biệt" attrs="{'invisible':[('id','=',False)]}">
                             <field name="id" invisible="1"/>
                             <field name="bsd_ck_db_ids"
                                    attrs="{'readonly':[('bsd_da_co_lich','=',True)]}"
@@ -316,7 +328,7 @@
                                 </form>
                             </field>
                         </page>
-                        <page string="Lịch thanh toán">
+                        <page string="Lịch thanh toán" attrs="{'invisible':[('id','=',False)]}">
                             <field name="bsd_ltt_ids">
                                 <tree>
                                     <field name="bsd_stt"/>

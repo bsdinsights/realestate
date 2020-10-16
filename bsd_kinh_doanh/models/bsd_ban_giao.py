@@ -6,15 +6,19 @@ from odoo.exceptions import ValidationError
 
 class BsdBanGiao(models.Model):
     _name = 'bsd.ban_giao'
-    _description = 'Thông tin bàn giao cho báo giá'
+    _description = 'Thông tin điều kiện bàn giao cho báo giá'
     _rec_name = 'bsd_dk_bg_id'
 
     bsd_dk_bg_id = fields.Many2one('bsd.dk_bg', string="Tên ĐKBG", help="Tên điều kiện bàn giao", required=True)
     bsd_ma_dkbg = fields.Char(related='bsd_dk_bg_id.bsd_ma_dkbg', store=True)
-    bsd_dk_tt = fields.Selection(related='bsd_dk_bg_id.bsd_dk_tt', store=True)
-    bsd_gia_m2 = fields.Monetary(related='bsd_dk_bg_id.bsd_gia_m2', store=True)
-    bsd_tien = fields.Monetary(related='bsd_dk_bg_id.bsd_tien', store=True)
-    bsd_ty_le = fields.Float(related="bsd_dk_bg_id.bsd_ty_le", store=True)
+    bsd_dk_tt = fields.Selection([('tien', 'Giá trị'),
+                                  ('ty_le', 'Phần trăm'),
+                                  ('m2', 'Đơn giá'),
+                                  ], string="Điều kiện thanh toán", default="m2", required=True,
+                                 help="Điều kiện thanh toán để được nhận bàn giao", readonly=True)
+    bsd_gia_m2 = fields.Monetary(string="Giá/m2", help="Giá/m2 theo đợt bàn giao", readonly=True)
+    bsd_tien = fields.Monetary(string="Tiền", help="Tiền thanh toán theo đợt bàn giao", readonly=True)
+    bsd_ty_le = fields.Float(string="Tỷ lệ (%)", help="Tỷ lệ thanh toán theo đợt bàn giao", readonly=True)
     bsd_tien_bg = fields.Monetary(string="Tiền bàn giao ", help="Tiền thanh toán theo điều kiện bàn giao ",
                                   compute="_compute_tien_bg", store=True)
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", help="Tên báo giá", required=True)
@@ -31,13 +35,20 @@ class BsdBanGiao(models.Model):
             dk_bg = self.bsd_bao_gia_id.bsd_dot_mb_id.bsd_dkbg_ids
             # Lọc các điều kiện bàn giao có nhóm sản phẩm trùng với unit trong bảng tính giá
             list_id = dk_bg.filtered(
-                lambda d: d.bsd_loai_sp_id == self.bsd_bao_gia_id.bsd_unit_id.bsd_loai_sp_id).ids
+                lambda d: d.bsd_loai_sp_id == self.bsd_bao_gia_id.bsd_unit_id.bsd_loai_sp_id or not d.bsd_loai_sp_id).ids
         res.update({
             'domain': {
                 'bsd_dk_bg_id': [('id', 'in', list_id)]
             }
         })
         return res
+
+    @api.onchange('bsd_dk_bg_id')
+    def _onchange_dkbg(self):
+        self.bsd_dk_tt = self.bsd_dk_bg_id.bsd_dk_tt
+        self.bsd_gia_m2 = self.bsd_dk_bg_id.bsd_gia_m2
+        self.bsd_tien = self.bsd_dk_bg_id.bsd_tien
+        self.bsd_ty_le = self.bsd_dk_bg_id.bsd_ty_le
 
     @api.depends('bsd_dk_tt', 'bsd_gia_m2', 'bsd_tien', 'bsd_ty_le')
     def _compute_tien_bg(self):

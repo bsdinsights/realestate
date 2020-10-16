@@ -41,7 +41,7 @@
         'data/bsd_automation_data.xml',
         'data/bsd_sequence_data.xml',
         'data/bsd_kh_dn_data.xml',
-        'wizards/bsd_wizard_ky_bg_views.xml',
+        'wizards/bsd_wizard_bao_gia_views.xml',
         'wizards/bsd_wizard_dc_views.xml',
         'wizards/bsd_wizard_khong_duyet_chuyen_gc_views.xml',
         'wizards/bsd_wizard_khong_duyet_thu_hoi_views.xml',

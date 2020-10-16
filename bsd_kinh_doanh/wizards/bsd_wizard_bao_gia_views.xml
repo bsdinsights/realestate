@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_wizard_ky_bg_form">
+        <field name="name">bsd.wizard.ky_bg.form</field>
+        <field name="model">bsd.wizard.ky_bg</field>
+        <field name="arch" type="xml">
+            <form string="Ký báo giá">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_bao_gia_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ngay_ky_bg"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_ky_bg_action">
+        <field name="name">Ký báo giá</field>
+        <field name="res_model">bsd.wizard.ky_bg</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_wizard_chon_ck_form">
+        <field name="name">bsd.wizard.chon_ck.form</field>
+        <field name="model">bsd.wizard.bao_gia.chon_ck</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group string="CHIẾT KHẤU CHUNG">
+                            <field name="bsd_ck_ch_ids" widget="many2many_checkboxes" nolabel="1"/>
+                        </group>
+                        <group string="CHIẾT KHẤU NỘI BỘ">
+                            <field name="bsd_ck_nb_ids" widget="many2many_checkboxes" nolabel="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="CHIẾT KHẤU THEO PHƯƠNG THỨC THANH TOÁN">
+                            <field name="bsd_ck_pttt_ids" widget="many2many_checkboxes" nolabel="1"/>
+                        </group>
+                        <group>
+                            <field name="bsd_bao_gia_id" invisible="1"/>
+                            <field name="bsd_dot_mb_id" invisible="1"/>
+                            <field name="bsd_cs_tt_id" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_chon_ck_action">
+        <field name="name">Chọn chiết khấu</field>
+        <field name="res_model">bsd.wizard.bao_gia.chon_ck</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_wizard_chon_dkbg_form">
+        <field name="name">bsd.wizard.chon_dkbg.form</field>
+        <field name="model">bsd.wizard.bao_gia.chon_dkbg</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group string="ĐIỀU KIỆN BÀN GIAO">
+                        <field name="bsd_dk_bg_ids"
+                               context="{'show_info':True}"
+                               widget="many2many_checkboxes" nolabel="1"/>
+                    </group>
+                    <group>
+                        <field name="bsd_bao_gia_id" invisible="1"/>
+                        <field name="bsd_dot_mb_id" invisible="1"/>
+                        <field name="bsd_unit_id" invisible="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_chon_dkbg_action">
+        <field name="name">Chọn Điều kiện bàn giao</field>
+        <field name="res_model">bsd.wizard.bao_gia.chon_dkbg</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
+</odoo>

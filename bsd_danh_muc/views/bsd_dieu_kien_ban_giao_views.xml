@@ -11,6 +11,8 @@
                 <sheet>
                     <group>
                         <group>
+                            <field name="company_id" invisible="1"/>
+                            <field name="current_id" invisible="1"/>
                             <field name="bsd_ma_dkbg"/>
                             <field name="bsd_ten_dkbg"/>
                             <field name="bsd_du_an_id"/>

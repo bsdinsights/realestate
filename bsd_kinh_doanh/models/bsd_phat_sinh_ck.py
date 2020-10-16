@@ -13,8 +13,7 @@ class BsdPsCk(models.Model):
 
     bsd_loai_ck = fields.Selection([('chung', 'Chung'),
                                     ('noi_bo', 'Nội bộ'),
-                                    ('mua_si', 'Mua sỉ'),
-                                    ('ltt', 'Lịch thanh toán')], string="Loại chiết khấu",
+                                    ('ltt', 'Phương thức TT')], string="Loại chiết khấu",
                                    default='chung', required=True, help="Loại chiết khấu")
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", help="Tên báo giá", required=True)
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Tên Đặt cọc", readonly=True)
