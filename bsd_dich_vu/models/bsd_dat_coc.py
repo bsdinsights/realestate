@@ -57,7 +57,7 @@ class BsdDatCoc(models.Model):
     # Tạo hợp đồng mua bán
     def action_tao_hd_ban(self):
         context = {
-            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'default_bsd_khach_hang_id': self.bsd_nguoi_dd_id.id,
             'default_bsd_dat_coc_id': self.id,
         }
         action = self.env.ref('bsd_dich_vu.bsd_hd_ban_action_popup').read()[0]

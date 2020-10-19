@@ -47,12 +47,12 @@ class ReportBsdGCTG(models.AbstractModel):
         ngay_hien_tai = ngay_hien_tai.replace(tzinfo=from_zone)
         ngay_hien_tai = ngay_hien_tai.astimezone(to_zone)
 
-        tai_khoan = gc_tc.bsd_du_an_id.bsd_tk_ng_ids
+        tai_khoan = gc_tc.bsd_khach_hang_id.bank_ids
         tai_khoan = tai_khoan.filtered(lambda t: t.bsd_tk_chinh)
         if not tai_khoan:
-            raise UserError("Dự án chưa cấu hình tài khoản chính.\n Vui lòng chọn tài khoản chính cho dự án.")
+            raise UserError("Khách hàng chưa cấu hình tài khoản chính.\n Vui lòng chọn tài khoản chính cho khách hàng.")
         if len(tai_khoan) > 1:
-            raise UserError("Dự án cấu hình nhiều hơn 1 tài khoản chính.\n Vui lòng kiểm tra lại thông tin.")
+            raise UserError("Khách hàng cấu hình nhiều hơn 1 tài khoản chính.\n Vui lòng kiểm tra lại thông tin.")
         return {
             'doc_ids': data['ids'],
             'doc_model': data['model'],

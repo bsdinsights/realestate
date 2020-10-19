@@ -71,7 +71,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <p>Nhân viên kinh doanh: <strong t-field="doc.bsd_nvbh_id.name"/></p>
+                                    <p>Nhân viên kinh doanh: <strong t-field="doc.bsd_nvbh_id.display_name"/></p>
                                 </div>
                             </div>
                             <div class="row mt16">
@@ -87,11 +87,11 @@
                             <div class="row mt8">
                                 <div class="col-12">
                                     <t t-if="doc.bsd_kh_moi_id.is_company">
-                                        <p>Tên công ty: <strong t-field="doc.bsd_kh_moi_id.name"/>
+                                        <p>Tên công ty: <strong t-field="doc.bsd_kh_moi_id.display_name"/>
                                         </p>
                                     </t>
                                     <t t-else="">
-                                        <p>Họ và tên: <strong t-field="doc.bsd_kh_moi_id.bsd_ten"/></p>
+                                        <p>Họ và tên: <strong t-field="doc.bsd_kh_moi_id.display_name"/></p>
                                     </t>
                                 </div>
                             </div>
@@ -178,7 +178,7 @@
                                         Tôi xác nhận đặt chỗ để mua sản phẩm
                                          <span t-field="doc.bsd_unit_id.bsd_ten_unit"/> tại dự án
                                          <span t-field="doc.bsd_du_an_id.bsd_ten_da"/> do
-                                         <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/> làm Chủ Đầu Tư
+                                         <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.display_name"/> làm Chủ Đầu Tư
                                     </p>
                                 </div>
                             </div>
@@ -281,17 +281,17 @@
                                 <div class="col-6">
                                     <p><strong>Xác nhận bởi khách hàng</strong></p>
                                     <t t-if="doc.bsd_kh_moi_id.is_company">
-                                        <p style="margin-top:100px">Tên công ty: <span t-field="doc.bsd_kh_moi_id.name"/>
+                                        <p style="margin-top:100px">Tên công ty: <span t-field="doc.bsd_kh_moi_id.display_name"/>
                                         </p>
                                     </t>
                                     <t t-else="">
-                                        <p style="margin-top:100px">Họ và tên: <span t-field="doc.bsd_kh_moi_id.bsd_ten"/></p>
+                                        <p style="margin-top:100px">Họ và tên: <span t-field="doc.bsd_kh_moi_id.display_name"/></p>
                                     </t>
                                 </div>
                                 <div class="col-6">
                                     <p><strong>Xác nhận bởi Chủ Đầu Tư</strong></p>
                                     <p style="margin-top:100px">
-                                        Họ và tên: <span t-esc="doc.bsd_du_an_id.bsd_chu_dt_id.bsd_nguoi_dd_id.bsd_ten"/>
+                                        Họ và tên: <span t-esc="doc.bsd_du_an_id.bsd_chu_dt_id.bsd_nguoi_dd_id.display_name"/>
                                     </p>
                                     <p>
                                         Chức vụ: <span t-esc="doc.bsd_du_an_id.bsd_chu_dt_id.bsd_nguoi_dd_id.function"/>

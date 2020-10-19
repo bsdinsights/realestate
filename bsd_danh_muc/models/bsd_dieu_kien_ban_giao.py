@@ -16,26 +16,48 @@ class BsdDkbg(models.Model):
         ('bsd_ma_dkbg_unique', 'unique (bsd_ma_dkbg)',
          'Mã điều kiện bàn giao đã tồn tại !'),
     ]
-    bsd_ten_dkbg = fields.Char(string="Tên", help="Tên điều kiện bàn giao", required=True)
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True)
-    bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu hiệu lực của điều kiện bàn giao", required=True)
-    bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc hiệu lực của điều kiện bàn giao", required=True)
-    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
+    bsd_ten_dkbg = fields.Char(string="Tên", help="Tên điều kiện bàn giao", required=True,
+                               readonly=True,
+                               states={'nhap': [('readonly', False)]})
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True,
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu hiệu lực của điều kiện bàn giao", required=True,
+                              readonly=True,
+                              states={'nhap': [('readonly', False)]})
+    bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc hiệu lực của điều kiện bàn giao", required=True,
+                               readonly=True,
+                               states={'nhap': [('readonly', False)]})
+    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
     bsd_loai_bg = fields.Selection([('tho', 'Bàn giao thô'),
                                     ('co_ban', 'Bàn giao hoàn thiện cơ bản'),
                                     ('hoan_thien', 'Bàn giao hoàn thiện'),
                                     ('noi_that', 'Bàn giao hoàn thiện mặt ngoài và thô bên trong'),
                                     ('bo_sung', 'Bàn giao bổ sung')], string="Loại bàn giao",
-                                   help="Tình trạng của căn hộ khi bàn giao")
+                                   help="Tình trạng của căn hộ khi bàn giao",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
     bsd_dk_tt = fields.Selection([('tien', 'Giá trị'),
                                   ('ty_le', 'Phần trăm'),
                                   ('m2', 'Đơn giá'),
                                   ], string="Điều kiện thanh toán", default="m2", required=True,
-                                 help="Điều kiện thanh toán để được nhận bàn giao")
-    bsd_loai_sp_id = fields.Many2one('bsd.loai_sp', string="Theo loại sản phẩm", help="Theo loại sản phẩm")
-    bsd_gia_m2 = fields.Monetary(string="Giá/m2", help="Giá/m2 theo đợt bàn giao")
-    bsd_tien = fields.Monetary(string="Tiền", help="Tiền thanh toán theo đợt bàn giao")
-    bsd_ty_le = fields.Float(string="Tỷ lệ (%)", help="Tỷ lệ thanh toán theo đợt bàn giao")
+                                 help="Điều kiện thanh toán để được nhận bàn giao",
+                                 readonly=True,
+                                 states={'nhap': [('readonly', False)]})
+    bsd_loai_sp_id = fields.Many2one('bsd.loai_sp', string="Theo loại sản phẩm", help="Theo loại sản phẩm",
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
+    bsd_gia_m2 = fields.Monetary(string="Giá/m2", help="Giá/m2 theo đợt bàn giao",
+                                 readonly=True,
+                                 states={'nhap': [('readonly', False)]})
+    bsd_tien = fields.Monetary(string="Tiền", help="Tiền thanh toán theo đợt bàn giao",
+                               readonly=True,
+                               states={'nhap': [('readonly', False)]})
+    bsd_ty_le = fields.Float(string="Tỷ lệ (%)", help="Tỷ lệ thanh toán theo đợt bàn giao",
+                             readonly=True,
+                             states={'nhap': [('readonly', False)]})
     bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
@@ -79,6 +101,8 @@ class BsdDkbg(models.Model):
         if self.state == 'xac_nhan':
             self.write({
                 'state': 'duyet',
+                'bsd_nguoi_duyet_id': self.env.uid,
+                'bsd_ngay_duyet': fields.Datetime.now()
             })
 
     # DM.13.04 Không duyệt chiết khấu

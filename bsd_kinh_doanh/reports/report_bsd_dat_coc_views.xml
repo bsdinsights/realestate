@@ -67,7 +67,7 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div>
-                                        <b><span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/></b>
+                                        <b><span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.display_name"/></b>
                                         <br/>
                                         <span/>
                                         <br/>
@@ -112,7 +112,7 @@
                                             </tr>
                                             <tr>
                                                 <th style="border: 1px solid black !important;"><b>Sàn giao dịch</b></th>
-                                                <td style="border: 1px solid black !important;"><span t-field="doc.bsd_giu_cho_id.bsd_san_gd_id.name"/></td>
+                                                <td style="border: 1px solid black !important;"><span t-field="doc.bsd_giu_cho_id.bsd_san_gd_id.display_name"/></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -128,8 +128,9 @@
                                             <td rowspan="6" width="10%"
                                                 style="border: 1px solid black !important;vertical-align: middle;"><b>Người mua 1</b></td>
                                             <td class="text-left" width="20%" style="border: 1px solid black !important;"><div>Tên công ty:</div></td>
-                                            <td width="80%" style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.name"/></div></td>
-
+                                            <td width="38%" style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.display_name"/></div></td>
+                                            <td width="12%" class="text-left" style="border: 1px solid black !important;"></td>
+                                            <td width="20%" style="border: 1px solid black !important;"></td>
                                         </tr>
                                         <tr class="text-center">
                                             <td class="text-left" style="border: 1px solid black !important;"><div>Số đăng ký:</div></td>
@@ -165,7 +166,7 @@
                                             <td rowspan="6" width="10%"
                                                 style="border: 1px solid black !important;vertical-align: middle;"><b>Người mua 1</b></td>
                                             <td class="text-left" width="20%" style="border: 1px solid black !important;"><div>Họ vàn tên:</div></td>
-                                            <td width="38%" style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.bsd_ten"/></div></td>
+                                            <td width="38%" style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.display_name"/></div></td>
                                             <td class="text-left" width="12%" style="border: 1px solid black !important;"><div>Ngày sinh:</div></td>
                                             <td width="20%" style="border: 1px solid black !important;"><div><span t-field="doc.bsd_khach_hang_id.bsd_ngay_sinh" t-options='{"format": "dd/MM/YYYY"}'/></div></td>
                                         </tr>
@@ -289,7 +290,7 @@
                                 <div class="col-12">
                                     <div>1. Người mua thanh toán i) Phí đặt chỗ <span t-field="doc.bsd_tien_gc"/> bằng Séc hoặc Thẻ tín dụng,
                                         hoặc ii) Đặt cọc số tiền <span t-field="doc.bsd_du_an_id.bsd_tien_dc"/>
-                                        (Bằng chữ: <span t-esc="tien_dat_coc_chu"/>) cho <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/> mua căn hộ
+                                        (Bằng chữ: <span t-esc="tien_dat_coc_chu"/>) cho <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.display_name"/> mua căn hộ
                                         của Dự án. (Lưu ý: Phiếu đặt cọc này chỉ dành cho một căn hộ).</div>
                                 </div>
                             </div>
@@ -297,8 +298,8 @@
                                 <div class="col-12">
                                     <div>2. Trong vòng <span t-field="doc.bsd_du_an_id.bsd_hh_pc"/> ngày kể từ ngày in Phiếu đặt cọc này, Người mua sẽ ký Thỏa
                                         thuận đặt cọc (Hợp đồng) với Người bán để mua Căn hộ được nêu ở đây, và Người
-                                        mua sẽ thanh toán cho <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/> tương đương <span t-esc="tl_tt"/>% Tổng giá trị căn hộ không bao gồm
-                                        phí bảo trì (trừ đi số tiền đặt cọc nếu đã thanh toán cho công ty <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/>).
+                                        mua sẽ thanh toán cho <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.display_name"/> tương đương <span t-esc="tl_tt"/>% Tổng giá trị căn hộ không bao gồm
+                                        phí bảo trì (trừ đi số tiền đặt cọc nếu đã thanh toán cho công ty <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.display_name"/>).
                                         Chi tiết về lịch thanh toán sẽ được quy định trong Lịch thanh toán kèm theo
                                         Phiếu đặt cọc này.</div>
                                 </div>
@@ -437,13 +438,13 @@
                                 </div>
                                 <div class="col-1"/>
                                 <div class="col-5">
-                                    <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/>
+                                    <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.display_name"/>
                                 </div>
                                 <div class="col-1"/>
                             </div>
                             <div class="row">
                                 <div class="col-5">
-                                    <span>Họ và tên: </span><span t-field="doc.bsd_khach_hang_id.bsd_ten"/><br/>
+                                    <span>Họ và tên: </span><span t-field="doc.bsd_khach_hang_id.display_name"/><br/>
                                     <span>Hộ chiếu: </span><span t-field="doc.bsd_khach_hang_id.bsd_ho_chieu"/><br/>
                                     <span>CMND/ CCCD: </span><span t-field="doc.bsd_khach_hang_id.bsd_cmnd"/><br/>
                                 </div>

@@ -385,15 +385,15 @@ class BsdBaoGia(models.Model):
                     tien_dot_tt = tien_dot_tt - (tien_dot_tt % 1000)
                     # cộng tiền đợt thanh toán
                     tong_tien_dot_tt += tien_dot_tt
-                    if dot_td.bsd_tinh_pql and not dot_td.bsd_tinh_qbt and not da_tao_pql:
+                    if dot_td.bsd_tinh_pql and not dot_td.bsd_tinh_pbt and not da_tao_pql:
                         self.bsd_ltt_ids.create(
                             self._cb_du_lieu_dtt(stt, 'TD', dot_td, lai_phat, ngay, cs_tt, tien_dot_tt, True, False))
                         da_tao_pql = True
-                    elif not dot_td.bsd_tinh_pql and dot_td.bsd_tinh_qbt and not da_tao_pbt:
+                    elif not dot_td.bsd_tinh_pql and dot_td.bsd_tinh_pbt and not da_tao_pbt:
                         self.bsd_ltt_ids.create(
                             self._cb_du_lieu_dtt(stt, 'TD', dot_td, lai_phat, ngay, cs_tt, tien_dot_tt, False, True))
                         da_tao_pbt = True
-                    elif dot_td.bsd_tinh_pql and dot_td.bsd_tinh_qbt and not da_tao_pbt and not da_tao_pql:
+                    elif dot_td.bsd_tinh_pql and dot_td.bsd_tinh_pbt and not da_tao_pbt and not da_tao_pql:
                         self.bsd_ltt_ids.create(
                             self._cb_du_lieu_dtt(stt, 'TD', dot_td, lai_phat, ngay, cs_tt, tien_dot_tt, True, True))
                         da_tao_pql = True
@@ -543,12 +543,10 @@ class BsdBaoGia(models.Model):
         pass
 
     def action_chon_ck(self):
-        _logger.debug("Chọn ck")
         action = self.env.ref('bsd_kinh_doanh.bsd_wizard_chon_ck_action').read()[0]
         return action
 
     def action_chon_dkbg(self):
-        _logger.debug("Chọn ck")
         action = self.env.ref('bsd_kinh_doanh.bsd_wizard_chon_dkbg_action').read()[0]
         return action
 

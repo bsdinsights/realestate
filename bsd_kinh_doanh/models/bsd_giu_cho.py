@@ -554,7 +554,7 @@ class BsdGiuCho(models.Model):
     # tiện ích chuyển gc
     def action_chuyen_gc(self):
         context = {
-            'default_bsd_kh_ht_id': self.bsd_khach_hang_id.id,
+            'default_bsd_kh_ht_id': self.bsd_kh_moi_id.id,
             'default_bsd_giu_cho_id': self.id,
             'default_bsd_unit_id': self.bsd_unit_id.id,
             'default_bsd_du_an_id': self.bsd_du_an_id.id,

@@ -298,7 +298,7 @@
                         <div class="o_row no-gutters d-flex">
                             <label for="bsd_ma_kh"/>
                             <field name="bsd_ma_kh"/>
-                            <field name="is_company"/>
+                            <field name="is_company" invisible="1"/>
                         </div>
                     </div>
                     <notebook>
@@ -450,9 +450,10 @@
                                                     <field name="acc_number"/>
                                                     <field name="partner_id"/>
                                                     <field name="bank_id"/>
-                                                    <field name="bsd_tk_chinh"/>
+                                                    <field name="bsd_chi_nhanh"/>
                                                 </group>
                                                 <group>
+                                                    <field name="bsd_tk_chinh"/>
                                                     <field name="acc_holder_name"/>
                                                     <field name="bsd_tu_ngay"/>
                                                     <field name="bsd_den_ngay"/>
