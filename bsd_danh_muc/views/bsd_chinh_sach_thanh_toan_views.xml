@@ -46,16 +46,19 @@
                                                     ('bsd_du_an_id', '=', bsd_du_an_id)]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_ngay_tinh"/>
-                                </group>
-                                <group>
                                     <label for="bsd_dk_hd"/>
                                     <div class="o_row d-flex no-gutters">
                                         <field name="bsd_dk_hd" class="mr-1"/>
                                         <span>%</span>
                                     </div>
+                                </group>
+                                <group>
                                     <field name="bsd_tu_ngay"/>
                                     <field name="bsd_den_ngay"/>
                                     <field name="bsd_dien_giai"/>
+                                    <field name="bsd_nguoi_duyet_id"/>
+                                    <field name="bsd_ngay_duyet"/>
+
                                 </group>
                             </group >
                             <group string="PHẠT THANH LÝ">

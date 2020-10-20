@@ -69,7 +69,7 @@ class BsdChinhSachThanhToan(models.Model):
                                help="Tổng số ngày trễ tối đa để thanh lý hợp đồng",
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
-    bsd_qh_tt = fields.Integer(string="Tổng sô ngày TL/ Đợt", help="Số ngày trễ tối đa của mỗi đợt thanh toán",
+    bsd_qh_tt = fields.Integer(string="Tổng số ngày TL/ đợt", help="Số ngày trễ tối đa của mỗi đợt thanh toán",
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
     bsd_canh_bao1 = fields.Integer(string="Thông báo nhắc nợ 1",
@@ -117,6 +117,18 @@ class BsdChinhSachThanhToan(models.Model):
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('duyet', 'Duyệt'), ('het_han', 'Hết hạn'), ('huy', 'Hủy')],
                              string="Trạng thái", required=True, default='nhap', tracking=1)
+    bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
+    bsd_ngay_duyet = fields.Date(string="Ngày duyệt", readonly=True)
+
+    # Kiểm tra dữ liệu ngày hiệu lực
+    @api.constrains('bsd_tu_ngay', 'bsd_den_ngay')
+    def _constrains_ngay(self):
+        for each in self:
+            if each.bsd_tu_ngay:
+                if not each.bsd_den_ngay:
+                    raise UserError(_("Sai thông tin ngày kết thúc.\n Vui lòng kiểm tra lại thông tin."))
+                elif each.bsd_den_ngay < each.bsd_tu_ngay:
+                    raise UserError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu.\n Vui lòng kiểm tra lại thông tin."))
 
     # Kiểm tra tổng phần trăm của các đợt thanh toán
     @api.constrains('bsd_ct_ids')
@@ -153,6 +165,8 @@ class BsdChinhSachThanhToan(models.Model):
         if self.state == 'xac_nhan':
             self.write({
                 'state': 'duyet',
+                'bsd_ngay_duyet': fields.Date.today(),
+                'bsd_nguoi_duyet_id': self.env.uid,
             })
 
     # Không duyệt phương thức thanh toán

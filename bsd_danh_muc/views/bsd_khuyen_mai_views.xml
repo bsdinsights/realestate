@@ -40,9 +40,6 @@
                             <field name="bsd_ten_km"/>
                             <field name="bsd_gia_tri"/>
                             <field name="bsd_loai"/>
-                        </group>
-                        <group>
-
                             <field name="bsd_tong_tt" attrs="{'required':[('bsd_loai', 'in', ['tien','ty_le_tien'])],
                                                                 'readonly':[('bsd_loai', 'in', ['ty_le','khong'])]}"/>
                             <label for="bsd_tl_tt"/>
@@ -53,9 +50,14 @@
                                                                 'readonly':[('bsd_loai', 'in', ['tien','khong'])]}"/>
                                 <span>%</span>
                             </div>
+                        </group>
+                        <group>
                             <field name="bsd_tu_ngay"/>
                             <field name="bsd_den_ngay"/>
                             <field name="bsd_ngay_hldc"/>
+                            <field name="bsd_dien_giai"/>
+                            <field name="bsd_nguoi_duyet_id"/>
+                            <field name="bsd_ngay_duyet"/>
                         </group>
                     </group>
                 </sheet>

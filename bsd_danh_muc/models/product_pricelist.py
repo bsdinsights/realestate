@@ -34,6 +34,16 @@ class ProductPriceList(models.Model):
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
 
+    # Kiểm tra dữ liệu ngày hiệu lực
+    @api.constrains('bsd_tu_ngay', 'bsd_den_ngay')
+    def _constrains_ngay(self):
+        for each in self:
+            if each.bsd_tu_ngay:
+                if not each.bsd_den_ngay:
+                    raise UserError(_("Sai thông tin ngày kết thúc.\n Vui lòng kiểm tra lại thông tin."))
+                elif each.bsd_den_ngay < each.bsd_tu_ngay:
+                    raise UserError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu.\n Vui lòng kiểm tra lại thông tin."))
+
     # Xác nhận bảng giá
     def action_xac_nhan(self):
         if not self.item_ids:

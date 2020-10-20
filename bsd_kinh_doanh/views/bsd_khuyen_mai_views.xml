@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="bsd_danh_muc.bsd_khuyen_mai_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='bsd_gia_tri']" position="before">
-                <field name="bsd_dot_mb_id"/>
+                <field name="bsd_dot_mb_id" options="{'no_create':true}"/>
             </xpath>
         </field>
     </record>
@@ -16,7 +16,7 @@
         <field name="inherit_id" ref="bsd_danh_muc.bsd_khuyen_mai_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='bsd_gia_tri']" position="before">
-                <field name="bsd_dot_mb_id"/>
+                <field name="bsd_dot_mb_id" options="{'no_create':true}"/>
             </xpath>
         </field>
     </record>

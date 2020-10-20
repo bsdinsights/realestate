@@ -54,6 +54,18 @@ class BsdKhuyenMai(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
+    bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
+    bsd_ngay_duyet = fields.Date(string="Ngày duyệt", readonly=True)
+
+    # Kiểm tra dữ liệu ngày hiệu lực
+    @api.constrains('bsd_tu_ngay', 'bsd_den_ngay')
+    def _constrains_ngay(self):
+        for each in self:
+            if each.bsd_tu_ngay:
+                if not each.bsd_den_ngay:
+                    raise UserError(_("Sai thông tin ngày kết thúc.\n Vui lòng kiểm tra lại thông tin."))
+                elif each.bsd_den_ngay < each.bsd_tu_ngay:
+                    raise UserError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu.\n Vui lòng kiểm tra lại thông tin."))
 
     # DM.12.01 Xác nhận khuyến mãi
     def action_xac_nhan(self):
@@ -67,6 +79,8 @@ class BsdKhuyenMai(models.Model):
         if self.state == 'xac_nhan':
             self.write({
                 'state': 'duyet',
+                'bsd_nguoi_duyet_id': self.env.uid,
+                'bsd_ngay_duyet': fields.Datetime.now()
             })
 
     # DM.12.04 Không duyệt khuyến mãi

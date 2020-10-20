@@ -50,16 +50,14 @@
                                            'readonly':['|',('bsd_cach_tinh', 'in', ['tien']),('state','!=','nhap')]}"/>
                                 <span>%</span>
                             </div>
-
-                            <field name="bsd_dien_giai"/>
-                        </group>
-                        <group>
-                            <field name="currency_id" invisible="1"/>
-                            <field name="company_id" invisible="1"/>
                             <field name="bsd_tu_ngay"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['ttth','mua_si','ttn'])]}"/>
                             <field name="bsd_den_ngay"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['ttth','mua_si','ttn'])]}"/>
+                        </group>
+                        <group>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
                             <field name="bsd_cung_tang"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['mua_si'])],
                                            'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn']),('state','!=','nhap')]}"/>
@@ -70,6 +68,8 @@
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['mua_si'])],
                                            'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn']),('state','!=','nhap')]}"/>
                             <field name="bsd_cs_tt_id"
+                                   options="{'no_create': true}"
+                                   domain="[('state', '=', 'duyet'), ('bsd_du_an_id', '=', bsd_du_an_id)]"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['ltt'])],
                                            'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','ttth','ttn','mua_si']),('state','!=','nhap')]}"/>
                             <field name="bsd_ngay_tt"
@@ -82,6 +82,9 @@
                                            'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','mua_si','ltt','ttth']),('state','!=','nhap')]}"/>
                                 <span>%</span>
                             </div>
+                            <field name="bsd_dien_giai"/>
+                            <field name="bsd_nguoi_duyet_id"/>
+                            <field name="bsd_ngay_duyet"/>
                         </group>
                     </group>
                 </sheet>

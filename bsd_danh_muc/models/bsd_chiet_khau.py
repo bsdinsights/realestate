@@ -57,7 +57,7 @@ class BsdChietKhau(models.Model):
     bsd_sl_den = fields.Integer(string="Số lượng đến", help="Điều kiện xét chiết theo số lượng đến",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="Chính sách thanh toán", help="Chính sách thanh toán",
+    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="PT thanh toán", help="Phương thức thanh toán",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_ngay_tt = fields.Date(string="Ngày thanh toán",
@@ -71,7 +71,7 @@ class BsdChietKhau(models.Model):
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_tl_ck = fields.Float(string="Tỷ lệ chiết khấu", help="Tỷ lệ chiết khấu được hưởng",
-                             readonly=True, digits=(2, 4),
+                             readonly=True, digits=(2, 2),
                              states={'nhap': [('readonly', False)]})
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
@@ -82,6 +82,18 @@ class BsdChietKhau(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
+    bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
+    bsd_ngay_duyet = fields.Date(string="Ngày duyệt", readonly=True)
+
+    # Kiểm tra dữ liệu ngày hiệu lực
+    @api.constrains('bsd_tu_ngay', 'bsd_den_ngay')
+    def _constrains_ngay(self):
+        for each in self:
+            if each.bsd_tu_ngay:
+                if not each.bsd_den_ngay:
+                    raise UserError(_("Sai thông tin ngày kết thúc.\n Vui lòng kiểm tra lại thông tin."))
+                elif each.bsd_den_ngay < each.bsd_tu_ngay:
+                    raise UserError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu.\n Vui lòng kiểm tra lại thông tin."))
 
     # DM.13.01 Xác nhận chiết khấu
     def action_xac_nhan(self):
@@ -95,6 +107,8 @@ class BsdChietKhau(models.Model):
         if self.state == 'xac_nhan':
             self.write({
                 'state': 'duyet',
+                'bsd_ngay_duyet': fields.Date.today(),
+                'bsd_nguoi_duyet_id': self.env.uid,
             })
 
     # DM.13.04 Không duyệt chiết khấu
@@ -113,6 +127,10 @@ class BsdChietKhau(models.Model):
     def constrains_ck(self):
         # DM.13.07 Kiểm tra điều kiện trùng chiếu khấu mua sỉ
         if self.bsd_loai_ck == 'mua_si':
+            if self.bsd_sl_tu < 2:
+                raise UserError(_("Số lượng từ không thể nhỏ hơn 2.\n Vui lòng kiểm tra lại thông tin."))
+            if self.bsd_sl_den < self.bsd_sl_tu:
+                raise UserError(_("Số lượng đến không thể nhỏ hơn số lượng từ.\n Vui lòng kiểm tra lại thông tin."))
             mua_si = self.env['bsd.chiet_khau'].search([('bsd_loai_ck', '=', 'mua_si'),
                                                         ('id', '!=', self.id),
                                                         ('state', '!=', 'huy'),

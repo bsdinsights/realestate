@@ -36,12 +36,14 @@
                         <group>
                             <field name="bsd_ma_ck_ttth"/>
                             <field name="bsd_ten_ck_ttth"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
                             <field name="bsd_dien_giai"/>
                         </group>
                         <group>
-                            <field name="bsd_du_an_id"/>
                             <field name="bsd_tu_ngay"/>
                             <field name="bsd_den_ngay"/>
+                            <field name="bsd_nguoi_duyet_id"/>
+                            <field name="bsd_ngay_duyet"/>
                         </group>
                         <field name="bsd_ct_ids" nolabel="1">
                             <tree editable="bottom">

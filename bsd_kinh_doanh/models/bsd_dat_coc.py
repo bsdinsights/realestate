@@ -413,11 +413,11 @@ class BsdDatCoc(models.Model):
         recs = self.browse(ids)
         return models.lazy_name_get(recs.with_user(access_rights_uid))
 
-    # Tạo thong báo hủy giữ chỗ
-    def tao_tb_huy_gc(self):
-        giu_cho = self.bsd_bao_gia_id.bsd_giu_cho_id
-        giu_cho.activity_schedule(act_type_xmlid='mail.mail_activity_data_todo',
-                                  summary='Hủy giữ chỗ đặt cọc bị hủy')
+    # # Tạo thong báo hủy giữ chỗ
+    # def tao_tb_huy_gc(self):
+    #     giu_cho = self.bsd_bao_gia_id.bsd_giu_cho_id
+    #     giu_cho.activity_schedule(act_type_xmlid='mail.mail_activity_data_todo',
+    #                               summary='Hủy giữ chỗ đặt cọc bị hủy')
 
     # Tạo phiếu thay đổi người ký TTĐC/HĐMB
     def action_tao_thay_doi(self):

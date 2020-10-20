@@ -42,12 +42,27 @@ class BsdChietKhauCSTT(models.Model):
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     bsd_ct_ids = fields.One2many('bsd.ck_cstt_ct', 'bsd_ck_cstt_id', string="Chi tiết")
     bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
+    bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
+    bsd_ngay_duyet = fields.Date(string="Ngày duyệt", readonly=True)
+
+    # Kiểm tra dữ liệu ngày hiệu lực
+    @api.constrains('bsd_tu_ngay', 'bsd_den_ngay')
+    def _constrains_ngay(self):
+        for each in self:
+            if each.bsd_tu_ngay:
+                if not each.bsd_den_ngay:
+                    raise UserError(_("Sai thông tin ngày kết thúc.\n Vui lòng kiểm tra lại thông tin."))
+                elif each.bsd_den_ngay < each.bsd_tu_ngay:
+                    raise UserError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu.\n Vui lòng kiểm tra lại thông tin."))
 
     # DM.15.01 Xác nhận chiết khấu
     def action_xac_nhan(self):
+        # Kiểm tra đã có chi tiết chưa
+        if not self.bsd_ct_ids:
+            raise UserError(_("Chưa nhập chi tiết chiết khấu.\n Vui lòng kiểm tra lại thông tin."))
         if self.state == 'nhap':
             self.write({
-                'state': 'xac_nhan'
+                'state': 'xac_nhan',
             })
 
     # DM.15.02 Duyệt chiết khấu
@@ -55,6 +70,8 @@ class BsdChietKhauCSTT(models.Model):
         if self.state == 'xac_nhan':
             self.write({
                 'state': 'duyet',
+                'bsd_ngay_duyet': fields.Date.today(),
+                'bsd_nguoi_duyet_id': self.env.uid,
             })
 
     # DM.15.04 Không duyệt chiết khấu
