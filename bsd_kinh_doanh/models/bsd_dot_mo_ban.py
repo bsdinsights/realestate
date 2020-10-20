@@ -102,6 +102,16 @@ class BsdDotMoBan(models.Model):
     bsd_so_thu_hoi_ch = fields.Integer(string="# Thu hồi Sản phẩm", compute='_compute_thu_hoi_ch')
     bsd_so_them_ch = fields.Integer(string="# Thêm Sản phẩm", compute='_compute_them_ch')
 
+    # Kiểm tra dữ liệu ngày hiệu lực
+    @api.constrains('bsd_tu_ngay', 'bsd_den_ngay')
+    def _constrains_ngay(self):
+        for each in self:
+            if each.bsd_tu_ngay:
+                if not each.bsd_den_ngay:
+                    raise UserError(_("Sai thông tin ngày kết thúc.\n Vui lòng kiểm tra lại thông tin."))
+                elif each.bsd_den_ngay < each.bsd_tu_ngay:
+                    raise UserError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu.\n Vui lòng kiểm tra lại thông tin."))
+
     def _compute_thu_hoi_ch(self):
         for each in self:
             thu_hoi = self.env['bsd.thu_hoi'].search([('bsd_dot_mb_id', '=', self.id)])

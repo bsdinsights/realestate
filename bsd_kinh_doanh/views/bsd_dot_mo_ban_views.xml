@@ -129,6 +129,7 @@
                                     <field name="bsd_tien"/>
                                     <field name="bsd_ty_le"/>
                                     <field name="bsd_gia_m2"/>
+                                    <field name="state" invisible="1"/>
                                     <field name="currency_id" invisible="1"/>
                                 </tree>
                             </field>

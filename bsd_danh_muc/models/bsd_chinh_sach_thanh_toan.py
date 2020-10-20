@@ -92,19 +92,19 @@ class BsdChinhSachThanhToan(models.Model):
                                    help="Số ngày (sau khi đến hạn thanh toán) để gửi cảnh báo quá hạn thanh toán lần 5",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_tl_cb1 = fields.Boolean(string="Thiết lập 1",
+    bsd_tl_cb1 = fields.Boolean(string="Thiết lập TBNN 1",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_tl_cb2 = fields.Boolean(string="Thiết lập 2",
+    bsd_tl_cb2 = fields.Boolean(string="Thiết lập TBNN 2",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_tl_cb3 = fields.Boolean(string="Thiết lập 3",
+    bsd_tl_cb3 = fields.Boolean(string="Thiết lập TBNN 3",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_tl_cb4 = fields.Boolean(string="Thiết lập 4",
+    bsd_tl_cb4 = fields.Boolean(string="Thiết lập TBNN 4",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_tl_cb5 = fields.Boolean(string="Thiết lập 5",
+    bsd_tl_cb5 = fields.Boolean(string="Thiết lập TBNN 5",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
