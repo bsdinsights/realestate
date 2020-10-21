@@ -38,9 +38,13 @@
                             <field name="currency_id" invisible="1"/>
                             <field name="bsd_ma_dkbg"/>
                             <field name="bsd_ten_dkbg"/>
-                            <field name="bsd_du_an_id"/>
+                            <field name="bsd_du_an_id"
+
+                                   options="{'no_create':true}"/>
                             <field name="bsd_loai_bg"/>
-                            <field name="bsd_loai_sp_id" domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"/>
+                            <field name="bsd_loai_sp_id"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"/>
                         </group>
                         <group>
                             <field name="bsd_tu_ngay"/>
@@ -53,14 +57,23 @@
                     <group string="CÁCH TÍNH">
                         <group>
                             <field name="bsd_dk_tt"/>
-                            <field name="bsd_tien" attrs="{'required':[('bsd_dk_tt', '=', 'tien')],
-                                                           'readonly':[('bsd_dk_tt', 'in', ['m2','ty_le'])]}"/>
+                            <field name="bsd_tien"
+                                   attrs="{'required':[('bsd_dk_tt', '=', 'tien')],
+                                           'readonly':['|',('bsd_dk_tt', 'in', ['m2','ty_le']),('state', '!=','nhap')]}"/>
                         </group>
                         <group>
-                            <field name="bsd_ty_le" attrs="{'required':[('bsd_dk_tt', '=', 'ty_le')],
-                                                            'readonly':[('bsd_dk_tt', 'in', ['tien','m2'])]}"/>
-                            <field name="bsd_gia_m2" attrs="{'required':[('bsd_dk_tt', '=', 'm2')],
-                                                             'readonly':[('bsd_dk_tt', 'in', ['tien','ty_le'])]}"/>
+                            <label for="bsd_ty_le"/>
+                            <div class="o_row d-flex no-gutters">
+                            <field name="bsd_ty_le"
+                                   class="mr-1"
+                                   attrs="{'required':[('bsd_dk_tt', '=', 'ty_le')],
+                                           'readonly':['|',('bsd_dk_tt', 'in', ['tien','m2']),('state', '!=','nhap')]}"
+                            />
+                                <span>%</span>
+                            </div>
+                            <field name="bsd_gia_m2"
+                                   attrs="{'required':[('bsd_dk_tt', '=', 'm2')],
+                                           'readonly':['|',('bsd_dk_tt', 'in', ['tien','ty_le']),('state', '!=','nhap')]}"/>
                         </group>
                     </group>
                 </sheet>
