@@ -60,7 +60,9 @@
                                 <group>
                                     <group>
                                         <field name="bsd_ma_ck"/>
-                                        <field name="bsd_chiet_khau_id" options="{'no_create':true}"/>
+                                        <field name="bsd_chiet_khau_id"
+                                               domain="[('state', '=', 'duyet'), ('bsd_loai_ck', '=', 'ltt'), ('bsd_du_an_id', '=', parent.bsd_du_an_id)]"
+                                               options="{'no_create':true}"/>
                                         <field name="bsd_tu_ngay"/>
                                         <field name="bsd_den_ngay"/>
                                     </group>

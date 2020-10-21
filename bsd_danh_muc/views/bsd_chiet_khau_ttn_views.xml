@@ -47,7 +47,9 @@
                         </group>
                         <field name="bsd_ct_ids" nolabel="1">
                             <tree editable="bottom">
-                                <field name="bsd_chiet_khau_id" options="{'no_create':true}"/>
+                                <field name="bsd_chiet_khau_id"
+                                       domain="[('state', '=', 'duyet'), ('bsd_loai_ck', '=', 'ttn'), ('bsd_du_an_id', '=', parent.bsd_du_an_id)]"
+                                       options="{'no_create':true}"/>
                                 <field name="bsd_ma_ck"/>
                                 <field name="bsd_tu_ngay"/>
                                 <field name="bsd_den_ngay"/>

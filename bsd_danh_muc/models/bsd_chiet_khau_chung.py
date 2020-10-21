@@ -108,9 +108,8 @@ class BsdChietKhauChungChiTiet(models.Model):
     _description = "Thông tin chiết khấu chung chi tiết"
     _rec_name = 'bsd_chiet_khau_id'
 
-    bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="Chiết khấu chung")
-    bsd_chiet_khau_id = fields.Many2one('bsd.chiet_khau', string="Chiết khấu", required=True,
-                                        domain=[('bsd_loai_ck', '=', 'chung'), ('state', '=', 'duyet')])
+    bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="Chiết khấu chung", required=True, ondelete='cascade')
+    bsd_chiet_khau_id = fields.Many2one('bsd.chiet_khau', string="Chiết khấu", required=True)
     bsd_ma_ck = fields.Char(related="bsd_chiet_khau_id.bsd_ma_ck")
     bsd_tu_ngay = fields.Date(related="bsd_chiet_khau_id.bsd_tu_ngay")
     bsd_den_ngay = fields.Date(related="bsd_chiet_khau_id.bsd_den_ngay")

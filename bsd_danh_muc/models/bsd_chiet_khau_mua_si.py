@@ -39,7 +39,9 @@ class BsdChietKhauMuaSi(models.Model):
                              help="Trạng thái")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-    bsd_ct_ids = fields.One2many('bsd.ck_ms_ct', 'bsd_ck_ms_id', string="Chi tiết")
+    bsd_ct_ids = fields.One2many('bsd.ck_ms_ct', 'bsd_ck_ms_id', string="Chi tiết",
+                                 readonly=True,
+                                 states={'nhap': [('readonly', False)]})
     bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
     bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
     bsd_ngay_duyet = fields.Date(string="Ngày duyệt", readonly=True)
@@ -106,9 +108,8 @@ class BsdChietKhauMuaSiChiTiet(models.Model):
     _description = "Thông tin chiết khấu mua sỉ chi tiết"
     _rec_name = 'bsd_chiet_khau_id'
 
-    bsd_ck_ms_id = fields.Many2one('bsd.ck_ms', string="Chiết khấu mua sỉ")
-    bsd_chiet_khau_id = fields.Many2one('bsd.chiet_khau', string="Chiết khấu", required=True,
-                                        domain=[('bsd_loai_ck', '=', 'mua_si'), ('state', '=', 'duyet')])
+    bsd_ck_ms_id = fields.Many2one('bsd.ck_ms', string="Chiết khấu mua sỉ", required=True, ondelete='cascade')
+    bsd_chiet_khau_id = fields.Many2one('bsd.chiet_khau', string="Chiết khấu", required=True)
     bsd_ma_ck = fields.Char(related="bsd_chiet_khau_id.bsd_ma_ck")
     bsd_tu_ngay = fields.Date(related="bsd_chiet_khau_id.bsd_tu_ngay")
     bsd_den_ngay = fields.Date(related="bsd_chiet_khau_id.bsd_den_ngay")

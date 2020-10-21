@@ -128,9 +128,9 @@ class BsdChietKhau(models.Model):
         # DM.13.07 Kiểm tra điều kiện trùng chiếu khấu mua sỉ
         if self.bsd_loai_ck == 'mua_si':
             if self.bsd_sl_tu < 2:
-                raise UserError(_("Số lượng từ không thể nhỏ hơn 2.\n Vui lòng kiểm tra lại thông tin."))
+                raise UserError(_("Số lượng từ không thể nhỏ hơn 2.\nVui lòng kiểm tra lại thông tin."))
             if self.bsd_sl_den < self.bsd_sl_tu:
-                raise UserError(_("Số lượng đến không thể nhỏ hơn số lượng từ.\n Vui lòng kiểm tra lại thông tin."))
+                raise UserError(_("Số lượng đến không thể nhỏ hơn số lượng từ.\nVui lòng kiểm tra lại thông tin."))
             mua_si = self.env['bsd.chiet_khau'].search([('bsd_loai_ck', '=', 'mua_si'),
                                                         ('id', '!=', self.id),
                                                         ('state', '!=', 'huy'),

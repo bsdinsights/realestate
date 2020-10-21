@@ -63,7 +63,7 @@
                                            'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn']),('state','!=','nhap')]}"/>
                             <field name="bsd_sl_tu"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['mua_si'])],
-                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn'])]}"/>
+                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn']),('state','!=','nhap')]}"/>
                             <field name="bsd_sl_den"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['mua_si'])],
                                            'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn']),('state','!=','nhap')]}"/>
