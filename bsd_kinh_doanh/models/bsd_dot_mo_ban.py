@@ -174,28 +174,25 @@ class BsdDotMoBan(models.Model):
         if self.state != 'cph':
             pass
         # Kiểm tra đầy đủ các field điều kiện lọc unit
-        elif not tu_toa_nha_id or not den_toa_nha_id or not tu_tang_id:
+        elif not tu_toa_nha_id or not den_toa_nha_id:
             raise UserError("Trường điều kiện lọc sản phẩm theo tòa trống.")
         elif tu_toa_nha_id.bsd_stt > den_toa_nha_id.bsd_stt:
             raise UserError("Nhập sai số thứ tự 2 tòa nhà.")
         else:
-            if not den_tang_id:
-                ids_tang = []
-                tu_tang_stt = tu_tang_id.bsd_stt
-                den_tang_stt = den_tang_id.bsd_stt
+            ids_tang = []
+            tu_tang_stt = tu_tang_id.bsd_stt
+            den_tang_stt = den_tang_id.bsd_stt
+            # Nếu không điền thông tin từ tầng và đến tầng
+            if not tu_tang_id and not den_tang_id:
                 # nếu lọc tầng cùng tòa nhà
                 if tu_toa_nha_id == den_toa_nha_id:
-                    ids_tang += self.env['bsd.tang'].search([('bsd_stt', '>=', tu_tang_stt),
-                                                                ('bsd_stt', '<=', den_tang_stt),
-                                                                ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids
+                    ids_tang += self.env['bsd.tang'].search([('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids
                 # nếu lọc tầng khác tòa nhà
                 else:
                     # lọc tầng từ tòa nhà đầu
-                    ids_tang += self.env['bsd.tang'].search([('bsd_stt', '>=', tu_tang_stt),
-                                                             ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids
+                    ids_tang += self.env['bsd.tang'].search([('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids
                     # lọc tầng đến tòa nhà cuối
-                    ids_tang += self.env['bsd.tang'].search([('bsd_stt', '<=', den_tang_stt),
-                                                                ('bsd_toa_nha_id', '=', den_toa_nha_id.id)]).ids
+                    ids_tang += self.env['bsd.tang'].search([('bsd_toa_nha_id', '=', den_toa_nha_id.id)]).ids
                     # lọc tầng các tòa nhà có số thứ tự lớn hơn tòa nhà đầu và nhỏ hơn tòa nhà cuối
                     if den_toa_nha_id.bsd_stt - tu_toa_nha_id.bsd_stt > 1:
                         ids_toa_nha = self.env['bsd.toa_nha'].search([('bsd_stt', '>', tu_toa_nha_id.bsd_stt),
@@ -204,21 +201,81 @@ class BsdDotMoBan(models.Model):
                         ids_tang += self.env['bsd.tang'].search([('bsd_toa_nha_id', 'in', ids_toa_nha)]).ids
                 _logger.debug("id tầng")
                 _logger.debug(ids_tang)
-                # lọc unit theo các tầng đã tìm được:
-                units = set(self.env['product.product'].search([('bsd_tang_id', 'in', ids_tang)]))
-                # Chỉ tạo những unit chưa có trong chuẩn bị
-                exist_units = set(self.bsd_cb_ids.mapped('bsd_unit_id'))
-                no_units = units.difference(exist_units)
-                # Tạo dữ liệu cho bảng unit chuẩn bị mở bán
-                for unit in no_units:
-                    self.bsd_cb_ids.create({
-                        'bsd_du_an_id': unit.bsd_du_an_id.id,
-                        'bsd_toa_nha_id': unit.bsd_toa_nha_id.id,
-                        'bsd_tang_id': unit.bsd_tang_id.id,
-                        'bsd_unit_id': unit.id,
-                        'bsd_gia_ban': unit.bsd_tong_gb,
-                        'bsd_dot_mb_id': self.id
-                    })
+            # Nếu chỉ điền từ tầng không điền đến tầng
+            elif tu_tang_id and not den_tang_id:
+                if tu_toa_nha_id == den_toa_nha_id:
+                    ids_tang += self.env['bsd.tang'].search([('bsd_stt', '>=', tu_tang_stt),
+                                                             ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids
+                # nếu lọc tầng khác tòa nhà
+                else:
+                    # lọc tầng từ tòa nhà đầu
+                    ids_tang += self.env['bsd.tang'].search([('bsd_stt', '>=', tu_tang_stt),
+                                                             ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids
+                    # lọc tầng đến tòa nhà cuối
+                    ids_tang += self.env['bsd.tang'].search([('bsd_stt', '>=', tu_tang_stt),
+                                                             ('bsd_toa_nha_id', '=', den_toa_nha_id.id)]).ids
+                    # lọc tầng các tòa nhà có số thứ tự lớn hơn tòa nhà đầu và nhỏ hơn tòa nhà cuối
+                    if den_toa_nha_id.bsd_stt - tu_toa_nha_id.bsd_stt > 1:
+                        ids_toa_nha = self.env['bsd.toa_nha'].search([('bsd_stt', '>', tu_toa_nha_id.bsd_stt),
+                                                                     ('bsd_stt', '<', den_toa_nha_id.bsd_stt),
+                                                                     ('bsd_du_an_id', '=', self.bsd_du_an_id.id)]).ids
+                        ids_tang += self.env['bsd.tang'].search([('bsd_stt', '>=', tu_tang_stt),
+                                                                 ('bsd_toa_nha_id', 'in', ids_toa_nha)]).ids
+                _logger.debug("id tầng")
+                _logger.debug(ids_tang)
+            # Nếu chỉ điền từ tầng không điền đến tầng
+            elif tu_tang_id and den_tang_id:
+                if tu_toa_nha_id == den_toa_nha_id:
+                    ids_tang += self.env['bsd.tang'].search([('bsd_stt', '>=', tu_tang_stt),
+                                                             ('bsd_stt', '<=', den_tang_stt),
+                                                             ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids
+                else:
+                    ids_tang += self.env['bsd.tang'].search([('bsd_stt', '>=', tu_tang_stt),
+                                                             ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids
+                    ids_tang += self.env['bsd.tang'].search([('bsd_stt', '<=', den_tang_stt),
+                                                             ('bsd_toa_nha_id', '=', den_toa_nha_id.id)]).ids
+                    if den_toa_nha_id.bsd_stt - tu_toa_nha_id.bsd_stt > 1:
+                        ids_toa_nha = self.env['bsd.toa_nha'].search([('bsd_stt', '>', tu_toa_nha_id.bsd_stt),
+                                                                     ('bsd_stt', '<', den_toa_nha_id.bsd_stt),
+                                                                     ('bsd_du_an_id', '=', self.bsd_du_an_id.id)]).ids
+                        ids_tang += self.env['bsd.tang'].search([('bsd_toa_nha_id', 'in', ids_toa_nha),
+                                                                 ('bsd_stt', '>=', tu_tang_stt),
+                                                                 ('bsd_stt', '<=', den_tang_stt)]).ids
+                _logger.debug("id tầng")
+                _logger.debug(ids_tang)
+            # Nếu chỉ điền từ tầng không điền đến tầng
+            elif not tu_tang_id and den_tang_id:
+                if tu_toa_nha_id == den_toa_nha_id:
+                    ids_tang += self.env['bsd.tang'].search([('bsd_stt', '<=', den_tang_stt),
+                                                             ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids
+                else:
+                    ids_tang += self.env['bsd.tang'].search([('bsd_stt', '<=', den_tang_stt),
+                                                             ('bsd_toa_nha_id', '=', tu_toa_nha_id.id)]).ids
+                    ids_tang += self.env['bsd.tang'].search([('bsd_stt', '<=', den_tang_stt),
+                                                             ('bsd_toa_nha_id', '=', den_toa_nha_id.id)]).ids
+                    if den_toa_nha_id.bsd_stt - tu_toa_nha_id.bsd_stt > 1:
+                        ids_toa_nha = self.env['bsd.toa_nha'].search([('bsd_stt', '>', tu_toa_nha_id.bsd_stt),
+                                                                     ('bsd_stt', '<', den_toa_nha_id.bsd_stt),
+                                                                     ('bsd_du_an_id', '=', self.bsd_du_an_id.id)]).ids
+                        ids_tang += self.env['bsd.tang'].search([('bsd_toa_nha_id', 'in', ids_toa_nha),
+                                                                 ('bsd_stt', '<=', den_tang_stt)]).ids
+                _logger.debug("id tầng")
+                _logger.debug(ids_tang)
+            # lọc unit theo các tầng đã tìm được:
+            units = set(self.env['product.product'].search([('bsd_tang_id', 'in', ids_tang)]))
+            # Chỉ tạo những unit chưa có trong chuẩn bị
+            exist_units = set(self.bsd_cb_ids.mapped('bsd_unit_id'))
+            no_units = units.difference(exist_units)
+            # Tạo dữ liệu cho bảng unit chuẩn bị mở bán
+            for unit in no_units:
+                self.bsd_cb_ids.create({
+                    'bsd_du_an_id': unit.bsd_du_an_id.id,
+                    'bsd_toa_nha_id': unit.bsd_toa_nha_id.id,
+                    'bsd_tang_id': unit.bsd_tang_id.id,
+                    'bsd_unit_id': unit.id,
+                    'bsd_gia_ban': unit.bsd_tong_gb,
+                    'bsd_dot_mb_id': self.id
+                })
 
     # Phát hành
     def action_phat_hanh(self):
@@ -326,31 +383,6 @@ class BsdDotMoBan(models.Model):
             # KD.04.09 cập nhật đợt mở bán cho giữ chỗ
             giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', unit_ph.id)])
             giu_cho_unit.write({'bsd_dot_mb_id': self.id})
-        #     # lọc các giữ chỗ của unit đã thanh toán
-        #     giu_cho_ids = giu_cho_unit.filtered(lambda g: g.state == 'giu_cho' and g.bsd_thanh_toan == 'da_tt')
-        #     if giu_cho_ids:
-        #         gc = giu_cho_ids.filtered(lambda x: not x.bsd_rap_can_id).sorted('id')
-        #         gc_no_rc = zip(gc.mapped('id'), gc.mapped('bsd_ngay_tt'))
-        #         gc = giu_cho_ids.filtered(lambda x: x.bsd_rap_can_id).sorted('id')
-        #         gc_rc = zip(gc.mapped('id'), gc.mapped('bsd_ngay_gc'))
-        #         _logger.debug("sắp xếp")
-        #         gc_sorted = sorted(list(gc_rc) + list(gc_no_rc), key=lambda x: x[1])
-        #         id_gc_sorted = [g[0] for g in gc_sorted]
-        #         stt = 0
-        #         time_gc = self.bsd_du_an_id.bsd_gc_smb
-        #         ngay_ph = self.bsd_ngay_ph
-        #         for giu_cho in self.env['bsd.giu_cho'].browse(id_gc_sorted):
-        #             stt += 1
-        #             ngay_ph += datetime.timedelta(hours=time_gc)
-        #             # KD.04.07 cập nhật trạng thái giữ chỗ khi phát hành
-        #             # if giu_cho.state == 'dat_cho' and giu_cho.bsd_thanh_toan == 'da_tt':
-        #             #     giu_cho.write({
-        #             #         'state': 'giu_cho',
-        #             #     })
-        #             giu_cho.write({
-        #                 'bsd_stt_bg': stt,
-        #                 'bsd_ngay_hh_bg': ngay_ph
-        #             })
 
     # Thu hồi toàn bộ đợt mở bán
     def action_thu_hoi(self):
@@ -421,7 +453,7 @@ class BsdDotMoBanSanGiaoDich(models.Model):
     _description = 'Thông tin sàn giao dich cho đợt mở bán'
     _rec_name = 'bsd_san_gd_id'
 
-    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", required=True)
+    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", required=True, ondelete='cascade')
     bsd_san_gd_id = fields.Many2one('res.partner', string="Tên sàn giao dịch", domain=[('is_company', '=', True)],
                                     help="Sàn giao dịch được bán các Sản phẩm trong đợt mở bán", required=True)
     bsd_san_gd_phone = fields.Char(string="Số điện thoại", related="bsd_san_gd_id.phone")
@@ -436,7 +468,7 @@ class BsdDotMoBanCB(models.Model):
     _description = 'Thông tin Sản phẩm chuẩn bị cho đợt mở bán'
     _rec_name = 'bsd_unit_id'
 
-    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", required=True)
+    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", required=True, ondelete='cascade')
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
     bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà", required=True)
     bsd_tang_id = fields.Many2one('bsd.tang', string="Tầng", required=True)
@@ -475,7 +507,7 @@ class BsdDotMoBanUnit(models.Model):
     _description = 'Thông tin Sản phẩm phát hành cho đợt mở bán'
     _rec_name = 'bsd_unit_id'
 
-    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", required=True)
+    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", required=True, ondelete='cascade')
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
     bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà", required=True)
     bsd_tang_id = fields.Many2one('bsd.tang', string="Tầng", required=True)

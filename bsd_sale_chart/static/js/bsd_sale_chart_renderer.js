@@ -609,17 +609,8 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             let unit_id = parseInt($(event.currentTarget).parent().attr('id'))
             this._loadAction('bsd_sale_chart.bsd_bao_gia_action_popup_2').then(function(action){
                 action.context={default_bsd_unit_id:unit_id}
-                console.log(action)
                 self.do_action(action)
             })
-//            this.do_action({
-//                name: "Tạo bảng tính giá",
-//                res_model: 'bsd.bao_gia',
-//                views: [[false, 'form']],
-//                type: 'ir.actions.act_window',
-//                view_mode: "form",
-//                target: "new"
-//            })
          },
         /**
          * @private Thay đổi dự án đợt mở bán
@@ -627,8 +618,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
         _onFieldChange: function(event){
             event.stopPropagation();
             var fieldName = event.target.name;
-            console.log("field name")
-            console.log(fieldName)
             if (fieldName === 'bsd_du_an_id'){
                 if (event.data.changes.bsd_du_an_id !== false){
                     var bsd_du_an_id = event.data.changes.bsd_du_an_id;
@@ -667,15 +656,19 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
         update: function(dataChange){
             var self = this;
             if (dataChange.field === 'bsd_dot_mb_id'){
-                this._makeRecord(dataChange).then(function (recordID) {
-                    self.fields.bsd_dot_mb_id.reset(self.model.get(recordID));
-                });
+                if (dataChange.data){
+                    this._makeRecord(dataChange).then(function (recordID) {
+                        self.fields.bsd_dot_mb_id.reset(self.model.get(recordID));
+                    });
+                }
             };
             if (dataChange.field === 'bsd_du_an_id'){
-                this._makeRecord(dataChange).then(function (recordID) {
-                    self.fields.bsd_du_an_id.reset(self.model.get(recordID));
-                    self.fields.bsd_dot_mb_id.reset(self.model.get(recordID));
-                });
+                if (dataChange.data){
+                    this._makeRecord(dataChange).then(function (recordID) {
+                        self.fields.bsd_du_an_id.reset(self.model.get(recordID));
+                        self.fields.bsd_dot_mb_id.reset(self.model.get(recordID));
+                    });
+                }
             };
             if (dataChange.field === 'bsd_view_ids'){
                 var list_id = []
@@ -703,8 +696,6 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                         dataChange.data.ids.push(temp)
                     })
                 }).then(function(){
-                    console.log("dataChange")
-                    console.log(dataChange.data.ids)
                     self._makeRecord(dataChange).then(function (recordID) {
                         console.log("có chạy code ở đây ko")
                         self.fields.bsd_view_ids.reset(self.model.get(recordID));
@@ -728,7 +719,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                     relation: 'bsd.dot_mb',
                     type: 'many2one',
                     name: 'bsd_dot_mb_id',
-                    domain: [['bsd_du_an_id', '=', self.filter.bsd_du_an_id]]
+                    domain: [['bsd_du_an_id', '=', self.filter.bsd_du_an_id],['state', '=','ph']]
                 },
                 {
                     relation: 'bsd.view',
@@ -775,11 +766,10 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 }
                 if (data.field === 'bsd_du_an_id'){
                     field[0].value = [data.data.id, data.data.display_name];
-                    field[1].domain = [['bsd_du_an_id', '=', data.data.id]]
+                    field[1].domain = [['bsd_du_an_id', '=', data.data.id],['state', '=','ph']]
                 }
                 if (data.field === 'bsd_view_ids'){
                     if (data.data.operation === 'ADD_M2M'){
-
 //                        if (_.isArray(data.data.ids)){
                         _.each(data.data.ids, function(item,index,data){
                             self.filter.bsd_view_ids.push(item)
