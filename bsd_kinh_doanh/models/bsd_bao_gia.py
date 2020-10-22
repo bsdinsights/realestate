@@ -540,7 +540,14 @@ class BsdBaoGia(models.Model):
 
     # Sử dụng trên popup
     def action_luu(self):
-        pass
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Bảng tính giá',
+            'res_model': 'bsd.bao_gia',
+            'res_id': self.id,
+            'target': 'current',
+            'view_mode': 'form'
+        }
 
     def action_chon_ck(self):
         action = self.env.ref('bsd_kinh_doanh.bsd_wizard_chon_ck_action').read()[0]

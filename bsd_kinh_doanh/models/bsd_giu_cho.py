@@ -186,15 +186,15 @@ class BsdGiuCho(models.Model):
             raise UserError(_("Sản phẩm không nằm trong dự án.\n Vui lòng kiểm tra lại thông tin."))
 
     @api.onchange('bsd_ngay_gc', 'bsd_du_an_id',)
-    def _onchange_ngay_gctc(self):
-        self.bsd_ngay_hh_gc = self.bsd_ngay_gc + datetime.timedelta(hours=self.bsd_du_an_id.bsd_gc_smb)
+    def _onchange_ngay_gc(self):
+        self.bsd_ngay_hh_gc = self.bsd_ngay_gc + datetime.timedelta(days=self.bsd_du_an_id.bsd_gc_tmb)
 
     # KD.07.03 Ràng buộc số giữ chỗ theo Sản phẩm
     @api.constrains('bsd_unit_id')
     def _constrain_unit(self):
         gc_in_unit = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                      ('bsd_unit_id', '=', self.bsd_unit_id.id),
-                                                     ('state', 'in', ['nhap', 'giu_cho', 'dat_cho'])])
+                                                     ('state', 'in', ['giu_cho', 'dang_cho'])])
         if len(gc_in_unit) > self.bsd_du_an_id.bsd_gc_unit:
             raise UserError("Tổng số giữ chỗ trên Sản phẩm đã vượt quá quy định!")
 
@@ -207,7 +207,7 @@ class BsdGiuCho(models.Model):
                                                    ('bsd_ngay_gc', '>', min_time),
                                                    ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                    ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
-                                                   ('state', 'in', ['nhap', 'giu_cho', 'dat_cho'])])
+                                                   ('state', 'in', ['giu_cho', 'dang_cho'])])
         if len(gc_in_day) > self.bsd_du_an_id.bsd_gc_nv_ngay:
             raise UserError("Tổng số Giữ chỗ trên một ngày của bạn đã vượt quá quy định.")
 
@@ -221,7 +221,7 @@ class BsdGiuCho(models.Model):
                                                    ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                    ('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                    ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
-                                                   ('state', 'in', ['nhap', 'giu_cho', 'dat_cho'])])
+                                                   ('state', 'in', ['giu_cho', 'dang_cho'])])
         if len(gc_in_day) > self.bsd_du_an_id.bsd_gc_unit_nv_ngay:
             raise UserError("Tổng số Giữ chỗ trong ngày theo Sản phẩm của bạn đã vượt quá quy định.")
 
@@ -285,9 +285,9 @@ class BsdGiuCho(models.Model):
                 raise UserError(_("Sản phẩm đã có giao dịch.\n Vui lòng kiểm tra lại thông tin."))
             giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                            ('state', '=', 'giu_cho')])
-            time_gc = self.bsd_du_an_id.bsd_gc_tmb
+            time_gc = self.bsd_du_an_id.bsd_gc_smb
             ngay_hh_bg = self.bsd_ngay_gc
-            ngay_hh_gc = self.bsd_ngay_gc + datetime.timedelta(days=time_gc)
+            ngay_hh_gc = self.bsd_ngay_gc + datetime.timedelta(hours=time_gc)
             stt = self.bsd_unit_id.bsd_sequence_gc_id.next_by_id()
             if giu_cho_unit:
                 self.write({

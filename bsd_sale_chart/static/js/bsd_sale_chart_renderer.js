@@ -609,6 +609,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
             let unit_id = parseInt($(event.currentTarget).parent().attr('id'))
             this._loadAction('bsd_sale_chart.bsd_bao_gia_action_popup_2').then(function(action){
                 action.context={default_bsd_unit_id:unit_id}
+                console.log(action)
                 self.do_action(action)
             })
 //            this.do_action({

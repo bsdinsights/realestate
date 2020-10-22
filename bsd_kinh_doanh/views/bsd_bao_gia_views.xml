@@ -22,12 +22,12 @@
                             attrs="{'invisible':['|',('bsd_ngay_in_bg', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
-                    <button string="Tạo đợt thanh toán"
+                    <button string="Tạo lịch TT"
                             name="action_lich_tt"
                             attrs="{'invisible': ['|',('id', '=',False),'|',('state','!=','nhap'),('bsd_da_co_lich','=',True)]}"
                             type="object"
                             class="oe_highlight"/>
-                    <button string="Xóa đợt thanh toán"
+                    <button string="Xóa lịch TT"
                             name="action_xoa_lich_tt"
                             attrs="{'invisible': ['|',('id', '=',False),'|',('state','!=','nhap'),('bsd_da_co_lich','=',False)]}"
                             type="object"/>
@@ -70,7 +70,7 @@
                                            domain="[('bsd_kh_moi_id', 'in', [bsd_khach_hang_id]),
                                                     ('state', '=','giu_cho')]"/>
                                     <field name="bsd_cs_tt_id"
-                                           domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"
+                                           domain="[('bsd_du_an_id', '=', bsd_du_an_id),('state','=','duyet')]"
                                            options="{'no_create':true}"/>
                                 </group>
                                 <group>
@@ -186,10 +186,10 @@
                             </group>
                             <group string="PHÍ QUẢN LÝ">
                                 <group>
-                                    <field name="bsd_thang_pql"/>
+                                    <field name="bsd_thang_pql" readonly="1" force_save="1"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_tien_pql"/>
+                                    <field name="bsd_tien_pql" readonly="1" force_save="1"/>
                                 </group>
                             </group>
                         </page>
@@ -532,10 +532,10 @@
                             </group>
                             <group string="PHÍ QUẢN LÝ">
                                 <group>
-                                    <field name="bsd_thang_pql"/>
+                                    <field name="bsd_thang_pql" readonly="1" force_save="1"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_tien_pql"/>
+                                    <field name="bsd_tien_pql" readonly="1" force_save="1"/>
                                 </group>
                             </group>
                         </page>

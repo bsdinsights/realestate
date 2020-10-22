@@ -21,6 +21,13 @@ class BsdChinhSachThanhToan(models.Model):
     bsd_ten_cstt = fields.Char(string="Tên", help="Tên chính sách thanh toán", required=True,
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
+    bsd_search_name = fields.Char(string="Search name", compute='_compute_search_name', store=True)
+
+    @api.depends('bsd_ma_cstt', 'bsd_ten_cstt')
+    def _compute_search_name(self):
+        for each in self:
+            each.bsd_search_name = (each.bsd_ma_cstt or '') + ' - ' + (each.bsd_ten_cstt or '')
+
     bsd_dien_giai = fields.Char(string="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
@@ -214,6 +221,19 @@ class BsdChinhSachThanhToan(models.Model):
         action = self.env.ref('bsd_danh_muc.bsd_cs_tt_ct_action_popup').read()[0]
         action['context'] = {'default_bsd_cs_tt_id': self.id}
         return action
+
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        args = list(args or [])
+        if name:
+            if operator == 'ilike':
+                args += [('bsd_search_name', operator, name)]
+            elif operator == '=':
+                args += [('bsd_ma_cstt', operator, name)]
+        access_rights_uid = name_get_uid or self._uid
+        ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
+        recs = self.browse(ids)
+        return models.lazy_name_get(recs.with_user(access_rights_uid))
 
     @api.model
     def create(self, vals):
