@@ -10,6 +10,7 @@ _logger = logging.getLogger(__name__)
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
+    _order = 'bsd_stt ASC'
 
     name = fields.Char(compute='_compute_name', store=True, required=False)
 
@@ -21,9 +22,9 @@ class ProductTemplate(models.Model):
     def name_get(self):
         return [(template.id, template.bsd_ma_unit)for template in self]
 
-    bsd_stt = fields.Char(string="Số thứ tự", help="Số thứ tự sản phẩm", required=True,
-                          readonly=True,
-                          states={'chuan_bi': [('readonly', False)]})
+    bsd_stt = fields.Integer(string="Số thứ tự", help="Số thứ tự sản phẩm", required=True,
+                             readonly=True,
+                             states={'chuan_bi': [('readonly', False)]})
     bsd_ten_unit = fields.Char(string="Mã sản phẩm",
                                help="Mã sản phẩm bao gồm mã tòa nhà, mã tầng và số sản phẩm",
                                readonly=True,

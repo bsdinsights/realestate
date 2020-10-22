@@ -104,7 +104,9 @@ class BsdSaleChartWidget(models.AbstractModel):
                     loai.bsd_ten_nhom AS loai,
                     unit_product.id AS product,
                     unit.bsd_dot_mb_id AS dot_mb,
-                    unit.bsd_so_qt
+                    unit.bsd_so_qt,
+                    tang.bsd_stt,
+                    unit.bsd_stt
                 FROM bsd_toa_nha AS toa
                 LEFT JOIN bsd_tang AS tang 
                     ON toa.id = tang.bsd_toa_nha_id
@@ -119,9 +121,12 @@ class BsdSaleChartWidget(models.AbstractModel):
                 LEFT JOIN bsd_loai_sp AS loai
                     ON loai.id = unit.bsd_loai_sp_id
                 LEFT JOIN product_product AS unit_product ON unit_product.product_tmpl_id = unit.id
-                """ + where + "ORDER BY toa.id, tang.bsd_stt, unit.bsd_stt")
+                """ + where + "ORDER BY toa.bsd_stt ASC NULLS FIRST,"
+                              "tang.bsd_stt ASC NULLS FIRST,"
+                              "unit.bsd_stt ASC NULLS FIRST")
 
         item_ids = [x for x in self.env.cr.fetchall()]
+        _logger.debug(item_ids)
         return item_ids
 
     @api.model

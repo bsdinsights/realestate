@@ -256,6 +256,7 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                 _.each(group_toa, function(item,index,group_toa){
                     var toa = {};
                     toa.headerToa = [item[0][0],item[0][1]]
+                    toa.sl = 0
                     toa.state={
                             chuan_bi:0,
                             san_sang:0,
@@ -270,12 +271,14 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                             du_dk:0,
                             da_ban:0,
                         }
-                    var group_tang = _.groupBy(item, function(item){ return item[2]})
-                    var k = [];
+                    var group_tang = _.groupBy(item, function(item){ return item[14]})
+                    var k = [];;
                     _.each(group_tang, function(item,index,group_tang){
                         var tang ={};
                         tang.headerTang=[item[0][2],item[0][3]]
                         tang.detailTang=item
+                        tang.sl = item.length
+                        toa.sl += tang.sl
                         tang.state={
                             chuan_bi:0,
                             san_sang:0,
