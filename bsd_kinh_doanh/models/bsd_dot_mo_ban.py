@@ -279,6 +279,10 @@ class BsdDotMoBan(models.Model):
 
     # Phát hành
     def action_phat_hanh(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_wizard_ph_dot_mb_action').read()[0]
+        return action
+
+    def action_phat_hanh_wizard(self, so_gio):
         # kiểm tra trạng thái record
         if self.state != 'cph':
             pass

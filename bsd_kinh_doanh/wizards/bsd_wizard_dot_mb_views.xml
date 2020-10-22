@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_wizard_ph_dot_mb_form">
+        <field name="name">bsd.wizard.ph_dot_mb.form</field>
+        <field name="model">bsd.wizard.ph_dot_mb</field>
+        <field name="arch" type="xml">
+            <form string="Phát hành đợt mở bán">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_dot_mb_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_so_gio"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_ph_dot_mb_action">
+        <field name="name">Phát hành đợt mở bán</field>
+        <field name="res_model">bsd.wizard.ph_dot_mb</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
+</odoo>
