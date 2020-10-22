@@ -280,7 +280,7 @@
         <field name="arch" type="xml">
             <search>
                 <field name="bsd_ma_kh"/>
-                <field name="name"/>
+                <field name="display_name" string="Tên khách hàng"/>
                 <field name="bsd_cmnd"/>
                 <field name="bsd_ho_chieu"/>
                 <field name="mobile"/>

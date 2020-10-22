@@ -14,7 +14,9 @@
                             <field name="bsd_ngay_qt" readonly="1" force_save="1"/>
                             <field name="bsd_khach_hang_id"
                                    context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_popup_form',
-                                             'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree_search'}"
+                                             'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree_search',
+                                             'search_view_ref': 'bsd_kinh_doanh.bsd_res_partner_filter_popup',
+                                             'show_ma_kh': True}"
                                    options="{'no_create':true}"/>
                             <field name="bsd_nvbh_id" readonly="1" force_save="1" options="{'no_create':true}"/>
                         </group>

@@ -42,6 +42,7 @@
                                     <field name="bsd_nguoi_uq"/>
                                     <field name="phone" required="1"/>
                                     <field name="bsd_phone_2"/>
+                                    <field name="mobile"/>
                                     <field name="email" string="Email"/>
                                     <field name="bsd_email_2"/>
                                     <field name="bsd_fax"/>
@@ -256,7 +257,9 @@
         <field name="arch" type="xml">
             <search>
                 <field name="bsd_ma_kh"/>
-                <field name="name"/>
+                <field name="display_name" string="Tên cty"/>
+                <field name="bsd_so_gpkd"/>
+                <field name="email"/>
             </search>
         </field>
     </record>
@@ -542,9 +545,26 @@
                 <field name="display_name" string="Khách hàng"/>
                 <field name="mobile"/>
                 <field name="phone"/>
+                <field name="bsd_so_gpkd"/>
                 <field name="email" string="email"/>
                 <field name="bsd_dia_chi_lh"/>
             </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_res_partner_filter_popup">
+        <field name="name">bsd.res.partner.filter.popup</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="bsd_ma_kh"/>
+                <field name="display_name" string="Khách hàng"/>
+                <field name="bsd_cmnd"/>
+                <field name="bsd_ho_chieu"/>
+                <field name="bsd_so_gpkd"/>
+                <field name="mobile"/>
+                <field name="phone"/>
+                <field name="email"/>
+            </search>
         </field>
     </record>
 </odoo>

@@ -15,7 +15,9 @@
                             <field name="bsd_ngay_gc"/>
                             <field name="bsd_khach_hang_id"
                                    context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_popup_form',
-                                             'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree_search'}"
+                                             'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree_search',
+                                             'search_view_ref': 'bsd_kinh_doanh.bsd_res_partner_filter_popup',
+                                             'show_ma_kh': True}"
                                    options="{'no_create':true}"/>
 
                         </group>
@@ -25,7 +27,7 @@
                             <field name="bsd_du_an_id"
                                    readonly="1" force_save="1"
                                    options="{'no_create':true}"/>
-                            <field name="bsd_unit_id"
+                            <field name="bsd_unit_id" readonly="1" force_save="1"
                                    context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form',
                                              'tree_view_ref': 'bsd_du_an.bsd_product_template_tree'}"
                                    options="{'no_create':true}"
