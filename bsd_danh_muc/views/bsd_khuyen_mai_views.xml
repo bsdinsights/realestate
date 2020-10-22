@@ -39,6 +39,7 @@
                             <field name="bsd_ma_km"/>
                             <field name="bsd_ten_km"/>
                             <field name="bsd_gia_tri"/>
+                            <field name="bsd_loai_km"/>
                             <field name="bsd_loai"/>
                             <field name="bsd_tong_tt" attrs="{'required':[('bsd_loai', 'in', ['tien','ty_le_tien'])],
                                                                 'readonly':[('bsd_loai', 'in', ['ty_le','khong'])]}"/>
@@ -80,6 +81,8 @@
                 <field name="bsd_tu_ngay"/>
                 <field name="bsd_den_ngay"/>
                 <field name="state"/>
+                <field name="company_id" invisible="1"/>
+                <field name="currency_id" invisible="1"/>
             </tree>
         </field>
     </record>

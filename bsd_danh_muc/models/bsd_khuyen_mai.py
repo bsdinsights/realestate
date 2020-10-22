@@ -26,6 +26,8 @@ class BsdKhuyenMai(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
+    bsd_loai_km = fields.Selection([('tien_mat', 'Tiền mặt'), ('qua_tang', 'Quà tặng')], string="Loại khuyến mãi",
+                                   required=True, readonly=True, states={'nhap': [('readonly', False)]})
     bsd_loai = fields.Selection([('khong', 'Không'), ('ty_le', 'Tỷ lệ'), ('tien', 'Tiền'),
                                  ('ty_le_tien', 'Tỷ lệ hoặc tiền')],
                                 string="Điều kiện", help="Điều kiện xét khuyến mãi", required=True, default='khong',
