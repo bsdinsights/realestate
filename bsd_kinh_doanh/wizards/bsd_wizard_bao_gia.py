@@ -38,10 +38,20 @@ class BsdBaoGiaChonCK(models.TransientModel):
     def default_get(self, fields_list):
         res = super(BsdBaoGiaChonCK, self).default_get(fields_list)
         bao_gia = self.env['bsd.bao_gia'].browse(self._context.get('active_ids', []))
+
         res.update({
             'bsd_bao_gia_id': bao_gia.id,
             'bsd_dot_mb_id': bao_gia.bsd_dot_mb_id.id,
             'bsd_cs_tt_id': bao_gia.bsd_cs_tt_id.id,
+            'bsd_ck_ch_ids': [(6, 0, bao_gia.bsd_ps_ck_ids
+                               .filtered(lambda x: x.bsd_loai_ck == 'chung')
+                               .mapped('bsd_chiet_khau_id').ids)],
+            'bsd_ck_nb_ids': [(6, 0, bao_gia.bsd_ps_ck_ids
+                               .filtered(lambda x: x.bsd_loai_ck == 'noi_bo')
+                               .mapped('bsd_chiet_khau_id').ids)],
+            'bsd_ck_pttt_ids': [(6, 0, bao_gia.bsd_ps_ck_ids
+                                 .filtered(lambda x: x.bsd_loai_ck == 'ltt')
+                                 .mapped('bsd_chiet_khau_id').ids)]
         })
         return res
 
@@ -105,7 +115,8 @@ class BsdBaoGiaChonDKBG(models.TransientModel):
         res.update({
             'bsd_bao_gia_id': bao_gia.id,
             'bsd_dot_mb_id': bao_gia.bsd_dot_mb_id.id,
-            'bsd_unit_id': bao_gia.bsd_unit_id.id
+            'bsd_unit_id': bao_gia.bsd_unit_id.id,
+            'bsd_dk_bg_ids': [(6, 0, bao_gia.bsd_bg_ids.mapped('bsd_dk_bg_id').ids)]
         })
         return res
 
