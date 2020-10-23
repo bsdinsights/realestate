@@ -48,7 +48,8 @@ class BsdChuyenGiuCho(models.Model):
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
     bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
-
+    bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
+    bsd_ngay_duyet = fields.Date(string="Ngày duyệt", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('da_duyet', 'Đã duyệt'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
                              required=True, default='nhap', tracking=1)
@@ -61,9 +62,12 @@ class BsdChuyenGiuCho(models.Model):
 
     # KD.05.07.02 Duyệt chuyển tên khách hàng giữ chỗ
     def action_duyet(self):
-        self.write({
-            'state': 'da_duyet',
-        })
+        if self.state == 'xac_nhan':
+            self.write({
+                'state': 'duyet',
+                'bsd_ngay_duyet': fields.Date.today(),
+                'bsd_nguoi_duyet_id': self.env.uid,
+            })
         if self.bsd_loai_gc == 'gc_tc' and self.bsd_gc_tc_id:
             if self.bsd_gc_tc_id.state not in ['cho_rc', 'giu_cho']:
                 raise UserError("Giữ chỗ thiện chí đã hết hiệu lực hoặc đã ráp căn.\n Vui lòng kiểm tra lại thông tin.")

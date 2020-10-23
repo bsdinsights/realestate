@@ -57,6 +57,8 @@ class BsdHuyGC(models.Model):
                               ('duyet', 'Duyệt'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
                              tracking=1, default="nhap", required=True)
     bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
+    bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
+    bsd_ngay_duyet = fields.Date(string="Ngày duyệt", readonly=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
@@ -176,9 +178,12 @@ class BsdHuyGC(models.Model):
                     'bsd_huy_gc_id': self.id
                 })
         # Cập nhật trạng thái phiếu hủy
-        self.write({
-            'state': 'duyet',
-        })
+        if self.state == 'xac_nhan':
+            self.write({
+                'state': 'duyet',
+                'bsd_ngay_duyet': fields.Date.today(),
+                'bsd_nguoi_duyet_id': self.env.uid,
+            })
         # Theo dõi công nợ
         self._tao_cong_no()
 

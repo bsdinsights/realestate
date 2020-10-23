@@ -40,18 +40,14 @@
                                    context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
                                    options="{'no_create':true}"/>
                             <field name="bsd_loai_gc"/>
-                            <field name="company_id" invisible="1"/>
-                            <field name="currency_id" invisible="1"/>
-                            <field name="bsd_ly_do"
-                                   attrs="{'invisible': [('state', '!=', 'khong_duyet')]}"/>
-                        </group>
-                        <group>
                             <field name="bsd_unit_id"
                                    context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                    options="{'no_create':true}"
                                    domain="[('bsd_du_an_id','=',bsd_du_an_id)]"
                                    attrs="{'invisible':[('bsd_loai_gc', '!=','giu_cho')],
                                            'required':[('bsd_loai_gc', '=', 'giu_cho')]}"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
                             <field name="bsd_gc_tc_id"
                                    domain="[('bsd_du_an_id','=',bsd_du_an_id),('bsd_kh_moi_id', '=',bsd_khach_hang_id),
                                             ('bsd_thanh_toan','!=','chua_tt'),('state','in', ['xac_nhan'])]"
@@ -67,12 +63,19 @@
                                    attrs="{'invisible':[('bsd_loai_gc', '!=','giu_cho')],
                                            'required':[('bsd_loai_gc', '=', 'giu_cho')]}"
                             />
+                        </group>
+                        <group>
+
+
                             <field name="bsd_tien" readonly="1" force_save="1"/>
                             <field name="bsd_tien_da_tt" readonly="1" force_save="1"/>
                             <field name="bsd_hoan_tien"/>
                             <field name="bsd_tien_ht"
                                    attrs="{'invisible':[('bsd_hoan_tien', '=', False)],
                                            'required':[('bsd_hoan_tien', '=', True)]}"/>
+                            <field name="bsd_nguoi_duyet_id"/>
+                            <field name="bsd_ngay_duyet"/>
+                            <field name="bsd_ly_do"/>
                         </group>
                     </group>
                 </sheet>

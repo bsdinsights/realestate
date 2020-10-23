@@ -54,6 +54,8 @@
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['ttth','mua_si','ttn'])]}"/>
                             <field name="bsd_den_ngay"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['ttth','mua_si','ttn'])]}"/>
+                            <field name="bsd_dien_giai"/>
+                            <field name="bsd_ly_do"/>
                         </group>
                         <group>
                             <field name="currency_id" invisible="1"/>
@@ -78,6 +80,16 @@
                             <field name="bsd_so_ngay_tt"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['ttth'])],
                                            'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','mua_si','ltt','ttn']),('state','!=','nhap')]}"/>
+                            <field name="bsd_so_ngay_nam"
+                                   attrs="{'required':[('bsd_loai_ck', 'in', ['ttth'])],
+                                           'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','mua_si','ltt','ttn']),('state','!=','nhap')]}"/>
+                            <field name="bsd_cach_tinh_th" attrs="{'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','mua_si','ltt','ttn']),('state','!=','nhap')]}"/>
+                            <field name="bsd_ngay_ad_th"
+                                   attrs="{'required':[('bsd_cach_tinh_th', '=', 'ngay_cd')],
+                                           'readonly':['|',('bsd_cach_tinh_th', '!=', 'ngay_cd'),('state','!=','nhap')]}"/>
+                            <field name="bsd_so_dot_ad_th"
+                                   attrs="{'required':[('bsd_cach_tinh_th', '=', 'so_dot_tt')],
+                                           'readonly':['|',('bsd_cach_tinh_th', '!=', 'so_dot_tt'),('state','!=','nhap')]}"/>
                             <label for="bsd_tl_tt"/>
                             <div class="o_row no-gutters d-flex">
                             <field name="bsd_tl_tt"
@@ -85,7 +97,6 @@
                                            'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','mua_si','ltt','ttth']),('state','!=','nhap')]}"/>
                                 <span>%</span>
                             </div>
-                            <field name="bsd_dien_giai"/>
                             <field name="bsd_nguoi_duyet_id"/>
                             <field name="bsd_ngay_duyet"/>
                         </group>

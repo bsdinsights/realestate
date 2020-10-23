@@ -47,6 +47,20 @@ class BsdChietKhau(models.Model):
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng chiết khấu",
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
+    bsd_cach_tinh_th = fields.Selection([('ngay_cd', 'Sau ngày cố định'),
+                                         ('ngay_ky_hd', 'Sau ngày ký HĐ'),
+                                         ('so_dot_tt', 'Sau đợt thanh toán')], string="Cách tính TTTH",
+                                        help="Điều kiện áp dụng thanh toán trước hạn cho đợt thanh toán")
+    bsd_ngay_ad_th = fields.Date(string="Ngày xét TTTH", hepl="Những đợt có hạn thanh toán sau ngày này mới được xé "
+                                                              "thanh toán trước hạn",
+                                 readonly=True,
+                                 states={'nhap': [('readonly', False)]})
+    bsd_so_ngay_nam = fields.Integer(string="Số ngày trong năm",
+                                     help="Số ngày dùng để tính phần trăm chiết khấu thanh toán trước hạn", default=365)
+    bsd_so_dot_ad_th = fields.Integer(string="Sau đợt TT", help="Những đợt thanh toán sau đợt này sẽ được áp dụng "
+                                                                "thanh toán trước hạn",
+                                      readonly=True,
+                                      states={'nhap': [('readonly', False)]})
     bsd_so_ngay_tt = fields.Integer(string="Số ngày tối thiểu",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]},
@@ -88,6 +102,11 @@ class BsdChietKhau(models.Model):
     bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
     bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
     bsd_ngay_duyet = fields.Date(string="Ngày duyệt", readonly=True)
+
+    @api.onchange('bsd_cach_tinh_th')
+    def _onchange_ct_th(self):
+        self.bsd_ngay_ad_th = False
+        self.bsd_so_dot_ad_th = False
 
     # Kiểm tra dữ liệu ngày hiệu lực
     @api.constrains('bsd_tu_ngay', 'bsd_den_ngay')
