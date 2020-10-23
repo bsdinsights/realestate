@@ -63,7 +63,7 @@
                                            'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn']),('state','!=','nhap')]}"/>
                             <field name="bsd_sl_tu"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['mua_si'])],
-                                           'readonly':[('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn']),('state','!=','nhap')]}"/>
+                                           'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn']),('state','!=','nhap')]}"/>
                             <field name="bsd_sl_den"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['mua_si'])],
                                            'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','ltt','ttth','ttn']),('state','!=','nhap')]}"/>
@@ -75,6 +75,9 @@
                             <field name="bsd_ngay_tt"
                                    attrs="{'required':[('bsd_loai_ck', 'in', ['ttn'])],
                                            'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','mua_si','ltt','ttth']),('state','!=','nhap')]}"/>
+                            <field name="bsd_so_ngay_tt"
+                                   attrs="{'required':[('bsd_loai_ck', 'in', ['ttth'])],
+                                           'readonly':['|',('bsd_loai_ck', 'in', ['chung','noi_bo','mua_si','ltt','ttn']),('state','!=','nhap')]}"/>
                             <label for="bsd_tl_tt"/>
                             <div class="o_row no-gutters d-flex">
                             <field name="bsd_tl_tt"

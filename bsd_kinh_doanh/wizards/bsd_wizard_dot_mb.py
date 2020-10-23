@@ -11,7 +11,7 @@ class BsdPhatHanhDMB(models.TransientModel):
     _description = 'Phát hành đợt mở bán'
 
     def _get_dot_mb(self):
-        dot_mb = self.env['bsd.bao_gia'].browse(self._context.get('active_ids', []))
+        dot_mb = self.env['bsd.dot_mb'].browse(self._context.get('active_ids', []))
         return dot_mb
 
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", default=_get_dot_mb, readonly=True)

@@ -327,8 +327,14 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
             if self.bsd_ngay_cd < fields.Date.today():
                 return {
                     'warning': {'title': _("Cảnh báo"),
-                                'message': _('Ngày cố định không được nhỏ hơn hiện tại')}
+                                'message': _('Ngày cố định không được nhỏ hơn hiện tại.')}
                 }
+
+    @api.constrains('bsd_ngay_cd')
+    def _onchange_ngay_cd(self):
+        if self.bsd_ngay_cd:
+            if self.bsd_ngay_cd < fields.Date.today():
+                raise UserError(_("Ngày cố định không được nhỏ hơn hiện tại."))
 
     @api.onchange('bsd_bg_tam')
     def _onchange_bg_tam(self):

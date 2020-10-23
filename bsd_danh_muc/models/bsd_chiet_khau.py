@@ -47,6 +47,10 @@ class BsdChietKhau(models.Model):
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng chiết khấu",
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
+    bsd_so_ngay_tt = fields.Integer(string="Số ngày tối thiểu",
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]},
+                                    help="Ngày ngày tối thiểu áp dụng chiết khấu thanh toán trước hạn")
     bsd_cung_tang = fields.Boolean(string="Mua cùng tầng",
                                    help="Điều kiện xét chiết khấu mua sỉ số lượng mua có cùng chung một tầng hay không",
                                    readonly=True,

@@ -326,8 +326,8 @@ class BsdDotMoBan(models.Model):
             # kiểm tra các unit không trùng với đợt mở bán hiện tại đang phát hành
             diff_mb_units = ph_units.filtered(lambda x: (x.bsd_dot_mb_id.bsd_tu_ngay < self.bsd_tu_ngay
                                                          and x.bsd_dot_mb_id.bsd_den_ngay < self.bsd_tu_ngay)
-                                                            or (x.bsd_dot_mb_id.bsd_tu_ngay > self.bsd_den_ngay
-                                                                and x.bsd_dot_mb_id.bsd_den_ngay > self.bsd_den_ngay)
+                                                         or (x.bsd_dot_mb_id.bsd_tu_ngay > self.bsd_den_ngay
+                                                         and x.bsd_dot_mb_id.bsd_den_ngay > self.bsd_den_ngay)
                                               )
             # các chuẩn bị trùng với đợt mở bán khác
             cb_trung = (cb_state - cb_uu).filtered(lambda t: t.bsd_unit_id not in diff_mb_units
@@ -381,12 +381,17 @@ class BsdDotMoBan(models.Model):
             'bsd_ngay_ph': fields.Datetime.now(),
             'bsd_nguoi_ph': self.env.uid,
         })
-        #  KD.04.08 Tính hạn báo giá  của giữ chỗ sau khi phát hành đợt mở bán
+
         units_ph = self.bsd_ph_ids.mapped('bsd_unit_id')
         for unit_ph in units_ph:
+            # KD.04.08 Tính hạn giữ chỗ của giữ chỗ sau khi phát hành đợt mở bán
             # KD.04.09 cập nhật đợt mở bán cho giữ chỗ
             giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', unit_ph.id)])
-            giu_cho_unit.write({'bsd_dot_mb_id': self.id})
+            for gc in giu_cho_unit:
+                gc.write({
+                    'bsd_dot_mb_id': self.id,
+                    'bsd_ngay_hh_gc': gc.bsd_ngay_hh_gc + datetime.timedelta(hours=so_gio)
+                })
 
     # Thu hồi toàn bộ đợt mở bán
     def action_thu_hoi(self):
