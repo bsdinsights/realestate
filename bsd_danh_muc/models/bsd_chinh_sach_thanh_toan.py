@@ -331,7 +331,7 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
                 }
 
     @api.constrains('bsd_ngay_cd')
-    def _onchange_ngay_cd(self):
+    def _constraint_ngay_cd(self):
         if self.bsd_ngay_cd:
             if self.bsd_ngay_cd < fields.Date.today():
                 raise UserError(_("Ngày cố định không được nhỏ hơn hiện tại."))
@@ -339,10 +339,8 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
     @api.onchange('bsd_bg_tam')
     def _onchange_bg_tam(self):
         if self.bsd_bg_tam:
-            self.bsd_tinh_pbt = True
             self.bsd_tinh_pql = True
         else:
-            self.bsd_tinh_pbt = False
             self.bsd_tinh_pql = False
 
     @api.constrains('bsd_lap_lai')
