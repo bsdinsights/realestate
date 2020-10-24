@@ -72,7 +72,7 @@
                       action="bsd_pt_tt_action"
                       parent="bsd_thanh_toan_menu"/>
     <menuitem id="bsd_ma_bo_cn_menu_action"
-              name="Mã bộ chứng từ"
+              name="Mã chứng từ dự án"
               sequence="14"
               action="bsd_ma_bo_cn_action"
               parent="bsd_main_danh_muc_root"/>

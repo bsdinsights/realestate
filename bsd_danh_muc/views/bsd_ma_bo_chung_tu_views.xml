@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <form duplicate="false">
                 <header>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    <field name="state" widget="statusbar" options="{'clickable':1}"/>
                 </header>
                 <sheet>
                     <group>
@@ -17,6 +17,7 @@
                         </group>
                         <group>
                             <field name="bsd_ma_cn"/>
+                            <field name="bsd_ma_ht"/>
                             <label for="bsd_so_tt"/>
                             <div>
                                 <field name="bsd_so_tt" style="padding-right: 1.0em"/>
@@ -55,16 +56,20 @@
             <search>
                 <field name="bsd_ten_cn"/>
                 <field name="bsd_du_an_id"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Loại chứng từ" name="bsd_loai_cn" domain="[]" context="{'group_by': 'bsd_loai_cn'}"/>
+                </group>
             </search>
         </field>
     </record>
 
     <record model="ir.actions.act_window" id="bsd_ma_bo_cn_action">
-        <field name="name">Mã bộ chứng từ</field>
+        <field name="name">Mã chứng từ dự án</field>
         <field name="res_model">bsd.ma_bo_cn</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
-            <p>Tạo mã bộ chứng từ</p>
+            <p>Tạo mã chứng từ cho dự án</p>
         </field>
     </record>
 </odoo>

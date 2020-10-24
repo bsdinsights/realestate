@@ -20,6 +20,32 @@
                             <field name="bsd_so_tt"/>
                             <field name="state"/>
                         </tree>
+                        <form>
+                            <header>
+                                <field name="state" widget="statusbar" options="{'clickable':1}"/>
+                            </header>
+                            <sheet>
+                                <group>
+                                    <group>
+                                        <field name="bsd_ten_cn"/>
+                                        <field name="bsd_du_an_id"
+                                               invisible="1"
+                                               options="{'no_create':true}"/>
+                                        <field name="bsd_loai_cn"/>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_ma_cn"/>
+                                        <field name="bsd_ma_ht"/>
+                                        <label for="bsd_so_tt"/>
+                                        <div>
+                                            <field name="bsd_so_tt" style="padding-right: 1.0em"/>
+                                            <field name="bsd_ma_tt_id" required="0" attrs="{'readonly': 1}" groups="base.group_no_one"/>
+                                        </div>
+                                        <field name="bsd_sl_ky_tu"/>
+                                    </group>
+                                </group>
+                            </sheet>
+                        </form>
                     </field>
                 </page>
             </xpath>
