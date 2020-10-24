@@ -33,6 +33,7 @@
         'views/bsd_lai_phat_tt_views.xml',
         'views/bsd_chinh_sach_thanh_toan_views.xml',
         'views/bsd_ma_bo_chung_tu_views.xml',
+        'views/bsd_ma_bo_cn_chung_views.xml',
         'views/bsd_du_an_views.xml',
         'views/bsd_thue_suat_views.xml',
         'views/bsd_menu_item_views.xml',

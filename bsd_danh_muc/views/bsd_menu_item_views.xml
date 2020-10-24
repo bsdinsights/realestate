@@ -76,6 +76,11 @@
               sequence="14"
               action="bsd_ma_bo_cn_action"
               parent="bsd_main_danh_muc_root"/>
+    <menuitem id="bsd_ma_bo_cn_chung_menu_action"
+              name="Mã chứng từ chung"
+              sequence="15"
+              action="bsd_ma_bo_cn_chung_action"
+              parent="bsd_main_danh_muc_root"/>
 
 
 <!-- Không sử dụng ở bản demo -->

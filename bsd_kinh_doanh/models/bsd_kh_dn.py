@@ -43,6 +43,41 @@ class ResPartner(models.Model):
     bsd_quyen_sh = fields.Selection([('chung', 'Chung (Nhà nước)'), ('rieng', 'Riêng (Tư nhân)'),
                                      ('cty_con', 'Công ty con'), ('khac', 'Khác')],
                                     string="Quyền sở hữu", help="Quyền sở hữu")
+    bsd_dia_chi_ts = fields.Char(string="Địa chỉ trụ sở", help="Địa chỉ trụ sở",
+                                 compute="_compute_dia_chi_ts", store=True)
+    bsd_quoc_gia_ts_id = fields.Many2one('res.country', string="Quốc gia (TS)", help="Tên quốc gia đặt trụ sở công ty")
+    bsd_tinh_ts_id = fields.Many2one('res.country.state', string="Tỉnh/ Thành (TS)",
+                                     help="Tên tỉnh thành, thành phố đặt trụ sở công ty")
+    bsd_quan_ts_id = fields.Many2one('bsd.quan_huyen', string="Quận/ Huyện (TS)",
+                                     help="Tên quận huyện đặt trụ sở công ty")
+    bsd_phuong_ts_id = fields.Many2one('bsd.phuong_xa', string="Phường/ Xã (TS)",
+                                       help="Tên phường xã đặt trụ sở công ty")
+    bsd_so_nha_ts = fields.Char(string="Số nhà (TS)", help="Số nhà, tên đường đặt trụ sở công ty")
+    bsd_cung_ts = fields.Boolean(string="Đây là địa chỉ trụ sở", help="Đãy là địa chỉ trụ sợ")
+
+    @api.onchange('bsd_cung_ts')
+    def _onchange_ts(self):
+        if self.bsd_cung_ts:
+            self.bsd_quoc_gia_ts_id = self.bsd_quoc_gia_lh_id
+            self.bsd_tinh_ts_id = self.bsd_tinh_lh_id
+            self.bsd_quan_ts_id = self.bsd_quan_lh_id
+            self.bsd_phuong_ts_id = self.bsd_phuong_lh_id
+            self.bsd_so_nha_ts = self.bsd_so_nha_lh
+
+    @api.depends('bsd_quoc_gia_ts_id', 'bsd_tinh_ts_id', 'bsd_quan_ts_id', 'bsd_phuong_ts_id', 'bsd_so_nha_ts')
+    def _compute_dia_chi_ts(self):
+        for each in self:
+            each.bsd_dia_chi_ts = ''
+            if each.bsd_so_nha_ts:
+                each.bsd_dia_chi_ts += each.bsd_so_nha_ts + ', '
+            if each.bsd_phuong_ts_id:
+                each.bsd_dia_chi_ts += each.bsd_phuong_ts_id.bsd_ten + ', '
+            if each.bsd_quan_ts_id:
+                each.bsd_dia_chi_ts += each.bsd_quan_ts_id.bsd_ten + ', '
+            if each.bsd_tinh_ts_id:
+                each.bsd_dia_chi_ts += each.bsd_tinh_ts_id.name + ', '
+            if each.bsd_quoc_gia_ts_id:
+                each.bsd_dia_chi_ts += each.bsd_quoc_gia_ts_id.name
 
     @api.onchange('name')
     def _onchange_ma_da(self):

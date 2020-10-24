@@ -13,7 +13,9 @@
                             <field name="bsd_sequence_gc_tc_id" />
                         </group>
                     </group>
-                    <field name="bsd_ma_bo_cn_ids" domain="['|',('bsd_du_an_id', '=', False), ('bsd_du_an_id', '=', id)]">
+                    <field name="bsd_ma_bo_cn_ids"
+                           force_save="1"
+                           domain="['|',('bsd_du_an_id', '=', False), ('bsd_du_an_id', '=', id)]">
                         <tree>
                             <field name="bsd_loai_cn"/>
                             <field name="bsd_ma_cn"/>

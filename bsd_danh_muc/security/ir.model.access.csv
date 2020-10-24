@@ -36,12 +36,13 @@ bsd_ck_ttn_ct_manager,Quản lý chiết khấu thanh toán nhanh,model_bsd_ck_t
 
 bsd_lai_phat_tt_manager, Thông tin lãi phạt thanh toán,model_bsd_lai_phat_tt,bsd_danh_muc.group_manager,1,1,1,1
 
-bsd_cs_tt_manager, Thông tin chính sách thanh toán,model_bsd_cs_tt,bsd_danh_muc.group_manager,1,1,1,1
-bsd_cs_tt_ct_manager, Thông tin chi tiết chính sách thanh toán,model_bsd_cs_tt_ct,bsd_danh_muc.group_manager,1,1,1,1
+bsd_cs_tt_manager,Thông tin chính sách thanh toán,model_bsd_cs_tt,bsd_danh_muc.group_manager,1,1,1,1
+bsd_cs_tt_ct_manager,Thông tin chi tiết chính sách thanh toán,model_bsd_cs_tt_ct,bsd_danh_muc.group_manager,1,1,1,1
 
-bsd_ma_bo_cn_manager, Mã bộ chứng từ,model_bsd_ma_bo_cn,bsd_danh_muc.group_manager,1,1,1,1
+bsd_ma_bo_cn_manager,Mã bộ chứng từ dự án,model_bsd_ma_bo_cn,bsd_danh_muc.group_manager,1,1,1,1
+bsd_ma_bo_cn_chung_manager,Mã bộ chứng từ chung,model_bsd_ma_bo_cn_chung,bsd_danh_muc.group_manager,1,1,1,1
 
-bsd_thue_suat_manager, Thuế suất,model_bsd_thue_suat,bsd_danh_muc.group_manager,1,1,1,1
+bsd_thue_suat_manager,Thuế suất,model_bsd_thue_suat,bsd_danh_muc.group_manager,1,1,1,1
 
 bsd_bang_gia_manager,Khai báo bảng giá,product.model_product_pricelist,bsd_danh_muc.group_manager,1,1,1,1
 bsd_bang_gia_chi_tiet_manager,Khai báo chi tiết bảng giá,product.model_product_pricelist_item,bsd_danh_muc.group_manager,1,1,1,1

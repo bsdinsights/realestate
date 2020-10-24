@@ -139,6 +139,10 @@ class BsdMaBoChungTu(models.Model):
         return super(BsdMaBoChungTu, self).create(vals)
 
     def write(self, vals):
+        if 'bsd_ten_cn' in vals.keys():
+            self.bsd_ma_tt_id.write({
+                'name': _('%s trình tự') % vals['bsd_ten_cn'],
+            })
         if 'bsd_ma_cn' in vals.keys():
             self.bsd_ma_tt_id.write({
                 'prefix': vals['bsd_ma_cn'],

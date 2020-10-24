@@ -19,6 +19,7 @@ from . import bsd_chiet_khau_ttn
 from . import bsd_lai_phat_tt
 from . import bsd_chinh_sach_thanh_toan
 from . import bsd_ma_cn
+from . import bsd_ma_cn_chung
 from . import res_country
 from . import bsd_du_an
 from . import bsd_thue_suat

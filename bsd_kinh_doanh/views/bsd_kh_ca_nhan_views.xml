@@ -60,43 +60,50 @@
                             </group>
                             <group string="ĐỊA CHỈ">
                                 <group>
-                                    <field name="bsd_dia_chi_tt"/>
-                                    <field name="bsd_quoc_gia_tt_id" options="{'no_create':true}" required="1"/>
-                                    <field name="bsd_tinh_tt_id" domain="[('country_id', 'in',[bsd_quoc_gia_tt_id])]"
-                                           options="{'no_create':true}" required="1"/>
-                                    <field name="bsd_quan_tt_id" domain="[('bsd_tinh_thanh_id', 'in',[bsd_tinh_tt_id])]"
-                                           options="{'no_create':true}" required="1"/>
-                                    <field name="bsd_phuong_tt_id" domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_tt_id])]"
-                                           options="{'no_create':true}" required="1" />
-                                    <field name="bsd_so_nha_tt" required="1"/>
-                                    <field name="bsd_cung_dc"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_dia_chi_lh"
-                                           force_save="1"
-                                           attrs="{'readonly':[('bsd_cung_dc', '=', True)]}"/>
+                                    <field name="bsd_dia_chi_lh"/>
                                     <field name="bsd_quoc_gia_lh_id"
-                                           force_save="1"
-                                           attrs="{'readonly':[('bsd_cung_dc', '=', True)]}"
+                                           required="1"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_tinh_lh_id"
-                                           force_save="1"
-                                           attrs="{'readonly':[('bsd_cung_dc', '=', True)]}"
+                                           required="1"
                                            domain="[('country_id', 'in',[bsd_quoc_gia_lh_id])]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_quan_lh_id"
-                                           force_save="1"
-                                           attrs="{'readonly':[('bsd_cung_dc', '=', True)]}"
+                                           required="1"
                                            domain="[('bsd_tinh_thanh_id', 'in',[bsd_tinh_lh_id])]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_phuong_lh_id"
-                                           force_save="1"
-                                           attrs="{'readonly':[('bsd_cung_dc', '=', True)]}"
+                                           required="1"
                                            domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_lh_id])]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_so_nha_lh"
+                                           required="1"/>
+                                    <field name="bsd_cung_dc"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_dia_chi_tt"/>
+                                    <field name="bsd_quoc_gia_tt_id"
+                                           attrs="{'readonly':[('bsd_cung_dc','=',True)]}"
                                            force_save="1"
-                                           attrs="{'readonly':[('bsd_cung_dc', '=', True)]}"/>
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_tinh_tt_id"
+                                           attrs="{'readonly':[('bsd_cung_dc','=',True)]}"
+                                           force_save="1"
+                                           domain="[('country_id', 'in',[bsd_quoc_gia_tt_id])]"
+                                           options="{'no_create':true}" />
+                                    <field name="bsd_quan_tt_id"
+                                           attrs="{'readonly':[('bsd_cung_dc','=',True)]}"
+                                           force_save="1"
+                                           domain="[('bsd_tinh_thanh_id', 'in',[bsd_tinh_tt_id])]"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_phuong_tt_id"
+                                           attrs="{'readonly':[('bsd_cung_dc','=',True)]}"
+                                           force_save="1"
+                                           domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_tt_id])]"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_so_nha_tt"
+                                           attrs="{'readonly':[('bsd_cung_dc','=',True)]}"
+                                           force_save="1"/>
                                 </group>
                             </group>
                         </page>
