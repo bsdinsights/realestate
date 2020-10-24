@@ -29,6 +29,9 @@ class BsdPhieuThu(models.Model):
         if self.bsd_ngay_pt.date() > today:
             raise UserError(_("Ngày thanh toán không được lớn hơn ngày hiện tại."))
 
+    def _get_pt(self):
+        return self.env.ref('bsd_danh_muc.bsd_tien_mat').id
+
     bsd_loai_pt = fields.Selection([('tra_truoc', 'Trả trước'),
                                     ('gc_tc', 'Giữ chỗ thiện chí'),
                                     ('giu_cho', 'Giữ chỗ'),
@@ -49,7 +52,7 @@ class BsdPhieuThu(models.Model):
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
     bsd_pt_tt_id = fields.Many2one('bsd.pt_tt', string="Hình thức", help="Hình thức thanh toán",
-                                   readonly=True,required=True,
+                                   readonly=True, required=True, default=_get_pt,
                                    states={'nhap': [('readonly', False)]})
     bsd_so_nk = fields.Selection([('tien_mat', 'Tiền mặt'), ('ngan_hang', 'Ngân hàng')], string="Sổ nhật ký",
                                  required=True,

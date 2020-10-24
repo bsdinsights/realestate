@@ -36,19 +36,18 @@ class BsdChietKhauDacBiet(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Nội dung về yêu cầu chiết khấu đặc biệt")
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", required=True)
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Tên Đặt cọc", readonly=True)
-    bsd_khach_hang_id = fields.Many2one(related="bsd_bao_gia_id.bsd_khach_hang_id", store=True)
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án",
-                                   related="bsd_bao_gia_id.bsd_du_an_id", store=True)
+    bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", required=True)
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True)
     bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Tên Sản phẩm",
-                                  related="bsd_bao_gia_id.bsd_unit_id", store=True)
+                                  required=True)
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Tên đợt mở bán",
-                                    related="bsd_bao_gia_id.bsd_dot_mb_id", store=True)
+                                    required=True)
     bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="CS thanh toán", help="Chính sách thanh toán",
-                                   related="bsd_bao_gia_id.bsd_cs_tt_id", store=True)
+                                   required=True)
     bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ",
-                                  related="bsd_bao_gia_id.bsd_tien_gc", store=True)
+                                  required=True)
     bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc",
-                                  related="bsd_bao_gia_id.bsd_tien_dc", store=True)
+                                  required=True)
     bsd_ngay_duyet = fields.Datetime(string="Ngày duyệt", readonly=True)
     bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'),
@@ -60,6 +59,16 @@ class BsdChietKhauDacBiet(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
+
+    @api.onchange('bsd_bao_gia_id')
+    def _onchange_bao_gia(self):
+        self.bsd_du_an_id = self.bsd_bao_gia_id.bsd_du_an_id
+        self.bsd_khach_hang_id = self.bsd_bao_gia_id.bsd_khach_hang_id
+        self.bsd_unit_id = self.bsd_bao_gia_id.bsd_unit_id
+        self.bsd_dot_mb_id = self.bsd_bao_gia_id.bsd_dot_mb_id
+        self.bsd_cs_tt_id = self.bsd_bao_gia_id.bsd_cs_tt_id
+        self.bsd_tien_gc = self.bsd_bao_gia_id.bsd_tien_gc
+        self.bsd_tien_dc = self.bsd_bao_gia_id.bsd_tien_dc
 
     @api.depends('bsd_cach_tinh', 'bsd_tien', 'bsd_tl_ck', 'bsd_bao_gia_id.bsd_gia_ban')
     def _compute_tien_ck(self):
@@ -80,7 +89,6 @@ class BsdChietKhauDacBiet(models.Model):
         self.write({
             'state': 'duyet',
         })
-        self.bsd_bao_gia_id.action_lich_tt()
 
     # DM.13.04 Không duyệt chiết khấu
     def action_khong_duyet(self):
@@ -96,9 +104,9 @@ class BsdChietKhauDacBiet(models.Model):
     @api.model
     def create(self, vals):
         sequence = False
-        if vals.get('bsd_ma_ck_db', '/') == '/':
-            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.ck_db')], limit=1).bsd_ma_tt_id
-            vals['bsd_ma_ck_db'] = self.env['ir.sequence'].next_by_code('bsd.ck_db') or '/'
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
             raise UserError(_('Danh mục mã chưa khai báo mã danh sách chiết khấu đặc biệt.'))
         vals['bsd_ma_ck_db'] = sequence.next_by_id()

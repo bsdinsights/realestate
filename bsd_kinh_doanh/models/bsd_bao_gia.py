@@ -171,7 +171,7 @@ class BsdBaoGia(models.Model):
             km = each.bsd_km_ids.mapped('bsd_khuyen_mai_id')
             if len(record) > len(km):
                 raise UserError("Có Khuyến mãi bị trùng.\n Vui lòng kiểm tra lại thông tin khuyến mãi.")
-    bsd_ck_db_ids = fields.One2many('bsd.ck_db', 'bsd_bao_gia_id', string="Danh sách chiết khấu đặt biệt",
+    bsd_ck_db_ids = fields.One2many('bsd.ck_db', 'bsd_bao_gia_id', string="Chiết khấu đặc biệt",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
     bsd_da_co_lich = fields.Boolean(default=False)
@@ -555,6 +555,10 @@ class BsdBaoGia(models.Model):
 
     def action_chon_dkbg(self):
         action = self.env.ref('bsd_kinh_doanh.bsd_wizard_chon_dkbg_action').read()[0]
+        return action
+
+    def action_ck_db(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_ck_db_action_popup').read()[0]
         return action
 
 

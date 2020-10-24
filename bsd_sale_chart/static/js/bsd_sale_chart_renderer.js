@@ -105,6 +105,8 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                             attrs: {
                                 placeholder: _t('Chọn hướng nhìn'),
                                 string: "Hướng nhìn",
+                                can_create: false,
+                                can_write: false,
                             }
                         }
                     ),

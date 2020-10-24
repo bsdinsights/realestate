@@ -273,7 +273,7 @@
                             <field name="bsd_ck_db_ids"
                                    attrs="{'readonly':[('bsd_da_co_lich','=',True)]}"
                                    context="{'default_bsd_bao_gia_id':id}">
-                                <tree>
+                                <tree delete="false">
                                     <field name="currency_id" invisible="1"/>
                                     <field name="company_id" invisible="1"/>
                                     <field name="bsd_ma_ck_db"/>
@@ -299,42 +299,12 @@
                                             type="object"
                                             confirm="Bạn có muốn Từ chối yêu cầu không?"/>
                                 </tree>
-                                <form duplicate="false">
-                                    <header>
-                                        <field name="state" widget="statusbar" statusbar_visible="0"/>
-                                    </header>
-                                    <sheet>
-                                        <group>
-                                            <group>
-                                                <field name="currency_id" invisible="1"/>
-                                                <field name="company_id" invisible="1"/>
-                                                <field name="bsd_ma_ck_db"/>
-                                                <field name="bsd_ten_ck_db"/>
-                                                <field name="bsd_cach_tinh"/>
-                                                <field name="bsd_tien"
-                                                       attrs="{'required':[('bsd_cach_tinh', 'in', ['tien'])],
-                                                               'readonly':['|',('bsd_cach_tinh', 'in', ['phan_tram']),('state','!=','nhap')]}"/>
-                                                <field name="bsd_tl_ck"
-                                                       attrs="{'required':[('bsd_cach_tinh', 'in', ['phan_tram'])],
-                                                               'readonly':['|',('bsd_cach_tinh', 'in', ['tien']),('state','!=','nhap')]}"/>
-                                                <field name="bsd_dien_giai"/>
-                                                <field name="bsd_bao_gia_id"/>
-                                                <field name="bsd_khach_hang_id"/>
-                                            </group>
-                                            <group>
-                                                <field name="bsd_du_an_id"/>
-                                                <field name="bsd_unit_id"/>
-                                                <field name="bsd_dot_mb_id"/>
-                                                <field name="bsd_cs_tt_id"/>
-                                                <field name="bsd_tien_dc"/>
-                                                <field name="bsd_tien_gc"/>
-                                                <field name="bsd_ngay_duyet"/>
-                                                <field name="bsd_nguoi_duyet_id"/>
-                                            </group>
-                                        </group>
-                                    </sheet>
-                                </form>
                             </field>
+                            <button string="Thêm CK đặc biệt"
+                                    type="object"
+                                    name="action_ck_db"
+                                    states="nhap"
+                                    class="oe_highlight oe_right"/>
                         </page>
                         <page string="Lịch thanh toán">
                             <field name="bsd_ltt_ids">
