@@ -62,57 +62,57 @@
                                     <table class="table table-bordered table-sm"
                                            style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
                                         <thead>
-                                            <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px;">
-                                                <th style="border: 1px solid black !important;" width="15%">
+                                            <tr class="text-center" style="font-size:17px;border: 1px solid black !important;">
+                                                <th width="15%">
                                                     <div>Đợt thanh toán</div>
                                                 </th>
-                                                <th style="border: 1px solid black !important;" width="15%">
+                                                <th width="15%">
                                                     <div>Hạn thanh toán</div>
                                                 </th>
-                                                <th style="border: 1px solid black !important;" width="20%">
+                                                <th width="20%">
                                                     <div>Tỷ lệ thanh toán (%)</div>
                                                 </th>
-                                                <th style="border: 1px solid black !important;" width="10%">
+                                                <th width="10%">
                                                     <div>Đợt ký HĐ</div>
                                                 </th>
-                                                <th style="border: 1px solid black !important;" width="10%">
+                                                <th width="10%">
                                                     <div>Đợt Cuối</div>
                                                 </th>
-                                                <th style="border: 1px solid black !important;" width="15%">
+                                                <th width="15%">
                                                     <div>Đợt thu PQL</div>
                                                 </th>
-                                                <th style="border: 1px solid black !important;" width="15%">
+                                                <th width="15%">
                                                     <div>Đợt thu PBT</div>
                                                 </th>
                                             </tr>
                                         </thead>
                                             <t t-foreach="list_tt" t-as="dot_tt">
-                                                <tr>
-                                                    <td style="border: 1px solid black !important;" class="text-center">
+                                                <tr style="border: 1px solid black !important;">
+                                                    <td class="text-center">
                                                         <span t-esc="dot_tt[0]"/>
                                                     </td>
-                                                    <td style="border: 1px solid black !important;" class="text-right">
+                                                    <td class="text-right">
                                                         <span t-esc="dot_tt[1]"/>
                                                     </td>
-                                                    <td style="border: 1px solid black !important;" class="text-right">
+                                                    <td class="text-right">
                                                         <span t-esc="dot_tt[2]"/>
                                                     </td>
-                                                    <td style="border: 1px solid black !important;" class="text-center">
+                                                    <td class="text-center">
                                                         <t t-if="dot_tt[3]">
                                                             <i class="fa fa-check"/>
                                                         </t>
                                                     </td>
-                                                    <td style="border: 1px solid black !important;" class="text-center">
+                                                    <td class="text-center">
                                                         <t t-if="dot_tt[4]">
                                                             <i class="fa fa-check"/>
                                                         </t>
                                                     </td>
-                                                    <td style="border: 1px solid black !important;" class="text-center">
+                                                    <td class="text-center">
                                                         <t t-if="dot_tt[5]">
                                                             <i class="fa fa-check"/>
                                                         </t>
                                                     </td>
-                                                    <td style="border: 1px solid black !important;" class="text-center">
+                                                    <td class="text-center">
                                                         <t t-if="dot_tt[6]">
                                                             <i class="fa fa-check"/>
                                                         </t>
