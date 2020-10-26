@@ -98,6 +98,9 @@ class BsdChietKhauDacBiet(models.Model):
 
     # DM.13.02 Duyệt chiết khấu
     def action_duyet(self):
+        if self.bsd_bao_gia_id.bsd_ltt_ids:
+            raise UserError(_("Bảng tính giá đã tạo lịch thanh toán.\n"
+                              "Vui lòng xóa lịch thanh toán trước khi duyệt chiết khấu đặc biệt."))
         self.write({
             'state': 'duyet',
         })

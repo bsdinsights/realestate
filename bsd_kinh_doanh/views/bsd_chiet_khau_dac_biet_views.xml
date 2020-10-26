@@ -168,6 +168,10 @@
                             name="action_khong_duyet"
                             states="xac_nhan"
                             type="object"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            states="nhap,xac_nhan"
+                            type="object"/>
                     <button string="Đóng" special="cancel"/>
                 </footer>
             </form>

@@ -328,7 +328,7 @@
                             <button string="Thêm CK đặc biệt"
                                     type="object"
                                     name="action_ck_db"
-                                    states="nhap"
+                                    attrs="{'invisible':['|',('id', '=', False),('bsd_da_co_lich','=',True)]}"
                                     class="oe_highlight oe_right"/>
                         </page>
                         <page string="Lịch thanh toán">
