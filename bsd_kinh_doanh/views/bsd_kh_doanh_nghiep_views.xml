@@ -316,6 +316,7 @@
     <record model="ir.ui.view" id="bsd_res_partner_popup_form">
         <field name="name">bsd.res.partner.popup.form</field>
         <field name="model">res.partner</field>
+        <field name="priority" eval="1"/>
         <field name="arch" type="xml">
             <form duplicate="false">
                 <sheet>

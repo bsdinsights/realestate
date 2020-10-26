@@ -3,6 +3,7 @@
     <record model="ir.ui.view" id="bsd_product_template_form">
         <field name="name">bsd.product.template.form</field>
         <field name="model">product.template</field>
+        <field eval="1" name="priority"/>
         <field name="arch" type="xml">
             <form duplicate="false">
                 <header>
@@ -33,6 +34,7 @@
                                    attrs="{'readonly':[('id', '!=', False)]}"
                                    domain="[('bsd_toa_nha_id','in',[bsd_toa_nha_id])]"
                                    options="{'no_create':true}"/>
+                            <field name="bsd_ky_tu_sp"/>
                             <field name="bsd_stt"/>
                         </group>
                         <group>
@@ -227,7 +229,186 @@
                       (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_product_template_form')})]"/>
         <field name="search_view_id" ref="bsd_product_template_filter"/>
     </record>
+    <!--    form product   -->
+    <record model="ir.ui.view" id="bsd_product_product_form">
+        <field name="name">bsd.product.product.form</field>
+        <field name="model">product.product</field>
+        <field eval="1" name="priority"/>
+        <field name="arch" type="xml">
+            <form duplicate="false">
+                <header>
+                    <button string="Ưu tiên"
+                            name="action_uu_tien"
+                            type="object"
+                            attrs="{'invisible':['|',('bsd_uu_tien','=','1'),('state','not in',['chuan_bi','san_sang','dat_cho','giu_cho'])]}"
+                            class="oe_highlight"/>
+                    <button string="Hủy ưu tiên"
+                            name="action_huy_uu_tien"
+                            type="object"
+                            attrs="{'invisible':['|',('bsd_uu_tien','=','0'),('state','not in',['chuan_bi','san_sang'])]}"
+                            class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" text="Ưu tiên" attrs="{'invisible':[('bsd_uu_tien', '=', '0')]}"/>
+                    <group string="THÔNG TIN CHUNG">
+                        <group>
+                            <field name="bsd_du_an_id"
+                                   attrs="{'readonly':[('id', '!=', False)]}"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_toa_nha_id"
+                                   attrs="{'readonly':[('id', '!=', False)]}"
+                                   domain="[('bsd_du_an_id','in',[bsd_du_an_id])]"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_tang_id"
+                                   attrs="{'readonly':[('id', '!=', False)]}"
+                                   domain="[('bsd_toa_nha_id','in',[bsd_toa_nha_id])]"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_ky_tu_sp"/>
+                            <field name="bsd_stt"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ma_unit" readonly="1"/>
+                            <field name="bsd_ma_unit" invisible="1"/>
+                            <field name="bsd_ten_unit" readonly="1"/>
+                            <field name="bsd_ten_unit" invisible="1"/>
+                            <field name="bsd_ten_sp" />
+                            <field name="bsd_dien_giai"/>
+                        </group>
+                    </group>
+                    <group string="PHÂN NHÓM">
+                        <group>
+                            <field name="bsd_huong"/>
+<!--                            <field name="bsd_view"/>-->
+                            <field name="bsd_view_ids" widget="many2many_tags"/>
+                            <field name="bsd_so_pn"/>
+                        </group>
+                        <group>
+<!--                            <field name="bsd_loai_bds"/>-->
+<!--                            <field name="bsd_phan_loai"/>-->
+<!--                            <field name="bsd_loai_unit"/>-->
+                            <field name="bsd_loai_sd_ids"
+                                   options="{'no_create': true}"
+                                   widget="many2many_tags" />
+                            <field name="bsd_loai_sp_id"
+                                   domain="[('bsd_du_an_id', 'in',[bsd_du_an_id]),
+                                            '|',('bsd_toa_nha_id','in',[bsd_toa_nha_id]),
+                                                ('bsd_toa_nha_id', '=',False)]"
+                                   options="{'no_create':true}"/>
+                        </group>
+                    </group>
+                    <group string="DIỆN TÍCH">
+                        <group>
+                            <label for="bsd_dt_cl"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_dt_cl" class="mr-1"/>
+                                <span>%</span>
+                            </div>
+                            <label for="bsd_dt_xd"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_dt_xd" class="mr-1"/>
+                                <span>m2</span>
+                            </div>
+                            <label for="bsd_dt_sd"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_dt_sd" class="mr-1"/>
+                                <span>m2</span>
+                            </div>
+                        </group>
+                        <group>
+                            <label for="bsd_dt_tt"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_dt_tt" class="mr-1"/>
+                                <span>m2</span>
+                            </div>
+                            <label for="bsd_dt_sh"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_dt_sh" class="mr-1"/>
+                                <span>m2</span>
+                            </div>
+                        </group>
+                    </group>
+                    <group string="GIÁ BÁN">
+                        <group>
+                            <field name="bsd_tien_gc"/>
+                            <field name="bsd_tien_dc"/>
+                            <label for="bsd_tl_tc"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_tl_tc" class="mr-1"/>
+                                <span>%</span>
+                            </div>
+                            <field name="bsd_don_gia"/>
+                            <field name="bsd_gia_ban"/>
+                            <field name="bsd_qsdd_m2"/>
+                        </group>
+                        <group>
+                            <field name="bsd_tien_qsdd"/>
+                            <label for="bsd_tl_pbt"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_tl_pbt" class="mr-1"/>
+                                <span>%</span>
+                            </div>
+                            <field name="bsd_tien_pbt"/>
+                            <label for="bsd_thue_suat"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_thue_suat" class="mr-1"/>
+                                <span>%</span>
+                            </div>
+                            <field name="bsd_tien_thue"/>
+                            <field name="bsd_tong_gb"/>
+                        </group>
+                    </group>
+                    <group string="MỞ BÁN" name="mo_ban">
+                        <group name="san_gd">
+                            <field name="bsd_san_gd_id"
+                                   domain="[('is_company', '=',True)]"
+                                   options="{'no_create':true}"/>
+                        </group>
+                    </group>
+                    <group string="BÀN GIAO">
+                        <group>
+                            <label for="bsd_dk_bg"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_dk_bg" class="mr-1"/>
+                                <span>%</span>
+                            </div>
+                            <field name="bsd_thang_pql"/>
+                            <field name="bsd_don_gia_pql"/>
+                            <field name="bsd_tien_pql"/>
 
+                        </group>
+                        <group>
+                            <field name="bsd_ngay_dkbg" readonly="1"/>
+                            <field name="bsd_ngay_dkbg" invisible="1"/>
+                            <field name="bsd_ngay_cn" readonly="1"/>
+                            <field name="bsd_ngay_bg" readonly="1"/>
+                            <field name="bsd_ngay_cap_sh"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="ƯU TIÊN">
+                        <group>
+                            <field name="bsd_uu_tien"/>
+                            <field name="bsd_nguoi_duyet_id" options="{'no_create':true}"/>
+                            <field name="bsd_ngay_duyet"/>
+                            <field name="bsd_lan_duyet"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ghi_chu" attrs="{'readonly':[('bsd_uu_tien','=','0')]}"/>
+                            <field name="bsd_nguoi_huy_id" options="{'no_create':true}"/>
+                            <field name="bsd_ngay_huy"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
     <record model="ir.ui.view" id="bsd_view_tree">
         <field name="name">bsd.view.tree</field>
         <field name="model">bsd.view</field>

@@ -155,10 +155,20 @@
                 </sheet>
                 <footer>
                     <button string="Xác nhận"
-                            name="action_xac_nhan"
+                            name="action_xac_nhan_popup"
+                            states="nhap"
                             class="oe_highlight"
                             type="object"/>
-                    <button string="Hủy" special="cancel"/>
+                    <button string="Duyệt"
+                            name="action_duyet"
+                            class="oe_highlight"
+                            states="xac_nhan"
+                            type="object"/>
+                    <button string="Không duyệt"
+                            name="action_khong_duyet"
+                            states="xac_nhan"
+                            type="object"/>
+                    <button string="Đóng" special="cancel"/>
                 </footer>
             </form>
         </field>

@@ -559,6 +559,7 @@ class BsdBaoGia(models.Model):
 
     def action_ck_db(self):
         action = self.env.ref('bsd_kinh_doanh.bsd_ck_db_action_popup').read()[0]
+        action['context'] = {'default_bsd_bao_gia_id': self.id}
         return action
 
 

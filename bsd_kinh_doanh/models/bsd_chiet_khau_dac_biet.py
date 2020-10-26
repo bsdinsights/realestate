@@ -33,8 +33,12 @@ class BsdChietKhauDacBiet(models.Model):
     bsd_tl_ck = fields.Float(string="Tỷ lệ chiết khấu", help="Tỷ lệ chiết khấu được hưởng",
                              readonly=True,
                              states={'nhap': [('readonly', False)]})
-    bsd_dien_giai = fields.Char(string="Diễn giải", help="Nội dung về yêu cầu chiết khấu đặc biệt")
-    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", required=True)
+    bsd_dien_giai = fields.Char(string="Diễn giải", help="Nội dung về yêu cầu chiết khấu đặc biệt",
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
+    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", required=True,
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Tên Đặt cọc", readonly=True)
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", required=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True)
@@ -84,6 +88,14 @@ class BsdChietKhauDacBiet(models.Model):
             'state': 'xac_nhan'
         })
 
+    def action_xac_nhan_popup(self):
+        self.write({
+            'state': 'xac_nhan'
+        })
+        action = self.env.ref('bsd_kinh_doanh.bsd_ck_db_action_popup').read()[0]
+        action['res_id'] = self.id
+        return action
+
     # DM.13.02 Duyệt chiết khấu
     def action_duyet(self):
         self.write({
@@ -100,6 +112,11 @@ class BsdChietKhauDacBiet(models.Model):
         self.write({
             'state': 'huy',
         })
+
+    def action_xet_duyet(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_ck_db_action_popup').read()[0]
+        action['res_id'] = self.id
+        return action
 
     @api.model
     def create(self, vals):

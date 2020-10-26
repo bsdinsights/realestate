@@ -25,6 +25,7 @@ class ProductTemplate(models.Model):
     bsd_stt = fields.Integer(string="Số thứ tự", help="Số thứ tự sản phẩm", required=True,
                              readonly=True,
                              states={'chuan_bi': [('readonly', False)]})
+    bsd_ky_tu_sp = fields.Char(string="Ký tự sản phẩm", help="Ký tự sản phẩm dùng để nối chuỗi sinh mã sp", required=True)
     bsd_ten_unit = fields.Char(string="Mã sản phẩm",
                                help="Mã sản phẩm bao gồm mã tòa nhà, mã tầng và số sản phẩm",
                                readonly=True,
@@ -364,12 +365,12 @@ class ProductTemplate(models.Model):
                 template.write({
                     'bsd_ma_unit': du_an.bsd_ma_da + du_an.bsd_dd_da +
                             toa_nha.bsd_ma_tn + du_an.bsd_dd_khu +
-                                   tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_stt
+                                   tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_ky_tu_sp
                 })
             if not template.bsd_ten_unit:
                 template.write({
                     'bsd_ten_unit': toa_nha.bsd_ma_tn + du_an.bsd_dd_khu +
-                                    tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_stt
+                                    tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_ky_tu_sp
                 })
             if not template.bsd_ngay_dkbg:
                 template.write({
@@ -434,6 +435,25 @@ class ProductTemplate(models.Model):
                 raise UserError(_("Sản phẩm đã phát sinh giữ chỗ. Không thể xóa sản phẩm."))
             each.env['ir.sequence'].search([('id', '=', each.bsd_sequence_gc_id.id)]).unlink()
         return super(ProductTemplate, self).unlink()
+
+
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
+
+    def action_uu_tien(self):
+        self.write({
+            'bsd_uu_tien': '1',
+            'bsd_nguoi_duyet_id': self.env.uid,
+            'bsd_ngay_duyet': datetime.today(),
+            'bsd_lan_duyet': self.bsd_lan_duyet + 1,
+        })
+
+    def action_huy_uu_tien(self):
+        self.write({
+            'bsd_uu_tien': '0',
+            'bsd_nguoi_huy_id': self.env.uid,
+            'bsd_ngay_huy': datetime.today(),
+        })
 
 
 class BsdHuongNhin(models.Model):
