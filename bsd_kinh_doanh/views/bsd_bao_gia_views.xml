@@ -134,25 +134,25 @@
                                     <label for="bsd_dt_sd"/>
                                     <div class="o_row no-gutters d-flex">
                                         <div class="col">
-                                            <field name="bsd_dt_sd" class="mr-1"/>
+                                            <field name="bsd_dt_sd" class="mr-1" readonly="1" force_save="1"/>
                                             <span>m2</span>
                                         </div>
                                     </div>
-                                    <field name="bsd_qsdd_m2"/>
+                                    <field name="bsd_qsdd_m2" readonly="1" force_save="1"/>
                                     <field name="bsd_thue_id"
                                            readonly="1"
                                            options="{'no_create':true}"/>
                                     <label for="bsd_thue_suat"/>
                                     <div class="o_row no-gutters d-flex">
                                         <div class="col">
-                                            <field name="bsd_thue_suat" class="mr-1"/>
+                                            <field name="bsd_thue_suat" class="mr-1" readonly="1" force_save="1"/>
                                             <span>%</span>
                                         </div>
                                     </div>
                                     <label for="bsd_tl_pbt"/>
                                     <div class="o_row no-gutters d-flex">
                                         <div class="col">
-                                            <field name="bsd_tl_pbt" class="mr-1"/>
+                                            <field name="bsd_tl_pbt" class="mr-1" readonly="1" force_save="1"/>
                                             <span>%</span>
                                         </div>
                                     </div>
@@ -222,6 +222,30 @@
                                     <field name="currency_id" invisible="1"/>
                                     <field name="company_id" invisible="1"/>
                                 </tree>
+                                <form duplicate="false">
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="company_id" invisible="1"/>
+                                                <field name="currency_id" invisible="1"/>
+                                                <field name="bsd_ma_dkbg"/>
+                                                <field name="bsd_dk_bg_id"/>
+                                                <field name="bsd_dk_tt"/>
+                                                <field name="bsd_bao_gia_id"/>
+                                            </group>
+                                            <group>
+                                                <field name="bsd_gia_m2"/>
+                                                <field name="bsd_tien"/>
+                                                <label for="bsd_ty_le"/>
+                                                <div class="o_row d-flex no-gutters">
+                                                    <field name="bsd_ty_le"
+                                                           class="mr-1"/>
+                                                </div>
+                                                <field name="bsd_tien_bg"/>
+                                            </group>
+                                        </group>
+                                    </sheet>
+                                </form>
                             </field>
                         </page>
                         <page string="Khuyến mãi">
@@ -488,25 +512,25 @@
                                     <label for="bsd_dt_sd"/>
                                     <div class="o_row no-gutters d-flex">
                                         <div class="col">
-                                            <field name="bsd_dt_sd" class="mr-1"/>
+                                            <field name="bsd_dt_sd" class="mr-1" readonly="1" force_save="1"/>
                                             <span>m2</span>
                                         </div>
                                     </div>
-                                    <field name="bsd_qsdd_m2"/>
+                                    <field name="bsd_qsdd_m2" readonly="1" force_save="1"/>
                                     <field name="bsd_thue_id"
                                            readonly="1" force_save="1"
                                            options="{'no_create':true}"/>
                                     <label for="bsd_thue_suat"/>
                                     <div class="o_row no-gutters d-flex">
                                         <div class="col">
-                                            <field name="bsd_thue_suat" class="mr-1"/>
+                                            <field name="bsd_thue_suat" class="mr-1" readonly="1" force_save="1"/>
                                             <span>%</span>
                                         </div>
                                     </div>
                                     <label for="bsd_tl_pbt"/>
                                     <div class="o_row no-gutters d-flex">
                                         <div class="col">
-                                            <field name="bsd_tl_pbt" class="mr-1"/>
+                                            <field name="bsd_tl_pbt" class="mr-1" readonly="1" force_save="1"/>
                                             <span>%</span>
                                         </div>
                                     </div>

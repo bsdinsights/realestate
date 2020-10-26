@@ -68,7 +68,8 @@ class BsdBaoGia(models.Model):
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích tim tường",
                              related="bsd_unit_id.bsd_dt_xd", store=True)
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",
-                             related="bsd_unit_id.bsd_dt_sd", store=True)
+                             required=True,
+                             readonly=True)
 
     def _get_thue(self):
         return self.env['bsd.thue_suat'].search([('bsd_ma_ts', '=', 'VAT10')], limit=1)
@@ -76,11 +77,15 @@ class BsdBaoGia(models.Model):
     bsd_thue_id = fields.Many2one('bsd.thue_suat', string="Thuế", help="Thuế", required=True,
                                   readonly=True, default=_get_thue,
                                   states={'nhap': [('readonly', False)]})
-    bsd_qsdd_m2 = fields.Monetary(string="Giá trị QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2",
-                                  related="bsd_unit_id.bsd_qsdd_m2", store=True)
-    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", related="bsd_thue_id.bsd_thue_suat", store=True,
+    bsd_qsdd_m2 = fields.Monetary(string="Giá trị QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2")
+    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", required=True, readonly=True,
                                  digits=(12, 2))
-    bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì", compute='_compute_tl_pbt', store=True)
+
+    @api.onchange('bsd_thue_id')
+    def _onchange_thue(self):
+        self.bsd_thue_suat = self.bsd_thue_id.bsd_thue_suat
+
+    bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì")
     bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="Phương thức TT", help="Phương thức thanh toán", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
@@ -115,7 +120,7 @@ class BsdBaoGia(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
-    bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_bao_gia_id', string="Bàn giao",
+    bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_bao_gia_id', string="Điều kiện bàn giao",
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
 
@@ -189,14 +194,6 @@ class BsdBaoGia(models.Model):
             so_ngay = datetime.timedelta(days=each.bsd_du_an_id.bsd_hh_bg)
             each.bsd_ngay_hl_bg = each.bsd_ngay_bao_gia + so_ngay
 
-    @api.depends('bsd_unit_id.bsd_tl_pbt')
-    def _compute_tl_pbt(self):
-        for each in self:
-            if each.bsd_unit_id.bsd_tl_pbt != 0:
-                each.bsd_tl_pbt = each.bsd_unit_id.bsd_tl_pbt
-            else:
-                each.bsd_tl_pbt = each.bsd_unit_id.bsd_du_an_id.bsd_tl_pbt
-
     @api.depends('bsd_gia_ban', 'bsd_tl_pbt')
     def _compute_tien_pbt(self):
         for each in self:
@@ -244,13 +241,11 @@ class BsdBaoGia(models.Model):
         self.bsd_dot_mb_id = self.bsd_unit_id.bsd_dot_mb_id
         self.bsd_tien_dc = self.bsd_unit_id.bsd_tien_dc
         self.bsd_du_an_id = self.bsd_unit_id.bsd_du_an_id
-        for each in self:
-            if each.bsd_unit_id.bsd_thang_pql != 0:
-                each.bsd_thang_pql = each.bsd_unit_id.bsd_thang_pql
-            else:
-                each.bsd_thang_pql = each.bsd_unit_id.bsd_du_an_id.bsd_thang_pql
-
-            each.bsd_tien_pql = each.bsd_unit_id.bsd_tien_pql
+        self.bsd_thang_pql = self.bsd_unit_id.bsd_thang_pql
+        self.bsd_tien_pql = self.bsd_unit_id.bsd_tien_pql
+        self.bsd_dt_sd = self.bsd_unit_id.bsd_dt_sd
+        self.bsd_qsdd_m2 = self.bsd_unit_id.bsd_qsdd_m2
+        self.bsd_tl_pbt = self.bsd_unit_id.bsd_tl_pbt
 
     @api.depends('bsd_gia_truoc_thue', 'bsd_tien_thue', 'bsd_tien_pbt')
     def _compute_tong_gia(self):
