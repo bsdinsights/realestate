@@ -263,3 +263,21 @@ class BsdChietKhau(models.Model):
             raise UserError(_('Dự án chưa có mã Chiết khấu.'))
         vals['bsd_ma_ck'] = sequence.next_by_id()
         return super(BsdChietKhau, self).create(vals)
+    
+    def _get_name(self):
+        ck = self
+        name = ck.bsd_ten_ck or ''
+        if self._context.get('show_info'):
+            if ck.bsd_cach_tinh == 'tien':
+                name = "%s - %s - %s" % (ck.bsd_ten_ck, "Giá trị",  '{:,.0f} đ'
+                                         .format(ck.bsd_tien_ck).replace(',', '.'))
+            elif ck.bsd_cach_tinh == 'phan_tram':
+                name = "%s - %s - %s %s" % (ck.bsd_ten_ck, "Phần trăm", ck.bsd_tl_ck, "%")
+        return name
+
+    def name_get(self):
+        res = []
+        for ck in self:
+            name = ck._get_name()
+            res.append((ck.id, name))
+        return res

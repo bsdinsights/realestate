@@ -545,10 +545,16 @@ class BsdBaoGia(models.Model):
         }
 
     def action_chon_ck(self):
+        if self.bsd_ltt_ids:
+            raise UserError(_("Bảng tính giá đã có lịch thanh toán.\n"
+                              "Vui lòng xóa lịch thanh toán trước khi chọn chiết khấu."))
         action = self.env.ref('bsd_kinh_doanh.bsd_wizard_chon_ck_action').read()[0]
         return action
 
     def action_chon_dkbg(self):
+        if self.bsd_ltt_ids:
+            raise UserError(_("Bảng tính giá đã có lịch thanh toán.\n"
+                              "Vui lòng xóa lịch thanh toán trước khi chọn điều kiện bàn giao."))
         action = self.env.ref('bsd_kinh_doanh.bsd_wizard_chon_dkbg_action').read()[0]
         return action
 

@@ -39,15 +39,21 @@
                 <sheet>
                     <group>
                         <group string="CHIẾT KHẤU CHUNG">
-                            <field name="bsd_ck_ch_ids" widget="many2many_checkboxes" nolabel="1"/>
+                            <field name="bsd_ck_ch_ids"
+                                   context="{'show_info':True}"
+                                   widget="many2many_checkboxes" nolabel="1"/>
                         </group>
                         <group string="CHIẾT KHẤU NỘI BỘ">
-                            <field name="bsd_ck_nb_ids" widget="many2many_checkboxes" nolabel="1"/>
+                            <field name="bsd_ck_nb_ids"
+                                   context="{'show_info':True}"
+                                   widget="many2many_checkboxes" nolabel="1"/>
                         </group>
                     </group>
                     <group>
                         <group string="CHIẾT KHẤU THEO PHƯƠNG THỨC THANH TOÁN">
-                            <field name="bsd_ck_pttt_ids" widget="many2many_checkboxes" nolabel="1"/>
+                            <field name="bsd_ck_pttt_ids"
+                                   context="{'show_info':True}"
+                                   widget="many2many_checkboxes" nolabel="1"/>
                         </group>
                         <group>
                             <field name="bsd_bao_gia_id" invisible="1"/>
