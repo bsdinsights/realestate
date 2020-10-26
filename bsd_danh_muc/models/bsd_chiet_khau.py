@@ -281,3 +281,9 @@ class BsdChietKhau(models.Model):
             name = ck._get_name()
             res.append((ck.id, name))
         return res
+
+    def auto_kt_chiet_khau(self):
+        if self.state == 'duyet':
+            self.write({
+                'state': 'het_han'
+            })

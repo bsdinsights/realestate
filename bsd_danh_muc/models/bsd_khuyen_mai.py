@@ -99,6 +99,12 @@ class BsdKhuyenMai(models.Model):
                 'state': 'huy',
             })
 
+    def auto_kt_km(self):
+        if self.state == 'duyet':
+            self.write({
+                'state': 'het_han'
+            })
+
     @api.model
     def create(self, vals):
         sequence = False

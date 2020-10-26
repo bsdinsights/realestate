@@ -14,6 +14,7 @@
         'security/ir.model.access.csv',
         'security/bsd_security.xml',
         'data/bsd_danh_muc_data.xml',
+        'data/bsd_automation_data.xml',
         'views/bsd_quan_huyen_views.xml',
         'views/bsd_phuong_xa_views.xml',
         'views/bsd_lai_suat_views.xml',

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record model="base.automation" id="bsd_chiet_khau_het_han_ck">
+            <field name="name">Kiểm tra hiệu lực chiết khấu</field>
+            <field name="model_id" ref="bsd_danh_muc.model_bsd_chiet_khau"></field>
+            <field name="trigger">on_time</field>
+            <field name="filter_domain">[('state', '=', 'duyet')]</field>
+            <field name="trg_date_id" ref="bsd_danh_muc.field_bsd_chiet_khau__bsd_den_ngay"></field>
+            <field name="state">code</field>
+            <field name="code">
+record = model.browse(env.context['active_id'])
+record.auto_kt_chiet_khau()
+            </field>
+        </record>
+
+        <record model="base.automation" id="bsd_dk_bg_het_han">
+            <field name="name">Kiểm tra hiệu lực điều kiện bàn giao</field>
+            <field name="model_id" ref="bsd_danh_muc.model_bsd_dk_bg"></field>
+            <field name="trigger">on_time</field>
+            <field name="filter_domain">[('state', '=', 'duyet')]</field>
+            <field name="trg_date_id" ref="bsd_danh_muc.field_bsd_dk_bg__bsd_den_ngay"></field>
+            <field name="state">code</field>
+            <field name="code">
+record = model.browse(env.context['active_id'])
+record.auto_kt_dk_bg()
+            </field>
+        </record>
+
+        <record model="base.automation" id="bsd_khuyen_mai_het_han">
+            <field name="name">Kiểm tra hiệu lực khuyến mãi</field>
+            <field name="model_id" ref="bsd_danh_muc.model_bsd_khuyen_mai"></field>
+            <field name="trigger">on_time</field>
+            <field name="filter_domain">[('state', '=', 'duyet')]</field>
+            <field name="trg_date_id" ref="bsd_danh_muc.field_bsd_khuyen_mai__bsd_den_ngay"></field>
+            <field name="state">code</field>
+            <field name="code">
+record = model.browse(env.context['active_id'])
+record.auto_kt_km()
+            </field>
+        </record>
+    </data>
+</odoo>
