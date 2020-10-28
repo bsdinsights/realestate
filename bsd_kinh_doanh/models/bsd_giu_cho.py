@@ -50,7 +50,7 @@ class BsdGiuCho(models.Model):
     def _get_nhan_vien(self):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)])
 
-    bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên BH", help="Nhân viên bán hàng",
+    bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên KD", help="Nhân viên kinh doanh",
                                   readonly=True, required=True, default=_get_nhan_vien,
                                   states={'nhap': [('readonly', False)]})
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch", domain=[('is_company', '=', True)],
@@ -89,11 +89,7 @@ class BsdGiuCho(models.Model):
                                       required=True, readonly=True)
     bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ",readonly=True)
     bsd_stt_bg = fields.Integer(string="Số thứ tự", readonly=True, help="Số thứ tự giữ chỗ")
-    bsd_ngay_hh_bg = fields.Datetime(string="Ngày ưu tiên ", help="Ưu tiên làm bảng tính giá", readonly=True)
-    # bsd_het_han_bg = fields.Boolean(string="Hết hạn báo giá", readonly=True, default=False,
-    #                                 help="Thông tin ghi nhận thời gian làm báo giá có bok hết hiệu lực hay chưa")
-    # bsd_ngay_hh_stt = fields.Datetime(string="Hạn GC sau TT",
-    #                                   help="Ngày hết hạn giữ chỗ sau khi thanh toán tiền giữ chỗ")
+    bsd_ngay_hh_bg = fields.Datetime(string="Ngày ưu tiên", help="Ưu tiên làm bảng tính giá", readonly=True)
     bsd_het_han_gc = fields.Boolean(string="Hết hạn giữ chỗ", readonly=True,
                                     help="""Thông tin ghi nhận giữ chỗ bị hết hiệu lực sau khi đã thanh toán giữ chỗ""")
 
@@ -104,9 +100,22 @@ class BsdGiuCho(models.Model):
                                     readonly=True, default=0)
     bsd_huy_gc_id = fields.Many2one('bsd.huy_gc', string="Hủy giữ chỗ", help="Mã phiếu hủy giữ chỗ", readonly=1)
 
-    bsd_so_bao_gia = fields.Integer(string="# Báo giá", compute='_compute_bao_gia')
+    bsd_so_bao_gia = fields.Integer(string="# Bảng tính giá", compute='_compute_bao_gia')
     bsd_so_huy_gc = fields.Integer(string="# Hủy giữ chỗ", compute='_compute_huy_gc')
     bsd_so_chuyen_gc = fields.Integer(string="# Chuyển GC", compute='_compute_chuyen_gc')
+
+    # 3 field ctv , sàn gd, giới thiệu không tồn tại đồng thời
+    # Khách hàng không được trùng với mô giới
+    @api.constrains('bsd_ctv_id', 'bsd_san_gd_id', 'bsd_gioi_thieu_id', 'bsd_khach_hang_id')
+    def _constrains_mo_gioi(self):
+        if (self.bsd_ctv_id and self.bsd_san_gd_id) \
+            or (self.bsd_ctv_id and self.bsd_gioi_thieu_id) \
+               or (self.bsd_san_gd_id and self.bsd_gioi_thieu_id):
+            raise UserError("Vui lòng chọn 1 trong 3 giá trị: Sàn giao dịch, Công tác viên, Khách hàng giới thiệu.")
+        if self.bsd_khach_hang_id == self.bsd_ctv_id \
+            or self.bsd_khach_hang_id == self.bsd_san_gd_id \
+                or self.bsd_khach_hang_id == self.bsd_gioi_thieu_id:
+            raise UserError("Thông tin môi giới không được trùng với khách hàng.\n Vui lòng kiểm tra lại thông tin.")
 
     @api.onchange('bsd_nvbh_id')
     def _onchange_san_ctv(self):
@@ -154,19 +163,22 @@ class BsdGiuCho(models.Model):
     @api.constrains('bsd_unit_id')
     def _constraint_unit_ut(self):
         if self.bsd_unit_id.bsd_uu_tien == '1':
-            raise UserError(_("""Sản phẩm {0} đang được ưu tiên.\n 
-            Vui lòng chọn sản phẩm khác để giao dịch.""".format(self.bsd_unit_id.bsd_ma_unit)))
+            raise UserError(_("""
+            Sản phẩm {0} đang được ưu tiên.\nVui lòng chọn sản phẩm khác để giao dịch.""".format(self.bsd_unit_id.bsd_ma_unit)))
 
-    # KD.07.02 Ràng buộc số giữ chỗ theo Sản phẩm/ NVBH
+    # KD.07.02 Ràng buộc số giữ chỗ theo Sản phẩm/ NVKD
     @api.constrains('bsd_nvbh_id', 'bsd_unit_id')
     def _constrain_unit_nv(self):
-        _logger.debug(" Ràng buộc số giữ chỗ theo Sản phẩm/ NVBH")
+        _logger.debug("Ràng buộc số giữ chỗ theo Sản phẩm/ NVBH.")
         gc_in_unit = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                      ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
-                                                     ('bsd_unit_id', '=', self.bsd_unit_id.id),
-                                                     ('state', 'in', ['nhap', 'giu_cho', 'dat_cho'])])
-        if len(gc_in_unit) > self.bsd_du_an_id.bsd_gc_unit_nv:
-            raise UserError("Tổng số giữ chỗ trên Sản phẩm của bạn đã vượt quá quy định!")
+                                                     ('bsd_thanh_toan', '!=', 'chua_tt'),
+                                                     ('state', 'in', ['dat_cho', 'giu_cho', 'dang_cho'])])
+        gc_in_unit += self
+        unit = gc_in_unit.mapped('bsd_unit_id')
+        _logger.debug(unit)
+        if len(unit) > self.bsd_du_an_id.bsd_gc_unit_nv:
+            raise UserError("Tổng số sản phẩm bạn thực hiện giữ chỗ đã vượt quá quy định dự án!")
 
     # Kiểm tra khách hàng đã giữ chỗ căn hộ này chưa
     @api.constrains('bsd_unit_id', 'bsd_khach_hang_id')
@@ -195,6 +207,7 @@ class BsdGiuCho(models.Model):
         gc_in_unit = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                      ('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                      ('state', 'in', ['giu_cho', 'dang_cho'])])
+        gc_in_unit += self
         if len(gc_in_unit) > self.bsd_du_an_id.bsd_gc_unit:
             raise UserError("Tổng số giữ chỗ trên Sản phẩm đã vượt quá quy định!")
 
@@ -207,7 +220,9 @@ class BsdGiuCho(models.Model):
                                                    ('bsd_ngay_gc', '>', min_time),
                                                    ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
                                                    ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
-                                                   ('state', 'in', ['giu_cho', 'dang_cho'])])
+                                                   ('bsd_thanh_toan', '!=', 'chua_tt'),
+                                                   ('state', 'in', ['dat_cho', 'giu_cho', 'dang_cho'])])
+        gc_in_day += self
         if len(gc_in_day) > self.bsd_du_an_id.bsd_gc_nv_ngay:
             raise UserError("Tổng số Giữ chỗ trên một ngày của bạn đã vượt quá quy định.")
 
@@ -219,10 +234,11 @@ class BsdGiuCho(models.Model):
         gc_in_day = self.env['bsd.giu_cho'].search([('bsd_ngay_gc', '<', max_time),
                                                    ('bsd_ngay_gc', '>', min_time),
                                                    ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-                                                   ('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                    ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
                                                    ('state', 'in', ['giu_cho', 'dang_cho'])])
-        if len(gc_in_day) > self.bsd_du_an_id.bsd_gc_unit_nv_ngay:
+        gc_in_day += self
+        unit = gc_in_day.mapped('bsd_unit_id')
+        if len(unit) > self.bsd_du_an_id.bsd_gc_unit_nv_ngay:
             raise UserError("Tổng số Giữ chỗ trong ngày theo Sản phẩm của bạn đã vượt quá quy định.")
 
     # Kiểm tra trạng thái unit trước khi tạo giữ chỗ
@@ -286,8 +302,8 @@ class BsdGiuCho(models.Model):
             giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                            ('state', '=', 'giu_cho')])
             time_gc = self.bsd_du_an_id.bsd_gc_smb
-            ngay_hh_bg = self.bsd_ngay_gc
-            ngay_hh_gc = self.bsd_ngay_gc + datetime.timedelta(hours=time_gc)
+            ngay_hh_bg = fields.Datetime.now()
+            ngay_hh_gc = ngay_hh_bg + datetime.timedelta(hours=time_gc)
             stt = self.bsd_unit_id.bsd_sequence_gc_id.next_by_id()
             if giu_cho_unit:
                 self.write({

@@ -35,7 +35,7 @@
         </record>
 
         <act_window id="bsd_gc_tc_report_action"
-                    name="Chọn mẫu in báo giá"
+                    name="Chọn mẫu in phiếu GCTC"
                     res_model="bsd.gc_tc.report.wizard"
                     view_mode="form"
                     target="new"/>

@@ -35,7 +35,7 @@
         </record>
 
         <act_window id="bsd_giu_cho_report_action"
-                    name="Chọn mẫu in báo giá"
+                    name="Chọn mẫu in phiếu giữ chỗ"
                     res_model="bsd.giu_cho.report.wizard"
                     view_mode="form"
                     target="new"/>

@@ -148,23 +148,22 @@ class BsdProject(models.Model):
                              help="Số giờ hiệu lực của phiếu quan tâm bất động sản",
                              readonly=True,
                              states={'chuan_bi': [('readonly', False)]})
-    bsd_gc_unit_nv = fields.Integer(string="Căn hộ/NVBH", required=True,
-                                    help="Số lượng căn hộ tối đa mà mỗi nhân viên bán hàng được thực hiện giữ chỗ",
+    bsd_gc_unit_nv = fields.Integer(string="Sản phẩm/NVKD", required=True,
+                                    help="Số lượng SP mà 01 NVKH được phép thực hiện giữ chỗ",
                                     readonly=True,
                                     states={'chuan_bi': [('readonly', False)]})
-    bsd_gc_unit = fields.Integer(string="Giữ chỗ/Căn hộ", required=True,
-                                 help="Số lượng giữ chỗ tối đa cho mỗi căn hộ",
+    bsd_gc_unit = fields.Integer(string="Giữ chỗ/Sản phẩm", required=True,
+                                 help="Số lượng Giữ chỗ (Ưu tiên) trong 01 SP",
                                  readonly=True,
                                  states={'chuan_bi': [('readonly', False)]})
-    bsd_gc_nv_ngay = fields.Integer(string="NVBH/ngày",
-                                    help="Số lượng giữ chỗ tối đa mà 1 nhân viên bán hàng được phép thực hiện trong 1 ngày",
+    bsd_gc_nv_ngay = fields.Integer(string="Giữ chỗ/NVKD/ngày",
+                                    help="Số lượng Giữ chỗ mà 01 NVKD dc phép thực hiện trong 01 ngày ",
                                     readonly=True,
                                     states={'chuan_bi': [('readonly', False)]})
-    bsd_gc_unit_nv_ngay = fields.Integer(string="Căn hộ/NVBH/ngày",
-                                         help="""Số lượng giữ chỗ tối đa trên 1 căn hộ mà 1 nhân viên bán hàng 
-                                                được phép thực hiện trong 1 ngày""",
-                                        readonly=True,
-                                        states={'chuan_bi': [('readonly', False)]})
+    bsd_gc_unit_nv_ngay = fields.Integer(string="SP/NVKD/ngày",
+                                         help="""Số lượng SP mà 01 NVKD dc phép thực hiện giữ chỗ trong 01 ngày""",
+                                         readonly=True,
+                                         states={'chuan_bi': [('readonly', False)]})
     bsd_gc_tmb = fields.Integer(string="Giữ chỗ dài hạn",
                                 help="""Thời gian hiệu lực giữ chỗ dài hạn""",
                                 required=True,
@@ -175,7 +174,7 @@ class BsdProject(models.Model):
                               required=True,
                               readonly=True,
                               states={'chuan_bi': [('readonly', False)]})
-    bsd_hh_nv = fields.Float(string="Hoa hồng NVBH", required=True,
+    bsd_hh_nv = fields.Float(string="Hoa hồng NVKD", required=True,
                              help="Tỷ lệ (%) hoa hồng được hưởng của nhân viên bán hàng",
                              readonly=True,
                              states={'chuan_bi': [('readonly', False)]})

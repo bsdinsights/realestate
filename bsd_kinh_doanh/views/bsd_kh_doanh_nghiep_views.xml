@@ -345,7 +345,7 @@
                                     <field name="bsd_ten_cty_en"/>
                                     <field name="bsd_loai_cty_ids"
                                            widget="many2many_tags"
-                                           required="1"
+                                            attrs="{'required':[('is_company','=',True)]}"
                                            options="{'no_create': true}"/>
                                     <field name="bsd_cty_me"/>
                                     <field name="bsd_phan_loai"/>
@@ -355,7 +355,7 @@
                                                      'default_is_company': False,'default_bsd_la_kh': True}"
                                     />
                                     <field name="bsd_nguoi_uq"/>
-                                    <field name="phone" required="1"/>
+                                    <field name="phone" attrs="{'required':[('is_company','=',True)]}"/>
                                     <field name="bsd_phone_2"/>
                                     <field name="mobile"/>
                                     <field name="email" string="Email"/>
@@ -364,7 +364,7 @@
                                     <field name="website" string="Website"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_so_gpkd" required="1"/>
+                                    <field name="bsd_so_gpkd" attrs="{'required':[('is_company','=',True)]}"/>
                                     <field name="bsd_ngay_gpkd"/>
                                     <field name="bsd_noi_gpkd"/>
                                     <field name="bsd_mt_gpkd"/>
@@ -429,11 +429,11 @@
                             <group>
                                 <group>
                                     <field name="bsd_ho_tl"/>
-                                    <field name="name" required="1"/>
+                                    <field name="name"  attrs="{'required':[('is_company','=',False)]}"/>
                                     <field name="bsd_ngay_sinh"/>
                                     <field name="bsd_gioi_tinh"/>
                                     <field name="phone"/>
-                                    <field name="mobile" required="1"/>
+                                    <field name="mobile" attrs="{'required':[('is_company','=',False)]}"/>
                                     <field name="email" string=" Email "/>
                                     <field name="bsd_loai_kh"/>
                                     <field name="bsd_nguoi_bh"/>
@@ -447,7 +447,7 @@
                                     <field name="bsd_loai_kh_cn_ids"
                                            widget="many2many_tags"
                                            options="{'no_create': true}"
-                                           required="1"
+                                            attrs="{'required':[('is_company','=',False)]}"
                                     />
                                     <field name="function"/>
                                     <field name="bsd_cmnd"/>

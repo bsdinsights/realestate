@@ -86,6 +86,8 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                             attrs: {
                                 placeholder: _t('Chọn đợt mở bán'),
                                 can_create: false,
+                                can_write: false,
+                                string: "Đợt mở bán",
                             }
                         }
                     ),
@@ -525,27 +527,17 @@ odoo.define('bsd_sale_chart.SaleChartRenderer', function(require){
                         }
                         // Cập nhật môi giới
                         if (item.bsd_san_gd_id !== false){
-                            console.log(item.bsd_san_gd_id)
                             item.moi_gioi = item.bsd_san_gd_id[1]
                         }
                         else if (item.bsd_ctv_id !== false){
-                            console.log(item.bsd_ctv_id)
                             item.moi_gioi = item.bsd_ctv_id[1]
                         }
                         else if (item.bsd_gioi_thieu_id !== false){
-                            console.log(item.bsd_gioi_thieu_id)
-                            let moi_gioi = item.bsd_gioi_thieu_id[1]
-                            if (moi_gioi.length > 1) {
-                                item.moi_gioi = moi_gioi[1]
-                            }
-                            else {
-                                item.moi_gioi = moi_gioi[0]
-                            }
+                            item.moi_gioi = item.bsd_gioi_thieu_id[1]
                         }
                         else {
                             item.moi_gioi = ''
                         }
-                        console.log(item.moi_gioi)
                     })
                     data.giu_cho = giu_cho
                 }

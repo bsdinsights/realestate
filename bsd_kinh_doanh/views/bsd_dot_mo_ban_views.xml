@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <form duplicate="false">
                 <header>
-                    <button string="Lọc căn hộ"
+                    <button string="Lọc SP"
                             name="action_loc_unit"
                             type="object"
                             states="cph"
@@ -22,11 +22,11 @@
                             type="object"
                             states="ph"
                             name="action_thu_hoi"/>
-                    <button string="Thu hồi căn hộ"
+                    <button string="Thu hồi SP"
                             type="object"
                             states="ph"
                             name="action_thu_hoi_can_ho"/>
-                    <button string="Thêm căn hộ"
+                    <button string="Thêm SP"
                             type="object"
                             states="ph"
                             name="action_them_can_ho"/>
