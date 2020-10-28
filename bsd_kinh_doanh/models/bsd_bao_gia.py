@@ -159,9 +159,9 @@ class BsdBaoGia(models.Model):
     bsd_ngay_hl_bg = fields.Datetime(string="Hiệu lực BTG", help="Hiệu lực bảng tính giá",
                                      compute="_compute_ngay_hl", store=True)
 
-    bsd_dsh_ids = fields.Many2many('res.partner', string="Đồng sở hữu",
-                                   readonly=True,
-                                   states={'nhap': [('readonly', False)]})
+    bsd_dong_sh_ids = fields.One2many('bsd.dong_so_huu', 'bsd_bao_gia_id', string="Đồng sở hữu",
+                                      readonly=True,
+                                      states={'nhap': [('readonly', False)]})
     bsd_so_dat_coc = fields.Integer(string="# Đặt cọc", compute='_compute_dat_coc')
 
     bsd_km_ids = fields.One2many('bsd.bao_gia_km', 'bsd_bao_gia_id', string="Danh sách khuyến mãi",

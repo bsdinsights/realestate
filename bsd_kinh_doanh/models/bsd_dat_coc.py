@@ -187,7 +187,7 @@ class BsdDatCoc(models.Model):
                                     readonly=True,
                                     states={'xac_nhan': [('readonly', False)],
                                             'da_tc': [('readonly', False)]})
-    bsd_dsh_ids = fields.Many2many('res.partner', string="Đồng sở hữu", readonly=True)
+    bsd_dong_sh_ids = fields.One2many('bsd.dong_so_huu', 'bsd_dat_coc_id', string="Đồng sở hữu", readonly=True)
     bsd_nguoi_dd_id = fields.Many2one('res.partner', string="Người ký TTĐC/HĐ",required=True, tracking=2,
                                       help="Người đại diện ký thỏa thuận đặt cọc và hợp đồng mua bán", readonly=True)
     bsd_so_chuyen_dd = fields.Integer(string="# Phiếu thay đổi thông tin", compute="_compute_chuyen_dd")
@@ -257,7 +257,7 @@ class BsdDatCoc(models.Model):
         ids_km = res.bsd_bao_gia_id.bsd_km_ids.ids
         ids_ck = res.bsd_bao_gia_id.bsd_ps_ck_ids.ids
         ids_db = res.bsd_bao_gia_id.bsd_ck_db_ids.ids
-        ids_dsh = res.bsd_bao_gia_id.bsd_dsh_ids.ids
+        ids_dsh = res.bsd_bao_gia_id.bsd_dong_sh_ids.ids
         ids_pbt = res.bsd_bao_gia_id.bsd_dot_pbt_ids.ids
         ids_pql = res.bsd_bao_gia_id.bsd_dot_pql_ids.ids
         res.write({
@@ -266,7 +266,7 @@ class BsdDatCoc(models.Model):
             'bsd_km_ids': [(6, 0, ids_km)],
             'bsd_ps_ck_ids': [(6, 0, ids_ck)],
             'bsd_ck_db_ids': [(6, 0, ids_db)],
-            'bsd_dsh_ids': [(6, 0, ids_dsh)],
+            'bsd_dong_sh_ids': [(6, 0, ids_dsh)],
             'bsd_dot_pbt_ids': [(6, 0, ids_pbt)],
             'bsd_dot_pql_ids': [(6, 0, ids_pql)],
         })

@@ -51,7 +51,7 @@ class BsdHopDongMuaBan(models.Model):
             each.bsd_thang_pql = each.bsd_dat_coc_id.bsd_thang_pql
             each.bsd_tien_pql = each.bsd_dat_coc_id.bsd_tien_pql
             lines = [(5, 0, 0)]
-            for line in each.bsd_dat_coc_id.bsd_bao_gia_id.bsd_dsh_ids:
+            for line in each.bsd_dat_coc_id.bsd_dong_sh_ids:
                 vals = {
                     'bsd_dong_sh_id': line.id,
                     'bsd_lan_td': 0
@@ -461,14 +461,6 @@ class BsdHopDongMuaBan(models.Model):
             'bsd_dot_pbt_ids': [(6, 0, ids_pbt)],
             'bsd_dot_pql_ids': [(6, 0, ids_pql)],
         })
-        # Cập nhật đồng sở hữu từ đặt cọc
-        ids_dsh = res.bsd_dat_coc_id.bsd_dsh_ids
-        for dsh in ids_dsh:
-            self.env['bsd.dong_so_huu'].create({
-                'bsd_hd_ban_id': res.id,
-                'bsd_dong_sh_id': dsh.id,
-                'bsd_lan_td': 0
-            })
         return res
 
 
@@ -520,14 +512,9 @@ class BsdCkDb(models.Model):
 
 
 class BsdDongSoHuu(models.Model):
-    _name = 'bsd.dong_so_huu'
-    _description = 'Người đồng sở hữu'
-    _rec_name = 'bsd_dong_sh_id'
+    _inherit = 'bsd.dong_so_huu'
 
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True)
-    bsd_dong_sh_id = fields.Many2one('res.partner', string="Đồng sở hữu", help="Người đồng sở hữu", required=True)
-    bsd_mobile = fields.Char(related='bsd_dong_sh_id.mobile', string="Di động")
-    bsd_email = fields.Char(related='bsd_dong_sh_id.email', string="Email")
     bsd_pl_dsh_id = fields.Many2one('bsd.pl_dsh', string="Phụ lục HĐ", help="Phụ lục hợp đồng thay đổi chủ sở hữu",
                                     readonly=True)
     bsd_hd_ban_cn_id = fields.Many2one('bsd.hd_ban_cn', string="Chuyển nhượng", help="Chuyển nhượng hợp đồng",

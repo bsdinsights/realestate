@@ -192,8 +192,8 @@
                                 <tree editable="top" default_order="bsd_lan_td desc">
                                     <field name="bsd_dong_sh_id" string="Đồng sở hữu hiện tại"
                                            context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"/>
-                                    <field name="bsd_mobile"/>
-                                    <field name="bsd_email"/>
+                                    <field name="mobile"/>
+                                    <field name="email"/>
                                     <field name="bsd_pl_dsh_id"/>
                                     <field name="bsd_lan_td"/>
                                     <field name="state"/>
@@ -203,8 +203,8 @@
                                 <tree editable="top" default_order="bsd_lan_td desc">
                                     <field name="bsd_dong_sh_id" string="Đồng sở hữu cũ"
                                            context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"/>
-                                    <field name="bsd_mobile"/>
-                                    <field name="bsd_email"/>
+                                    <field name="mobile"/>
+                                    <field name="email"/>
                                     <field name="bsd_pl_dsh_id"/>
                                     <field name="bsd_lan_td"/>
                                     <field name="state"/>
@@ -575,8 +575,8 @@
                                 <tree editable="top" default_order="bsd_lan_td desc">
                                     <field name="bsd_dong_sh_id" string="Đồng sở hữu hiện tại"
                                            context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"/>
-                                    <field name="bsd_mobile"/>
-                                    <field name="bsd_email"/>
+                                    <field name="mobile"/>
+                                    <field name="email"/>
                                     <field name="bsd_pl_dsh_id"/>
                                     <field name="bsd_lan_td"/>
                                     <field name="state"/>
@@ -586,8 +586,8 @@
                                 <tree editable="top" default_order="bsd_lan_td desc">
                                     <field name="bsd_dong_sh_id" string="Đồng sở hữu cũ"
                                            context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"/>
-                                    <field name="bsd_mobile"/>
-                                    <field name="bsd_email"/>
+                                    <field name="mobile"/>
+                                    <field name="email"/>
                                     <field name="bsd_pl_dsh_id"/>
                                     <field name="bsd_lan_td"/>
                                     <field name="state"/>

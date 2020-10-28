@@ -182,14 +182,16 @@
                             </group>
                         </page>
                         <page string="Đồng sở hữu" attrs="{'invisible':[('id','=',False)]}">
-                            <field name="bsd_dsh_ids"
-                                   domain="[('id', '!=',bsd_khach_hang_id)]"
-                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}">
+                            <field name="bsd_dong_sh_ids"
+                                   domain="[('id', '!=',bsd_khach_hang_id)]">
                                 <tree editable="bottom">
                                     <field name="bsd_ma_kh"/>
-                                    <field name="name" string="Đồng sở hữu"/>
+                                    <field name="bsd_dong_sh_id"
+                                           options="{'no_create':true}"
+                                           string="Đồng sở hữu"/>
                                     <field name="mobile"/>
                                     <field name="email" string="Email"/>
+                                    <field name="bsd_quan_he"/>
                                 </tree>
                             </field>
                         </page>

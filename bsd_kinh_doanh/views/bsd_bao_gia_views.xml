@@ -190,15 +190,33 @@
                             </group>
                         </page>
                         <page string="Đồng sở hữu">
-                            <field name="bsd_dsh_ids"
+                            <field name="bsd_dong_sh_ids"
                                    domain="[('id', '!=',bsd_khach_hang_id)]"
                                    context="{'show_ma_kh': True}">
                                 <tree editable="bottom">
                                     <field name="bsd_ma_kh"/>
-                                    <field name="name" string="Đồng sở hữu"/>
+                                    <field name="bsd_dong_sh_id"
+                                           options="{'no_create':true}"
+                                           string="Đồng sở hữu"/>
                                     <field name="mobile"/>
                                     <field name="email" string="Email"/>
+                                    <field name="bsd_quan_he"/>
                                 </tree>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <field name="bsd_ma_kh"/>
+                                            <field name="bsd_dong_sh_id" string="Đồng sở hữu"/>
+                                            <field name="mobile"/>
+                                        </group>
+                                        <group>
+                                            <field name="email" string="Email"/>
+                                            <field name="bsd_quan_he"/>
+                                            <field name="bsd_dat_coc_id" invisible="1"/>
+                                            <field name="bsd_bao_gia_id" invisible="1"/>
+                                        </group>
+                                    </sheet>
+                                </form>
                                 <kanban class="o_kanban_mobile">
                                     <field name="bsd_ma_kh"/>
                                     <field name="display_name" string="Đồng sở hữu"/>
@@ -838,15 +856,33 @@
                             </group>
                         </page>
                         <page string="Đồng sở hữu" attrs="{'invisible':[('id','=',False)]}">
-                            <field name="bsd_dsh_ids"
+                            <field name="bsd_dong_sh_ids"
                                    domain="[('id', '!=',bsd_khach_hang_id)]"
                                    context="{'show_ma_kh': True}">
                                 <tree editable="bottom">
                                     <field name="bsd_ma_kh"/>
-                                    <field name="name" string="Đồng sở hữu"/>
+                                    <field name="bsd_dong_sh_id"
+                                           options="{'no_create':true}"
+                                           string="Đồng sở hữu"/>
                                     <field name="mobile"/>
                                     <field name="email" string="Email"/>
+                                    <field name="bsd_quan_he"/>
                                 </tree>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <field name="bsd_ma_kh"/>
+                                            <field name="bsd_dong_sh_id" string="Đồng sở hữu"/>
+                                            <field name="mobile"/>
+                                        </group>
+                                        <group>
+                                            <field name="email" string="Email"/>
+                                            <field name="bsd_quan_he"/>
+                                            <field name="bsd_dat_coc_id" invisible="1"/>
+                                            <field name="bsd_bao_gia_id" invisible="1"/>
+                                        </group>
+                                    </sheet>
+                                </form>
                             </field>
                         </page>
                         <page string="Điều kiện bàn giao" attrs="{'invisible':[('id','=',False)]}">
