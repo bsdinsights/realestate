@@ -29,13 +29,12 @@ class ProductTemplate(models.Model):
         return action
 
 
-class ProductTemplate(models.Model):
+class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     # Tạo giữ chỗ từ sản phẩm
     def action_tao_gc(self):
-        product_id = self.env['product.product'].search([('product_tmpl_id', '=', self.id)], limit=1)
         action = self.env.ref('bsd_kinh_doanh.bsd_giu_cho_action_popup').read()[0]
         action['context'] = {'default_bsd_du_an_id': self.bsd_du_an_id.id,
-                             'default_bsd_unit_id': product_id.id}
+                             'default_bsd_unit_id': self.id}
         return action

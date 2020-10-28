@@ -214,20 +214,6 @@ class BsdHuyGC(models.Model):
                             'state': 'nhap',
             })
             giam_no.action_xac_nhan()
-            # Tạo công nợ
-            # giam_no.action_vao_so()
-            # Tạo công nợ chứng từ
-            # if self.bsd_tien > self.bsd_tien_da_tt:
-            #     # tạo record trong bảng công nợ chứng từ
-            #     self.env['bsd.cong_no_ct'].create({
-            #         'bsd_ngay_pb': self.bsd_ngay_huy_gc,
-            #         'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-            #         'bsd_gc_tc_id': self.bsd_gc_tc_id.id,
-            #         'bsd_giam_no_id': giam_no.id,
-            #         'bsd_tien_pb': self.bsd_tien - self.bsd_tien_da_tt,
-            #         'bsd_loai': 'giam_gctc',
-            #         'state': 'hoan_thanh',
-            #     })
             # Tạo hoàn tiền nếu được check
             if self.bsd_hoan_tien:
                 ht = self.env['bsd.hoan_tien'].create({

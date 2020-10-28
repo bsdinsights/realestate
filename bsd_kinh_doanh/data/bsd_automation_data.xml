@@ -18,7 +18,7 @@ record.auto_huy_giu_cho()
             <field name="name">Hủy giữ chỗ</field>
             <field name="model_id" ref="bsd_kinh_doanh.model_bsd_giu_cho"/>
             <field name="trigger">on_time</field>
-            <field name="filter_domain">[('bsd_truoc_mb','=',True),('state','in',['dat_cho','dang_cho','giu_cho'])]</field>
+            <field name="filter_domain">[('state','in',['dat_cho','dang_cho','giu_cho'])]</field>
             <field name="trg_date_id" ref="bsd_kinh_doanh.field_bsd_giu_cho__bsd_ngay_hh_gc"/>
             <field name="state">code</field>
             <field name="code">

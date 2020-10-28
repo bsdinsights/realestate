@@ -47,19 +47,21 @@ class ReportBsdGiuCho(models.AbstractModel):
         ngay_hien_tai = ngay_hien_tai.replace(tzinfo=from_zone)
         ngay_hien_tai = ngay_hien_tai.astimezone(to_zone)
         _logger.debug(ngay_hien_tai)
-        tai_khoan = giu_cho.bsd_du_an_id.bsd_tk_ng_ids
+        tai_khoan = giu_cho.bsd_khach_hang_id.bank_ids
         tai_khoan = tai_khoan.filtered(lambda t: t.bsd_tk_chinh)
         if not tai_khoan:
             raise UserError("Dự án chưa cấu hình tài khoản chính.\n Vui lòng chọn tài khoản chính cho dự án.")
         if len(tai_khoan) > 1:
             raise UserError("Dự án cấu hình nhiều hơn 1 tài khoản chính.\n Vui lòng kiểm tra lại thông tin.")
+        # Không có tên tài khoản sẽ lấy tên chủ tk
+        chu_tk = tai_khoan.acc_holder_name if tai_khoan.acc_holder_name else tai_khoan.partner_id.display_name
         return {
             'doc_ids': data['ids'],
             'doc_model': data['model'],
             'docs': giu_cho,
             'tien_giu_cho_chu': tien_giu_cho,
             'ngay_hien_tai': ngay_hien_tai.strftime("%d/%m/%y"),
-            'chu_tk': tai_khoan.acc_holder_name,
+            'chu_tk': chu_tk,
             'so_tk': tai_khoan.acc_number,
             'ngan_hang': tai_khoan.bank_id.name,
             'chi_nhanh': tai_khoan.bsd_chi_nhanh

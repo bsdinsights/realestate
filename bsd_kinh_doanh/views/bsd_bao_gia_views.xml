@@ -32,7 +32,7 @@
                             attrs="{'invisible': ['|',('id', '=',False),'|',('state','!=','nhap'),('bsd_da_co_lich','=',False)]}"
                             type="object"/>
                     <button string="Hủy"
-                            states="xac_nhan"
+                            states="xac_nhan,nhap"
                             confirm="Bạn có chắc muốn Hủy bảng tính giá không?"
                             name="action_huy"
                             type="object"/>
@@ -60,8 +60,7 @@
                                     <field name="bsd_ten_bao_gia"/>
                                     <field name="bsd_ngay_bao_gia"/>
                                     <field name="bsd_khach_hang_id" readonly="1"
-                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_popup_form',
-                                                     'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree_search'}"
+                                           context="{'show_ma_kh': True}"
                                            options="{'no_create':true}"
                                            domain="[('bsd_la_kh', '=', True)]"
                                     />
@@ -87,18 +86,15 @@
                                     <field name="bsd_nvbh_id"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_san_gd_id"
-                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_popup_form',
-                                                     'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree_search'}"
+                                           context="{'show_ma_kh': True}"
                                            options="{'no_create':true}"/>
                                 </group>
                                 <group>
                                     <field name="bsd_ctv_id"
-                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_popup_form',
-                                                     'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree_search'}"
+                                           context="{'show_ma_kh': True}"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_gioi_thieu_id"
-                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_popup_form',
-                                                     'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree_search'}"
+                                           context="{'show_ma_kh': True}"
                                            options="{'no_create':true}"/>
                                 </group>
                             </group>
@@ -196,7 +192,7 @@
                         <page string="Đồng sở hữu">
                             <field name="bsd_dsh_ids"
                                    domain="[('id', '!=',bsd_khach_hang_id)]"
-                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}">
+                                   context="{'show_ma_kh': True}">
                                 <tree editable="bottom">
                                     <field name="bsd_ma_kh"/>
                                     <field name="name" string="Đồng sở hữu"/>
@@ -731,7 +727,7 @@
                                     <field name="bsd_ngay_bao_gia"/>
                                     <field name="bsd_khach_hang_id" readonly="1" force_save="1"
                                            domain="[('bsd_la_kh', '=', True)]"
-                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                           context="{'show_ma_kh': True}"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_giu_cho_id" readonly="1" force_save="1"
                                            options="{'no_create':true}"
@@ -755,12 +751,19 @@
                             </group>
                             <group string="MÔI GIỚI">
                                 <group>
-                                    <field name="bsd_nvbh_id" options="{'no_create':true}"/>
-                                    <field name="bsd_san_gd_id" options="{'no_create':true}"/>
+                                    <field name="bsd_nvbh_id"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_san_gd_id"
+                                           context="{'show_ma_kh': True}"
+                                           options="{'no_create':true}"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_ctv_id" options="{'no_create':true}"/>
-                                    <field name="bsd_gioi_thieu_id" options="{'no_create':true}"/>
+                                    <field name="bsd_ctv_id"
+                                           context="{'show_ma_kh': True}"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_gioi_thieu_id"
+                                           context="{'show_ma_kh': True}"
+                                           options="{'no_create':true}"/>
                                 </group>
                             </group>
                             <group string="HIỆU LỰC">
@@ -837,7 +840,7 @@
                         <page string="Đồng sở hữu" attrs="{'invisible':[('id','=',False)]}">
                             <field name="bsd_dsh_ids"
                                    domain="[('id', '!=',bsd_khach_hang_id)]"
-                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}">
+                                   context="{'show_ma_kh': True}">
                                 <tree editable="bottom">
                                     <field name="bsd_ma_kh"/>
                                     <field name="name" string="Đồng sở hữu"/>

@@ -181,6 +181,38 @@ class BsdBaoGia(models.Model):
                                     states={'nhap': [('readonly', False)]})
     bsd_da_co_lich = fields.Boolean(default=False)
 
+    # 3 field ctv , sàn gd, giới thiệu không tồn tại đồng thời
+    # Khách hàng không được trùng với mô giới
+    @api.constrains('bsd_ctv_id', 'bsd_san_gd_id', 'bsd_gioi_thieu_id', 'bsd_khach_hang_id')
+    def _constrains_mo_gioi(self):
+        if (self.bsd_ctv_id and self.bsd_san_gd_id) \
+            or (self.bsd_ctv_id and self.bsd_gioi_thieu_id) \
+               or (self.bsd_san_gd_id and self.bsd_gioi_thieu_id):
+            raise UserError("Vui lòng chọn 1 trong 3 giá trị: Sàn giao dịch, Công tác viên, Khách hàng giới thiệu.")
+        if self.bsd_khach_hang_id == self.bsd_ctv_id \
+            or self.bsd_khach_hang_id == self.bsd_san_gd_id \
+                or self.bsd_khach_hang_id == self.bsd_gioi_thieu_id:
+            raise UserError("Thông tin môi giới không được trùng với khách hàng.\n Vui lòng kiểm tra lại thông tin.")
+
+    @api.onchange('bsd_nvbh_id')
+    def _onchange_san_ctv(self):
+        res = {}
+        self.env.cr.execute("""SELECT bsd_cn_id FROM bsd_loai_cn_rel 
+                                WHERE bsd_loai_id = {0}
+                            """.format(self.env.ref('bsd_kinh_doanh.bsd_ctv').id))
+        list_cn = [cn[0] for cn in self.env.cr.fetchall()]
+        self.env.cr.execute("""SELECT bsd_dn_id FROM bsd_loai_dn_rel 
+                                WHERE bsd_loai_id = {0}
+                            """.format(self.env.ref('bsd_kinh_doanh.bsd_san').id))
+        list_dn = [cn[0] for cn in self.env.cr.fetchall()]
+        res.update({
+            'domain': {
+                'bsd_ctv_id': [('id', 'in', list_cn)],
+                'bsd_san_gd_id': [('id', 'in', list_dn)]
+            }
+        })
+        return res
+
     # Kiểm tra sản phẩm đã được ký bảng tính giá hay chưa
     @api.constrains('bsd_unit_id')
     def _constraint_state_unit(self):

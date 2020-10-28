@@ -79,12 +79,12 @@
                   action="bsd_dot_mb_action"
                   parent="bsd_dot_mb_menu_2"/>
         <menuitem id="bsd_thu_hoi_menu_action_2"
-                  name="Thu hồi căn hộ"
+                  name="Thu hồi sản phẩm"
                   sequence="102"
                   action="bsd_thu_hoi_action"
                   parent="bsd_dot_mb_menu_2"/>
         <menuitem id="bsd_them_unit_menu_action_2"
-                  name="Thêm căn hộ"
+                  name="Thêm sản phẩm"
                   sequence="103"
                   action="bsd_them_unit_action"
                   parent="bsd_dot_mb_menu_2"/>
