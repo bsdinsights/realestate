@@ -88,7 +88,7 @@ class BsdGiuCho(models.Model):
                                       help="Thanh toán",
                                       required=True, readonly=True)
     bsd_ngay_tt = fields.Datetime(string="Ngày thanh toán", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ",readonly=True)
-    bsd_stt_bg = fields.Integer(string="Số thứ tự", readonly=True, help="Số thứ tự giữ chỗ")
+    bsd_stt_bg = fields.Integer(string="Số ưu tiên", readonly=True, help="Số ưu tiên giữ chỗ")
     bsd_ngay_hh_bg = fields.Datetime(string="Ngày ưu tiên", help="Ưu tiên làm bảng tính giá", readonly=True)
     bsd_het_han_gc = fields.Boolean(string="Hết hạn giữ chỗ", readonly=True,
                                     help="""Thông tin ghi nhận giữ chỗ bị hết hiệu lực sau khi đã thanh toán giữ chỗ""")
@@ -325,11 +325,16 @@ class BsdGiuCho(models.Model):
     # KD.07.07 Tự động hủy giữ chỗ quá hạn thanh toán
     # KD.07.08 Tự động đánh dấu hết hạn giữ chỗ
     def auto_huy_gc(self):
-        if self.bsd_thanh_toan == 'chua_tt' or not self.bsd_truoc_mb:
+        _logger.debug("Chạy tự động hủy")
+        if self.bsd_thanh_toan == 'chua_tt' and self.bsd_truoc_mb:
             self.write({
                 'state': 'het_han'
             })
-            if self.bsd_thanh_toan != 'chua_tt':
+        elif not self.bsd_truoc_mb:
+            if self.state == 'giu_cho':
+                self.write({
+                    'state': 'het_han'
+                })
                 # Kiểm tra ngày ưu tiên báo giá nhỏ nhất
                 self.env.cr.execute("""SELECT MIN(bsd_ngay_hh_bg) FROM bsd_giu_cho
                                         WHERE bsd_unit_id = {0} AND state = 'dang_cho'
@@ -342,6 +347,10 @@ class BsdGiuCho(models.Model):
                     next_giu_cho.write({
                         'state': 'giu_cho'
                     })
+            else:
+                self.write({
+                    'state': 'het_han'
+                })
             # Cập nhật trạng thái unit
             giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                       ('state', 'in', ['dat_cho', 'dang_cho', 'giu_cho']),
@@ -422,7 +431,23 @@ class BsdGiuCho(models.Model):
 
         # Hủy giữ chỗ sau mở bán
         if self.bsd_thanh_toan == 'da_tt' and not self.bsd_truoc_mb:
-            self.write({'state': 'huy'})
+            if self.state == 'giu_cho':
+                self.write({'state': 'huy'})
+                # Kiểm tra ngày ưu tiên báo giá nhỏ nhất
+                self.env.cr.execute("""SELECT MIN(bsd_ngay_hh_bg) FROM bsd_giu_cho
+                                        WHERE bsd_unit_id = {0} AND state = 'dang_cho'
+                                    """.format(self.bsd_unit_id.id))
+                min_ngay_ut = self.env.cr.fetchone()[0]
+                if min_ngay_ut:
+                    # lấy số thứ tự giữ chỗ thiện chí tiếp theo đang ở trạng thái chờ
+                    next_giu_cho = self.env['bsd.giu_cho'].search([('bsd_ngay_hh_bg', '=', min_ngay_ut)])
+                    _logger.debug(next_giu_cho)
+                    next_giu_cho.write({
+                        'state': 'giu_cho'
+                    })
+            else:
+                self.write({'state': 'huy'})
+
             giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                       ('state', 'in', ['dat_cho', 'dang_cho', 'giu_cho'])])
             if not giu_cho:
@@ -432,18 +457,6 @@ class BsdGiuCho(models.Model):
             elif not giu_cho.filtered(lambda g: g.state in ['dang_cho', 'giu_cho']):
                 self.bsd_unit_id.write({
                     'state': 'dat_cho'
-                })
-            # Kiểm tra ngày ưu tiên báo giá nhỏ nhất
-            self.env.cr.execute("""SELECT MIN(bsd_ngay_hh_bg) FROM bsd_giu_cho
-                                    WHERE bsd_unit_id = {0} AND state = 'dang_cho'
-                                """.format(self.bsd_unit_id.id))
-            min_ngay_ut = self.env.cr.fetchone()[0]
-            if min_ngay_ut:
-                # lấy số thứ tự giữ chỗ thiện chí tiếp theo đang ở trạng thái chờ
-                next_giu_cho = self.env['bsd.giu_cho'].search([('bsd_ngay_hh_bg', '=', min_ngay_ut)])
-                _logger.debug(next_giu_cho)
-                next_giu_cho.write({
-                    'state': 'giu_cho'
                 })
 
     # KD.07.06 Hủy giữ chỗ chưa thanh toán
