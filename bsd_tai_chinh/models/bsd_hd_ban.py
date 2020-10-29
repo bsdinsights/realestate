@@ -99,7 +99,8 @@ class BsdHdBan(models.Model):
             return
         if self.bsd_co_ttdc:
             if self.state != 'da_ky_ttdc':
-                raise UserError("Hợp đồng chưa thực hiện ký thỏa thuận đặt cọc.")
+                # raise UserError("Hợp đồng chưa thực hiện ký thỏa thuận đặt cọc.")
+                pass
             else:
                 self.write({
                     'state': 'du_dk'

@@ -39,7 +39,8 @@ class BsdDatCoc(models.Model):
             else:
                 each.bsd_ngay_tt = None
 
-    # KD.10.10 - Cập nhật trạng thái đặt cọc
+    # KD.10.10 - Cập nhật trạng thái đặt cọc khi thanh toán tiền cọc,
+    # Hủy tất cả giữ chỗ còn lại của sản phẩm, hoàn tiền cho những giữ chỗ có tiền giữ chỗ
     def cap_nhat_trang_thai(self):
         if self.state == 'xac_nhan':
             self.write({
@@ -48,6 +49,27 @@ class BsdDatCoc(models.Model):
         if self.bsd_unit_id.state == 'dat_coc':
             self.bsd_unit_id.write({
                 'state': 'da_tc'
+            })
+        # Đánh dấu hoàn thành cho giữ chỗ chuyển sang đặt cọc
+        self.bsd_giu_cho_id.write({'state': 'hoan_thanh'})
+        # Lấy tất cả các giữ chỗ đang chờ của sản phẩm
+        giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                  ('state', '=', 'dang_cho')])
+        # Hủy tất cả các giữ chỗ sau mở bán của sp
+        giu_cho.filtered(lambda g: not g.bsd_truoc_mb).write({'state': 'huy'})
+        # Hủy giữ chỗ trước mở bán có tiền giữ chỗ và tạo phiếu hoàn tiền cho
+        gc_truoc_mb = giu_cho.filtered(lambda g: g.bsd_truoc_mb)
+        gc_truoc_mb.write({'state': 'huy'})
+        for gc in gc_truoc_mb:
+            self.env['bsd.hoan_tien'].create({
+                'bsd_ngay_ct': fields.Datetime.now(),
+                'bsd_khach_hang_id': gc.bsd_khach_hang_id.id,
+                'bsd_du_an_id': gc.bsd_du_an_id.id,
+                'bsd_loai': 'giu_cho',
+                'bsd_giu_cho_id': gc.id,
+                'bsd_tien': gc.bsd_tien_gc,
+                'bsd_dien_giai': 'Hoàn tiền giữ chỗ cho sản phẩm đã thu cọc ' + self.bsd_ma_dat_coc,
+                'state': 'nhap',
             })
 
     # Tạo thanh toán

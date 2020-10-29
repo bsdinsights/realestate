@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="button_thanh_toan_js" inherit_id="web.assets_backend">
+        <xpath expr="script[last()]" position="after">
+            <script type="text/javascript" src="/bsd_tai_chinh/static/js/bsd_thanh_toan.js"></script>
+        </xpath>
+    </template>
+</odoo>

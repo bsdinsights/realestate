@@ -4,7 +4,7 @@
         <field name="name">bsd.phieu_thu.form</field>
         <field name="model">bsd.phieu_thu</field>
         <field name="arch" type="xml">
-            <form>
+            <form duplicate="false" create="false" delete="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"

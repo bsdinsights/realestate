@@ -60,9 +60,6 @@
                                                  '|', ('bsd_ngay_duyet_bgdb', '!=', False),
                                                  ('state', 'not in', ['da_ky', 'dang_tt'])]}"
                             class="oe_highlight"/>
-                    <button string="Hủy"
-                            name="action_huy"
-                            type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>

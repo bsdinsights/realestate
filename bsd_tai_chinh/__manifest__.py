@@ -35,7 +35,9 @@
         'views/bsd_hd_ban_views.xml',
         'views/bsd_huy_gc_views.xml',
         'reports/report_bsd_phieu_thu_views.xml',
-        'reports/report_bsd_hoan_tien_views.xml'
+        'reports/report_bsd_hoan_tien_views.xml',
+        'views/assets.xml'
     ],
     'application': True,
+    'qweb': ['static/xml/*.xml'],
 }

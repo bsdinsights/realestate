@@ -147,6 +147,7 @@ class BsdDatCoc(models.Model):
     state = fields.Selection([('xac_nhan', 'Đặt cọc'),
                               ('da_tc', 'Đã thu cọc'),
                               ('dat_coc', 'Đã ký'),
+                              ('hoan_thanh', 'Hoàn thành'),
                               ('het_han', 'Hết hạn'),
                               ('da_tl', 'Đã thanh lý'),
                               ('huy', 'Hủy')],

@@ -150,7 +150,7 @@
                   decoration-info="state=='dang_cho'"
                   decoration-danger="state=='giu_cho'"
                   decoration-bf="state=='giu_cho' or state=='dang_cho'"
-                  decoration-success="state=='dong_gc'"
+                  decoration-success="state=='hoan_thanh'"
                   decoration-muted="state=='huy' or state=='het_han'"
             >
                 <field name="bsd_ma_gc"/>

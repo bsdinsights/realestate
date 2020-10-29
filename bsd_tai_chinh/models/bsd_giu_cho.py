@@ -25,6 +25,27 @@ class BsdGiuCho(models.Model):
                                   ('da_ht', 'Đã hoàn tiền')], string="Hoàn tiền GC",
                                  help="Hoàn tiền giữ chỗ", default="khong",
                                  readonly=True)
+    bsd_so_ht = fields.Integer(string="# Hoàn tiền", compute='_compute_ht')
+
+    def _compute_ht(self):
+        for each in self:
+            hoan_tien = self.env['bsd.hoan_tien'].search([('bsd_giu_cho_id', '=', self.id)])
+            each.bsd_so_ht = len(hoan_tien)
+
+    def action_view_ht(self):
+        action = self.env.ref('bsd_tai_chinh.bsd_hoan_tien_action').read()[0]
+
+        hoan_tien = self.env['bsd.hoan_tien'].search([('bsd_giu_cho_id', '=', self.id)])
+        if len(hoan_tien) > 1:
+            action['domain'] = [('id', 'in', hoan_tien.ids)]
+        elif hoan_tien:
+            form_view = [(self.env.ref('bsd_tai_chinh.bsd_hoan_tien_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = hoan_tien.id
+        return action
 
     @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien_gc', 'bsd_tien_gctc')
     def _compute_tien_tt(self):

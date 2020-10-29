@@ -37,6 +37,7 @@
                     <button string="Tạo hợp đồng"
                             type="object"
                             name="action_tao_hd_ban"
+                            states="dat_coc"
                             class="oe_highlight"
                             attrs="{'invisible': ['|',('state','not in',['dat_coc']),('bsd_ngay_ky_dc','=', False)]}"/>
                     <button string="Hủy"

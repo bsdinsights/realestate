@@ -71,6 +71,7 @@ class BsdPLDSH(models.Model):
                     'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
                     'bsd_pl_dsh_id': self.id,
                     'bsd_lan_td': 1,
+                    'bsd_quan_he': moi.bsd_quan_he,
                     'state': 'active',
                 })
         else:
@@ -86,6 +87,7 @@ class BsdPLDSH(models.Model):
                     'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
                     'bsd_pl_dsh_id': self.id,
                     'bsd_lan_td': lan_td + 1,
+                    'bsd_quan_he': moi.bsd_quan_he,
                     'state': 'active',
                 })
 
@@ -93,14 +95,13 @@ class BsdPLDSH(models.Model):
     def create(self, vals):
         res = super(BsdPLDSH, self).create(vals)
         # R.04 lọc các đồng sở hữu cũ
-        _logger.debug("Debug tại đây")
-        temp = res.bsd_hd_ban_id.bsd_dong_sh_ids.filtered(lambda x: x.state == 'active')
-        ids_dsh = temp.mapped('bsd_dong_sh_id')
+        ids_dsh = res.bsd_hd_ban_id.bsd_dong_sh_ids.filtered(lambda x: x.state == 'active')
         _logger.debug(ids_dsh)
         for id_dsh in ids_dsh:
             res.bsd_cu_ids.create({
-                'bsd_dong_sh_id': id_dsh.id,
+                'bsd_dong_sh_id': id_dsh.bsd_dong_sh_id.id,
                 'bsd_pl_dsh_id': res.id,
+                'bsd_quan_he': id_dsh.bsd_quan_he,
             })
         return res
 
@@ -112,6 +113,14 @@ class BsdPLDSHMoi(models.Model):
     bsd_dong_sh_id = fields.Many2one('res.partner', string="Đồng sở hữu", required=True)
     bsd_mobile = fields.Char(related='bsd_dong_sh_id.mobile', string="Di động")
     bsd_email = fields.Char(related='bsd_dong_sh_id.email', string="Thư điện tử")
+    bsd_quan_he = fields.Selection([('vo', 'Vợ'),
+                                    ('chong', 'Chồng'),
+                                    ('con', 'Con'),
+                                    ('chau', 'Cháu'),
+                                    ('nguoi_than', 'Người thân'),
+                                    ('ban', 'Bạn'),
+                                    ('khac', 'Khác')
+                                    ], string="Mối quan hệ", required=True)
     bsd_pl_dsh_id = fields.Many2one('bsd.pl_dsh', string="Phụ lục HĐ", help="Mã phụ lục hợp đồng thay đổi chủ sở hữu")
 
 
@@ -122,4 +131,12 @@ class BsdPLDSHCu(models.Model):
     bsd_dong_sh_id = fields.Many2one('res.partner', string="Đồng sở hữu", required=True)
     bsd_mobile = fields.Char(related='bsd_dong_sh_id.mobile', string="Di động")
     bsd_email = fields.Char(related='bsd_dong_sh_id.email', string="Thư điện tử")
+    bsd_quan_he = fields.Selection([('vo', 'Vợ'),
+                                    ('chong', 'Chồng'),
+                                    ('con', 'Con'),
+                                    ('chau', 'Cháu'),
+                                    ('nguoi_than', 'Người thân'),
+                                    ('ban', 'Bạn'),
+                                    ('khac', 'Khác')
+                                    ], string="Mối quan hệ", required=True)
     bsd_pl_dsh_id = fields.Many2one('bsd.pl_dsh', string="Phụ lục HĐ", help="Mã phụ lục hợp đồng thay đổi chủ sở hữu")

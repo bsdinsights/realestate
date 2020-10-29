@@ -55,13 +55,12 @@ class BsdRapCan(models.Model):
             if gc_tc:
                 raise UserError("Có Giữ chỗ thiện chí cần được Ráp căn trước .\n Vui lòng chờ đến lược của bạn!")
 
-    # KD.06.07 Không cho ráp căn khi đã có đợt mở bán
-    @api.constrains('bsd_du_an_id')
-    def _constraint_du_an(self):
-        if self.bsd_du_an_id:
-            dot_mb = self.env['bsd.dot_mb'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id)])
-            if dot_mb:
-                raise UserError("Đã có đợt mở bán cho Dự án.\n Bạn không được phép thực hiện Ráp căn!")
+    # KD.06.07 Không cho ráp căn sản phẩm đang nằm trong đợt mở bán
+    @api.constrains('bsd_unit_id')
+    def _constraint_unit(self):
+        if self.bsd_unit_id:
+            if self.bsd_unit_id.bsd_dot_mb_id:
+                raise UserError("Sản phẩm đang nằm trong đợt mở bán.\nBạn không được phép thực hiện Ráp căn!")
 
     # KD.06.01 xác nhận ráp căn
     def action_xac_nhan(self):
@@ -126,8 +125,11 @@ class BsdRapCan(models.Model):
                     'bsd_gc_da': True,
                     'bsd_gc_tc_id': self.bsd_gc_tc_id.id,
                     'bsd_rap_can_id': self.id,
-                    'state': 'dang_cho' if giu_cho_unit else 'giu_cho',
+                    'state': 'nhap',
                     'bsd_truoc_mb': True,
+        })
+        gc.write({
+            'state': 'dang_cho' if giu_cho_unit else 'giu_cho',
         })
         # cập nhật lại field giữ chỗ cho phiếu ráp căn
         self.write({

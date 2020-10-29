@@ -50,14 +50,6 @@ class BsdHopDongMuaBan(models.Model):
             each.bsd_gia_ban = each.bsd_dat_coc_id.bsd_gia_ban
             each.bsd_thang_pql = each.bsd_dat_coc_id.bsd_thang_pql
             each.bsd_tien_pql = each.bsd_dat_coc_id.bsd_tien_pql
-            lines = [(5, 0, 0)]
-            for line in each.bsd_dat_coc_id.bsd_dong_sh_ids:
-                vals = {
-                    'bsd_dong_sh_id': line.id,
-                    'bsd_lan_td': 0
-                }
-                lines.append((0, 0, vals))
-            each.bsd_dong_sh_ids = lines
 
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
@@ -452,6 +444,7 @@ class BsdHopDongMuaBan(models.Model):
         ids_db = res.bsd_dat_coc_id.bsd_ck_db_ids.ids
         ids_pbt = res.bsd_dat_coc_id.bsd_dot_pbt_ids.ids
         ids_pql = res.bsd_dat_coc_id.bsd_dot_pql_ids.ids
+        ids_dsh = res.bsd_dat_coc_id.bsd_dong_sh_ids.ids
         res.write({
             'bsd_bg_ids': [(6, 0, ids_bg)],
             'bsd_ltt_ids': [(6, 0, ids_ltt)],
@@ -460,6 +453,10 @@ class BsdHopDongMuaBan(models.Model):
             'bsd_ck_db_ids': [(6, 0, ids_db)],
             'bsd_dot_pbt_ids': [(6, 0, ids_pbt)],
             'bsd_dot_pql_ids': [(6, 0, ids_pql)],
+            'bsd_dong_sh_ids': [(6, 0, ids_dsh)]
+        })
+        res.bsd_dat_coc_id.write({
+            'state': 'hoan_thanh',
         })
         return res
 
@@ -475,7 +472,7 @@ class BsdBaoGiaLTT(models.Model):
     _rec_name = "bsd_ma_ht"
 
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True)
-    bsd_ma_ht = fields.Char(string="Mã tầng", help="Mã tầng", compute='_compute_ma_ht', store=True)
+    bsd_ma_ht = fields.Char(string="Mã hệ thống", help="Mã hệ thống", compute='_compute_ma_ht', store=True)
 
     @api.depends('bsd_hd_ban_id.bsd_ma_hd_ban', 'bsd_ten_dtt')
     def _compute_ma_ht(self):
