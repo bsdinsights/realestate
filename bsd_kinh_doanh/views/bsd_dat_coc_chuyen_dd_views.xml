@@ -40,8 +40,6 @@
                                     <field name="bsd_tieu_de"/>
                                     <field name="bsd_dat_coc_id" readonly="1" force_save="1"/>
                                     <field name="bsd_kh_ht_id" readonly="1" force_save="1"
-                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_popup_form',
-                                                     'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree_search'}"
                                            options="{'no_create':true}"/>
                                 </group>
                                 <group>
@@ -52,8 +50,6 @@
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_kh_moi_id"
-                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_popup_form',
-                                                     'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree_search'}"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_dien_giai"/>
                                 </group>
@@ -70,8 +66,6 @@
                         <page string="Đồng sở hữu">
                             <group string="Đồng sở hữu hiện tại">
                                 <field name="bsd_dsh_ht_ids"
-                                        context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_popup_form',
-                                             'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree_search'}"
                                         nolabel="1">
                                     <tree>
                                         <field name="bsd_ma_kh"/>
@@ -90,12 +84,12 @@
                             <field name="bsd_dsh_moi_ids"
                                    attrs="{'readonly':[('bsd_co_dsh_moi', '=', False)]}"
                                    domain="[('id', '!=',bsd_kh_moi_id)]"
-                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_popup_form',
-                                             'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree_search'}"
                                    nolabel="1">
                                 <tree editable="bottom">
                                     <field name="bsd_ma_kh"/>
-                                    <field name="bsd_dong_sh_id" string="Đồng sở hữu"/>
+                                    <field name="bsd_dong_sh_id"
+                                           domain="[('id', '!=', parent.bsd_kh_moi_id)]"
+                                           string="Đồng sở hữu"/>
                                     <field name="mobile"/>
                                     <field name="email" string="Email"/>
                                     <field name="bsd_quan_he"/>
@@ -177,8 +171,6 @@
                                     <field name="bsd_tieu_de"/>
                                     <field name="bsd_dat_coc_id" readonly="1" force_save="1"/>
                                     <field name="bsd_kh_ht_id" readonly="1" force_save="1"
-                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_popup_form',
-                                                     'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree_search'}"
                                            options="{'no_create':true}"/>
                                 </group>
                                 <group>
@@ -189,8 +181,6 @@
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_kh_moi_id"
-                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_popup_form',
-                                                     'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree_search'}"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_dien_giai"/>
                                 </group>
@@ -199,9 +189,7 @@
                         <page string="Đồng sở hữu">
                             <group string="Đồng sở hữu hiện tại">
                                 <field name="bsd_dsh_ht_ids"
-                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_popup_form',
-                                             'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree_search'}"
-                                   nolabel="1">
+                                       nolabel="1">
                                 <tree>
                                     <field name="bsd_ma_kh"/>
                                     <field name="bsd_dong_sh_id" string="Đồng sở hữu"/>
@@ -217,13 +205,13 @@
                                 </group>
                                 <field name="bsd_dsh_moi_ids"
                                        attrs="{'readonly':[('bsd_co_dsh_moi', '=', False)]}"
-                                       domain="[('id', '!=',bsd_kh_moi_id)]"
-                                       context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_popup_form',
-                                                 'tree_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_tree_search'}"
                                        nolabel="1">
                                     <tree editable="bottom">
                                         <field name="bsd_ma_kh"/>
-                                        <field name="bsd_dong_sh_id" string="Đồng sở hữu"/>
+                                        <field name="bsd_dong_sh_id"
+                                               domain="[('id', '!=', parent.bsd_kh_moi_id)]"
+                                               options="{'no_create':true}"
+                                               string="Đồng sở hữu"/>
                                         <field name="mobile"/>
                                         <field name="email" string="Email"/>
                                         <field name="bsd_quan_he"/>
