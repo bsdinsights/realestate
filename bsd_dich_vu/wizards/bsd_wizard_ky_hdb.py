@@ -15,7 +15,7 @@ class BsdKyHDB(models.TransientModel):
         return hdb
 
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng bán", default=_get_hdb, readonly=True)
-    bsd_ngay_ky_hdb = fields.Datetime(string="Ngày ký hợp đồng", required=True)
+    bsd_ngay_ky_hdb = fields.Date(string="Ngày ký hợp đồng", required=True)
 
     def action_xac_nhan(self):
         # Cập nhật trạng thái hợp đồng

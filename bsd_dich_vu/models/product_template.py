@@ -8,7 +8,7 @@ class ProductTemplate(models.Model):
 
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng",
                                     readonly=True)
-    bsd_ngay_ky_hdb = fields.Datetime(related='bsd_hd_ban_id.bsd_ngay_ky_hdb')
+    bsd_ngay_ky_hdb = fields.Date(related='bsd_hd_ban_id.bsd_ngay_ky_hdb')
     bsd_lan_tl = fields.Integer(string="Lần thanh lý",
                                 help="Số lần Sản phẩm bị thanh lý hợp đồng",
                                 readonly=True)

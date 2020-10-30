@@ -29,7 +29,7 @@ class BsdPsCk(models.Model):
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng chiết khấu",
                                related="bsd_chiet_khau_id.bsd_den_ngay", store=True)
     bsd_cach_tinh = fields.Selection(related="bsd_chiet_khau_id.bsd_cach_tinh", store=True)
-    bsd_tien = fields.Monetary(string="Tiền chiết khấu", help="Tiền chiết khấu được hưởng")
+    bsd_tien = fields.Monetary(string="Tiền", help="Tiền chiết khấu được hưởng")
     bsd_tl_ck = fields.Float(string="Tỷ lệ chiết khấu", help="Tỷ lệ chiết khấu được hưởng")
     bsd_tien_ck = fields.Monetary(string="Tiền chiết khấu",
                                   compute="_compute_tien_ck", store=True,

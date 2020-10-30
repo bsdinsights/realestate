@@ -75,9 +75,10 @@
                                         nolabel="1">
                                     <tree>
                                         <field name="bsd_ma_kh"/>
-                                        <field name="name" string="Đồng sở hữu"/>
+                                        <field name="bsd_dong_sh_id" string="Đồng sở hữu"/>
                                         <field name="mobile"/>
                                         <field name="email" string="Email"/>
+                                        <field name="bsd_quan_he"/>
                                     </tree>
                                 </field>
                             </group>
@@ -94,9 +95,10 @@
                                    nolabel="1">
                                 <tree editable="bottom">
                                     <field name="bsd_ma_kh"/>
-                                    <field name="name" string="Đồng sở hữu"/>
+                                    <field name="bsd_dong_sh_id" string="Đồng sở hữu"/>
                                     <field name="mobile"/>
                                     <field name="email" string="Email"/>
+                                    <field name="bsd_quan_he"/>
                                 </tree>
                             </field>
                         </page>
@@ -202,9 +204,10 @@
                                    nolabel="1">
                                 <tree>
                                     <field name="bsd_ma_kh"/>
-                                    <field name="name" string="Đồng sở hữu"/>
+                                    <field name="bsd_dong_sh_id" string="Đồng sở hữu"/>
                                     <field name="mobile"/>
                                     <field name="email" string="Email"/>
+                                    <field name="bsd_quan_he"/>
                                 </tree>
                             </field>
                             </group>
@@ -220,9 +223,10 @@
                                        nolabel="1">
                                     <tree editable="bottom">
                                         <field name="bsd_ma_kh"/>
-                                        <field name="name" string="Đồng sở hữu"/>
+                                        <field name="bsd_dong_sh_id" string="Đồng sở hữu"/>
                                         <field name="mobile"/>
                                         <field name="email" string="Email"/>
+                                        <field name="bsd_quan_he"/>
                                     </tree>
                                 </field>
                             </group>
@@ -243,7 +247,6 @@
     <record model="ir.actions.act_window" id="bsd_dat_coc_chuyen_dd_action_popup">
         <field name="name">Thay đổi người ký TTĐC/HĐMB</field>
         <field name="res_model">bsd.dat_coc.chuyen_dd</field>
-        <field name="view_mode">tree,form</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="bsd_dat_coc_chuyen_dd_form_popup"/>
         <field name="target">new</field>

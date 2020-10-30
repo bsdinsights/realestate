@@ -134,7 +134,7 @@ class BsdDanhSachTheoDoi(models.Model):
                                    compute="_compute_tt")
 
     bsd_ma_dat_coc = fields.Char(related='bsd_dat_coc_id.bsd_ma_dat_coc')
-    bsd_ngay_dat_coc = fields.Datetime(related='bsd_dat_coc_id.bsd_ngay_dat_coc')
+    bsd_ngay_dat_coc = fields.Date(related='bsd_dat_coc_id.bsd_ngay_dat_coc')
     bsd_co_ttdc = fields.Boolean(related='bsd_dat_coc_id.bsd_co_ttdc')
     bsd_kh_dc_id = fields.Many2one(related='bsd_dat_coc_id.bsd_khach_hang_id')
     bsd_bao_gia_dc_id = fields.Many2one(related='bsd_dat_coc_id.bsd_bao_gia_id')
@@ -149,7 +149,7 @@ class BsdDanhSachTheoDoi(models.Model):
     bsd_ctv_id = fields.Many2one(related='bsd_dat_coc_id.bsd_ctv_id')
 
     bsd_ma_hd_ban = fields.Char(related='bsd_hd_ban_id.bsd_ma_hd_ban')
-    bsd_ngay_hd_ban = fields.Datetime(related='bsd_hd_ban_id.bsd_ngay_hd_ban')
+    bsd_ngay_hd_ban = fields.Date(related='bsd_hd_ban_id.bsd_ngay_hd_ban')
     bsd_kh_hd_id = fields.Many2one(related='bsd_hd_ban_id.bsd_khach_hang_id')
     bsd_bao_gia_hd_id = fields.Many2one(related='bsd_hd_ban_id.bsd_bao_gia_id')
     bsd_dat_coc_hd_id = fields.Many2one(related='bsd_hd_ban_id.bsd_dat_coc_id')

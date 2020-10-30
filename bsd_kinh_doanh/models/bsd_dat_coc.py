@@ -21,9 +21,9 @@ class BsdDatCoc(models.Model):
         ('bsd_ma_dat_coc_unique', 'unique (bsd_ma_dat_coc)',
          'Mã đặt cọc đã tồn tại !'),
     ]
-    bsd_ngay_dat_coc = fields.Datetime(string="Ngày", help="Ngày đặt cọc", required=True,
-                                       default=lambda self: fields.Datetime.now(),
-                                       readonly=True)
+    bsd_ngay_dat_coc = fields.Date(string="Ngày", help="Ngày đặt cọc", required=True,
+                                   default=lambda self: fields.Date.today(),
+                                   readonly=True)
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True)
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", help="Tên bảng tính giá", required=True,
@@ -165,20 +165,20 @@ class BsdDatCoc(models.Model):
                                       readonly=True, domain=[('bsd_loai', '=', 'pql')])
     bsd_co_ttdc = fields.Boolean(string="Thỏa thuận đặt cọc", help="Thông tin quy định thỏa thuận đặt cọc hay không")
 
-    bsd_ngay_in_dc = fields.Datetime(string="Ngày in", help="Ngày in phiếu cọc, hợp đồng cọc", readonly=True)
-    bsd_ngay_hh_kdc = fields.Datetime(string="Hạn ký đặt cọc", help="Ngày hết hạn ký phiếu cọc",
+    bsd_ngay_in_dc = fields.Date(string="Ngày in", help="Ngày in phiếu cọc, hợp đồng cọc", readonly=True)
+    bsd_ngay_hh_kdc = fields.Date(string="Hạn ký đặt cọc", help="Ngày hết hạn ký phiếu cọc",
                                       readonly=True)
-    bsd_ngay_up_dc = fields.Datetime(string="Upload đặt cọc", readonly=True,
+    bsd_ngay_up_dc = fields.Date(string="Upload đặt cọc", readonly=True,
                                      help="""Ngày tải lên hệ thống phiếu đặt cọc đã được khách hàng 
                                              ký xác nhận""")
-    bsd_ngay_ky_dc = fields.Datetime(string="Ngày ký đặt cọc", help="Ngày ký đặt cọc", readonly=True)
+    bsd_ngay_ky_dc = fields.Date(string="Ngày ký đặt cọc", help="Ngày ký đặt cọc", readonly=True)
 
     bsd_thanh_toan = fields.Selection([('chua_tt', 'Chưa thanh toán'),
                                        ('dang_tt', 'Đang thanh toán'),
                                        ('da_tt', 'Đã thanh toán')], string="Tình trạng TT", default="chua_tt",
                                       help="Thanh toán", readonly=True,
                                       required=True)
-    bsd_ngay_tt = fields.Datetime(string="Ngày TT cọc", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ", readonly=True)
+    bsd_ngay_tt = fields.Date(string="Ngày TT cọc", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ", readonly=True)
 
     bsd_tien_ttd = fields.Monetary(string="Đã thanh toán/ đợt", help="Tiền đã thanh toán theo đợt thanh toán",)
     bsd_km_ids = fields.One2many('bsd.bao_gia_km', 'bsd_dat_coc_id', string="Danh sách khuyến mãi",
@@ -233,7 +233,7 @@ class BsdDatCoc(models.Model):
     def name_get(self):
         res = []
         for dc in self:
-            res.append((dc.id, "%s" % dc.bsd_ten_sp))
+            res.append((dc.id, "{0} - {1}".format(dc.bsd_ma_dat_coc, dc.bsd_ten_sp)))
         return res
 
     @api.model
@@ -302,7 +302,7 @@ class BsdDatCoc(models.Model):
     # KD.10.03 Upload đặt cọc
     def action_upload_dc(self):
         self.write({
-            'bsd_ngay_up_dc': datetime.datetime.now(),
+            'bsd_ngay_up_dc': datetime.date.today(),
         })
 
     # KD.10.04 Ký đặt cọc

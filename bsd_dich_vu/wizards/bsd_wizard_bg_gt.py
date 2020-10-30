@@ -14,7 +14,7 @@ class BsdKyBGGT(models.TransientModel):
 
     bsd_bg_gt_id = fields.Many2one('bsd.bg_gt', string="Bàn giao giấy tờ", default=_get_bao_giao,
                                    readonly=True)
-    bsd_ngay_bg_tt = fields.Datetime(string="Ngày bàn giao", required=True)
+    bsd_ngay_bg_tt = fields.Date(string="Ngày bàn giao", required=True)
     bsd_nguoi_bg_tt_id = fields.Many2one('hr.employee', required=True, string="Người bàn giao")
 
     def action_xac_nhan(self):

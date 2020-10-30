@@ -15,7 +15,7 @@ class BsdTBTL(models.TransientModel):
         return tb_tl
 
     bsd_tb_tl_id = fields.Many2one('bsd.tb_tl', string="Thông báo thanh lý", default=_get_tb_tl, readonly=True)
-    bsd_ngay = fields.Datetime(string="Ngày gửi", required=True)
+    bsd_ngay = fields.Date(string="Ngày gửi", required=True)
 
     def action_xac_nhan(self):
         if self.bsd_tb_tl_id:

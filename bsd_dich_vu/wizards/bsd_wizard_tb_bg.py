@@ -15,7 +15,7 @@ class BsdTBNT(models.TransientModel):
         return tb_bg
 
     bsd_tb_bg_id = fields.Many2one('bsd.tb_bg', string="Thông báo bàn giao", default=_get_tb_bg, readonly=True)
-    bsd_ngay = fields.Datetime(string="Ngày", required=True)
+    bsd_ngay = fields.Date(string="Ngày", required=True)
 
     def action_xac_nhan(self):
         if self.bsd_tb_bg_id:

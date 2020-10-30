@@ -15,7 +15,7 @@ class BsdKyThanhLy(models.TransientModel):
         return thanh_ly
 
     bsd_thanh_ly_id = fields.Many2one('bsd.thanh_ly', string="Biên bản thanh lý", default=_get_thanh_ly, readonly=True)
-    bsd_ngay_ky_thanh_ly = fields.Datetime(string="Ngày ký ", required=True)
+    bsd_ngay_ky_thanh_ly = fields.Date(string="Ngày ký ", required=True)
 
     def action_xac_nhan(self):
         self.bsd_thanh_ly_id.write({

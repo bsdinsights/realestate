@@ -18,7 +18,7 @@ class BsdTBNT(models.TransientModel):
         return self._context.get('loai_ngay')
 
     bsd_tb_nt_id = fields.Many2one('bsd.tb_nt', string="Thông báo nghiệm thu", default=_get_tb_nt, readonly=True)
-    bsd_ngay = fields.Datetime(string="Ngày", required=True)
+    bsd_ngay = fields.Date(string="Ngày", required=True)
     bsd_loai_ngay = fields.Selection([('ngay_gui', 'Ngày gửi thông báo'), ('ngay_dong', 'Ngày đóng thông báo')],
                                      string="Loại",
                                      default=_get_loai, readonly=True)

@@ -26,8 +26,10 @@ class BsdThayDoiNguoiKy(models.Model):
                                    required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_dsh_ht_ids = fields.Many2many("res.partner",
+    bsd_dsh_ht_ids = fields.Many2many("bsd.dong_so_huu",
                                       relation="bsd_dsh_ht_rel",
+                                      column2="bsd_dong_sh_id",
+                                      column1="bsd_chuyen_dd_id",
                                       string="Đồng sở hữu hiện tại", readonly=True)
 
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Đặt cọc",
@@ -45,16 +47,15 @@ class BsdThayDoiNguoiKy(models.Model):
         self.bsd_unit_id = self.bsd_dat_coc_id.bsd_unit_id
         self.bsd_du_an_id = self.bsd_dat_coc_id.bsd_du_an_id
         self.bsd_kh_ht_id = self.bsd_dat_coc_id.bsd_nguoi_dd_id
-        self.bsd_dsh_ht_id = [(5, 0, self.bsd_dat_coc_id.bsd_dsh_ids.ids)]
+        self.bsd_dsh_ht_ids = [(6, 0, self.bsd_dat_coc_id.bsd_dong_sh_ids.ids)]
 
     bsd_kh_moi_id = fields.Many2one('res.partner', string="Người ký mới", help="Người đại diện ký mới",
                                     required=True,
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
     bsd_co_dsh_moi = fields.Boolean(string="Thay đổi đồng sở hữu", default=False)
-    bsd_dsh_moi_ids = fields.Many2many("res.partner",
-                                       relation="bsd_dsh_moi_rel",
-                                       string="Đồng sở hữu mới", help="Danh sách người đồng sở hữu mới")
+    bsd_dsh_moi_ids = fields.One2many("bsd.dong_so_huu", 'bsd_chuyen_dd_id',
+                                      string="Đồng sở hữu mới", help="Danh sách người đồng sở hữu mới")
 
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
@@ -102,7 +103,7 @@ class BsdThayDoiNguoiKy(models.Model):
             })
         self.bsd_dat_coc_id.write({
             'bsd_nguoi_dd_id': self.bsd_kh_moi_id.id,
-            'bsd_dsh_ids': [(6, 0, self.bsd_dsh_moi_ids.ids)]
+            'bsd_dong_sh_ids': [(6, 0, self.bsd_dsh_moi_ids.ids)]
         })
 
     # KD.05.07.03 Từ chối yêu cầu thay đổi

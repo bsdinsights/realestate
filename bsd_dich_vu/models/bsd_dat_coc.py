@@ -55,11 +55,23 @@ class BsdDatCoc(models.Model):
         })
 
     # Tạo hợp đồng mua bán
-    def action_tao_hd_ban(self):
+    def action_tao_hd_mb(self):
+        _logger.debug("Tạo HĐ")
         context = {
             'default_bsd_khach_hang_id': self.bsd_nguoi_dd_id.id,
             'default_bsd_dat_coc_id': self.id,
         }
         action = self.env.ref('bsd_dich_vu.bsd_hd_ban_action_popup').read()[0]
         action['context'] = context
+        _logger.debug(action)
+        # action = {
+        #     'type': 'ir.actions.act_window',
+        #     'name': 'Tạo Hợp đồng mua bán',
+        #     'view_mode': 'form',
+        #     'res_model': 'bsd.hd_ban',
+        #     'target': 'new',
+        #     'context': context,
+        #     'view_id': self.env.ref('bsd_dich_vu.bsd_hd_ban_form').id
+        # }
+        _logger.debug(action)
         return action

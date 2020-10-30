@@ -15,7 +15,7 @@ class BsdKyPLDSH(models.TransientModel):
         return dsh
 
     bsd_pl_dsh_id = fields.Many2one('bsd.pl_dsh', string="Phụ lục HĐ", default=_get_pl_dsh, readonly=True)
-    bsd_ngay_ky_pl = fields.Datetime(string="Ngày ký phụ lục", required=True)
+    bsd_ngay_ky_pl = fields.Date(string="Ngày ký phụ lục", required=True)
 
     def action_xac_nhan(self):
         self.bsd_pl_dsh_id.write({

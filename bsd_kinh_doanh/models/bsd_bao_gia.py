@@ -25,10 +25,10 @@ class BsdBaoGia(models.Model):
     bsd_ten_bao_gia = fields.Char(string="Tiêu đề", help="Tên bảng tính giá", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
-    bsd_ngay_bao_gia = fields.Datetime(string="Ngày", help="Ngày bảng tính giá", required=True,
-                                       default=lambda self: fields.Datetime.now(),
-                                       readonly=True,
-                                       states={'nhap': [('readonly', False)]})
+    bsd_ngay_bao_gia = fields.Date(string="Ngày", help="Ngày bảng tính giá", required=True,
+                                   default=lambda self: fields.Date.today(),
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
@@ -65,6 +65,7 @@ class BsdBaoGia(models.Model):
                                         states={'nhap': [('readonly', False)]})
 
     bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Tên Sản phẩm", required=True)
+    bsd_ten_sp = fields.Char(related="bsd_unit_id.name", store=True)
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích tim tường",
                              related="bsd_unit_id.bsd_dt_xd", store=True)
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",
@@ -124,13 +125,20 @@ class BsdBaoGia(models.Model):
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
 
+    # Tên hiện thị record
+    def name_get(self):
+        res = []
+        for btg in self:
+            res.append((btg.id, "{0} - {1}".format(btg.bsd_ma_bao_gia, btg.bsd_ten_sp)))
+        return res
+
     @api.constrains('bsd_bg_ids')
     def _constrains_dk_bg(self):
         for each in self:
             record = each.bsd_bg_ids
             dk_bg = each.bsd_bg_ids.mapped('bsd_dk_bg_id')
             if len(record) > len(dk_bg):
-                raise UserError("Có Điều kiện bàn giao bị trùng.\n Vui lòng kiểm tra lại thông tin điều kiện bàn giao.")
+                raise UserError("Có Điều kiện bàn giao bị trùng.\nVui lòng kiểm tra lại thông tin điều kiện bàn giao.")
 
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_bao_gia_id', string="Lịch thanh toán",
                                   readonly=True, domain=[('bsd_loai', 'in', ['dtt'])])
@@ -150,13 +158,13 @@ class BsdBaoGia(models.Model):
             record = each.bsd_ps_ck_ids
             ck = each.bsd_ps_ck_ids.mapped('bsd_chiet_khau_id')
             if len(record) > len(ck):
-                raise UserError("Có Chiết khâu bị trùng.\n Vui lòng kiểm tra lại thông tin chiết khấu.")
+                raise UserError("Có Chiết khâu bị trùng.\nVui lòng kiểm tra lại thông tin chiết khấu.")
 
-    bsd_ngay_in_bg = fields.Datetime(string="Ngày in BTG", help="Ngày in báo giá", readonly=True)
-    bsd_ngay_hh_kbg = fields.Datetime(string="Hết hạn ký BTG", help="Ngày hết hiệu lực ký báo giá", readonly=True)
-    bsd_ngay_ky_bg = fields.Datetime(string="Ngày ký BTG", help="Ngày ký báo giá", readonly=True)
+    bsd_ngay_in_bg = fields.Date(string="Ngày in BTG", help="Ngày in báo giá", readonly=True)
+    bsd_ngay_hh_kbg = fields.Date(string="Hết hạn ký BTG", help="Ngày hết hiệu lực ký báo giá", readonly=True)
+    bsd_ngay_ky_bg = fields.Date(string="Ngày ký BTG", help="Ngày ký báo giá", readonly=True)
 
-    bsd_ngay_hl_bg = fields.Datetime(string="Hiệu lực BTG", help="Hiệu lực bảng tính giá",
+    bsd_ngay_hl_bg = fields.Date(string="Hiệu lực BTG", help="Hiệu lực bảng tính giá",
                                      compute="_compute_ngay_hl", store=True)
 
     bsd_dong_sh_ids = fields.One2many('bsd.dong_so_huu', 'bsd_bao_gia_id', string="Đồng sở hữu",
@@ -175,7 +183,7 @@ class BsdBaoGia(models.Model):
             record = each.bsd_km_ids
             km = each.bsd_km_ids.mapped('bsd_khuyen_mai_id')
             if len(record) > len(km):
-                raise UserError("Có Khuyến mãi bị trùng.\n Vui lòng kiểm tra lại thông tin khuyến mãi.")
+                raise UserError("Có Khuyến mãi bị trùng.\nVui lòng kiểm tra lại thông tin khuyến mãi.")
     bsd_ck_db_ids = fields.One2many('bsd.ck_db', 'bsd_bao_gia_id', string="Chiết khấu đặc biệt",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
@@ -192,7 +200,7 @@ class BsdBaoGia(models.Model):
         if self.bsd_khach_hang_id == self.bsd_ctv_id \
             or self.bsd_khach_hang_id == self.bsd_san_gd_id \
                 or self.bsd_khach_hang_id == self.bsd_gioi_thieu_id:
-            raise UserError("Thông tin môi giới không được trùng với khách hàng.\n Vui lòng kiểm tra lại thông tin.")
+            raise UserError("Thông tin môi giới không được trùng với khách hàng.\nVui lòng kiểm tra lại thông tin.")
 
     @api.onchange('bsd_nvbh_id')
     def _onchange_san_ctv(self):
@@ -217,7 +225,7 @@ class BsdBaoGia(models.Model):
     @api.constrains('bsd_unit_id')
     def _constraint_state_unit(self):
         if self.bsd_unit_id.state not in ['chuan_bi', 'san_sang', 'dat_cho', 'giu_cho']:
-            raise UserError(_("Sản phẩm đã có giao dịch.\n Vui lòng kiểm tra lại thông tin sản phẩm."))
+            raise UserError(_("Sản phẩm đã có giao dịch.\nVui lòng kiểm tra lại thông tin sản phẩm."))
 
     # R.33 Hiệu lực báo giá
     @api.depends('bsd_ngay_bao_gia')
@@ -287,7 +295,7 @@ class BsdBaoGia(models.Model):
     # KD.09.03 Xác nhận báo giá
     def action_xac_nhan(self):
         if not self.bsd_ltt_ids:
-            raise UserError("Bảng tính giá chưa có lịch thanh toán.\n Vui lòng kiểm tra lại thông tin.")
+            raise UserError("Bảng tính giá chưa có lịch thanh toán.\nVui lòng kiểm tra lại thông tin.")
         else:
             self.write({
                 'state': 'xac_nhan',
@@ -320,7 +328,7 @@ class BsdBaoGia(models.Model):
             'bsd_cs_tt_ct_id': dot_tt.id,
             'bsd_bao_gia_id': self.id,
             'bsd_dot_ky_hd': dot_tt.bsd_dot_ky_hd,
-            'bsd_tien_dc': self.bsd_tien_gc + self.bsd_tien_dc if stt == 1 else 0,
+            'bsd_tien_dc': 0,
             'bsd_loai': 'dtt'
         })
         return res
@@ -504,7 +512,7 @@ class BsdBaoGia(models.Model):
                                                       ('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                       ('bsd_stt_bg', '<', self.bsd_giu_cho_id.bsd_stt_bg)])
             if giu_cho:
-                raise UserError("Có giữ chỗ ưu tiên ký bảng giá trước.\n Vui lòng chờ đến lượt của bạn.")
+                raise UserError("Có giữ chỗ ưu tiên ký bảng giá trước.\nVui lòng chờ đến lượt của bạn.")
         action = self.env.ref('bsd_kinh_doanh.bsd_wizard_ky_bg_action').read()[0]
         return action
 

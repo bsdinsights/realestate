@@ -14,7 +14,7 @@ class BsdDanhSachThongBao(models.TransientModel):
         cn_dkbg = cn_dkbg.filtered(lambda c: c.state == 'duyet' and c.bsd_loai != 'san_pham')
         return [(6, 0, cn_dkbg.ids)]
 
-    bsd_ngay_ds_tb = fields.Datetime(string="Ngày tạo", required=True, default=lambda self: fields.Datetime.now())
+    bsd_ngay_ds_tb = fields.Date(string="Ngày tạo", required=True, default=lambda self: fields.Date.today())
     bsd_loai = fields.Selection([('nt', 'Nghiệm thu'), ('bg', 'Bàn giao')], string="Loại thông báo",
                                 required=True, default='nt')
     bsd_cn_dkbg_ids = fields.Many2many('bsd.cn_dkbg', string="Danh sách cập nhật DKBG", default=_get_cn_dkbg,

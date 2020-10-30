@@ -15,7 +15,7 @@ class BsdKyBG(models.TransientModel):
         return bg
 
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", default=_get_bg, readonly=True)
-    bsd_ngay_ky_bg = fields.Datetime(string="Ngày ký báo giá", required=True)
+    bsd_ngay_ky_bg = fields.Date(string="Ngày ký BTG", required=True)
 
     def action_xac_nhan(self):
         # Kiểm tra trạng thái unit trước khi ký bảng tính giá

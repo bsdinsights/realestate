@@ -10,6 +10,14 @@
                         <field name="bsd_so_hd_ban" widget="statinfo" string="Hợp đồng"/>
                     </button>
             </xpath>
+            <xpath expr="//header" position="inside">
+                <button string="Tạo hợp đồng"
+                        type="object"
+                        name="action_tao_hd_mb"
+                        states="dat_coc"
+                        class="oe_highlight"
+                        attrs="{'invisible': ['|',('state','not in',['dat_coc']),('bsd_ngay_ky_dc','=', False)]}"/>
+            </xpath>
         </field>
     </record>
 </odoo>

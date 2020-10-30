@@ -15,7 +15,7 @@ class BsdKyPLTTI(models.TransientModel):
         return tti
 
     bsd_pl_tti_id = fields.Many2one('bsd.pl_tti', string="Phụ lục HĐ", default=_get_pl_tti, readonly=True)
-    bsd_ngay_ky_pl = fields.Datetime(string="Ngày ký phụ lục", required=True)
+    bsd_ngay_ky_pl = fields.Date(string="Ngày ký phụ lục", required=True)
 
     def action_xac_nhan(self):
         self.bsd_pl_tti_id.write({
