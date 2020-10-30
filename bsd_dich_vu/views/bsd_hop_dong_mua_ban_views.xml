@@ -13,25 +13,25 @@
                             attrs="{'invisible': ['|',('id', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
-                    <button string="Duyệt ĐB"
+                    <button string="Duyệt in ĐB"
                             name="action_duyet_db"
                             type="object"
                             states="ht_dc"
                             attrs="{'invisible': ['|',('bsd_duyet_db', '=',True)]}"
                             class="oe_highlight"/>
-                    <button string="In hợp đồng"
-                            name="action_in_hd"
-                            attrs="{'invisible': ['!','|',('state', 'in',['du_dk','tt_dot1','da_ky']),'&amp;',('bsd_duyet_db','=',True),('state', '!=','nhap')]}"
+                    <button string="Xác nhận in TTĐC/HĐĐC"
+                            name="action_in_ttdc"
                             type="object"
+                            attrs="{'invisible': ['!','|',('state', 'in',['tt_dot1']),'&amp;',('bsd_duyet_db','=',True),('state', '=','ht_dc')]}"
                             class="oe_highlight"/>
-                    <button string="Upload hợp đồng"
-                            name="action_upload_hdb"
-                            attrs="{'invisible':['|',('bsd_ngay_in_hdb', '=',False)]}"
+                    <button string="Xác nhận in HĐMB"
+                            name="action_in_hd"
+                            attrs="{'invisible': ['!','|',('state', 'in',['du_dk']),'&amp;',('bsd_duyet_db','=',True),('state', '=','ht_dc')]}"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Ký hợp đồng"
                             name="action_ky_hdb"
-                            attrs="{'invisible':['|',('bsd_ngay_up_hdb', '=',False)]}"
+                            attrs="{'invisible':['|',('bsd_ngay_in_hdb', '=',False),('state', 'not in',['du_dk','ht_dc'])]}"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Chiết khấu mua sỉ"
@@ -94,9 +94,9 @@
                                 <group>
                                     <field name="bsd_co_ttdc" readonly="1" force_save="1"/>
                                     <field name="bsd_so_ttdc"/>
+                                    <field name="bsd_ngay_in_ttdc"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_ngay_in_ttdc"/>
                                     <field name="bsd_ngay_hh_ttdc"/>
                                     <field name="bsd_ngay_ky_ttdc"/>
                                 </group>
@@ -104,11 +104,11 @@
                             <group string="HỢP ĐỒNG">
                                 <group>
                                     <field name="bsd_ngay_dkbg" readonly="1" force_save="1"/>
+                                    <field name="bsd_ma_so_hd"/>
                                     <field name="bsd_ngay_in_hdb"/>
-                                    <field name="bsd_ngay_hh_khdb"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_ngay_up_hdb"/>
+                                    <field name="bsd_ngay_hh_khdb"/>
                                     <field name="bsd_ngay_ky_hdb"/>
                                 </group>
                             </group>
@@ -800,11 +800,11 @@
                             <group string="HỢP ĐỒNG">
                                 <group>
                                     <field name="bsd_ngay_dkbg" readonly="1" force_save="1"/>
+                                    <field name="bsd_ma_so_hd"/>
                                     <field name="bsd_ngay_in_hdb"/>
-                                    <field name="bsd_ngay_hh_khdb"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_ngay_up_hdb"/>
+                                    <field name="bsd_ngay_hh_khdb"/>
                                     <field name="bsd_ngay_ky_hdb"/>
                                 </group>
                             </group>

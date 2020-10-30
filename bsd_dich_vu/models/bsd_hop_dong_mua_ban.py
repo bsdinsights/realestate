@@ -13,8 +13,9 @@ class BsdHopDongMuaBan(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma_hd_ban'
 
-    bsd_ma_hd_ban = fields.Char(string="Mã", help="Mã hợp đồng mua bán", required=True, readonly=True, copy=False,
+    bsd_ma_hd_ban = fields.Char(string="Mã hệ thống", help="Mã hệ thống của hợp đồng mua bán", required=True, readonly=True, copy=False,
                                 default='/')
+    bsd_ma_so_hd = fields.Char(string="Mã HĐMB", help="Mã hợp đồng mua bán", readonly=True)
     _sql_constraints = [
         ('bsd_ma_hd_ban_unique', 'unique (bsd_ma_hd_ban)',
          'Mã hợp đồng đã tồn tại !'),
@@ -151,8 +152,7 @@ class BsdHopDongMuaBan(models.Model):
                               ('ht_tt', 'Hoàn tất thanh toán'),
                               ('bg_gt', 'Bàn giao giấy tờ'),
                               ('da_ht', 'Đã hoàn tất'),
-                              ('thanh_ly', 'Thanh lý'),
-                              ('huy', 'Hủy')], string="Trạng thái", default="nhap",
+                              ('thanh_ly', 'Thanh lý')], string="Trạng thái", default="nhap",
                              help="Trạng thái", tracking=1)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
@@ -171,10 +171,7 @@ class BsdHopDongMuaBan(models.Model):
                                          readonly=True, domain=[('state', '=', 'inactive')])
     bsd_ngay_in_hdb = fields.Date(string="Ngày in hợp đồng", help="Ngày in hợp đồng mua bán", readonly=True)
     bsd_ngay_hh_khdb = fields.Date(string="Hết hạn ký HĐ", help="Ngày hết hạn ký hợp đồng mua bán",
-                                       readonly=True)
-    bsd_ngay_up_hdb = fields.Date(string="Upload hợp đồng", readonly=True,
-                                      help="""Ngày tải lên hệ thống hợp đồng bán đã được người mua
-                                             ký xác nhận""")
+                                   readonly=True)
     bsd_ngay_ky_hdb = fields.Date(string="Ngày ký hợp đồng", help="Ngày ký hợp đồng mua bán", readonly=True)
 
     bsd_km_ids = fields.One2many('bsd.bao_gia_km', 'bsd_hd_ban_id', string="Danh sách khuyến mãi",
@@ -312,15 +309,13 @@ class BsdHopDongMuaBan(models.Model):
         self.tao_cong_no_dot_tt()
         self.tao_cong_no_phi()
 
-    # DV.01.02 In hợp đồng
+    # DV.01.02 Xác nhận In hợp đồng
     def action_in_hd(self):
-        return self.env.ref('bsd_dich_vu.bsd_hd_ban_report_action').read()[0]
+        return self.env.ref('bsd_dich_vu.bsd_wizard_xn_in_hdb_action').read()[0]
 
-    # DV.01.03 Upload hợp đồng
-    def action_upload_hdb(self):
-        self.write({
-            'bsd_ngay_up_hdb': datetime.date.today(),
-        })
+    # Xác nhận In thỏa thuận đặt cọc
+    def action_in_ttdc(self):
+        return self.env.ref('bsd_dich_vu.bsd_wizard_xn_in_ttdc_action').read()[0]
 
     # DV.01.04 Ký hợp đồng
     def action_ky_hdb(self):

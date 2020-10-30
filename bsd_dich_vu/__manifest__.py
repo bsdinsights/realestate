@@ -41,7 +41,7 @@
         'wizards/bsd_wizard_tao_thong_bao_tt_nn_views.xml',
         'views/bsd_menu_item_views.xml',
         'views/product_template_views.xml',
-        'wizards/bsd_wizard_ky_hdb_views.xml',
+        'wizards/bsd_wizard_hd_ban_views.xml',
         'wizards/bsd_wizard_ky_pl_dsh_views.xml',
         'wizards/bsd_wizard_ky_pl_tti_views.xml',
         'wizards/bsd_wizard_ms_hdb_views.xml',

@@ -5,6 +5,12 @@
         <field name="model">bsd.hd_ban</field>
         <field name="inherit_id" ref="bsd_dich_vu.bsd_hd_ban_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button string="Thanh toán"
+                        name="action_thanh_toan"
+                        type="object"
+                        class="oe_highlight"/>
+            </xpath>
             <xpath expr="//field[@name='bsd_ltt_ids']" position="before">
                 <group>
                     <group>

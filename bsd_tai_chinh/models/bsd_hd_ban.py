@@ -192,7 +192,16 @@ class BsdHdBan(models.Model):
         self.write({
             'state': 'ht_tt'
         })
-        # Cập nhật trạng thái hoàn tất thanh toán cho sản phẩm
-        # self.bsd_unit_id.write({
-        #     'state': 'ht_tt'
-        # })
+
+    # Tạo thanh toán
+    def action_thanh_toan(self):
+        context = {
+            'default_bsd_loai_pt': 'dot_tt',
+            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_hd_ban_id': self.id,
+            'default_bsd_unit_id': self.bsd_unit_id.id
+        }
+        action = self.env.ref('bsd_tai_chinh.bsd_phieu_thu_action_popup').read()[0]
+        action['context'] = context
+        return action
