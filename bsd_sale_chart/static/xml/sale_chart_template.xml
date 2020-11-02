@@ -252,13 +252,16 @@
         <div class="tooltip" role="tooltip">
             <div class="arrow"></div>
             <div class="tooltip-inner bsd_tooltip_title"></div>
-            <div class="bsd_tooltip_action" t-attf-id="{{data[11]}}">
-                <span class="bsd_quan_tam ml-3" style="font-size:13px">Quan tâm</span>
-                <span class="bsd_giu_cho ml-3" style="font-size:13px">Giữ chỗ</span>
-                <t t-if="data[12] != False">
-                    <span class="bsd_bao_gia ml-3" style="font-size:13px">Bảng tính giá</span>
-                </t>
-            </div>
+            <t t-if="data[6] == 'chuan_bi' or data[6] == 'san_sang' or data[6] == 'dat_cho' or data[6] == 'giu_cho'">
+                <div class="bsd_tooltip_action" t-attf-id="{{data[11]}}">
+                    <span class="bsd_quan_tam ml-3" style="font-size:13px">Quan tâm</span>
+                    <span class="bsd_giu_cho ml-3" style="font-size:13px">Giữ chỗ</span>
+                    <t t-if="data[12] != False">
+                        <span class="bsd_bao_gia ml-3" style="font-size:13px">Bảng tính giá</span>
+                    </t>
+                </div>
+            </t>
+
        </div>
     </t>
 </templates>

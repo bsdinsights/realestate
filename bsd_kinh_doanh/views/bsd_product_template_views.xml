@@ -14,6 +14,7 @@
                 <button string="Tạo giữ chỗ"
                         name="action_tao_gc"
                         class="oe_highlight"
+                        attrs="{'invisible':['|',('bsd_uu_tien','=','1'),('state', 'not in',['chuan_bi','san_sang','dat_cho','giu_cho'])]}"
                         type="object"
                         sequence="50"/>
             </xpath>

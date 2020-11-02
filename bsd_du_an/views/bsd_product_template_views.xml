@@ -15,7 +15,7 @@
                     <button string="Hủy ưu tiên"
                             name="action_huy_uu_tien"
                             type="object"
-                            attrs="{'invisible':['|',('bsd_uu_tien','=','0'),('state','not in',['chuan_bi','san_sang'])]}"
+                            attrs="{'invisible':['|',('bsd_uu_tien','=','0'),('state','not in',['chuan_bi','san_sang','dat_cho','giu_cho'])]}"
                             class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
