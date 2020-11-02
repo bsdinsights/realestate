@@ -8,7 +8,7 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="bsd_loai"/>
+                            <field name="bsd_loai" readonly="1" force_save="1"/>
                             <field name="bsd_du_an_id" options="{'no_create':true}"/>
                             <field name="bsd_toa_nha_id"
                                    domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="button_tao_td_tb_tt_nn_js" inherit_id="web.assets_backend">
+        <xpath expr="script[last()]" position="after">
+            <script type="text/javascript" src="/bsd_dich_vu/static/js/bsd_tb_tt_nn.js"></script>
+        </xpath>
+    </template>
+</odoo>

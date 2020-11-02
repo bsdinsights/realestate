@@ -12,6 +12,7 @@ class BsdThongBaoNhacNo(models.Model):
     _description = "Thông báo nhắc nợ"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma_tb'
+    _order = 'bsd_ngay_tao_tb desc'
 
     bsd_ma_tb = fields.Char(string="Mã", help="Mã thông báo nhắc nợ", required=True, readonly=True,
                             copy=False, default='/')
@@ -73,6 +74,7 @@ class BsdThongBaoNhacNo(models.Model):
                               ('da_gui', 'Đã gửi'),
                               ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
+    bsd_tb_tt_id = fields.Many2one('bsd.tb_tt', string="Thông báo TT", readonly=True)
 
     @api.onchange('bsd_hd_ban_id')
     def _onchange_hd_ban(self):

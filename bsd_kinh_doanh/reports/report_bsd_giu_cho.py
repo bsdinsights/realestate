@@ -50,9 +50,9 @@ class ReportBsdGiuCho(models.AbstractModel):
         tai_khoan = giu_cho.bsd_khach_hang_id.bank_ids
         tai_khoan = tai_khoan.filtered(lambda t: t.bsd_tk_chinh)
         if not tai_khoan:
-            raise UserError("Dự án chưa cấu hình tài khoản chính.\n Vui lòng chọn tài khoản chính cho dự án.")
+            raise UserError("Khách hàng chưa cấu hình tài khoản chính.\nVui lòng chọn tài khoản chính cho khách hàng.")
         if len(tai_khoan) > 1:
-            raise UserError("Dự án cấu hình nhiều hơn 1 tài khoản chính.\n Vui lòng kiểm tra lại thông tin.")
+            raise UserError("Khách hàng cấu hình nhiều hơn 1 tài khoản chính.\nVui lòng kiểm tra lại thông tin.")
         # Không có tên tài khoản sẽ lấy tên chủ tk
         chu_tk = tai_khoan.acc_holder_name if tai_khoan.acc_holder_name else tai_khoan.partner_id.display_name
         return {

@@ -54,11 +54,11 @@
                   sequence="102"
                   action="bsd_tb_nn_action"
                   parent="bsd_thong_bao_tt_nn_menu_2"/>
-        <menuitem id="bsd_tao_tb_tt_menu_action_2"
-                  name="Tạo thông báo"
-                  sequence="103"
-                  action="bsd_wizard_tao_tb_tt_action_2"
-                  parent="bsd_thong_bao_tt_nn_menu_2"/>
+<!--        <menuitem id="bsd_tao_tb_tt_menu_action_2"-->
+<!--                  name="Tạo thông báo"-->
+<!--                  sequence="103"-->
+<!--                  action="bsd_wizard_tao_tb_tt_action_2"-->
+<!--                  parent="bsd_thong_bao_tt_nn_menu_2"/>-->
     <menuitem id="bsd_thong_bao_hd_menu_2"
               name="Thông báo NT/ BG"
               sequence="26"
