@@ -157,7 +157,7 @@ class BsdHopDongMuaBan(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
-    bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_hd_ban_id', string="Bàn giao", readonly=True)
+    bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_hd_ban_id', string="Điều kiện bàn giao", readonly=True)
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_hd_ban_id', string="Lịch thanh toán",
                                   readonly=True, domain=[('bsd_loai', '=', 'dtt')])
     bsd_dot_pbt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_hd_ban_id', string="Đợt thu phí bảo trì",
@@ -174,12 +174,12 @@ class BsdHopDongMuaBan(models.Model):
                                    readonly=True)
     bsd_ngay_ky_hdb = fields.Date(string="Ngày ký hợp đồng", help="Ngày ký hợp đồng mua bán", readonly=True)
 
-    bsd_km_ids = fields.One2many('bsd.bao_gia_km', 'bsd_hd_ban_id', string="Danh sách khuyến mãi",
-                                 help="Danh sách khuyến mãi", readonly=True,)
+    bsd_km_ids = fields.One2many('bsd.bao_gia_km', 'bsd_hd_ban_id', string="Khuyến mãi",
+                                 help="Khuyến mãi", readonly=True,)
 
-    bsd_ps_ck_ids = fields.One2many('bsd.ps_ck', 'bsd_hd_ban_id', string="Phát sinh chiết khấu",
+    bsd_ps_ck_ids = fields.One2many('bsd.ps_ck', 'bsd_hd_ban_id', string="Chiết khấu",
                                     readonly=True)
-    bsd_ck_db_ids = fields.One2many('bsd.ck_db', 'bsd_hd_ban_id', string="Danh sách chiết khấu đặt biệt",
+    bsd_ck_db_ids = fields.One2many('bsd.ck_db', 'bsd_hd_ban_id', string="Chiết khấu đặt biệt",
                                     readonly=True)
     bsd_dh_ck_ttn = fields.Boolean(string="Đã hưởng CK Nhanh", help="Đánh dấu hợp đồng đã hưởng CK nhanh",
                                    readonly=True, default=False)

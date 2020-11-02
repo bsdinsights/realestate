@@ -148,7 +148,7 @@ class BsdBaoGia(models.Model):
     bsd_dot_pql_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_bao_gia_id', string="Đợt thu phí quản lý",
                                       readonly=True, domain=[('bsd_loai', '=', 'pql')])
 
-    bsd_ps_ck_ids = fields.One2many('bsd.ps_ck', 'bsd_bao_gia_id', string="Phát sinh chiết khấu",
+    bsd_ps_ck_ids = fields.One2many('bsd.ps_ck', 'bsd_bao_gia_id', string="Chiết khấu",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
 
@@ -172,7 +172,7 @@ class BsdBaoGia(models.Model):
                                       states={'nhap': [('readonly', False)]})
     bsd_so_dat_coc = fields.Integer(string="# Đặt cọc", compute='_compute_dat_coc')
 
-    bsd_km_ids = fields.One2many('bsd.bao_gia_km', 'bsd_bao_gia_id', string="Danh sách khuyến mãi",
+    bsd_km_ids = fields.One2many('bsd.bao_gia_km', 'bsd_bao_gia_id', string="Khuyến mãi",
                                  help="Danh sách khuyến mãi",
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
