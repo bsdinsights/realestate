@@ -243,7 +243,7 @@ class BsdPhieuThu(models.Model):
             'bsd_phieu_thu_id': self.id,
             'bsd_tien_pb': self.bsd_tien,
             'bsd_loai': 'pt_gctc',
-            'state': 'hoan_thanh',
+            'state': 'hieu_luc',
         })
 
     # TC.01.04 - Ghi số phiếu thu Giữ chỗ
@@ -269,7 +269,7 @@ class BsdPhieuThu(models.Model):
             'bsd_phieu_thu_id': self.id,
             'bsd_tien_pb': self.bsd_tien,
             'bsd_loai': 'pt_gc',
-            'state': 'hoan_thanh',
+            'state': 'hieu_luc',
         })
 
     # TC.01.05 Ghi sổ phiếu thu Đặt cọc
@@ -295,7 +295,7 @@ class BsdPhieuThu(models.Model):
             'bsd_phieu_thu_id': self.id,
             'bsd_tien_pb': self.bsd_tien,
             'bsd_loai': 'pt_dc',
-            'state': 'hoan_thanh',
+            'state': 'hieu_luc',
         })
 
     # TC.01.06 Ghi sổ phiếu đợt thanh toán hợp đồng bán
@@ -330,7 +330,7 @@ class BsdPhieuThu(models.Model):
             'bsd_dot_tt_id': self.bsd_dot_tt_id.id,
             'bsd_tien_pb': self.bsd_tien,
             'bsd_loai': 'pt_dtt',
-            'state': 'hoan_thanh',
+            'state': 'hieu_luc',
         })
 
     # TC.01.08 - Kiểm tra thanh toán dư

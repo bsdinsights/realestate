@@ -14,7 +14,7 @@
                             class="oe_highlight"/>
                     <button string="In đặt cọc"
                             name="action_in_dc"
-                            states="dat_coc,da_tc"
+                            states="da_tc"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Upload đặt cọc"
@@ -31,7 +31,7 @@
                             class="oe_highlight"/>
                     <button string="Thay đổi người ký TTĐC/HĐ"
                             name="action_tao_thay_doi"
-                            states="da_tc,dat_coc"
+                            states="da_tc"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Hủy"

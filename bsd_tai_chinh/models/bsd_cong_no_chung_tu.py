@@ -30,7 +30,9 @@ class BsdCongNoCT(models.Model):
     bsd_lai_phat_id = fields.Many2one('bsd.lai_phat', string="Lãi phạt", help="Lãi phạt")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-    state = fields.Selection([('hoan_thanh', 'Hoàn thành'), ('huy', 'Hủy')])
+    state = fields.Selection([('hieu_luc', 'Hiệu lực'), ('huy', 'Hủy')],
+                             string="Tình trạng",
+                             default='hieu_luc', required=True, readonly=True, tracking=1)
 
     bsd_loai = fields.Selection([('pt_gctc', 'Phiếu thanh toán - Giữ chỗ thiện chí'),
                                  ('pt_gc', 'Phiếu thanh toán - Giữ chỗ'),
@@ -131,6 +133,7 @@ class BsdCongNoCT(models.Model):
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             if self.bsd_phieu_thu_id.bsd_tien < tien:
                 raise UserError("Không thể thực hiện thanh toán dư.")
+
         elif self.bsd_loai == 'pt_pps':
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_phi_ps_id', '=', self.bsd_phi_ps_id.id)])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))

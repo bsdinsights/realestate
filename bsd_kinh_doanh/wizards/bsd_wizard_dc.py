@@ -15,7 +15,7 @@ class BsdKyDC(models.TransientModel):
         return dc
 
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", default=_get_dc, readonly=True)
-    bsd_ngay_ky_dc = fields.Datetime(string="Ngày ký đặt cọc", required=True)
+    bsd_ngay_ky_dc = fields.Date(string="Ngày ký đặt cọc", required=True)
 
     def action_xac_nhan(self):
         self.bsd_dat_coc_id.write({

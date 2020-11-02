@@ -44,28 +44,28 @@ class BsdHdBan(models.Model):
         # Kiểm tra thời điểm thanh toán nằm trong khuyến mãi
         km_ids = km_ids.filtered(lambda k: k.bsd_tu_ngay <= ngay_tt <= k.bsd_den_ngay)
         # Lấy ngày thanh toán đặc cọc
-        ngay_tt_dc = self.bsd_dat_coc_id.bsd_ngay_tt.date()
-        _logger.debug(ngay_tt_dc)
-        for km_check_dc in km_ids.filtered(lambda k: k.bsd_ngay_hldc):
-            # Kiểm tra ngày thanh toán đặc cọc
-            if ngay_tt_dc > km_check_dc.bsd_ngay_hldc:
-                continue
-            if km_check_dc.bsd_loai == 'tien':
-                if self.bsd_tien_tt_hd < km_check_dc.bsd_tong_tt:
+        if self.bsd_dat_coc_id.bsd_ngay_tt:
+            ngay_tt_dc = self.bsd_dat_coc_id.bsd_ngay_tt.date()
+            for km_check_dc in km_ids.filtered(lambda k: k.bsd_ngay_hldc):
+                # Kiểm tra ngày thanh toán đặc cọc
+                if ngay_tt_dc > km_check_dc.bsd_ngay_hldc:
                     continue
-            if km_check_dc.bsd_loai == 'ty_le':
-                if self.bsd_tl_tt_hd < km_check_dc.bsd_tl_tt:
-                    continue
-            if km_check_dc.bsd_loai == 'ty_le_tien':
-                if self.bsd_tien_tt_hd < km_check_dc.bsd_tong_tt and self.bsd_tl_tt_hd < km_check_dc.bsd_tl_tt:
-                    continue
-            self.env['bsd.ps_gd_km'].create({
-                'bsd_khuyen_mai_id': km_check_dc.id,
-                'bsd_hd_ban_id': self.id,
-                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                'bsd_ngay_tt': ngay_tt,
-                'state': 'xac_nhan',
-            })
+                if km_check_dc.bsd_loai == 'tien':
+                    if self.bsd_tien_tt_hd < km_check_dc.bsd_tong_tt:
+                        continue
+                if km_check_dc.bsd_loai == 'ty_le':
+                    if self.bsd_tl_tt_hd < km_check_dc.bsd_tl_tt:
+                        continue
+                if km_check_dc.bsd_loai == 'ty_le_tien':
+                    if self.bsd_tien_tt_hd < km_check_dc.bsd_tong_tt and self.bsd_tl_tt_hd < km_check_dc.bsd_tl_tt:
+                        continue
+                self.env['bsd.ps_gd_km'].create({
+                    'bsd_khuyen_mai_id': km_check_dc.id,
+                    'bsd_hd_ban_id': self.id,
+                    'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                    'bsd_ngay_tt': ngay_tt,
+                    'state': 'xac_nhan',
+                })
         for km in km_ids.filtered(lambda k: not k.bsd_ngay_hldc):
             if km.bsd_loai == 'tien':
                 if self.bsd_tien_tt_hd < km.bsd_tong_tt:
@@ -97,19 +97,10 @@ class BsdHdBan(models.Model):
         # Kiểm tra nếu hợp đồng có duyệt đặc biệt thì ko cập nhật trạng thái đủ dk
         if self.bsd_duyet_db:
             return
-        if self.bsd_co_ttdc:
-            if self.state != 'da_ky_ttdc':
-                # raise UserError("Hợp đồng chưa thực hiện ký thỏa thuận đặt cọc.")
-                pass
-            else:
-                self.write({
-                    'state': 'du_dk'
-                })
-        else:
-            if self.state == 'tt_dot1':
-                self.write({
-                    'state': 'du_dk'
-                })
+        if self.state == 'tt_dot1':
+            self.write({
+                'state': 'du_dk'
+            })
 
     # DV.01.21 Cập nhật trạng thái Đang thanh toán
     def action_dang_tt(self):
