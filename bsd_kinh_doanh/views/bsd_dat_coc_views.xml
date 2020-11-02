@@ -327,10 +327,14 @@
                                                 <field name="currency_id" invisible="1"/>
                                                 <field name="bsd_ma_dkbg"/>
                                                 <field name="bsd_dk_bg_id"/>
-                                                <field name="bsd_dk_tt"/>
+                                                <field name="bsd_loai_bg"/>
+                                                <field name="bsd_loai_sp_id"/>
                                                 <field name="bsd_bao_gia_id"/>
                                             </group>
                                             <group>
+                                                <field name="bsd_tu_ngay"/>
+                                                <field name="bsd_den_ngay"/>
+                                                <field name="bsd_dk_tt"/>
                                                 <field name="bsd_gia_m2"/>
                                                 <field name="bsd_tien"/>
                                                 <label for="bsd_ty_le"/>
@@ -407,7 +411,7 @@
                                     <field name="bsd_ck_nb_id" invisible="1"/>
                                     <field name="bsd_cs_tt_id" invisible="1"/>
                                     <field name="bsd_chiet_khau_id" options="{'no_create':true}"/>
-                                    <field name="bsd_ten_ck"/>
+                                    <field name="bsd_ma_ck"/>
                                     <field name="bsd_tu_ngay"/>
                                     <field name="bsd_den_ngay"/>
                                     <field name="bsd_cach_tinh"/>
@@ -427,7 +431,7 @@
                                     <field name="bsd_ck_nb_id"/>
                                     <field name="bsd_cs_tt_id"/>
                                     <field name="bsd_chiet_khau_id"/>
-                                    <field name="bsd_ten_ck"/>
+                                    <field name="bsd_ma_ck"/>
                                     <field name="bsd_tu_ngay"/>
                                     <field name="bsd_den_ngay"/>
                                     <field name="bsd_cach_tinh"/>
@@ -448,7 +452,7 @@
                                                     <div class="col-4">
                                                         <strong>
                                                             <span class="float-right text-right">
-                                                                <field name="bsd_ten_ck"/>
+                                                                <field name="bsd_ma_ck"/>
                                                             </span>
                                                         </strong>
                                                     </div>
@@ -904,7 +908,7 @@
                                     <field name="bsd_ck_nb_id" invisible="1"/>
                                     <field name="bsd_cs_tt_id" invisible="1"/>
                                     <field name="bsd_chiet_khau_id" options="{'no_create':true}"/>
-                                    <field name="bsd_ten_ck"/>
+                                    <field name="bsd_ma_ck"/>
                                     <field name="bsd_tu_ngay"/>
                                     <field name="bsd_den_ngay"/>
                                     <field name="bsd_cach_tinh"/>

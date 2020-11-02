@@ -11,14 +11,18 @@ class BsdBanGiao(models.Model):
 
     bsd_dk_bg_id = fields.Many2one('bsd.dk_bg', string="Tên ĐKBG", help="Tên điều kiện bàn giao", required=True)
     bsd_ma_dkbg = fields.Char(related='bsd_dk_bg_id.bsd_ma_dkbg', store=True)
-    bsd_dk_tt = fields.Selection([('tien', 'Giá trị'),
+    bsd_dk_tt = fields.Selection([('tien', 'Số tiền'),
                                   ('ty_le', 'Phần trăm'),
-                                  ('m2', 'Đơn giá'),
-                                  ], string="Điều kiện thanh toán", default="m2", required=True,
+                                  ('m2', 'Đơn giá/m2'),
+                                  ], string="Phương thức tính", default="m2", required=True,
                                  help="Điều kiện thanh toán để được nhận bàn giao", readonly=True)
-    bsd_gia_m2 = fields.Monetary(string="Giá/m2", help="Giá/m2 theo đợt bàn giao", readonly=True)
-    bsd_tien = fields.Monetary(string="Tiền", help="Tiền thanh toán theo đợt bàn giao", readonly=True)
-    bsd_ty_le = fields.Float(string="Tỷ lệ (%)", help="Tỷ lệ thanh toán theo đợt bàn giao", readonly=True)
+    bsd_loai_bg = fields.Selection(related='bsd_dk_bg_id.bsd_loai_bg', store=True)
+    bsd_loai_sp_id = fields.Many2one(related='bsd_dk_bg_id.bsd_loai_sp_id', store=True)
+    bsd_tu_ngay = fields.Date(related='bsd_dk_bg_id.bsd_tu_ngay', store=True)
+    bsd_den_ngay = fields.Date(related='bsd_dk_bg_id.bsd_den_ngay', store=True)
+    bsd_gia_m2 = fields.Monetary(string="Đơn giá/ m2", help="Đơn giá/ m2 theo điều kiện bàn giao", readonly=True)
+    bsd_tien = fields.Monetary(string="Số tiền", help="Số tiền thanh toán theo điều kiện bàn giao", readonly=True)
+    bsd_ty_le = fields.Float(string="Phần trăm", help="Tỷ lệ thanh toán theo điều kiện bàn giao", readonly=True)
     bsd_tien_bg = fields.Monetary(string="Tiền bàn giao ", help="Tiền thanh toán theo điều kiện bàn giao ",
                                   compute="_compute_tien_bg", store=True)
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", help="Tên báo giá", required=True)
