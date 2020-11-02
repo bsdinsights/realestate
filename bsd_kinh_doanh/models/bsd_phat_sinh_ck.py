@@ -22,7 +22,6 @@ class BsdPsCk(models.Model):
     bsd_ck_cstt_id = fields.Many2one('bsd.ck_cstt', string="Chiết khấu CSTT")
     bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="Chính sách thanh toán")
     bsd_chiet_khau_id = fields.Many2one('bsd.chiet_khau', string="Tên chiết khấu", help="Tên chiết khấu", required=True)
-    bsd_ten_ck = fields.Char(related="bsd_chiet_khau_id.bsd_ma_ck", store=True)
     bsd_ma_ck = fields.Char(related="bsd_chiet_khau_id.bsd_ma_ck", store=True)
     bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng chiết khấu",
                               related="bsd_chiet_khau_id.bsd_tu_ngay", store=True)

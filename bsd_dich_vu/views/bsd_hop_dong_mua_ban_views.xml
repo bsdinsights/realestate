@@ -589,14 +589,20 @@
                         </page>
                         <page string="Lịch thanh toán">
                             <field name="bsd_ltt_ids">
-                                <tree>
+                                <tree decoration-warning="bsd_thanh_toan=='dang_tt'"
+                                      decoration-info="bsd_thanh_toan=='da_tt'"
+                                      decoration-danger="bsd_thanh_toan=='chua_tt'">
                                     <field name="bsd_stt"/>
                                     <field name="bsd_ten_dtt"/>
                                     <field name="bsd_ngay_hh_tt"/>
+                                    <field name="bsd_tl_tt" string="Tỷ lệ TT (%)"/>
                                     <field name="bsd_tien_dot_tt" sum="Tổng tiền thanh toán"/>
                                     <field name="bsd_dot_ky_hd"/>
                                     <field name="bsd_tinh_pql"/>
                                     <field name="bsd_tinh_pbt"/>
+                                    <field name="bsd_tien_da_tt"/>
+                                    <field name="bsd_tien_phai_tt"/>
+                                    <field name="bsd_thanh_toan"/>
                                     <field name="currency_id" invisible="1"/>
                                     <field name="company_id" invisible="1"/>
                                 </tree>

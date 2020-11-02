@@ -1006,4 +1006,59 @@
                       (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_bao_gia_form_popup')})]"/>
     </record>
 
+    <record model="ir.ui.model" id="bsd_bao_gia_km_form">
+        <field name="name">bsd.bao_gia.km</field>
+        <field name="res_model">bsd.bao_gia_km</field>
+        <field name="view_mode">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma_km"/>
+                            <field name="bsd_khuyen_mai_id"/>
+                            <field name="bsd_dot_mb_id"/>
+                            <field name="bsd_gia_tri"/>
+                            <field name="bsd_ngay_hldc"/>
+                        </group>
+                        <group>
+                            <field name="bsd_tu_ngay"/>
+                            <field name="bsd_den_ngay"/>
+                            <field name="bsd_bao_gia_id"/>
+                            <field name="bsd_dat_coc_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.model" id="bsd_ps_ck_form">
+        <field name="name">bsd.ps_ck</field>
+        <field name="res_model">bsd.ps_ck</field>
+        <field name="view_mode">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_loai_ck"/>
+                            <field name="bsd_ma_ck"/>
+                            <field name="bsd_chiet_khau_id"/>
+                            <field name="bsd_cach_tinh"/>
+                            <field name="bsd_tien" attrs="{'invisible':[('bsd_cach_tinh', '=', 'phan_tram')]}"/>
+                            <field name="bsd_tl_ck" attrs="{'invisible':[('bsd_cach_tinh', '=', 'tien')]}"/>
+                        </group>
+                        <group>
+                            <field name="bsd_tu_ngay"/>
+                            <field name="bsd_den_ngay"/>
+                            <field name="bsd_tien_ck"/>
+                            <field name="bsd_bao_gia_id"/>
+                            <field name="bsd_dat_coc_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
 </odoo>

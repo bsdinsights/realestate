@@ -6,6 +6,9 @@
         <field name="arch" type="xml">
             <form duplicate="false">
                 <sheet>
+                    <widget name="web_ribbon" text="Đã TT" attrs="{'invisible':[('bsd_thanh_toan', '!=', 'da_tt')]}"/>
+                    <widget name="web_ribbon" text="Đang TT" bg_color="bg-warning" attrs="{'invisible':[('bsd_thanh_toan', '!=', 'dang_tt')]}"/>
+                    <widget name="web_ribbon" text="Chưa TT" bg_color="bg-danger" attrs="{'invisible':[('bsd_thanh_toan', '!=', 'chua_tt')]}"/>
                     <notebook>
                         <page string="Thông tin đợt">
                             <group>
@@ -14,11 +17,11 @@
                                     <field name="bsd_ma_dtt"/>
                                     <field name="bsd_ten_dtt"/>
                                     <field name="bsd_ngay_hh_tt"/>
+                                    <field name="bsd_tl_tt"/>
                                     <field name="bsd_tien_dot_tt"/>
                                     <field name="bsd_tien_dc"/>
-                                    <field name="bsd_thanh_toan"/>
                                     <field name="bsd_ngay_tt"/>
-
+                                    <field name="bsd_thanh_toan" invisible="1"/>
                                 </group>
                                 <group>
                                     <field name="bsd_dot_ky_hd"/>
