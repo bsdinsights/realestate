@@ -169,7 +169,7 @@ class BsdThongBaoBanGiao(models.Model):
     @api.constrains('bsd_hd_ban_id')
     def _constrains_hd_ban(self):
         if self.bsd_hd_ban_id.state == 'thanh_ly':
-            raise UserError(_('Hợp đồng đã bị thanh lý.\n Vui lòng kiểm tra lại!'))
+            raise UserError(_('Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại!'))
 
     @api.model
     def create(self, vals):

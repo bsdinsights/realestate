@@ -71,17 +71,17 @@ class BsdThayDoiNguoiKy(models.Model):
     @api.constrains('bsd_kh_moi_id', 'bsd_kh_ht_id')
     def _constrains_kh_moi(self):
         if self.bsd_kh_ht_id == self.bsd_kh_moi_id:
-            raise UserError(_('Người đại diện ký TTĐC/HĐ mới không được trùng với người hiện tại.\n '
+            raise UserError(_('Người đại diện ký TTĐC/HĐ mới không được trùng với người hiện tại.\n'
                               'Vui lòng kiểm tra lại thông tin.'))
 
     # KD Xác nhận phiếu chuyển người đại diện đặt cọc
     def action_xac_nhan(self):
         # Kiểm tra đặt cọc đã tạo hợp đồng chưa và đặt cọc còn hiệu lực không
         if self.bsd_dat_coc_id.state not in ['da_tc', 'dat_coc']:
-            raise UserError("Đặt cọc đã hết hiệu lực.\n Vui lòng kiểm tra lại thông tin.")
+            raise UserError("Đặt cọc đã hết hiệu lực.\nVui lòng kiểm tra lại thông tin.")
         hd_ban = self.env['bsd.hd_ban'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id)])
         if hd_ban:
-            raise UserError(_("Đặt cọc đã tạo hợp đồng.\n Vui lòng kiểm tra lại thông tin."))
+            raise UserError(_("Đặt cọc đã tạo hợp đồng.\nVui lòng kiểm tra lại thông tin."))
         if self.state == 'nhap':
             self.write({
                 'state': 'xac_nhan',
@@ -91,10 +91,10 @@ class BsdThayDoiNguoiKy(models.Model):
     def action_duyet(self):
         # Kiểm tra đặt cọc đã tạo hợp đồng chưa và đặt cọc còn hiệu lực không
         if self.bsd_dat_coc_id.state not in ['da_tc', 'dat_coc']:
-            raise UserError("Đặt cọc đã hết hiệu lực.\n Vui lòng kiểm tra lại thông tin.")
+            raise UserError("Đặt cọc đã hết hiệu lực.\nVui lòng kiểm tra lại thông tin.")
         hd_ban = self.env['bsd.hd_ban'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id)])
         if hd_ban:
-            raise UserError(_("Đặt cọc đã tạo hợp đồng.\n Vui lòng kiểm tra lại thông tin."))
+            raise UserError(_("Đặt cọc đã tạo hợp đồng.\nVui lòng kiểm tra lại thông tin."))
         if self.state == 'xac_nhan':
             self.write({
                 'state': 'da_duyet',

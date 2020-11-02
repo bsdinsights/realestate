@@ -53,15 +53,15 @@ class BsdChietKhauCSTT(models.Model):
         for each in self:
             if each.bsd_tu_ngay:
                 if not each.bsd_den_ngay:
-                    raise UserError(_("Sai thông tin ngày kết thúc.\n Vui lòng kiểm tra lại thông tin."))
+                    raise UserError(_("Sai thông tin ngày kết thúc.\nVui lòng kiểm tra lại thông tin."))
                 elif each.bsd_den_ngay < each.bsd_tu_ngay:
-                    raise UserError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu.\n Vui lòng kiểm tra lại thông tin."))
+                    raise UserError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu.\nVui lòng kiểm tra lại thông tin."))
 
     # DM.15.01 Xác nhận chiết khấu
     def action_xac_nhan(self):
         # Kiểm tra đã có chi tiết chưa
         if not self.bsd_ct_ids:
-            raise UserError(_("Chưa nhập chi tiết chiết khấu.\n Vui lòng kiểm tra lại thông tin."))
+            raise UserError(_("Chưa nhập chi tiết chiết khấu.\nVui lòng kiểm tra lại thông tin."))
         if self.state == 'nhap':
             self.write({
                 'state': 'xac_nhan',

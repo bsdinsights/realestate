@@ -261,7 +261,7 @@ class BsdHopDongMuaBan(models.Model):
         _logger.debug(tl_con_tt)
         so_dot_tt = len(dot_phai_tt)
         if so_dot_tt < 1:
-            raise UserError("Không còn đợt chưa thanh toán.\n Vui lòng kiểm tra lại thông tin.")
+            raise UserError("Không còn đợt chưa thanh toán.\nVui lòng kiểm tra lại thông tin.")
         elif so_dot_tt == 1:
             dot_phai_tt.bsd_tien_dot_tt = tong_tien_phai_tt
         else:
@@ -297,7 +297,7 @@ class BsdHopDongMuaBan(models.Model):
     @api.constrains('bsd_dat_coc_id')
     def _constrains_dat_coc(self):
         if len(self.env['bsd.hd_ban'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id)])) > 1:
-            raise UserError("Phiếu đặt cọc đã được tạo hợp đồng.\n Vui lòng kiểm tra lại.")
+            raise UserError("Phiếu đặt cọc đã được tạo hợp đồng.\nVui lòng kiểm tra lại.")
 
     # DV.01.01 - Xác nhận hợp đồng
     def action_xac_nhan(self):

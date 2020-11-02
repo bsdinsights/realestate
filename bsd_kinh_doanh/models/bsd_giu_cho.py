@@ -115,7 +115,7 @@ class BsdGiuCho(models.Model):
         if self.bsd_khach_hang_id == self.bsd_ctv_id \
             or self.bsd_khach_hang_id == self.bsd_san_gd_id \
                 or self.bsd_khach_hang_id == self.bsd_gioi_thieu_id:
-            raise UserError("Thông tin môi giới không được trùng với khách hàng.\n Vui lòng kiểm tra lại thông tin.")
+            raise UserError("Thông tin môi giới không được trùng với khách hàng.\nVui lòng kiểm tra lại thông tin.")
 
     @api.onchange('bsd_nvbh_id')
     def _onchange_san_ctv(self):
@@ -187,13 +187,13 @@ class BsdGiuCho(models.Model):
                                                 ('bsd_khach_hang_id', '=', self.bsd_khach_hang_id.id),
                                                 ('state', 'not in', ['huy', 'het_han', 'dong'])])
         if gc_kh:
-            raise UserError(_("Khách hàng đã tạo giữ chỗ sản phẩm này.\n Vui lòng kiểm tra lại thông tin."))
+            raise UserError(_("Khách hàng đã tạo giữ chỗ sản phẩm này.\nVui lòng kiểm tra lại thông tin."))
 
     # Kiểm tra sản phẩm có thuộc dự án đã chọn hay ko
     @api.constrains('bsd_unit_id', 'bsd_du_an_id')
     def _constrain_da(self):
         if self.bsd_unit_id.bsd_du_an_id != self.bsd_du_an_id:
-            raise UserError(_("Sản phẩm không nằm trong dự án.\n Vui lòng kiểm tra lại thông tin."))
+            raise UserError(_("Sản phẩm không nằm trong dự án.\nVui lòng kiểm tra lại thông tin."))
 
     @api.onchange('bsd_ngay_gc', 'bsd_du_an_id',)
     def _onchange_ngay_gc(self):
@@ -243,7 +243,7 @@ class BsdGiuCho(models.Model):
     @api.constrains('bsd_unit_id')
     def _constrains_state_giu_cho(self):
         if self.bsd_unit_id.state not in ['chuan_bi', 'san_sang', 'dat_cho', 'giu_cho']:
-            raise UserError(_("Sản phẩm đã có giao dịch.\n Vui lòng kiểm tra lại thông tin sản phẩm."))
+            raise UserError(_("Sản phẩm đã có giao dịch.\nVui lòng kiểm tra lại thông tin sản phẩm."))
 
     @api.onchange('bsd_unit_id', 'bsd_du_an_id')
     def _onchange_tien_gc(self):
@@ -296,7 +296,7 @@ class BsdGiuCho(models.Model):
         # Khi đã có đợt mở bán xem sản phẩm đã có đặt cọc chưa
         else:
             if self.bsd_unit_id.state not in ['chuan_bi', 'san_sang', 'dat_coc', 'giu_cho']:
-                raise UserError(_("Sản phẩm đã có giao dịch.\n Vui lòng kiểm tra lại thông tin."))
+                raise UserError(_("Sản phẩm đã có giao dịch.\nVui lòng kiểm tra lại thông tin."))
             giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                            ('state', '=', 'giu_cho')])
             time_gc = self.bsd_du_an_id.bsd_gc_smb

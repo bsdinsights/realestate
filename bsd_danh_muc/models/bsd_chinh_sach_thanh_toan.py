@@ -133,9 +133,9 @@ class BsdChinhSachThanhToan(models.Model):
         for each in self:
             if each.bsd_tu_ngay:
                 if not each.bsd_den_ngay:
-                    raise UserError(_("Sai thông tin ngày kết thúc.\n Vui lòng kiểm tra lại thông tin."))
+                    raise UserError(_("Sai thông tin ngày kết thúc.\nVui lòng kiểm tra lại thông tin."))
                 elif each.bsd_den_ngay < each.bsd_tu_ngay:
-                    raise UserError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu.\n Vui lòng kiểm tra lại thông tin."))
+                    raise UserError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu.\nVui lòng kiểm tra lại thông tin."))
 
     # Kiểm tra tổng phần trăm của các đợt thanh toán
     @api.constrains('bsd_ct_ids')
@@ -151,13 +151,13 @@ class BsdChinhSachThanhToan(models.Model):
             _logger.debug("Tổng phần trăm thanh toán")
             _logger.debug(tong_pt)
             if tong_pt != 100:
-                raise UserError(_("Tỷ lệ của đợt thanh toán không bằng 100%.\n "
+                raise UserError(_("Tỷ lệ của đợt thanh toán không bằng 100%.\n"
                                   "Vui lòng kiểm tra lại thông tin."))
 
     # Xác nhận phương thúc thanh toán
     def action_xac_nhan(self):
         if not self.bsd_ct_ids:
-            raise UserError(_("Bạn chưa nhập thông tin khai báo đợt thanh toán.\n "
+            raise UserError(_("Bạn chưa nhập thông tin khai báo đợt thanh toán.\n"
                               "Vui lòng kiểm tra lại thông tin."))
         else:
             dot_ky_hd = self.bsd_ct_ids.filtered(lambda d: d.bsd_dot_ky_hd)
@@ -196,7 +196,7 @@ class BsdChinhSachThanhToan(models.Model):
     # Duyệt phương thức thanh toán
     def action_duyet(self):
         if not self.bsd_ct_ids:
-            raise UserError(_("Bạn chưa nhập thông tin khai báo đợt thanh toán.\n "
+            raise UserError(_("Bạn chưa nhập thông tin khai báo đợt thanh toán.\n"
                               "Vui lòng kiểm tra lại thông tin."))
         if self.state == 'xac_nhan':
             self.write({
@@ -347,7 +347,7 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
     def _constrains_lap_lai(self):
         if self.bsd_lap_lai == '1':
             if self.bsd_so_dot < 1:
-                raise UserError(_("Số lần lặp không được nhỏ hơn 1.\n Vui lòng kiểm tra lại thông tin."))
+                raise UserError(_("Số lần lặp không được nhỏ hơn 1.\nVui lòng kiểm tra lại thông tin."))
 
     @api.constrains('bsd_tl_tt')
     def _constrains_bsd_tl_tt(self):
@@ -364,7 +364,7 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
     def _constrains_cs_tt(self):
         list_ct = self.bsd_cs_tt_id.bsd_ct_ids.mapped('bsd_stt')
         if len(set(list_ct)) < len(list_ct):
-            raise UserError(_("Sô thứ tự trùng.\n Vui lòng kiểm tra lại thông tin"))
+            raise UserError(_("Sô thứ tự trùng.\nVui lòng kiểm tra lại thông tin"))
 
     def action_xac_nhan(self):
         pass

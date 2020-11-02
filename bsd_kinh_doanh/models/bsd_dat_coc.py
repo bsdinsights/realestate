@@ -244,7 +244,7 @@ class BsdDatCoc(models.Model):
             dat_coc = self.env['bsd.dat_coc'].search([('bsd_bao_gia_id', '=', id_bao_gia)])
             _logger.debug(dat_coc)
             if dat_coc:
-                raise UserError("Bảng tính giá đã được tạo Đặt cọc.\n Vui lòng kiểm tra lại thông tin!")
+                raise UserError("Bảng tính giá đã được tạo Đặt cọc.\nVui lòng kiểm tra lại thông tin!")
         sequence = False
         if 'bsd_bao_gia_id' in vals:
             bao_gia = self.env['bsd.bao_gia'].browse(vals['bsd_bao_gia_id'])

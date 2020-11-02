@@ -85,7 +85,7 @@ class BsdHuyGC(models.Model):
             bao_gia = self.env['bsd.bao_gia'].search([('bsd_giu_cho_id', '=', self.bsd_giu_cho_id.id),
                                                       ('state', 'not in', ['huy'])])
             if bao_gia:
-                raise UserError("Bạn cần hủy Bảng tính giá trước khi đóng giữ chỗ.\n Vui lòng kiểm tra lại thông tin.")
+                raise UserError("Bạn cần hủy Bảng tính giá trước khi đóng giữ chỗ.\nVui lòng kiểm tra lại thông tin.")
 
     # KD.14.02 Duyệt hủy giữ chỗ
     def action_duyet(self):
@@ -94,10 +94,10 @@ class BsdHuyGC(models.Model):
             bao_gia = self.env['bsd.bao_gia'].search([('bsd_giu_cho_id', '=', self.bsd_giu_cho_id.id),
                                                       ('state', 'not in', ['huy'])])
             if bao_gia:
-                raise UserError("Bạn cần hủy Bảng tính giá trước khi đóng giữ chỗ.\n Vui lòng kiểm tra lại thông tin.")
+                raise UserError("Bạn cần hủy Bảng tính giá trước khi đóng giữ chỗ.\nVui lòng kiểm tra lại thông tin.")
             # Cập nhật trạng thái giữ chỗ, mã hủy giữ chỗ
             if self.bsd_giu_cho_id.state == 'huy':
-                raise UserError("Giữ chỗ đã bị hủy.\n Vui lòng kiểm tra lại thông tin.")
+                raise UserError("Giữ chỗ đã bị hủy.\nVui lòng kiểm tra lại thông tin.")
             else:
                 # Cập nhật phiếu giữ chỗ
                 if self.bsd_giu_cho_id.state == 'giu_cho':
@@ -151,10 +151,10 @@ class BsdHuyGC(models.Model):
                         })
         if self.bsd_loai_gc == 'gc_tc':
             if self.bsd_gc_tc_id.state == 'huy':
-                raise UserError("Giữ chỗ thiện chí đã bị hủy.\n Vui lòng kiểm tra lại thông tin.")
+                raise UserError("Giữ chỗ thiện chí đã bị hủy.\nVui lòng kiểm tra lại thông tin.")
             if self.bsd_gc_tc_id.bsd_rap_can_id:
                 if self.bsd_gc_tc_id.bsd_rap_can_id.state not in ['huy', 'nhap']:
-                    raise UserError("Giữ chỗ thiện chí đã ráp căn.\n Vui lòng kiểm tra lại thông tin.")
+                    raise UserError("Giữ chỗ thiện chí đã ráp căn.\nVui lòng kiểm tra lại thông tin.")
             if self.bsd_gc_tc_id.state == 'giu_cho':
                 self.bsd_gc_tc_id.write({
                     'state': 'huy',

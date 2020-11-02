@@ -63,4 +63,4 @@ class BsdQuanTam(models.Model):
                                 ('bsd_unit_id', '=', self.bsd_unit_id.id),
                                 ('id', '!=', self.id), ('state', '=', 'xac_nhan')])
         if quan_tam:
-            raise UserError(_("Khách hàng đã quan tâm sảm phẩm này.\n Vui lòng kiểm tra lại thông tin."))
+            raise UserError(_("Khách hàng đã quan tâm sảm phẩm này.\nVui lòng kiểm tra lại thông tin."))

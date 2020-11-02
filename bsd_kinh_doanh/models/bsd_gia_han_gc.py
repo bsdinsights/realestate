@@ -33,7 +33,7 @@ class BsdGiaHanGiuCho(models.Model):
             if giu_cho:
                 du_an = giu_cho.mapped('bsd_du_an_id')
                 if len(du_an) > 1:
-                    raise UserError(_("Chọn giữ chỗ nằm ở 2 dự án khác nhau.\n Vui lòng kiểm tra lại."))
+                    raise UserError(_("Chọn giữ chỗ nằm ở 2 dự án khác nhau.\nVui lòng kiểm tra lại."))
                 item = []
                 for gc in giu_cho:
                     item.append((0, 0, {'bsd_giu_cho_id': gc.id, 'state': 'cho_duyet'}))
@@ -47,7 +47,7 @@ class BsdGiaHanGiuCho(models.Model):
             if gc_tc:
                 du_an = gc_tc.mapped('bsd_du_an_id')
                 if len(du_an) > 1:
-                    raise UserError(_("Chọn giữ chỗ nằm ở 2 dự án khác nhau.\n Vui lòng kiểm tra lại."))
+                    raise UserError(_("Chọn giữ chỗ nằm ở 2 dự án khác nhau.\nVui lòng kiểm tra lại."))
                 item = []
                 for gc in gc_tc:
                     item.append((0, 0, {'bsd_gc_tc_id': gc.id, 'state': 'cho_duyet'}))

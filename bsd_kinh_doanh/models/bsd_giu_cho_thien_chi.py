@@ -127,7 +127,7 @@ class BsdGiuChoThienChi(models.Model):
         if self.bsd_khach_hang_id == self.bsd_ctv_id \
             or self.bsd_khach_hang_id == self.bsd_san_gd_id \
                 or self.bsd_khach_hang_id == self.bsd_gioi_thieu_id:
-            raise UserError("Thông tin môi giới không được trùng với khách hàng.\n Vui lòng kiểm tra lại thông tin.")
+            raise UserError("Thông tin môi giới không được trùng với khách hàng.\nVui lòng kiểm tra lại thông tin.")
 
     @api.constrains('bsd_tien_gc')
     def _check_bsd_tien_gc(self):
@@ -231,7 +231,7 @@ class BsdGiuChoThienChi(models.Model):
                                                   ('state', '=', 'xac_nhan'),
                                                   ('bsd_thanh_toan', 'in', ['chua_tt', 'dang_tt'])])
         if len(gc_in_day) >= self.bsd_du_an_id.bsd_gc_nv_ngay:
-            raise UserError("Số lượng giữ chỗ tối đa trên một ngày của bạn đã vượt mức.\n "
+            raise UserError("Số lượng giữ chỗ tối đa trên một ngày của bạn đã vượt mức.\n"
                             "Vui lòng kiểm tra lại thông tin.")
 
     # KD.05.08 Theo dõi công nợ giữ chỗ thiện chí

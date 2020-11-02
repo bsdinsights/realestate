@@ -40,14 +40,14 @@ class ProductPriceList(models.Model):
         for each in self:
             if each.bsd_tu_ngay:
                 if not each.bsd_den_ngay:
-                    raise UserError(_("Sai thông tin ngày kết thúc.\n Vui lòng kiểm tra lại thông tin."))
+                    raise UserError(_("Sai thông tin ngày kết thúc.\nVui lòng kiểm tra lại thông tin."))
                 elif each.bsd_den_ngay < each.bsd_tu_ngay:
-                    raise UserError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu.\n Vui lòng kiểm tra lại thông tin."))
+                    raise UserError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu.\nVui lòng kiểm tra lại thông tin."))
 
     # Xác nhận bảng giá
     def action_xac_nhan(self):
         if not self.item_ids:
-            raise UserError(_('Bạn chưa khai báo chi tiết bảng giá.\n Vui lòng kiểm tra lại'))
+            raise UserError(_('Bạn chưa khai báo chi tiết bảng giá.\nVui lòng kiểm tra lại'))
         if self.state == 'nhap':
             self.write({
                 'state': 'xac_nhan'
@@ -56,7 +56,7 @@ class ProductPriceList(models.Model):
     # Duyệt bảng giá
     def action_duyet(self):
         if not self.item_ids:
-            raise UserError(_('Bạn chưa khai báo chi tiết bảng giá.\n Vui lòng kiểm tra lại'))
+            raise UserError(_('Bạn chưa khai báo chi tiết bảng giá.\nVui lòng kiểm tra lại'))
         if self.state == 'xac_nhan':
             self.write({
                 'state': 'duyet',

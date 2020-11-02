@@ -74,7 +74,7 @@ class BsdDTTTTT(models.Model):
         pl_tti = self.env['bsd.pl_tti'].search([('bsd_dt_tt_id', '=', self.id),
                                                 ('state', '!=', 'huy')])
         if pl_tti:
-            raise UserError("Đã phát sinh Phụ lục hợp đồng thay đổi thông tin\n "
+            raise UserError("Đã phát sinh Phụ lục hợp đồng thay đổi thông tin\n"
                             "Bạn không thể Hủy, vui lòng kiểm tra lại thông tin.")
         else:
             self.write({

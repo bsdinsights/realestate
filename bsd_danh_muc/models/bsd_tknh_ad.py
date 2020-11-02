@@ -59,7 +59,7 @@ class BsdTknhAp(models.Model):
                         _logger.debug("Nằm trong khoảng cho phep")
                         flag = False
             if flag:
-                raise UserError("Đã tồn tại một tài khoản ngân hàng đang được áp dụng \n "
+                raise UserError("Đã tồn tại một tài khoản ngân hàng đang được áp dụng \n"
                                 "trong khoảng thời gian được lựa chọn. Vui lòng kiểm tra lại.")
 
 

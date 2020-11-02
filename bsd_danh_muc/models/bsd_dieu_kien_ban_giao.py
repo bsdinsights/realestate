@@ -84,9 +84,9 @@ class BsdDkbg(models.Model):
         for each in self:
             if each.bsd_tu_ngay:
                 if not each.bsd_den_ngay:
-                    raise UserError(_("Sai thông tin ngày kết thúc.\n Vui lòng kiểm tra lại thông tin."))
+                    raise UserError(_("Sai thông tin ngày kết thúc.\nVui lòng kiểm tra lại thông tin."))
                 elif each.bsd_den_ngay < each.bsd_tu_ngay:
-                    raise UserError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu.\n Vui lòng kiểm tra lại thông tin."))
+                    raise UserError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu.\nVui lòng kiểm tra lại thông tin."))
 
     def _get_name(self):
         dk_bg = self

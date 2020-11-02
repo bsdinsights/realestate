@@ -44,7 +44,7 @@ class BsdThuHoi(models.Model):
     # KD.04.04.03 - Xác nhận thu hồi Sản phẩm đợt mở bán
     def action_xac_nhan(self):
         if not self.bsd_unit_ids:
-            raise UserError("Chưa có Sản phẩm thu hồi.\n Vui lòng kiểm tra lại!")
+            raise UserError("Chưa có Sản phẩm thu hồi.\nVui lòng kiểm tra lại!")
         if self.bsd_dot_mb_id.state != 'ph' or self.bsd_dot_mb_id.bsd_den_ngay < datetime.date.today():
             raise UserError("Vui lòng kiểm tra lại thông tin đợt mở bán.")
         self.write({

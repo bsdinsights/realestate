@@ -70,17 +70,17 @@ class BsdChuyenGiuCho(models.Model):
             })
         if self.bsd_loai_gc == 'gc_tc' and self.bsd_gc_tc_id:
             if self.bsd_gc_tc_id.state not in ['cho_rc', 'giu_cho']:
-                raise UserError("Giữ chỗ thiện chí đã hết hiệu lực hoặc đã ráp căn.\n Vui lòng kiểm tra lại thông tin.")
+                raise UserError("Giữ chỗ thiện chí đã hết hiệu lực hoặc đã ráp căn.\nVui lòng kiểm tra lại thông tin.")
             if self.bsd_gc_tc_id.bsd_thanh_toan != 'da_tt':
-                raise UserError("Phiếu giữ chỗ thiện chí chưa thanh toán đủ.\n Vui lòng kiểm tra lại thông tin.")
+                raise UserError("Phiếu giữ chỗ thiện chí chưa thanh toán đủ.\nVui lòng kiểm tra lại thông tin.")
             self.bsd_gc_tc_id.write({
                 'bsd_kh_moi_id': self.bsd_kh_moi_id.id,
             })
         if self.bsd_loai_gc == 'giu_cho' and self.bsd_giu_cho_id:
             if self.bsd_giu_cho_id.state not in ['dang_cho', 'giu_cho']:
-                raise UserError("Giữ chỗ đã hết hiệu lực.\n Vui lòng kiểm tra lại thông tin.")
+                raise UserError("Giữ chỗ đã hết hiệu lực.\nVui lòng kiểm tra lại thông tin.")
             if self.bsd_giu_cho_id.bsd_thanh_toan != 'da_tt':
-                raise UserError("Phiếu giữ chỗ chưa thanh toán đủ.\n Vui lòng kiểm tra lại thông tin.")
+                raise UserError("Phiếu giữ chỗ chưa thanh toán đủ.\nVui lòng kiểm tra lại thông tin.")
             self.bsd_giu_cho_id.write({
                 'bsd_kh_moi_id': self.bsd_kh_moi_id.id,
             })

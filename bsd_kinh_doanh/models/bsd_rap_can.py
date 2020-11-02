@@ -53,7 +53,7 @@ class BsdRapCan(models.Model):
                                                   ('bsd_thanh_toan', '=', 'da_tt'),
                                                   ('bsd_ngay_ut', '<', self.bsd_gc_tc_id.bsd_ngay_ut)])
             if gc_tc:
-                raise UserError("Có Giữ chỗ thiện chí cần được Ráp căn trước .\n Vui lòng chờ đến lược của bạn!")
+                raise UserError("Có Giữ chỗ thiện chí cần được Ráp căn trước .\nVui lòng chờ đến lược của bạn!")
 
     # KD.06.07 Không cho ráp căn sản phẩm đang nằm trong đợt mở bán
     @api.constrains('bsd_unit_id')
@@ -161,7 +161,7 @@ class BsdRapCan(models.Model):
         rap_can = self.env['bsd.rap_can'].search([('bsd_gc_tc_id', '=', vals['bsd_gc_tc_id']),
                                                   ('state', '!=', 'huy')])
         if rap_can:
-            raise UserError("Giữ chỗ thiện chí thuộc một ráp căn khác.\n Vui lòng kiểm tra lại.")
+            raise UserError("Giữ chỗ thiện chí thuộc một ráp căn khác.\nVui lòng kiểm tra lại.")
         # Sinh mã tự động cho phiếu ráp căn
         sequence = False
         if 'bsd_unit_id' in vals:

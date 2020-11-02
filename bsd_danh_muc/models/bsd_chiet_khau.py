@@ -114,9 +114,9 @@ class BsdChietKhau(models.Model):
         for each in self:
             if each.bsd_tu_ngay:
                 if not each.bsd_den_ngay:
-                    raise UserError(_("Sai thông tin ngày kết thúc.\n Vui lòng kiểm tra lại thông tin."))
+                    raise UserError(_("Sai thông tin ngày kết thúc.\nVui lòng kiểm tra lại thông tin."))
                 elif each.bsd_den_ngay < each.bsd_tu_ngay:
-                    raise UserError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu.\n Vui lòng kiểm tra lại thông tin."))
+                    raise UserError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu.\nVui lòng kiểm tra lại thông tin."))
 
     # DM.13.01 Xác nhận chiết khấu
     def action_xac_nhan(self):
@@ -176,7 +176,7 @@ class BsdChietKhau(models.Model):
                             _logger.debug("Nằm trong khoảng cho phep")
                             flag_time = False
                 if flag_time:
-                    raise UserError("Đã tồn tại chiết khấu này.\n Vui lòng kiểm tra lại thông tin.")
+                    raise UserError("Đã tồn tại chiết khấu này.\nVui lòng kiểm tra lại thông tin.")
             mua_si_sl = mua_si.filtered(lambda m: not (m.bsd_den_ngay < self.bsd_tu_ngay < self.bsd_den_ngay
                                                        or self.bsd_tu_ngay < self.bsd_den_ngay < m.bsd_tu_ngay))
             if mua_si_sl:
@@ -195,7 +195,7 @@ class BsdChietKhau(models.Model):
                             _logger.debug("Nằm trong khoảng cho phep")
                             flag_sl = False
                 if flag_sl:
-                    raise UserError("Đã tồn tại chiết khấu mua sỉ.\n Vui lòng kiểm tra lại thông tin.")
+                    raise UserError("Đã tồn tại chiết khấu mua sỉ.\nVui lòng kiểm tra lại thông tin.")
 
         # DM.13.08 Kiểm tra điều kiện trùng lịch thanh toán
         if self.bsd_loai_ck == 'ltt':
@@ -228,7 +228,7 @@ class BsdChietKhau(models.Model):
                             _logger.debug("Nằm trong khoảng cho phep")
                             flag_time = False
                 if flag_time:
-                    raise UserError("Đã tồn tại chiết khấu này.\n Vui lòng kiểm tra lại thông tin.")
+                    raise UserError("Đã tồn tại chiết khấu này.\nVui lòng kiểm tra lại thông tin.")
         # DM.13.10 Kiểm tra điều kiện trùng chiết khấu thanh toán nhanh
         if self.bsd_loai_ck == 'ttn':
             ttn = self.env['bsd.chiet_khau'].search([('bsd_loai_ck', '=', 'ttn'),
@@ -251,7 +251,7 @@ class BsdChietKhau(models.Model):
                             _logger.debug("Nằm trong khoảng cho phep")
                             flag_time = False
                 if flag_time:
-                    raise UserError("Đã tồn tại chiết khấu này.\n Vui lòng kiểm tra lại thông tin.")
+                    raise UserError("Đã tồn tại chiết khấu này.\nVui lòng kiểm tra lại thông tin.")
 
     @api.model
     def create(self, vals):

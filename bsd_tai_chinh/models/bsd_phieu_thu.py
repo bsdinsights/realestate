@@ -163,7 +163,7 @@ class BsdPhieuThu(models.Model):
         # TC.01.09
         # Kiểm tra hợp đồng đã bị thanh lý chưa
         if self.bsd_hd_ban_id.state == 'thanh_ly':
-            raise UserError(_('Hợp đồng đã bị thanh lý.\n Vui lòng kiểm tra lại thông tin hợp đồng.'))
+            raise UserError(_('Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin hợp đồng.'))
         # Kiểm tra nếu thu phí quản lý, phí bảo trì Sản phẩm phải có ngày cất nóc
         if self.bsd_loai_pt in ['pql', 'pbt']:
             if not self.bsd_unit_id.bsd_ngay_cn:
@@ -303,7 +303,7 @@ class BsdPhieuThu(models.Model):
     def _gs_pt_dot_tt_hd(self, time):
         # Kiểm tra hợp đồng đã bị thanh lý chưa
         if self.bsd_hd_ban_id.state == 'thanh_ly':
-            raise UserError(_('Hợp đồng đã bị thanh lý.\n Vui lòng kiểm tra lại thông tin hợp đồng.'))
+            raise UserError(_('Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin hợp đồng.'))
         # Kiểm tra nếu thu phí quản lý, phí bảo trì Sản phẩm phải có ngày cất nóc
         if self.bsd_loai_pt in ['pql', 'pbt']:
             if not self.bsd_unit_id.bsd_ngay_cn:
@@ -396,7 +396,7 @@ class BsdPhieuThu(models.Model):
     def _gs_pt_pps(self, time):
         # Kiểm tra hợp đồng đã bị thanh lý chưa
         if self.bsd_hd_ban_id.state == 'thanh_ly':
-            raise UserError(_('Hợp đồng đã bị thanh lý.\n Vui lòng kiểm tra lại thông tin hợp đồng.'))
+            raise UserError(_('Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin hợp đồng.'))
         self.env['bsd.cong_no'].create({
                 'bsd_ngay': time,
                 'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
@@ -412,7 +412,7 @@ class BsdPhieuThu(models.Model):
     # TC.01.12 Cấn trừ công nợ phiếu thu
     def action_can_tru(self):    
         if self.bsd_hd_ban_id.state == 'thanh_ly':
-            raise UserError(_('Hợp đồng đã bị thanh lý.\n Vui lòng kiểm tra lại thông tin!'))
+            raise UserError(_('Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin!'))
         list_ct = []
         if self.bsd_loai_pt == 'pps':
             if self.bsd_dot_tt_id:

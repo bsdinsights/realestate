@@ -112,7 +112,7 @@ class BsdPhiPhatSinh(models.Model):
     # TC.15.01 Xác nhận phí phát sinh
     def action_xac_nhan(self):
         if self.bsd_hd_ban_id.state == 'thanh_ly':
-            raise UserError(_('Hợp đồng đã bị thanh lý.\n Vui lòng kiểm tra lại thông tin!'))
+            raise UserError(_('Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin!'))
         if self.state == 'nhap':
             self.write({
                 'state': 'xac_nhan'
@@ -121,7 +121,7 @@ class BsdPhiPhatSinh(models.Model):
     # TC.15.02 Ghi sổ phí phát sinh
     def action_ghi_so(self):
         if self.bsd_hd_ban_id.state == 'thanh_ly':
-            raise UserError(_('Hợp đồng đã bị thanh lý.\n Vui lòng kiểm tra lại thông tin!'))
+            raise UserError(_('Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin!'))
         if self.state == 'xac_nhan':
             self.write({
                 'state': 'ghi_so'
@@ -142,7 +142,7 @@ class BsdPhiPhatSinh(models.Model):
     # TC.15.03 Cấn trừ công nợ phí phát sinh
     def action_can_tru(self):
         if self.bsd_hd_ban_id.state == 'thanh_ly':
-            raise UserError(_('Hợp đồng đã bị thanh lý.\n Vui lòng kiểm tra lại thông tin!'))
+            raise UserError(_('Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin!'))
         return {
             'type': 'ir.actions.act_window',
             'name': 'Cấn trừ công nợ',

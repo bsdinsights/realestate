@@ -60,7 +60,7 @@ class BsdDanhSachTheoDoi(models.Model):
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
     bsd_ngay_hh = fields.Datetime(string="ngày hết hạn",
-                                  help="""Ngày hết hạn:\n 
+                                  help="""Ngày hết hạn:\n
                                         - Nếu đối tượng là đặt cọc: Hạn ký đặt cọc \n
                                         - Nếu đối tượng là thỏa thuận đặt cọc: Hạn ký thỏa thuận đặt cọc\n
                                         - Nếu đối tượng là hơp đồng mua bán: Hạn ký hợp đồng""",
