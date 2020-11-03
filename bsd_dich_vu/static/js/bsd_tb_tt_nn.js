@@ -17,6 +17,7 @@ var _t = core._t;
             var user = session.uid
             this._loadAction('bsd_dich_vu.bsd_wizard_tao_tb_tt_action_2').then(function(action){
                 action.context={default_bsd_loai:'tb_tt'}
+                action.flags = {new_window: true}
                 self.do_action(action)
             })
         },
@@ -25,6 +26,7 @@ var _t = core._t;
             var user = session.uid
             this._loadAction('bsd_dich_vu.bsd_wizard_tao_tb_tt_action_2').then(function(action){
                 action.context={default_bsd_loai:'tb_nn'}
+                action.flags = {new_window: true}
                 self.do_action(action)
             })
         },

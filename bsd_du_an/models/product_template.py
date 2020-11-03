@@ -153,11 +153,6 @@ class ProductTemplate(models.Model):
     bsd_ghi_chu = fields.Char(string="Ghi chú ưu tiên", help="Ghi chú ưu tiên", readonly=True)
     bsd_nguoi_huy_id = fields.Many2one('res.users', string="Người hủy ưu tiên", help="Người hủy ưu tiên", readonly=True)
     bsd_ngay_huy = fields.Datetime(string="Ngày hủy ưu tiên", readonly=True, help="Ngày hủy ưu tiên")
-    bsd_tt_vay = fields.Selection([('0', 'Không'),
-                                   ('1', 'Có')], string="Tình trạng vay", default='0',
-                                  help="Tình trạng vay ngân hàng của sản phẩm",
-                                  readonly=True,
-                                  states={'chuan_bi': [('readonly', False)]})
     bsd_ngay_dkbg = fields.Date(string="Ngày dự kiến bàn giao", help="Ngày dự kiến bàn giao",
                                 readonly=True,
                                 states={'chuan_bi': [('readonly', False)]})

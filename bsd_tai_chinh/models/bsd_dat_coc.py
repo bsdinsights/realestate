@@ -17,7 +17,7 @@ class BsdDatCoc(models.Model):
     bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_dat_coc_id', string="Công nợ chứng tự",
                                  domain=[('bsd_loai', '=', 'pt_dc')],
                                  readonly=True)
-    bsd_ngay_tt = fields.Datetime(compute='_compute_tien_tt', store=True)
+    bsd_ngay_tt = fields.Datetime(compute='_compute_tien_tt', store=True, string="Ngày TT cọc")
     # bsd_tien_ttd = fields.Monetary(compute="_compute_tien_ttd")
     bsd_thanh_toan = fields.Selection(compute='_compute_tien_tt', store=True)
 

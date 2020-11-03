@@ -15,9 +15,14 @@
                             class="oe_highlight"/>
                     <button string="Xác nhận TTLK"
                             name="action_xac_nhan_ttlk"
-                            states="xac_nhan"
+                            states="cho_xn_ttlk"
                             confirm="Bạn có muốn xác nhận lũy kế thanh toán này không?"
-                            attrs="{'invisible': ['|',('bsd_ngay_kt_xn', '!=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Xác nhận TT"
+                            name="action_xac_nhan_tt"
+                            states="da_xn_ttlk"
+                            confirm="Bạn có muốn xác nhận thông tin khách hàng mới không?"
                             type="object"
                             class="oe_highlight"/>
                     <button string="In"
@@ -65,7 +70,8 @@
                                     <field name="bsd_unit_id"
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                            options="{'no_create':true}"/>
-                                    <field name="bsd_hd_ban_state"/>
+                                    <field name="bsd_hd_ban_state" readonly="1" force_save="1"/>
+                                    <field name="bsd_ly_do" readonly="1"/>
                                 </group>
                             </group>
                             <group string="XÁC NHẬN">
@@ -85,34 +91,61 @@
                         <page string="Khách hàng">
                             <group>
                                 <group>
-                                    <field name="bsd_khach_hang_id" options="{'no_create':true}"/>
+                                    <field name="bsd_khach_hang_id"
+                                           readonly="1"
+                                           force_save="1"
+                                           options="{'no_create':true}"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_co_dsh_ht" readonly="1" />
-                                    <field name="bsd_co_dsh_ht" invisible="1"/>
+                                    <field name="bsd_co_dsh_ht" readonly="1" force_save="1"/>
                                 </group>
                             </group>
                             <field name="bsd_dsh_ht_ids" readonly="1" nolabel="1" attrs="{'invisible':[('bsd_co_dsh_ht', '=', False)]}">
                                 <tree>
-                                    <field name="name"/>
+                                    <field name="bsd_dong_sh_id"/>
                                     <field name="mobile"/>
                                     <field name="email"/>
+                                    <field name="bsd_quan_he"/>
                                 </tree>
                             </field>
                             <group>
                                 <group>
-                                    <field name="bsd_kh_moi_id" options="{'no_create':true}"/>
+                                    <field name="bsd_kh_moi_id"
+                                           attrs="{'required':[('state', '=', 'da_xn_ttlk')]}"
+                                           context="{'show_ma_kh': True}"
+                                           options="{'no_create':true}"/>
                                 </group>
                                 <group>
                                     <field name="bsd_co_dsh_moi"/>
                                 </group>
                             </group>
-                            <field name="bsd_dsh_moi_ids" nolabel="1" attrs="{'invisible':[('bsd_co_dsh_moi', '=', False)]}">
+                            <field name="bsd_dsh_moi_ids"
+                                   nolabel="1" attrs="{'invisible':[('bsd_co_dsh_moi', '=', False)]}">
                                 <tree>
-                                    <field name="name"/>
+                                    <field name="bsd_dong_sh_id"
+                                           context="{'show_ma_kh': True}"
+                                           options="{'no_create':true}"/>
                                     <field name="mobile"/>
                                     <field name="email"/>
+                                    <field name="bsd_quan_he"/>
                                 </tree>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="bsd_dong_sh_id"
+                                                       domain="[('id', '!=', parent.bsd_kh_moi_id)]"
+                                                       context="{'show_ma_kh': True}"
+                                                       options="{'no_create':true}"/>
+                                                <field name="bsd_quan_he"/>
+                                            </group>
+                                            <group>
+                                                <field name="mobile"/>
+                                                <field name="email"/>
+                                            </group>
+                                        </group>
+                                    </sheet>
+                                </form>
                             </field>
                         </page>
                         <page string="Công chứng">
@@ -147,6 +180,9 @@
             <tree>
                 <field name="bsd_ma_cn"/>
                 <field name="bsd_ten_cn"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_hd_ban_id"/>
+                <field name="bsd_unit_id"/>
                 <field name="state"/>
             </tree>
         </field>

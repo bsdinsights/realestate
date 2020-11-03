@@ -178,7 +178,7 @@ class BsdDatCoc(models.Model):
                                        ('da_tt', 'Đã thanh toán')], string="Tình trạng TT", default="chua_tt",
                                       help="Thanh toán", readonly=True,
                                       required=True)
-    bsd_ngay_tt = fields.Date(string="Ngày TT cọc", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ", readonly=True)
+    bsd_ngay_tt = fields.Datetime(string="Ngày TT cọc", help="Ngày (kế toán xác nhận) thanh toán giữ chỗ", readonly=True)
 
     bsd_tien_ttd = fields.Monetary(string="Đã thanh toán/ đợt", help="Tiền đã thanh toán theo đợt thanh toán",)
     bsd_km_ids = fields.One2many('bsd.bao_gia_km', 'bsd_dat_coc_id', string="Khuyến mãi",

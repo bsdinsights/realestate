@@ -15,8 +15,10 @@ class ProductTemplate(models.Model):
     bsd_tt_vay = fields.Selection([('0', 'Không'),
                                    ('1', 'Có')], string="Tình trạng vay", default='0',
                                   help="Tình trạng vay ngân hàng của Sản phẩm",
-                                  readonly=True,
-                                  states={'chuan_bi': [('readonly', False)]})
+                                  readonly=True)
+    bsd_xn_du_hs = fields.Selection([('0', 'Không'), ('1', 'Có')],
+                                    string="Xác nhận đủ HS", default='0',
+                                    help="Xác nhận đủ hồ sơ", readonly=True, required=True)
     bsd_bg_sp_id = fields.Many2one('bsd.bg_sp', string="Bàn giao sản phẩm", help="Bàn giao sản phẩm", readonly=True)
     bsd_bg_gt_id = fields.Many2one('bsd.bg_gt', string="Bàn giao giấy tờ", help="Bàn giao giấy tờ", readonly=True)
 

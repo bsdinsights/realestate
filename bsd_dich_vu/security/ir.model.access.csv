@@ -9,6 +9,8 @@ bsd_pl_tti_manager, Phụ lục thay đổi thông tin,model_bsd_pl_tti,bsd_dich
 
 bsd_ps_gd_km_manager, Bảng phát sinh giao dịch khuyến mãi,model_bsd_ps_gd_km,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_hd_ban_cn_manager, Chuyển nhượng hợp đồng,model_bsd_hd_ban_cn,bsd_dich_vu.group_manager,1,1,1,1
+bsd_cn_dsh_moi_manager, Đồng sở hữu mới (chuyển nhượng),model_bsd_cn_dsh_moi,bsd_dich_vu.group_manager,1,1,1,1
+bsd_cn_dsh_cu_manager, Đồng sở hữu (chuyển nhượng),model_bsd_cn_dsh_cu,bsd_dich_vu.group_manager,1,1,1,1
 
 bsd_cn_dkbg,Cập nhật dự kiến bàn giao,model_bsd_cn_dkbg,bsd_dich_vu.group_manager,1,1,1,1
 bsd_cn_dkbg_unit,Cập nhật dự kiến bàn giao unit,model_bsd_cn_dkbg_unit,bsd_dich_vu.group_manager,1,1,1,1

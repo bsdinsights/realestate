@@ -14,10 +14,11 @@ class BsdWizardReportChuyenNhuongHopDong(models.TransientModel):
         hdb = self.env['bsd.hd_ban_cn'].browse(self._context.get('active_ids', []))
         return hdb
 
-    bsd_hd_ban_cn_id = fields.Many2one('bsd.hd_ban_cn', string="Chuyển nhượng hợp đồng", default=_get_hdb_cn,
+    bsd_hd_ban_cn_id = fields.Many2one('bsd.hd_ban_cn', string="Chuyển nhượng HĐMB", default=_get_hdb_cn,
                                        readonly=True)
     bsd_mau_in = fields.Selection([('bsd_mau_in_vbcn', 'Văn bản chuyển nhượng'),
-                                   ('bsd_mau_in_xncn', 'Xác nhận cho phép chuyển nhượng')], string="Mẫu in", required=True,
+                                   ('bsd_mau_in_xncn', 'Xác nhận cho phép chuyển nhượng')], string="Mẫu in",
+                                  required=True,
                                   default='bsd_mau_in_vbcn')
 
     def action_in(self):

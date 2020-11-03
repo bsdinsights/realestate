@@ -203,6 +203,10 @@
                                     <field name="mobile"/>
                                     <field name="email" string="Email"/>
                                     <field name="bsd_quan_he"/>
+                                    <field name="bsd_pl_dsh_id"/>
+                                    <field name="bsd_hd_ban_cn_id"/>
+                                    <field name="bsd_lan_td"/>
+                                    <field name="state"/>
                                 </tree>
                                 <form>
                                     <sheet>
@@ -253,6 +257,76 @@
                                                         <span class="float-right text-right">
                                                             Mối quan hệ: <field name="bsd_quan_he"/>
                                                         </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <span>
+                                                            Email:
+                                                        </span>
+                                                        <field name="email"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                            <field name="bsd_dong_sh_cu_ids" nolabel="1">
+                                <tree default_order="bsd_lan_td desc">
+                                    <field name="bsd_ma_kh"/>
+                                    <field name="bsd_dong_sh_id" string="Đồng sở hữu cũ"/>
+                                    <field name="mobile"/>
+                                    <field name="email"/>
+                                    <field name="bsd_pl_dsh_id"/>
+                                    <field name="bsd_hd_ban_cn_id"/>
+                                    <field name="bsd_lan_td"/>
+                                    <field name="state"/>
+                                </tree>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <field name="bsd_ma_kh"/>
+                                            <field name="bsd_dong_sh_id" string="Đồng sở hữu"/>
+                                            <field name="mobile"/>
+                                        </group>
+                                        <group>
+                                            <field name="email" string="Email"/>
+                                            <field name="bsd_quan_he"/>
+                                            <field name="bsd_dat_coc_id" invisible="1"/>
+                                            <field name="bsd_bao_gia_id" invisible="1"/>
+                                        </group>
+                                    </sheet>
+                                </form>
+                                <kanban class="o_kanban_mobile">
+                                    <field name="bsd_ma_kh"/>
+                                    <field name="bsd_dong_sh_id" string="Đồng sở hữu"/>
+                                    <field name="mobile"/>
+                                    <field name="email" string="Email"/>
+                                    <field name="bsd_quan_he"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <strong>
+                                                            <field name="bsd_dong_sh_id"/>
+                                                        </strong>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <strong>
+                                                            <span class="float-right text-right">
+                                                                <field name="bsd_ma_kh"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <span>
+                                                            Số ĐT:
+                                                        </span>
+                                                        <field name="mobile"/>
                                                     </div>
                                                 </div>
                                                 <div class="row">

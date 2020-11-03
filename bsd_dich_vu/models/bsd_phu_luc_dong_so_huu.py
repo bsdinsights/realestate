@@ -112,7 +112,7 @@ class BsdPLDSHMoi(models.Model):
 
     bsd_dong_sh_id = fields.Many2one('res.partner', string="Đồng sở hữu", required=True)
     bsd_mobile = fields.Char(related='bsd_dong_sh_id.mobile', string="Di động")
-    bsd_email = fields.Char(related='bsd_dong_sh_id.email', string="Thư điện tử")
+    bsd_email = fields.Char(related='bsd_dong_sh_id.email', string="Email")
     bsd_quan_he = fields.Selection([('vo', 'Vợ'),
                                     ('chong', 'Chồng'),
                                     ('con', 'Con'),
@@ -130,7 +130,7 @@ class BsdPLDSHCu(models.Model):
 
     bsd_dong_sh_id = fields.Many2one('res.partner', string="Đồng sở hữu", required=True)
     bsd_mobile = fields.Char(related='bsd_dong_sh_id.mobile', string="Di động")
-    bsd_email = fields.Char(related='bsd_dong_sh_id.email', string="Thư điện tử")
+    bsd_email = fields.Char(related='bsd_dong_sh_id.email', string="Email")
     bsd_quan_he = fields.Selection([('vo', 'Vợ'),
                                     ('chong', 'Chồng'),
                                     ('con', 'Con'),
