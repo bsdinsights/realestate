@@ -54,6 +54,7 @@ class BsdHuyDC(models.TransientModel):
         dat_coc = self.bsd_dat_coc_id
         bao_gia = self.bsd_dat_coc_id.bsd_bao_gia_id
         giu_cho = self.bsd_dat_coc_id.bsd_giu_cho_id
+        unit = self.bsd_dat_coc_id.bsd_unit_id
         # Cập nhật trạng thái đặt cọc
         dat_coc.write({
             'bsd_ly_do': self.bsd_ly_do,
@@ -83,13 +84,16 @@ class BsdHuyDC(models.TransientModel):
                     self.bsd_unit_id.write({
                         'state': 'dat_cho'
                     })
+                else:
+                    self.bsd_unit_id.write({
+                        'state': 'giu_cho'
+                    })
         else:
             # Cập nhật trạng thái unit khi hủy bảng tính giá và đặt cọc
-            if self.bsd_dat_coc_id.bsd_unit_id.state == 'dat_coc':
-                self.bsd_dat_coc_id.bsd_unit_id.write({
+            if unit.state == 'dat_coc':
+                unit.write({
                     'state': 'giu_cho'
                 })
-
 
 
 class BsdWizardChuyenDD(models.TransientModel):

@@ -66,6 +66,7 @@
                                                     ('bsd_ngay_ky_bg','!=',False)]"/>
                                     <field name="bsd_giu_cho_id"/>
                                     <field name="bsd_du_an_id"/>
+                                    <field name="bsd_ly_do" attrs="{'invisible':[('state', '!=', 'huy')]}"/>
                                 </group>
                                 <group>
                                     <field name="bsd_co_ttdc"/>
