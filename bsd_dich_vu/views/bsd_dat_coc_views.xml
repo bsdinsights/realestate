@@ -9,6 +9,9 @@
                     <button name="action_view_hd_ban" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_hd_ban', '=', 0)]}">
                         <field name="bsd_so_hd_ban" widget="statinfo" string="Hợp đồng"/>
                     </button>
+                    <button name="action_view_ds_td" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_ds_td', '=', 0)]}">
+                        <field name="bsd_so_ds_td" widget="statinfo" string="DS theo dõi"/>
+                    </button>
             </xpath>
             <xpath expr="//header" position="inside">
                 <button string="Tạo hợp đồng"
@@ -17,6 +20,12 @@
                         states="dat_coc"
                         class="oe_highlight"
                         attrs="{'invisible': ['|',('state','not in',['dat_coc']),('bsd_ngay_ky_dc','=', False)]}"/>
+                <button string="Thanh lý"
+                        name="action_tao_ds_tt"
+                        states="da_tc,dat_coc"
+                        comfirm="Bạn có chắc muốn tạo danh sách theo dõi thanh lý đặt cọc?"
+                        type="object"
+                        />
             </xpath>
         </field>
     </record>

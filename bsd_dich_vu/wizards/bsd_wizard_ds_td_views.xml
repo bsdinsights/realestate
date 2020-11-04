@@ -1,34 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_ds_td_kt_xn_form">
-        <field name="name">bsd.wizard.ds_td.kt_xn.form</field>
-        <field name="model">bsd.wizard.ds_td.kt_xn</field>
-        <field name="arch" type="xml">
-            <form>
-                <p class="text-center">
-                    <field name="bsd_thong_bao" readonly="1"/>
-                    <field name="bsd_ds_td_id" invisible="1"/>
-                </p>
-                <footer>
-                    <button string="Có"
-                            name="action_co"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Không"
-                            name="action_khong"
-                            type="object"
-                            class="oe_highlight"/>
-                </footer>
-            </form>
-        </field>
-    </record>
-    <record model="ir.actions.act_window" id="bsd_wizard_ds_td_kt_xn_action">
-        <field name="name">Xác nhận công nợ</field>
-        <field name="res_model">bsd.wizard.ds_td.kt_xn</field>
-        <field name="target">new</field>
-        <field name="view_mode">form</field>
-    </record>
-
     <record model="ir.ui.view" id="bsd_wizard_ds_td_huy_form">
         <field name="name">bsd.wizard.ds_td.huy.form</field>
         <field name="model">bsd.wizard.ds_td.huy</field>

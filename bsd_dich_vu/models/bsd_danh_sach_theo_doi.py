@@ -25,25 +25,35 @@ class BsdDanhSachTheoDoi(models.Model):
     bsd_ten = fields.Char(string="Tiêu đề", required=True, help="Tiêu đề",
                           readonly=True,
                           states={'nhap': [('readonly', False)]})
+    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
+    bsd_loai_dt = fields.Selection([
+        ('san_pham', 'Sản phẩm'),
+        ('ky_dc', 'Quá hạn ký PĐC'),
+        ('ky_ttdc', 'Quá hạn ký TTĐC/HHĐC'),
+        ('ky_hdmb', 'Quá hạn ký HĐMB'),
+        ('tl_dc', 'Thanh lý đặt cọc'),
+        ('tl_dc_cbhd', 'Thanh lý đặt cọc (Chuẩn bị HĐ)'),
+        ('tl_ttdc_hd', 'Thanh lý giao dịch'),
+        ('vp_tt', 'Lịch thanh toán')], string="Loại theo dõi", required=True,
+       help="Đối tượng", default='san_pham',
+       readonly=True,
+       states={'nhap': [('readonly', False)]})
     bsd_loai_td = fields.Selection([('vp_tg', 'Vi phạm thời gian'),
-                                    ('yc_kh', 'Yêu cầu khách hàng'),
-                                    ('vp_tt', 'Vi phạm thanh toán')], string="Loại theo dõi",
-                                   required=True, help="Loại theo dõi", default="yc_kh",
-                                   readonly=True,
-                                   states={'nhap': [('readonly', False)]})
-    bsd_loai_yc = fields.Selection([('gia_han', 'Gia hạn'),
+                                    ('yc_kh', 'Yêu cầu'),
+                                    ('vp_tt', 'Vi phạm thanh toán')], string="Lý do tạo",
+                                   required=True, help="Lý do tạo danh sách theo dõi", default="yc_kh",
+                                   readonly=True)
+    bsd_loai_xl = fields.Selection([('gia_han', 'Gia hạn'),
                                     ('thanh_ly', 'Thanh lý'),
-                                    ('tt_td', 'Tiếp tục theo dõi')], string="Loại yêu cầu",
-                                   required=True, help="Loại yêu cầu", default='thanh_ly',
-                                   readonly=True,
-                                   states={'nhap': [('readonly', False)]})
-    bsd_loai_dt = fields.Selection([('dat_coc', 'Đặt cọc'),
-                                    ('dc_cb', 'Đặt cọc - Chuẩn bị HĐ'),
-                                    ('tt_dc', 'Thỏa thuận đặt cọc'),
-                                    ('hd_ban', 'Hợp đồng mua bán')], string="Đối tượng", required=True,
-                                   help="Đối tượng", default='dat_coc',
-                                   readonly=True,
-                                   states={'nhap': [('readonly', False)]})
+                                    ('tt_td', 'Tiếp tục theo dõi')], string="Loại xử lý",
+                                   required=True, help="Loại xử lý", default='thanh_ly',
+                                   readonly=True)
+    bsd_nhom = fields.Selection([('kd', 'Kinh doanh'),
+                                 ('dvkh', 'DVKH'),
+                                 ('kt', 'Kế toán')], string="Nhóm",
+                                required=True,
+                                readonly=True, default='kd',
+                                states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
@@ -56,10 +66,10 @@ class BsdDanhSachTheoDoi(models.Model):
     bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Sản phẩm", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
-    bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng", required=True,
+    bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng",
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
-    bsd_ngay_hh = fields.Datetime(string="ngày hết hạn",
+    bsd_ngay_hh = fields.Datetime(string="Ngày hết hạn",
                                   help="""Ngày hết hạn:\n
                                         - Nếu đối tượng là đặt cọc: Hạn ký đặt cọc \n
                                         - Nếu đối tượng là thỏa thuận đặt cọc: Hạn ký thỏa thuận đặt cọc\n
@@ -96,7 +106,7 @@ class BsdDanhSachTheoDoi(models.Model):
     bsd_tien_phat = fields.Monetary(string="Tiền phạt", help="Số tiền khách hàng bị phạt do vi phạm hợp đồng",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
-    bsd_quyet_dinh = fields.Char(string="Quyết định", help="Quyết định xử lý cho Danh sách theo dõi",
+    bsd_quyet_dinh = fields.Text(string="Quyết định", help="Quyết định xử lý cho Danh sách theo dõi",
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
     state = fields.Selection([('nhap', 'Nháp'), ('xn_tt', 'Xác nhận thông tin'),
@@ -216,22 +226,6 @@ class BsdDanhSachTheoDoi(models.Model):
         }
         action['context'] = context
         return action
-
-    @api.onchange('bsd_loai_yc', 'bsd_hd_ban_id', 'bsd_dat_coc_id', 'bsd_loai_dt')
-    def onchange_loai_yc(self):
-        if self.bsd_loai_yc == 'thanh_ly':
-            if self.bsd_loai_dt == 'hd_ban':
-                if self.bsd_hd_ban_id:
-                    self.bsd_tl_phat = self.bsd_hd_ban_id.bsd_cs_tt_id.bsd_phat_shd
-                    self.bsd_tien_phat = self.bsd_tl_phat * self.bsd_tong_gt_hd / 100
-            elif self.bsd_loai_dt == 'dat_coc':
-                if self.bsd_dat_coc_id:
-                    self.bsd_tl_phat = self.bsd_dat_coc_id.bsd_cs_tt_id.bsd_phat_thd
-                    self.bsd_tien_phat = self.bsd_tl_phat * self.bsd_tien_dc / 100
-            else:
-                if self.bsd_hd_ban_id:
-                    self.bsd_tl_phat = self.bsd_hd_ban_id.bsd_cs_tt_id.bsd_phat_thd
-                    self.bsd_tien_phat = self.bsd_tl_phat * self.bsd_tong_gt_hd / 100
 
     # R.02
     @api.onchange('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id', 'bsd_loai_td', 'bsd_du_an_id')
@@ -413,11 +407,6 @@ class BsdDanhSachTheoDoi(models.Model):
                 'state': 'xn_tt',
             })
 
-    # DV.15.02 Xác nhận công nợ
-    def action_xn_cn(self):
-        action = self.env.ref('bsd_dich_vu.bsd_wizard_ds_td_kt_xn_action').read()[0]
-        return action
-
     # DV.15.03 Gia hạn
     def action_gia_han(self):
         if self.bsd_loai_dt == 'dat_coc':
@@ -452,7 +441,7 @@ class BsdDanhSachTheoDoi(models.Model):
 
     # DV.15.06 Chuyển thanh lý
     def action_chuyen_tl(self):
-        self.copy(default={'bsd_loai_yc': 'thanh_ly',
+        self.copy(default={'bsd_loai_xl': 'thanh_ly',
                            'bsd_ngay_tao': fields.Datetime.now(),
                            'bsd_ten': "Theo dõi thanh lý",
                            'bsd_ma': '/',
@@ -540,7 +529,7 @@ class BsdDanhSachTheoDoi(models.Model):
 
     # DV.15.11 Chuyển gia hạn
     def action_chuyen_gh(self):
-        self.copy(default={'bsd_loai_yc': 'gia_han',
+        self.copy(default={'bsd_loai_xl': 'gia_han',
                            'bsd_ngay_tao': fields.Datetime.now(),
                            'bsd_ten': "Theo dõi gia hạn",
                            'bsd_ma': '/',
@@ -559,7 +548,7 @@ class BsdDanhSachTheoDoi(models.Model):
 
     # DV.15.13 Kiểm tra dk chuyển trạng thái hoàn thành
     def _chuyen_hoan_thanh(self):
-        if self.bsd_loai_yc == 'thanh_ly':
+        if self.bsd_loai_xl == 'thanh_ly':
             if self.bsd_gui_thu and not self.bsd_ky_bb:
                 if self.bsd_da_tb_tl:
                     self.write({
