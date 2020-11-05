@@ -25,7 +25,9 @@ class BsdDanhSachTheoDoi(models.Model):
     bsd_ten = fields.Char(string="Tiêu đề", required=True, help="Tiêu đề",
                           readonly=True,
                           states={'nhap': [('readonly', False)]})
-    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
+    bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
     bsd_loai_dt = fields.Selection([
         ('san_pham', 'Sản phẩm'),
         ('ky_dc', 'Quá hạn ký PĐC'),
@@ -87,30 +89,44 @@ class BsdDanhSachTheoDoi(models.Model):
                                      states={'nhap': [('readonly', False)]})
     bsd_ngay_gh = fields.Date(string="Ngày gia hạn", help="Ngày gia hạn mới cho đặt cọc/ Thỏa thuận đặt cọc/ Hợp đồng",
                               readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                              states={'nhap': [('readonly', False)], 'xn_tt': [('readonly', False)]})
     bsd_gui_thu = fields.Boolean(string="Gửi thư thanh lý", help="Gửi thư thanh lý",
                                  readonly=True,
-                                 states={'nhap': [('readonly', False)]})
+                                 states={'nhap': [('readonly', False)], 'xn_tt': [('readonly', False)]})
     bsd_ky_bb = fields.Boolean(string="Ký BB thanh lý", help="Ký biên bản thanh lý",
                                readonly=True,
-                               states={'nhap': [('readonly', False)]})
+                               states={'nhap': [('readonly', False)], 'xn_tt': [('readonly', False)]})
     bsd_mo_bl = fields.Boolean(string="Mở bán lại", help="Đánh dấu sản phẩm được mở bán lại?",
                                readonly=True,
-                               states={'nhap': [('readonly', False)]})
+                               states={'nhap': [('readonly', False)], 'xn_tt': [('readonly', False)]})
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Đợt mở bán",
                                     readonly=True,
-                                    states={'nhap': [('readonly', False)]})
+                                    states={'nhap': [('readonly', False)], 'xn_tt': [('readonly', False)]})
+    bsd_pt_phat = fields.Selection([('tien', 'Số tiền hoàn'), ('phan_tram', 'Phần trăm')],
+                                   string="Phương thức tính", help="Phương thức tính tiền thanh lý",
+                                   required=True, default='phan_tram', readonly=True,
+                                   states={'nhap': [('readonly', False)], 'xn_tt': [('readonly', False)]})
     bsd_tl_phat = fields.Float(string="Tỷ lệ phạt", help="Tỷ lệ phần trăm mà khách hàng bị phạt",
                                readonly=True,
-                               states={'nhap': [('readonly', False)]})
-    bsd_tien_phat = fields.Monetary(string="Tiền phạt", help="Số tiền khách hàng bị phạt do vi phạm hợp đồng",
+                               states={'nhap': [('readonly', False)], 'xn_tt': [('readonly', False)]})
+    bsd_tien_hoan = fields.Monetary(string="Số tiền hoàn", help="Số tiền khách hàng được hoàn trả",
                                     readonly=True,
-                                    states={'nhap': [('readonly', False)]})
+                                    states={'nhap': [('readonly', False)], 'xn_tt': [('readonly', False)]})
+    bsd_tong_tp = fields.Monetary(string="Tổng tiền phạt", help="Tổng số tiền phạt thanh lý",
+                                  compute="_compute_tong_tien", store=True)
+
+    @api.depends('bsd_pt_phat', 'bsd_tl_phat', 'bsd_tien_hoan')
+    def _compute_tong_tien(self):
+        for each in self:
+            if each.bsd_pt_phat == 'tien':
+                each.bsd_tong_tp = each.bsd_tien_da_tt - each.bsd_tien_hoan
+            else:
+                each.bsd_tong_tp = (each.bsd_tien_dc * each.bsd_tl_phat) / 100
     bsd_quyet_dinh = fields.Text(string="Quyết định", help="Quyết định xử lý cho Danh sách theo dõi",
                                  readonly=True,
-                                 states={'nhap': [('readonly', False)]})
+                                 states={'nhap': [('readonly', False)], 'xn_tt': [('readonly', False)]})
     state = fields.Selection([('nhap', 'Nháp'), ('xn_tt', 'Xác nhận thông tin'),
-                              ('xac_nhan', 'Xác nhận'),
+                              ('xac_nhan', 'Đã có quyết định'),
                               ('hoan_thanh', 'Hoàn thành'), ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
     bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
@@ -168,8 +184,8 @@ class BsdDanhSachTheoDoi(models.Model):
     bsd_bang_gia_hd_id = fields.Many2one(related='bsd_hd_ban_id.bsd_bang_gia_id')
     state_hd = fields.Selection(related='bsd_hd_ban_id.state')
 
-    bsd_parent_id = fields.Many2one('bsd.ds_td', string="Danh sách theo dõi", readonly=True)
-    bsd_child_ids = fields.One2many('bsd.ds_td', 'bsd_parent_id', string="Danh sách theo dõi", readonly=True)
+    bsd_parent_id = fields.Many2one('bsd.ds_td', string="DS theo dõi", readonly=True)
+    bsd_child_ids = fields.One2many('bsd.ds_td', 'bsd_parent_id', string="DS theo dõi", readonly=True)
 
     bsd_so_tb_tl = fields.Integer(string="# TB thanh lý", compute='_compute_tb_tl')
     bsd_so_thanh_ly = fields.Integer(string="# Thanh lý", compute='_compute_thanh_ly')
@@ -227,113 +243,18 @@ class BsdDanhSachTheoDoi(models.Model):
         action['context'] = context
         return action
 
-    # R.02
-    @api.onchange('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id', 'bsd_loai_td', 'bsd_du_an_id')
-    def _onchange_tt(self):
-        if self.bsd_loai_dt == 'dat_coc':
-            if self.bsd_dat_coc_id:
-                self.bsd_ngay_hh = self.bsd_dat_coc_id.bsd_ngay_hh_kdc
-                self.bsd_khach_hang_id = self.bsd_dat_coc_id.bsd_khach_hang_id
-                self.bsd_unit_id = self.bsd_dat_coc_id.bsd_unit_id
-                self.bsd_tien_dc = self.bsd_dat_coc_id.bsd_tien_dc + self.bsd_dat_coc_id.bsd_tien_gc
-                self.bsd_tien_da_tt = self.bsd_dat_coc_id.bsd_tien_da_tt
-        elif self.bsd_loai_dt == 'ttdc' and self.bsd_loai_td == 'vp_tg':
-            if self.bsd_hd_ban_id:
-                self.bsd_ngay_hh = self.bsd_hd_ban_id.bsd_ngay_hh_ttdc
-                self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
-                self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
-                self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
-                self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
-            res = {}
-            res.update({
-                'domain': {'bsd_hd_ban_id': [('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-                                             ('state', '=', 'tt_dot1'),
-                                             '|',
-                                             ('bsd_duyet_db', '=', True),
-                                             ('bsd_ngay_ky_ttdc', '=', False)]}
-            })
-            return res
-        elif self.bsd_loai_dt == 'hd_ban' and self.bsd_loai_td == 'vp_tg':
-            if self.bsd_hd_ban_id:
-                self.bsd_ngay_hh = self.bsd_hd_ban_id.bsd_ngay_hh_khdb
-                self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
-                self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
-                self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
-                self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
-            res = {}
-            res.update({
-                'domain': {'bsd_hd_ban_id': [('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-                                             ('state', '=', 'du_dk'),
-                                             '|',
-                                             ('bsd_duyet_db', '=', True),
-                                             ('bsd_ngay_ky_hdb', '=', False)]}
-            })
-            return res
-        elif self.bsd_loai_dt == 'dc_cb' and self.bsd_loai_td == 'vp_tg':
-            if self.bsd_hd_ban_id:
-                self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
-                self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
-                self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
-                self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
-            res = {}
-            res.update({
-                'domain': {'bsd_hd_ban_id': [('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-                                             ('state', '=', 'ht_dc')]}
-            })
-            return res
-
-        elif self.bsd_loai_td == 'yc_kh' and self.bsd_loai_dt == 'dc_cb':
-            if self.bsd_hd_ban_id:
-                self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
-                self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
-                self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
-                self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
-            res = {}
-            res.update({
-                'domain': {'bsd_hd_ban_id': [('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-                                             ('state', '=', 'ht_dc')]}
-            })
-            return res
-
-        elif self.bsd_loai_td == 'yc_kh' and self.bsd_loai_dt == 'tt_dc':
-            if self.bsd_hd_ban_id:
-                self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
-                self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
-                self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
-                self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
-            res = {}
-            res.update({
-                'domain': {'bsd_hd_ban_id': [('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-                                             ('state', '=', 'da_ky_ttdc')]}
-            })
-            return res
-
-        elif self.bsd_loai_td == 'yc_kh' and self.bsd_loai_dt == 'hd_ban':
-            if self.bsd_hd_ban_id:
-                self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
-                self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
-                self.bsd_tong_gt_hd = self.bsd_hd_ban_id.bsd_tong_gia
-                self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
-            res = {}
-            res.update({
-                'domain': {'bsd_hd_ban_id': [('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-                                             ('state', 'in', ['da_ky', 'dang_tt', 'du_dkbg', 'du_dkbg', 'da_bg'])]}
-            })
-            return res
-
     @api.onchange('bsd_mo_bl', 'bsd_hd_ban_id', 'bsd_dat_coc_id')
     def _onchange_dot_mb(self):
         if self.bsd_mo_bl:
-            if self.bsd_loai_dt == 'dat_coc':
-                if self.bsd_dat_coc_id:
-                    self.bsd_dot_mb_id = self.bsd_dat_coc_id.bsd_dot_mb_id
-            else:
-                if self.bsd_hd_ban_id:
-                    self.bsd_dot_mb_id = self.bsd_hd_ban_id.bsd_dot_mb_id
+            if self.bsd_dat_coc_id:
+                self.bsd_dot_mb_id = self.bsd_dat_coc_id.bsd_dot_mb_id
+
+            if self.bsd_hd_ban_id:
+                self.bsd_dot_mb_id = self.bsd_hd_ban_id.bsd_dot_mb_id
 
     @api.depends('bsd_loai_dt', 'bsd_hd_ban_id', 'bsd_dat_coc_id')
     def _compute_tt(self):
-        if self.bsd_loai_dt in ['dat_coc']:
+        if self.bsd_loai_dt in ['tl_dc', 'ky_dc']:
             if self.bsd_dat_coc_id:
                 self.bsd_dt_xd = self.bsd_dat_coc_id.bsd_dt_xd
                 self.bsd_dt_sd = self.bsd_dat_coc_id.bsd_dt_sd
@@ -400,26 +321,34 @@ class BsdDanhSachTheoDoi(models.Model):
                 self.bsd_tien_pbt = False
                 self.bsd_tong_gia = False
 
-    # DV.15.01 Xác nhận thông tin trên danh sách theo dõi
-    def action_xac_nhan(self):
+    def action_xac_nhan_tt(self):
         if self.state == 'nhap':
             self.write({
                 'state': 'xn_tt',
             })
 
+    # DV.15.01 Xác nhận thông tin trên danh sách theo dõi
+    def action_xac_nhan(self):
+        if not self.bsd_quyet_dinh:
+            raise UserError(_("Trường thông tin quyết định không thể trống.\nVui lòng kiểm tra lại thông tin"))
+        if self.state == 'xn_tt':
+            self.write({
+                'state': 'xac_nhan',
+            })
+
     # DV.15.03 Gia hạn
     def action_gia_han(self):
-        if self.bsd_loai_dt == 'dat_coc':
+        if self.bsd_loai_dt == 'ky_dc':
             if self.bsd_dat_coc_id:
                 self.bsd_dat_coc_id.write({
                     'bsd_ngay_hh_kdc': self.bsd_ngay_gh
                 })
-        if self.bsd_loai_dt == 'ttdc':
+        if self.bsd_loai_dt == 'ky_ttdc':
             if self.bsd_hd_ban_id:
                 self.bsd_hd_ban_id.write({
                     'bsd_ngay_hh_ttdc': self.bsd_ngay_gh
                 })
-        if self.bsd_loai_dt == 'hd_ban':
+        if self.bsd_loai_dt == 'ky_hdmb':
             if self.bsd_hd_ban_id:
                 self.bsd_hd_ban_id.write({
                     'bsd_ngay_hh_khdb': self.bsd_ngay_gh
@@ -428,27 +357,33 @@ class BsdDanhSachTheoDoi(models.Model):
             'state': 'hoan_thanh'
         })
 
+    def action_tt_td(self):
+        if self.bsd_loai_dt == 'tl_dc':
+            tieu_de = 'Theo dõi thanh lý đặt cọc ' + self.bsd_dat_coc_id.bsd_ma_dat_coc
+        else:
+            tieu_de = 'Theo dõi thanh lý hợp đồng ' + self.bsd_hd_ban_id.bsd_ma_hd_ban
+        self.copy(default={'bsd_loai_xl': 'thanh_ly',
+                           'bsd_ngay_tao': fields.Datetime.now(),
+                           'bsd_ten': tieu_de,
+                           'bsd_ma': '/',
+                           'state': 'nhap',
+                           'bsd_parent_id': self.id})
+        self.write({
+            'state': 'hoan_thanh',
+            'bsd_loai_xl': 'tt_td'
+        })
+
     # DV.15.04 Gửi thông báo thanh lý
     def action_gui_tbtl(self):
         self._tao_tb_tl()
-        self._chuyen_hoan_thanh()
 
     # DV.15.05 Thanh lý
     def action_thanh_ly(self):
-        # self._tao_tb_tl()
         self._tao_thanh_ly()
-        self._chuyen_hoan_thanh()
 
-    # DV.15.06 Chuyển thanh lý
-    def action_chuyen_tl(self):
-        self.copy(default={'bsd_loai_xl': 'thanh_ly',
-                           'bsd_ngay_tao': fields.Datetime.now(),
-                           'bsd_ten': "Theo dõi thanh lý",
-                           'bsd_ma': '/',
-                           'bsd_parent_id': self.id})
-        self.write({
-            'state': 'hoan_thanh'
-        })
+    def action_hoan_thanh(self):
+        if self.state == 'xac_nhan':
+            self.write({'state': 'hoan_thanh'})
 
     # DV.15.07 Hủy danh sách theo dõi
     def action_huy(self):
@@ -465,52 +400,38 @@ class BsdDanhSachTheoDoi(models.Model):
         else:
             loai_ld = ''
 
-        if self.bsd_loai_dt == 'dat_coc':
+        if self.bsd_loai_dt == 'tl_dc':
             self.env['bsd.tb_tl'].create({
                 'bsd_ds_td_id': self.id,
                 'bsd_loai_ld': loai_ld,
-                'bsd_loai_dt': self.bsd_loai_dt,
+                'bsd_loai_dt': 'dat_coc',
                 'bsd_du_an_id': self.bsd_du_an_id.id,
                 'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
                 'bsd_unit_id': self.bsd_unit_id.id,
                 'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                 'bsd_tien_dc': self.bsd_tien_dc,
                 'bsd_ngay_ky_dc': self.bsd_dat_coc_id.bsd_ngay_ky_dc,
-                'bsd_tien_da_tt': self.bsd_tien_da_tt
+                'bsd_tien_da_tt': self.bsd_tien_da_tt,
+                'bsd_tien_phat': self.bsd_tong_tp
             })
-        elif self.bsd_loai_dt == 'tt_dc':
+        else:
             self.env['bsd.tb_tl'].create({
                 'bsd_ds_td_id': self.id,
                 'bsd_loai_ld': loai_ld,
-                'bsd_loai_dt': self.bsd_loai_dt,
-                'bsd_du_an_id': self.bsd_du_an_id.id,
-                'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
-                'bsd_unit_id': self.bsd_unit_id.id,
-                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                'bsd_tong_gt_hd': self.bsd_tong_gt_hd,
-                'bsd_ngay_ky_ttdc': self.bsd_hd_ban_id.bsd_ngay_ky_ttdc,
-                'bsd_tien_da_tt': self.bsd_tien_da_tt
-            })
-        elif self.bsd_loai_dt == 'hd_ban':
-            self.env['bsd.tb_tl'].create({
-                'bsd_ds_td_id': self.id,
-                'bsd_loai_ld': loai_ld,
-                'bsd_loai_dt': self.bsd_loai_dt,
+                'bsd_loai_dt': 'hd_ban',
                 'bsd_du_an_id': self.bsd_du_an_id.id,
                 'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
                 'bsd_unit_id': self.bsd_unit_id.id,
                 'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                 'bsd_tong_gt_hd': self.bsd_tong_gt_hd,
                 'bsd_ngay_ky_hdb': self.bsd_hd_ban_id.bsd_ngay_ky_hdb,
-                'bsd_tien_da_tt': self.bsd_tien_da_tt
+                'bsd_tien_da_tt': self.bsd_tien_da_tt,
+                'bsd_tien_phat': self.bsd_tong_tp
             })
-        self.write({
-            'bsd_da_tb_tl': True
-        })
 
     # DV.15.09 Tự động tạo thanh lý
     def _tao_thanh_ly(self):
-        ten = "Thanh lý " + "đặt cọc " + self.bsd_unit_id.bsd_ten_unit if self.bsd_loai_dt == 'dat_coc' \
+        ten = "Thanh lý " + "đặt cọc " + self.bsd_unit_id.bsd_ten_unit if self.bsd_loai_dt == 'tl_dc' \
             else "Thanh lý " + "hợp đồng " + self.bsd_unit_id.bsd_ten_unit
         self.env['bsd.thanh_ly'].create({
             'bsd_ten': ten,
@@ -523,47 +444,14 @@ class BsdDanhSachTheoDoi(models.Model):
             'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
             'bsd_tong_gt_hd': self.bsd_tong_gt_hd,
         })
-        self.write({
-            'bsd_da_thanh_ly': True
-        })
-
-    # DV.15.11 Chuyển gia hạn
-    def action_chuyen_gh(self):
-        self.copy(default={'bsd_loai_xl': 'gia_han',
-                           'bsd_ngay_tao': fields.Datetime.now(),
-                           'bsd_ten': "Theo dõi gia hạn",
-                           'bsd_ma': '/',
-                           'bsd_parent_id': self.id})
-        self.write({
-            'state': 'hoan_thanh'
-        })
 
     # DV.15.12 Kiểm tra dk đặt cọc
     @api.constrains('bsd_loai_dt', 'bsd_dat_coc_id')
     def _constrain_dat_coc(self):
-        if self.bsd_loai_dt == 'dat_coc':
+        if self.bsd_loai_dt == 'tl_dc':
             hop_dong = self.env['bsd.hd_ban'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id)])
             if hop_dong:
                 raise UserError("Đặc cọc đã được tạo hợp đồng. Vui lòng kiểm tra lại thông tin!")
-
-    # DV.15.13 Kiểm tra dk chuyển trạng thái hoàn thành
-    def _chuyen_hoan_thanh(self):
-        if self.bsd_loai_xl == 'thanh_ly':
-            if self.bsd_gui_thu and not self.bsd_ky_bb:
-                if self.bsd_da_tb_tl:
-                    self.write({
-                        'state': 'hoan_thanh',
-                    })
-            elif self.bsd_gui_thu and self.bsd_ky_bb:
-                if self.bsd_da_tb_tl and self.bsd_da_thanh_ly:
-                    self.write({
-                        'state': 'hoan_thanh',
-                    })
-            elif not self.bsd_gui_thu and self.bsd_ky_bb:
-                if self.bsd_da_thanh_ly:
-                    self.write({
-                        'state': 'hoan_thanh',
-                    })
 
     @api.model
     def create(self, vals):

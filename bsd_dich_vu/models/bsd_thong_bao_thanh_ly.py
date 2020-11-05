@@ -27,8 +27,6 @@ class BsdTBTL(models.Model):
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_loai_dt = fields.Selection([('dat_coc', 'Đặt cọc'),
-                                    ('dc_cb', 'Đặt cọc - Chuẩn bị HĐ'),
-                                    ('tt_dc', 'Thỏa thuận đặt cọc'),
                                     ('hd_ban', 'Hợp đồng mua bán')], string="Đối tượng", required=True,
                                    help="Đối tượng", default='dat_coc',
                                    readonly=True,
@@ -80,16 +78,13 @@ class BsdTBTL(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
-    bsd_tl_phat = fields.Float(string="Tỷ lệ phạt", help="Tỷ lệ phần trăm mà khách hàng bị phạt",
-                               readonly=True,
-                               states={'nhap': [('readonly', False)]})
-    bsd_tien_phat = fields.Monetary(string="Tiền phạt", help="Số tiền khách hàng bị phạt do vi phạm hợp đồng",
+    bsd_tien_phat = fields.Monetary(string="Tiền phạt", help="Số tiền khách hàng bị phạt",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
 
-    bsd_tien_mg = fields.Monetary(string="Miển giảm phạt", help="Số tiền phạt được miễn giảm",
+    bsd_tien_mg = fields.Monetary(string="Miễn giảm phạt", help="Số tiền phạt được miễn giảm",
                                   readonly=True,
-                                  states={'nhap': [('readonly', False)]})
+                                  states={'nhap': [('readonly', False)], 'xac_nhan': [('readonly', False)]})
     bsd_tong_phat = fields.Monetary(string="Tổng số tiền phạt", help="Tổng số tiền phạt sau khi được miễn giảm",
                                     readonly=True, compute="_compute_tong_phat", store=True)
 

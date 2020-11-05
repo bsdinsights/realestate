@@ -54,11 +54,6 @@
                   sequence="102"
                   action="bsd_tb_nn_action"
                   parent="bsd_thong_bao_tt_nn_menu_2"/>
-<!--        <menuitem id="bsd_tao_tb_tt_menu_action_2"-->
-<!--                  name="Tạo thông báo"-->
-<!--                  sequence="103"-->
-<!--                  action="bsd_wizard_tao_tb_tt_action_2"-->
-<!--                  parent="bsd_thong_bao_tt_nn_menu_2"/>-->
     <menuitem id="bsd_thong_bao_hd_menu_2"
               name="Thông báo NT/ BG"
               sequence="26"
@@ -72,11 +67,6 @@
                   name="Thông báo bàn giao"
                   sequence="102"
                   action="bsd_tb_bg_action"
-                  parent="bsd_thong_bao_hd_menu_2"/>
-        <menuitem id="bsd_tb_tl_menu_action_2"
-                  name="Thông báo thanh lý"
-                  sequence="103"
-                  action="bsd_tb_tl_action"
                   parent="bsd_thong_bao_hd_menu_2"/>
     <menuitem id="bsd_hd_ban_cn_menu_action_2"
               name="Chuyển nhượng HĐ"
@@ -144,6 +134,11 @@
                   name="DS theo dõi"
                   sequence="1"
                   action="bsd_ds_td_action"
+                  parent="bsd_ds_td_menu_2"/>
+        <menuitem id="bsd_tb_tl_menu_action_2"
+                  name="Thông báo thanh lý"
+                  sequence="2"
+                  action="bsd_tb_tl_action"
                   parent="bsd_ds_td_menu_2"/>
     <menuitem id="bsd_tt_dtt_menu_2"
               name="Cập nhật TT.ĐTT"

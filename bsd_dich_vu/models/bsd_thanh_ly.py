@@ -60,7 +60,6 @@ class BsdThanhLy(models.Model):
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
-
     bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc",
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
@@ -76,13 +75,22 @@ class BsdThanhLy(models.Model):
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Đợt mở bán",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
-    bsd_tl_phat = fields.Float(string="Tỷ lệ phạt", help="Tỷ lệ phần trăm mà khách hàng bị phạt",
-                               readonly=True,
-                               states={'nhap': [('readonly', False)]})
     bsd_tien_phat = fields.Monetary(string="Tiền phạt", help="Số tiền khách hàng bị phạt do vi phạm hợp đồng",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
-    bsd_tien_hoan = fields.Monetary(string="Số tiền hoàn", help="Số tiền khách hàng được hoàn lại")
+    bsd_tien_hoan = fields.Monetary(string="Số tiền hoàn", help="Số tiền khách hàng được hoàn hoàn lại")
+    bsd_tien_mg = fields.Monetary(string="Miễn giảm phạt", help="Số tiền phạt được miễn giảm",
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
+    bsd_tong_phat = fields.Monetary(string="Tổng số tiền phạt", help="Tổng số tiền phạt sau khi được miễn giảm",
+                                    readonly=True, compute="_compute_tong_phat", store=True)
+
+    @api.depends('bsd_tien_phat', 'bsd_tien_mg')
+    def _compute_tong_phat(self):
+        for each in self:
+            each.bsd_tong_phat = each.bsd_tien_phat - each.bsd_tien_mg
+
+    bsd_tien_hoan_tt = fields.Monetary(string="Số tiền hoàn TT", help="Số tiền hoàn trả thực tế của khách hàng")
     bsd_tt_ht = fields.Selection([('chua_ht', 'Chưa hoàn tiền'),
                                   ('dang_ht', 'Đang hoàn tiền'),
                                   ('da_ht', 'Đã hoàn tiền')], string="Tình trạng", help="Tình trạng hoàn tiền")

@@ -6,7 +6,7 @@
             <field name="name">bsd.tb_tl.form</field>
             <field name="model">bsd.tb_tl</field>
             <field name="arch" type="xml">
-                <form duplicate="false">
+                <form duplicate="false" create="false">
                     <header>
                         <button string="Xác nhận"
                                 name="action_xac_nhan"
@@ -17,7 +17,7 @@
                                 class="oe_highlight"/>
                         <button string="In thông báo"
                                 name="action_in"
-                                attrs="{'invisible': [('state', '=','nhap')]}"
+                                attrs="{'invisible': [('state', 'in',['nhap','huy','hoan_thanh'])]}"
                                 type="object"
                                 class="oe_highlight"/>
                         <button string="Gửi thông báo"
@@ -44,7 +44,6 @@
                             <group>
                                 <field name="bsd_ma"/>
                                 <field name="bsd_ngay_tao"/>
-<!--                                <field name="bsd_ten"/>-->
                                 <field name="bsd_ds_td_id"/>
                                 <field name="bsd_loai_ld"/>
                                 <field name="bsd_loai_dt"/>
@@ -65,15 +64,9 @@
                                 <field name="bsd_unit_id"
                                        context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                        options="{'no_create':true}" readonly="1"/>
-                                <field name="bsd_unit_id"
-                                       context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
-                                       options="{'no_create':true}" invisible="1"/>
                                 <field name="bsd_khach_hang_id"
                                        context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
                                        options="{'no_create':true}" readonly="1"/>
-                                <field name="bsd_khach_hang_id"
-                                       context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
-                                       options="{'no_create':true}" invisible="1"/>
                                 <field name="bsd_tien_dc"
                                        readonly="1"
                                        attrs="{'invisible': [('bsd_loai_dt', '!=', 'dat_coc')]}"/>
@@ -100,17 +93,10 @@
                         </group>
                         <group string="THANH LÝ">
                             <group>
-                                <label for="bsd_tl_phat"/>
-                                <div class="o_row no-gutters d-flex">
-                                    <div class="col">
-                                        <field name="bsd_tl_phat" class="mr-1"/>
-                                        <span>%</span>
-                                    </div>
-                                </div>
+                                <field name="bsd_tien_phat"/>
                                 <field name="bsd_tien_mg"/>
                             </group>
                             <group>
-                                <field name="bsd_tien_phat"/>
                                 <field name="bsd_tong_phat"/>
                             </group>
                         </group>
@@ -138,9 +124,12 @@
             <field name="name">bsd.tb_tl.tree</field>
             <field name="model">bsd.tb_tl</field>
             <field name="arch" type="xml">
-                <tree string="Thông báo thanh lý">
+                <tree string="Thông báo thanh lý" create="false" duplicate="false">
                     <field name="bsd_ma"/>
                     <field name="bsd_ngay_tao"/>
+                    <field name="bsd_khach_hang_id"/>
+                    <field name="bsd_dat_coc_id"/>
+                    <field name="bsd_hd_ban_id"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -153,6 +142,9 @@
                 <search string="Thông báo thanh lý">
                     <field name="bsd_ma"/>
                     <field name="bsd_ngay_tao"/>
+                    <field name="bsd_khach_hang_id"/>
+                    <field name="bsd_dat_coc_id"/>
+                    <field name="bsd_hd_ban_id"/>
                     <field name="state"/>
                 </search>
             </field>

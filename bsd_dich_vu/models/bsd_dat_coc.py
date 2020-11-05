@@ -54,19 +54,23 @@ class BsdDatCoc(models.Model):
 
     # Tính năng tạo danh sách theo dõi khi khách hàng yêu cầu thanh lý đặt cọc
     def action_tao_ds_tt(self):
-        self.env['bsd.ds_td'].create({
-            'bsd_ten': 'Theo dõi thanh lý đặt cọc ' + self.bsd_ma_dat_coc,
-            'bsd_loai_td': 'yc_kh',
-            'bsd_loai_xl': 'thanh_ly',
-            'bsd_loai_dt': 'tl_dc',
-            'bsd_du_an_id': self.bsd_du_an_id.id,
-            'bsd_unit_id': self.bsd_unit_id.id,
-            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-            'bsd_tien_dc': self.bsd_tien_dc,
-            'bsd_dat_coc_id': self.id,
-            'bsd_ngay_hh': self.bsd_ngay_hh_kdc,
-            'bsd_tien_da_tt': self.bsd_tien_da_tt,
-        })
+        action = self.env.ref('bsd_dich_vu.bsd_ds_td_action_popup').read()[0]
+        action['context'] = {
+            'default_bsd_ten': 'Theo dõi thanh lý đặt cọc ' + self.bsd_ma_dat_coc,
+            'default_bsd_loai_td': 'yc_kh',
+            'default_bsd_loai_xl': 'thanh_ly',
+            'default_bsd_loai_dt': 'tl_dc',
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_unit_id': self.bsd_unit_id.id,
+            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'default_bsd_tien_dc': self.bsd_tien_dc,
+            'default_bsd_dat_coc_id': self.id,
+            'default_bsd_tien_da_tt': self.bsd_tien_da_tt,
+            'default_bsd_gui_thu': True,
+            'default_bsd_ky_bb': True,
+            'default_bsd_tl_phat': self.bsd_cs_tt_id.bsd_phat_dc,
+        }
+        return action
 
     # DV.10. Xử lý đặt cọc quá hạn
     def auto_tao_ds_td(self):
