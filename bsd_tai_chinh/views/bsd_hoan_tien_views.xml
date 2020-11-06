@@ -53,6 +53,11 @@
                                    attrs="{'invisible':[('bsd_loai', '!=', 'tl_dc')],
                                            'required':[('bsd_loai', '=', 'tl_dc')]}"
                                    options="{'no_create':true}"/>
+                            <field name="bsd_hd_ban_id"
+                                   readonly="1" force_save="1"
+                                   attrs="{'invisible':[('bsd_loai', 'not in', ['tl_ttdc','tl_hd','vp_hd'])],
+                                           'required':[('bsd_loai', 'in', ['tl_ttdc','tl_hd','vp_hd'])]}"
+                                   options="{'no_create':true}"/>
                             <field name="bsd_phieu_thu_id"
                                    readonly="1" force_save="1"
                                    attrs="{'invisible':[('bsd_loai', '!=', 'phieu_thu')],
@@ -62,15 +67,9 @@
                                    ('bsd_khach_hang_id', 'in', [bsd_khach_hang_id]),('state', '!=', 'nhap')]"/>
                             <field name="bsd_thanh_ly_id"
                                    readonly="1" force_save="1"
-                                   attrs="{'invisible':[('bsd_loai', 'not in', ['tl_ttdc','tl_hd'])],
-                                           'required':[('bsd_loai', 'in', ['tl_ttdc','tl_hd'])]}"
+                                   attrs="{'invisible':[('bsd_loai', 'not in', ['tl_ttdc','tl_hd','tl_dc'])],
+                                           'required':[('bsd_loai', 'in', ['tl_ttdc','tl_hd','tl_dc'])]}"
                                    options="{'no_create':true}"/>
-                            <field name="bsd_hd_ban_id"
-                                   readonly="1" force_save="1"
-                                   attrs="{'invisible':[('bsd_loai', 'not in', ['tl_ttdc','tl_hd','vp_hd'])],
-                                           'required':[('bsd_loai', 'in', ['tl_ttdc','tl_hd','vp_hd'])]}"
-                                   options="{'no_create':true}"/>
-<!--                            <field name="bsd_giam_no_id"/>-->
                             <field name="company_id" invisible="1"/>
                         </group>
                         <group>

@@ -431,19 +431,34 @@ class BsdDanhSachTheoDoi(models.Model):
 
     # DV.15.09 Tự động tạo thanh lý
     def _tao_thanh_ly(self):
-        ten = "Thanh lý " + "đặt cọc " + self.bsd_unit_id.bsd_ten_unit if self.bsd_loai_dt == 'tl_dc' \
-            else "Thanh lý " + "hợp đồng " + self.bsd_unit_id.bsd_ten_unit
-        self.env['bsd.thanh_ly'].create({
-            'bsd_ten': ten,
-            'bsd_ds_td_id': self.id,
-            'bsd_du_an_id': self.bsd_du_an_id.id,
-            'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
-            'bsd_unit_id': self.bsd_unit_id.id,
-            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-            'bsd_tien_dc': self.bsd_tien_dc,
-            'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
-            'bsd_tong_gt_hd': self.bsd_tong_gt_hd,
-        })
+        if self.bsd_loai_dt == 'tl_dc':
+            self.env['bsd.thanh_ly'].create({
+                'bsd_ten': "Thanh lý " + "đặt cọc " + self.bsd_unit_id.bsd_ten_unit,
+                'bsd_ds_td_id': self.id,
+                'bsd_du_an_id': self.bsd_du_an_id.id,
+                'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
+                'bsd_unit_id': self.bsd_unit_id.id,
+                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                'bsd_tien_dc': self.bsd_tien_dc,
+                'bsd_tien_da_tt': self.bsd_tien_da_tt,
+                'bsd_tien_phat': self.bsd_tong_tp,
+                'bsd_tien_hoan': self.bsd_tien_hoan,
+                'bsd_tien_hoan_tt': self.bsd_tien_hoan
+            })
+        else:
+            self.env['bsd.thanh_ly'].create({
+                'bsd_ten': "Thanh lý " + "hợp đồng " + self.bsd_unit_id.bsd_ten_unit,
+                'bsd_ds_td_id': self.id,
+                'bsd_du_an_id': self.bsd_du_an_id.id,
+                'bsd_unit_id': self.bsd_unit_id.id,
+                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
+                'bsd_tong_gt_hd': self.bsd_tong_gt_hd,
+                'bsd_tien_da_tt': self.bsd_tien_da_tt,
+                'bsd_tien_phat': self.bsd_tong_tp,
+                'bsd_tien_hoan': self.bsd_tien_hoan,
+                'bsd_tien_hoan_tt': self.bsd_tien_hoan
+            })
 
     # DV.15.12 Kiểm tra dk đặt cọc
     @api.constrains('bsd_loai_dt', 'bsd_dat_coc_id')

@@ -4,7 +4,7 @@
         <field name="name">bsd.thanh_ly.form</field>
         <field name="model">bsd.thanh_ly</field>
         <field name="arch" type="xml">
-            <form duplicate="false">
+            <form duplicate="false" create="false">
                 <header>
                     <button name="action_xac_nhan"
                             type="object"
@@ -19,13 +19,13 @@
                             class="oe_highlight"/>
                     <button name="action_ky"
                             type="object"
-                            states="xac_nhan"
+                            attrs="{'invisible': ['|',('state', '!=','xac_nhan'),('bsd_ngay_in','=',False)]}"
                             class="oe_highlight"
                             string="Ký biên bản"/>
                     <button name="action_hoan_tien"
                             type="object"
                             confirm="Bạn có muốn thực hiện yêu cầu này không?"
-                            attrs="{'invisible': ['!','|',('state','=','da_ky'),'&amp;',('state','=','xac_nhan'),('bsd_loai_tl','=','thuong')]}"
+                            states="da_ky"
                             class="oe_highlight"
                             string="Hoàn tiền"/>
                     <button name="action_huy"
@@ -46,10 +46,7 @@
                                     <field name="bsd_ten"/>
                                     <field name="bsd_ds_td_id"/>
                                     <field name="bsd_loai_tl"/>
-                                    <field name="bsd_loai_dt" readonly="1"/>
-                                    <field name="bsd_loai_dt" invisible="1"/>
-                                    <field name="bsd_du_an_id" options="{'no_create':true}" readonly="1"/>
-                                    <field name="bsd_du_an_id" invisible="1"/>
+                                    <field name="bsd_loai_dt" readonly="1" force_save="1"/>
                                 </group>
                                 <group>
                                     <field name="bsd_hd_ban_id"
@@ -61,29 +58,22 @@
                                            attrs="{'invisible':[('bsd_loai_dt', '!=', 'dat_coc')],
                                                    'required':[('bsd_loai_dt', '=', 'dat_coc')]}"
                                            options="{'no_create':true}"/>
+                                    <field name="bsd_du_an_id" options="{'no_create':true}" readonly="1" force_save="1"/>
                                     <field name="bsd_unit_id"
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
-                                           options="{'no_create':true}" readonly="1"/>
-                                    <field name="bsd_unit_id"
-                                           context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
-                                           options="{'no_create':true}" invisible="1"/>
+                                           options="{'no_create':true}" readonly="1" force_save="1"/>
                                     <field name="bsd_khach_hang_id"
                                            context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
-                                           options="{'no_create':true}" readonly="1"/>
-                                    <field name="bsd_khach_hang_id"
-                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
-                                           options="{'no_create':true}" invisible="1"/>
+                                           options="{'no_create':true}" readonly="1" force_save="1"/>
                                     <field name="bsd_tien_dc"
                                            readonly="1"
+                                           force_save="1"
                                            attrs="{'invisible': [('bsd_loai_dt', '!=', 'dat_coc')]}"/>
-                                    <field name="bsd_tien_dc" invisible="1"/>
                                     <field name="bsd_tong_gt_hd"
                                            readonly="1"
+                                           force_save="1"
                                            attrs="{'invisible': [('bsd_loai_dt', '=', 'dat_coc')]}"/>
-                                    <field name="bsd_tong_gt_hd" invisible="1"/>
-                                    <field name="bsd_tien_da_tt" readonly="1"/>
-                                    <field name="bsd_tien_da_tt" invisible="1"/>
-                                    <field name="bsd_nguoi_pt_id"/>
+                                    <field name="bsd_tien_da_tt" readonly="1" force_save="1"/>
                                 </group>
                             </group>
                             <group string="MỞ BÁN">
@@ -118,7 +108,7 @@
                             <group string="XÁC NHẬN">
                                 <group>
                                     <field name="bsd_ngay_in"/>
-                                    <field name="bsd_ngay_th"/>
+                                    <field name="bsd_nguoi_in_id"/>
                                 </group>
                                 <group>
                                     <field name="bsd_ngay_ky"/>
@@ -192,9 +182,14 @@
         <field name="name">bsd.thanh_ly.tree</field>
         <field name="model">bsd.thanh_ly</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree create="false">
                 <field name="bsd_ma"/>
                 <field name="bsd_ngay_tao"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_dat_coc_id"/>
+                <field name="bsd_hd_ban_id"/>
+                <field name="bsd_unit_id"/>
                 <field name="state"/>
             </tree>
         </field>

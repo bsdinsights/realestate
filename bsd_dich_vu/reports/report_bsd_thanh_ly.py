@@ -28,7 +28,8 @@ class BsdWizardReportThanhLy(models.TransientModel):
             'model': self.bsd_thanh_ly_id._name,
         }
         self.bsd_thanh_ly_id.write({
-            'bsd_ngay_in': datetime.datetime.now(),
+            'bsd_ngay_in': datetime.date.today(),
+            'bsd_nguoi_in_id': self.env.uid,
         })
         ref_id = 'bsd_dich_vu.' + self.bsd_mau_in
         return self.env.ref(ref_id).report_action(self, data=data)
@@ -54,11 +55,11 @@ class ReportBsdTBTL(models.AbstractModel):
         so_dt = bsd_chu_dt_id.phone
         nguoi_dd = bsd_chu_dt_id.bsd_nguoi_dd_id
         xung_ho = 'Ông' if nguoi_dd.bsd_gioi_tinh == 'nam' else 'Bà'
-        nguoi_dai_dien = nguoi_dd.bsd_ten
+        nguoi_dai_dien = nguoi_dd.display_name
         chuc_vu = nguoi_dd.function
         ma_so_thue = bsd_chu_dt_id.vat
         kh = doc.bsd_khach_hang_id
-        ten_kh = kh.bsd_ten
+        ten_kh = kh.display_name
         so_cmnd = kh.bsd_cmnd
         ngay_cmnd = kh.bsd_ngay_cap_cmnd
         noi_cmnd = kh.bsd_noi_cap_cmnd

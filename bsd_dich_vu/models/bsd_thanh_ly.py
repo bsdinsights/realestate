@@ -25,11 +25,6 @@ class BsdThanhLy(models.Model):
     bsd_ten = fields.Char(string="Tiêu đề", required=True, help="Tiêu đề",
                           readonly=True,
                           states={'nhap': [('readonly', False)]})
-    bsd_nguoi_pt_id = fields.Many2one('res.users', string="Người phụ trách",
-                                      help="Người phụ trách thanh lý chấm dứt hợp đồng hợp đồng",
-                                      tracking=3,
-                                      readonly=True,
-                                      states={'nhap': [('readonly', False)]})
     bsd_loai_dt = fields.Selection([('dat_coc', 'Đặt cọc'),
                                     ('dc_cb', 'Đặt cọc - Chuẩn bị HĐ'),
                                     ('tt_dc', 'Thỏa thuận đặt cọc'),
@@ -44,7 +39,9 @@ class BsdThanhLy(models.Model):
                                    required=True, default='thuong',
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_ds_td_id = fields.Many2one('bsd.ds_td', string="Danh sách theo dõi", help="Danh sách theo dõi", required=True)
+    bsd_ds_td_id = fields.Many2one('bsd.ds_td', string="Danh sách theo dõi", help="Danh sách theo dõi", required=True,
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
@@ -78,10 +75,12 @@ class BsdThanhLy(models.Model):
     bsd_tien_phat = fields.Monetary(string="Tiền phạt", help="Số tiền khách hàng bị phạt do vi phạm hợp đồng",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
-    bsd_tien_hoan = fields.Monetary(string="Số tiền hoàn", help="Số tiền khách hàng được hoàn hoàn lại")
+    bsd_tien_hoan = fields.Monetary(string="Số tiền hoàn", help="Số tiền khách hàng được hoàn hoàn lại",
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)], 'xac_nhan': [('readonly', False)]})
     bsd_tien_mg = fields.Monetary(string="Miễn giảm phạt", help="Số tiền phạt được miễn giảm",
                                   readonly=True,
-                                  states={'nhap': [('readonly', False)]})
+                                  states={'nhap': [('readonly', False)], 'xac_nhan': [('readonly', False)]})
     bsd_tong_phat = fields.Monetary(string="Tổng số tiền phạt", help="Tổng số tiền phạt sau khi được miễn giảm",
                                     readonly=True, compute="_compute_tong_phat", store=True)
 
@@ -90,13 +89,18 @@ class BsdThanhLy(models.Model):
         for each in self:
             each.bsd_tong_phat = each.bsd_tien_phat - each.bsd_tien_mg
 
-    bsd_tien_hoan_tt = fields.Monetary(string="Số tiền hoàn TT", help="Số tiền hoàn trả thực tế của khách hàng")
-    bsd_tt_ht = fields.Selection([('chua_ht', 'Chưa hoàn tiền'),
-                                  ('dang_ht', 'Đang hoàn tiền'),
-                                  ('da_ht', 'Đã hoàn tiền')], string="Tình trạng", help="Tình trạng hoàn tiền")
-    bsd_ngay_in = fields.Datetime(string="Ngày in biên bản", help="Ngày in biên bản", readonly=True)
-    bsd_ngay_ky = fields.Datetime(string="Ngày ký biên bản", help="Ngày ký biên bản", readonly=True)
-    bsd_ngay_th = fields.Datetime(string="Ngày thu hồi", help="Ngày thu hồi biên bản", readonly=True)
+    bsd_tien_hoan_tt = fields.Monetary(string="Số tiền hoàn TT", help="Số tiền hoàn trả thực tế của khách hàng",
+                                       readonly=True,
+                                       states={'nhap': [('readonly', False)], 'xac_nhan': [('readonly', False)]})
+    bsd_tt_ht = fields.Selection([('khong', 'Không có'),
+                                  ('chua_ht', 'Chưa hoàn tiền'),
+                                  ('da_ht', 'Đã hoàn tiền')],
+                                 string="Hoàn tiền TL", readonly=True,
+                                 default='khong', required=True,
+                                 help="Tình trạng hoàn tiền")
+    bsd_nguoi_in_id = fields.Many2one('res.users', string="Người in", help="Người in", readonly=True)
+    bsd_ngay_in = fields.Date(string="Ngày in biên bản", help="Ngày in biên bản", readonly=True)
+    bsd_ngay_ky = fields.Date(string="Ngày ký biên bản", help="Ngày ký biên bản", readonly=True)
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích xây dựng", compute="_compute_tt")
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế", compute="_compute_tt")
     bsd_thue_id = fields.Many2one('bsd.thue_suat', string="Mã thuế", help="Mã thuế", compute="_compute_tt")
@@ -140,7 +144,6 @@ class BsdThanhLy(models.Model):
         self.bsd_unit_id = self.bsd_ds_td_id.bsd_unit_id
         self.bsd_khach_hang_id = self.bsd_ds_td_id.bsd_khach_hang_id
         self.bsd_tien_dc = self.bsd_ds_td_id.bsd_tien_dc
-        # self.bsd_ngay_hh = self.bsd_ds_td_id.bsd_ngay_hh
         self.bsd_hd_ban_id = self.bsd_ds_td_id.bsd_hd_ban_id
         self.bsd_tong_gt_hd = self.bsd_ds_td_id.bsd_tong_gt_hd
         self.bsd_loai_dt = self.bsd_ds_td_id.bsd_loai_dt
@@ -241,6 +244,7 @@ class BsdThanhLy(models.Model):
             })
         self.write({
             'state': 'da_tl',
+            'bsd_tt_ht': 'chua_ht',
         })
         # gọi hàm xử lý hoàn tiền đặt cọc
         if self.bsd_loai_dt == 'dat_coc':
@@ -266,60 +270,20 @@ class BsdThanhLy(models.Model):
 
     # DV.13.07 Xử lý hoàn tiền đặt cọc
     def _xu_ly_dat_coc(self):
-        # Tạo record bảng điều chỉnh giảm
-        giam_no = self.env['bsd.giam_no'].create({
-            'bsd_loai_dc': 'tl_dc',
-            'bsd_dien_giai': 'Thanh lý đặt cọc ' + self.bsd_dat_coc_id.bsd_ma_dat_coc,
-            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-            'bsd_du_an_id': self.bsd_du_an_id.id,
-            'bsd_tien': self.bsd_tien_dc,
-            'state': 'nhap'
-        })
-        giam_no.action_xac_nhan()
-        giam_no.action_vao_so()
-        # Tạo record phát sinh tăng từ chứng từ thanh lý
-        self.env['bsd.cong_no'].create({
-            'bsd_chung_tu': self.bsd_ma,
-            'bsd_ngay': fields.Datetime.now(),
-            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-            'bsd_du_an_id': self.bsd_du_an_id.id,
-            'bsd_ps_tang': self.bsd_tien_phat,
-            'bsd_loai_ct': 'tl_dc',
-            'bsd_thanh_ly_id': self.id,
-        })
-        # Tạo record trong bảng công nợ chứng từ
-        self.env['bsd.cong_no_ct'].create({
-            'bsd_ngay_pb': fields.Datetime.now(),
-            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-            'bsd_thanh_ly_id': self.id,
-            'bsd_giam_no_id': giam_no.id,
-            'bsd_tien_pb': self.bsd_tien_phat,
-            'bsd_loai': 'giam_tl',
-            'state': 'hoan_thanh',
-        })
-        if self.bsd_dat_coc_id.bsd_thanh_toan == 'dang_tt':
-            self.env['bsd.cong_no_ct'].create({
-                'bsd_ngay_pb': fields.Datetime.now(),
-                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
-                'bsd_giam_no_id': giam_no.id,
-                'bsd_tien_pb': self.bsd_tien_dc - self.bsd_tien_phat - self.bsd_tien_hoan,
-                'bsd_loai': 'giam_dc',
-                'state': 'hoan_thanh',
-            })
-
         # Tạo record hoàn tiền từ thanh lý
         hoan_tien = self.env['bsd.hoan_tien'].create({
                         'bsd_ngay_ct': fields.Datetime.now(),
                         'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                         'bsd_du_an_id': self.bsd_du_an_id.id,
                         'bsd_loai': 'tl_dc',
-                        'bsd_giam_no_id': giam_no.id,
-                        'bsd_tien': self.bsd_tien_hoan,
-                        'bsd_dien_giai': 'Hoàn tiền cho ' + self.bsd_ma + ' cho ' + self.bsd_dat_coc_id.bsd_ma_dat_coc,
+                        'bsd_tien': self.bsd_tien_hoan_tt,
+                        'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
+                        'bsd_thanh_ly_id': self.id,
+                        'bsd_dien_giai': 'Hoàn tiền đặt cọc ' +
+                                         self.bsd_dat_coc_id.bsd_ma_dat_coc + ' theo thanh lý ' + self.bsd_ma,
                         'state': 'nhap',
                 })
-        hoan_tien.action_xac_nhan()
+
     @api.model
     def create(self, vals):
         sequence = self.env['ir.sequence']

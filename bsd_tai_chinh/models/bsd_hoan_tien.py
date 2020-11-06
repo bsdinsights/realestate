@@ -101,10 +101,6 @@ class BsdHoanTien(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
-    @api.onchange('bsd_thanh_ly_id')
-    def _onchange_tl(self):
-        self.bsd_hd_ban_id = self.bsd_thanh_ly_id.bsd_hd_ban_id
-
     # TC.07.01 Xác nhận hoàn tiền
     # TC.07.03 Ghi sổ hoàn tiền
     def action_xac_nhan(self):
@@ -120,6 +116,11 @@ class BsdHoanTien(models.Model):
         # Cập nhật trạng thái hoàn tiền giữ chỗ
         if self.bsd_loai == 'giu_cho':
             self.bsd_giu_cho_id.write({
+                'bsd_tt_ht': 'da_ht'
+            })
+
+        if self.bsd_thanh_ly_id:
+            self.bsd_thanh_ly_id.write({
                 'bsd_tt_ht': 'da_ht'
             })
 

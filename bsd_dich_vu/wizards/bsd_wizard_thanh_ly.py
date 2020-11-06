@@ -22,14 +22,6 @@ class BsdKyThanhLy(models.TransientModel):
             'bsd_ngay_ky': self.bsd_ngay_ky_thanh_ly,
             'state': 'da_ky'
         })
-        
-        
-# -*- coding:utf-8 -*-
-
-from odoo import models, fields, api, _
-
-import logging
-_logger = logging.getLogger(__name__)
 
 
 class BsdHuyThanhLy(models.TransientModel):
