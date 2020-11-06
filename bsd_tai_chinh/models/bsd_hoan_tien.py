@@ -64,8 +64,7 @@ class BsdHoanTien(models.Model):
                    ('giu_cho', 'Giữ chỗ'),
                    ('tl_dc', 'Thanh lý đặt cọc'),
                    ('phieu_thu', 'Thanh toán trả trước'),
-                   ('tl_ttdc', 'Thanh lý TTĐC/ HĐĐC'),
-                   ('tl_hd', 'Thanh lý HĐMB'),
+                   ('tl_gd', 'Thanh lý giao dịch'),
                    ('vp_hd', 'Vi phạm hợp đồng'),
                    ('pl_hd', 'Phụ lục hợp đồng')]
         if self.env['res.users'].has_group('bsd_kinh_doanh.group_manager'):

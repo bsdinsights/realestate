@@ -42,7 +42,7 @@ class BsdDanhSachTheoDoi(models.Model):
        states={'nhap': [('readonly', False)]})
     bsd_loai_td = fields.Selection([('vp_tg', 'Vi phạm thời gian'),
                                     ('yc_kh', 'Yêu cầu'),
-                                    ('vp_tt', 'Vi phạm thanh toán')], string="Lý do tạo",
+                                    ('vp_tt', 'Vi phạm thanh toán')], string="Lý do",
                                    required=True, help="Lý do tạo danh sách theo dõi", default="yc_kh",
                                    readonly=True)
     bsd_loai_xl = fields.Selection([('gia_han', 'Gia hạn'),
@@ -104,7 +104,7 @@ class BsdDanhSachTheoDoi(models.Model):
                                     states={'nhap': [('readonly', False)], 'xn_tt': [('readonly', False)]})
     bsd_pt_phat = fields.Selection([('tien', 'Số tiền hoàn'), ('phan_tram', 'Phần trăm')],
                                    string="Phương thức tính", help="Phương thức tính tiền thanh lý",
-                                   required=True, default='phan_tram', readonly=True,
+                                   required=True, default='tien', readonly=True,
                                    states={'nhap': [('readonly', False)], 'xn_tt': [('readonly', False)]})
     bsd_tl_phat = fields.Float(string="Tỷ lệ phạt", help="Tỷ lệ phần trăm mà khách hàng bị phạt",
                                readonly=True,
@@ -121,9 +121,12 @@ class BsdDanhSachTheoDoi(models.Model):
             if each.bsd_pt_phat == 'tien':
                 each.bsd_tong_tp = each.bsd_tien_da_tt - each.bsd_tien_hoan
             else:
-                each.bsd_tong_tp = (each.bsd_tien_dc * each.bsd_tl_phat) / 100
+                if self.bsd_loai_dt == 'tl_dc':
+                    each.bsd_tong_tp = (each.bsd_tien_dc * each.bsd_tl_phat) / 100
+                else:
+                    each.bsd_tong_tp = (each.bsd_tong_gt_hd * each.bsd_tl_phat) / 100
     bsd_quyet_dinh = fields.Text(string="Quyết định", help="Quyết định xử lý cho Danh sách theo dõi",
-                                 readonly=True,
+                                 readonly=True, copy=False,
                                  states={'nhap': [('readonly', False)], 'xn_tt': [('readonly', False)]})
     state = fields.Selection([('nhap', 'Nháp'), ('xn_tt', 'Xác nhận thông tin'),
                               ('xac_nhan', 'Đã có quyết định'),
@@ -357,7 +360,7 @@ class BsdDanhSachTheoDoi(models.Model):
             'state': 'hoan_thanh'
         })
 
-    def action_tt_td(self):
+    def _tt_td(self):
         if self.bsd_loai_dt == 'tl_dc':
             tieu_de = 'Theo dõi thanh lý đặt cọc ' + self.bsd_dat_coc_id.bsd_ma_dat_coc
         else:
@@ -369,19 +372,16 @@ class BsdDanhSachTheoDoi(models.Model):
                            'state': 'nhap',
                            'bsd_parent_id': self.id})
         self.write({
-            'state': 'hoan_thanh',
             'bsd_loai_xl': 'tt_td'
         })
 
-    # DV.15.04 Gửi thông báo thanh lý
-    def action_gui_tbtl(self):
-        self._tao_tb_tl()
-
-    # DV.15.05 Thanh lý
-    def action_thanh_ly(self):
-        self._tao_thanh_ly()
-
     def action_hoan_thanh(self):
+        if self.bsd_gui_thu:
+            self._tao_tb_tl()
+        if self.bsd_ky_bb:
+            self._tao_thanh_ly()
+        else:
+            self._tt_td()
         if self.state == 'xac_nhan':
             self.write({'state': 'hoan_thanh'})
 
@@ -431,6 +431,7 @@ class BsdDanhSachTheoDoi(models.Model):
 
     # DV.15.09 Tự động tạo thanh lý
     def _tao_thanh_ly(self):
+        tien_hoan = self.bsd_tien_da_tt - self.bsd_tong_tp
         if self.bsd_loai_dt == 'tl_dc':
             self.env['bsd.thanh_ly'].create({
                 'bsd_ten': "Thanh lý " + "đặt cọc " + self.bsd_unit_id.bsd_ten_unit,
@@ -442,12 +443,13 @@ class BsdDanhSachTheoDoi(models.Model):
                 'bsd_tien_dc': self.bsd_tien_dc,
                 'bsd_tien_da_tt': self.bsd_tien_da_tt,
                 'bsd_tien_phat': self.bsd_tong_tp,
-                'bsd_tien_hoan': self.bsd_tien_hoan,
-                'bsd_tien_hoan_tt': self.bsd_tien_hoan
+                'bsd_tien_hoan': tien_hoan,
+                'bsd_tien_hoan_tt': tien_hoan,
             })
         else:
             self.env['bsd.thanh_ly'].create({
                 'bsd_ten': "Thanh lý " + "hợp đồng " + self.bsd_unit_id.bsd_ten_unit,
+                'bsd_loai_dt': 'hd_ban',
                 'bsd_ds_td_id': self.id,
                 'bsd_du_an_id': self.bsd_du_an_id.id,
                 'bsd_unit_id': self.bsd_unit_id.id,
@@ -456,8 +458,8 @@ class BsdDanhSachTheoDoi(models.Model):
                 'bsd_tong_gt_hd': self.bsd_tong_gt_hd,
                 'bsd_tien_da_tt': self.bsd_tien_da_tt,
                 'bsd_tien_phat': self.bsd_tong_tp,
-                'bsd_tien_hoan': self.bsd_tien_hoan,
-                'bsd_tien_hoan_tt': self.bsd_tien_hoan
+                'bsd_tien_hoan': tien_hoan,
+                'bsd_tien_hoan_tt': tien_hoan
             })
 
     # DV.15.12 Kiểm tra dk đặt cọc

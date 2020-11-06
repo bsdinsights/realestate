@@ -209,6 +209,58 @@ class BsdHopDongMuaBan(models.Model):
     bsd_tl_tt_hd = fields.Float(string="Tỷ lệ thanh toán HĐ", help="Tỷ lệ thanh toán hợp đồng", digits=(10, 1))
     bsd_tien_tt_hd = fields.Monetary(string="Tiền thanh toán HĐ", help="Tiền thanh toán hợp đồng")
     bsd_ngay_cd_hd = fields.Date(string="Ngày chấm dứt hợp đồng")
+    bsd_so_ds_td = fields.Integer(string="# DS theo dõi", compute='_compute_ds_td')
+
+    def _compute_ds_td(self):
+        for each in self:
+            ds_td = self.env['bsd.ds_td'].search([('bsd_hd_ban_id', '=', self.id)])
+            each.bsd_so_ds_td = len(ds_td)
+
+    def action_view_ds_td(self):
+        action = self.env.ref('bsd_dich_vu.bsd_ds_td_action').read()[0]
+
+        ds_td = self.env['bsd.ds_td'].search([('bsd_hd_ban_id', '=', self.id)])
+        if len(ds_td) > 1:
+            action['domain'] = [('id', 'in', ds_td.ids)]
+        elif ds_td:
+            form_view = [(self.env.ref('bsd_dich_vu.bsd_ds_td_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = ds_td.id
+        return action
+
+    # Tính năng tạo danh sách theo dõi khi khách hàng yêu cầu thanh lý
+    def action_tao_ds_tt(self):
+        # kiểm tra trạng thái hợp đồng
+        if self.state in ['ht_dc', 'tt_dot1']:
+            loai_dt = 'tl_dc_cbhd'
+            tl_phat = self.bsd_cs_tt_id.bsd_phat_dc
+        elif self.state in ['da_ky_ttdc', 'du_dk']:
+            loai_dt = 'tl_ttdc_hd'
+            tl_phat = self.bsd_cs_tt_id.bsd_phat_ttdc
+        elif self.state in ['da_ky','dang_tt']:
+            loai_dt = 'tl_ttdc_hd'
+            tl_phat = self.bsd_cs_tt_id.bsd_phat_hd
+        action = self.env.ref('bsd_dich_vu.bsd_ds_td_action_popup').read()[0]
+        action['context'] = {
+            'default_bsd_ten': 'Theo dõi thanh lý hợp đồng ' + self.bsd_ma_hd_ban,
+            'default_bsd_loai_td': 'yc_kh',
+            'default_bsd_loai_xl': 'thanh_ly',
+            'default_bsd_loai_dt': loai_dt,
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_unit_id': self.bsd_unit_id.id,
+            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'default_bsd_hd_ban_id': self.id,
+            'default_bsd_tong_gt_hd': self.bsd_tong_gia,
+            'default_bsd_tien_da_tt': self.bsd_tien_tt_hd,
+            'default_bsd_gui_thu': True,
+            'default_bsd_ky_bb': True,
+            'default_bsd_tl_phat': tl_phat,
+            'default_bsd_nhom': 'dvkh',
+        }
+        return action
 
     # Tên hiện thị record
     def name_get(self):

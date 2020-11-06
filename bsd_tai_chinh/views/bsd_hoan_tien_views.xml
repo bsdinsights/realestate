@@ -55,8 +55,8 @@
                                    options="{'no_create':true}"/>
                             <field name="bsd_hd_ban_id"
                                    readonly="1" force_save="1"
-                                   attrs="{'invisible':[('bsd_loai', 'not in', ['tl_ttdc','tl_hd','vp_hd'])],
-                                           'required':[('bsd_loai', 'in', ['tl_ttdc','tl_hd','vp_hd'])]}"
+                                   attrs="{'invisible':[('bsd_loai', 'not in', ['tl_gd','vp_hd'])],
+                                           'required':[('bsd_loai', 'in', ['tl_gd','vp_hd'])]}"
                                    options="{'no_create':true}"/>
                             <field name="bsd_phieu_thu_id"
                                    readonly="1" force_save="1"

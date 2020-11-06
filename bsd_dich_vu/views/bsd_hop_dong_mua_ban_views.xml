@@ -42,6 +42,7 @@
                             class="oe_highlight"/>
                     <button string="Ước tính"
                             name="action_uoc_tinh_ck"
+                            attrs="{'invisible':[('state', 'in',['thanh_ly','da_ht','bg_gt','ht_tt'])]}"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Ký TTDC"
@@ -60,9 +61,21 @@
                                                  '|', ('bsd_ngay_duyet_bgdb', '!=', False),
                                                  ('state', 'not in', ['da_ky', 'dang_tt'])]}"
                             class="oe_highlight"/>
+                    <button string="Theo dõi"
+                            name="action_tao_ds_tt"
+                            states="ht_dc,tt_dot1,da_ky_ttdc,du_dk,da_ky,dang_tt"
+                            comfirm="Bạn có chắc muốn tạo theo dõi thanh lý hợp đồng?"
+                            type="object"
+                            />
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_ds_td" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_ds_td', '=', 0)]}">
+                            <field name="bsd_so_ds_td" widget="statinfo" string="DS theo dõi"/>
+                        </button>
+                    </div>
+
                     <notebook>
                         <page string="Thông tin chung">
                             <group>

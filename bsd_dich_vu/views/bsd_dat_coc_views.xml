@@ -20,10 +20,10 @@
                         states="dat_coc"
                         class="oe_highlight"
                         attrs="{'invisible': ['|',('state','not in',['dat_coc']),('bsd_ngay_ky_dc','=', False)]}"/>
-                <button string="Thanh lý"
+                <button string="Theo dõi"
                         name="action_tao_ds_tt"
                         states="da_tc,dat_coc"
-                        comfirm="Bạn có chắc muốn tạo danh sách theo dõi thanh lý đặt cọc?"
+                        comfirm="Bạn có chắc muốn tạo theo dõi thanh lý đặt cọc?"
                         type="object"
                         />
             </xpath>

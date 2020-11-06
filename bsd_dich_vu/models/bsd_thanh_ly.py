@@ -26,8 +26,6 @@ class BsdThanhLy(models.Model):
                           readonly=True,
                           states={'nhap': [('readonly', False)]})
     bsd_loai_dt = fields.Selection([('dat_coc', 'Đặt cọc'),
-                                    ('dc_cb', 'Đặt cọc - Chuẩn bị HĐ'),
-                                    ('tt_dc', 'Thỏa thuận đặt cọc'),
                                     ('hd_ban', 'Hợp đồng mua bán')], string="Đối tượng", required=True,
                                    help="Đối tượng", default='dat_coc',
                                    readonly=True,
@@ -249,7 +247,8 @@ class BsdThanhLy(models.Model):
         # gọi hàm xử lý hoàn tiền đặt cọc
         if self.bsd_loai_dt == 'dat_coc':
             self._xu_ly_dat_coc()
-
+        else:
+            self._xu_ly_hd_ban()
         # gọi hàm mở bán lại
         self._mo_ban_lai()
 
@@ -283,6 +282,21 @@ class BsdThanhLy(models.Model):
                                          self.bsd_dat_coc_id.bsd_ma_dat_coc + ' theo thanh lý ' + self.bsd_ma,
                         'state': 'nhap',
                 })
+
+    def _xu_ly_hd_ban(self):
+        # Tạo record hoàn tiền từ thanh lý
+        self.env['bsd.hoan_tien'].create({
+            'bsd_ngay_ct': fields.Datetime.now(),
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_du_an_id': self.bsd_du_an_id.id,
+            'bsd_loai': 'tl_gd',
+            'bsd_tien': self.bsd_tien_hoan_tt,
+            'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
+            'bsd_thanh_ly_id': self.id,
+            'bsd_dien_giai': 'Hoàn tiền hợp đồng ' +
+                             self.bsd_hd_ban_id.bsd_ma_hd_ban + ' theo thanh lý ' + self.bsd_ma,
+            'state': 'nhap',
+        })
 
     @api.model
     def create(self, vals):
