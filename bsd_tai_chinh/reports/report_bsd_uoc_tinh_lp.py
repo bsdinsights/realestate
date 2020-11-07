@@ -55,29 +55,31 @@ class ReportBsdUocTinhLaiPhat(models.AbstractModel):
                 han_tinh_phat = dot_tt.bsd_ngay_ah
             # Số ngày tính lãi phạt
             so_ngay_nam = cs_tt.bsd_lai_phat_tt_id.bsd_so_ngay_nam
-            # Số ngày tính phạt
-            so_ngay_tp = (ngay_ut - han_tinh_phat).days
-            # Tính lãi phạt
-            tien_phat = float_round(dot_tt.bsd_tien_phai_tt * (dot_tt.bsd_lai_phat/100 / so_ngay_nam) * so_ngay_tp, 0)
-            # Kiểm tra lãi phạt đã vượt lãi phạt tối đa của đợt chưa
-            tong_tien_phat = dot_tt.bsd_tien_phat + tien_phat
-            if dot_tt.bsd_tien_td == 0 and dot_tt.bsd_tl_td != 0:
-                tien_phat_toi_da = dot_tt.bsd_tien_dot_tt * dot_tt.bsd_tl_td / 100
-                if tong_tien_phat > tien_phat_toi_da:
-                    tien_phat = tien_phat_toi_da - dot_tt.bsd_tien_phat
-            elif dot_tt.bsd_tien_td != 0 and dot_tt.bsd_tl_td == 0:
-                tien_phat_toi_da = dot_tt.bsd_tien_td
-                if tong_tien_phat > tien_phat_toi_da:
-                    tien_phat = tien_phat_toi_da - dot_tt.bsd_tien_phat
-            elif dot_tt.bsd_tien_td != 0 and dot_tt.bsd_tl_td != 0:
-                tien_phat_toi_da_1 = dot_tt.bsd_tien_dot_tt * dot_tt.bsd_tl_td / 100
-                tien_phat_toi_da_2 = dot_tt.bsd_tien_td
-                tien_phat_toi_da = tien_phat_toi_da_1 if tien_phat_toi_da_1 < tien_phat_toi_da_2 else tien_phat_toi_da_2
-                if tong_tien_phat > tien_phat_toi_da:
-                    tien_phat = tien_phat_toi_da - dot_tt.bsd_tien_phat
-
+            if ngay_ut > han_tinh_phat:
+                # Số ngày tính phạt
+                so_ngay_tp = (ngay_ut - han_tinh_phat).days
+                # Tính lãi phạt
+                tien_phat = float_round(dot_tt.bsd_tien_phai_tt * (dot_tt.bsd_lai_phat/100 / so_ngay_nam) * so_ngay_tp, 0)
+                # Kiểm tra lãi phạt đã vượt lãi phạt tối đa của đợt chưa
+                tong_tien_phat = dot_tt.bsd_tien_phat + tien_phat
+                if dot_tt.bsd_tien_td == 0 and dot_tt.bsd_tl_td != 0:
+                    tien_phat_toi_da = dot_tt.bsd_tien_dot_tt * dot_tt.bsd_tl_td / 100
+                    if tong_tien_phat > tien_phat_toi_da:
+                        tien_phat = tien_phat_toi_da - dot_tt.bsd_tien_phat
+                elif dot_tt.bsd_tien_td != 0 and dot_tt.bsd_tl_td == 0:
+                    tien_phat_toi_da = dot_tt.bsd_tien_td
+                    if tong_tien_phat > tien_phat_toi_da:
+                        tien_phat = tien_phat_toi_da - dot_tt.bsd_tien_phat
+                elif dot_tt.bsd_tien_td != 0 and dot_tt.bsd_tl_td != 0:
+                    tien_phat_toi_da_1 = dot_tt.bsd_tien_dot_tt * dot_tt.bsd_tl_td / 100
+                    tien_phat_toi_da_2 = dot_tt.bsd_tien_td
+                    tien_phat_toi_da = tien_phat_toi_da_1 if tien_phat_toi_da_1 < tien_phat_toi_da_2 else tien_phat_toi_da_2
+                    if tong_tien_phat > tien_phat_toi_da:
+                        tien_phat = tien_phat_toi_da - dot_tt.bsd_tien_phat
+            else:
+                so_ngay_tp = 0
+                tien_phat = 0
             tong_tien_chua_tt += dot_tt.bsd_tien_phai_tt
-            tong_tien_phat += dot_tt.bsd_tien_phat + tien_phat
             lich_tt.append({
                 'stt': dot_tt.bsd_stt,
                 'ten': dot_tt.bsd_ten_dtt,
@@ -91,6 +93,8 @@ class ReportBsdUocTinhLaiPhat(models.AbstractModel):
                 'tien_phat': tien_phat,
                 'tong_tien_phat': dot_tt.bsd_tien_phat + tien_phat,
             })
+        for d in lich_tt:
+            tong_tien_phat += d['tong_tien_phat']
         doc.update({
             'lich_tt': lich_tt,
             'tong_tien_chua_tt': tong_tien_chua_tt,
