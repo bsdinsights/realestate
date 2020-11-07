@@ -41,7 +41,7 @@ class BsdLaiPhat(models.Model):
 
             if each.bsd_tien_phai_tt == 0:
                 each.bsd_thanh_toan = 'da_tt'
-            elif 0 < each.bsd_tien_phai_tt < each.bsd_tien_dot_tt:
+            elif 0 < each.bsd_tien_phai_tt < each.bsd_tien_phat:
                 each.bsd_thanh_toan = 'dang_tt'
             else:
                 each.bsd_thanh_toan = 'chua_tt'

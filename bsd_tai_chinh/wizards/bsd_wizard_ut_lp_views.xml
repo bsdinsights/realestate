@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_wizard_uoc_tinh_lp_form">
+        <field name="name">bsd.wizard.uoc_tinh_lp.form</field>
+        <field name="model">bsd.wizard.uoc_tinh_lp</field>
+        <field name="arch" type="xml">
+            <form string="Ước tính">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_hd_ban_id"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ngay_ut"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_in" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_uoc_tinh_lp_action">
+        <field name="name">Ước tính lãi phạt chậm thanh toán</field>
+        <field name="res_model">bsd.wizard.uoc_tinh_lp</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
+</odoo>

@@ -109,6 +109,9 @@ class BsdCongNoCT(models.Model):
                 self.bsd_dot_tt_id.tao_ck_ttn()
                 # Gọi hàm xứ lý khuyến mãi
                 hd_ban.tao_giao_dich_khuyen_mai(ngay_tt=self.bsd_ngay_pb)
+                # Gọi hàm xử lý lãi phạt chậm thanh toán
+                self.bsd_dot_tt_id.tao_lp_tt(ngay_tt=self.bsd_ngay_pb, tien_tt=self.bsd_tien_pb,
+                                             thanh_toan=self.bsd_phieu_thu_id)
             # Cập nhật trạng thái hợp đồng khi thanh toán đủ đợt thanh toán
             tien_thu_dot = self.bsd_dot_tt_id.bsd_tien_dot_tt - self.bsd_dot_tt_id.bsd_tien_dc
             if float_utils.float_compare(tien_thu_dot, tien, 4) == 0:

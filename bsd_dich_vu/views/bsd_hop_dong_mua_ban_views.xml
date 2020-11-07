@@ -678,7 +678,7 @@
                             </field>
                         </page>
                         <page string="Lịch thanh toán">
-                            <field name="bsd_ltt_ids">
+                            <field name="bsd_ltt_ids" readonly="0">
                                 <tree decoration-warning="bsd_thanh_toan=='dang_tt'"
                                       decoration-info="bsd_thanh_toan=='da_tt'"
                                       decoration-danger="bsd_thanh_toan=='chua_tt'">
@@ -944,10 +944,8 @@
                                            options="{'no_create':true}"/>
                                     <label for="bsd_thue_suat"/>
                                     <div class="o_row no-gutters d-flex">
-                                        <div class="col">
-                                            <field name="bsd_thue_suat" class="mr-1"/>
-                                            <span>%</span>
-                                        </div>
+                                        <field name="bsd_thue_suat" class="mr-1"/>
+                                        <span>%</span>
                                     </div>
                                     <label for="bsd_tl_pbt"/>
                                     <div class="o_row no-gutters d-flex">

@@ -5,7 +5,7 @@
         <field name="model">bsd.lich_thanh_toan</field>
         <field name="inherit_id" ref="bsd_kinh_doanh.bsd_lich_thanh_toan_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='bsd_tien_dot_tt']" position="after">
+            <xpath expr="//field[@name='bsd_ngay_tt']" position="before">
                 <field name="bsd_tien_da_tt"/>
                 <field name="bsd_tien_phai_tt"/>
             </xpath>

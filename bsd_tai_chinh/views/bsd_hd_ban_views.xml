@@ -12,6 +12,13 @@
                         type="object"
                         class="oe_highlight"/>
             </xpath>
+                        <xpath expr="//button[@name='action_xac_nhan']" position="after">
+                <button string="Ước tính lãi phạt"
+                        name="action_uoc_tinh_lp"
+                        attrs="{'invisible':[('state', 'in',['thanh_ly','da_ht','bg_gt','ht_tt'])]}"
+                        type="object"
+                        class="oe_highlight"/>
+            </xpath>
             <xpath expr="//field[@name='bsd_ltt_ids']" position="before">
                 <group>
                     <group>
@@ -37,6 +44,25 @@
                             <field name="bsd_tien_phai_tt"/>
                             <field name="bsd_thanh_toan"/>
                             <field name="state"/>
+                        </tree>
+                    </field>
+                </page>
+                <page string="Lãi phạt">
+                    <field name="bsd_lai_phat_ids">
+                        <tree decoration-warning="bsd_thanh_toan=='dang_tt'"
+                              decoration-info="bsd_thanh_toan=='da_tt'"
+                              decoration-danger="bsd_thanh_toan=='chua_tt'">
+                            <field name="bsd_ngay_lp"/>
+                            <field name="bsd_dot_tt_id"/>
+                            <field name="bsd_phieu_thu_id"/>
+                            <field name="bsd_tien_tt"/>
+                            <field name="bsd_so_ngay"/>
+                            <field name="bsd_tien_phat"/>
+                            <field name="bsd_tien_da_tt"/>
+                            <field name="bsd_tien_phai_tt"/>
+                            <field name="bsd_thanh_toan"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
                         </tree>
                     </field>
                 </page>

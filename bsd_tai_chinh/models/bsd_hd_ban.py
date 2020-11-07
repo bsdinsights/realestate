@@ -14,7 +14,8 @@ class BsdHdBan(models.Model):
     bsd_tien_tt_hd = fields.Monetary(string="Tiền thanh toán HĐ", help="Tiền thanh toán hợp đồng",
                                      compute='_compute_tl_tt', store=True)
 
-    bsd_phi_ps_ids = fields.One2many('bsd.phi_ps', 'bsd_hd_ban_id', string="Danh sách phí phát sinh", readonly=True)
+    bsd_phi_ps_ids = fields.One2many('bsd.phi_ps', 'bsd_hd_ban_id', string="Phí phát sinh", readonly=True)
+    bsd_lai_phat_ids = fields.One2many('bsd.lai_phat', 'bsd_hd_ban_id', string="Lãi phạt", readonly=True)
 
     @api.depends('bsd_ltt_ids.bsd_tien_da_tt', 'bsd_tong_gia')
     def _compute_tl_tt(self):
@@ -196,3 +197,8 @@ class BsdHdBan(models.Model):
         action = self.env.ref('bsd_tai_chinh.bsd_phieu_thu_action_popup').read()[0]
         action['context'] = context
         return action
+
+    def action_uoc_tinh_lp(self):
+        action = self.env.ref('bsd_tai_chinh.bsd_wizard_uoc_tinh_lp_action').read()[0]
+        return action
+

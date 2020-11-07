@@ -342,6 +342,7 @@ class BsdBaoGia(models.Model):
         self.write({
             'bsd_da_co_lich': True
         })
+
         # hàm cộng tháng
         def add_months(sourcedate, months):
             month = sourcedate.month - 1 + months

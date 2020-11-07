@@ -7,7 +7,7 @@ from odoo.exceptions import UserError
 class BsdLaiPhatTT(models.Model):
     _name = 'bsd.lai_phat_tt'
     _rec_name = 'bsd_ma_lptt'
-    _description = "Thông tin lãi phạt chậm thanh toán"
+    _description = "Cách tính lãi phạt chậm thanh toán"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     bsd_ma_lptt = fields.Char(string="Mã", help="Mã lãi phạt chậm thanh toán", required=True, readonly=True, copy=False,
@@ -20,7 +20,7 @@ class BsdLaiPhatTT(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True)
     bsd_tinh_phat = fields.Selection([('htt', 'Hạn thanh toán'), ('nah', "Ngày ân hạn")],
-                                     string="Phương thức tính phạt", default="htt",
+                                     string="PT tính phạt", default="htt",
                                      help="""
                                         Quy định tính lãi phạt chậm thanh toán từ ngày hết hạn thanh toán hay kể từ ngày ân hạn
                                      """, required=True)
@@ -30,6 +30,8 @@ class BsdLaiPhatTT(models.Model):
                                     sẽ không bị phạt thanh toán chậm    
                                 """)
     bsd_lai_phat = fields.Float(string="Lãi phạt", help="Tỷ lệ đóng lãi phạt theo năm")
+    bsd_so_ngay_nam = fields.Integer(string="Số ngày trong năm",
+                                     help="Số ngày dùng để tính phần trăm chiết khấu thanh toán trước hạn", default=365)
     bsd_tien_td = fields.Monetary(string="Tiền phạt tối đa", help="Tiền phạt chậm thanh toán tối đa")
     bsd_tl_td = fields.Float(string="Tỷ lệ phạt tối đa", help="Tỷ lệ tối đa phạt chậm thanh toán")
     state = fields.Selection([('active', 'Đang sử dụng'),

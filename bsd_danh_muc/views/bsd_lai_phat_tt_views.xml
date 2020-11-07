@@ -23,7 +23,7 @@
                             <label for="bsd_lai_phat"/>
                             <div class="o_row d-flex no-gutters">
                                 <field name="bsd_lai_phat" class="mr-1"/>
-                                <span>%</span>
+                                <span>%/ năm</span>
                             </div>
                             <field name="bsd_tien_td"/>
                             <label for="bsd_tl_td"/>
@@ -31,6 +31,7 @@
                                 <field name="bsd_tl_td" class="mr-1"/>
                                 <span>%</span>
                             </div>
+                            <field name="bsd_so_ngay_nam"/>
                             <field name="bsd_dien_giai"/>
                         </group>
                     </group>

@@ -32,7 +32,7 @@
         <field name="name">bsd.lai_phat.tree</field>
         <field name="model">bsd.lai_phat</field>
         <field name="arch" type="xml">
-            <tree create="false" delete="false">
+            <tree delete="false">
                 <field name="bsd_ngay_lp"/>
                 <field name="bsd_hd_ban_id"/>
                 <field name="bsd_dot_tt_id"/>
@@ -47,7 +47,7 @@
         </field>
     </record>
     <record model="ir.actions.act_window" id="bsd_lai_phat_action">
-        <field name="name">Lãi phạt </field>
+        <field name="name">Lãi phạt</field>
         <field name="res_model">bsd.lai_phat</field>
         <field name="view_mode">tree,form</field>
     </record>

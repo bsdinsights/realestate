@@ -13,29 +13,41 @@
                         <page string="Thông tin đợt">
                             <group>
                                 <group>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="bsd_thanh_toan" invisible="1"/>
                                     <field name="bsd_stt"/>
                                     <field name="bsd_ma_dtt"/>
                                     <field name="bsd_ten_dtt"/>
-                                    <field name="bsd_ngay_hh_tt"/>
+                                    <field name="bsd_ngay_hh_tt" readonly="0"/>
                                     <field name="bsd_tl_tt"/>
                                     <field name="bsd_tien_dot_tt"/>
                                     <field name="bsd_tien_dc"/>
-                                    <field name="bsd_ngay_tt"/>
-                                    <field name="bsd_thanh_toan" invisible="1"/>
                                 </group>
                                 <group>
+                                    <field name="bsd_ngay_tt"/>
                                     <field name="bsd_dot_ky_hd"/>
-                                    <field name="currency_id" invisible="1"/>
-                                    <field name="company_id" invisible="1"/>
-                                    <field name="bsd_ngay_ah"/>
-                                    <field name="bsd_tinh_phat"/>
-                                    <field name="bsd_lai_phat"/>
-                                    <field name="bsd_tien_td"/>
-                                    <field name="bsd_tl_td"/>
-                                    <field name="bsd_phat_thd"/>
-                                    <field name="bsd_phat_shd"/>
                                     <field name="bsd_tinh_pql"/>
                                     <field name="bsd_tinh_pbt"/>
+                                </group>
+                            </group>
+                            <group string="LÃI PHẠT">
+                                <group>
+                                    <field name="bsd_tinh_phat"/>
+                                    <field name="bsd_ngay_ah"/>
+                                    <label for="bsd_lai_phat"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_lai_phat" class="mr-1"/>
+                                        <span>%/ năm</span>
+                                    </div>
+                                </group>
+                                <group>
+                                    <field name="bsd_tien_td"/>
+                                    <label for="bsd_tl_td"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_tl_td" class="mr-1"/>
+                                        <span>%</span>
+                                    </div>
                                 </group>
                             </group>
                             <group string="THAM CHIẾU">

@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_round
 import datetime
 import logging
 _logger = logging.getLogger(__name__)
@@ -80,7 +81,7 @@ class BsdBaoGiaLTT(models.Model):
         if ck_ttth.bsd_chiet_khau_id.bsd_cach_tinh == 'tien':
             tien_ck = so_ngay_th * ck_ttth.bsd_chiet_khau_id.bsd_tien_ck
         else:
-            tien_ck = ((ck_ttth.bsd_chiet_khau_id.bsd_tl_ck/100) * so_ngay_th) * tien_tt
+            tien_ck = float_round(((ck_ttth.bsd_chiet_khau_id.bsd_tl_ck/100/ck_ttth.bsd_chiet_khau_id.bsd_so_ngay_nam) * so_ngay_th) * tien_tt, 0)
         # Tạo Giao dich chiết khấu
         self.env['bsd.ps_gd_ck'].create({
             'bsd_ma_ck': ck_ttth.bsd_chiet_khau_id.bsd_ma_ck,
@@ -142,3 +143,50 @@ class BsdBaoGiaLTT(models.Model):
         self.bsd_hd_ban_id.write({
             'bsd_dh_ck_ttn': True
         })
+
+    # Tạo lãi phạt chậm thanh toán
+    def tao_lp_tt(self,ngay_tt, tien_tt, thanh_toan):
+        ngay_tt = ngay_tt.date()
+        # Kiểm tra ngày làm mốc tính lãi phạt
+        han_tinh_phat = self.bsd_ngay_hh_tt
+        if self.bsd_tinh_phat == 'nah':
+            han_tinh_phat = self.bsd_ngay_ah
+        # Kiểm tra đã quá hạn thanh toán của đợt hay chưa
+        if han_tinh_phat >= ngay_tt:
+            return
+        else:
+            # Số ngày tính lãi phạt
+            so_ngay_nam = self.bsd_cs_tt_id.bsd_lai_phat_tt_id.bsd_so_ngay_nam
+            # Số ngày tính phạt
+            so_ngay_tp = (ngay_tt - han_tinh_phat).days
+            # Tính lãi phạt
+            tien_phat = float_round(tien_tt * (self.bsd_lai_phat/100 / so_ngay_nam) * so_ngay_tp,0)
+            # Kiểm tra lãi phạt đã vượt lãi phạt tối đa của đợt chưa
+            tong_tien_phat = self.bsd_tien_phat + tien_phat
+            if self.bsd_tien_td == 0 and self.bsd_tl_td != 0:
+                tien_phat_toi_da = self.bsd_tien_dot_tt * self.bsd_tl_td / 100
+                if tong_tien_phat > tien_phat_toi_da:
+                    tien_phat = tien_phat_toi_da - self.bsd_tien_phat
+            elif self.bsd_tien_td != 0 and self.bsd_tl_td == 0:
+                tien_phat_toi_da = self.bsd_tien_td
+                if tong_tien_phat > tien_phat_toi_da:
+                    tien_phat = tien_phat_toi_da - self.bsd_tien_phat
+            elif self.bsd_tien_td != 0 and self.bsd_tl_td != 0:
+                tien_phat_toi_da_1 = self.bsd_tien_dot_tt * self.bsd_tl_td / 100
+                tien_phat_toi_da_2 = self.bsd_tien_td
+                tien_phat_toi_da = tien_phat_toi_da_1 if tien_phat_toi_da_1 < tien_phat_toi_da_2 else tien_phat_toi_da_2
+                if tong_tien_phat > tien_phat_toi_da:
+                    tien_phat = tien_phat_toi_da - self.bsd_tien_phat
+            # Kiểm tra nếu có tính phạt thì tạo dữ liệu
+            if tien_phat != 0:
+                self.env['bsd.lai_phat'].create({
+                    'bsd_ngay_lp': ngay_tt,
+                    'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
+                    'bsd_dot_tt_id': self.id,
+                    'bsd_phieu_thu_id': thanh_toan.id,
+                    'bsd_tien_tt': tien_tt,
+                    'bsd_so_ngay': so_ngay_tp,
+                    'bsd_tien_phat': tien_phat
+                })
+
+
