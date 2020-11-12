@@ -55,6 +55,8 @@ class BsdPLPTTT(models.Model):
     bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="Phương thức TT", help="Phương thức thanh toán mới",
                                    required=True)
 
+    bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_pl_pttt_id', string="Lịch thanh toán", readonly=True)
+
     # Xác nhận phụ lục hợp đồng
     def action_xac_nhan(self):
         self.write({
@@ -84,3 +86,9 @@ class BsdPLPTTT(models.Model):
         vals['bsd_ma'] = sequence.next_by_id()
         res = super(BsdPLPTTT, self).create(vals)
         return res
+
+
+class BsdLichThanhToan(models.Model):
+    _inherit = 'bsd.lich_thanh_toan'
+
+    bsd_pl_pttt_id = fields.Many2one('bsd.pl_pttt', string="Phụ lục PTTT", readonly=True)

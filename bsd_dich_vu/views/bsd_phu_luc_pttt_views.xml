@@ -26,31 +26,51 @@
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
-                    <group>
-                        <group>
-                            <field name="bsd_ma"/>
-                            <field name="bsd_ngay"/>
-                            <field name="bsd_khach_hang_id"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_hd_ban_id"
-                                   options="{'no_create':true}"
-                                   domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id])]"/>
-                        </group>
-                        <group>
-                            <field name="bsd_du_an_id" readony="1" force_save="1"/>
-                            <field name="bsd_unit_id" readony="1" force_save="1"/>
-                            <field name="bsd_cs_tt_ht_id" readony="1" force_save="1"/>
-                            <field name="bsd_dien_giai"/>
-                        </group>
-                    </group>
-                    <group string="XÁC NHẬN">
-                        <group>
-                            <field name="bsd_nguoi_xn_id"/>
-                        </group>
-                        <group>
-                            <field name="bsd_ngay_ky_pl"/>
-                        </group>
-                    </group>
+                    <notebook>
+                        <page string="Thông tin chung">
+                            <group>
+                                <group>
+                                    <field name="bsd_ma"/>
+                                    <field name="bsd_ngay"/>
+                                    <field name="bsd_khach_hang_id"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_hd_ban_id"
+                                           options="{'no_create':true}"
+                                           domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id])]"/>
+                                    <field name="bsd_cs_tt_id" options="{'no_create':true}"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_du_an_id" readonly="1" force_save="1"/>
+                                    <field name="bsd_unit_id" readonly="1" force_save="1"/>
+                                    <field name="bsd_cs_tt_ht_id" readonly="1" force_save="1"/>
+                                    <field name="bsd_dien_giai"/>
+                                </group>
+                            </group>
+                            <group string="XÁC NHẬN">
+                                <group>
+                                    <field name="bsd_nguoi_xn_id"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_ky_pl"/>
+                                </group>
+                            </group>                            
+                        </page>
+                        <page string="Lịch thanh toán">
+                            <field name="bsd_ltt_ids" readonly="1">
+                                <tree>
+                                    <field name="bsd_stt"/>
+                                    <field name="bsd_ten_dtt"/>
+                                    <field name="bsd_ngay_hh_tt"/>
+                                    <field name="bsd_tien_dot_tt" sum="Tổng tiền thanh toán"/>
+                                    <field name="bsd_dot_ky_hd"/>
+                                    <field name="bsd_tinh_pql"/>
+                                    <field name="bsd_tinh_pbt"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="company_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>

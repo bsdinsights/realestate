@@ -256,9 +256,10 @@
                 <div class="bsd_tooltip_action" t-attf-id="{{data[11]}}">
                     <span class="bsd_quan_tam ml-3" style="font-size:13px">Quan tâm</span>
                     <span class="bsd_giu_cho ml-3" style="font-size:13px">Giữ chỗ</span>
-                    <t t-if="data[12] != False">
-                        <span class="bsd_bao_gia ml-3" style="font-size:13px">Bảng tính giá</span>
-                    </t>
+<!--                    Tạm thời ẩn nút tạo bảng tính giá từ giỏ hàng-->
+<!--                    <t t-if="data[12] != False">-->
+<!--                        <span class="bsd_bao_gia ml-3" style="font-size:13px">Bảng tính giá</span>-->
+<!--                    </t>-->
                 </div>
             </t>
 

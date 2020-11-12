@@ -304,8 +304,8 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
     def _onchange_bsd_dot_cuoi(self):
         self.bsd_cach_tinh = None
 
-    @api.onchange('bsd_tl_tt', 'bsd_so_dot')
-    def _onchange_bsd_tl_tt(self):
+    @api.constrains('bsd_tl_tt', 'bsd_so_dot')
+    def _constrain_bsd_tl_tt(self):
         tong_tl_tt = 0
         for dot in self.bsd_cs_tt_id.bsd_ct_ids:
             if dot.bsd_cach_tinh != 'td':
@@ -315,6 +315,7 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
                     tong_tl_tt += dot.bsd_tl_tt
                 else:
                     tong_tl_tt += dot.bsd_tl_tt * dot.bsd_so_dot
+
         if tong_tl_tt > 100:
             return {
                 'warning': {'title': _("Cảnh báo"),

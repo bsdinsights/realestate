@@ -52,9 +52,9 @@ class BsdDatCoc(models.Model):
             })
         # Đánh dấu hoàn thành cho giữ chỗ chuyển sang đặt cọc
         self.bsd_giu_cho_id.write({'state': 'hoan_thanh'})
-        # Lấy tất cả các giữ chỗ đang chờ của sản phẩm
+        # Lấy tất cả các giữ chỗ còn lại của sản phẩm
         giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
-                                                  ('state', '=', 'dang_cho')])
+                                                  ('state', '=', 'dang_cho', 'giu_cho')])
         # Hủy tất cả các giữ chỗ sau mở bán của sp
         giu_cho.filtered(lambda g: not g.bsd_truoc_mb).write({'state': 'huy'})
         # Hủy giữ chỗ trước mở bán có tiền giữ chỗ và tạo phiếu hoàn tiền cho

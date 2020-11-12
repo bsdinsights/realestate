@@ -4,12 +4,6 @@
          <field name="name">Giỏ hàng</field>
          <field name="tag">sale_chart_view</field>
     </record>
-<!--    <menuitem id="bsd_sale_chart_menu"-->
-<!--              name="Giỏ hàng"-->
-<!--              parent="bsd_kinh_doanh.bsd_main_kinh_doanh_root"-->
-<!--              sequence="100"-->
-<!--              action="bsd_sale_chart.bsd_sale_chart_action"-->
-<!--    />-->
     <menuitem id="bsd_sale_chart_menu_2"
               name="Giỏ hàng"
               sequence="7"
