@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_pl_pttt_form">
+        <field name="name">bsd.pl_pttt.form</field>
+        <field name="model">bsd.pl_pttt</field>
+        <field name="arch" type="xml">
+            <form duplicate="false">
+                <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            states="nhap"
+                            confirm="Bạn có muốn xác nhận phụ lục hợp đồng không?"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Ký phụ lục"
+                            name="action_ky_pl"
+                            states="xac_nhan"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            confirm="Bạn có chắc hủy phụ lục hợp đồng"
+                            states="xac_nhan"
+                            type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma"/>
+                            <field name="bsd_ngay"/>
+                            <field name="bsd_khach_hang_id"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_hd_ban_id"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id])]"/>
+                        </group>
+                        <group>
+                            <field name="bsd_du_an_id" readony="1" force_save="1"/>
+                            <field name="bsd_unit_id" readony="1" force_save="1"/>
+                            <field name="bsd_cs_tt_ht_id" readony="1" force_save="1"/>
+                            <field name="bsd_dien_giai"/>
+                        </group>
+                    </group>
+                    <group string="XÁC NHẬN">
+                        <group>
+                            <field name="bsd_nguoi_xn_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ngay_ky_pl"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_pl_pttt_tree">
+        <field name="name">bsd.pl_pttt.tree</field>
+        <field name="model">bsd.pl_pttt</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma"/>
+                <field name="bsd_ngay"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_hd_ban_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_pl_pttt_filter">
+        <field name="name">bsd.pl_pttt.list.filter</field>
+        <field name="model">bsd.pl_pttt</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_ma"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_hd_ban_id"/>
+                <field name="bsd_du_an_id"/>
+                <filter string="Phụ lục HĐ của tôi" domain="[('create_uid', '=', uid)]" name="my_pl_pttt_filter"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
+                    <filter string="Hợp đồng mua bán" name="bsd_hd_ban_id" domain="[]" context="{'group_by': 'bsd_hd_ban_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_pl_pttt_action">
+        <field name="name">Thay đổi phương thức thanh toán</field>
+        <field name="res_model">bsd.pl_pttt</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo phụ lục thay đổi phương thức thanh toán</p>
+        </field>
+    </record>
+</odoo>

@@ -33,7 +33,8 @@ class BsdHopDongMuaBan(models.Model):
     bsd_thue_id = fields.Many2one('bsd.thue_suat', string="Thuế", help="Thuế")
     bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", related="bsd_thue_id.bsd_thue_suat",
                                  store=True, digits=(12, 2))
-    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="Phương thức TT", help="Phương thức thanh toán", required=True)
+    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="Phương thức TT", tracking=2,
+                                   help="Phương thức thanh toán", required=True)
     bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán")
     bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý",
                                    help="Số tháng đóng phí quản lý trước đợt bàn giao tạm thời hoặc bàn giao chính thức")
@@ -240,7 +241,7 @@ class BsdHopDongMuaBan(models.Model):
         elif self.state in ['da_ky_ttdc', 'du_dk']:
             loai_dt = 'tl_ttdc_hd'
             tl_phat = self.bsd_cs_tt_id.bsd_phat_ttdc
-        elif self.state in ['da_ky','dang_tt']:
+        elif self.state in ['da_ky', 'dang_tt']:
             loai_dt = 'tl_ttdc_hd'
             tl_phat = self.bsd_cs_tt_id.bsd_phat_hd
         action = self.env.ref('bsd_dich_vu.bsd_ds_td_action_popup').read()[0]
