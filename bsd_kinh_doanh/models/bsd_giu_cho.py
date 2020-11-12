@@ -169,15 +169,16 @@ class BsdGiuCho(models.Model):
     @api.constrains('bsd_nvbh_id', 'bsd_unit_id')
     def _constrain_unit_nv(self):
         _logger.debug("Ràng buộc số giữ chỗ theo Sản phẩm/ NVBH.")
-        gc_in_unit = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-                                                     ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
-                                                     ('bsd_thanh_toan', '!=', 'chua_tt'),
-                                                     ('state', 'in', ['dat_cho', 'giu_cho', 'dang_cho'])])
-        gc_in_unit += self
-        unit = gc_in_unit.mapped('bsd_unit_id')
-        _logger.debug(unit)
-        if len(unit) > self.bsd_du_an_id.bsd_gc_unit_nv:
-            raise UserError("Tổng số sản phẩm bạn thực hiện giữ chỗ đã vượt quá quy định dự án!")
+        if self.bsd_du_an_id.bsd_gc_unit_nv:
+            gc_in_unit = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                         ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
+                                                         ('bsd_thanh_toan', '!=', 'chua_tt'),
+                                                         ('state', 'in', ['dat_cho', 'giu_cho', 'dang_cho'])])
+            gc_in_unit += self
+            unit = gc_in_unit.mapped('bsd_unit_id')
+            _logger.debug(unit)
+            if len(unit) > self.bsd_du_an_id.bsd_gc_unit_nv:
+                raise UserError("Tổng số sản phẩm bạn thực hiện giữ chỗ đã vượt quá quy định dự án!")
 
     # Kiểm tra khách hàng đã giữ chỗ căn hộ này chưa
     @api.constrains('bsd_unit_id', 'bsd_khach_hang_id')
@@ -202,42 +203,45 @@ class BsdGiuCho(models.Model):
     # KD.07.03 Ràng buộc số giữ chỗ theo Sản phẩm
     @api.constrains('bsd_unit_id')
     def _constrain_unit(self):
-        gc_in_unit = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-                                                     ('bsd_unit_id', '=', self.bsd_unit_id.id),
-                                                     ('state', 'in', ['giu_cho', 'dang_cho'])])
-        gc_in_unit += self
-        if len(gc_in_unit) > self.bsd_du_an_id.bsd_gc_unit:
-            raise UserError("Tổng số giữ chỗ trên Sản phẩm đã vượt quá quy định!")
+        if self.bsd_du_an_id.bsd_gc_unit:
+            gc_in_unit = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                         ('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                         ('state', 'in', ['giu_cho', 'dang_cho'])])
+            gc_in_unit += self
+            if len(gc_in_unit) > self.bsd_du_an_id.bsd_gc_unit:
+                raise UserError("Tổng số giữ chỗ trên Sản phẩm đã vượt quá quy định!")
 
     # KD.07.04 Ràng buộc số giữ chỗ theo NVBH/ngày
     @api.constrains('bsd_nvbh_id', 'bsd_ngay_gc')
     def _constrain_nv_bh(self):
-        min_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
-        max_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.max.time())
-        gc_in_day = self.env['bsd.giu_cho'].search([('bsd_ngay_gc', '<', max_time),
-                                                   ('bsd_ngay_gc', '>', min_time),
-                                                   ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-                                                   ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
-                                                   ('bsd_thanh_toan', '!=', 'chua_tt'),
-                                                   ('state', 'in', ['dat_cho', 'giu_cho', 'dang_cho'])])
-        gc_in_day += self
-        if len(gc_in_day) > self.bsd_du_an_id.bsd_gc_nv_ngay:
-            raise UserError("Tổng số Giữ chỗ trên một ngày của bạn đã vượt quá quy định.")
+        if self.bsd_du_an_id.bsd_gc_nv_ngay:
+            min_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
+            max_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.max.time())
+            gc_in_day = self.env['bsd.giu_cho'].search([('bsd_ngay_gc', '<', max_time),
+                                                       ('bsd_ngay_gc', '>', min_time),
+                                                       ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                       ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
+                                                       ('bsd_thanh_toan', '!=', 'chua_tt'),
+                                                       ('state', 'in', ['dat_cho', 'giu_cho', 'dang_cho'])])
+            gc_in_day += self
+            if len(gc_in_day) > self.bsd_du_an_id.bsd_gc_nv_ngay:
+                raise UserError("Tổng số Giữ chỗ trên một ngày của bạn đã vượt quá quy định.")
 
     # KD.07.05 Ràng buộc số giữ chỗ theo Sản phẩm/NVBH/ngày
     @api.constrains('bsd_nvbh_id', 'bsd_unit_id', 'bsd_ngay_gc')
     def _constrain_unit_nv_ngay(self):
-        min_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
-        max_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.max.time())
-        gc_in_day = self.env['bsd.giu_cho'].search([('bsd_ngay_gc', '<', max_time),
-                                                   ('bsd_ngay_gc', '>', min_time),
-                                                   ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-                                                   ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
-                                                   ('state', 'in', ['giu_cho', 'dang_cho'])])
-        gc_in_day += self
-        unit = gc_in_day.mapped('bsd_unit_id')
-        if len(unit) > self.bsd_du_an_id.bsd_gc_unit_nv_ngay:
-            raise UserError("Tổng số Giữ chỗ trong ngày theo Sản phẩm của bạn đã vượt quá quy định.")
+        if self.bsd_du_an_id.bsd_gc_unit_nv_ngay:
+            min_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
+            max_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.max.time())
+            gc_in_day = self.env['bsd.giu_cho'].search([('bsd_ngay_gc', '<', max_time),
+                                                       ('bsd_ngay_gc', '>', min_time),
+                                                       ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                       ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
+                                                       ('state', 'in', ['giu_cho', 'dang_cho'])])
+            gc_in_day += self
+            unit = gc_in_day.mapped('bsd_unit_id')
+            if len(unit) > self.bsd_du_an_id.bsd_gc_unit_nv_ngay:
+                raise UserError("Tổng số Giữ chỗ trong ngày theo Sản phẩm của bạn đã vượt quá quy định.")
 
     # Kiểm tra trạng thái unit trước khi tạo giữ chỗ
     @api.constrains('bsd_unit_id')

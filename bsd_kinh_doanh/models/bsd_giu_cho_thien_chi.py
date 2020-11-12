@@ -222,17 +222,18 @@ class BsdGiuChoThienChi(models.Model):
     # KD.05.06 Quản lý số lượng giữ chỗ theo nhân viên bán hàng
     @api.constrains('bsd_nvbh_id')
     def _constrain_nv_bh(self):
-        min_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
-        max_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.max.time())
-        gc_in_day = self.env['bsd.gc_tc'].search([('create_date', '<', max_time),
-                                                  ('create_date', '>', min_time),
-                                                  ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-                                                  ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
-                                                  ('state', '=', 'xac_nhan'),
-                                                  ('bsd_thanh_toan', 'in', ['chua_tt', 'dang_tt'])])
-        if len(gc_in_day) >= self.bsd_du_an_id.bsd_gc_nv_ngay:
-            raise UserError("Số lượng giữ chỗ tối đa trên một ngày của bạn đã vượt mức.\n"
-                            "Vui lòng kiểm tra lại thông tin.")
+        if self.bsd_du_an_id.bsd_gc_nv_ngay:
+            min_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
+            max_time = datetime.datetime.combine(datetime.date.today(), datetime.datetime.max.time())
+            gc_in_day = self.env['bsd.gc_tc'].search([('create_date', '<', max_time),
+                                                      ('create_date', '>', min_time),
+                                                      ('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                      ('bsd_nvbh_id', '=', self.bsd_nvbh_id.id),
+                                                      ('state', '=', 'xac_nhan'),
+                                                      ('bsd_thanh_toan', 'in', ['chua_tt', 'dang_tt'])])
+            if len(gc_in_day) >= self.bsd_du_an_id.bsd_gc_nv_ngay:
+                raise UserError("Số lượng giữ chỗ tối đa trên một ngày của bạn đã vượt mức.\n"
+                                "Vui lòng kiểm tra lại thông tin.")
 
     # KD.05.08 Theo dõi công nợ giữ chỗ thiện chí
     def _tao_rec_cong_no(self):
