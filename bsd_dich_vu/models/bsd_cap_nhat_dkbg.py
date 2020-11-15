@@ -204,7 +204,7 @@ class BsdCapNhatDKBGUnit(models.Model):
     bsd_ngay_htt = fields.Date(string="Hạn thanh toán", help="Hạn thanh toán",
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
-    bsd_gia_ban = fields.Monetary(related="bsd_unit_id.bsd_gia_ban")
+    bsd_gia_ban = fields.Monetary(related="bsd_unit_id.list_price")
     bsd_dk_bg = fields.Float(related="bsd_unit_id.bsd_dk_bg")
     bsd_dt_cl = fields.Float(related="bsd_unit_id.bsd_dt_cl")
     bsd_dt_xd = fields.Float(related="bsd_unit_id.bsd_dt_xd")

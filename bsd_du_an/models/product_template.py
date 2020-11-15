@@ -61,8 +61,7 @@ class ProductTemplate(models.Model):
                                 states={'chuan_bi': [('readonly', False)]})
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch",
                                     help="Sàn giao dịch đang bán(sản phẩm) theo đợt mở bán",
-                                    readonly=True,
-                                    states={'chuan_bi': [('readonly', False)]})
+                                    readonly=True)
     bsd_loai_sd_ids = fields.Many2many('bsd.lh_sd', string="Loại hình sử dụng", help="Loại hình sử dụng",
                                        readonly=True,
                                        states={'chuan_bi': [('readonly', False)]})
@@ -114,9 +113,12 @@ class ProductTemplate(models.Model):
     bsd_don_gia = fields.Monetary(string="Đơn giá bán/m2", help="Đơn giá bán trước thuế theo m2",
                                   readonly=True,
                                   states={'chuan_bi': [('readonly', False)]})
-    bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán trước thuế của sản phẩm",
+    list_price = fields.Monetary(string="Giá bán", help="Giá bán trước thuế của sản phẩm",
                                   readonly=True,
                                   states={'chuan_bi': [('readonly', False)]})
+    lst_price = fields.Monetary(
+        'Public Price', related='list_price', readonly=False,
+        digits='Product Price')
     bsd_qsdd_m2 = fields.Monetary(string="QSDĐ/ m2", help="Giá trị quyền sử dụng đất theo m2",
                                   readonly=True,
                                   states={'chuan_bi': [('readonly', False)]})
@@ -194,6 +196,11 @@ class ProductTemplate(models.Model):
                              default="chuan_bi", tracking=1, help="Trạng thái", required=True, readonly=True)
     bsd_sequence_gc_id = fields.Many2one('ir.sequence', string="STT giữ chỗ", readonly=1)
 
+    @api.constrains('bsd_du_an_id')
+    def _constrains_da(self):
+        if self.bsd_du_an_id.state != 'chuan_bi':
+            raise UserError(_("Dự án đã phát hành.\nVui lòng kiểm tra lại thông tin."))
+
     @api.constrains('bsd_tl_pbt')
     def _check_bsd_phi_bao_tri(self):
         for record in self:
@@ -266,10 +273,10 @@ class ProductTemplate(models.Model):
             if record.bsd_don_gia <= 0:
                 raise ValidationError("Đơn giá bán trước thuế phải lớn hơn 0.")
 
-    @api.constrains('bsd_gia_ban')
-    def _check_bsd_gia_ban(self):
+    @api.constrains('list_price')
+    def _check_list_price(self):
         for record in self:
-            if record.bsd_gia_ban <= 0:
+            if record.list_price <= 0:
                 raise ValidationError("Giá bán phải lớn hơn 0.")
 
     @api.constrains('bsd_qsdd_m2')
@@ -308,20 +315,20 @@ class ProductTemplate(models.Model):
         for each in self:
             each.bsd_tien_qsdd = each.bsd_dt_sd * each.bsd_qsdd_m2
 
-    @api.depends('bsd_tl_pbt', 'bsd_gia_ban')
+    @api.depends('bsd_tl_pbt', 'list_price')
     def _compute_bsd_phi_bao_tri(self):
         for each in self:
-            each.bsd_tien_pbt = each.bsd_tl_pbt * each.bsd_gia_ban / 100
+            each.bsd_tien_pbt = each.bsd_tl_pbt * each.list_price / 100
 
-    @api.depends('bsd_gia_ban', 'bsd_tien_qsdd', 'bsd_thue_suat')
+    @api.depends('list_price', 'bsd_tien_qsdd', 'bsd_thue_suat')
     def _compute_tien_thue(self):
         for each in self:
-            each.bsd_tien_thue = (each.bsd_gia_ban - each.bsd_tien_qsdd) * each.bsd_thue_suat / 100
+            each.bsd_tien_thue = (each.list_price - each.bsd_tien_qsdd) * each.bsd_thue_suat / 100
 
-    @api.depends('bsd_gia_ban', 'bsd_tien_thue', 'bsd_tien_pbt')
+    @api.depends('list_price', 'bsd_tien_thue', 'bsd_tien_pbt')
     def _compute_bsd_tong_gia_ban(self):
         for each in self:
-            each.bsd_tong_gb = each.bsd_gia_ban + each.bsd_tien_thue + each.bsd_tien_pbt
+            each.bsd_tong_gb = each.list_price + each.bsd_tien_thue + each.bsd_tien_pbt
 
     def action_uu_tien(self):
         self.write({

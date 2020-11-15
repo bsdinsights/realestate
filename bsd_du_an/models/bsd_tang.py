@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -39,3 +40,8 @@ class BsdFloor(models.Model):
         for toa in self:
             res.append((toa.id, toa.bsd_ten_tang))
         return res
+
+    @api.constrains('bsd_du_an_id')
+    def _constrains_da(self):
+        if self.bsd_du_an_id.state != 'chuan_bi':
+            raise UserError(_("Dự án đã phát hành.\nVui lòng kiểm tra lại thông tin."))

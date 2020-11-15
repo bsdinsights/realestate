@@ -62,18 +62,24 @@
                             </group>
                         </page>
                         <page string="Bán hàng">
-                            <group string="QUẢN LÝ &amp; BẢO TRÌ">
+                            <group string="QUY ĐỊNH GIỮ CHỖ">
                                 <group>
-                                    <field name="bsd_thang_pql"/>
-                                    <field name="bsd_pql_m2"/>
+                                    <field name="bsd_gc_unit_nv"/>
+                                    <field name="bsd_gc_unit"/>
+                                    <field name="bsd_gc_nv_ngay"/>
                                 </group>
                                 <group>
-                                    <label for="bsd_tl_pbt"/>
+                                    <field name="bsd_gc_unit_nv_ngay"/>
+                                    <label for="bsd_gc_tmb"/>
                                     <div class="o_row no-gutters d-flex">
-                                        <field name="bsd_tl_pbt" class="mr-1"/>
-                                        <span>%</span>
+                                        <field name="bsd_gc_tmb" class="mr-1"/>
+                                        <span>ngày</span>
                                     </div>
-                                    <field name="bsd_qsdd_m2"/>
+                                    <label for="bsd_gc_smb"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_gc_smb" class="mr-1" widget="float_time"/>
+                                        <span>giờ</span>
+                                    </div>
                                 </group>
                             </group>
                             <group string="GIỮ CHỖ &amp; ĐẶT CỌC">
@@ -94,6 +100,20 @@
                                                attrs="{'readonly':['|',('state', '!=', 'chuan_bi'),('bsd_hd_coc','=',False)]}"/>
                                         <span>%</span>
                                     </div>
+                                </group>
+                            </group>
+                            <group string="QUẢN LÝ &amp; BẢO TRÌ">
+                                <group>
+                                    <field name="bsd_thang_pql"/>
+                                    <field name="bsd_pql_m2"/>
+                                </group>
+                                <group>
+                                    <label for="bsd_tl_pbt"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_tl_pbt" class="mr-1"/>
+                                        <span>%</span>
+                                    </div>
+                                    <field name="bsd_qsdd_m2"/>
                                 </group>
                             </group>
                             <group string="HIỆU LỰC">
@@ -143,26 +163,6 @@
                                 <group>
                                     <field name="bsd_hh_ql"/>
                                     <field name="bsd_hh_dv"/>
-                                </group>
-                            </group>
-                            <group string="QUY ĐỊNH GIỮ CHỖ">
-                                <group>
-                                    <field name="bsd_gc_unit_nv"/>
-                                    <field name="bsd_gc_unit"/>
-                                    <field name="bsd_gc_nv_ngay"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_gc_unit_nv_ngay"/>
-                                    <label for="bsd_gc_tmb"/>
-                                    <div class="o_row no-gutters d-flex">
-                                        <field name="bsd_gc_tmb" class="mr-1"/>
-                                        <span>ngày</span>
-                                    </div>
-                                    <label for="bsd_gc_smb"/>
-                                    <div class="o_row no-gutters d-flex">
-                                        <field name="bsd_gc_smb" class="mr-1" widget="float_time"/>
-                                        <span>giờ</span>
-                                    </div>
                                 </group>
                             </group>
                         </page>

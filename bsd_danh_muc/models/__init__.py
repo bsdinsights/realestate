@@ -23,3 +23,4 @@ from . import bsd_ma_cn_chung
 from . import res_country
 from . import bsd_du_an
 from . import bsd_thue_suat
+from . import product_template

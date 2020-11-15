@@ -13,7 +13,7 @@
                             class="oe_highlight"/>
                     <button string="In bảng giá"
                             name="action_in_bg"
-                            states="xac_nhan,da_ky"
+                            states="xac_nhan,da_ky,hoan_thanh"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Ký bảng giá"
@@ -690,9 +690,10 @@
         <field name="arch" type="xml">
             <tree default_order="bsd_unit_id asc"
                   decoration-warning="state=='xac_nhan'"
-                  decoration-success="state=='da_ky'"
+                  decoration-primary="state=='da_ky'"
                   decoration-bf="state=='da_ky'"
                   decoration-muted="state=='huy'"
+                  decoration-success="state=='hoan_thanh'"
                   create="false" duplicate="false" delete="false">
                 <field name="bsd_ma_bao_gia"/>
                 <field name="bsd_khach_hang_id"/>

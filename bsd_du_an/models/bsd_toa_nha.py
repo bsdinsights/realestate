@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 
 class BsdBlock(models.Model):
@@ -38,3 +39,8 @@ class BsdBlock(models.Model):
         for toa in self:
             res.append((toa.id, toa.bsd_ten_tn))
         return res
+
+    @api.constrains('bsd_du_an_id')
+    def _constrains_da(self):
+        if self.bsd_du_an_id.state != 'chuan_bi':
+            raise UserError(_("Dự án đã phát hành.\nVui lòng kiểm tra lại thông tin."))

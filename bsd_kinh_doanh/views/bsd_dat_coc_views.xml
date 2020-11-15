@@ -14,7 +14,7 @@
                             class="oe_highlight"/>
                     <button string="In đặt cọc"
                             name="action_in_dc"
-                            states="da_tc"
+                            states="da_tc,dat_coc,hoan_thanh"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Upload đặt cọc"
@@ -658,7 +658,16 @@
         <field name="name">bsd.dat_coc.tree</field>
         <field name="model">bsd.dat_coc</field>
         <field name="arch" type="xml">
-            <tree create="false" delete="false" duplicate="false">
+            <tree default_order="bsd_ngay_dat_coc asc"
+                  decoration-warning="state=='xac_nhan'"
+                  decoration-info="state=='da_tc'"
+                  decoration-primary="state=='dat_coc'"
+                  decoration-bf="state=='dat_coc'"
+                  decoration-danger="state=='het_han'"
+                  decoration-muted="state=='huy' or state=='da_tl'"
+                  decoration-it="state=='da_tl'"
+                  decoration-success="state=='hoan_thanh'"
+                  create="false" duplicate="false" delete="false">
                 <field name="bsd_ma_dat_coc"/>
                 <field name="bsd_du_an_id"/>
                 <field name="bsd_unit_id"/>

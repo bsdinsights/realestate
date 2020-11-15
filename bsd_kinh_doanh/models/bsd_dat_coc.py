@@ -293,6 +293,10 @@ class BsdDatCoc(models.Model):
         # self.write({
         #     'state': 'xac_nhan',
         # })
+        # Cập nhật trạng thái hoàn thành cho báo giá đã ký khi tạo đặt cọc
+        self.bsd_bao_gia_id.write({
+            'state': 'hoan_thanh',
+        })
         self._tao_rec_cong_no()
 
     # KD.10.02 In đặt cọc

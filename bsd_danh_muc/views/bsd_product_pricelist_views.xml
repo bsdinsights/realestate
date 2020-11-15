@@ -33,6 +33,9 @@
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
             </xpath>
+            <xpath expr="//form" position="attributes">
+                <attribute name="delete">false</attribute>
+            </xpath>
             <xpath expr="//div[@class='oe_title']" position="attributes">
                 <attribute name="attrs">{'invisible':1}</attribute>
             </xpath>
@@ -110,6 +113,9 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="before">
                 <field name="bsd_ma_bg"/>
+            </xpath>
+            <xpath expr="//tree" position="attributes">
+                <attribute name="delete">false</attribute>
             </xpath>
             <xpath expr="//field[@name='name']" position="after">
                 <field name="bsd_du_an_id"/>

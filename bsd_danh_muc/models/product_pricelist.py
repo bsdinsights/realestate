@@ -63,6 +63,10 @@ class ProductPriceList(models.Model):
                 'bsd_ngay_duyet': fields.Date.today(),
                 'bsd_nguoi_duyet_id': self.env.uid,
             })
+        for item in self.item_ids:
+            item.product_tmpl_id.write({
+                'list_price': item.fixed_price
+            })
 
     # Không duyệt bảng giá
     def action_khong_duyet(self):

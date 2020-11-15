@@ -116,7 +116,9 @@ class BsdBaoGia(models.Model):
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
 
-    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'), ('da_ky', 'Đã ký'),
+    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
+                              ('da_ky', 'Đã ký'),
+                              ('hoan_thanh', 'Hoàn thành'),
                               ('huy', 'Hủy')], string="Trạng thái", default="nhap", help="Trạng thái", required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)

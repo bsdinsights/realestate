@@ -21,8 +21,12 @@ class BsdWizardReportBaoGia(models.TransientModel):
                                   default='bsd_mau_in_bao_gia_chuan')
 
     def action_in(self):
-        """Call when button 'Get Report' clicked.
-        """
+        tai_khoan = self.bsd_bao_gia_id.bsd_du_an_id.bsd_tk_ng_ids
+        tai_khoan = tai_khoan.filtered(lambda t: t.bsd_tk_chinh)
+        if not tai_khoan:
+            raise UserError("Dự án chưa cấu hình tài khoản chính.\n Vui lòng chọn tài khoản chính cho dự án.")
+        if len(tai_khoan) > 1:
+            raise UserError("Dự án cấu hình nhiều hơn 1 tài khoản chính.\n Vui lòng kiểm tra lại thông tin.")
         data = {
             'ids': self.bsd_bao_gia_id.ids,
             'model': self.bsd_bao_gia_id._name,
@@ -44,10 +48,6 @@ class ReportBsdBaoGia(models.AbstractModel):
         bao_gia = self.env['bsd.bao_gia'].browse(data['ids'])
         tai_khoan = bao_gia.bsd_du_an_id.bsd_tk_ng_ids
         tai_khoan = tai_khoan.filtered(lambda t: t.bsd_tk_chinh)
-        if not tai_khoan:
-            raise UserError("Dự án chưa cấu hình tài khoản chính.\n Vui lòng chọn tài khoản chính cho dự án.")
-        if len(tai_khoan) > 1:
-            raise UserError("Dự án cấu hình nhiều hơn 1 tài khoản chính.\n Vui lòng kiểm tra lại thông tin.")
         res = {
             'doc_ids': data['ids'],
             'doc_model': data['model'],

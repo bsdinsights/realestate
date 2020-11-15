@@ -299,7 +299,7 @@ class BsdGiuCho(models.Model):
                 })
         # Khi đã có đợt mở bán xem sản phẩm đã có đặt cọc chưa
         else:
-            if self.bsd_unit_id.state not in ['chuan_bi', 'san_sang', 'dat_coc', 'giu_cho']:
+            if self.bsd_unit_id.state not in ['chuan_bi', 'san_sang', 'dat_cho', 'giu_cho']:
                 raise UserError(_("Sản phẩm đã có giao dịch.\nVui lòng kiểm tra lại thông tin."))
             giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
                                                            ('state', '=', 'giu_cho')])

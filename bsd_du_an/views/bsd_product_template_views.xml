@@ -108,7 +108,7 @@
                                 <span>%</span>
                             </div>
                             <field name="bsd_don_gia"/>
-                            <field name="bsd_gia_ban"/>
+                            <field name="list_price"/>
                             <field name="bsd_qsdd_m2"/>
                         </group>
                         <group>
@@ -338,7 +338,7 @@
                                 <span>%</span>
                             </div>
                             <field name="bsd_don_gia"/>
-                            <field name="bsd_gia_ban"/>
+                            <field name="list_price"/>
                             <field name="bsd_qsdd_m2"/>
                         </group>
                         <group>
