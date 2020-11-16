@@ -24,9 +24,12 @@ class ProductPriceList(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_ly_do = fields.Char(string="Lý do", help="Lý do không duyệt phương thức thanh toán", tracking=2)
-    bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
-    bsd_ngay_duyet = fields.Date(string="Ngày duyệt", readonly=True)
+    name = fields.Char(string="Tên", help="Tên bảng giá bán", required=True,
+                       readonly=True, states={'nhap': [('readonly', False)]})
+    bsd_ly_do = fields.Char(string="Lý do", readonly=True,
+                            help="Lý do không duyệt bảng giá bán", tracking=2, copy=False)
+    bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True, copy=False)
+    bsd_ngay_duyet = fields.Date(string="Ngày duyệt", readonly=True, copy=False)
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('duyet', 'Duyệt'), ('het_han', 'Hết hạn'), ('huy', 'Hủy')],
                              string="Trạng thái", required=True, default='nhap', tracking=1)
@@ -95,6 +98,9 @@ class ProductPriceList(models.Model):
 class ProductPriceListItem(models.Model):
     _inherit = 'product.pricelist.item'
 
+    bsd_ngay_duyet = fields.Date(related='pricelist_id.bsd_ngay_duyet', store=True)
+    date_start = fields.Date(string='Ngày bắt đầu', related='pricelist_id.bsd_ngay_bd', store=True)
+    date_end = fields.Date(string='Ngày kết thúc', related='pricelist_id.bsd_ngay_kt', store=True)
     applied_on = fields.Selection([
         ('3_global', 'All Products'),
         ('2_product_category', ' Product Category'),

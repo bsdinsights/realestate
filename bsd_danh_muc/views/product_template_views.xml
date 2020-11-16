@@ -18,24 +18,28 @@
         </field>
     </record>
     <record model="ir.ui.view" id="bsd_chi_tiet_gia_tree">
-        <field name="name">product.pricelist.item.tree</field>
+        <field name="name">bsd.product.pricelist.item.tree</field>
         <field name="model">product.pricelist.item</field>
         <field name="arch" type="xml">
             <tree create="false" delete="false" duplicate="false">
                 <field name="product_tmpl_id"/>
+                <field name="fixed_price" string="Giá bán"/>
+                <field name="pricelist_id"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="bsd_ngay_duyet"/>
+                <field name="currency_id" invisible="1"/>
             </tree>
-            <footer>
-                <button string="Đóng" special="cancel"/>
-            </footer>
         </field>
     </record>
 
     <record model="ir.actions.act_window" id="bsd_chi_tiet_gia_action">
         <field name="name">Lịch sử giá</field>
         <field name="res_model">product.pricelist.item</field>
-        <field name="view_mode">tree</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">new</field>
         <field name="view_ids"
                eval="[(5, 0, 0),
-                      (0, 0, {'view_mode': 'tree', 'view_id': ref('bsd_chi_tiet_gia_tree')})]"/>
+                      (0, 0, {'view_mode': 'tree', 'view_id': ref('bsd_danh_muc.bsd_chi_tiet_gia_tree')})]"/>
     </record>
 </odoo>

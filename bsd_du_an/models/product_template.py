@@ -114,8 +114,8 @@ class ProductTemplate(models.Model):
                                   readonly=True,
                                   states={'chuan_bi': [('readonly', False)]})
     list_price = fields.Monetary(string="Giá bán", help="Giá bán trước thuế của sản phẩm",
-                                  readonly=True,
-                                  states={'chuan_bi': [('readonly', False)]})
+                                 readonly=True, tracking=2,
+                                 states={'chuan_bi': [('readonly', False)]})
     lst_price = fields.Monetary(
         'Public Price', related='list_price', readonly=False,
         digits='Product Price')
