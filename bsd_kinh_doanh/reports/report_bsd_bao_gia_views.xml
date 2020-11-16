@@ -126,19 +126,19 @@
                                    style="table-layout:fixed;border: 2px !important; border-style: solid !important; border-color: #000000 !important;" >
                                     <thead>
                                         <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px;">
-                                              <th width="19.5%" style="border: 1px solid black !important;padding-top:0px !important">
+                                              <th width="15%" style="border: 1px solid black !important;padding-top:0px !important">
                                                     Căn hộ
                                               </th>
-                                              <th width="19.5%" style="border: 1px solid black !important;">
+                                              <th width="15%" style="border: 1px solid black !important;">
                                                     Loại căn hộ
                                               </th>
                                               <th width="20%" style="border: 1px solid black !important;">
                                                     Diện tích tim tường
                                               </th>
-                                              <th width="21%" style="border: 1px solid black !important;">
+                                              <th width="20%" style="border: 1px solid black !important;">
                                                     Diện tích thông thủy
                                               </th>
-                                              <th width="20%" style="border: 1px solid black !important;">
+                                              <th width="30%" style="border: 1px solid black !important;">
                                                     Điều kiện bàn giao
                                               </th>
                                         </tr>
@@ -282,7 +282,6 @@
                             <div class="col-12">
                                 <div><b><u>Điều khoản:</u></b></div>
                             </div>
-
                         </div>
                         <div class="row">
                             <div class="col-12">
