@@ -282,7 +282,7 @@ class ProductTemplate(models.Model):
     @api.constrains('bsd_qsdd_m2')
     def _check_bsd_qsdd_m2(self):
         for record in self:
-            if record.bsd_qsdd_m2 <= 0:
+            if record.bsd_qsdd_m2 < 0:
                 raise ValidationError("Giá trị quyền sử dụng đất theo m2 phải lớn hơn 0.")
 
     @api.constrains('bsd_don_gia_pql')

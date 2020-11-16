@@ -78,9 +78,7 @@ class BsdDanhSachTheoDoi(models.Model):
                                         - Nếu đối tượng là hơp đồng mua bán: Hạn ký hợp đồng""",
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
-    bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc",
-                                  readonly=True,
-                                  states={'nhap': [('readonly', False)]})
+    bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc",readonly=True)
     bsd_tong_gt_hd = fields.Monetary(string="Tổng giá trị HĐ", help="Tổng giá trị thanh toán theo Hợp đồng",
                                      readonly=True,
                                      states={'nhap': [('readonly', False)]})
@@ -445,6 +443,9 @@ class BsdDanhSachTheoDoi(models.Model):
                 'bsd_tien_phat': self.bsd_tong_tp,
                 'bsd_tien_hoan': tien_hoan,
                 'bsd_tien_hoan_tt': tien_hoan,
+                'bsd_mo_bl': self.bsd_mo_bl,
+                'bsd_dot_mb_id': self.bsd_dot_mb_id.id
+
             })
         else:
             self.env['bsd.thanh_ly'].create({
@@ -459,7 +460,9 @@ class BsdDanhSachTheoDoi(models.Model):
                 'bsd_tien_da_tt': self.bsd_tien_da_tt,
                 'bsd_tien_phat': self.bsd_tong_tp,
                 'bsd_tien_hoan': tien_hoan,
-                'bsd_tien_hoan_tt': tien_hoan
+                'bsd_tien_hoan_tt': tien_hoan,
+                'bsd_mo_bl': self.bsd_mo_bl,
+                'bsd_dot_mb_id': self.bsd_dot_mb_id.id
             })
 
     # DV.15.12 Kiểm tra dk đặt cọc

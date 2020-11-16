@@ -279,6 +279,12 @@ class BsdDotMoBan(models.Model):
 
     # Phát hành
     def action_phat_hanh(self):
+        # Kiểm tra điều kiện phát hành
+        # Kiểm tra các giữ chỗ thiện chí đã ráp căn
+        gc_tc = self.env['bsd.gc_tc'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                              ('state', 'not in', ['dong_gc', 'het_han', 'huy'])], limit=1)
+        if gc_tc:
+            raise UserError(_("Có giữ chỗ thiện chí chưa được ráp căn.\nVui lòng kiểm tra lại thông tin."))
         action = self.env.ref('bsd_kinh_doanh.bsd_wizard_ph_dot_mb_action').read()[0]
         return action
 
@@ -300,52 +306,41 @@ class BsdDotMoBan(models.Model):
                         'bsd_gia_ban': unit.bsd_tong_gb,
                         'bsd_dot_mb_id': self.id
                     })
-            # lấy tất cả unit chuẩn bị phát hành ở trạng thái chuẩn bị đặt chỗ, giữ chỗ
-            units = self.bsd_cb_ids.mapped('bsd_unit_id').filtered(lambda x: x.state in ['chuan_bi', 'dat_cho',
+            # lấy tất cả unit chuẩn bị phát hành ở trạng thái chuẩn bị đặt chỗ, giữ chỗ, sẵn sàng
+            units = self.bsd_cb_ids.mapped('bsd_unit_id').filtered(lambda x: x.state in ['chuan_bi',
+                                                                                         'dat_cho',
+                                                                                         'san_sang',
                                                                                          'giu_cho'])
-            # các chuẩn bị không đúng trạng thái
+            # các sản phẩm đã có giao dịch
             cb_no_state = self.bsd_cb_ids.filtered(lambda c: c.bsd_unit_id not in units)
             cb_no_state.write({
                 'bsd_ly_do': 'kd_tt',
             })
             # các chuẩn bị đúng trạng thái
             cb_state = self.bsd_cb_ids - cb_no_state
-            # lọc các unit thỏa điều kiện trường ưu tiên là không và không có đợt mở bán
-            no_uu_dot_no_mb_units = units.filtered(lambda x: x.bsd_uu_tien == '0' and not x.bsd_dot_mb_id)
-            # lọc các unit thỏa điều kiện trường ưu tiên là không và có đợt mở bán
-            no_uu_dot_mb_units = units.filtered(lambda x: x.bsd_uu_tien == '0' and x.bsd_dot_mb_id)
 
             # các chuẩn bị đúng trạng thái, đang được ưu tiên
             cb_uu = cb_state.filtered(lambda u: u.bsd_unit_id.bsd_uu_tien == '1')
             cb_uu.write({
                 'bsd_ly_do': 'dd_ut',
             })
-            # lọc các unit không ưu tiên có đợt mở bán chưa phát hành
-            no_ph_units = no_uu_dot_mb_units.filtered(lambda x: x.bsd_dot_mb_id.state != 'ph')
-            ph_units = no_uu_dot_mb_units.filtered(lambda x: x.bsd_dot_mb_id.state == 'ph')
-            # kiểm tra các unit không trùng với đợt mở bán hiện tại đang phát hành
-            diff_mb_units = ph_units.filtered(lambda x: (x.bsd_dot_mb_id.bsd_tu_ngay < self.bsd_tu_ngay
-                                                         and x.bsd_dot_mb_id.bsd_den_ngay < self.bsd_tu_ngay)
-                                                         or (x.bsd_dot_mb_id.bsd_tu_ngay > self.bsd_den_ngay
-                                                         and x.bsd_dot_mb_id.bsd_den_ngay > self.bsd_den_ngay)
-                                              )
+            # Lọc các sản phẩm đang ưu tiên
+            cb_state_uu = cb_state - cb_uu
             # các chuẩn bị trùng với đợt mở bán khác
-            cb_trung = (cb_state - cb_uu).filtered(lambda t: t.bsd_unit_id not in diff_mb_units
-                                                   and t.bsd_unit_id.bsd_dot_mb_id)
+            cb_trung = cb_state_uu.filtered(lambda t: t.bsd_unit_id.bsd_dot_mb_id)
             cb_trung.write({
                 'bsd_ly_do': 'dang_mb',
             })
+            cb_state_uu_trung = cb_state_uu - cb_trung
             # Lấy units template
-            units_template = set(no_uu_dot_no_mb_units.mapped('product_tmpl_id').ids +
-                                 no_ph_units.mapped('product_tmpl_id').ids +
-                                 diff_mb_units.mapped('product_tmpl_id').ids)
+            units_template = set(cb_state_uu_trung.mapped('bsd_unit_id').mapped('product_tmpl_id').ids)
             # lấy các unit trong bảng giá đang áp dụng cho đợt mở báng
             bang_gia_units_template = set(self.bsd_bang_gia_id.item_ids.mapped('product_tmpl_id').ids)
             # lấy các unit thỏa điều kiện  không trường ưu tiên và bsd_dot_mb_id và có trong bảng giá
             phat_hanh_units_templated = list(units_template.intersection(bang_gia_units_template))
 
             units_ph = self.env['product.product'].search([('product_tmpl_id', 'in', phat_hanh_units_templated)])
-            cb_no_bg = (cb_state - cb_trung - cb_uu).filtered(lambda b: b.bsd_unit_id not in units_ph)
+            cb_no_bg = cb_state_uu_trung.filtered(lambda b: b.bsd_unit_id not in units_ph)
             cb_no_bg.write({
                 'bsd_ly_do': 'kc_bg',
             })
@@ -354,6 +349,13 @@ class BsdDotMoBan(models.Model):
         # Tạo dự liệu trong bảng unit phát hành trong đợt mở bán
         if not units_ph:
             raise UserError(_('Không có sản phẩm phát hành.'))
+        # Kiểm tra các giữ chỗ của sản phẩm sắp phát hành đã hoàn tất thanh toán hay chưa
+        giu_cho = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                  ('bsd_unit_id', 'in', units_ph.ids),
+                                                  ('state', '=', 'dat_cho')])
+        if giu_cho:
+            raise UserError(_("Có giữ chỗ của sản phẩm sắp phát hành chưa hoàn tất thanh toán.\n"
+                              "Vui lòng kiểm tra lại thông tin."))
         for unit in units_ph:
             pricelist_item = self.env['product.pricelist.item'].search([('product_tmpl_id', '=', unit.product_tmpl_id.id)],
                                                                        limit=1)
@@ -488,7 +490,7 @@ class BsdDotMoBanCB(models.Model):
     bsd_ly_do = fields.Selection([('kc_bg', 'Không có bảng giá'),
                                   ('dang_mb', 'Đang mở bán'),
                                   ('dd_ut', 'Đánh dấu ưu tiên'),
-                                  ('kd_tt', 'Không đúng trạng thái')],
+                                  ('kd_tt', 'Đã có giao dịch')],
                                  string="Lý do", help="Lý do Sản phẩm không được phát hành mở bán", readonly=True)
 
     @api.model

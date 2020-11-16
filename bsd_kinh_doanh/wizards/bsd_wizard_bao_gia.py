@@ -14,7 +14,7 @@ class BsdKyBG(models.TransientModel):
         bg = self.env['bsd.bao_gia'].browse(self._context.get('active_ids', []))
         return bg
 
-    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", default=_get_bg, readonly=True)
+    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", default=_get_bg, readonly=True)
     bsd_ngay_ky_bg = fields.Date(string="Ngày ký BTG", required=True)
 
     def action_xac_nhan(self):
