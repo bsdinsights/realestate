@@ -227,7 +227,7 @@
                                     type="object"
                                     name="action_them_dot"
                                     states="nhap"
-                                    class="oe_highlight oe_right"/>
+                                    class="oe_highlight oe_right oe_read_only"/>
                         </page>
                     </notebook>
                 </sheet>

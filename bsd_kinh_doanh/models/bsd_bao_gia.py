@@ -298,10 +298,12 @@ class BsdBaoGia(models.Model):
     def action_xac_nhan(self):
         if not self.bsd_ltt_ids:
             raise UserError("Bảng tính giá chưa có lịch thanh toán.\nVui lòng kiểm tra lại thông tin.")
-        else:
-            self.write({
-                'state': 'xac_nhan',
-            })
+        if not self.bsd_bg_ids:
+            raise UserError("Bảng tính giá phải chọn tối thiểu 1 điều kiện bàn giao.\nVui lòng kiểm tra lại thông tin.")
+
+        self.write({
+            'state': 'xac_nhan',
+        })
 
     # KD.09.05 In báo giá
     def action_in_bg(self):

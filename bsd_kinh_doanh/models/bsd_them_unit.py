@@ -160,33 +160,8 @@ class BsdThemUnit(models.Model):
             # cập nhật đợt mở bán cho giữ chỗ
             giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', unit_ph.id)])
             giu_cho_unit.write({'bsd_dot_mb_id': self.bsd_dot_mb_id.id})
-            # lọc các giữ chỗ của unit đã thanh toán
-            giu_cho_ids = giu_cho_unit.filtered(lambda g: g.state == 'giu_cho' and g.bsd_thanh_toan == 'da_tt')
-            if giu_cho_ids:
-                gc = giu_cho_ids.filtered(lambda x: not x.bsd_rap_can_id).sorted('id')
-                gc_no_rc = zip(gc.mapped('id'), gc.mapped('bsd_ngay_tt'))
-                gc = giu_cho_ids.filtered(lambda x: x.bsd_rap_can_id).sorted('id')
-                gc_rc = zip(gc.mapped('id'), gc.mapped('bsd_ngay_gc'))
-                _logger.debug("sắp xếp")
-                gc_sorted = sorted(list(gc_rc) + list(gc_no_rc), key=lambda x: x[1])
-                id_gc_sorted = [g[0] for g in gc_sorted]
-                stt = 0
-                time_gc = self.bsd_du_an_id.bsd_gc_smb
-                ngay_ph = self.bsd_dot_mb_id.bsd_ngay_ph
-                for giu_cho in self.env['bsd.giu_cho'].browse(id_gc_sorted):
-                    stt += 1
-                    ngay_ph += datetime.timedelta(hours=time_gc)
-                    # # KD.04.07 cập nhật trạng thái giữ chỗ khi phát hành
-                    # if giu_cho.state == 'dat_cho' and giu_cho.bsd_thanh_toan == 'da_tt':
-                    #     giu_cho.write({
-                    #         'state': 'giu_cho',
-                    #     })
-                    giu_cho.write({
-                        'bsd_stt_bg': stt,
-                        'bsd_ngay_hh_bg': ngay_ph
-                    })
 
-    # KD.04.04.05 - Không duyệt thu hồi Sản phẩm
+    # KD.04.04.05 - Không duyệt thêm unit Sản phẩm
     def action_khong_duyet(self):
         action = self.env.ref('bsd_kinh_doanh.bsd_wizard_them_unit_action').read()[0]
         return action
@@ -222,8 +197,7 @@ class BsdDotMoBanCB(models.Model):
     bsd_gia_ban = fields.Monetary(string="Giá bán", required=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-    bsd_ly_do = fields.Selection([('kc_bg', 'Không có bảng giá'),
-                                  ('dang_mb', 'Đang mở bán'),
+    bsd_ly_do = fields.Selection([('dang_mb', 'Đang mở bán'),
                                   ('dd_ut', 'Đánh dấu ưu tiên'),
                                   ('kd_tt', 'Không đúng trạng thái')],
                                  string="Lý do", help="Lý do Sản phẩm không được phát hành mở bán", readonly=True)

@@ -137,10 +137,12 @@ class BsdChinhSachThanhToan(models.Model):
                 elif each.bsd_den_ngay < each.bsd_tu_ngay:
                     raise UserError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu.\nVui lòng kiểm tra lại thông tin."))
 
-    # Kiểm tra tổng phần trăm của các đợt thanh toán
-    @api.constrains('bsd_ct_ids')
-    def _constrains_ct(self):
-        if self.bsd_ct_ids:
+    # Xác nhận phương thúc thanh toán
+    def action_xac_nhan(self):
+        if not self.bsd_ct_ids:
+            raise UserError(_("Bạn chưa nhập thông tin khai báo đợt thanh toán.\n"
+                              "Vui lòng kiểm tra lại thông tin."))
+        else:
             tong_pt = sum(self.bsd_ct_ids.filtered(lambda x: x.bsd_cach_tinh != 'td').mapped('bsd_tl_tt'))
             _logger.debug(tong_pt)
             for ct in self.bsd_ct_ids.filtered(lambda x: x.bsd_cach_tinh == 'td'):
@@ -151,15 +153,9 @@ class BsdChinhSachThanhToan(models.Model):
             _logger.debug("Tổng phần trăm thanh toán")
             _logger.debug(tong_pt)
             if tong_pt != 100:
-                raise UserError(_("Tỷ lệ của đợt thanh toán không bằng 100%.\n"
-                                  "Vui lòng kiểm tra lại thông tin."))
+                raise UserError(_("Tỷ lệ của đợt thanh toán không bằng 100%.,tỷ lệ hiện tại {0}%.\n"
+                                  "Vui lòng kiểm tra lại thông tin.".format(tong_pt)))
 
-    # Xác nhận phương thúc thanh toán
-    def action_xac_nhan(self):
-        if not self.bsd_ct_ids:
-            raise UserError(_("Bạn chưa nhập thông tin khai báo đợt thanh toán.\n"
-                              "Vui lòng kiểm tra lại thông tin."))
-        else:
             dot_ky_hd = self.bsd_ct_ids.filtered(lambda d: d.bsd_dot_ky_hd)
             if not dot_ky_hd:
                 raise UserError(_("Phương thức thanh toán chưa có đợt ký hợp đồng.\n"
