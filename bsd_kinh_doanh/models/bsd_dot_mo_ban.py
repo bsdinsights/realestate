@@ -259,8 +259,6 @@ class BsdDotMoBan(models.Model):
                                                                      ('bsd_du_an_id', '=', self.bsd_du_an_id.id)]).ids
                         ids_tang += self.env['bsd.tang'].search([('bsd_toa_nha_id', 'in', ids_toa_nha),
                                                                  ('bsd_stt', '<=', den_tang_stt)]).ids
-                _logger.debug("id tầng")
-                _logger.debug(ids_tang)
             # lọc unit theo các tầng đã tìm được:
             units = set(self.env['product.product'].search([('bsd_tang_id', 'in', ids_tang)]))
             # Chỉ tạo những unit chưa có trong chuẩn bị
@@ -293,8 +291,8 @@ class BsdDotMoBan(models.Model):
         if self.state != 'cph':
             pass
         else:
-            # Nếu không có điều kiện lọc thì lấy sản phẩm trong bảng giá
-            if not self.bsd_tu_toa_nha_id:
+            # Nếu không có sản phẩm chuẩn bị thì lấy sản phẩm trong bảng giá
+            if not self.bsd_cb_ids:
                 template_ids = self.bsd_bang_gia_id.item_ids.mapped('product_tmpl_id').ids
                 unit_ids = self.env['product.product'].search([('product_tmpl_id', 'in', template_ids)])
                 for unit in unit_ids:
@@ -529,4 +527,4 @@ class BsdDotMoBanUnit(models.Model):
     state = fields.Selection([('phat_hanh', 'Phát hành'), ('thu_hoi', 'Thu hồi')], string="Trạng thái",
                              required="True", default='phat_hanh', help="Tráng thái")
     bsd_thu_hoi_id = fields.Many2one('bsd.thu_hoi', string="Thu hồi", help="Thu hồi", readonly=True)
-    bsd_them_unit_id = fields.Many2one('bsd.them_unit', string="Thêm Sản phẩm", help="Thêm Sản phẩm", readonly=True)
+    bsd_them_unit_id = fields.Many2one('bsd.them_unit', string="Thêm SP", help="Thêm Sản phẩm", readonly=True)

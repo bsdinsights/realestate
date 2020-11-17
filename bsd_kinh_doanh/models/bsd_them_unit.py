@@ -31,12 +31,12 @@ class BsdThemUnit(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_ngay_duyet = fields.Datetime(string="Ngày duyệt", help="Ngày duyệt yêu cầu", readonly=True)
-    bsd_nguoi_duyet = fields.Many2one('res.users', string="Người duyệt", help="Người duyệt yêu cầu",
+    bsd_ngay_duyet = fields.Date(string="Ngày duyệt", help="Ngày duyệt yêu cầu", readonly=True)
+    bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", help="Người duyệt yêu cầu",
                                       readonly=True)
-    bsd_ly_do_khong_duyet = fields.Char(string="Lý do", readonly=True, tracking=2)
-    state = fields.Selection([('nhap', 'Nháp'), ('cph', 'Chưa phát hành'),
-                              ('ph', 'Phát hành'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
+    bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
+    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
+                              ('duyet', 'Duyệt'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
                              tracking=1, required=True, default='nhap')
     bsd_cb_ids = fields.One2many('bsd.them_unit_cb', 'bsd_them_unit_id', string="Chuẩn bị")
     bsd_ph_ids = fields.One2many('bsd.dot_mb_unit', 'bsd_them_unit_id', string="Phát hành", readonly=True)
@@ -46,7 +46,7 @@ class BsdThemUnit(models.Model):
         if not self.bsd_cb_ids:
             raise UserError("Chưa có Sản phẩm được chọn. Vui lòng kiểm tra lại thông tin !")
         self.write({
-            'state': 'cph',
+            'state': 'xac_nhan',
         })
 
     # KD.04.05.02 - Phát hành thêm Sản phẩm
@@ -56,117 +56,123 @@ class BsdThemUnit(models.Model):
             raise UserError("Vui lòng kiểm tra lại thông tin đợt mở bán!")
 
         # kiểm tra trạng thái record
-        if self.state != 'cph':
+        if self.state != 'xac_nhan':
             pass
         else:
-            # lấy tất cả unit chuẩn bị phát hành ở trạng thái chuẩn bị đặt chỗ, giữ chỗ
-            units = self.bsd_cb_ids.mapped('bsd_unit_id').filtered(lambda x: x.state in ['chuan_bi', 'dat_cho',
+            # lấy tất cả unit chuẩn bị phát hành ở trạng thái chuẩn bị đặt chỗ, giữ chỗ, sẵn sàng
+            units = self.bsd_cb_ids.mapped('bsd_unit_id').filtered(lambda x: x.state in ['chuan_bi',
+                                                                                         'dat_cho',
+                                                                                         'san_sang',
                                                                                          'giu_cho'])
-            _logger.debug("phát hành")
-            units_dang_ph = self.bsd_dot_mb_id.bsd_ph_ids.mapped('bsd_unit_id')
-            units = units - units_dang_ph
-            _logger.debug(units)
-            # các chuẩn bị không đúng trạng thái
+            # các sản phẩm đã có giao dịch
             cb_no_state = self.bsd_cb_ids.filtered(lambda c: c.bsd_unit_id not in units)
             cb_no_state.write({
                 'bsd_ly_do': 'kd_tt',
             })
-            # các chuẩn bị đúng trạng thái
+            # các chuẩn bị chưa có giao dịch
             cb_state = self.bsd_cb_ids - cb_no_state
-            # lọc các unit thỏa điều kiện trường ưu tiên là không và không có đợt mở bán
-            no_uu_dot_no_mb_units = units.filtered(lambda x: x.bsd_uu_tien == '0' and not x.bsd_dot_mb_id)
-            _logger.debug('không uu tien ko đợt phát hành')
-            _logger.debug(no_uu_dot_no_mb_units)
-            # lọc các unit thỏa điều kiện trường ưu tiên là không và có đợt mở bán
-            no_uu_dot_mb_units = units.filtered(lambda x: x.bsd_uu_tien == '0' and x.bsd_dot_mb_id)
-            _logger.debug('không uu tien có đợt phát hành')
-            _logger.debug(no_uu_dot_mb_units)
+
             # các chuẩn bị đúng trạng thái, đang được ưu tiên
             cb_uu = cb_state.filtered(lambda u: u.bsd_unit_id.bsd_uu_tien == '1')
-            _logger.debug("các chuẩn bị đã ưu tiên")
-            _logger.debug(cb_uu)
             cb_uu.write({
                 'bsd_ly_do': 'dd_ut',
             })
-            # lọc các unit không ưu tiên có đợt mở bán chưa phát hành
-            no_ph_units = no_uu_dot_mb_units.filtered(lambda x: x.bsd_dot_mb_id.state != 'ph')
-            _logger.debug('không uu tien có đợt mở bán chưa phát hành')
-            _logger.debug(no_ph_units)
-            ph_units = no_uu_dot_mb_units.filtered(lambda x: x.bsd_dot_mb_id.state == 'ph')
-            # kiểm tra các unit không trùng với đợt mở bán hiện tại đang phát hành
-            diff_mb_units = ph_units.filtered(lambda x: (x.bsd_dot_mb_id.bsd_tu_ngay < self.bsd_tu_ngay
-                                                         and x.bsd_dot_mb_id.bsd_den_ngay < self.bsd_tu_ngay)
-                                                            or (x.bsd_dot_mb_id.bsd_tu_ngay > self.bsd_den_ngay
-                                                                and x.bsd_dot_mb_id.bsd_den_ngay > self.bsd_den_ngay)
-                                              )
-            _logger.debug('diff_mb_units')
-            _logger.debug(diff_mb_units)
+            # Lọc các sản phẩm đang ưu tiên
+            cb_state_uu = cb_state - cb_uu
             # các chuẩn bị trùng với đợt mở bán khác
-            cb_trung = (cb_state - cb_uu).filtered(lambda t: t.bsd_unit_id not in diff_mb_units
-                                                   and t.bsd_unit_id.bsd_dot_mb_id)
-            _logger.debug("các chuẩn bị trùng đợt mở bán")
-            _logger.debug(cb_trung)
+            cb_trung = cb_state_uu.filtered(lambda t: t.bsd_unit_id.bsd_dot_mb_id)
             cb_trung.write({
                 'bsd_ly_do': 'dang_mb',
             })
-            # Lấy units template
-            units_template = set(no_uu_dot_no_mb_units.mapped('product_tmpl_id').ids +
-                                 no_ph_units.mapped('product_tmpl_id').ids +
-                                 diff_mb_units.mapped('product_tmpl_id').ids)
-            # lấy các unit trong bảng giá đang áp dụng cho đợt mở báng
-            bang_gia_units_template = set(self.bsd_bang_gia_id.item_ids.mapped('product_tmpl_id').ids)
-            # lấy các unit thỏa điều kiện  không trường ưu tiên và bsd_dot_mb_id và có trong bảng giá
-            phat_hanh_units_templated = list(units_template.intersection(bang_gia_units_template))
-
-            units_ph = self.env['product.product'].search([('product_tmpl_id', 'in', phat_hanh_units_templated)])
-            cb_no_bg = (cb_state - cb_trung - cb_uu).filtered(lambda b: b.bsd_unit_id not in units_ph)
-            cb_no_bg.write({
-                'bsd_ly_do': 'kc_bg',
-            })
-        # Xóa cb đã chuyển sang phát hành
-            self.bsd_cb_ids.filtered(lambda c: c.bsd_unit_id in units_ph).unlink()
-        # Tạo dự liệu trong bảng unit phát hành trong đợt mở bán
-        for unit in units_ph:
-            pricelist_item = self.env['product.pricelist.item'].search([('product_tmpl_id', '=', unit.product_tmpl_id.id)],
-                                                                       limit=1)
-            self.bsd_ph_ids.create({
-                'bsd_du_an_id': unit.bsd_du_an_id.id,
-                'bsd_toa_nha_id': unit.bsd_toa_nha_id.id,
-                'bsd_tang_id': unit.bsd_tang_id.id,
-                'bsd_unit_id': unit.id,
-                'bsd_gia_ban': pricelist_item.fixed_price,
-                'bsd_dot_mb_id': self.bsd_dot_mb_id.id,
-                'bsd_them_unit_id': self.id
-            })
-            # KD.04.06 Cập nhật tình trạng Sản phẩm phát hành
-            if unit.state == 'chuan_bi':
-                unit.write({
-                    'bsd_dot_mb_id': self.bsd_dot_mb_id.id,
-                    'state': 'san_sang',
+            cb_state_uu_trung = cb_state_uu - cb_trung
+            # Kiểm tra nếu có sản phẩm không thỏa điều kiện thì chuyển trạng thái về nháp
+            if len(self.bsd_cb_ids) != len(cb_state_uu_trung):
+                self.write({
+                    'state': 'nhap',
+                    'bsd_ly_do': "Danh sách chuẩn bị sản phẩm không thỏa điều kiện"
                 })
             else:
-                unit.write({
-                    'bsd_dot_mb_id': self.bsd_dot_mb_id.id,
+                # Lấy units template
+                units_template = set(cb_state_uu_trung.mapped('bsd_unit_id').mapped('product_tmpl_id').ids)
+                # lấy các unit trong bảng giá đang áp dụng cho đợt mở bán
+                bang_gia_units_template = set(self.bsd_bang_gia_id.item_ids.mapped('product_tmpl_id').ids)
+                # lấy các unit thỏa điều kiện  không trường ưu tiên và bsd_dot_mb_id và có trong bảng giá
+                phat_hanh_units_templated = list(units_template.intersection(bang_gia_units_template))
+                # Các sản phẩm đã có giá trong bảng giá bán của đợt mở bán
+                units_co_bang_gia = self.env['product.product'].search([('product_tmpl_id', 'in', phat_hanh_units_templated)])
+                # Các sản phẩm không có giá trong bảng giá bán của đợt mở bán
+                units_ko_bang_gia = cb_state_uu_trung.mapped('bsd_unit_id') - units_co_bang_gia
+                _logger.debug("Thêm Sản phẩm ")
+                _logger.debug(units_co_bang_gia)
+                _logger.debug(units_ko_bang_gia)
+                # phát hành các unit có bảng giá
+                for unit in units_co_bang_gia:
+                    pricelist_item = self.env['product.pricelist.item'].search(
+                        [('product_tmpl_id', '=', unit.product_tmpl_id.id)],
+                        limit=1)
+                    self.bsd_ph_ids.create({
+                        'bsd_du_an_id': unit.bsd_du_an_id.id,
+                        'bsd_toa_nha_id': unit.bsd_toa_nha_id.id,
+                        'bsd_tang_id': unit.bsd_tang_id.id,
+                        'bsd_unit_id': unit.id,
+                        'bsd_gia_ban': pricelist_item.fixed_price,
+                        'bsd_dot_mb_id': self.bsd_dot_mb_id.id,
+                        'bsd_them_unit_id': self.id,
+                    })
+                    # KD.04.06 Cập nhật tình trạng Sản phẩm phát hành
+                    if unit.state == 'chuan_bi':
+                        unit.write({
+                            'bsd_dot_mb_id': self.bsd_dot_mb_id.id,
+                            'state': 'san_sang',
+                        })
+                    else:
+                        unit.write({
+                            'bsd_dot_mb_id': self.bsd_dot_mb_id.id,
+                        })
+                # phát hành các unit không có trong bảng giá bán
+                for unit in units_ko_bang_gia:
+                    cb = self.bsd_cb_ids.filtered(lambda c: c.bsd_unit_id == unit)
+                    # Cập nhật giá của sản phẩm vào bảng giá của đợt mở bán
+                    self.bsd_bang_gia_id.item_ids.create({
+                        'product_tmpl_id': unit.product_tmpl_id.id,
+                        'fixed_price': cb.bsd_gia_ban,
+                        'bsd_them_unit_id': self.id,
+                    })
+                    unit.write({
+                        'list_price': cb.bsd_gia_ban
+                    })
+                    self.bsd_ph_ids.create({
+                        'bsd_du_an_id': unit.bsd_du_an_id.id,
+                        'bsd_toa_nha_id': unit.bsd_toa_nha_id.id,
+                        'bsd_tang_id': unit.bsd_tang_id.id,
+                        'bsd_unit_id': unit.id,
+                        'bsd_gia_ban': cb.bsd_gia_ban,
+                        'bsd_dot_mb_id': self.bsd_dot_mb_id.id,
+                        'bsd_them_unit_id': self.id,
+                    })
+                    # KD.04.06 Cập nhật tình trạng Sản phẩm phát hành
+                    if unit.state == 'chuan_bi':
+                        unit.write({
+                            'bsd_dot_mb_id': self.bsd_dot_mb_id.id,
+                            'state': 'san_sang',
+                        })
+                    else:
+                        unit.write({
+                            'bsd_dot_mb_id': self.bsd_dot_mb_id.id,
+                        })
+                # Cập nhập người duyệt ngày duyệt
+                self.write({
+                    'state': 'duyet',
+                    'bsd_nguoi_duyet_id': self.env.uid,
+                    'bsd_ngay_duyet': fields.Date.today()
                 })
-        # Cập lại lại trạng thái đợt mở bán ngày phát hình và người phát hành
-        self.write({
-            'state': 'ph',
-            'bsd_ngay_duyet': fields.Datetime.now(),
-            'bsd_nguoi_duyet': self.env.uid,
-        })
-        #  KD.04.08 Tính hạn báo giá  của giữ chỗ sau khi phát hành đợt mở bán
-        units_ph = self.bsd_ph_ids.mapped('bsd_unit_id')
-        for unit_ph in units_ph:
-            # cập nhật đợt mở bán cho giữ chỗ
-            giu_cho_unit = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', unit_ph.id)])
-            giu_cho_unit.write({'bsd_dot_mb_id': self.bsd_dot_mb_id.id})
 
-    # KD.04.04.05 - Không duyệt thêm unit Sản phẩm
+    # KD.04.04.05 - Không duyệt thêm Sản phẩm
     def action_khong_duyet(self):
         action = self.env.ref('bsd_kinh_doanh.bsd_wizard_them_unit_action').read()[0]
         return action
 
-    # KD.04.04.06 - Hủy thu hồi Sản phẩm
+    # KD.04.04.06 - Hủy thêm Sản phẩm
     def action_huy(self):
         self.write({
             'state': 'huy',
@@ -189,7 +195,7 @@ class BsdDotMoBanCB(models.Model):
     _description = 'Thông tin Sản phẩm chuẩn bị phiếu thêm Sản phẩm'
     _rec_name = 'bsd_unit_id'
 
-    bsd_them_unit_id = fields.Many2one('bsd.them_unit', string="Phiếu thêm Sản phẩm", required=True)
+    bsd_them_unit_id = fields.Many2one('bsd.them_unit', string="Phiếu thêm SP", required=True, ondelete='CASCADE')
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
     bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà", required=True)
     bsd_tang_id = fields.Many2one('bsd.tang', string="Tầng", required=True)
@@ -199,7 +205,7 @@ class BsdDotMoBanCB(models.Model):
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     bsd_ly_do = fields.Selection([('dang_mb', 'Đang mở bán'),
                                   ('dd_ut', 'Đánh dấu ưu tiên'),
-                                  ('kd_tt', 'Không đúng trạng thái')],
+                                  ('kd_tt', 'Đã có giao dịch')],
                                  string="Lý do", help="Lý do Sản phẩm không được phát hành mở bán", readonly=True)
 
     @api.model
@@ -207,7 +213,7 @@ class BsdDotMoBanCB(models.Model):
         if 'bsd_unit_id' in vals.keys() and 'bsd_them_unit_id' in vals.keys():
             if self.env['bsd.them_unit_cb'].search([('bsd_unit_id', '=', vals['bsd_unit_id']),
                                                     ('bsd_them_unit_id', '=', vals['bsd_them_unit_id'])]):
-                raise UserError("Phiếu thêm đã có sản phẩm.\nVui lòng kiểm tra lại thông tin!")
+                raise UserError("Phiếu đã có sản phẩm.\nVui lòng kiểm tra lại thông tin!")
         rec = super(BsdDotMoBanCB, self).create(vals)
         return rec
 
@@ -215,11 +221,14 @@ class BsdDotMoBanCB(models.Model):
         if 'bsd_unit_id' in vals.keys():
             if self.env['bsd.them_unit_cb'].search([('bsd_unit_id', '=', vals['bsd_unit_id']),
                                                     ('bsd_dot_mb_id', '=', self.bsd_dot_mb_id.id)]):
-                raise UserError("Phiếu thêm đã có sản phẩm.\nVui lòng kiểm tra lại thông tin.")
+                raise UserError("Phiếu đã có sản phẩm.\nVui lòng kiểm tra lại thông tin.")
         rec = super(BsdDotMoBanCB, self).write(vals)
         return rec
 
 
+class ProductPriceListItem(models.Model):
+    _inherit = 'product.pricelist.item'
 
+    bsd_them_unit_id = fields.Many2one('bsd.them_unit', string="Phiếu thêm Sản phẩm", readonly=True)
 
 
