@@ -183,11 +183,12 @@
         <field name="name">bsd.product.template.tree</field>
         <field name="model">product.template</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree create="false">
                 <field name="bsd_ma_unit"/>
                 <field name="bsd_du_an_id"/>
                 <field name="bsd_toa_nha_id"/>
                 <field name="bsd_tang_id"/>
+                <field name="bsd_ky_tu_sp"/>
                 <field name="bsd_stt"/>
                 <field name="bsd_tong_gb"/>
                 <field name="bsd_uu_tien"/>

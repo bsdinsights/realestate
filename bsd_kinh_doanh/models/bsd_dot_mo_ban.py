@@ -435,15 +435,9 @@ class BsdDotMoBan(models.Model):
             'default_bsd_du_an_id': self.bsd_du_an_id.id,
             'default_bsd_dot_mb_id': self.id,
         }
-        return {
-            "name": "Tạo phiếu thêm Sản phẩm",
-            "res_model": 'bsd.them_unit',
-            "view": [[False, 'form']],
-            "type": 'ir.actions.act_window',
-            "view_mode": "form",
-            "context": context,
-            "target": "new"
-        }
+        action = self.env.ref('bsd_kinh_doanh.bsd_them_unit_action_popup').read()[0]
+        action['context'] = context
+        return action
 
     @api.model
     def create(self, vals):

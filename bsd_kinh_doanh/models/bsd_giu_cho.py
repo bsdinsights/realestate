@@ -329,7 +329,6 @@ class BsdGiuCho(models.Model):
     # KD.07.07 Tự động hủy giữ chỗ quá hạn thanh toán
     # KD.07.08 Tự động đánh dấu hết hạn giữ chỗ
     def auto_huy_gc(self):
-        _logger.debug("Chạy tự động hủy")
         if self.bsd_thanh_toan == 'chua_tt' and self.bsd_truoc_mb:
             self.write({
                 'state': 'het_han'

@@ -21,24 +21,27 @@
                     <button string="Thu hồi ĐMB"
                             type="object"
                             states="ph"
+                            class="oe_highlight"
                             name="action_thu_hoi"/>
                     <button string="Thu hồi SP"
                             type="object"
                             states="ph"
+                            class="oe_highlight"
                             name="action_thu_hoi_can_ho"/>
                     <button string="Thêm SP"
                             type="object"
                             states="ph"
+                            class="oe_highlight"
                             name="action_them_can_ho"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_thu_hoi_ch" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_thu_hoi_ch', '=', 0)]}">
-                            <field name="bsd_so_thu_hoi_ch" widget="statinfo" string="Thu hồi căn hộ"/>
+                            <field name="bsd_so_thu_hoi_ch" widget="statinfo" string="Thu hồi SP"/>
                         </button>
                         <button name="action_view_them_ch" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_them_ch', '=', 0)]}">
-                            <field name="bsd_so_them_ch" widget="statinfo" string="Thêm căn hộ"/>
+                            <field name="bsd_so_them_ch" widget="statinfo" string="Thêm SP"/>
                         </button>
                     </div>
                     <notebook>

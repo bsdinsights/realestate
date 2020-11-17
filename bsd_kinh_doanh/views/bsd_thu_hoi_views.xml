@@ -60,6 +60,8 @@
                             <field name="bsd_tang_id"/>
                             <field name="name"/>
                             <field name="list_price"/>
+                            <field name="state" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
                         </tree>
                     </field>
                 </sheet>
@@ -118,29 +120,21 @@
         <field name="arch" type="xml">
             <form duplicate="false">
                 <header>
-                    <button string="Xác nhận"
-                            name="action_xac_nhan"
-                            class="oe_highlight"
-                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
-                            type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
                     <group>
                         <group>
-                            <field name="bsd_ma_th"/>
                             <field name="bsd_ngay_th"/>
                             <field name="bsd_ly_do"/>
                         </group>
                         <group>
-                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
-                            <field name="bsd_dot_mb_id"
+                            <field name="bsd_du_an_id" readonly="1" force_save="1" options="{'no_create':true}"/>
+                            <field name="bsd_dot_mb_id" readonly="1" force_save="1"
                                    domain="[('bsd_du_an_id', 'in', [bsd_du_an_id]),('state', '=','ph'),
                                             ('bsd_tu_ngay', '&lt;=', context_today().strftime('%%Y-%%m-%%d')),
                                             ('bsd_den_ngay', '&gt;=', context_today().strftime('%%Y-%%m-%%d'))]"
                                    options="{'no_create':true}"/>
-                            <field name="bsd_ngay_duyet"/>
-                            <field name="bsd_nguoi_duyet"/>
                         </group>
                     </group>
                     <field name="bsd_unit_ids" nolabel="1"
@@ -153,11 +147,19 @@
                             <field name="bsd_du_an_id"/>
                             <field name="bsd_toa_nha_id"/>
                             <field name="bsd_tang_id"/>
-                            <field name="name"/>
+                            <field name="bsd_ten_sp" string="Sản phẩm"/>
                             <field name="list_price"/>
+                            <field name="state" invisible="1"/>
                         </tree>
                     </field>
                 </sheet>
+                <footer>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            class="oe_highlight"
+                            type="object"/>
+                    <button string="Hủy" special="cancel"/>
+                </footer>
             </form>
         </field>
     </record>

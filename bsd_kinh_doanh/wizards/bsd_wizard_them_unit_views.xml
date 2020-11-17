@@ -31,4 +31,35 @@
         <field name="target">new</field>
         <field name="view_mode">form</field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_wizard_ph_them_unit_form">
+        <field name="name">bsd.wizard.ph_them_unit.form</field>
+        <field name="model">bsd.wizard.ph_them_unit</field>
+        <field name="arch" type="xml">
+            <form string="Phát hành thêm sản phẩm">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_them_unit_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_so_gio"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_ph_them_unit_action">
+        <field name="name">Phát hành thêm SP</field>
+        <field name="res_model">bsd.wizard.ph_them_unit</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
 </odoo>

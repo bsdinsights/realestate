@@ -78,6 +78,8 @@
                         <page string="Phát hành">
                             <field name="bsd_ph_ids">
                                 <tree>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="company_id" invisible="1"/>
                                     <field name="bsd_du_an_id"/>
                                     <field name="bsd_toa_nha_id"/>
                                     <field name="bsd_tang_id"/>
@@ -94,11 +96,10 @@
                                                 <field name="bsd_tang_id"/>
                                             </group>
                                             <group>
-                                                <field name="bsd_unit_id"
-                                                       context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"/>
+                                                <field name="bsd_unit_id"/>
                                                 <field name="bsd_gia_ban"/>
                                                 <field name="state"/>
-                                                <field name="currency_id"/>
+                                                <field name="currency_id" invisible="1"/>
                                             </group>
                                         </group>
                                     </sheet>
@@ -147,11 +148,62 @@
         </field>
     </record>
     <record model="ir.actions.act_window" id="bsd_them_unit_action">
-        <field name="name">Thêm căn hộ đợt mở bán</field>
+        <field name="name">Thêm SP đợt mở bán</field>
         <field name="res_model">bsd.them_unit</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
-            <p>Tạo phiếu thêm căn hộ</p>
+            <p>Tạo phiếu thêm sản phẩm</p>
         </field>
+    </record>
+<!--    Phiếu thu sản phẩm  -->
+    <record model="ir.ui.view" id="bsd_them_unit_form_popup">
+        <field name="name">bsd.them_unit.form</field>
+        <field name="model">bsd.them_unit</field>
+        <field name="arch" type="xml">
+            <form duplicate="false">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ngay_tu"/>
+                            <field name="bsd_du_an_id"
+                                   readonly="1"
+                                   force_save="1"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_dot_mb_id"
+                                   readonly="1"
+                                   force_save="1"
+                                   domain="[('bsd_du_an_id', 'in', [bsd_du_an_id]),('state', '=','ph'),
+                                            ('bsd_tu_ngay', '&lt;=', context_today().strftime('%%Y-%%m-%%d')),
+                                            ('bsd_den_ngay', '&gt;=', context_today().strftime('%%Y-%%m-%%d'))]"
+                                   options="{'no_create':true}"/>
+                        </group>
+                        <group>
+                            <field name="bsd_bang_gia_id"/>
+                            <field name="bsd_dien_giai"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            class="oe_highlight"
+                            type="object"/>
+                    <button string="Hủy" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_them_unit_action_popup">
+        <field name="name">Thêm SP đợt mở bán</field>
+        <field name="res_model">bsd.them_unit</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_ids"
+               eval="[(5, 0, 0),
+                      (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_them_unit_form_popup')})]"/>
     </record>
 </odoo>
