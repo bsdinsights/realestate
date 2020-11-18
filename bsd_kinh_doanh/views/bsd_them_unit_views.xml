@@ -206,4 +206,15 @@
                eval="[(5, 0, 0),
                       (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_them_unit_form_popup')})]"/>
     </record>
+
+    <record model="ir.ui.view" id="bsd_product_pricelist_form_1">
+        <field name="name">bsd.product.pricelist.form</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="bsd_danh_muc.bsd_product_pricelist_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='fixed_price']" position="after">
+                <field name="bsd_them_unit_id"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>

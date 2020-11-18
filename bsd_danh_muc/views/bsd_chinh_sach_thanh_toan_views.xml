@@ -4,7 +4,7 @@
         <field name="name">bsd.cs_tt.form</field>
         <field name="model">bsd.cs_tt</field>
         <field name="arch" type="xml">
-            <form>
+            <form delete="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
@@ -227,7 +227,7 @@
                                     type="object"
                                     name="action_them_dot"
                                     states="nhap"
-                                    class="oe_highlight oe_right oe_read_only"/>
+                                    class="oe_highlight oe_right"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -243,7 +243,7 @@
         <field name="name">bsd.cs_tt.tree</field>
         <field name="model">bsd.cs_tt</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree delete="false">
                 <field name="bsd_ma_cstt"/>
                 <field name="bsd_ten_cstt"/>
                 <field name="bsd_du_an_id"/>

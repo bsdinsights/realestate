@@ -120,12 +120,12 @@ class BsdChinhSachThanhToan(models.Model):
                                  readonly=True, copy=True,
                                  states={'nhap': [('readonly', False)]})
     active = fields.Boolean(default=True)
-    bsd_ly_do = fields.Char(string="Lý do", help="Lý do không duyệt phương thức thanh toán", tracking=2)
+    bsd_ly_do = fields.Char(string="Lý do", help="Lý do không duyệt phương thức thanh toán", tracking=2, copy=False)
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('duyet', 'Duyệt'), ('het_han', 'Hết hạn'), ('huy', 'Hủy')],
-                             string="Trạng thái", required=True, default='nhap', tracking=1)
-    bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
-    bsd_ngay_duyet = fields.Date(string="Ngày duyệt", readonly=True)
+                             string="Trạng thái", required=True, default='nhap', tracking=1, copy=False)
+    bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True, copy=False)
+    bsd_ngay_duyet = fields.Date(string="Ngày duyệt", readonly=True, copy=False)
 
     # Kiểm tra dữ liệu ngày hiệu lực
     @api.constrains('bsd_tu_ngay', 'bsd_den_ngay')
@@ -300,24 +300,6 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
     def _onchange_bsd_dot_cuoi(self):
         self.bsd_cach_tinh = None
 
-    @api.constrains('bsd_tl_tt', 'bsd_so_dot')
-    def _constrain_bsd_tl_tt(self):
-        tong_tl_tt = 0
-        for dot in self.bsd_cs_tt_id.bsd_ct_ids:
-            if dot.bsd_cach_tinh != 'td':
-                tong_tl_tt += dot.bsd_tl_tt
-            else:
-                if dot.bsd_lap_lai == '0':
-                    tong_tl_tt += dot.bsd_tl_tt
-                else:
-                    tong_tl_tt += dot.bsd_tl_tt * dot.bsd_so_dot
-
-        if tong_tl_tt > 100:
-            return {
-                'warning': {'title': _("Cảnh báo"),
-                            'message': _('Tỷ lệ thanh toán đã vượt 100%, {0}%'.format(tong_tl_tt))}
-            }
-
     @api.onchange('bsd_ngay_cd')
     def _onchange_ngay_cd(self):
         if self.bsd_ngay_cd:
@@ -329,9 +311,10 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
 
     @api.constrains('bsd_ngay_cd')
     def _constraint_ngay_cd(self):
-        if self.bsd_ngay_cd:
-            if self.bsd_ngay_cd < fields.Date.today():
-                raise UserError(_("Ngày cố định không được nhỏ hơn hiện tại."))
+        for each in self:
+            if each.bsd_ngay_cd:
+                if each.bsd_ngay_cd < fields.Date.today():
+                    raise UserError(_("Ngày cố định không được nhỏ hơn hiện tại."))
 
     @api.onchange('bsd_bg_tam')
     def _onchange_bg_tam(self):
@@ -342,14 +325,16 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
 
     @api.constrains('bsd_lap_lai')
     def _constrains_lap_lai(self):
-        if self.bsd_lap_lai == '1':
-            if self.bsd_so_dot < 1:
-                raise UserError(_("Số lần lặp không được nhỏ hơn 1.\nVui lòng kiểm tra lại thông tin."))
+        for each in self:
+            if each.bsd_lap_lai == '1':
+                if each.bsd_so_dot < 1:
+                    raise UserError(_("Số lần lặp không được nhỏ hơn 1.\nVui lòng kiểm tra lại thông tin."))
 
     @api.constrains('bsd_tl_tt')
     def _constrains_bsd_tl_tt(self):
-        if self.bsd_tl_tt < 0 or self.bsd_tl_tt > 100:
-            raise UserError(_("Giá trị nhập nằm ngoài khoản giới hạn"))
+        for each in self:
+            if each.bsd_tl_tt < 0 or each.bsd_tl_tt > 100:
+                raise UserError(_("Giá trị nhập nằm ngoài khoản giới hạn"))
 
     @api.constrains('bsd_ngay_thang')
     def _constraint_ngay_thang(self):
@@ -359,9 +344,29 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
 
     @api.constrains('bsd_stt', 'bsd_cs_tt_id')
     def _constrains_cs_tt(self):
-        list_ct = self.bsd_cs_tt_id.bsd_ct_ids.mapped('bsd_stt')
-        if len(set(list_ct)) < len(list_ct):
-            raise UserError(_("Sô thứ tự trùng.\nVui lòng kiểm tra lại thông tin"))
+        for each in self:
+            list_ct = each.bsd_cs_tt_id.bsd_ct_ids.mapped('bsd_stt')
+            if len(set(list_ct)) < len(list_ct):
+                raise UserError(_("Sô thứ tự trùng.\nVui lòng kiểm tra lại thông tin"))
+
+    @api.model
+    def create(self, vals):
+        res = super(BsdChinhSachThanhToanChiTiet, self).create(vals)
+        for each in res:
+            tong_tl_tt = 0
+            for dot in each.bsd_cs_tt_id.bsd_ct_ids:
+                if dot.bsd_cach_tinh != 'td':
+                    tong_tl_tt += dot.bsd_tl_tt
+                else:
+                    if dot.bsd_lap_lai == '0':
+                        tong_tl_tt += dot.bsd_tl_tt
+                    else:
+                        tong_tl_tt += dot.bsd_tl_tt * dot.bsd_so_dot
+            _logger.debug("Kiểm tra tỉ lệ thanh toán")
+            _logger.debug(tong_tl_tt)
+            if tong_tl_tt > 100:
+                raise UserError(_('Tỷ lệ thanh toán đã vượt 100%, {0}%'.format(tong_tl_tt)))
+        return res
 
     def action_xac_nhan(self):
         pass

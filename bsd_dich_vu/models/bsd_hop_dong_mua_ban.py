@@ -211,11 +211,47 @@ class BsdHopDongMuaBan(models.Model):
     bsd_tien_tt_hd = fields.Monetary(string="Tiền thanh toán HĐ", help="Tiền thanh toán hợp đồng")
     bsd_ngay_cd_hd = fields.Date(string="Ngày chấm dứt hợp đồng")
     bsd_so_ds_td = fields.Integer(string="# DS theo dõi", compute='_compute_ds_td')
+    bsd_so_pl_pttt = fields.Integer(string="# PL PTTT", compute='_compute_pl_pttt')
+
+    def _compute_pl_pttt(self):
+        for each in self:
+            pl_pttt = self.env['bsd.pl_pttt'].search([('bsd_hd_ban_id', '=', self.id)])
+            each.bsd_so_pl_pttt = len(pl_pttt)
 
     def _compute_ds_td(self):
         for each in self:
             ds_td = self.env['bsd.ds_td'].search([('bsd_hd_ban_id', '=', self.id)])
             each.bsd_so_ds_td = len(ds_td)
+
+    def action_view_pl_pttt(self):
+        action = self.env.ref('bsd_dich_vu.bsd_pl_pttt_action').read()[0]
+
+        pl_pttt = self.env['bsd.pl_pttt'].search([('bsd_hd_ban_id', '=', self.id)])
+        if len(pl_pttt) > 1:
+            action['domain'] = [('id', 'in', pl_pttt.ids)]
+        elif pl_pttt:
+            form_view = [(self.env.ref('bsd_dich_vu.bsd_pl_pttt_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = pl_pttt.id
+        return action
+
+    def action_view_ds_td(self):
+        action = self.env.ref('bsd_dich_vu.bsd_ds_td_action').read()[0]
+
+        ds_td = self.env['bsd.ds_td'].search([('bsd_hd_ban_id', '=', self.id)])
+        if len(ds_td) > 1:
+            action['domain'] = [('id', 'in', ds_td.ids)]
+        elif ds_td:
+            form_view = [(self.env.ref('bsd_dich_vu.bsd_ds_td_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = ds_td.id
+        return action
 
     def action_view_ds_td(self):
         action = self.env.ref('bsd_dich_vu.bsd_ds_td_action').read()[0]
@@ -261,6 +297,13 @@ class BsdHopDongMuaBan(models.Model):
             'default_bsd_tl_phat': tl_phat,
             'default_bsd_nhom': 'dvkh',
         }
+        return action
+
+    # Tính năng tạo phụ lục thay đổi phương thức thanh toán
+    def action_tao_pl_pttt(self):
+        action = self.env.ref('bsd_dich_vu.bsd_pl_pttt_action_popup').read()[0]
+        action['context'] = {'default_bsd_hd_ban_id': self.id,
+                             'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id}
         return action
 
     # Tên hiện thị record

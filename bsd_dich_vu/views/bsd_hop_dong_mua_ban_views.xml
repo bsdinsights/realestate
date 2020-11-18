@@ -64,13 +64,22 @@
                     <button string="Theo dõi"
                             name="action_tao_ds_tt"
                             states="ht_dc,tt_dot1,da_ky_ttdc,du_dk,da_ky,dang_tt"
-                            comfirm="Bạn có chắc muốn tạo theo dõi thanh lý hợp đồng?"
                             type="object"
+                            class="oe_highlight"
+                            />
+                    <button string="Tạo PL PTTT"
+                            name="action_tao_pl_pttt"
+                            attrs="{'invisible':[('bsd_ngay_ky_hdb', '=', False)]}"
+                            type="object"
+                            class="oe_highlight"
                             />
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <button name="action_view_pl_pttt" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_pl_pttt', '=', 0)]}">
+                            <field name="bsd_so_pl_pttt" widget="statinfo" string="PL PTTT"/>
+                        </button>
                         <button name="action_view_ds_td" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_ds_td', '=', 0)]}">
                             <field name="bsd_so_ds_td" widget="statinfo" string="DS theo dõi"/>
                         </button>

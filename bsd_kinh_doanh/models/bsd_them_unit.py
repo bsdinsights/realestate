@@ -257,6 +257,6 @@ class BsdDotMoBanCB(models.Model):
 class ProductPriceListItem(models.Model):
     _inherit = 'product.pricelist.item'
 
-    bsd_them_unit_id = fields.Many2one('bsd.them_unit', string="Phiếu thêm Sản phẩm", readonly=True)
+    bsd_them_unit_id = fields.Many2one('bsd.them_unit', string="Phiếu thêm SP", readonly=True)
 
 

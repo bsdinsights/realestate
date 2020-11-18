@@ -16,8 +16,7 @@ class BsdBaoGiaLTT(models.Model):
     bsd_ngay_hh_tt = fields.Date(string="Hạn thanh toán", help="Thời hạn thanh toán của đợt thanh toán")
     bsd_tien_dot_tt = fields.Monetary(string="Số tiền", help="Tiền thanh toán của đợt thanh toán",
                                       required=True)
-    bsd_tl_tt = fields.Float(string="Tỷ lệ TT", help="Tỷ lệ thanh toán hợp đồng mua bán",
-                             related='bsd_cs_tt_ct_id.bsd_tl_tt', store=True)
+    bsd_tl_tt = fields.Float(string="Tỷ lệ TT", help="Tỷ lệ thanh toán hợp đồng mua bán", readonly=True)
     bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc", readonly=True)
     bsd_thanh_toan = fields.Selection([('chua_tt', 'Chưa thanh toán'),
                                        ('dang_tt', 'Đang thanh toán'),

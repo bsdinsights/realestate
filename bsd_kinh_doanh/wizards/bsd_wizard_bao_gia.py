@@ -38,7 +38,6 @@ class BsdBaoGiaChonCK(models.TransientModel):
     def default_get(self, fields_list):
         res = super(BsdBaoGiaChonCK, self).default_get(fields_list)
         bao_gia = self.env['bsd.bao_gia'].browse(self._context.get('active_ids', []))
-
         res.update({
             'bsd_bao_gia_id': bao_gia.id,
             'bsd_dot_mb_id': bao_gia.bsd_dot_mb_id.id,

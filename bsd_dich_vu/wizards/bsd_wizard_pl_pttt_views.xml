@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_wizard_ky_pl_pttt_form">
+        <field name="name">bsd.wizard.ky_pl_pttt.form</field>
+        <field name="model">bsd.wizard.ky_pl_pttt</field>
+        <field name="arch" type="xml">
+            <form string="Ký phụ lục hợp đồng">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_pl_pttt_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ngay_ky_pl"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_ky_pl_pttt_action">
+        <field name="name">Ký phụ lục thay đổi PTTT</field>
+        <field name="res_model">bsd.wizard.ky_pl_pttt</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
+    
+    <record model="ir.ui.view" id="bsd_wizard_khong_duyet_pl_pttt_form">
+        <field name="name">bsd.wizard.khong_duyet_pl_pttt.form</field>
+        <field name="model">bsd.wizard.khong_duyet_pl_pttt</field>
+        <field name="arch" type="xml">
+            <form string="Ghi nhận lý do">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_pl_pttt_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ly_do"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_khong_duyet_pl_pttt_action">
+        <field name="name">Ghi nhận lý do</field>
+        <field name="res_model">bsd.wizard.khong_duyet_pl_pttt</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>    
+</odoo>
