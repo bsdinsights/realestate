@@ -418,13 +418,13 @@ class BsdHopDongMuaBan(models.Model):
         # Lấy chiết khấu đặt biệt đã duyệt
         for ck_db in self.bsd_ck_db_ids.filtered(lambda c: c.state == 'duyet'):
             if ck_db.bsd_cach_tinh == 'tien':
-                bsd_tien_ck = ck_db.bsd_tien_ck
+                bsd_tien_ck = ck_db.bsd_tien
             else:
                 bsd_tien_ck = ck_db.bsd_tl_ck * (self.bsd_gia_ban + self.bsd_tien_bg) / 100
                 bsd_tien_ck = float_round(bsd_tien_ck, 0)
             self.env['bsd.ps_gd_ck'].create({
-                'bsd_ma_ck': ck_db.bsd_ma_ck_db,
-                'bsd_ten_ck': ck_db.bsd_ten_ck_db,
+                'bsd_ma': ck_db.bsd_ma_ck_db,
+                'bsd_ten': ck_db.bsd_ten_ck_db,
                 'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
                 'bsd_hd_ban_id': self.id,
                 'bsd_du_an_id': self.bsd_du_an_id.id,
