@@ -757,6 +757,20 @@
                                 </tree>
                             </field>
                         </page>
+                        <page string="Chiết khấu giao dịch">
+                            <field name="bsd_ps_gd_ck_ids">
+                                <tree>
+                                    <field name="bsd_ma"/>
+                                    <field name="bsd_ten"/>
+                                    <field name="bsd_tien"/>
+                                    <field name="bsd_tl_ck"/>
+                                    <field name="bsd_tien_ck" sum="Tổng tiền CK"/>
+                                    <field name="state"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="company_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
                 <div class="oe_chatter">

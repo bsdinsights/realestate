@@ -2,7 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
-import datetime
+from odoo.tools.float_utils import float_round
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -53,6 +53,7 @@ class BsdHopDongMuaBan(models.Model):
             each.bsd_thang_pql = each.bsd_dat_coc_id.bsd_thang_pql
             each.bsd_tien_pql = each.bsd_dat_coc_id.bsd_tien_pql
             each.bsd_co_ttdc = each.bsd_dat_coc_id.bsd_co_ttdc
+            each.bsd_tien_ck = each.bsd_dat_coc_id.bsd_tien_ck
 
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
@@ -207,6 +208,8 @@ class BsdHopDongMuaBan(models.Model):
     bsd_so_ds_td = fields.Integer(string="# DS theo dõi", compute='_compute_ds_td')
     bsd_so_pl_pttt = fields.Integer(string="# PL PTTT", compute='_compute_pl_pttt')
 
+    bsd_ps_gd_ck_ids = fields.One2many('bsd.ps_gd_ck', 'bsd_hd_ban_id', string="Chiết khấu giao dịch", readonly=True)
+
     def _compute_pl_pttt(self):
         for each in self:
             pl_pttt = self.env['bsd.pl_pttt'].search([('bsd_hd_ban_id', '=', self.id)])
@@ -230,21 +233,6 @@ class BsdHopDongMuaBan(models.Model):
             else:
                 action['views'] = form_view
             action['res_id'] = pl_pttt.id
-        return action
-
-    def action_view_ds_td(self):
-        action = self.env.ref('bsd_dich_vu.bsd_ds_td_action').read()[0]
-
-        ds_td = self.env['bsd.ds_td'].search([('bsd_hd_ban_id', '=', self.id)])
-        if len(ds_td) > 1:
-            action['domain'] = [('id', 'in', ds_td.ids)]
-        elif ds_td:
-            form_view = [(self.env.ref('bsd_dich_vu.bsd_ds_td_form').id, 'form')]
-            if 'views' in action:
-                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
-            else:
-                action['views'] = form_view
-            action['res_id'] = ds_td.id
         return action
 
     def action_view_ds_td(self):
@@ -414,6 +402,7 @@ class BsdHopDongMuaBan(models.Model):
                 bsd_tien_ck = ck.bsd_tien_ck
             else:
                 bsd_tien_ck = ck.bsd_tl_ck * (self.bsd_gia_ban + self.bsd_tien_bg) / 100
+                bsd_tien_ck = float_round(bsd_tien_ck, 0)
             self.env['bsd.ps_gd_ck'].create({
                 'bsd_ma': ck.bsd_ma_ck,
                 'bsd_ten': ck.bsd_ten_ck,
@@ -432,6 +421,7 @@ class BsdHopDongMuaBan(models.Model):
                 bsd_tien_ck = ck_db.bsd_tien_ck
             else:
                 bsd_tien_ck = ck_db.bsd_tl_ck * (self.bsd_gia_ban + self.bsd_tien_bg) / 100
+                bsd_tien_ck = float_round(bsd_tien_ck, 0)
             self.env['bsd.ps_gd_ck'].create({
                 'bsd_ma_ck': ck_db.bsd_ma_ck_db,
                 'bsd_ten_ck': ck_db.bsd_ten_ck_db,

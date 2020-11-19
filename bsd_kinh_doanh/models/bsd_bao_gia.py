@@ -273,7 +273,7 @@ class BsdBaoGia(models.Model):
                     tien_ps_ck += ck.bsd_tl_ck * \
                                        (each.bsd_gia_ban + each.bsd_tien_bg) / 100
                 else:
-                    tien_ps_ck += each.bsd_tien
+                    tien_ps_ck += ck.bsd_tien
             for ck_db in each.bsd_ck_db_ids.filtered(lambda t: t.state == 'duyet'):
                 if ck_db.bsd_cach_tinh == 'phan_tram':
                     tien_ps_ck += ck_db.bsd_tl_ck * (each.bsd_gia_ban + each.bsd_tien_bg) / 100
