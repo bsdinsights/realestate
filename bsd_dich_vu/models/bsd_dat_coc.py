@@ -15,15 +15,12 @@ class BsdDatCoc(models.Model):
 
     # Tạo hợp đồng mua bán
     def action_tao_hd_mb(self):
-        _logger.debug("Tạo HĐ")
         context = {
             'default_bsd_khach_hang_id': self.bsd_nguoi_dd_id.id,
             'default_bsd_dat_coc_id': self.id,
         }
         action = self.env.ref('bsd_dich_vu.bsd_hd_ban_action_popup').read()[0]
         action['context'] = context
-        _logger.debug(action)
-        _logger.debug(action)
         return action
 
     def _compute_hd_ban(self):

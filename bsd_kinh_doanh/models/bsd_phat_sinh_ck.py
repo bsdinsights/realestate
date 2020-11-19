@@ -28,11 +28,8 @@ class BsdPsCk(models.Model):
     bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng chiết khấu",
                                related="bsd_chiet_khau_id.bsd_den_ngay", store=True)
     bsd_cach_tinh = fields.Selection(related="bsd_chiet_khau_id.bsd_cach_tinh", store=True)
-    bsd_tien = fields.Monetary(string="Tiền", help="Tiền chiết khấu được hưởng")
-    bsd_tl_ck = fields.Float(string="Tỷ lệ chiết khấu", help="Tỷ lệ chiết khấu được hưởng")
-    bsd_tien_ck = fields.Monetary(string="Tiền chiết khấu",
-                                  compute="_compute_tien_ck", store=True,
-                                  help="Tiền bàn giao theo chiết khấu")
+    bsd_tien = fields.Monetary(string="Tiền CK", help="Tiền chiết khấu được hưởng")
+    bsd_tl_ck = fields.Float(string="Tỷ lệ CK", help="Tỷ lệ chiết khấu được hưởng")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 

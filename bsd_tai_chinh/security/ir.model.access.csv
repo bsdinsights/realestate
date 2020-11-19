@@ -8,7 +8,6 @@ bsd_giam_no_manager,Điều chỉnh giảm công nợ khách hàng,model_bsd_gia
 bsd_tang_no_manager,Điều chỉnh tăng công nợ khách hàng,model_bsd_tang_no,bsd_tai_chinh.group_manager,1,1,1,1
 bsd_chuyen_tien_manager,Chuyển tiền khách hàng,model_bsd_chuyen_tien,bsd_tai_chinh.group_manager,1,1,1,1
 bsd_hoan_tien_manager,Hoàn tiền khách hàng,model_bsd_hoan_tien,bsd_tai_chinh.group_manager,1,1,1,1
-bsd_ps_gd_ck_manager, Phát sinh giao dịch chiết khấu,model_bsd_ps_gd_ck,bsd_tai_chinh.group_manager,1,1,1,1
 bsd_phi_ps_manager,Phí phát sinh,model_bsd_phi_ps,bsd_tai_chinh.group_manager,1,1,1,1
 bsd_lai_phat_manager,Lãi phạt,model_bsd_lai_phat,bsd_tai_chinh.group_manager,1,1,1,1
 

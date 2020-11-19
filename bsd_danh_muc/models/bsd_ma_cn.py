@@ -67,7 +67,7 @@ class BsdMaBoChungTu(models.Model):
                                     ('bsd.chuyen_tien', 'Chuyển tiền'),
                                     ('bsd.pl_dsh', 'Phụ lục đồng sở hữu'),
                                     ('bsd.pl_pttt', 'Phụ lục phương thức thanh toán'),
-                                    ('bsd.ps_gd_ck', 'Giao dịch chiết khấu'),
+                                    ('bsd.ps_gd_ck', 'Chiết khấu giao dịch'),
                                     ('bsd.ps_gd_km', 'Giao dịch khuyến mãi')],
                                    string="Loại chứng từ", help="Loại chứng từ được đặt mã", required=True,
                                    readonly=True,

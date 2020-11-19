@@ -24,8 +24,6 @@ class BsdKyDC(models.TransientModel):
         })
         # tính lại ngày hạn thanh toán
         self.bsd_dat_coc_id.tinh_lai_han_tt()
-        # Ghi nhận giao dịch chiết khấu
-        self.bsd_dat_coc_id.tao_gd_chiet_khau()
 
 
 class BsdHuyDC(models.TransientModel):

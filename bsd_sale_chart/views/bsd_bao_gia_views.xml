@@ -252,7 +252,6 @@
                                     <field name="bsd_tl_ck" readonly="1"/>
                                     <field name="bsd_tien" invisible="1"/>
                                     <field name="bsd_tl_ck" invisible="1"/>
-                                    <field name="bsd_tien_ck" sum="Tổng tiền chiết khấu"/>
                                     <field name="currency_id" invisible="1"/>
                                     <field name="company_id" invisible="1"/>
                                 </tree>
@@ -271,7 +270,6 @@
                                     <field name="bsd_cach_tinh"/>
                                     <field name="bsd_tien"/>
                                     <field name="bsd_tl_ck"/>
-                                    <field name="bsd_tien_ck"/>
                                     <field name="state"/>
                                     <button icon="fa-pencil"
                                             name="action_xac_nhan"

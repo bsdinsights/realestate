@@ -10,6 +10,7 @@ bsd_giu_cho_manager, Phiếu giữ chỗ,model_bsd_giu_cho,bsd_kinh_doanh.group_
 bsd_bao_gia_manager, Bảng tính giá,model_bsd_bao_gia,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_bao_gia_km_manager, Thông tin khuyến mãi bảng tính giá,model_bsd_bao_gia_km,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_ps_ck_manager, Phát sinh chiết khấu thương mại,model_bsd_ps_ck,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_ps_gd_ck_manager, Phát sinh giao dịch chiết khấu,model_bsd_ps_gd_ck,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_ban_giao_manager,Thông tin bàn giao cho bảng tính giá,model_bsd_ban_giao,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_lich_thanh_toan_manager, Lịch thanh toán cho bảng tính giá,model_bsd_lich_thanh_toan,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_dat_coc_manager, Phiếu đặt cọc,model_bsd_dat_coc,bsd_kinh_doanh.group_manager,1,1,1,1

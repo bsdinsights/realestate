@@ -25,3 +25,4 @@ from . import bsd_quan_tam
 from . import bsd_thay_doi_nguoi_ky_ttdd_hd
 from . import bsd_gia_han_gc
 from . import bsd_dong_so_huu
+from . import bsd_chiet_khau_giao_dich

@@ -440,7 +440,6 @@
                                     <field name="bsd_tl_ck" readonly="1"/>
                                     <field name="bsd_tien" invisible="1"/>
                                     <field name="bsd_tl_ck" invisible="1"/>
-                                    <field name="bsd_tien_ck" sum="Tổng tiền chiết khấu"/>
                                     <field name="currency_id" invisible="1"/>
                                     <field name="company_id" invisible="1"/>
                                 </tree>
@@ -458,7 +457,6 @@
                                     <field name="bsd_cach_tinh"/>
                                     <field name="bsd_tien"/>
                                     <field name="bsd_tl_ck"/>
-                                    <field name="bsd_tien_ck"/>
                                     <field name="currency_id"/>
                                     <field name="company_id"/>
                                     <templates>
@@ -502,12 +500,6 @@
                                                             <span>Phần trăm: <field name="bsd_tl_ck"/> %</span>
                                                         </t>
                                                     </div>
-                                                    <div class="col-6">
-                                                         <span class="float-right text-right">Tiền chiết khấu:
-                                                             <field name="bsd_tien_ck"
-                                                                    widget="monetary"
-                                                                    options="{'currency_field': 'currency_id'}"/></span>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </t>
@@ -527,7 +519,6 @@
                                     <field name="bsd_cach_tinh"/>
                                     <field name="bsd_tien"/>
                                     <field name="bsd_tl_ck"/>
-                                    <field name="bsd_tien_ck"/>
                                     <field name="state"/>
                                     <button name="action_xet_duyet"
                                             string="Xét duyệt"
@@ -543,7 +534,6 @@
                                     <field name="bsd_cach_tinh"/>
                                     <field name="bsd_tien"/>
                                     <field name="bsd_tl_ck"/>
-                                    <field name="bsd_tien_ck"/>
                                     <field name="state"/>
                                     <templates>
                                         <t t-name="kanban-box">
@@ -572,12 +562,6 @@
                                                         <t t-else="">
                                                             <span>Phần trăm: <field name="bsd_tl_ck"/> %</span>
                                                         </t>
-                                                    </div>
-                                                    <div class="col-6">
-                                                         <span class="float-right text-right">Tiền chiết khấu:
-                                                             <field name="bsd_tien_ck"
-                                                                    widget="monetary"
-                                                                    options="{'currency_field': 'currency_id'}"/></span>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -953,7 +937,6 @@
                                     <field name="bsd_tl_ck" readonly="1"/>
                                     <field name="bsd_tien" invisible="1"/>
                                     <field name="bsd_tl_ck" invisible="1"/>
-                                    <field name="bsd_tien_ck" sum="Tổng tiền chiết khấu"/>
                                     <field name="currency_id" invisible="1"/>
                                     <field name="company_id" invisible="1"/>
                                 </tree>
@@ -971,7 +954,6 @@
                                     <field name="bsd_cach_tinh"/>
                                     <field name="bsd_tien"/>
                                     <field name="bsd_tl_ck"/>
-                                    <field name="bsd_tien_ck"/>
                                     <field name="state"/>
                                     <button icon="fa-pencil"
                                             name="action_xac_nhan"
@@ -1048,14 +1030,13 @@
                             <field name="bsd_loai_ck"/>
                             <field name="bsd_ma_ck"/>
                             <field name="bsd_chiet_khau_id"/>
+                            <field name="bsd_tu_ngay"/>
+                            <field name="bsd_den_ngay"/>
+                        </group>
+                        <group>
                             <field name="bsd_cach_tinh"/>
                             <field name="bsd_tien" attrs="{'invisible':[('bsd_cach_tinh', '=', 'phan_tram')]}"/>
                             <field name="bsd_tl_ck" attrs="{'invisible':[('bsd_cach_tinh', '=', 'tien')]}"/>
-                        </group>
-                        <group>
-                            <field name="bsd_tu_ngay"/>
-                            <field name="bsd_den_ngay"/>
-                            <field name="bsd_tien_ck"/>
                             <field name="bsd_bao_gia_id"/>
                             <field name="bsd_dat_coc_id"/>
                         </group>

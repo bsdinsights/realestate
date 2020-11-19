@@ -77,6 +77,7 @@ class BsdDatCoc(models.Model):
         self.bsd_tien_pql = self.bsd_bao_gia_id.bsd_tien_pql
         self.bsd_thue_id = self.bsd_bao_gia_id.bsd_thue_id
         self.bsd_co_ttdc = self.bsd_bao_gia_id.bsd_du_an_id.bsd_hd_coc
+        self.bsd_tien_ck = self.bsd_bao_gia_id.bsd_tien_ck
 
     # Hết thông tin load từ báo giá
     bsd_ten_sp = fields.Char(related="bsd_unit_id.name", store=True)
@@ -91,13 +92,7 @@ class BsdDatCoc(models.Model):
                                  digits=(12, 2))
     bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì",
                               related="bsd_unit_id.bsd_tl_pbt", store=True)
-    bsd_tien_ck = fields.Monetary(string="Chiết khấu", help="Tổng tiền chiết khấu", compute="_compute_tien_ck", store=True)
-
-    @api.depends('bsd_ps_ck_ids.bsd_tien_ck', 'bsd_ck_db_ids.bsd_tien_ck', 'bsd_ck_db_ids.state', 'bsd_ck_db_ids')
-    def _compute_tien_ck(self):
-        for each in self:
-            tien_ck_db = sum(each.bsd_ck_db_ids.filtered(lambda t: t.state == 'duyet').mapped('bsd_tien_ck'))
-            each.bsd_tien_ck = sum(each.bsd_ps_ck_ids.mapped('bsd_tien_ck')) + tien_ck_db
+    bsd_tien_ck = fields.Monetary(string="Chiết khấu", help="Tổng tiền chiết khấu", store=True)
 
     bsd_tien_bg = fields.Monetary(string="Giá trị ĐKBG", help="Tổng tiền bàn giao",
                                   compute='_compute_tien_bg', store=True)
@@ -376,34 +371,6 @@ class BsdDatCoc(models.Model):
                 dot.bsd_child_ids.write({
                     'bsd_ngay_hh_tt': dot.bsd_ngay_hh_tt,
                 })
-
-    # KD.10.08 Tự động cập nhật giao dịch chiết khấu
-    def tao_gd_chiet_khau(self):
-        # Lấy chiết khấu chung, nội bộ, lịch thanh toán
-        for gd_ck in self.bsd_ps_ck_ids:
-            ck = gd_ck.bsd_chiet_khau_id
-            self.env['bsd.ps_gd_ck'].create({
-                'bsd_ma_ck': ck.bsd_ma_ck,
-                'bsd_ten_ck': ck.bsd_ten_ck,
-                'bsd_dat_coc_id': self.id,
-                'bsd_unit_id': self.bsd_unit_id.id,
-                'bsd_loai_ck': ck.bsd_loai_ck,
-                'bsd_tl_ck': ck.bsd_tl_ck,
-                'bsd_tien': ck.bsd_tien_ck,
-                'bsd_tien_ck': gd_ck.bsd_tien_ck,
-            })
-        # Lấy chiết khấu đặt biệt đã duyệt
-        for ck_db in self.bsd_ck_db_ids.filtered(lambda c: c.state == 'duyet'):
-            self.env['bsd.ps_gd_ck'].create({
-                'bsd_ma_ck': ck_db.bsd_ma_ck_db,
-                'bsd_ten_ck': ck_db.bsd_ten_ck_db,
-                'bsd_dat_coc_id': self.id,
-                'bsd_unit_id': self.bsd_unit_id.id,
-                'bsd_loai_ck': 'dac_biet',
-                'bsd_tl_ck': ck_db.bsd_tl_ck,
-                'bsd_tien': ck_db.bsd_tien,
-                'bsd_tien_ck': ck_db.bsd_tien_ck,
-            })
 
     # Override hàm search name của odoo
     @api.model

@@ -27,9 +27,6 @@ class BsdChietKhauDacBiet(models.Model):
     bsd_tien = fields.Monetary(string="Tiền", help="Tiền chiết khấu được hưởng",
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
-    bsd_tien_ck = fields.Monetary(string="Tiền chiết khấu",
-                                  compute="_compute_tien_ck", store=True,
-                                  help="Tiền bàn giao theo chiết khấu")
     bsd_tl_ck = fields.Float(string="Tỷ lệ chiết khấu", help="Tỷ lệ chiết khấu được hưởng",
                              readonly=True,
                              states={'nhap': [('readonly', False)]})
@@ -73,14 +70,6 @@ class BsdChietKhauDacBiet(models.Model):
         self.bsd_cs_tt_id = self.bsd_bao_gia_id.bsd_cs_tt_id
         self.bsd_tien_gc = self.bsd_bao_gia_id.bsd_tien_gc
         self.bsd_tien_dc = self.bsd_bao_gia_id.bsd_tien_dc
-
-    @api.depends('bsd_cach_tinh', 'bsd_tien', 'bsd_tl_ck', 'bsd_bao_gia_id.bsd_gia_ban')
-    def _compute_tien_ck(self):
-        for each in self:
-            if each.bsd_cach_tinh == 'phan_tram':
-                each.bsd_tien_ck = each.bsd_tl_ck * each.bsd_bao_gia_id.bsd_gia_ban / 100
-            else:
-                each.bsd_tien_ck = each.bsd_tien
 
     # DM.13.01 Xác nhận chiết khấu
     def action_xac_nhan(self):

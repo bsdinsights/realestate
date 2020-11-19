@@ -260,12 +260,26 @@ class BsdBaoGia(models.Model):
         for each in self:
             each.bsd_tien_bg = sum(each.bsd_bg_ids.mapped('bsd_tien_bg'))
 
-    @api.depends('bsd_ps_ck_ids.bsd_tien_ck', 'bsd_ck_db_ids.bsd_tien_ck', 'bsd_ck_db_ids.state', 'bsd_ck_db_ids')
+    @api.depends('bsd_ps_ck_ids.bsd_tien', 'bsd_ps_ck_ids.bsd_tl_ck', 'bsd_ps_ck_ids.bsd_cach_tinh',
+                 'bsd_ck_db_ids.bsd_tien', 'bsd_ck_db_ids.bsd_tl_ck', 'bsd_ck_db_ids.bsd_cach_tinh',
+                 'bsd_ck_db_ids.state',
+                 'bsd_gia_ban')
     def _compute_tien_ck(self):
         for each in self:
             _logger.debug("tính tiền chiết khấu")
-            tien_ck_db = sum(each.bsd_ck_db_ids.filtered(lambda t: t.state == 'duyet').mapped('bsd_tien_ck'))
-            each.bsd_tien_ck = sum(each.bsd_ps_ck_ids.mapped('bsd_tien_ck')) + tien_ck_db
+            tien_ps_ck = 0
+            for ck in each.bsd_ps_ck_ids:
+                if ck.bsd_cach_tinh == 'phan_tram':
+                    tien_ps_ck += ck.bsd_tl_ck * \
+                                       (each.bsd_gia_ban + each.bsd_tien_bg) / 100
+                else:
+                    tien_ps_ck += each.bsd_tien
+            for ck_db in each.bsd_ck_db_ids.filtered(lambda t: t.state == 'duyet'):
+                if ck_db.bsd_cach_tinh == 'phan_tram':
+                    tien_ps_ck += ck_db.bsd_tl_ck * (each.bsd_gia_ban + each.bsd_tien_bg) / 100
+                else:
+                    tien_ps_ck += ck_db.bsd_tien
+            each.bsd_tien_ck = tien_ps_ck
 
     @api.depends('bsd_gia_ban', 'bsd_tien_ck', 'bsd_tien_bg')
     def _compute_gia_truoc_thue(self):

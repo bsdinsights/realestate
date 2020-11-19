@@ -102,13 +102,7 @@ class BsdHopDongMuaBan(models.Model):
         self.bsd_tien_qsdd = self.bsd_unit_id.bsd_tien_qsdd
 
     # Tính giá
-    bsd_tien_ck = fields.Monetary(string="Chiết khấu", help="Tổng tiền chiết khấu", compute="_compute_tien_ck", store=True)
-
-    @api.depends('bsd_ps_ck_ids.bsd_tien_ck', 'bsd_ck_db_ids.bsd_tien_ck', 'bsd_ck_db_ids.state', 'bsd_ck_db_ids')
-    def _compute_tien_ck(self):
-        for each in self:
-            tien_ck_db = sum(each.bsd_ck_db_ids.filtered(lambda t: t.state == 'duyet').mapped('bsd_tien_ck'))
-            each.bsd_tien_ck = sum(each.bsd_ps_ck_ids.mapped('bsd_tien_ck')) + tien_ck_db
+    bsd_tien_ck = fields.Monetary(string="Chiết khấu", help="Tổng tiền chiết khấu", readonly=True)
 
     bsd_tien_bg = fields.Monetary(string="Giá trị ĐKBG", help="Tổng tiền bàn giao",
                                   compute='_compute_tien_bg', store=True)
@@ -400,10 +394,56 @@ class BsdHopDongMuaBan(models.Model):
         self.write({
             'state': 'ht_dc',
         })
+        # Cập nhật trạng thái hoàn thành cho đặt cọc
+        self.bsd_dat_coc_id.write({
+            'state': 'hoan_thanh',
+        })
+        # Ghi nhận giao dịch chiết khấu
+        self.tao_gd_chiet_khau()
         # Cập nhật tiền đặt cọc vào trong đợt 1 của hợp đồng
         self.bsd_ltt_ids.filtered(lambda x: x.bsd_stt == 1).write({"bsd_tien_dc": self.bsd_dat_coc_id.bsd_tien_dc})
         self.tao_cong_no_dot_tt()
         self.tao_cong_no_phi()
+
+    # Tạo chiết khấu giao dịch cho hợp đồng
+    def tao_gd_chiet_khau(self):
+        # Lấy chiết khấu chung, nội bộ, lịch thanh toán
+        for gd_ck in self.bsd_ps_ck_ids:
+            ck = gd_ck.bsd_chiet_khau_id
+            if gd_ck.bsd_cach_tinh == 'tien':
+                bsd_tien_ck = ck.bsd_tien_ck
+            else:
+                bsd_tien_ck = ck.bsd_tl_ck * (self.bsd_gia_ban + self.bsd_tien_bg) / 100
+            self.env['bsd.ps_gd_ck'].create({
+                'bsd_ma': ck.bsd_ma_ck,
+                'bsd_ten': ck.bsd_ten_ck,
+                'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
+                'bsd_hd_ban_id': self.id,
+                'bsd_du_an_id': self.bsd_du_an_id.id,
+                'bsd_unit_id': self.bsd_unit_id.id,
+                'bsd_loai_ps': ck.bsd_loai_ck,
+                'bsd_tl_ck': ck.bsd_tl_ck,
+                'bsd_tien': ck.bsd_tien_ck,
+                'bsd_tien_ck': bsd_tien_ck,
+            })
+        # Lấy chiết khấu đặt biệt đã duyệt
+        for ck_db in self.bsd_ck_db_ids.filtered(lambda c: c.state == 'duyet'):
+            if ck_db.bsd_cach_tinh == 'tien':
+                bsd_tien_ck = ck_db.bsd_tien_ck
+            else:
+                bsd_tien_ck = ck_db.bsd_tl_ck * (self.bsd_gia_ban + self.bsd_tien_bg) / 100
+            self.env['bsd.ps_gd_ck'].create({
+                'bsd_ma_ck': ck_db.bsd_ma_ck_db,
+                'bsd_ten_ck': ck_db.bsd_ten_ck_db,
+                'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
+                'bsd_hd_ban_id': self.id,
+                'bsd_du_an_id': self.bsd_du_an_id.id,
+                'bsd_unit_id': self.bsd_unit_id.id,
+                'bsd_loai_ps': 'dac_biet',
+                'bsd_tl_ck': ck_db.bsd_tl_ck,
+                'bsd_tien': ck_db.bsd_tien,
+                'bsd_tien_ck': bsd_tien_ck,
+            })
 
     # DV.01.02 Xác nhận In hợp đồng
     def action_in_hd(self):
@@ -569,9 +609,9 @@ class BsdHopDongMuaBan(models.Model):
             'bsd_dot_pql_ids': [(6, 0, ids_pql)],
             'bsd_dong_sh_ids': [(6, 0, ids_dsh)]
         })
-        res.bsd_dat_coc_id.write({
-            'state': 'hoan_thanh',
-        })
+        # res.bsd_dat_coc_id.write({
+        #     'state': 'hoan_thanh',
+        # })
         return res
 
 
@@ -667,3 +707,9 @@ class ResPartner(models.Model):
         }
         action['context'] = context
         return action
+
+
+class BsdChietKhauGiaoDich(models.Model):
+    _inherit = 'bsd.ps_gd_ck'
+
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string='Hợp đồng', help="Hợp đồng")

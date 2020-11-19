@@ -6,43 +6,22 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button string="Hoàn tiền"
-                            name="action_hoan_tien"
-                            type="object"
-                            confirm="Bạn có muốn tạo phiếu Hoàn tiền cho giao dịch này không?"
-                            attrs="{'invisible':['|',('state','!=','xac_nhan'),('bsd_loai_ck','not in',['ttth','ttn'])]}"
-                            class="oe_highlight"/>
-                    <button string="Điều chỉnh giảm"
-                            name="action_dc_giam"
-                            type="object"
-                            confirm="Bạn có muốn tạo phiếu Điều chỉnh giảm công nợ cho giao dịch này không?"
-                            attrs="{'invisible':['|',('state','!=','xac_nhan'),('bsd_loai_ck','not in',['ttth','ttn'])]}"
-                            class="oe_highlight"/>
                     <button string="Hủy"
                             name="action_huy"
                             type="object"
-                            attrs="{'invisible':['|',('state','!=','xac_nhan'),('bsd_loai_ck','not in',['ttth','ttn'])]}"
+                            attrs="{'invisible':['|',('state','!=','xac_nhan'),('bsd_loai_ps','not in',['ttth','ttn'])]}"
                             confirm="Bạn có muốn Hủy giao dịch chiết khấu này không?"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button name="action_view_hoan_tien" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_hoan_tien', '=', 0)]}">
-                            <field name="bsd_so_hoan_tien" widget="statinfo" string="Hoàn tiền"/>
-                        </button>
-                        <button name="action_view_giam_no" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_giam_no', '=', 0)]}">
-                            <field name="bsd_so_giam_no" widget="statinfo" string="Điều chỉnh giảm"/>
-                        </button>
-                    </div>
                     <group>
                         <group>
-                            <field name="bsd_ma_ht"/>
-                            <field name="bsd_ma_ck"/>
-                            <field name="bsd_ten_ck"/>
+                            <field name="bsd_ma"/>
+                            <field name="bsd_ten"/>
                             <field name="bsd_dat_coc_id"/>
                             <field name="bsd_unit_id"/>
                             <field name="bsd_hd_ban_id"/>
-                            <field name="bsd_loai_ck"/>
+                            <field name="bsd_loai_ps"/>
                         </group>
                         <group>
                             <field name="bsd_ltt_id"/>
@@ -73,11 +52,12 @@
         <field name="model">bsd.ps_gd_ck</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="bsd_ma_ck"/>
-                <field name="bsd_ten_ck"/>
+                <field name="bsd_ma"/>
+                <field name="bsd_ten"/>
                 <field name="bsd_unit_id"/>
                 <field name="bsd_hd_ban_id"/>
                 <field name="bsd_dat_coc_id"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
@@ -87,13 +67,13 @@
         <field name="model">bsd.ps_gd_ck</field>
         <field name="arch" type="xml">
             <search>
-                <field name="bsd_ma_ck"/>
-                <field name="bsd_ten_ck"/>
+                <field name="bsd_ma"/>
+                <field name="bsd_ten"/>
                 <field name="bsd_unit_id"/>
                 <field name="bsd_hd_ban_id"/>
                 <field name="bsd_dat_coc_id"/>
                 <group expand="0" string="Group by">
-                    <filter string="Loại chiết khấu" name="bsd_loai_ck" domain="[]" context="{'group_by': 'bsd_loai_ck'}"/>
+                    <filter string="Loại" name="bsd_loai_ps" domain="[]" context="{'group_by': 'bsd_loai_ps'}"/>
                     <filter string="Hợp đồng" name="bsd_hd_ban_id" domain="[]" context="{'group_by': 'bsd_hd_ban_id'}"/>
                     <filter string="Đặt cọc" name="bsd_dat_coc_id" domain="[]" context="{'group_by':'bsd_dat_coc_id'}"/>
                     <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by':'bsd_unit_id'}"/>
@@ -103,11 +83,11 @@
     </record>
 
     <record model="ir.actions.act_window" id="bsd_ps_gd_ck_action">
-        <field name="name">Giao dịch chiết khấu</field>
+        <field name="name">Chiết khấu giao dịch</field>
         <field name="res_model">bsd.ps_gd_ck</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
-            <p>Giao dịch chiết khấu</p>
+            <p>Chiết khấu giao dịch</p>
         </field>
     </record>
 </odoo>
