@@ -73,12 +73,21 @@
                             type="object"
                             class="oe_highlight"
                             />
+                    <button string="Tạo PL CKTM"
+                            name="action_tao_pl_cktm"
+                            attrs="{'invisible':[('bsd_ngay_ky_hdb', '=', False)]}"
+                            type="object"
+                            class="oe_highlight"
+                            />
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_pl_pttt" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_pl_pttt', '=', 0)]}">
                             <field name="bsd_so_pl_pttt" widget="statinfo" string="PL PTTT"/>
+                        </button>
+                        <button name="action_view_pl_cktm" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_pl_cktm', '=', 0)]}">
+                            <field name="bsd_so_pl_cktm" widget="statinfo" string="PL CKTM"/>
                         </button>
                         <button name="action_view_ds_td" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_ds_td', '=', 0)]}">
                             <field name="bsd_so_ds_td" widget="statinfo" string="DS theo dõi"/>
@@ -971,8 +980,8 @@
                                     <field name="bsd_tien_bg"/>
                                     <field name="bsd_gia_truoc_thue"/>
                                     <field name="bsd_tien_qsdd" readonly="1" force_save="1"/>
-                                    <field name="bsd_tien_thue"/>
-                                    <field name="bsd_tien_pbt"/>
+                                    <field name="bsd_tien_thue" readonly="1" force_save="1"/>
+                                    <field name="bsd_tien_pbt" readonly="1" force_save="1"/>
                                     <field name="bsd_tong_gia"/>
                                 </group>
                             </group>

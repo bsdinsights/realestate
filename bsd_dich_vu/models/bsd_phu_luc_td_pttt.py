@@ -49,7 +49,7 @@ class BsdPLPTTT(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_ngay_ky_pl = fields.Date(string="Ngày ký PL", help="Ngày ký phụ lục thay đổi PTTT", readonly=True)
+    bsd_ngay_ky_pl = fields.Date(string="Ngày ký PL", help="Ngày ký phụ lục hợp đồng", readonly=True)
     bsd_nguoi_xn_ky_id = fields.Many2one('res.users', string="Người xác nhận ký",
                                          help="Người xác nhận ký phụ lục hợp đồng", readonly=True)
     bsd_ngay_duyet = fields.Date(string="Ngày duyệt", help="Ngày duyệt phụ lục hợp đồng", readonly=True)
@@ -59,7 +59,7 @@ class BsdPLPTTT(models.Model):
     bsd_nguoi_huy_id = fields.Many2one('res.users', string="Người hủy", readonly=True)
     bsd_ngay_huy = fields.Date(string="Ngày hủy", help="Ngày hủy phụ lục hợp đồng", readonly=True)
     bsd_ly_do_huy = fields.Char(string="Lý do hủy", help="Lý do hủy phụ lục", readonly=True)
-    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),('duyet', 'Duyệt'),
+    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'), ('duyet', 'Duyệt'),
                               ('dk_pl', 'Đã ký phụ lục'), ('huy', 'Hủy')],
                              string="Trạng thái", help="Trạng thái", required=True, default="nhap", tracking=1)
     bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="PTTT mới", help="Phương thức thanh toán mới",
@@ -137,7 +137,7 @@ class BsdPLPTTT(models.Model):
     # Ký phụ lục hợp đồng
     def action_ky_pl(self):
         if self.state == 'duyet':
-            action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_pl_pttt_action').read()[0]
+            action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_pl_action').read()[0]
             return action
 
     def thay_doi_pttt(self):
@@ -164,12 +164,12 @@ class BsdPLPTTT(models.Model):
     # Hủy phụ lục hợp đồng
     def action_huy(self):
         if self.state in ['nhap', 'xac_nhan']:
-            return self.env.ref('bsd_dich_vu.bsd_wizard_huy_pl_pttt_action').read()[0]
+            return self.env.ref('bsd_dich_vu.bsd_wizard_huy_pl_action').read()[0]
 
     # Không duyệt phụ lục hợp đồng
     def action_khong_duyet(self):
         if self.state == 'xac_nhan':
-            action = self.env.ref('bsd_dich_vu.bsd_wizard_khong_duyet_pl_pttt_action').read()[0]
+            action = self.env.ref('bsd_dich_vu.bsd_wizard_khong_duyet_pl_action').read()[0]
             return action
 
     @api.model

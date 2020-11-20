@@ -35,10 +35,10 @@ class BsdHopDongMuaBan(models.Model):
                                  store=True, digits=(12, 2))
     bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="Phương thức TT", tracking=2,
                                    help="Phương thức thanh toán", required=True)
-    bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán")
-    bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý",
+    bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán", readonly=True)
+    bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý", readonly=True,
                                    help="Số tháng đóng phí quản lý trước đợt bàn giao tạm thời hoặc bàn giao chính thức")
-    bsd_tien_pql = fields.Monetary(string="Phí quản lý", help="Số tiền phí quản lý cần đóng")
+    bsd_tien_pql = fields.Monetary(string="Phí quản lý", help="Số tiền phí quản lý cần đóng", readonly=True)
 
     # Cập nhật đồng sở hữu từ báo giá, đợt mở bán , dự án, sản phẩm
     @api.onchange('bsd_dat_coc_id')
@@ -54,6 +54,8 @@ class BsdHopDongMuaBan(models.Model):
             each.bsd_tien_pql = each.bsd_dat_coc_id.bsd_tien_pql
             each.bsd_co_ttdc = each.bsd_dat_coc_id.bsd_co_ttdc
             each.bsd_tien_ck = each.bsd_dat_coc_id.bsd_tien_ck
+            each.bsd_tien_thue = each.bsd_dat_coc_id.bsd_tien_thue
+            each.bsd_tien_pbt = each.bsd_dat_coc_id.bsd_tien_pbt
 
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
@@ -124,9 +126,9 @@ class BsdHopDongMuaBan(models.Model):
 
     bsd_tien_thue = fields.Monetary(string="Tiền thuế",
                                     help="""Tiền thuế: Giá bán trước thuế trừ giá trị QSDĐ, nhân với thuế suất""",
-                                    related="bsd_dat_coc_id.bsd_tien_thue", store=True)
+                                    readonly=True)
     bsd_tien_pbt = fields.Monetary(string="Phí bảo trì", help="Phí bảo trì: bằng % phí bảo trì nhân với giá bán",
-                                   related="bsd_dat_coc_id.bsd_tien_pbt", store=True)
+                                   readonly=True)
     bsd_tong_gia = fields.Monetary(string="Tổng giá bán",
                                    help="""Tổng giá bán: bằng Giá bán trước thuế cộng Tiền thuế cộng phí bảo trì""",
                                    compute="_compute_tong_gia", store=True)
@@ -207,13 +209,18 @@ class BsdHopDongMuaBan(models.Model):
     bsd_ngay_cd_hd = fields.Date(string="Ngày chấm dứt hợp đồng")
     bsd_so_ds_td = fields.Integer(string="# DS theo dõi", compute='_compute_ds_td')
     bsd_so_pl_pttt = fields.Integer(string="# PL PTTT", compute='_compute_pl_pttt')
-
+    bsd_so_pl_cktm = fields.Integer(string="# PL CKTM", compute='_compute_pl_cktm')
     bsd_ps_gd_ck_ids = fields.One2many('bsd.ps_gd_ck', 'bsd_hd_ban_id', string="Chiết khấu giao dịch", readonly=True)
 
     def _compute_pl_pttt(self):
         for each in self:
             pl_pttt = self.env['bsd.pl_pttt'].search([('bsd_hd_ban_id', '=', self.id)])
             each.bsd_so_pl_pttt = len(pl_pttt)
+
+    def _compute_pl_cktm(self):
+        for each in self:
+            pl_cktm = self.env['bsd.pl_cktm'].search([('bsd_hd_ban_id', '=', self.id)])
+            each.bsd_so_pl_cktm = len(pl_cktm)
 
     def _compute_ds_td(self):
         for each in self:
@@ -233,6 +240,21 @@ class BsdHopDongMuaBan(models.Model):
             else:
                 action['views'] = form_view
             action['res_id'] = pl_pttt.id
+        return action
+
+    def action_view_pl_cktm(self):
+        action = self.env.ref('bsd_dich_vu.bsd_pl_cktm_action').read()[0]
+
+        pl_cktm = self.env['bsd.pl_cktm'].search([('bsd_hd_ban_id', '=', self.id)])
+        if len(pl_cktm) > 1:
+            action['domain'] = [('id', 'in', pl_cktm.ids)]
+        elif pl_cktm:
+            form_view = [(self.env.ref('bsd_dich_vu.bsd_pl_cktm_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = pl_cktm.id
         return action
 
     def action_view_ds_td(self):
@@ -288,6 +310,13 @@ class BsdHopDongMuaBan(models.Model):
                              'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id}
         return action
 
+    # Tính năng tạo phụ lục thay đổi chiết khấu thương mại
+    def action_tao_pl_cktm(self):
+        action = self.env.ref('bsd_dich_vu.bsd_pl_cktm_action_popup').read()[0]
+        action['context'] = {'default_bsd_hd_ban_id': self.id,
+                             'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id}
+        return action
+
     # Tên hiện thị record
     def name_get(self):
         res = []
@@ -326,13 +355,10 @@ class BsdHopDongMuaBan(models.Model):
         })
         # Tính lại tiền các đợt chưa thanh toán
         dot_da_tt = self.bsd_ltt_ids.filtered(lambda x: x.bsd_thanh_toan in ['da_tt', 'dang_tt'])
-        _logger.debug(dot_da_tt)
         tong_tien_phai_tt = self.bsd_tong_gia - self.bsd_tien_pbt - sum(dot_da_tt.mapped('bsd_tien_dot_tt'))
-        _logger.debug(tong_tien_phai_tt)
         dot_phai_tt = self.bsd_ltt_ids\
             .filtered(lambda x: x.bsd_thanh_toan == 'chua_tt')\
             .sorted('bsd_stt')
-        _logger.debug(dot_phai_tt)
         tl_con_tt = 0
         for dot in dot_phai_tt:
             tl_con_tt += dot.bsd_cs_tt_ct_id.bsd_tl_tt

@@ -35,6 +35,11 @@
                   sequence='102'
                   action='bsd_pl_pttt_action'
                   parent='bsd_phu_luc_menu_2'/>
+        <menuitem id="bsd_pl_cktm_menu_action_2"
+                  name="Thay đổi CKTM"
+                  sequence='103'
+                  action='bsd_pl_cktm_action'
+                  parent='bsd_phu_luc_menu_2'/>
         <menuitem id="bsd_pl_tti_menu_action_2"
                   name="Thay đổi thông tin"
                   sequence='107'
