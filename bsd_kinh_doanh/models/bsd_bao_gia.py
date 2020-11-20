@@ -335,6 +335,7 @@ class BsdBaoGia(models.Model):
             'bsd_ten_dtt': 'Đợt ' + str(stt),
             'bsd_ngay_hh_tt': ngay_hh_tt,
             'bsd_tien_dot_tt': tien_dot_tt,
+            'bsd_tl_tt': dot_tt.bsd_tl_tt,
             'bsd_tinh_pql': tinh_pql,
             'bsd_tinh_pbt': tinh_pbt,
             'bsd_ngay_ah': ngay_ah_cd,

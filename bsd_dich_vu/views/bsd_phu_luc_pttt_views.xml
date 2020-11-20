@@ -19,9 +19,15 @@
                             attrs="{'invisible': ['|',('id', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
+                    <button string="Duyệt"
+                            name="action_duyet"
+                            comfirm="Bạn có chắc muốn duyệt phụ lục hợp đồng này?"
+                            states="xac_nhan"
+                            type="object"
+                            class="oe_highlight"/>
                     <button string="Ký phụ lục"
                             name="action_ky_pl"
-                            states="xac_nhan"
+                            states="duyet"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Không duyệt"
@@ -31,8 +37,8 @@
                             class="oe_highlight"/>
                     <button string="Hủy"
                             name="action_huy"
-                            confirm="Bạn có chắc hủy phụ lục hợp đồng"
-                            states="xac_nhan"
+                            states="nhap,xac_nhan"
+                            ttrs="{'invisible': ['|',('id', '=',False)]}"
                             type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
@@ -59,13 +65,19 @@
                                     <field name="bsd_dien_giai"/>
                                 </group>
                             </group>
-                            <group string="XÁC NHẬN">
+                            <group string="XÉT DUYỆT">
                                 <group>
                                     <field name="bsd_ngay_xn"/>
                                     <field name="bsd_nguoi_xn_id"/>
+                                    <field name="bsd_ngay_huy"/>
+                                    <field name="bsd_nguoi_huy_id"/>
+                                    <field name="bsd_ly_do_huy"/>
                                 </group>
                                 <group>
+                                    <field name="bsd_ngay_duyet"/>
+                                    <field name="bsd_nguoi_duyet_id"/>
                                     <field name="bsd_ngay_ky_pl"/>
+                                    <field name="bsd_nguoi_xn_ky_id"/>
                                     <field name="bsd_ly_do"/>
                                 </group>
                             </group>                            
