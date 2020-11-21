@@ -40,6 +40,11 @@
                   sequence='103'
                   action='bsd_pl_cktm_action'
                   parent='bsd_phu_luc_menu_2'/>
+        <menuitem id="bsd_pl_dkbg_menu_action_2"
+                  name="Thay đổi ĐKBG"
+                  sequence='104'
+                  action='bsd_pl_dkbg_action'
+                  parent='bsd_phu_luc_menu_2'/>
         <menuitem id="bsd_pl_tti_menu_action_2"
                   name="Thay đổi thông tin"
                   sequence='107'

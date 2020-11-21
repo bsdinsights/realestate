@@ -79,6 +79,12 @@
                             type="object"
                             class="oe_highlight"
                             />
+                    <button string="Tạo PL ĐKBG"
+                            name="action_tao_pl_dkbg"
+                            attrs="{'invisible':[('bsd_ngay_ky_hdb', '=', False)]}"
+                            type="object"
+                            class="oe_highlight"
+                            />
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
@@ -88,6 +94,9 @@
                         </button>
                         <button name="action_view_pl_cktm" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_pl_cktm', '=', 0)]}">
                             <field name="bsd_so_pl_cktm" widget="statinfo" string="PL CKTM"/>
+                        </button>
+                        <button name="action_view_pl_dkbg" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_pl_dkbg', '=', 0)]}">
+                            <field name="bsd_so_pl_dkbg" widget="statinfo" string="PL ĐKBG"/>
                         </button>
                         <button name="action_view_ds_td" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_ds_td', '=', 0)]}">
                             <field name="bsd_so_ds_td" widget="statinfo" string="DS theo dõi"/>

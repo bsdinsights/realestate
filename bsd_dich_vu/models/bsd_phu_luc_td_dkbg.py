@@ -7,20 +7,20 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class BsdPLCKTM(models.Model):
-    _name = 'bsd.pl_cktm'
-    _description = "Phụ lục thay đổi chiết khấu thương mại"
+class BsdPLDKBG(models.Model):
+    _name = 'bsd.pl_dkbg'
+    _description = "Phụ lục thay đổi điều kiện bàn giao"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma'
 
-    bsd_ma = fields.Char(string="Mã", help="Mã phụ lục hợp đồng thay đổi chiết khấu thương mại",
+    bsd_ma = fields.Char(string="Mã", help="Mã phụ lục hợp đồng thay đổi điều kiện bàn giao",
                          required=True, readonly=True,
                          copy=False, default='/')
     _sql_constraints = [
         ('bsd_ma_unique', 'unique (bsd_ma)',
          'Mã phụ lục hợp đồng đã tồn tại !'),
     ]
-    bsd_ngay = fields.Datetime(string="Ngày", help="Ngày tạo phụ lục hợp đồng thay đổi chiết khấu thương mại",
+    bsd_ngay = fields.Datetime(string="Ngày", help="Ngày tạo phụ lục hợp đồng thay đổi điều kiện bàn giao",
                                required=True,
                                default=lambda self: fields.Datetime.now(),
                                readonly=True,
@@ -32,14 +32,19 @@ class BsdPLCKTM(models.Model):
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
     bsd_cs_tt_ht_id = fields.Many2one('bsd.cs_tt', string="PTTT hiện tại", readonly=True, required=True)
-    bsd_ltt_ht_ids = fields.Many2many('bsd.lich_thanh_toan', relation='lich_ht_cktm_rel', string="Lịch thanh toán ht", readonly=True)
+    bsd_ltt_ht_ids = fields.Many2many('bsd.lich_thanh_toan', relation='lich_ht_dkbg_rel', string="Lịch thanh toán ht", readonly=True)
+    bsd_bg_ht_ids = fields.Many2many('bsd.ban_giao', relation='dkbg_pl_ht_rel',
+                                     readonly=True, string="ĐKBG hiện tại")
 
     @api.onchange('bsd_hd_ban_id')
     def _onchange_hd(self):
         self.bsd_du_an_id = self.bsd_hd_ban_id.bsd_du_an_id
         self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
         self.bsd_cs_tt_ht_id = self.bsd_hd_ban_id.bsd_cs_tt_id
-        self.update({'bsd_ltt_ht_ids': [(5,), (6, 0, self.bsd_hd_ban_id.bsd_ltt_ids.ids)]})
+        self.update({
+            'bsd_ltt_ht_ids': [(5,), (6, 0, self.bsd_hd_ban_id.bsd_ltt_ids.ids)],
+            'bsd_bg_ht_ids': [(5,), (6, 0, self.bsd_hd_ban_id.bsd_bg_ids.ids)],
+        })
         self.bsd_gia_ban_ht = self.bsd_hd_ban_id.bsd_gia_ban
         self.bsd_tien_ck_ht = self.bsd_hd_ban_id.bsd_tien_ck
         self.bsd_tien_bg_ht = self.bsd_hd_ban_id.bsd_tien_bg
@@ -51,7 +56,6 @@ class BsdPLCKTM(models.Model):
         self.bsd_tien_da_tt = sum(self.bsd_hd_ban_id.bsd_ltt_ids
                                   .filtered(lambda l: l.bsd_thanh_toan != 'chua_tt').mapped('bsd_tien_dot_tt'))
         self.bsd_thue_suat = self.bsd_hd_ban_id.bsd_thue_suat
-        self.bsd_tl_ck_ht = float_round(self.bsd_tien_ck_ht / (self.bsd_gia_ban_ht + self.bsd_tien_bg_ht) * 100,2)
 
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án",
                                    help="Tên dự án", required=True, readonly=True)
@@ -63,14 +67,9 @@ class BsdPLCKTM(models.Model):
                                 states={'nhap': [('readonly', False)]})
     bsd_tien_da_tt = fields.Monetary(string="Tiền đã TT", help="Tổng tiền đợt đã và đang thanh toán 1 phần của hợp đồng",
                                      readonly=True)
-    bsd_tl_ck_ht = fields.Float(string="Tỷ lệ CK hiện tại",
-                                help="Tỷ lệ chiết khấu hiện tại của hợp đồng", readonly=True)
     bsd_tien_ck_ht = fields.Monetary(string="Tiền CK hiện tại", help="Tiền chiết khấu hiện tại", readonly=True)
-    bsd_tl_ck_moi = fields.Float(string="Tỷ lệ CK mới", help="Tỷ lệ chiết khấu mới của hợp đồng",
-                                 readonly=True,
-                                 states={'nhap': [('readonly', False)]})
-    bsd_tien_ck_moi = fields.Monetary(string="Tiền CK mới", help="Tiền chiết khấu mới của hợp đồng",
-                                      readonly=True,
+    bsd_bg_moi_ids = fields.Many2many('bsd.ban_giao', relation='dkbg_pl_moi_rel',
+                                      readonly=True, string="ĐKBG mới",
                                       states={'nhap': [('readonly', False)]})
 
     # field giá hiện tại
@@ -93,6 +92,7 @@ class BsdPLCKTM(models.Model):
                                       readonly=True)
     # field giá bán mới
     bsd_gia_ban_moi = fields.Monetary(string="Giá bán", help="Giá bán", readonly=True)
+    bsd_tien_ck_moi = fields.Monetary(string="Tiền CK hiện tại", help="Tiền chiết khấu", readonly=True)
     bsd_tien_bg_moi = fields.Monetary(string="Giá trị ĐKBG", help="Tổng tiền bàn giao", readonly=True)
     bsd_gia_truoc_thue_moi = fields.Monetary(string="Giá bán trước thuế",
                                              help="""Giá bán trước thuế: bằng giá bán cộng tiền bàn giao trừ 
@@ -124,7 +124,7 @@ class BsdPLCKTM(models.Model):
                               ('dk_pl', 'Đã ký phụ lục'), ('huy', 'Hủy')],
                              string="Trạng thái", help="Trạng thái", required=True, default="nhap", tracking=1)
 
-    bsd_ltt_ids = fields.Many2many('bsd.lich_thanh_toan', relation='lich_moi_cktt_rel', string="Lịch thanh toán",
+    bsd_ltt_ids = fields.Many2many('bsd.lich_thanh_toan', relation='lich_moi_dkbg_rel', string="Lịch thanh toán",
                                    readonly=True)
     bsd_ly_do = fields.Char(string="Lý do không duyệt", readonly=True, tracking=2)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
@@ -134,10 +134,6 @@ class BsdPLCKTM(models.Model):
                                   help="Tiền phát sinh do hết đợt thanh toán", readonly=True)
     bsd_tien_vuot = fields.Monetary(string="Tiền vượt HĐ",
                                     help="Khi số tiền đã thu lớn hơn tiền thanh toán hợp đồng mới", readonly=True)
-
-    @api.onchange('bsd_tl_ck_moi')
-    def _onchange_tl(self):
-        self.bsd_tien_ck_moi = self.bsd_tl_ck_moi * (self.bsd_gia_ban_moi + self.bsd_tien_bg_moi) / 100
 
     @api.depends('bsd_thue_suat', 'bsd_gia_truoc_thue_moi', 'bsd_tien_qsdd_moi')
     def _compute_tien_thue(self):
@@ -157,8 +153,8 @@ class BsdPLCKTM(models.Model):
     def action_tao_pl(self):
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Phụ lục thay đổi CKTM',
-            'res_model': 'bsd.pl_cktm',
+            'name': 'Phụ lục thay đổi dkbg',
+            'res_model': 'bsd.pl_dkbg',
             'res_id': self.id,
             'target': 'current',
             'view_mode': 'form'
@@ -269,7 +265,7 @@ class BsdPLCKTM(models.Model):
             action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_pl_action').read()[0]
             return action
 
-    def thay_doi_cktm(self):
+    def thay_doi_dkbg(self):
         # Cập nhật lại tỷ lệ chiết khấu của hợp đồng
         self.bsd_hd_ban_id.write({
             'bsd_tien_ck': self.bsd_tien_ck_moi,
@@ -281,7 +277,7 @@ class BsdPLCKTM(models.Model):
         # Tạo phát sinh chiết khấu giao dịch với phụ lục
         self.env['bsd.ps_gd_ck'].create({
             'bsd_ten': 'Phụ lục ' + self.bsd_ma + ' - ' + str(self.bsd_tl_ck_moi) + '%',
-            'bsd_pl_cktm_id': self.id,
+            'bsd_pl_dkbg_id': self.id,
             'bsd_du_an_id': self.bsd_du_an_id.id,
             'bsd_unit_id': self.bsd_unit_id.id,
             'bsd_loai_ps': 'pl_ck',
@@ -341,10 +337,10 @@ class BsdPLCKTM(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có quy định mã phụ lục thay đổi chiết khấu thương mại.\n'
+            raise UserError(_('Dự án chưa có quy định mã phụ lục thay đổi điều kiện bàn giao.\n'
                               'Vui lòng kiểm tra lại thông tin.'))
         vals['bsd_ma'] = sequence.next_by_id()
-        res = super(BsdPLCKTM, self).create(vals)
+        res = super(BsdPLDKBG, self).create(vals)
         res.write({
             'bsd_gia_ban_moi': res.bsd_gia_ban_ht,
             'bsd_tien_bg_moi': res.bsd_tien_bg_ht,
@@ -352,10 +348,3 @@ class BsdPLCKTM(models.Model):
             'bsd_tien_pbt_moi': res.bsd_tien_pbt_ht,
         })
         return res
-
-
-class BsdChietKhauGiaoDich(models.Model):
-    _inherit = 'bsd.ps_gd_ck'
-
-    bsd_pl_cktm_id = fields.Many2one('bsd.pl_cktm', string="Phụ lục",
-                                     help="Phụ lục thanh đổi chiết khấu thương mại")

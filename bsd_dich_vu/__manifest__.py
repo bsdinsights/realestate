@@ -20,6 +20,7 @@
         'views/bsd_phu_luc_dong_so_huu_views.xml',
         'views/bsd_phu_luc_pttt_views.xml',
         'views/bsd_phu_luc_cktm_views.xml',
+        'views/bsd_phu_luc_dkbg_views.xml',
         'views/bsd_dien_tich_thuc_te_views.xml',
         'views/bsd_phu_luc_thay_doi_thong_tin_views.xml',
         'views/bsd_kh_ca_nhan_views.xml',

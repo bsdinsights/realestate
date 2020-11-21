@@ -217,7 +217,9 @@ class BsdHopDongMuaBan(models.Model):
     bsd_so_ds_td = fields.Integer(string="# DS theo dõi", compute='_compute_ds_td')
     bsd_so_pl_pttt = fields.Integer(string="# PL PTTT", compute='_compute_pl_pttt')
     bsd_so_pl_cktm = fields.Integer(string="# PL CKTM", compute='_compute_pl_cktm')
-    bsd_ps_gd_ck_ids = fields.One2many('bsd.ps_gd_ck', 'bsd_hd_ban_id', string="Chiết khấu giao dịch", readonly=True)
+    bsd_so_pl_dkbg = fields.Integer(string="# PL ĐKBG", compute='_compute_pl_dkbg')
+    bsd_ps_gd_ck_ids = fields.One2many('bsd.ps_gd_ck', 'bsd_hd_ban_id', domain=[('state', '=', 'xac_nhan')],
+                                       string="Chiết khấu giao dịch", readonly=True)
 
     def _compute_pl_pttt(self):
         for each in self:
@@ -228,6 +230,11 @@ class BsdHopDongMuaBan(models.Model):
         for each in self:
             pl_cktm = self.env['bsd.pl_cktm'].search([('bsd_hd_ban_id', '=', self.id)])
             each.bsd_so_pl_cktm = len(pl_cktm)
+
+    def _compute_pl_dkbg(self):
+        for each in self:
+            pl_dkbg = self.env['bsd.pl_dkbg'].search([('bsd_hd_ban_id', '=', self.id)])
+            each.bsd_so_pl_dkbg = len(pl_dkbg)
 
     def _compute_ds_td(self):
         for each in self:
@@ -262,6 +269,21 @@ class BsdHopDongMuaBan(models.Model):
             else:
                 action['views'] = form_view
             action['res_id'] = pl_cktm.id
+        return action
+
+    def action_view_pl_dkbg(self):
+        action = self.env.ref('bsd_dich_vu.bsd_pl_dkbg_action').read()[0]
+
+        pl_dkbg = self.env['bsd.pl_dkbg'].search([('bsd_hd_ban_id', '=', self.id)])
+        if len(pl_dkbg) > 1:
+            action['domain'] = [('id', 'in', pl_dkbg.ids)]
+        elif pl_dkbg:
+            form_view = [(self.env.ref('bsd_dich_vu.bsd_pl_dkbg_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = pl_dkbg.id
         return action
 
     def action_view_ds_td(self):
@@ -320,6 +342,13 @@ class BsdHopDongMuaBan(models.Model):
     # Tính năng tạo phụ lục thay đổi chiết khấu thương mại
     def action_tao_pl_cktm(self):
         action = self.env.ref('bsd_dich_vu.bsd_pl_cktm_action_popup').read()[0]
+        action['context'] = {'default_bsd_hd_ban_id': self.id,
+                             'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id}
+        return action
+
+    # Tính năng tạo phụ lục thay đổi điều kiện bàn giao
+    def action_tao_pl_dkbg(self):
+        action = self.env.ref('bsd_dich_vu.bsd_pl_dkbg_action_popup').read()[0]
         action['context'] = {'default_bsd_hd_ban_id': self.id,
                              'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id}
         return action
