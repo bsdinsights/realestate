@@ -21,6 +21,7 @@
                             <field name="bsd_dat_coc_id"/>
                             <field name="bsd_unit_id"/>
                             <field name="bsd_hd_ban_id"/>
+                            <field name="bsd_pl_cktm_id"/>
                             <field name="bsd_loai_ps"/>
                         </group>
                         <group>

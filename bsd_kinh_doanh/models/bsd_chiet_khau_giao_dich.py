@@ -19,6 +19,7 @@ class BsdChietKhauGiaoDich(models.Model):
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Tên đặt cọc")
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True)
     bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", required=True)
+    bsd_chiet_khau_id = fields.Many2one('bsd.chiet_khau', string="Chiết khấu")
     bsd_loai_ps = fields.Selection([('chung', 'Chung'),
                                     ('noi_bo', 'Nội bộ'),
                                     ('mua_si', 'Mua sỉ'),
@@ -36,7 +37,7 @@ class BsdChietKhauGiaoDich(models.Model):
     bsd_tien_ck = fields.Monetary(string="Tổng tiền", help="Tổng tiền chiết khấu")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-    state = fields.Selection([('xac_nhan', 'Xác nhận'),
+    state = fields.Selection([('xac_nhan', 'Hiệu lực'),
                               ('huy', 'Hủy')], string="Trạng thái",
                              default='xac_nhan', tracking=1, help="Trạng thái", required=True)
 

@@ -36,7 +36,9 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Phí phát sinh">
                     <field name="bsd_phi_ps_ids">
-                        <tree>
+                        <tree decoration-warning="bsd_thanh_toan=='dang_tt'"
+                              decoration-info="bsd_thanh_toan=='da_tt'"
+                              decoration-danger="bsd_thanh_toan=='chua_tt'">
                             <field name="bsd_ma_ps"/>
                             <field name="bsd_ten_ps"/>
                             <field name="bsd_tong_tien"/>
@@ -44,6 +46,8 @@
                             <field name="bsd_tien_phai_tt"/>
                             <field name="bsd_thanh_toan"/>
                             <field name="state"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
                         </tree>
                     </field>
                 </page>

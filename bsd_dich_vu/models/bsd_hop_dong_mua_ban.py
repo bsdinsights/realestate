@@ -158,6 +158,13 @@ class BsdHopDongMuaBan(models.Model):
     bsd_bg_ids = fields.One2many('bsd.ban_giao', 'bsd_hd_ban_id', string="Điều kiện bàn giao", readonly=True)
     bsd_ltt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_hd_ban_id', string="Lịch thanh toán",
                                   readonly=True, domain=[('bsd_loai', '=', 'dtt')])
+
+    @api.constrains('bsd_ltt_ids')
+    def _constrains_ltt(self):
+        tl_tt = sum(self.bsd_ltt_ids.mapped('bsd_tl_tt'))
+        if tl_tt != 100:
+            raise UserError("Tỷ lệ thanh toán của hợp đồng không bằng 100%.\nVui lòng kiểm tra lại thông tin.")
+
     bsd_dot_pbt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_hd_ban_id', string="Đợt thu phí bảo trì",
                                       readonly=True, domain=[('bsd_loai', '=', 'pbt')])
     bsd_dot_pql_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_hd_ban_id', string="Đợt thu phí quản lý",
@@ -641,7 +648,7 @@ class BsdBaoGiaLTT(models.Model):
     _inherit = 'bsd.lich_thanh_toan'
     _rec_name = "bsd_ma_ht"
 
-    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True)
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True, copy=False)
     bsd_ma_ht = fields.Char(string="Mã hệ thống", help="Mã hệ thống", compute='_compute_ma_ht', store=True)
 
     @api.depends('bsd_hd_ban_id.bsd_ma_hd_ban', 'bsd_ten_dtt')

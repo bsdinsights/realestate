@@ -56,13 +56,13 @@ class BsdPhiPhatSinh(models.Model):
     bsd_tien_ps = fields.Monetary(string="Số tiền", help="Số tiền", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
-    bsd_tien_thue = fields.Monetary(string="Tiền thuế", help="Tiền thuế", required=True,
+    bsd_tien_thue = fields.Monetary(string="Tiền thuế", help="Tiền thuế",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
-    bsd_tien_tang = fields.Monetary(string="Điều chỉnh tăng", help="Số tiền điều chỉnh tăng", required=True,
+    bsd_tien_tang = fields.Monetary(string="Điều chỉnh tăng", help="Số tiền điều chỉnh tăng",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
-    bsd_tien_giam = fields.Monetary(string="Điều chỉnh giảm", help="Số tiền điều chỉnh giảm", required=True,
+    bsd_tien_giam = fields.Monetary(string="Điều chỉnh giảm", help="Số tiền điều chỉnh giảm",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
     bsd_tong_tien = fields.Monetary(string="Tổng tiền", help="Tổng tiền", compute='_compute_tong_tien')

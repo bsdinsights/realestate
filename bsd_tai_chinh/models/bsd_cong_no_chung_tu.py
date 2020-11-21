@@ -95,6 +95,9 @@ class BsdCongNoCT(models.Model):
                 self.bsd_dat_coc_id.cap_nhat_trang_thai()
 
         elif self.bsd_loai == 'pt_dtt':
+            # Kiểm tra đợt thanh toán đã có hạn thanh toán chưa
+            if not self.bsd_dot_tt_id.bsd_ngay_hh_tt:
+                raise UserError('Đợt thanh toán chưa có hạn thanh toán.\nVui lòng kiểm tra lại thông tin.')
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             if self.bsd_dot_tt_id.bsd_tien_dot_tt < tien:

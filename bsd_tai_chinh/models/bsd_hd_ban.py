@@ -110,10 +110,14 @@ class BsdHdBan(models.Model):
             return
         # Lấy đợt thanh toán ký hợp đồng
         dot_ky_hd = self.bsd_ltt_ids.filtered(lambda l: l.bsd_dot_ky_hd)
-        stt_dot_ky_hd = dot_ky_hd.bsd_stt
-        dot_sau_ky_hd = self.bsd_ltt_ids.filtered(lambda l: l.bsd_stt == stt_dot_ky_hd + 1)
+        # Lấy đợt dự ký bàn giao
+        dot_dkbg = self.bsd_ltt_ids.filtered(lambda l: l.bsd_ma_dtt == 'DKBG')
+        dot_sau_ky_hd = self.bsd_ltt_ids.filtered(lambda l: dot_ky_hd.bsd_stt < l.bsd_stt < dot_dkbg.bsd_stt)
         # Lấy đợt thanh toán sau ký hợp đồng
-        if dot_sau_ky_hd.bsd_thanh_toan == 'da_tt':
+        _logger.debug("123")
+        _logger.debug(dot_sau_ky_hd)
+        dot_state = dot_sau_ky_hd.mapped('bsd_thanh_toan')
+        if self.state == 'da_ky' and 'da_tt' in dot_state:
             self.write({
                 'state': 'dang_tt'
             })

@@ -126,9 +126,6 @@ class BsdBaoGiaLTT(models.Model):
         else:
             tien_ck = ck_ttn.bsd_chiet_khau_id.bsd_tl_ck / 100 * self.bsd_hd_ban_id.bsd_gia_truoc_thue
         # Tạo Giao dich chiết khấu
-        _logger.debug(self.bsd_ngay_tt.date())
-        _logger.debug(ck_ttn)
-        _logger.debug(ck_ttn.bsd_chiet_khau_id.bsd_ma_ck)
         self.env['bsd.ps_gd_ck'].create({
             'bsd_ma_ck': ck_ttn.bsd_chiet_khau_id.bsd_ma_ck,
             'bsd_ten_ck': ck_ttn.bsd_chiet_khau_id.bsd_ten_ck,

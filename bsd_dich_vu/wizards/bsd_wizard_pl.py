@@ -12,7 +12,6 @@ class BsdKyPL(models.TransientModel):
 
     @api.model
     def default_get(self, fields_list):
-        _logger.debug(self._context)
         res = super(BsdKyPL, self).default_get(fields_list)
         _logger.debug(self._context)
         if self._context.get('active_model', []) == 'bsd.pl_cktm':
@@ -35,12 +34,20 @@ class BsdKyPL(models.TransientModel):
     bsd_loai_pl = fields.Selection([('pttt', 'PTTT'), ('cktm', 'CKTM')])
 
     def action_xac_nhan(self):
-        self.bsd_pl_pttt_id.write({
-            'bsd_ngay_ky_pl': self.bsd_ngay_ky_pl,
-            'bsd_nguoi_xn_ky_id': self.env.uid,
-            'state': 'dk_pl',
-        })
-        self.bsd_pl_pttt_id.thay_doi_pttt()
+        if self.bsd_pl_pttt_id:
+            self.bsd_pl_pttt_id.write({
+                'bsd_ngay_ky_pl': self.bsd_ngay_ky_pl,
+                'bsd_nguoi_xn_ky_id': self.env.uid,
+                'state': 'dk_pl',
+            })
+            self.bsd_pl_pttt_id.thay_doi_pttt()
+        if self.bsd_pl_cktm_id:
+            self.bsd_pl_cktm_id.write({
+                'bsd_ngay_ky_pl': self.bsd_ngay_ky_pl,
+                'bsd_nguoi_xn_ky_id': self.env.uid,
+                'state': 'dk_pl',
+            })
+            self.bsd_pl_cktm_id.thay_doi_cktm()
 
 
 class BsdKhongDuyetPL(models.TransientModel):
