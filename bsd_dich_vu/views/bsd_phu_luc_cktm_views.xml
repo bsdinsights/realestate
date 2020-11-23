@@ -8,17 +8,20 @@
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
-                            states="nhap"
                             confirm="Bạn có muốn xác nhận phụ lục hợp đồng không?"
-                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            attrs="{'invisible': ['|', ('state', '!=', 'nhap'),
+                                                  '|', ('id', '=', False), ('bsd_da_co_lich', '=', False)]}"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Tạo lịch TT"
                             name="action_tao_lich_tt"
-                            states="nhap"
-                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            attrs="{'invisible': ['|',('id', '=',False),'|',('state','!=','nhap'),('bsd_da_co_lich','=',True)]}"
                             type="object"
                             class="oe_highlight"/>
+                    <button string="Xóa lịch TT"
+                            name="action_xoa_lich_tt"
+                            attrs="{'invisible': ['|',('id', '=',False),'|',('state','!=','nhap'),('bsd_da_co_lich','=',False)]}"
+                            type="object"/>
                     <button string="Duyệt"
                             name="action_duyet"
                             comfirm="Bạn có chắc muốn duyệt phụ lục hợp đồng này?"
@@ -47,6 +50,7 @@
                         <page string="Thông tin chung">
                             <group>
                                 <group>
+                                    <field name="bsd_da_co_lich" invisible="1"/>
                                     <field name="bsd_ma"/>
                                     <field name="bsd_ngay" readonly="1"/>
                                     <field name="bsd_khach_hang_id"
@@ -67,8 +71,12 @@
                                     <field name="bsd_tien_da_tt"/>
                                     <field name="bsd_tl_ck_ht"/>
                                     <field name="bsd_tien_ck_ht"/>
-                                    <field name="bsd_tl_ck_moi" required="1"/>
-                                    <field name="bsd_tien_ck_moi" required="1"/>
+                                    <field name="bsd_tl_ck_moi"
+                                           attrs="{'required':[('bsd_da_co_lich', '=', False)],
+                                                   'readonly':[('bsd_da_co_lich', '=', True)]}"/>
+                                    <field name="bsd_tien_ck_moi"
+                                           attrs="{'required':[('bsd_da_co_lich', '=', False)],
+                                                   'readonly':[('bsd_da_co_lich', '=', True)]}"/>
                                     <field name="bsd_dien_giai"/>
                                 </group>
                             </group>

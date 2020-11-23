@@ -6,9 +6,10 @@ bsd_pl_dsh_moi_manager,Đồng sở hữu mới,model_bsd_pl_dsh_moi,bsd_dich_vu
 bsd_pl_dsh_cu_manager,Đồng sở hữu,model_bsd_pl_dsh_cu,bsd_dich_vu.group_manager,1,1,1,1
 bsd_dt_tt_manager,Diện tích thông thủy thưc tế,model_bsd_dt_tt,bsd_dich_vu.group_manager,1,1,1,1
 bsd_pl_tti_manager,Phụ lục thay đổi thông tin,model_bsd_pl_tti,bsd_dich_vu.group_manager,1,1,1,1
-bsd_pl_pttt_manager,Phụ lục thanh đổi phương thức thanh toán,model_bsd_pl_pttt,bsd_dich_vu.group_manager,1,1,1,1
-bsd_pl_cktm_manager,Phụ lục thanh đổi chiết khấu thương mại,model_bsd_pl_cktm,bsd_dich_vu.group_manager,1,1,1,1
-bsd_pl_dkbg_manager,Phụ lục thanh đổi điều kiện bàn giao,model_bsd_pl_dkbg,bsd_dich_vu.group_manager,1,1,1,1
+bsd_pl_pttt_manager,Phụ lục thay đổi phương thức thanh toán,model_bsd_pl_pttt,bsd_dich_vu.group_manager,1,1,1,1
+bsd_pl_cktm_manager,Phụ lục thay đổi chiết khấu thương mại,model_bsd_pl_cktm,bsd_dich_vu.group_manager,1,1,1,1
+bsd_pl_dkbg_manager,Phụ lục thay đổi điều kiện bàn giao,model_bsd_pl_dkbg,bsd_dich_vu.group_manager,1,1,1,1
+bsd_pl_qsdd_manager,Phụ lục thay đổi giá trị QSDĐ,model_bsd_pl_qsdd,bsd_dich_vu.group_manager,1,1,1,1
 
 bsd_ps_gd_km_manager, Bảng phát sinh giao dịch khuyến mãi,model_bsd_ps_gd_km,bsd_kinh_doanh.group_manager,1,1,1,1
 bsd_hd_ban_cn_manager, Chuyển nhượng hợp đồng,model_bsd_hd_ban_cn,bsd_dich_vu.group_manager,1,1,1,1

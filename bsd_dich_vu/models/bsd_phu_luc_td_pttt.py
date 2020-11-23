@@ -70,6 +70,7 @@ class BsdPLPTTT(models.Model):
     bsd_ltt_ids = fields.Many2many('bsd.lich_thanh_toan', relation='lich_moi_rel', string="Lịch thanh toán",
                                    readonly=True)
     bsd_ly_do = fields.Char(string="Lý do không duyệt", readonly=True, tracking=2)
+    bsd_dot_ps_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt phát sinh")
 
     def action_tao_pl(self):
         return {
@@ -94,6 +95,9 @@ class BsdPLPTTT(models.Model):
     def action_tao_lich_tt(self):
         # Xóa đợt chưa thanh toán để tạo lại lịch
         self.bsd_ltt_ids.filtered(lambda x: x.bsd_thanh_toan == 'chua_tt').unlink()
+        # Xóa đợt phát sinh nếu có
+        if self.bsd_dot_ps_id:
+            self.bsd_dot_ps_id.unlink()
         # kiểm tra các đợt đã và đang thanh toán có nhiều hơn lịch thanh toán hiện tại hay ko
         # Lấy các đợt đã thanh toán tiền của lịch cũ
         old_paid = self.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_thanh_toan != 'chua_tt')
