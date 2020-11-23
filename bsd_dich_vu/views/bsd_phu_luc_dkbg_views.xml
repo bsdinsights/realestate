@@ -8,17 +8,26 @@
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
-                            states="nhap"
                             confirm="Bạn có muốn xác nhận phụ lục hợp đồng không?"
-                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            attrs="{'invisible': ['|', ('state', '!=', 'nhap'),
+                                                  '|', ('id', '=', False), ('bsd_da_co_lich', '=', False)]}"
                             type="object"
                             class="oe_highlight"/>
+                    <button type="object"
+                            string="Chọn ĐK bàn giao"
+                            class="oe_highlight"
+                            name="action_chon_dkbg"
+                            attrs="{'invisible': ['|', ('state', '!=', 'nhap'),
+                                                  '|', ('id', '=', False), ('bsd_da_co_lich', '=', True)]}"/>
                     <button string="Tạo lịch TT"
                             name="action_tao_lich_tt"
-                            states="nhap"
-                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            attrs="{'invisible': ['|',('id', '=',False),'|',('state','!=','nhap'),('bsd_da_co_lich','=',True)]}"
                             type="object"
                             class="oe_highlight"/>
+                    <button string="Xóa lịch TT"
+                            name="action_xoa_lich_tt"
+                            attrs="{'invisible': ['|',('id', '=',False),'|',('state','!=','nhap'),('bsd_da_co_lich','=',False)]}"
+                            type="object"/>
                     <button string="Duyệt"
                             name="action_duyet"
                             comfirm="Bạn có chắc muốn duyệt phụ lục hợp đồng này?"
@@ -47,6 +56,7 @@
                         <page string="Thông tin chung">
                             <group>
                                 <group>
+                                    <field name="bsd_da_co_lich" invisible="1"/>
                                     <field name="bsd_ma"/>
                                     <field name="bsd_ngay" readonly="1"/>
                                     <field name="bsd_khach_hang_id"
@@ -65,7 +75,12 @@
                                 <group>
                                     <field name="bsd_thue_suat"/>
                                     <field name="bsd_tien_da_tt"/>
-                                    <field name="bsd_bg_ht_ids" widget="many2many_tags"/>
+                                    <field name="bsd_bg_ht_ids"
+                                           context="{'show_info':True}"
+                                           widget="many2many_tags"/>
+                                    <field name="bsd_dkbg_moi_ids"
+                                           context="{'show_info':True}"
+                                           widget="many2many_tags"/>
                                     <field name="bsd_dien_giai"/>
                                 </group>
                             </group>
@@ -238,7 +253,8 @@
                                     <field name="bsd_cs_tt_ht_id" readonly="1" force_save="1"/>
                                     <field name="bsd_thue_suat" readonly="1" force_save="1"/>
                                     <field name="bsd_tien_da_tt" readonly="1" force_save="1"/>
-                                    <field name="bsd_bg_ht_ids" widget="many2many_tags"/>
+                                    <field name="bsd_bg_ht_ids" widget="many2many_tags"
+                                           readonly="1" force_save="1"/>
                                     <field name="bsd_dien_giai"/>
                                     <field name="company_id" invisible="1"/>
                                     <field name="currency_id" invisible="1"/>

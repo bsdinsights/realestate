@@ -395,6 +395,7 @@
                                     <field name="bsd_tien"/>
                                     <field name="bsd_ty_le"/>
                                     <field name="bsd_tien_bg" sum="Tổng tiền bàn giao"/>
+                                    <field name="state"/>
                                     <field name="currency_id" invisible="1"/>
                                     <field name="company_id" invisible="1"/>
                                 </tree>
@@ -1071,6 +1072,8 @@
                                     <field name="bsd_tien"/>
                                     <field name="bsd_ty_le"/>
                                     <field name="bsd_tien_bg" sum="Tổng tiền bàn giao"/>
+                                    <field name="state"/>
+                                    <field name="currency_id" invisible="1"/>
                                 </tree>
                             </field>
                         </page>

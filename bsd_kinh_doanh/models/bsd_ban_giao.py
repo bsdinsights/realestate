@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_round
 
 
 class BsdBanGiao(models.Model):
@@ -23,12 +24,15 @@ class BsdBanGiao(models.Model):
     bsd_gia_m2 = fields.Monetary(string="Đơn giá/ m2", help="Đơn giá/ m2 theo điều kiện bàn giao", readonly=True)
     bsd_tien = fields.Monetary(string="Số tiền", help="Số tiền thanh toán theo điều kiện bàn giao", readonly=True)
     bsd_ty_le = fields.Float(string="Phần trăm", help="Tỷ lệ thanh toán theo điều kiện bàn giao", readonly=True)
-    bsd_tien_bg = fields.Monetary(string="Tiền bàn giao ", help="Tiền thanh toán theo điều kiện bàn giao ",
-                                  compute="_compute_tien_bg", store=True)
-    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", help="Tên báo giá", required=True)
+    bsd_tien_bg = fields.Monetary(string="Tiền bàn giao ", help="Tiền thanh toán theo điều kiện bàn giao",
+                                  readonly=True)
+    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", help="Tên báo giá")
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="'Đặt cọc", help="Phiếu đặt cọc", readonly=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+    state = fields.Selection([('xac_nhan', 'Hiệu lực'),
+                              ('huy', 'Hủy')], string="Trạng thái",
+                             default='xac_nhan', tracking=1, help="Trạng thái", required=True)
 
     @api.onchange('bsd_bao_gia_id')
     def _onchange_dk_bg(self):
@@ -54,12 +58,18 @@ class BsdBanGiao(models.Model):
         self.bsd_tien = self.bsd_dk_bg_id.bsd_tien
         self.bsd_ty_le = self.bsd_dk_bg_id.bsd_ty_le
 
-    @api.depends('bsd_dk_tt', 'bsd_gia_m2', 'bsd_tien', 'bsd_ty_le')
-    def _compute_tien_bg(self):
-        for each in self:
-            if each.bsd_dk_tt == 'm2':
-                each.bsd_tien_bg = each.bsd_gia_m2 * each.bsd_bao_gia_id.bsd_dt_sd
-            elif each.bsd_dk_tt == 'tien':
-                each.bsd_tien_bg = each.bsd_tien
-            else:
-                each.bsd_tien_bg = each.bsd_ty_le * each.bsd_bao_gia_id.bsd_gia_ban / 100
+    @api.model_create_multi
+    def create(self, vals):
+        res = super(BsdBanGiao, self).create(vals)
+        # Cập nhật giá trị tiền bàn giao từ bảng tính giá
+        for each in res:
+            if each.bsd_bao_gia_id:
+                if each.bsd_dk_tt == 'm2':
+                    tien_bg = each.bsd_gia_m2 * each.bsd_bao_gia_id.bsd_dt_sd
+                elif each.bsd_dk_tt == 'tien':
+                    tien_bg = each.bsd_tien
+                else:
+                    tien_bg = each.bsd_ty_le * each.bsd_bao_gia_id.bsd_gia_ban / 100
+                each.write({
+                    'bsd_tien_bg': float_round(tien_bg, 0)
+                })

@@ -11,6 +11,7 @@
                             <field name="bsd_loai_pl" invisible="1"/>
                             <field name="bsd_pl_pttt_id" attrs="{'invisible':[('bsd_loai_pl', '!=','pttt')]}"/>
                             <field name="bsd_pl_cktm_id" attrs="{'invisible':[('bsd_loai_pl', '!=','cktm')]}"/>
+                            <field name="bsd_pl_dkbg_id" attrs="{'invisible':[('bsd_loai_pl', '!=','dkbg')]}"/>
                         </group>
                         <group>
                             <field name="bsd_ngay_ky_pl"/>
@@ -44,6 +45,7 @@
                             <field name="bsd_loai_pl" invisible="1"/>
                             <field name="bsd_pl_pttt_id" attrs="{'invisible':[('bsd_loai_pl', '!=','pttt')]}"/>
                             <field name="bsd_pl_cktm_id" attrs="{'invisible':[('bsd_loai_pl', '!=','cktm')]}"/>
+                            <field name="bsd_pl_dkbg_id" attrs="{'invisible':[('bsd_loai_pl', '!=','dkbg')]}"/>
                         </group>
                         <group>
                             <field name="bsd_ly_do"/>
@@ -77,6 +79,7 @@
                             <field name="bsd_loai_pl" invisible="1"/>
                             <field name="bsd_pl_pttt_id" attrs="{'invisible':[('bsd_loai_pl', '!=','pttt')]}"/>
                             <field name="bsd_pl_cktm_id" attrs="{'invisible':[('bsd_loai_pl', '!=','cktm')]}"/>
+                            <field name="bsd_pl_dkbg_id" attrs="{'invisible':[('bsd_loai_pl', '!=','dkbg')]}"/>
                         </group>
                         <group>
                             <field name="bsd_ly_do"/>
@@ -95,6 +98,37 @@
     <record model="ir.actions.act_window" id="bsd_wizard_huy_pl_action">
         <field name="name">Ghi nhận lý do hủy phụ lục</field>
         <field name="res_model">bsd.wizard.huy_pl</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_wizard_pl_chon_dkbg_form">
+        <field name="name">bsd.wizard.chon_dkbg.form</field>
+        <field name="model">bsd.wizard.phu_luc.chon_dkbg</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group string="ĐIỀU KIỆN BÀN GIAO">
+                        <field name="bsd_dk_bg_ids"
+                               context="{'show_info':True}"
+                               widget="many2many_checkboxes" nolabel="1"/>
+                    </group>
+                    <group>
+                        <field name="bsd_pl_dkbg_id" invisible="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_pl_chon_dkbg_action">
+        <field name="name">Chọn Điều kiện bàn giao</field>
+        <field name="res_model">bsd.wizard.phu_luc.chon_dkbg</field>
         <field name="target">new</field>
         <field name="view_mode">form</field>
     </record>

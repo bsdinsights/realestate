@@ -68,9 +68,8 @@ class BsdPLDKBG(models.Model):
     bsd_tien_da_tt = fields.Monetary(string="Tiền đã TT", help="Tổng tiền đợt đã và đang thanh toán 1 phần của hợp đồng",
                                      readonly=True)
     bsd_tien_ck_ht = fields.Monetary(string="Tiền CK hiện tại", help="Tiền chiết khấu hiện tại", readonly=True)
-    bsd_bg_moi_ids = fields.Many2many('bsd.ban_giao', relation='dkbg_pl_moi_rel',
-                                      readonly=True, string="ĐKBG mới",
-                                      states={'nhap': [('readonly', False)]})
+    bsd_dkbg_moi_ids = fields.Many2many('bsd.dk_bg', relation='bsd_dkbg_pl_moi_rel',
+                                        readonly=True, string="ĐKBG mới")
 
     # field giá hiện tại
     bsd_gia_ban_ht = fields.Monetary(string="Giá bán", help="Giá bán", readonly=True)
@@ -92,7 +91,7 @@ class BsdPLDKBG(models.Model):
                                       readonly=True)
     # field giá bán mới
     bsd_gia_ban_moi = fields.Monetary(string="Giá bán", help="Giá bán", readonly=True)
-    bsd_tien_ck_moi = fields.Monetary(string="Tiền CK hiện tại", help="Tiền chiết khấu", readonly=True)
+    bsd_tien_ck_moi = fields.Monetary(string="Tiền CK mới", help="Tiền chiết khấu", readonly=True)
     bsd_tien_bg_moi = fields.Monetary(string="Giá trị ĐKBG", help="Tổng tiền bàn giao", readonly=True)
     bsd_gia_truoc_thue_moi = fields.Monetary(string="Giá bán trước thuế",
                                              help="""Giá bán trước thuế: bằng giá bán cộng tiền bàn giao trừ 
@@ -134,6 +133,8 @@ class BsdPLDKBG(models.Model):
                                   help="Tiền phát sinh do hết đợt thanh toán", readonly=True)
     bsd_tien_vuot = fields.Monetary(string="Tiền vượt HĐ",
                                     help="Khi số tiền đã thu lớn hơn tiền thanh toán hợp đồng mới", readonly=True)
+    bsd_da_co_lich = fields.Boolean(default=False)
+    bsd_dot_ps_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt phát sinh")
 
     @api.depends('bsd_thue_suat', 'bsd_gia_truoc_thue_moi', 'bsd_tien_qsdd_moi')
     def _compute_tien_thue(self):
@@ -178,13 +179,24 @@ class BsdPLDKBG(models.Model):
                 'state': 'duyet',
             })
 
+    def action_chon_dkbg(self):
+        if self.bsd_ltt_ids:
+            raise UserError(_("Phụ lục đã có lịch thanh toán.\n"
+                              "Vui lòng xóa lịch thanh toán trước khi chọn điều kiện bàn giao."))
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_pl_chon_dkbg_action').read()[0]
+        return action
+
     def action_tao_lich_tt(self):
         # Xóa đợt chưa thanh toán để tạo lại lịch
         self.bsd_ltt_ids.filtered(lambda x: x.bsd_thanh_toan == 'chua_tt').unlink()
+        # Xóa đợt phát sinh nếu có
+        if self.bsd_dot_ps_id:
+            self.bsd_dot_ps_id.unlink()
         # Xóa field tiền
         self.write({
             'bsd_tien_ps': 0,
             'bsd_tien_vuot': 0,
+            'bsd_da_co_lich': True,
         })
         # Lấy các đợt đã thanh toán tiền của lịch cũ
         old_paid = self.bsd_ltt_ht_ids.filtered(lambda x: x.bsd_thanh_toan != 'chua_tt')
@@ -219,9 +231,10 @@ class BsdPLDKBG(models.Model):
                                         'bsd_tl_tt': 0,
                                         'bsd_tien_dot_tt': 0,
                                         'bsd_loai': 'dtt',
-                                    })
+                                    }).id
                 self.write({
-                    'bsd_ltt_ids': [(4, dot_phat_sinh.id)]
+                    'bsd_ltt_ids': [(4, dot_phat_sinh)],
+                    'bsd_dot_ps_id': dot_phat_sinh,
                 })
                 # Ghi nhận tiền phát sinh do hết đợt chưa thanh toán
                 self.write({'bsd_tien_ps': self.bsd_tong_gia_moi - self.bsd_tien_pbt_moi - self.bsd_tien_da_tt})
@@ -259,6 +272,21 @@ class BsdPLDKBG(models.Model):
                             'bsd_ltt_ids': [(4, dot_moi.id)]
                         })
 
+    # Xóa lịch thanh toán
+    def action_xoa_lich_tt(self):
+        # Xóa đợt chưa thanh toán
+        self.bsd_ltt_ids.filtered(lambda x: x.bsd_thanh_toan == 'chua_tt').unlink()
+        # Xóa đợt phát sinh nếu có
+        if self.bsd_dot_ps_id:
+            self.bsd_dot_ps_id.unlink()
+        # bỏ liên kết với các đợt đã và đang thanh toán
+        self.write({
+            'bsd_ltt_ids': [(5, 0, 0)],
+            'bsd_da_co_lich': False,
+            'bsd_tien_ps': 0,
+            'bsd_tien_vuot': 0,
+        })
+
     # Ký phụ lục hợp đồng
     def action_ky_pl(self):
         if self.state == 'duyet':
@@ -266,25 +294,36 @@ class BsdPLDKBG(models.Model):
             return action
 
     def thay_doi_dkbg(self):
+        # Cập nhật lại điều kiện bàn giao của hợp đồng
+        self.bsd_hd_ban_id.bsd_bg_ids.write({
+            'state': 'huy',
+        })
+        for dk_bg in self.bsd_dkbg_moi_ids:
+            if dk_bg.bsd_dk_tt == 'm2':
+                tien_bg = dk_bg.bsd_gia_m2 * self.bsd_unit_id.bsd_dt_sd
+            elif dk_bg.bsd_dk_tt == 'tien':
+                tien_bg = dk_bg.bsd_tien
+            else:
+                tien_bg = dk_bg.bsd_ty_le * self.bsd_gia_ban_moi / 100
+            self.env['bsd.ban_giao'].create({
+                    'bsd_dk_bg_id': dk_bg.id,
+                    'bsd_dk_tt': dk_bg.bsd_dk_tt,
+                    'bsd_gia_m2': dk_bg.bsd_gia_m2,
+                    'bsd_tien': dk_bg.bsd_tien,
+                    'bsd_ty_le': dk_bg.bsd_ty_le,
+                    'bsd_tien_bg': float_round(tien_bg, 0),
+                    'bsd_pl_dkbg_id': self.id,
+                    'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
+            })
+        _logger.debug("debug1")
         # Cập nhật lại tỷ lệ chiết khấu của hợp đồng
         self.bsd_hd_ban_id.write({
             'bsd_tien_ck': self.bsd_tien_ck_moi,
         })
+        _logger.debug("debug2")
         # Lấy các đợt chưa thanh toán ra khỏi hợp đồng
         self.bsd_ltt_ht_ids.filtered(lambda x: x.bsd_thanh_toan == 'chua_tt').write({'bsd_hd_ban_id': False})
-        # Hủy các chiết khấu giao dịch cũ của hợp đồng
-        self.bsd_hd_ban_id.bsd_ps_gd_ck_ids.write({'state': 'huy'})
-        # Tạo phát sinh chiết khấu giao dịch với phụ lục
-        self.env['bsd.ps_gd_ck'].create({
-            'bsd_ten': 'Phụ lục ' + self.bsd_ma + ' - ' + str(self.bsd_tl_ck_moi) + '%',
-            'bsd_pl_dkbg_id': self.id,
-            'bsd_du_an_id': self.bsd_du_an_id.id,
-            'bsd_unit_id': self.bsd_unit_id.id,
-            'bsd_loai_ps': 'pl_ck',
-            'bsd_tl_ck': self.bsd_tl_ck_moi,
-            'bsd_tien_ck': self.bsd_tien_ck_moi,
-            'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
-        })
+        _logger.debug("debug3")
         # Kiểm tra nếu có tiền thu vượt hợp đồng
         if self.bsd_tien_vuot > 0:
             # Tạo thanh toán trả trước ứng với số tiền thu vượt
@@ -297,8 +336,9 @@ class BsdPLDKBG(models.Model):
             }).action_xac_nhan()
             # Gắn những đợt 0 đồng vào hợp đồng
             self.bsd_ltt_ids.write({'bsd_hd_ban_id': self.bsd_hd_ban_id.id})
+            _logger.debug("debug4")
         elif self.bsd_tien_ps > 0:
-            dot_ps = self.bsd_ltt_ids.filtered(lambda l: l.bsd_ma_dtt == 'ĐPS')
+            dot_ps = self.bsd_dot_ps_id
             dot_ps.write({'bsd_hd_ban_id': self.bsd_hd_ban_id.id})
             self.env['bsd.phi_ps'].create({
                 'bsd_ten_ps': 'Phụ lục ' + self.bsd_ma,
@@ -308,6 +348,7 @@ class BsdPLDKBG(models.Model):
                 'bsd_loai': 'pl_hd',
                 'bsd_tien_ps': self.bsd_tien_ps
             })
+            _logger.debug("debug5")
         # Thêm các đợt mới vào hợp đồng
         elif self.bsd_tien_vuot == 0 and self.bsd_tien_ps == 0:
             self.bsd_ltt_ids\
@@ -318,6 +359,7 @@ class BsdPLDKBG(models.Model):
             dot_thu_pql = self.bsd_ltt_ids.filtered(lambda x: x.bsd_tinh_pql)
             self.bsd_hd_ban_id.bsd_dot_pbt_ids.write({'bsd_parent_id': dot_thu_pbt.id})
             self.bsd_hd_ban_id.bsd_dot_pql_ids.write({'bsd_parent_id': dot_thu_pql.id})
+            _logger.debug("debug6")
 
     # Hủy phụ lục hợp đồng
     def action_huy(self):
@@ -343,8 +385,14 @@ class BsdPLDKBG(models.Model):
         res = super(BsdPLDKBG, self).create(vals)
         res.write({
             'bsd_gia_ban_moi': res.bsd_gia_ban_ht,
-            'bsd_tien_bg_moi': res.bsd_tien_bg_ht,
+            'bsd_tien_ck_moi': res.bsd_tien_ck_ht,
             'bsd_tien_qsdd_moi': res.bsd_tien_qsdd_ht,
             'bsd_tien_pbt_moi': res.bsd_tien_pbt_ht,
         })
         return res
+
+
+class BsdBanGiao(models.Model):
+    _inherit = 'bsd.ban_giao'
+
+    bsd_pl_dkbg_id = fields.Many2one('bsd.pl_dkbg', string="Phụ lục", readonly=True)
