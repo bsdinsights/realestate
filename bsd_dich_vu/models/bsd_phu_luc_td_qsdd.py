@@ -54,22 +54,37 @@ class BsdPLQSDD(models.Model):
         self.bsd_tien_da_tt = sum(self.bsd_hd_ban_id.bsd_ltt_ids
                                   .filtered(lambda l: l.bsd_thanh_toan != 'chua_tt').mapped('bsd_tien_dot_tt'))
         self.bsd_thue_suat = self.bsd_hd_ban_id.bsd_thue_suat
+        self.bsd_qsdd_m2_ht = self.bsd_hd_ban_id.bsd_qsdd_m2
+        # tự động load đợt cấn trừ , mặc định đợt cuối
+        self.bsd_dot_ct_id = self.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda d: d.bsd_ma_dtt == 'DBGC')
 
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án",
                                    help="Tên dự án", required=True, readonly=True)
     bsd_unit_id = fields.Many2one('product.product',
                                   string="Sản phẩm", help="Tên Sản phẩm",
                                   required=True, readonly=True)
+
+    @api.onchange('bsd_unit_id')
+    def _onchange_unit(self):
+        self.bsd_dt_sd = self.bsd_hd_ban_id.bsd_dt_sd
+
+    bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích sử dụng", readonly=True)
+    bsd_cl_thue = fields.Monetary(string="chênh lệch thuế", help="Chênh lệch tiền thuế khi thay đổi giá trị QSDĐ",
+                                  compute='_compute_cl_thue', store=True)
+
+    @api.depends('bsd_tien_qsdd_moi')
+    def _compute_cl_thue(self):
+        for each in self:
+            each.bsd_cl_thue = each.bsd_tien_thue_moi - each.bsd_tien_thue_ht
+
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
     bsd_tien_da_tt = fields.Monetary(string="Tiền đã TT", help="Tổng tiền đợt đã và đang thanh toán 1 phần của hợp đồng",
                                      readonly=True)
-    bsd_tien_ck_ht = fields.Monetary(string="Tiền CK hiện tại", help="Tiền chiết khấu hiện tại", readonly=True)
-    bsd_qsdd_moi_ids = fields.Many2many('bsd.dk_bg', relation='bsd_qsdd_pl_moi_rel',
-                                        readonly=True, string="ĐKBG mới")
 
     # field giá hiện tại
+    bsd_tien_ck_ht = fields.Monetary(string="Tiền chiết khấu", help="Tiền chiết khấu hiện tại", readonly=True)
     bsd_qsdd_m2_ht = fields.Monetary(string="QSDĐ/ m2 hiện tại", help="Giá trị quyền sử dụng đất trên m2", readonly=True)
     bsd_gia_ban_ht = fields.Monetary(string="Giá bán", help="Giá bán", readonly=True)
     bsd_tien_bg_ht = fields.Monetary(string="Giá trị ĐKBG", help="Tổng tiền bàn giao", readonly=True)
@@ -80,7 +95,7 @@ class BsdPLQSDD(models.Model):
     bsd_tien_qsdd_ht = fields.Monetary(string="Giá trị QSDĐ",
                                        help="""Giá trị sử dụng đất: bằng QSDĐ/m2 nhân với diện tích sử dung""",
                                        readonly=True)
-    bsd_tien_thue_ht = fields.Monetary(string="Tiền thuế",
+    bsd_tien_thue_ht = fields.Monetary(string="Tiền thuế hiện tại",
                                        help="""Tiền thuế: Giá bán trước thuế trừ giá trị QSDĐ, nhân với thuế suất""",
                                        readonly=True)
     bsd_tien_pbt_ht = fields.Monetary(string="Phí bảo trì", help="Phí bảo trì: bằng % phí bảo trì nhân với giá bán",
@@ -92,7 +107,7 @@ class BsdPLQSDD(models.Model):
     bsd_qsdd_m2_moi = fields.Monetary(string="QSDĐ/ m2 mới", help="Giá trị quyền sử dụng đất trên m2 mới",
                                       readonly=True, states={'nhap': [('readonly', False)]})
     bsd_gia_ban_moi = fields.Monetary(string="Giá bán", help="Giá bán", readonly=True)
-    bsd_tien_ck_moi = fields.Monetary(string="Tiền CK mới", help="Tiền chiết khấu", readonly=True)
+    bsd_tien_ck_moi = fields.Monetary(string="Tiền chiết khấu", help="Tiền chiết khấu", readonly=True)
     bsd_tien_bg_moi = fields.Monetary(string="Giá trị ĐKBG", help="Tổng tiền bàn giao", readonly=True)
     bsd_gia_truoc_thue_moi = fields.Monetary(string="Giá bán trước thuế",
                                              help="""Giá bán trước thuế: bằng giá bán cộng tiền bàn giao trừ 
@@ -100,8 +115,8 @@ class BsdPLQSDD(models.Model):
                                              readonly=True)
     bsd_tien_qsdd_moi = fields.Monetary(string="Giá trị QSDĐ",
                                         help="""Giá trị sử dụng đất: bằng QSDĐ/m2 nhân với diện tích sử dung""",
-                                        readonly=True)
-    bsd_tien_thue_moi = fields.Monetary(string="Tiền thuế",
+                                        readonly=True, compute='_compute_qsdd', store=True)
+    bsd_tien_thue_moi = fields.Monetary(string="Tiền thuế mới",
                                         help="""Tiền thuế: Giá bán trước thuế trừ giá trị QSDĐ, nhân với thuế suất""",
                                         readonly=True, compute='_compute_tien_thue', store=True)
     bsd_tien_pbt_moi = fields.Monetary(string="Phí bảo trì", help="Phí bảo trì: bằng % phí bảo trì nhân với giá bán",
@@ -130,6 +145,11 @@ class BsdPLQSDD(models.Model):
 
     bsd_dot_ct_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt cấn trừ", readonly=True,
                                          states={'nhap': [('readonly', False)]})
+
+    @api.depends('bsd_qsdd_m2_moi')
+    def _compute_qsdd(self):
+        for each in self:
+            each.bsd_tien_qsdd_moi = each.bsd_dt_sd * each.bsd_qsdd_m2_moi
 
     @api.depends('bsd_thue_suat', 'bsd_gia_truoc_thue_moi', 'bsd_tien_qsdd_moi')
     def _compute_tien_thue(self):
@@ -180,7 +200,6 @@ class BsdPLQSDD(models.Model):
             action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_pl_action').read()[0]
             return action
 
-
     # Hủy phụ lục hợp đồng
     def action_huy(self):
         if self.state in ['nhap', 'xac_nhan']:
@@ -199,7 +218,7 @@ class BsdPLQSDD(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có quy định mã phụ lục thay đổi điều kiện bàn giao.\n'
+            raise UserError(_('Dự án chưa có quy định mã phụ lục thay đổi giá trị QSDĐ.\n'
                               'Vui lòng kiểm tra lại thông tin.'))
         vals['bsd_ma'] = sequence.next_by_id()
         res = super(BsdPLQSDD, self).create(vals)

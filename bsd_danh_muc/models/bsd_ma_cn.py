@@ -69,6 +69,7 @@ class BsdMaBoChungTu(models.Model):
                                     ('bsd.pl_pttt', 'Phụ lục thay đổi PTTT'),
                                     ('bsd.pl_cktm', 'Phụ lục thay đổi CKTM'),
                                     ('bsd.pl_dkbg', 'Phụ lục thay đổi ĐKBG'),
+                                    ('bsd.pl_qsdd', 'Phụ lục thay đổi QSDĐ'),
                                     ('bsd.ps_gd_ck', 'Chiết khấu giao dịch'),
                                     ('bsd.ps_gd_km', 'Giao dịch khuyến mãi')],
                                    string="Loại chứng từ", help="Loại chứng từ được đặt mã", required=True,

@@ -43,24 +43,26 @@
                                     <field name="bsd_ma"/>
                                     <field name="bsd_ngay" readonly="1"/>
                                     <field name="bsd_khach_hang_id"
-                                           readonly="1"
-                                           force_save="1"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_hd_ban_id"
-                                           readonly="1"
-                                           force_save="1"
                                            options="{'no_create':true}"
                                            domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id])]"/>
                                     <field name="bsd_du_an_id" readonly="1" force_save="1"/>
                                     <field name="bsd_unit_id" readonly="1" force_save="1"/>
                                     <field name="bsd_cs_tt_ht_id" readonly="1" force_save="1"/>
+                                    <field name="bsd_thue_suat" readonly="1" force_save="1"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_thue_suat"/>
-                                    <field name="bsd_tien_da_tt"/>
-                                    <field name="bsd_qsdd_m2_ht"/>
+                                    <field name="bsd_tien_da_tt" readonly="1" force_save="1"/>
+                                    <field name="bsd_dt_sd" readonly="1" force_save="1"/>
+                                    <field name="bsd_qsdd_m2_ht" readonly="1" force_save="1"/>
                                     <field name="bsd_qsdd_m2_moi"/>
-                                    <field name="bsd_dot_ct_id"/>
+                                    <field name="bsd_dot_ct_id"
+                                           domain="[('bsd_hd_ban_id' , '=', bsd_hd_ban_id),
+                                                    ('bsd_thanh_toan', '=', 'chua_tt'),
+                                                    ('bsd_loai','=','dtt')]"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_cl_thue"/>
                                     <field name="bsd_dien_giai"/>
                                 </group>
                             </group>
@@ -68,18 +70,18 @@
                                 <group>
                                     <field name="company_id" invisible="1"/>
                                     <field name="currency_id" invisible="1"/>
-                                    <field name="bsd_gia_ban_ht"/>
-                                    <field name="bsd_tien_ck_ht"/>
-                                    <field name="bsd_tien_bg_ht"/>
-                                    <field name="bsd_gia_truoc_thue_ht"/>
-                                    <field name="bsd_tien_qsdd_ht"/>
-                                    <field name="bsd_tien_thue_ht"/>
-                                    <field name="bsd_tien_pbt_ht"/>
-                                    <field name="bsd_tong_gia_ht"/>
+                                    <field name="bsd_gia_ban_ht" readonly="1" force_save="1"/>
+                                    <field name="bsd_tien_ck_ht" readonly="1" force_save="1"/>
+                                    <field name="bsd_tien_bg_ht" readonly="1" force_save="1"/>
+                                    <field name="bsd_gia_truoc_thue_ht" readonly="1" force_save="1"/>
+                                    <field name="bsd_tien_qsdd_ht" readonly="1" force_save="1"/>
+                                    <field name="bsd_tien_thue_ht" readonly="1" force_save="1"/>
+                                    <field name="bsd_tien_pbt_ht" readonly="1" force_save="1"/>
+                                    <field name="bsd_tong_gia_ht" readonly="1" force_save="1"/>
                                 </group>
                                 <group>
                                     <field name="bsd_gia_ban_moi"/>
-                                    <field name="bsd_tien_ck_moi" readonly="1" force_save="1"/>
+                                    <field name="bsd_tien_ck_moi"/>
                                     <field name="bsd_tien_bg_moi"/>
                                     <field name="bsd_gia_truoc_thue_moi"/>
                                     <field name="bsd_tien_qsdd_moi"/>
@@ -168,7 +170,7 @@
     </record>
 
     <record model="ir.actions.act_window" id="bsd_pl_qsdd_action">
-        <field name="name">Thay đổi điều kiện bàn giao</field>
+        <field name="name">Thay đổi giá trị QSDĐ</field>
         <field name="res_model">bsd.pl_qsdd</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">

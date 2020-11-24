@@ -48,8 +48,7 @@ class BsdPLCKTM(models.Model):
         self.bsd_tien_thue_ht = self.bsd_hd_ban_id.bsd_tien_thue
         self.bsd_tien_pbt_ht = self.bsd_hd_ban_id.bsd_tien_pbt
         self.bsd_tong_gia_ht = self.bsd_hd_ban_id.bsd_tong_gia
-        self.bsd_tien_da_tt = sum(self.bsd_hd_ban_id.bsd_ltt_ids
-                                  .filtered(lambda l: l.bsd_thanh_toan != 'chua_tt').mapped('bsd_tien_dot_tt'))
+        self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
         self.bsd_thue_suat = self.bsd_hd_ban_id.bsd_thue_suat
         self.bsd_tl_ck_ht = float_round(self.bsd_tien_ck_ht / (self.bsd_gia_ban_ht + self.bsd_tien_bg_ht) * 100,2)
 
@@ -238,7 +237,11 @@ class BsdPLCKTM(models.Model):
                 self.write({'bsd_tien_ps': self.bsd_tong_gia_moi - self.bsd_tien_pbt_moi - self.bsd_tien_da_tt})
             # Nếu còn đợt chưa thanh toán
             else:
-                tong_tien_phai_tt = self.bsd_tong_gia_moi - self.bsd_tien_pbt_moi - self.bsd_tien_da_tt
+                # Tiền các đợt đã và đang thanh toán
+                tien_da_va_dang_tt = sum(self.bsd_hd_ban_id.bsd_ltt_ids
+                                         .filtered(lambda l: l.bsd_thanh_toan != 'chua_tt')
+                                         .mapped('bsd_tien_dot_tt'))
+                tong_tien_phai_tt = self.bsd_tong_gia_moi - self.bsd_tien_pbt_moi - tien_da_va_dang_tt
                 # Kiểm tra tỷ lệ còn phải thanh toán
                 tl_con_tt = 0
                 for dot in dot_chua_tt:
