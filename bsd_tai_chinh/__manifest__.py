@@ -27,6 +27,7 @@
         'views/bsd_chiet_khau_giao_dich_views.xml',
         'views/bsd_phi_phat_sinh_views.xml',
         'views/bsd_lai_phat_views.xml',
+        'views/bsd_cn_qsdd_views.xml',
         'views/bsd_menu_item_views.xml',
         'views/bsd_giu_cho_thien_chi_views.xml',
         'views/bsd_giu_cho_views.xml',

@@ -32,21 +32,26 @@
               sequence="16"
               action="bsd_chuyen_tien_action"
               parent="bsd_main_tai_chinh_root"/>
-<!--    <menuitem id="bsd_hoan_tien_menu_action"-->
-<!--              name="Hoàn tiền"-->
-<!--              sequence="17"-->
-<!--              action="bsd_hoan_tien_action"-->
-<!--              parent="bsd_main_tai_chinh_root"/>-->
+
+    <menuitem id="bsd_cn_qsdd_menu"
+              name="Cập nhật QSDĐ"
+              sequence="17"
+              parent="bsd_main_tai_chinh_root"/>
+        <menuitem id="bsd_cn_qsdd_menu_action"
+                  name="Cập nhật QSDĐ"
+                  sequence="1"
+                  action="bsd_cn_qsdd_action"
+                  parent="bsd_cn_qsdd_menu"/>
+        <menuitem id="bsd_cn_qsdd_unit_menu_action"
+                  name="Cập nhật QSDĐ chi tiết"
+                  sequence="2"
+                  action="bsd_cn_qsdd_unit_action"
+                  parent="bsd_cn_qsdd_menu"/>
     <menuitem id="bsd_ps_gd_ck_menu_action"
-              name="Giao dịch chiết khấu"
+              name="Chiết khấu giao dịch"
               sequence="18"
               action="bsd_ps_gd_ck_action"
               parent="bsd_main_tai_chinh_root"/>
-<!--    <menuitem id="bsd_phi_ps_menu_action"-->
-<!--              name="Phí phát sinh"-->
-<!--              sequence="19"-->
-<!--              action="bsd_phi_ps_action"-->
-<!--              parent="bsd_main_tai_chinh_root"/>-->
 
     <record id="bsd_tai_chinh.bsd_main_tai_chinh_root" model="ir.ui.menu">
         <field name="action" eval="False"/>

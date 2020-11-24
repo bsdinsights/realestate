@@ -10,5 +10,7 @@ bsd_chuyen_tien_manager,Chuyển tiền khách hàng,model_bsd_chuyen_tien,bsd_t
 bsd_hoan_tien_manager,Hoàn tiền khách hàng,model_bsd_hoan_tien,bsd_tai_chinh.group_manager,1,1,1,1
 bsd_phi_ps_manager,Phí phát sinh,model_bsd_phi_ps,bsd_tai_chinh.group_manager,1,1,1,1
 bsd_lai_phat_manager,Lãi phạt,model_bsd_lai_phat,bsd_tai_chinh.group_manager,1,1,1,1
+bsd_cn_qsdd_manager,Cập nhật giá trị QSDĐ,model_bsd_cn_qsdd,bsd_tai_chinh.group_manager,1,1,1,1
+bsd_cn_qsdd_unit_manager,Cập nhật giá trị QSDĐ chi tiết,model_bsd_cn_qsdd_unit,bsd_tai_chinh.group_manager,1,1,1,1
 
 
