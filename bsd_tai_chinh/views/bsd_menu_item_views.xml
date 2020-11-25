@@ -17,31 +17,16 @@
               sequence="13"
               action="bsd_lai_phat_action"
               parent="bsd_main_tai_chinh_root"/>
-    <menuitem id="bsd_giam_no_menu_action"
-              name="Điều chỉnh giảm"
-              sequence="14"
-              action="bsd_giam_no_action"
-              parent="bsd_main_tai_chinh_root"/>
-    <menuitem id="bsd_tang_no_menu_action"
-              name="Điều chỉnh tăng"
-              sequence="15"
-              action="bsd_tang_no_action"
-              parent="bsd_main_tai_chinh_root"/>
-    <menuitem id="bsd_chuyen_tien_menu_action"
-              name="Chuyển tiền"
-              sequence="16"
-              action="bsd_chuyen_tien_action"
-              parent="bsd_main_tai_chinh_root"/>
 
     <menuitem id="bsd_cn_qsdd_menu_action"
               name="Cập nhật QSDĐ"
-              sequence="17"
+              sequence="14"
               action="bsd_cn_qsdd_action"
               parent="bsd_main_tai_chinh_root"/>
 
     <menuitem id="bsd_ps_gd_ck_menu_action"
               name="Chiết khấu giao dịch"
-              sequence="18"
+              sequence="15"
               action="bsd_ps_gd_ck_action"
               parent="bsd_main_tai_chinh_root"/>
 

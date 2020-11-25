@@ -4,7 +4,7 @@
         <field name="name">bsd.pl_qsdd.form</field>
         <field name="model">bsd.pl_qsdd</field>
         <field name="arch" type="xml">
-            <form duplicate="false" delete="false">
+            <form duplicate="false" delete="false" create="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
@@ -151,7 +151,7 @@
         <field name="name">bsd.pl_qsdd.tree</field>
         <field name="model">bsd.pl_qsdd</field>
         <field name="arch" type="xml">
-            <tree delete="false" duplicate="false">
+            <tree delete="false" duplicate="false" create="false">
                 <field name="bsd_ma"/>
                 <field name="bsd_ngay"/>
                 <field name="bsd_du_an_id"/>

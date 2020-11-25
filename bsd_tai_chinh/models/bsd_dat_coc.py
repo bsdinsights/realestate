@@ -18,7 +18,6 @@ class BsdDatCoc(models.Model):
                                  domain=[('bsd_loai', '=', 'pt_dc')],
                                  readonly=True)
     bsd_ngay_tt = fields.Datetime(compute='_compute_tien_tt', store=True, string="Ngày TT cọc")
-    # bsd_tien_ttd = fields.Monetary(compute="_compute_tien_ttd")
     bsd_thanh_toan = fields.Selection(compute='_compute_tien_tt', store=True)
 
     @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien_dc')

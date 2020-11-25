@@ -4,9 +4,6 @@ bsd_cong_no_manager,Công nợ khách hàng,model_bsd_cong_no,bsd_tai_chinh.grou
 bsd_cong_no_ct_manager,Công nợ chứng từ khách hàng,model_bsd_cong_no_ct,bsd_tai_chinh.group_manager,1,1,1,1
 bsd_can_tru_manager,Cấn trừ công nợ,model_bsd_can_tru,bsd_tai_chinh.group_manager,1,1,1,1
 bsd_can_tru_ct_manager,Chi tiết cấn trừ,model_bsd_can_tru_ct,bsd_tai_chinh.group_manager,1,1,1,1
-bsd_giam_no_manager,Điều chỉnh giảm công nợ khách hàng,model_bsd_giam_no,bsd_tai_chinh.group_manager,1,1,1,1
-bsd_tang_no_manager,Điều chỉnh tăng công nợ khách hàng,model_bsd_tang_no,bsd_tai_chinh.group_manager,1,1,1,1
-bsd_chuyen_tien_manager,Chuyển tiền khách hàng,model_bsd_chuyen_tien,bsd_tai_chinh.group_manager,1,1,1,1
 bsd_hoan_tien_manager,Hoàn tiền khách hàng,model_bsd_hoan_tien,bsd_tai_chinh.group_manager,1,1,1,1
 bsd_phi_ps_manager,Phí phát sinh,model_bsd_phi_ps,bsd_tai_chinh.group_manager,1,1,1,1
 bsd_lai_phat_manager,Lãi phạt,model_bsd_lai_phat,bsd_tai_chinh.group_manager,1,1,1,1

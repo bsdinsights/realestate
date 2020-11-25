@@ -24,7 +24,6 @@ class BsdCongNoCT(models.Model):
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán")
     bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thanh toán", help="Phiếu thanh toán")
     bsd_hoan_tien_id = fields.Many2one('bsd.hoan_tien', string="Hoàn tiền", help="Hoàn tiền")
-    bsd_giam_no_id = fields.Many2one('bsd.giam_no', string="Điều chỉnh giảm", help="Điều chỉnh giảm")
     bsd_phi_ps_id = fields.Many2one('bsd.phi_ps', string="Phí phát sinh", help="Phí phát sinh")
     bsd_thanh_ly_id = fields.Many2one('bsd.thanh_ly', string="Thanh lý", help="Thanh lý")
     bsd_lai_phat_id = fields.Many2one('bsd.lai_phat', string="Lãi phạt", help="Lãi phạt")
@@ -39,12 +38,7 @@ class BsdCongNoCT(models.Model):
                                  ('pt_dc', 'Phiếu thanh toán - Đặt cọc'),
                                  ('pt_dtt', 'Phiếu thanh toán - Đợt thanh toán'),
                                  ('pt_ht', 'Phiếu thanh toán - Hoàn tiền'),
-                                 ('pt_pps', 'Phiếu thanh toán - Phí phát sinh'),
-                                 ('giam_ht', 'Điều chỉnh giảm - Hoàn tiền'),
-                                 ('giam_gctc', 'Điều chỉnh giảm - Giữ chỗ thiện chí'),
-                                 ('giam_gc', 'Điều chỉnh giảm - Giữ chỗ'),
-                                 ('giam_tl', 'Điều chỉnh giảm - thanh lý'),
-                                 ('giam_dc', 'Điều chỉnh giảm - đặt cọc')], string="Phân loại",
+                                 ('pt_pps', 'Phiếu thanh toán - Phí phát sinh')], string="Phân loại",
                                 help="Phân loại", required=True)
     bsd_can_tru_id = fields.Many2one('bsd.can_tru', string="Cấn trừ", readonly=True)
 

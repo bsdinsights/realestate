@@ -201,19 +201,6 @@ class BsdHuyGC(models.Model):
     def _tao_cong_no(self):
         # Theo dõi công nợ hủy giữ chỗ thiện chí
         if self.bsd_gc_tc_id and self.bsd_loai_gc == 'gc_tc':
-            # Tạo điều chỉnh giảm
-            giam_no = self.env['bsd.giam_no'].create({
-                            'bsd_so_ct': self.bsd_ma_huy_gc,
-                            'bsd_ngay_ct': self.bsd_ngay_huy_gc,
-                            'bsd_loai_dc': 'huy_gctc',
-                            'bsd_dien_giai': 'Hủy giữ chỗ thiện chí [' + self.bsd_gc_tc_id.bsd_ma_gctc + ']',
-                            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                            'bsd_du_an_id': self.bsd_du_an_id.id,
-                            'bsd_unit_id': self.bsd_unit_id.id,
-                            'bsd_tien': self.bsd_tien,
-                            'state': 'nhap',
-            })
-            giam_no.action_xac_nhan()
             # Tạo hoàn tiền nếu được check
             if self.bsd_hoan_tien:
                 ht = self.env['bsd.hoan_tien'].create({
@@ -237,18 +224,6 @@ class BsdHuyGC(models.Model):
         # Theo dõi công nợ hủy giữ chỗ
         if self.bsd_giu_cho_id and self.bsd_loai_gc == 'giu_cho':
             # Tạo điều chỉnh giảm
-            giam_no = self.env['bsd.giam_no'].create({
-                            'bsd_so_ct': self.bsd_ma_huy_gc,
-                            'bsd_ngay_ct': self.bsd_ngay_huy_gc,
-                            'bsd_loai_dc': 'huy_gc',
-                            'bsd_dien_giai': 'Hủy giữ chỗ [' + self.bsd_giu_cho_id.bsd_ma_gc + ']',
-                            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                            'bsd_unit_id': self.bsd_unit_id.id,
-                            'bsd_du_an_id': self.bsd_du_an_id.id,
-                            'bsd_tien': self.bsd_tien,
-                            'state': 'nhap',
-            })
-            giam_no.action_xac_nhan()
             if self.bsd_hoan_tien:
                 # tạo record trong bảng hoàn tiền
                 ht = self.env['bsd.hoan_tien'].create({

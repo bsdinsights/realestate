@@ -67,8 +67,6 @@ class BsdHoanTien(models.Model):
                    ('tl_gd', 'Thanh lý giao dịch'),
                    ('vp_hd', 'Vi phạm hợp đồng'),
                    ('pl_hd', 'Phụ lục hợp đồng')]
-        if self.env['res.users'].has_group('bsd_kinh_doanh.group_manager'):
-            choices += [('dc_giam', 'Điều chỉnh giảm')]
         return choices
 
     bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Thanh toán trả trước", help="Thanh toán trả trước",
@@ -86,9 +84,6 @@ class BsdHoanTien(models.Model):
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
-    # bsd_giam_no_id = fields.Many2one('bsd.giam_no', string="Điều chỉnh giảm", help="Điều chỉnh giảm",
-    #                                  readonly=True,
-    #                                  states={'nhap': [('readonly', False)]})
     # bsd_ps_gd_ck_id = fields.Many2one('bsd.ps_gd_ck', string="Giao dịch chiết khấu", help="Giao dịch chiết khấu",
     #                                   readonly=True,
     #                                   states={'nhap': [('readonly', False)]})
