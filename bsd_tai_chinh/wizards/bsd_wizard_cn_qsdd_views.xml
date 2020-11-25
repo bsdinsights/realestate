@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_wizard_khong_duyet_cn_qsdd_form">
+        <field name="name">bsd.wizard.cn_qsdd.form</field>
+        <field name="model">bsd.wizard.khong_duyet.cn_qsdd</field>
+        <field name="arch" type="xml">
+            <form string="Ghi lý do từ chối">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_cn_qsdd_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ly_do"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_khong_duyet_cn_qsdd_action">
+        <field name="name">Ghi nhận lý do</field>
+        <field name="res_model">bsd.wizard.khong_duyet.cn_qsdd</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
+</odoo>

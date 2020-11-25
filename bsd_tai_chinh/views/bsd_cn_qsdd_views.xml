@@ -6,6 +6,12 @@
         <field name="arch" type="xml">
             <form duplicate="false">
                 <header>
+                    <button string="Nhập SP (excel)"
+                            name="action_nhap_sp"
+                            type="object"
+                            states="nhap"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            class="oe_highlight"/>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
                             states="nhap"
@@ -22,7 +28,6 @@
                     <button string="Không duyệt"
                             name="action_khong_duyet"
                             states="xac_nhan"
-                            confirm="Bạn có muốn từ chối yêu cầu này không?"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Hủy"
@@ -33,38 +38,64 @@
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
-                    <group>
-                        <group>
-                            <field name="bsd_ma"/>
-                            <field name="bsd_ngay"/>
-                            <field name="bsd_ten"/>
-                        </group>
-                        <group>
-                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
-                            <field name="bsd_ngay_duyet"/>
-                            <field name="bsd_nguoi_duyet_id"/>
-                            <field name="id" invisible="1"/>
-                        </group>
-                    </group>
-                    <field name="bsd_ct_ids"
-                           attrs="{'invisible':[('id','=',False)]}"
-                           context="{'default_bsd_cn_qsdd_id': id,
-                           'default_bsd_du_an_id': bsd_du_an_id}">
-                        <tree editable="bottom">
-                            <field name="bsd_cn_qsdd_id" invisible="1"/>
-                            <field name="bsd_du_an_id" invisible="1" force_save="1"/>
-                            <field name="bsd_unit_id"
-                                   options="{'no_create':true}"
-                                   domain="[('bsd_du_an_id','=',parent.bsd_du_an_id)]"/>
-                            <field name="bsd_hd_ban_id" readonly="1" force_save="1"/>
-                            <field name="bsd_qsdd_m2_ht" readonly="1" force_save="1"/>
-                            <field name="bsd_qsdd_m2_moi"/>
-                            <field name="bsd_ly_do"/>
-                            <field name="state"/>
-                            <field name="company_id" invisible="1"/>
-                            <field name="currency_id" invisible="1"/>
-                        </tree>
-                    </field>
+                    <notebook>
+                        <page string="Thông tin chung">
+                            <group>
+                                <group>
+                                    <field name="bsd_ma"/>
+                                    <field name="bsd_ngay"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ten"/>
+                                    <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                                    <field name="id" invisible="1"/>
+                                </group>
+                            </group>
+                            <group string="XÁC NHẬN">
+                                <group>
+                                    <field name="bsd_ngay_xn"/>
+                                    <field name="bsd_nguoi_xn_id"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_duyet"/>
+                                    <field name="bsd_nguoi_duyet_id"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="bsd_ly_do"/>
+                            </group>
+                        </page>
+                        <page string="Danh sách sản phẩm">
+                            <button string="Thêm SP"
+                                    name="action_them_sp"
+                                    type="object"
+                                    states="nhap"
+                                    attrs="{'invisible': ['|',('id', '=',False)]}"
+                                    class="oe_highlight oe_right"/>
+                            <field name="bsd_ct_ids" nolabel="1"
+                                   attrs="{'invisible':[('id','=',False)]}"
+                                   context="{'default_bsd_cn_qsdd_id': id,
+                                         'default_bsd_du_an_id': bsd_du_an_id}">
+                                <tree create="false" delete="false">
+                                    <field name="bsd_cn_qsdd_id" invisible="1"/>
+                                    <field name="bsd_du_an_id" invisible="1" force_save="1"/>
+                                    <field name="bsd_unit_id"
+                                           options="{'no_create':true}"
+                                           domain="[('bsd_du_an_id','=',parent.bsd_du_an_id)]"/>
+                                    <field name="bsd_unit_state" readonly="1" force_save="1"/>
+                                    <field name="bsd_hd_ban_id" readonly="1" force_save="1"/>
+                                    <field name="bsd_qsdd_m2_ht" readonly="1" force_save="1"/>
+                                    <field name="bsd_qsdd_m2_moi"/>
+                                    <field name="state"/>
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <button string="Hủy" name="action_huy"
+                                            states="nhap"
+                                            type="object" class="oe_highlight oe_right"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
@@ -112,58 +143,43 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="bsd_cn_qsdd_unit_form">
+    <record model="ir.ui.view" id="bsd_cn_qsdd_unit_form_popup">
         <field name="name">bsd.cn_qsdd_unit.form</field>
         <field name="model">bsd.cn_qsdd_unit</field>
         <field name="arch" type="xml">
             <form duplicate="false">
                 <header>
-                    <button string="Xác nhận"
-                            name="action_xac_nhan"
-                            states="nhap"
-                            confirm="Bạn có muốn xác nhận yêu cầu không?"
-                            attrs="{'invisible': ['|',('id', '=',False)]}"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Hủy"
-                            name="action_huy"
-                            type="object"
-                            attrs="{'invisible': ['|',('id', '=',False)]}"
-                            states="xac_nhan,nhap"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
                     <group>
                         <group>
-                            <field name="bsd_ngay"/>
-                            <field name="bsd_cn_qsdd_id" options="{'no_create':true}"/>
-                            <field name="bsd_unit_id"
+                            <field name="bsd_ngay" readonly="1" force_save="1"/>
+                            <field name="bsd_cn_qsdd_id"
+                                   readonly="1" force_save="1"
                                    options="{'no_create':true}"/>
-                            <field name="bsd_du_an_id" options="{'no_create':true}" readonly="1"/>
+                            <field name="bsd_unit_id"
+                                   domain="[('bsd_du_an_id', '=',bsd_du_an_id)]"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_qsdd_m2_moi"/>
+
                         </group>
                         <group>
+                            <field name="bsd_du_an_id"
+                                   force_save="1"
+                                   options="{'no_create':true}" readonly="1"/>
                             <field name="bsd_hd_ban_id" readonly="1" force_save="1"/>
+                            <field name="bsd_unit_state"/>
                             <field name="bsd_qsdd_m2_ht" readonly="1" force_save="1"/>
-                            <field name="bsd_qsdd_m2_moi"/>
                             <field name="company_id" invisible="1"/>
                             <field name="currency_id" invisible="1"/>
                         </group>
                     </group>
-                    <group string="XÁC NHẬN">
-                        <group>
-                            <field name="bsd_ngay_xn"/>
-                            <field name="bsd_ly_do"/>
-                        </group>
-                        <group>
-                            <field name="bsd_nguoi_xn_id"/>
-                        </group>
-                    </group>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
+                <footer>
+                    <button string="Tạo" name="action_tao" type="object" class="oe_highlight"/>
+                    <button string="Hủy" special="cancel"/>
+                </footer>
             </form>
         </field>
     </record>
@@ -201,12 +217,13 @@
         </field>
     </record>
 
-    <record model="ir.actions.act_window" id="bsd_cn_qsdd_unit_action">
-        <field name="name">Cập nhật giá trị QSDĐ chi tiết</field>
+    <record model="ir.actions.act_window" id="bsd_cn_qsdd_unit_action_popup">
+        <field name="name">Thêm sản phẩm</field>
         <field name="res_model">bsd.cn_qsdd_unit</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="xml">
-            <p>Tạo cập nhật giá trị QSDĐ chi tiết</p>
-        </field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_ids"
+               eval="[(5, 0, 0),
+                      (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_cn_qsdd_unit_form_popup')})]"/>
     </record>
 </odoo>

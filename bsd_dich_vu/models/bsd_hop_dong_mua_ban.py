@@ -220,8 +220,14 @@ class BsdHopDongMuaBan(models.Model):
     bsd_so_pl_pttt = fields.Integer(string="# PL PTTT", compute='_compute_pl_pttt')
     bsd_so_pl_cktm = fields.Integer(string="# PL CKTM", compute='_compute_pl_cktm')
     bsd_so_pl_dkbg = fields.Integer(string="# PL ĐKBG", compute='_compute_pl_dkbg')
+    bsd_so_pl_qsdd = fields.Integer(string="# PL QSDĐ", compute='_compute_pl_qsdd')
     bsd_ps_gd_ck_ids = fields.One2many('bsd.ps_gd_ck', 'bsd_hd_ban_id', domain=[('state', '=', 'xac_nhan')],
                                        string="Chiết khấu giao dịch", readonly=True)
+
+    def _compute_pl_qsdd(self):
+        for each in self:
+            pl_qsdd = self.env['bsd.pl_qsdd'].search([('bsd_hd_ban_id', '=', self.id)])
+            each.bsd_so_pl_qsdd = len(pl_qsdd)
 
     def _compute_pl_pttt(self):
         for each in self:
@@ -242,6 +248,21 @@ class BsdHopDongMuaBan(models.Model):
         for each in self:
             ds_td = self.env['bsd.ds_td'].search([('bsd_hd_ban_id', '=', self.id)])
             each.bsd_so_ds_td = len(ds_td)
+
+    def action_view_pl_qsdd(self):
+        action = self.env.ref('bsd_dich_vu.bsd_pl_qsdd_action').read()[0]
+
+        pl_qsdd = self.env['bsd.pl_qsdd'].search([('bsd_hd_ban_id', '=', self.id)])
+        if len(pl_qsdd) > 1:
+            action['domain'] = [('id', 'in', pl_qsdd.ids)]
+        elif pl_qsdd:
+            form_view = [(self.env.ref('bsd_dich_vu.bsd_pl_qsdd_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = pl_qsdd.id
+        return action
 
     def action_view_pl_pttt(self):
         action = self.env.ref('bsd_dich_vu.bsd_pl_pttt_action').read()[0]

@@ -51,12 +51,19 @@ class BsdPLDSH(models.Model):
 
     # DV.02.01 - Xác nhận phụ lục hợp đồng
     def action_xac_nhan(self):
-        self.write({
-            'state': 'xac_nhan',
-        })
+        # Kiểm tra hợp đồng đã bị thanh lý chưa
+        if self.bsd_hd_ban_id.state == 'thanh_ly':
+            raise UserError(_("Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin."))
+        if self.state == 'nhap':
+            self.write({
+                'state': 'xac_nhan',
+            })
 
     # DV.02.02 - Ký phụ lục hợp đồng
     def action_ky_pl(self):
+        # Kiểm tra hợp đồng đã bị thanh lý chưa
+        if self.bsd_hd_ban_id.state == 'thanh_ly':
+            raise UserError(_("Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin."))
         action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_pl_dsh_action').read()[0]
         return action
 

@@ -50,16 +50,28 @@
                                     <field name="bsd_du_an_id" readonly="1" force_save="1"/>
                                     <field name="bsd_unit_id" readonly="1" force_save="1"/>
                                     <field name="bsd_cs_tt_ht_id" readonly="1" force_save="1"/>
-                                    <field name="bsd_thue_suat" readonly="1" force_save="1"/>
+                                    <label for="bsd_thue_suat"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <div class="col">
+                                            <field name="bsd_thue_suat" readonly="1" class="mr-1"/>
+                                            <span>%</span>
+                                        </div>
+                                    </div>
                                 </group>
                                 <group>
                                     <field name="bsd_tien_da_tt" readonly="1" force_save="1"/>
-                                    <field name="bsd_dt_sd" readonly="1" force_save="1"/>
+                                    <label for="bsd_dt_sd"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <div class="col">
+                                            <field name="bsd_dt_sd" readonly="1" class="mr-1"/>
+                                            <span>m2</span>
+                                        </div>
+                                    </div>
                                     <field name="bsd_qsdd_m2_ht" readonly="1" force_save="1"/>
                                     <field name="bsd_qsdd_m2_moi"/>
                                     <field name="bsd_dot_ct_id"
                                            domain="[('bsd_hd_ban_id' , '=', bsd_hd_ban_id),
-                                                    ('bsd_thanh_toan', '=', 'chua_tt'),
+                                                    ('bsd_thanh_toan', '!=', 'da_tt'),
                                                     ('bsd_loai','=','dtt')]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_cl_thue"/>

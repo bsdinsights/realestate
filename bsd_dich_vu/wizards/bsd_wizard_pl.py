@@ -20,25 +20,33 @@ class BsdKyPL(models.TransientModel):
                 'bsd_loai_pl': 'cktm',
                 'bsd_pl_cktm_id': pl_cktm.id
             })
-        if self._context.get('active_model', []) == 'bsd.pl_pttt':
+        elif self._context.get('active_model', []) == 'bsd.pl_pttt':
             pl_pttt = self.env['bsd.pl_pttt'].browse(self._context.get('active_ids', []))
             res.update({
                 'bsd_loai_pl': 'pttt',
                 'bsd_pl_pttt_id': pl_pttt.id
             })
-        if self._context.get('active_model', []) == 'bsd.pl_dkbg':
+        elif self._context.get('active_model', []) == 'bsd.pl_dkbg':
             pl_dkbg = self.env['bsd.pl_dkbg'].browse(self._context.get('active_ids', []))
             res.update({
                 'bsd_loai_pl': 'dkbg',
                 'bsd_pl_dkbg_id': pl_dkbg.id
+            })
+        elif self._context.get('active_model', []) == 'bsd.pl_qsdd':
+            pl_qsdd = self.env['bsd.pl_qsdd'].browse(self._context.get('active_ids', []))
+            res.update({
+                'bsd_loai_pl': 'qsdd',
+                'bsd_pl_qsdd_id': pl_qsdd.id
             })
         return res
 
     bsd_pl_pttt_id = fields.Many2one('bsd.pl_pttt', string="Phụ lục", readonly=True)
     bsd_pl_cktm_id = fields.Many2one('bsd.pl_cktm', string="Phụ lục", readonly=True)
     bsd_pl_dkbg_id = fields.Many2one('bsd.pl_dkbg', string="Phụ lục", readonly=True)
+    bsd_pl_qsdd_id = fields.Many2one('bsd.pl_qsdd', string="Phụ lục", readonly=True)
     bsd_ngay_ky_pl = fields.Date(string="Ngày ký phụ lục", required=True)
-    bsd_loai_pl = fields.Selection([('pttt', 'PTTT'), ('cktm', 'CKTM'), ('dkbg', 'ĐKBG')])
+    bsd_loai_pl = fields.Selection([('pttt', 'PTTT'), ('cktm', 'CKTM'),
+                                    ('dkbg', 'ĐKBG'), ('qsdd', 'QSDĐ')])
 
     def action_xac_nhan(self):
         if self.bsd_pl_pttt_id:
@@ -62,6 +70,13 @@ class BsdKyPL(models.TransientModel):
                 'state': 'dk_pl',
             })
             self.bsd_pl_dkbg_id.thay_doi_dkbg()
+        if self.bsd_pl_qsdd_id:
+            self.bsd_pl_qsdd_id.write({
+                'bsd_ngay_ky_pl': self.bsd_ngay_ky_pl,
+                'bsd_nguoi_xn_ky_id': self.env.uid,
+                'state': 'dk_pl',
+            })
+            self.bsd_pl_qsdd_id.thay_doi_qsdd()
 
 
 class BsdKhongDuyetPL(models.TransientModel):
@@ -79,24 +94,32 @@ class BsdKhongDuyetPL(models.TransientModel):
                 'bsd_loai_pl': 'cktm',
                 'bsd_pl_cktm_id': pl_cktm.id
             })
-        if self._context.get('active_model', []) == 'bsd.pl_pttt':
+        elif self._context.get('active_model', []) == 'bsd.pl_pttt':
             pl_pttt = self.env['bsd.pl_pttt'].browse(self._context.get('active_ids', []))
             res.update({
                 'bsd_loai_pl': 'pttt',
                 'bsd_pl_pttt_id': pl_pttt.id
             })
-        if self._context.get('active_model', []) == 'bsd.pl_dkbg':
+        elif self._context.get('active_model', []) == 'bsd.pl_dkbg':
             pl_dkbg = self.env['bsd.pl_dkbg'].browse(self._context.get('active_ids', []))
             res.update({
                 'bsd_loai_pl': 'dkbg',
                 'bsd_pl_dkbg_id': pl_dkbg.id
+            })
+        elif self._context.get('active_model', []) == 'bsd.pl_qsdd':
+            pl_qsdd = self.env['bsd.pl_qsdd'].browse(self._context.get('active_ids', []))
+            res.update({
+                'bsd_loai_pl': 'qsdd',
+                'bsd_pl_qsdd_id': pl_qsdd.id
             })
         return res
 
     bsd_pl_pttt_id = fields.Many2one('bsd.pl_pttt', string="Phụ lục", readonly=True)
     bsd_pl_cktm_id = fields.Many2one('bsd.pl_cktm', string="Phụ lục", readonly=True)
     bsd_pl_dkbg_id = fields.Many2one('bsd.pl_dkbg', string="Phụ lục", readonly=True)
-    bsd_loai_pl = fields.Selection([('pttt', 'PTTT'), ('cktm', 'CKTM'), ('dkbg', 'ĐKBG')])
+    bsd_pl_qsdd_id = fields.Many2one('bsd.pl_qsdd', string="Phụ lục", readonly=True)
+    bsd_loai_pl = fields.Selection([('pttt', 'PTTT'), ('cktm', 'CKTM'),
+                                    ('dkbg', 'ĐKBG'), ('qsdd', 'QSDĐ')])
     bsd_ly_do = fields.Char(string="Lý do", required=True)
 
     def action_xac_nhan(self):
@@ -105,26 +128,31 @@ class BsdKhongDuyetPL(models.TransientModel):
                 'bsd_ly_do': self.bsd_ly_do,
                 'state': 'nhap',
             })
-        if self.bsd_pl_cktm_id:
+        elif self.bsd_pl_cktm_id:
             self.bsd_pl_cktm_id.write({
                 'bsd_ly_do': self.bsd_ly_do,
                 'state': 'nhap',
             })
-        if self.bsd_pl_dkbg_id:
+        elif self.bsd_pl_dkbg_id:
             self.bsd_pl_dkbg_id.write({
+                'bsd_ly_do': self.bsd_ly_do,
+                'state': 'nhap',
+            })
+        elif self.bsd_pl_qsdd_id:
+            self.bsd_pl_qsdd_id.write({
                 'bsd_ly_do': self.bsd_ly_do,
                 'state': 'nhap',
             })
 
 
-class BsdHuytPLPTTT(models.TransientModel):
+class BsdHuytPL(models.TransientModel):
     _name = 'bsd.wizard.huy_pl'
     _description = 'Ghi nhận lý do hủy phụ lục thay đổi phương thức thanh toán'
 
     @api.model
     def default_get(self, fields_list):
         _logger.debug(self._context)
-        res = super(BsdHuytPLPTTT, self).default_get(fields_list)
+        res = super(BsdHuytPL, self).default_get(fields_list)
         _logger.debug(self._context)
         if self._context.get('active_model', []) == 'bsd.pl_cktm':
             pl_cktm = self.env['bsd.pl_cktm'].browse(self._context.get('active_ids', []))
@@ -132,24 +160,32 @@ class BsdHuytPLPTTT(models.TransientModel):
                 'bsd_loai_pl': 'cktm',
                 'bsd_pl_cktm_id': pl_cktm.id
             })
-        if self._context.get('active_model', []) == 'bsd.pl_pttt':
+        elif self._context.get('active_model', []) == 'bsd.pl_pttt':
             pl_pttt = self.env['bsd.pl_pttt'].browse(self._context.get('active_ids', []))
             res.update({
                 'bsd_loai_pl': 'pttt',
                 'bsd_pl_pttt_id': pl_pttt.id
             })
-        if self._context.get('active_model', []) == 'bsd.pl_dkbg':
+        elif self._context.get('active_model', []) == 'bsd.pl_dkbg':
             pl_dkbg = self.env['bsd.pl_dkbg'].browse(self._context.get('active_ids', []))
             res.update({
                 'bsd_loai_pl': 'dkbg',
                 'bsd_pl_dkbg_id': pl_dkbg.id
+            })
+        elif self._context.get('active_model', []) == 'bsd.pl_qsdd':
+            pl_qsdd = self.env['bsd.pl_qsdd'].browse(self._context.get('active_ids', []))
+            res.update({
+                'bsd_loai_pl': 'qsdd',
+                'bsd_pl_qsdd_id': pl_qsdd.id
             })
         return res
 
     bsd_pl_pttt_id = fields.Many2one('bsd.pl_pttt', string="Phụ lục", readonly=True)
     bsd_pl_cktm_id = fields.Many2one('bsd.pl_cktm', string="Phụ lục", readonly=True)
     bsd_pl_dkbg_id = fields.Many2one('bsd.pl_dkbg', string="Phụ lục", readonly=True)
-    bsd_loai_pl = fields.Selection([('pttt', 'PTTT'), ('cktm', 'CKTM'), ('dkbg', 'ĐKBG')])
+    bsd_pl_qsdd_id = fields.Many2one('bsd.pl_qsdd', string="Phụ lục", readonly=True)
+    bsd_loai_pl = fields.Selection([('pttt', 'PTTT'), ('cktm', 'CKTM'),
+                                    ('dkbg', 'ĐKBG'), ('qsdd', 'QSDĐ')])
     bsd_ly_do = fields.Char(string="Lý do", required=True)
 
     def action_xac_nhan(self):
@@ -160,15 +196,22 @@ class BsdHuytPLPTTT(models.TransientModel):
                 'bsd_ngay_huy': fields.Date.today(),
                 'bsd_nguoi_huy_id': self.env.uid
             })
-        if self.bsd_pl_cktm_id:
+        elif self.bsd_pl_cktm_id:
             self.bsd_pl_cktm_id.write({
                 'bsd_ly_do_huy': self.bsd_ly_do,
                 'state': 'huy',
                 'bsd_ngay_huy': fields.Date.today(),
                 'bsd_nguoi_huy_id': self.env.uid
             })
-        if self.bsd_pl_dkbg_id:
+        elif self.bsd_pl_dkbg_id:
             self.bsd_pl_dkbg_id.write({
+                'bsd_ly_do_huy': self.bsd_ly_do,
+                'state': 'huy',
+                'bsd_ngay_huy': fields.Date.today(),
+                'bsd_nguoi_huy_id': self.env.uid
+            })
+        elif self.bsd_pl_qsdd_id:
+            self.bsd_pl_qsdd_id.write({
                 'bsd_ly_do_huy': self.bsd_ly_do,
                 'state': 'huy',
                 'bsd_ngay_huy': fields.Date.today(),
