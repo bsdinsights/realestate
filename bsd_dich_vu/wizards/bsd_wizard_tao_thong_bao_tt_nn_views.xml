@@ -22,13 +22,12 @@
                                    domain="[('bsd_tang_id', '=', bsd_tang_id)]"
                                    options="{'no_create':true}"/>
                         </group>
+                        <button name="action_tao_tb"
+                                type="object"
+                                string="Tạo"
+                                class="oe_highlight oe_right"/>
                     </group>
                 </sheet>
-                <footer>
-                    <button name="action_tao_tb" type="object"
-                            string="Tạo" class="oe_highlight"/>
-                    <button special="cancel" string="Hủy bỏ"/>
-                </footer>
             </form>
         </field>
     </record>
@@ -36,7 +35,7 @@
     <record model="ir.actions.act_window" id="bsd_wizard_tao_tb_tt_action_2">
         <field name="name">Tạo thông báo</field>
         <field name="res_model">bsd.wizard.tao_tb_tt</field>
-        <field name="target">new</field>
+        <field name="target">main</field>
         <field name="view_mode">form</field>
     </record>
 </odoo>

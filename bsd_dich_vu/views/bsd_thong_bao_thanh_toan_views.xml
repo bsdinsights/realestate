@@ -79,8 +79,13 @@
         <field name="name">bsd.tb_tt.tree</field>
         <field name="model">bsd.tb_tt</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree decoration-warning="state=='nhap'"
+                  decoration-info="state=='xac_nhan'"
+                  decoration-success="state=='hoan_thanh'"
+                  decoration-muted="state=='huy'"
+            >
                 <field name="bsd_ma_tb"/>
+                <field name="bsd_ngay_tao_tb"/>
                 <field name="bsd_du_an_id"/>
                 <field name="bsd_unit_id"/>
                 <field name="bsd_hd_ban_id"/>
@@ -90,6 +95,7 @@
             </tree>
         </field>
     </record>
+
     <record model="ir.actions.act_window" id="bsd_tb_tt_action">
         <field name="name">Thông báo thanh toán</field>
         <field name="res_model">bsd.tb_tt</field>

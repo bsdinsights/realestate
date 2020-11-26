@@ -11,6 +11,7 @@ class BsdThongBaoNghiemThu(models.Model):
     _description = "Thông báo nghiệm thu"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma_tb'
+    _order = 'bsd_ngay_tao_tb desc'
 
     bsd_ma_tb = fields.Char(string="Mã", help="Mã thông báo nghiệm thu", required=True, readonly=True,
                             copy=False, default='/')
@@ -18,10 +19,10 @@ class BsdThongBaoNghiemThu(models.Model):
         ('bsd_ma_tb_unique', 'unique (bsd_ma_tb)',
          'Mã thông báo đã tồn tại !')
     ]
-    bsd_ngay_tao_tb = fields.Datetime(string="Ngày", help="Ngày tạo thông báo nghiệm thu",
-                                      required=True, default=lambda self: fields.Datetime.now(),
-                                      readonly=True,
-                                      states={'nhap': [('readonly', False)]})
+    bsd_ngay_tao_tb = fields.Date(string="Ngày", help="Ngày tạo thông báo nghiệm thu",
+                                  required=True, default=lambda self: fields.Date.today(),
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_doi_tuong = fields.Char(string="Đối tượng", help="Đối tượng được tạo thông báo", required=True,
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})

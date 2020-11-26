@@ -32,8 +32,7 @@
                             name="action_de_nghi_huy"
                             type="object"
                             sequence="50"
-                            states="xac_nhan,cho_rc,giu_cho"
-                            attrs="{'invisible':['|',('bsd_thanh_toan', '=','chua_tt')]}"/>
+                            states="xac_nhan,cho_rc,giu_cho"/>
                     <button string="Hủy"
                             name="action_huy"
                             type="object"

@@ -59,6 +59,8 @@ class BsdCapNhatGTQSDD(models.Model):
 
     # Xác nhận cập nhật giá trị QSDĐ
     def action_xac_nhan(self):
+        if not self.bsd_ct_ids.filtered(lambda x: x.state == 'nhap'):
+            raise UserError("Không có sản phẩm cập nhật giá trị QSDĐ.\nVui lòng kiểm tra lại thông tin.")
         if self.state == 'nhap':
             self.write({
                 'state': 'xac_nhan',

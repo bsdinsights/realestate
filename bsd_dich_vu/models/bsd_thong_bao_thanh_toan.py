@@ -12,6 +12,7 @@ class BsdThongBaoThanhToan(models.Model):
     _description = "Thông báo thanh toán"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma_tb'
+    _order = 'bsd_ngay_tao_tb desc'
 
     bsd_ma_tb = fields.Char(string="Mã", help="Mã thông báo thanh toán", required=True, readonly=True,
                             copy=False, default='/')
@@ -19,10 +20,10 @@ class BsdThongBaoThanhToan(models.Model):
         ('bsd_ma_tb_unique', 'unique (bsd_ma_tb)',
          'Mã thông báo thanh toán đã tồn tại !')
     ]
-    bsd_ngay_tao_tb = fields.Datetime(string="Ngày", help="Ngày tạo thông báo thanh toán",
-                                      required=True, default=lambda self: fields.Datetime.now(),
-                                      readonly=True,
-                                      states={'nhap': [('readonly', False)]})
+    bsd_ngay_tao_tb = fields.Date(string="Ngày", help="Ngày tạo thông báo thanh toán",
+                                  required=True, default=lambda self: fields.Date.now(),
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_tieu_de = fields.Char(string="Tiêu đề", help="Tiêu đề thông báo", required=True,
                               readonly=True,
                               states={'nhap': [('readonly', False)]})
@@ -62,7 +63,7 @@ class BsdThongBaoThanhToan(models.Model):
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
-                              ('da_gui', 'Đã gửi'),
+                              ('da_gui', 'Hoàn thành'),
                               ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
 

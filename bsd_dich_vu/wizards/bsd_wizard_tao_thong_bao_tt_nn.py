@@ -23,9 +23,15 @@ class BsdWizardTBTT(models.TransientModel):
 
     def action_tao_tb(self):
         if self.bsd_loai == 'tb_tt':
-            self._tao_tb_tt()
+            list_tb_tt = self._tao_tb_tt()
+            action = self.env.ref('bsd_dich_vu.bsd_tb_tt_action').read()[0]
+            action['target'] = 'main'
+            return action
         else:
-            self._tao_tb_nn()
+            list_tb_nn = self._tao_tb_nn()
+            action = self.env.ref('bsd_dich_vu.bsd_tb_nn_action').read()[0]
+            action['target'] = 'main'
+            return action
 
     def _tao_tb_tt(self):
         where = "WHERE (hd_ban.state NOT IN ('nhap','da_ht','thanh_ly'))"
@@ -53,33 +59,34 @@ class BsdWizardTBTT(models.TransientModel):
         FROM bsd_hd_ban as hd_ban  
             LEFT JOIN bsd_lich_thanh_toan as dot_tt ON dot_tt.bsd_hd_ban_id = hd_ban.id
             LEFT JOIN bsd_cs_tt as cs_tt ON dot_tt.bsd_cs_tt_id = cs_tt.id
-        """ + where +
-        """ AND dot_tt.bsd_ngay_hh_tt IS NOT NULL AND dot_tt.bsd_tb_tt IS NULL AND dot_tt.bsd_thanh_toan != 'da_tt';""")
+        """ + where + """ AND dot_tt.bsd_ngay_hh_tt IS NOT NULL 
+        AND dot_tt.bsd_tb_tt IS NULL AND dot_tt.bsd_thanh_toan != 'da_tt';""")
         ngay_ht = datetime.datetime.now()
         from_zone = tz.gettz('UTC')
         to_zone = tz.gettz(self._context['tz'])
         ngay_ht = ngay_ht.replace(tzinfo=from_zone)
         ngay_ht = ngay_ht.astimezone(to_zone).date()
         _logger.debug("chạy tạo thông báo tự động")
+        list_tb_tt = []
         for item in self.env.cr.fetchall():
             _logger.debug(item)
             if 0 < (item[5] - ngay_ht).days <= item[6]:
                 unit_id = self.env['product.product'].browse(item[1])
-                self.env['bsd.tb_tt'].create({
-                    'bsd_tieu_de': 'Thông báo thanh toán ' + unit_id.bsd_ten_unit,
-                    'bsd_khach_hang_id': item[0],
-                    'bsd_unit_id': item[1],
-                    'bsd_du_an_id': item[2],
-                    'bsd_hd_ban_id': item[3],
-                    'bsd_dot_tt_id': item[4],
-                    'bsd_loai': 'tb_tt'
-                })
+                list_tb_tt.append(self.env['bsd.tb_tt'].create({
+                                    'bsd_tieu_de': 'Thông báo thanh toán ' + unit_id.bsd_ten_unit,
+                                    'bsd_khach_hang_id': item[0],
+                                    'bsd_unit_id': item[1],
+                                    'bsd_du_an_id': item[2],
+                                    'bsd_hd_ban_id': item[3],
+                                    'bsd_dot_tt_id': item[4],
+                                    'bsd_loai': 'tb_tt'
+                                }).id)
                 dot_tt = self.env['bsd.lich_thanh_toan'].browse(item[4])
                 dot_tt.write({
                     'bsd_tb_tt': True,
                     'bsd_ngay_tb_tt': fields.Date.today()
                 })
-        return self.env.ref('bsd_dich_vu.bsd_tb_tt_action').read()[0]
+        return list_tb_tt
 
     def _tao_tb_nn(self):
         where = "WHERE (hd_ban.state NOT IN ('nhap','da_ht','thanh_ly'))"
@@ -138,37 +145,31 @@ class BsdWizardTBTT(models.TransientModel):
         to_zone = tz.gettz(self._context['tz'])
         ngay_ht = ngay_ht.replace(tzinfo=from_zone)
         ngay_ht = ngay_ht.astimezone(to_zone).date()
-        _logger.debug("tạo thông báo nhắc nợ")
+        list_tb_nn = []
         for item in self.env.cr.fetchall():
-            dot_tt = self.env['bsd.lich_thanh_toan'].browse(item[4])
             so_ngay = (ngay_ht - item[5]).days
             if item[6]:
                 if 0 < so_ngay <= item[7]:
-                    _logger.debug("Lần 1")
-                    self._tao_data(1, item, ngay_ht)
+                    list_tb_nn.append(self._tao_data(1, item, ngay_ht))
             if item[8]:
                 if item[7] < so_ngay <= item[9]:
-                    _logger.debug("Lần 2")
-                    self._tao_data(2, item, ngay_ht)
+                    list_tb_nn.append(self._tao_data(2, item, ngay_ht))
             if item[10]:
                 if item[9] < so_ngay <= item[11]:
-                    _logger.debug("Lần 3")
-                    self._tao_data(3, item, ngay_ht)
+                    list_tb_nn.append(self._tao_data(3, item, ngay_ht))
             if item[12]:
                 if item[11] < so_ngay <= item[13]:
-                    _logger.debug("Lần 4")
-                    self._tao_data(4, item, ngay_ht)
+                    list_tb_nn.append(self._tao_data(4, item, ngay_ht))
             if item[14]:
                 if item[13] < so_ngay <= item[15]:
-                    _logger.debug("Lần 5")
-                    self._tao_data(5, item, ngay_ht)
-
+                    list_tb_nn.append(self._tao_data(5, item, ngay_ht))
+        return list_tb_nn
     # Tạo dữ liệu thông báo nhắc nợ
     def _tao_data(self, lan_nn, item, ngay_ht):
         unit_id = self.env['product.product'].browse(item[1])
         dot_tt = self.env['bsd.lich_thanh_toan'].browse(item[4])
         hd_ban = self.env['bsd.hd_ban'].browse(item[3])
-        self.env['bsd.tb_nn'].create({
+        tb_nn = self.env['bsd.tb_nn'].create({
             'bsd_tieu_de': 'Thông báo nhắc nợ lần ' + str(lan_nn) + ' ' + unit_id.bsd_ten_unit,
             'bsd_khach_hang_id': item[0],
             'bsd_unit_id': item[1],
@@ -232,3 +233,4 @@ class BsdWizardTBTT(models.TransientModel):
                 'bsd_tb_tt': True,
                 'bsd_ngay_tb_tt': fields.Date.today(),
             })
+        return tb_nn

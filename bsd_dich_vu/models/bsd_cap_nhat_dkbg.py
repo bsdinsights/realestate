@@ -6,22 +6,22 @@ from odoo.exceptions import UserError
 
 class BsdCapNhatDKBG(models.Model):
     _name = 'bsd.cn_dkbg'
-    _description = "Cập nhật điều kiện bàn giao"
+    _description = "Cập nhật ngày dự kiến bàn giao"
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _rec_name = 'bsd_ten_cn_dkbg'
+    _rec_name = 'bsd_ten'
 
-    bsd_ma_cn_dkbg = fields.Char(string="Mã", help="Mã chứng từ ", required=True, readonly=True,
-                                 copy=False, default='/')
+    bsd_ma = fields.Char(string="Mã", help="Mã cập nhật ngày dự kiến bàn giao", required=True, readonly=True,
+                         copy=False, default='/')
     _sql_constraints = [
-        ('bsd_ma_cn_dkbg_unique', 'unique (bsd_ma_cn_dkbg)',
+        ('bsd_ma_unique', 'unique (bsd_ma)',
          'Mã phiếu cập nhật DKBG đã tồn tại !')
     ]
-    bsd_ten_cn_dkbg = fields.Char(string="Tiêu đề", help="Tiêu đề", required=True,
-                                  readonly=True,
-                                  states={'nhap': [('readonly', False)]})
-    bsd_ngay_cn_dkbg = fields.Datetime(string="Ngày tạo", required=True, default=lambda self: fields.Datetime.now(),
-                                       readonly=True,
-                                       states={'nhap': [('readonly', False)]})
+    bsd_ten = fields.Char(string="Tiêu đề", help="Tiêu đề", required=True,
+                          readonly=True,
+                          states={'nhap': [('readonly', False)]})
+    bsd_ngay = fields.Datetime(string="Ngày tạo", required=True, default=lambda self: fields.Datetime.now(),
+                               readonly=True,
+                               states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
@@ -51,25 +51,53 @@ class BsdCapNhatDKBG(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
+    bsd_ngay_xn = fields.Datetime(string="Ngày xác nhận", readonly=True, help="Ngày xác nhận")
+    bsd_nguoi_xn_id = fields.Many2one('res.users', string="Người xác nhận", readonly=True, help="Người xác nhận")
     bsd_ngay_duyet = fields.Datetime(string="Ngày duyệt", readonly=True, help="Ngày duyệt")
     bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", help="Người duyệt", readonly=True)
-    bsd_da_tao_tbbg = fields.Boolean(string="Thông báo bàn giao", readonly=True,
+    bsd_da_tao_tbbg = fields.Boolean(string="TB bàn giao", readonly=True,
                                      help="Đánh dấu Cập nhật DKBG đã được tạo thông báo bàn giao")
-    bsd_da_tao_tbnt = fields.Boolean(string="Thông báo nghiệm thu", readonly=True,
+    bsd_da_tao_tbnt = fields.Boolean(string="TB nghiệm thu", readonly=True,
                                      help="Đánh dấu Cập nhật DKBG đã được tạo thông báo nghiệm thu")
 
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('duyet', 'Duyệt'), ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
     bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
-    bsd_ct_ids = fields.One2many('bsd.cn_dkbg_unit', 'bsd_cn_dkbg_id', string="Cập nhật DKBG chi tiết")
+    bsd_ct_ids = fields.One2many('bsd.cn_dkbg_unit', 'bsd_cn_dkbg_id', string="Cập nhật DKBG chi tiết", readonly=True)
+
+    # tính năng import dự liệu
+    def action_nhap_sp(self):
+        action = {
+            'type': 'ir.actions.client',
+            'tag': 'import',
+            'params': {
+                'model': 'bsd.cn_dkbg_unit',
+                'context': self._context,
+            }
+        }
+        return action
+
+    # tính năng thêm sản phẩm
+    def action_them_sp(self):
+        action = self.env.ref('bsd_dich_vu.bsd_cn_dkbg_unit_action_popup').read()[0]
+        action['context'] = {'default_bsd_cn_dkbg_id': self.id,
+                             'default_bsd_du_an_id': self.bsd_du_an_id.id}
+        return action
 
     # DV.19.03 Xác nhận cập nhật DKBG
     def action_xac_nhan(self):
+        if not self.bsd_ct_ids.filtered(lambda x: x.state == 'nhap'):
+            raise UserError("Không có sản phẩm cập nhật ngày DKBG.\nVui lòng kiểm tra lại thông tin.")
         if self.state == 'nhap':
             self.write({
-                'state': 'xac_nhan'
+                'state': 'xac_nhan',
+                'bsd_ngay_xn': fields.Date.today(),
+                'bsd_nguoi_xn_id': self.env.uid,
             })
+            for ct in self.bsd_ct_ids:
+                if ct.state == 'nhap':
+                    ct.write({'state': 'xac_nhan'})
 
     # DV.19.04 Duyệt cập nhật DKBG
     def action_duyet(self):
@@ -82,9 +110,6 @@ class BsdCapNhatDKBG(models.Model):
         unit = self.bsd_ct_ids.mapped('bsd_unit_id').filtered(lambda h: h.bsd_ngay_bg)
         if unit:
             message += "<li>Những Sản phẩm đã bàn giao: {}</li>".format(','.join(unit.mapped('bsd_ten_unit')))
-        chi_tiet = self.bsd_ct_ids.filtered(lambda h: h.state == 'nhap')
-        if chi_tiet:
-            message += "<li>Những chi tiết chưa xác nhận: {}</li></ul>".format(','.join(chi_tiet.mapped('bsd_ma_cn_unit')))
         if message:
             self.message_post(body=message)
             message_id = self.env['message.wizard'].create(
@@ -156,149 +181,94 @@ class BsdCapNhatDKBG(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã cập nhật dự kiến bàn giao.'))
-        vals['bsd_ma_cn_dkbg'] = sequence.next_by_id()
+            raise UserError(_('Dự án chưa có mã cập nhật ngày dự kiến bàn giao.'))
+        vals['bsd_ma'] = sequence.next_by_id()
         return super(BsdCapNhatDKBG, self).create(vals)
+
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        args = list(args or [])
+        if name:
+            if operator == 'ilike':
+                args += [('bsd_ten', operator, name)]
+            elif operator == '=':
+                args += [('bsd_ma', operator, name)]
+        access_rights_uid = name_get_uid or self._uid
+        ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
+        recs = self.browse(ids)
+        return models.lazy_name_get(recs.with_user(access_rights_uid))
 
 
 class BsdCapNhatDKBGUnit(models.Model):
     _name = 'bsd.cn_dkbg_unit'
     _description = "Cập nhật điều kiện bàn giao sản phẩm"
-    _inherit = ['mail.thread', 'mail.activity.mixin']
-    _rec_name = 'bsd_ma_cn_unit'
+    _rec_name = 'bsd_unit_id'
 
-    bsd_ma_cn_unit = fields.Char(string="Mã", help="Mã cập nhật dự kiến bàn giao chi tiết",
-                                 required=True, readonly=True, copy=False, default='/')
-    _sql_constraints = [
-        ('bsd_ma_cn_unit_unique', 'unique (bsd_ma_cn_unit)',
-         'Mã cập nhật dkbg sản phẩm đã tồn tại !')
-    ]
-    bsd_ngay_cn_unit = fields.Datetime(string="Ngày tạo", required=True, default=lambda self: fields.Datetime.now(),
-                                       readonly=True,
-                                       states={'nhap': [('readonly', False)]})
+    bsd_ngay= fields.Date(string="Ngày tạo", required=True, default=lambda self: fields.Date.today(),
+                          readonly=True,
+                          states={'nhap': [('readonly', False)]})
     bsd_cn_dkbg_id = fields.Many2one('bsd.cn_dkbg',
                                      string="Cập nhật DKBG",
                                      help="Tên chứng từ cập nhật dự kiến bàn giao", required=True,
                                      readonly=True,
                                      states={'nhap': [('readonly', False)]})
-    bsd_loai = fields.Selection(related="bsd_cn_dkbg_id.bsd_loai", store=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
-    bsd_ma_sp = fields.Char(related="bsd_unit_id.bsd_ma_unit", store=True)
+    bsd_stt = fields.Integer(related='bsd_unit_id.bsd_stt', store=True)
+    bsd_unit_state = fields.Selection([('chuan_bi', 'Chuẩn bị'),
+                                      ('san_sang', 'Sẵn sàng'),
+                                      ('dat_cho', 'Đặt chỗ'),
+                                      ('giu_cho', 'Giữ chỗ'),
+                                      ('dat_coc', 'Đặt cọc'),
+                                      ('chuyen_coc', 'Chuyển cọc'),
+                                      ('da_tc', 'Đã thu cọc'),
+                                      ('ht_dc', 'Hoàn tất đặt cọc'),
+                                      ('tt_dot_1', 'Thanh toán đợt 1'),
+                                      ('ky_tt_coc', 'Ký thỏa thuận cọc'),
+                                      ('du_dk', 'Đủ điều kiện'),
+                                      ('da_ban', 'Đã bán')], string="Trạng thái SP", readonly=True)
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
+    bsd_ngay_htt = fields.Date(string="Hạn thanh toán", help="Hạn thanh toán của đợt dự kiến bàn giao",
+                               readonly=True,
+                               states={'nhap': [('readonly', False)]})
     bsd_ngay_dkbg_ht = fields.Date(string="Ngày DKBG hiện tại", help="Ngày dự kiến bàn giao hiện tại",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_ngay_dkbg_moi = fields.Date(string="Ngày DKBG mới", help="Ngày dự kiến bàn giao mới",
+    bsd_ngay_dkbg_moi = fields.Date(string="Ngày DKBG mới", help="Ngày dự kiến bàn giao mới", required=True,
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
-    bsd_ngay_htt = fields.Date(string="Hạn thanh toán", help="Hạn thanh toán",
+    bsd_so_tb = fields.Integer(string="Số lần TB", help="Số lần hoàn thành thông báo bàn giao",
                                readonly=True,
                                states={'nhap': [('readonly', False)]})
-    bsd_gia_ban = fields.Monetary(related="bsd_unit_id.list_price")
-    bsd_dk_bg = fields.Float(related="bsd_unit_id.bsd_dk_bg")
-    bsd_dt_cl = fields.Float(related="bsd_unit_id.bsd_dt_cl")
-    bsd_dt_xd = fields.Float(related="bsd_unit_id.bsd_dt_xd")
-    bsd_dt_sd = fields.Float(related="bsd_unit_id.bsd_dt_sd")
-    bsd_dt_tt = fields.Float(related="bsd_unit_id.bsd_dt_tt")
-    bsd_dt_sh = fields.Float(related="bsd_unit_id.bsd_dt_sh")
-    bsd_unit_state = fields.Selection(related="bsd_unit_id.state")
-    bsd_ngay_xn = fields.Datetime(string="Ngày xác nhận", readonly=True, help="Ngày xác nhận")
-    bsd_nguoi_xn_id = fields.Many2one('res.users', string="Người xác nhận", readonly=True, help="Ngày xác nhận")
-    bsd_ly_do = fields.Char(string="Lý do hủy", help="Lý do hủy", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('duyet', 'Duyệt'), ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
-    # Tên hiện thị record
-    def name_get(self):
-        res = []
-        for bg in self:
-            res.append((bg.id, "%s" % bg.bsd_ma_sp))
-        return res
-
-    @api.model
-    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
-        args = list(args or [])
-        if not (name == '' and operator == 'ilike'):
-            args += [('bsd_ma_sp', operator, name)]
-        access_rights_uid = name_get_uid or self._uid
-        ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
-        recs = self.browse(ids)
-        return models.lazy_name_get(recs.with_user(access_rights_uid))
-
-    # R.01 Dự án
-    @api.onchange('bsd_cn_dkbg_id')
-    def _onchange_cn_dkbg(self):
-        self.bsd_du_an_id = self.bsd_cn_dkbg_id.bsd_du_an_id
-
-    # R.02 Unit
-    @api.onchange('bsd_loai', 'bsd_du_an_id')
-    def _onchange_loai(self):
-        res = {}
-        if self.bsd_loai != 'dot_tt':
-            res.update({
-                'domain': {'bsd_unit_id': [('bsd_du_an_id', '=', self.bsd_du_an_id.id)]}
-            })
-        else:
-            list_id = self.env['product.product'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
-                                                          ('bsd_hd_ban_id', '!=', False)]).ids
-            res.update({
-                'domain': {'bsd_unit_id': [('id', 'in', list_id)]}
-            })
-        return res
-
-    # R.03 Hợp đồng
     @api.onchange('bsd_unit_id')
     def _onchange_unit(self):
+        hd_ban = self.bsd_unit_id.bsd_hd_ban_id
+        if hd_ban:
+            dot_tt = hd_ban.bsd_ltt_ids.filtered(lambda x: x.bsd_ma_dtt == 'DKBG')[0]
+        else:
+            dot_tt = False
+        self.bsd_hd_ban_id = hd_ban
+
+        self.bsd_dot_tt_id = dot_tt
+        if dot_tt:
+            self.bsd_ngay_htt = dot_tt.bsd_ngay_hh_tt
         self.bsd_ngay_dkbg_ht = self.bsd_unit_id.bsd_ngay_dkbg
-        if self.bsd_loai != 'san_pham':
-            self.bsd_hd_ban_id = self.bsd_unit_id.bsd_hd_ban_id
-        else:
-            self.bsd_hd_ban_id = None
-
-    # R.04 Đợt thanh toán
-    @api.onchange('bsd_hd_ban_id')
-    def _onchange_hd_ban(self):
-        if self.bsd_loai != 'san_pham':
-            self.bsd_dot_tt_id = self.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_ma_dtt == 'DKBG')
-        else:
-            self.bsd_dot_tt_id = None
-
-    # DV.19.01 Xác nhận chi tiết Cập nhật DKBG
-    def action_xac_nhan(self):
-        if not self.bsd_hd_ban_id:
-            if self.state == 'nhap':
-                self.write({
-                    'state': 'xac_nhan',
-                    'bsd_ngay_xn': fields.Datetime.now(),
-                    'bsd_nguoi_xn_id': self.env.uid,
-                })
-        else:
-            if self.bsd_hd_ban_id.state == 'thanh_ly':
-                if self.state == 'nhap':
-                    self.write({
-                        'state': 'huy',
-                        'bsd_ly_do': 'Hợp đồng đã bị thanh lý'
-                    })
-            else:
-                if self.state == 'nhap':
-                    self.write({
-                        'state': 'xac_nhan',
-                        'bsd_ngay_xn': fields.Datetime.now(),
-                        'bsd_nguoi_xn_id': self.env.uid,
-                    })
+        self.bsd_unit_state = self.bsd_unit_id.state
 
     # DV.19.02 Hủy chi tiết Cập nhật DkBG
     def action_huy(self):
@@ -307,13 +277,35 @@ class BsdCapNhatDKBGUnit(models.Model):
                 'state': 'huy',
             })
 
+    @api.constrains('bsd_ngay_dkbg_moi', 'bsd_ngay_htt')
+    def _constraint_ngay_dkbg(self):
+        if self.bsd_ngay_htt:
+            if self.bsd_ngay_dkbg_moi < self.bsd_ngay_htt:
+                raise UserError("Ngày DKBG mới không thể nhỏ hơn hạn thanh toán Đợt DKBG.\n"
+                                "Vui lòng kiểm tra lại thông tin.")
+
+    @api.constrains('bsd_so_tb')
+    def _constraint_so_tb(self):
+        if self.bsd_so_tb < 0 or self.bsd_so_tb > 10:
+            raise UserError(_("Nhập sai số lần hoàn thành thông báo bàn giao.\nVui lòng kiểm tra lại thông tin."))
+
+    def action_tao(self):
+        pass
+
     @api.model
     def create(self, vals):
-        sequence = None
-        if 'bsd_du_an_id' in vals:
-            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
-            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
-        if not sequence:
-            raise UserError(_('Dự án chưa có mã cập nhật dự kiến bàn giao chi tiết.'))
-        vals['bsd_ma_cn_unit'] = sequence.next_by_id()
-        return super(BsdCapNhatDKBGUnit, self).create(vals)
+        res = super(BsdCapNhatDKBGUnit, self).create(vals)
+        if res.bsd_hd_ban_id:
+            hd_ban = res.bsd_hd_ban_id
+            dot_dkbg = hd_ban.bsd_ltt_ids.filtered(lambda x: x.bsd_ma_dtt == 'DKBG')[0]
+        else:
+            dot_dkbg = False
+            hd_ban = False
+        res.write({
+            'bsd_du_an_id': res.bsd_unit_id.bsd_du_an_id.id,
+            'bsd_hd_ban_id': hd_ban.id,
+            'bsd_dot_tt_id': dot_dkbg.id,
+            'bsd_ngay_dkbg_ht': res.bsd_unit_id.bsd_ngay_dkbg,
+            'bsd_unit_state': res.bsd_unit_id.state,
+        })
+        return res

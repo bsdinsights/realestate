@@ -16,7 +16,7 @@
                     </group>
                     <field name="bsd_cn_dkbg_ids" nolabel="1">
                         <tree>
-                            <field name="bsd_ma_cn_dkbg"/>
+                            <field name="bsd_ma"/>
                             <field name="bsd_ngay_ttcn"/>
                             <field name="bsd_ngay_ut"/>
                             <field name="state"/>

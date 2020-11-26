@@ -7,6 +7,7 @@ class BsdTBTL(models.Model):
     _description = 'Thông báo thanh lý'
     _rec_name = 'bsd_ma'
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    _order = 'bsd_ngay_tao desc'
 
     bsd_ma = fields.Char(string="Mã", help="Mã thông báo thanh lý", required=True, readonly=True,
                          copy=False, default='/')
@@ -14,10 +15,10 @@ class BsdTBTL(models.Model):
         ('bsd_ma_unique', 'unique (bsd_ma)',
          'Mã thông báo thanh lý đã tồn tại !')
     ]
-    bsd_ngay_tao = fields.Datetime(string="Ngày", help="Ngày thông báo thanh lý",
-                                   required=True, default=lambda self: fields.Datetime.now(),
-                                   readonly=True,
-                                   states={'nhap': [('readonly', False)]})
+    bsd_ngay_tao = fields.Date(string="Ngày", help="Ngày thông báo thanh lý",
+                               required=True, default=lambda self: fields.Date.today(),
+                               readonly=True,
+                               states={'nhap': [('readonly', False)]})
     # bsd_ten = fields.Char(string="Tiêu đề", required=True, help="Tiêu đề thông báo thanh lý",
     #                       readonly=True,
     #                       states={'nhap': [('readonly', False)]})

@@ -69,19 +69,22 @@
                             />
                     <button string="Tạo PL PTTT"
                             name="action_tao_pl_pttt"
-                            attrs="{'invisible':[('bsd_ngay_ky_hdb', '=', False)]}"
+                            attrs="{'invisible':['|',('bsd_ngay_ky_hdb', '=', False)]}"
+                            states="thanh_ly"
                             type="object"
                             class="oe_highlight"
                             />
                     <button string="Tạo PL CKTM"
                             name="action_tao_pl_cktm"
-                            attrs="{'invisible':[('bsd_ngay_ky_hdb', '=', False)]}"
+                            attrs="{'invisible':['|',('bsd_ngay_ky_hdb', '=', False)]}"
+                            states="thanh_ly"
                             type="object"
                             class="oe_highlight"
                             />
                     <button string="Tạo PL ĐKBG"
                             name="action_tao_pl_dkbg"
-                            attrs="{'invisible':[('bsd_ngay_ky_hdb', '=', False)]}"
+                            attrs="{'invisible':['|',('bsd_ngay_ky_hdb', '=', False)]}"
+                            states="thanh_ly"
                             type="object"
                             class="oe_highlight"
                             />
@@ -707,7 +710,7 @@
                                     <field name="bsd_tinh_pbt"/>
                                     <field name="bsd_tien_da_tt"/>
                                     <field name="bsd_tien_phai_tt"/>
-                                    <field name="bsd_thanh_toan"/>
+                                    <field name="bsd_thanh_toan" invisible="1"/>
                                     <field name="currency_id" invisible="1"/>
                                     <field name="company_id" invisible="1"/>
                                 </tree>
