@@ -22,4 +22,6 @@ class BsdWizardKhongDuyetCNQSDD(models.TransientModel):
             'bsd_ly_do': self.bsd_ly_do,
             'state': 'nhap',
         })
-        self.bsd_cn_qsdd_id.bsd_ct_ids.write({"state": "nhap"})
+        self.bsd_cn_qsdd_id.message_post(body='Lý do không duyệt: ' + self.bsd_ly_do)
+        for ct in self.bsd_cn_qsdd_id.bsd_ct_ids.filtered(lambda c: c.state == 'xac_nhan'):
+            ct.write({"state": "nhap"})

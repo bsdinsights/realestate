@@ -22,4 +22,7 @@ class BsdKhongDuyetCapNhatDKBG(models.TransientModel):
             'bsd_ly_do': self.bsd_ly_do,
             'state': 'nhap',
         })
+        self.bsd_cn_dkbg_id.message_post(body='Lý do không duyệt: ' + self.bsd_ly_do)
+        for ct in self.bsd_cn_dkbg_id.bsd_ct_ids.filtered(lambda c: c.state == 'xac_nhan'):
+            ct.write({"state": "nhap"})
 

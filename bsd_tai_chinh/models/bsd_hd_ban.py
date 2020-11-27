@@ -13,9 +13,17 @@ class BsdHdBan(models.Model):
                                 store=True, digits=(10, 1))
     bsd_tien_tt_hd = fields.Monetary(string="Tiền thanh toán HĐ", help="Tiền thanh toán hợp đồng",
                                      compute='_compute_tl_tt', store=True)
+    bsd_no_goc = fields.Monetary(string="Nợ gốc", compute='_compute_tl_tt', store=True,
+                                 help="Trường thông tin nợ gốc của hợp đồng dùng khi thông báo nợ gốc cho khách hàng")
 
     bsd_phi_ps_ids = fields.One2many('bsd.phi_ps', 'bsd_hd_ban_id', string="Phí phát sinh", readonly=True)
     bsd_lai_phat_ids = fields.One2many('bsd.lai_phat', 'bsd_hd_ban_id', string="Lãi phạt", readonly=True)
+    bsd_lt_phai_tt = fields.Monetary(string="Tiền phạt phải TT", compute='_compute_lp_tt', store=True)
+
+    @api.depends('bsd_lai_phat_ids', 'bsd_lai_phat_ids.bsd_tien_phai_tt')
+    def _compute_lp_tt(self):
+        for each in self:
+            each.bsd_lt_phai_tt = sum(each.bsd_lai_phat_ids.mapped('bsd_tien_phai_tt'))
 
     @api.depends('bsd_ltt_ids.bsd_tien_da_tt', 'bsd_tong_gia')
     def _compute_tl_tt(self):
@@ -24,6 +32,8 @@ class BsdHdBan(models.Model):
                 each.bsd_tien_tt_hd = sum(each.bsd_ltt_ids.mapped('bsd_tien_da_tt')) + \
                                       each.bsd_ltt_ids.filtered(lambda x: x.bsd_stt == 1).bsd_tien_dc
                 each.bsd_tl_tt_hd = each.bsd_tien_tt_hd / (each.bsd_tong_gia - each.bsd_tien_pbt) * 100
+                each.bsd_no_goc = sum(each.bsd_ltt_ids.filtered(lambda l: l.bsd_ma_dtt != 'DBGC')
+                                      .mapped('bsd_tien_phai_tt'))
             else:
                 each.bsd_tien_tt_hd = 0
                 each.bsd_tl_tt_hd = 0

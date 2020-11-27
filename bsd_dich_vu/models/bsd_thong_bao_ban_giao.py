@@ -12,6 +12,7 @@ class BsdThongBaoBanGiao(models.Model):
     _description = "Thông báo bàn giao"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma_tb'
+    _order = 'bsd_ngay_tao_tb desc'
 
     bsd_ma_tb = fields.Char(string="Mã", help="Mã thông báo bàn giao", required=True, readonly=True,
                             copy=False, default='/')
@@ -19,27 +20,23 @@ class BsdThongBaoBanGiao(models.Model):
         ('bsd_ma_tb_unique', 'unique (bsd_ma_tb)',
          'Mã thông báo đã tồn tại !')
     ]
-    bsd_ngay_tao_tb = fields.Datetime(string="Ngày", help="Ngày tạo thông báo bàn giao",
-                                      required=True, default=lambda self: fields.Datetime.now(),
-                                      readonly=True,
-                                      states={'nhap': [('readonly', False)]})
+    bsd_ngay_tao_tb = fields.Date(string="Ngày thông báo", help="Ngày tạo thông báo bàn giao",
+                                  required=True, default=lambda self: fields.Date.today(),
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_doi_tuong = fields.Char(string="Đối tượng", help="Đối tượng được tạo thông báo", required=True,
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
     bsd_tao_td = fields.Boolean(string="Được tạo tự động", help="Đánh dấu thông báo được tạo tự động từ hệ thông",
                                 readonly=True)
-    bsd_cn_dkbg_unit_id = fields.Many2one('bsd.cn_dkbg_unit', string="Cập nhật DKBG chi tiết",
+    bsd_cn_dkbg_unit_id = fields.Many2one('bsd.cn_dkbg_unit', string="CN.DKBG chi tiết",
                                           help="Mã cập nhật DKBG chi tiết",
-                                          readonly=True, required=True,
-                                          states={'nhap': [('readonly', False)]})
+                                          readonly=True)
     bsd_ngay_bg = fields.Date(string="Ngày bàn giao", help="Ngày bàn giao",
-                              readonly=True,
-                              states={'nhap': [('readonly', False)]})
-    bsd_ngay_tb = fields.Date(string="Ngày thông báo", help="Ngày thông báo bàn giao",
-                              readonly=True,
+                              readonly=True, required=True,
                               states={'nhap': [('readonly', False)]})
     bsd_ngay_ut = fields.Date(string="Ngày ước tính", help="Ngày ước tính",
-                              readonly=True,
+                              readonly=True, required=True,
                               states={'nhap': [('readonly', False)]})
     bsd_ngay_in = fields.Datetime(string="Ngày in", help="Ngày in thông báo bàn giao", readonly=True)
     bsd_nguoi_ht_id = fields.Many2one("res.users", help="Người thực hiện thông báo thành công",
@@ -57,32 +54,38 @@ class BsdThongBaoBanGiao(models.Model):
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán",
-                                    help="Đợt thanh toán là Đợt dự kiến bàn giao", compute="_compute_dot_tt")
+                                    help="Đợt thanh toán là Đợt dự kiến bàn giao",
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]})
     bsd_ngay_hh_tt = fields.Date(string="Hạn thanh toán", help="Hạn thanh toán của đợt dự kiến bàn giao",
-                                 compute="_compute_dot_tt")
-
-    @api.onchange('bsd_cn_dkbg_unit_id')
-    def _onchange_dkbg_unit(self):
-        self.bsd_ngay_bg = self.bsd_cn_dkbg_unit_id.bsd_ngay_dkbg_moi
-        self.bsd_ngay_tb = fields.Datetime.now()
-        self.bsd_ngay_ut = self.bsd_cn_dkbg_unit_id.bsd_cn_dkbg_id.bsd_ngay_ut
-        self.bsd_du_an_id = self.bsd_cn_dkbg_unit_id.bsd_du_an_id
-        self.bsd_hd_ban_id = self.bsd_cn_dkbg_unit_id.bsd_hd_ban_id
-        self.bsd_unit_id = self.bsd_cn_dkbg_unit_id.bsd_unit_id
-
-    bsd_ngay_dkbg = fields.Date(related="bsd_hd_ban_id.bsd_ngay_dkbg")
+                                 readonly=True,
+                                 states={'nhap': [('readonly', False)]})
+    bsd_ngay_dkbg = fields.Date(string="Ngày DKBG", help="Ngày dự kiến bàn giao",
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
     bsd_tien_ng = fields.Monetary(string="Nợ gốc",
                                   help="Tổng số tiền đợt thanh toán mà khách hàng chưa thanh toán và "
-                                       "không bao gồm đợt thanh toán cuối")
-    bsd_tien_pbt = fields.Monetary(string="Phí bảo trì", help="Phí bảo trì cần phải thu của khách hàng")
-    bsd_tien_pql = fields.Monetary(string="Phí quản lý", help="Phí quản lý cần phải thu của khách hàng")
-    bsd_thang_pql = fields.Integer(string="Số tháng đóng PQL", related='bsd_unit_id.bsd_thang_pql',
-                                   help="Số tháng đóng phí quản lý được quy định trên sản phẩm")
-    bsd_don_gia_pql = fields.Monetary(string="Đơn giá PQL", related='bsd_unit_id.bsd_don_gia_pql',
-                                      help="Đơn giá phí quản lý được quy định trên sản phẩm")
+                                       "không bao gồm đợt thanh toán cuối",
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
+    bsd_tien_pbt = fields.Monetary(string="Phí bảo trì", help="Phí bảo trì cần phải thu của khách hàng",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_tien_pql = fields.Monetary(string="Phí quản lý", help="Phí quản lý cần phải thu của khách hàng",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_thang_pql = fields.Integer(string="Số tháng đóng PQL",
+                                   help="Số tháng đóng phí quản lý được quy định trên sản phẩm",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_don_gia_pql = fields.Monetary(string="Đơn giá PQL",
+                                      help="Đơn giá phí quản lý được quy định trên sản phẩm",
+                                      readonly=True,
+                                      states={'nhap': [('readonly', False)]})
+    bsd_tien_lp = fields.Monetary(string="Tiền phạt chậm TT", help="Tiền phạt chậm thanh toán của hợp đồng")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'),
@@ -99,13 +102,6 @@ class BsdThongBaoBanGiao(models.Model):
         self.bsd_tien_pql = self.bsd_hd_ban_id.bsd_tien_pql
         dot_cuoi = self.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_cs_tt_ct_id.bsd_dot_cuoi)
         self.bsd_tien_ng = self.bsd_hd_ban_id.bsd_tong_gia - self.bsd_hd_ban_id.bsd_tien_pbt - self.bsd_hd_ban_id.bsd_tien_tt_hd - dot_cuoi.bsd_tien_dot_tt
-
-    @api.depends('bsd_hd_ban_id')
-    def _compute_dot_tt(self):
-        for each in self:
-            dot_dkbg = each.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_ma_dtt == 'DKBG')
-            each.bsd_dot_tt_id = dot_dkbg.id
-            each.bsd_ngay_hh_tt = dot_dkbg.bsd_ngay_hh_tt
 
     def _compute_bg_sp(self):
         for each in self:
@@ -146,7 +142,6 @@ class BsdThongBaoBanGiao(models.Model):
     # DV.16.03 Cập nhật ngày gửi
     def action_gui_tb(self):
         action = self.env.ref('bsd_dich_vu.bsd_wizard_tb_bg_action').read()[0]
-        _logger.debug(action)
         return action
 
     # DV.16.04 Hoàn thành thông báo bàn giao
@@ -160,7 +155,7 @@ class BsdThongBaoBanGiao(models.Model):
 
     # DV.16.05 Hủy thông báo bàn giao
     def action_huy(self):
-        if self.state == 'nhap':
+        if self.state in ['nhap', 'xac_nhan']:
             self.write({
                 'state': 'huy'
             })

@@ -34,8 +34,8 @@
                             name="action_huy"
                             type="object"
                             confirm="Bạn có muốn hủy yêu cầu này không ?"
-                            attrs="{'invisible': ['|',('bsd_ngay_gui', '!=',False)]}"
-                            states="xac_nhan"/>
+                            attrs="{'invisible': ['|',('id', '=',False),'|',('bsd_ngay_in', '!=',False)]}"
+                            states="xac_nhan,nhap"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
@@ -55,7 +55,6 @@
                                 </group>
                                 <group>
                                     <field name="bsd_cn_dkbg_unit_id"/>
-                                    <field name="bsd_ngay_tb"/>
                                     <field name="bsd_ngay_bg"/>
                                     <field name="bsd_ngay_ut"/>
                                 </group>
@@ -105,6 +104,7 @@
                                     <field name="bsd_tien_pql"/>
                                 </group>
                                 <group>
+                                    <field name="bsd_tien_lp"/>
                                     <field name="bsd_thang_pql"/>
                                     <field name="bsd_don_gia_pql"/>
                                 </group>
@@ -126,7 +126,11 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="bsd_ma_tb"/>
-                <field name="bsd_ngay_tb"/>
+                <field name="bsd_ngay_tao_tb"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_unit_id"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_hd_ban_id"/>
                 <field name="state"/>
             </tree>
         </field>

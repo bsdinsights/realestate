@@ -169,8 +169,22 @@ class BsdHopDongMuaBan(models.Model):
 
     bsd_dot_pbt_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_hd_ban_id', string="Đợt thu phí bảo trì",
                                       readonly=True, domain=[('bsd_loai', '=', 'pbt')])
+    bsd_pbt_phai_tt = fields.Monetary(string="PBT phải TT", compute="_compute_pbt_ptt", store=True)
+
+    @api.depends('bsd_dot_pbt_ids', 'bsd_dot_pbt_ids.bsd_tien_phai_tt')
+    def _compute_pbt_ptt(self):
+        for each in self:
+            each.bsd_pbt_phai_tt = sum(each.bsd_dot_pbt_ids.mapped('bsd_tien_phai_tt'))
     bsd_dot_pql_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_hd_ban_id', string="Đợt thu phí quản lý",
                                       readonly=True, domain=[('bsd_loai', '=', 'pql')])
+
+    bsd_pql_phai_tt = fields.Monetary(string="PBT phải TT", compute="_compute_pql_ptt", store=True)
+
+    @api.depends('bsd_dot_pbt_ids', 'bsd_dot_pbt_ids.bsd_tien_phai_tt')
+    def _compute_pql_ptt(self):
+        for each in self:
+            each.bsd_pql_phai_tt = sum(each.bsd_dot_pql_ids.mapped('bsd_tien_phai_tt'))
+
     bsd_dong_sh_ids = fields.One2many('bsd.dong_so_huu', 'bsd_hd_ban_id', string="Đồng sở hữu hiện tại",
                                       readonly=True, domain=[('state', '=', 'active')],
                                       states={'nhap': [('readonly', False)]})

@@ -18,7 +18,7 @@ class BsdTBNT(models.TransientModel):
         return self._context.get('loai_ngay')
 
     bsd_tb_nt_id = fields.Many2one('bsd.tb_nt', string="Thông báo nghiệm thu", default=_get_tb_nt, readonly=True)
-    bsd_ngay = fields.Date(string="Ngày", required=True)
+    bsd_ngay = fields.Date(string="Ngày", required=True, default=lambda self: fields.Date.today())
     bsd_loai_ngay = fields.Selection([('ngay_gui', 'Ngày gửi thông báo'), ('ngay_dong', 'Ngày đóng thông báo')],
                                      string="Loại",
                                      default=_get_loai, readonly=True)
@@ -32,7 +32,7 @@ class BsdTBNT(models.TransientModel):
             if self.bsd_loai_ngay == 'ngay_dong':
                 self.bsd_tb_nt_id.write({
                     'bsd_ngay_dong': self.bsd_ngay,
-                    'state': 'dong_nt'
+                    'state': 'hoan_thanh'
                 })
                 self.bsd_tb_nt_id.tao_nt_sp()
 

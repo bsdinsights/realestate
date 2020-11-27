@@ -1,6 +1,9 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
+import datetime
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class BsdBaoGiaLTT(models.Model):
@@ -65,3 +68,13 @@ class BsdBaoGiaLTT(models.Model):
     bsd_ngay_cb3 = fields.Date(string="Ngày TBNN 3", readonly=True, help="Ngày tạo thông báo nhắc nợ", copy=False)
     bsd_ngay_cb4 = fields.Date(string="Ngày TBNN 4", readonly=True, help="Ngày tạo thông báo nhắc nợ", copy=False)
     bsd_ngay_cb5 = fields.Date(string="Ngày TBNN 5", readonly=True, help="Ngày tạo thông báo nhắc nợ", copy=False)
+
+    # def write(self, vals):
+    #     _logger.debug("Write ne")
+    #     _logger.debug(vals)
+    #     if 'bsd_ngay_hh_tt' in vals:
+    #         ngay_hh = datetime.datetime.strptime(vals['bsd_ngay_hh_tt'], '%Y-%m-%d')
+    #         vals['bsd_ngay_ah'] = ngay_hh + datetime.timedelta(days=self.bsd_cs_tt_id.bsd_lai_phat_tt_id.bsd_an_han)
+    #         vals['bsd_ngay_ah'] = vals['bsd_ngay_ah'].strftime('%Y-%m-%d')
+    #         _logger.debug(vals['bsd_ngay_ah'])
+    #     return super(BsdBaoGiaLTT, self).write(vals)

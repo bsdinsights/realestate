@@ -51,6 +51,7 @@
                                 <group>
                                     <field name="bsd_ngay_ttcn"/>
                                     <field name="bsd_ngay_ut"/>
+                                    <field name="bsd_ngay_htt_moi"/>
                                     <field name="bsd_co_tbnt"/>
                                     <field name="bsd_co_tbbg"/>
                                     <field name="bsd_dien_giai"/>
@@ -65,6 +66,7 @@
                                     <field name="bsd_ngay_duyet"/>
                                     <field name="bsd_nguoi_duyet_id"/>
                                 </group>
+                                <field name="bsd_ly_do"  attrs="{'invisible':[('bsd_ly_do','=',False)]}"/>
                             </group>
                             <group string="THÔNG BÁO">
                                 <group>
@@ -74,6 +76,7 @@
                                     <field name="bsd_da_tao_tbbg"/>
                                 </group>
                             </group>
+
                         </page>
                         <page string="Danh sách sản phẩm">
                             <button string="Thêm SP"
@@ -91,6 +94,7 @@
                                     <field name="bsd_dot_tt_id"/>
                                     <field name="bsd_ngay_htt"/>
                                     <field name="bsd_ngay_dkbg_ht"/>
+                                    <field name="bsd_ngay_htt_moi"/>
                                     <field name="bsd_ngay_dkbg_moi"/>
                                     <field name="bsd_so_tb"/>
                                     <field name="state"/>
@@ -174,8 +178,11 @@
                         <group>
                             <field name="bsd_cn_dkbg_id" readonly="1" force_save="1"/>
                             <field name="bsd_ngay"/>
-                            <field name="bsd_unit_id"/>
+                            <field name="bsd_unit_id"
+                                   domain="[('bsd_du_an_id', '=',bsd_du_an_id)]"
+                                   options="{'no_create':true}"/>
                             <field name="bsd_ngay_dkbg_moi"/>
+                            <field name="bsd_ngay_htt_moi"/>
                             <field name="bsd_so_tb"/>
 
                         </group>
@@ -190,8 +197,9 @@
                     </group>
                 </sheet>
                 <footer>
-                    <button string="Tạo" name="action_tao" type="object" class="oe_highlight"/>
-                    <button string="Hủy" special="cancel"/>
+                    <button string="Tạo" name="action_tao"
+                            type="object" class="oe_highlight oe_edit_only"/>
+                    <button string="Hủy" special="cancel" class="oe_highlight oe_edit_only"/>
                 </footer>
             </form>
         </field>

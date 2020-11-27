@@ -18,3 +18,12 @@ class ProductTemplate(models.Model):
         action = self.env.ref('bsd_danh_muc.bsd_chi_tiet_gia_action').read()[0]
         action['domain'] = [('id', 'in', self.bsd_pricelist_ids.ids)]
         return action
+
+
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
+
+    def action_view_gia(self):
+        action = self.env.ref('bsd_danh_muc.bsd_chi_tiet_gia_action').read()[0]
+        action['domain'] = [('id', 'in', self.bsd_pricelist_ids.ids)]
+        return action

@@ -23,6 +23,7 @@
                 <group>
                     <group>
                         <field name="bsd_tien_tt_hd"/>
+                        <field name="bsd_no_goc"/>
                     </group>
                     <group>
                         <label for="bsd_tl_tt_hd"/>

@@ -18,12 +18,26 @@
                     </group>
                 </group>
             </xpath>
-<!--            <xpath expr="//field[@name='bsd_ngay_bg']" position="after">-->
-<!--                <field name="bsd_bg_sp_id"/>-->
-<!--            </xpath>-->
-<!--            <xpath expr="//field[@name='bsd_ngay_cap_sh']" position="after">-->
-<!--                <field name="bsd_bg_gt_id"/>-->
-<!--            </xpath>-->
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_product_product_inherit">
+        <field name="name">bsd.product.product.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="bsd_du_an.bsd_product_product_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='mo_ban']" position="after">
+                <group string="HỢP ĐỒNG">
+                    <group>
+                        <field name="bsd_hd_ban_id"/>
+                        <field name="bsd_tt_vay"/>
+                        <field name="bsd_xn_du_hs"/>
+                    </group>
+                    <group>
+                        <field name="bsd_lan_tl"/>
+                        <field name="bsd_ngay_ky_hdb"/>
+                    </group>
+                </group>
+            </xpath>
         </field>
     </record>
 </odoo>
