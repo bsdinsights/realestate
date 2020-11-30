@@ -178,7 +178,7 @@ class BsdThongBaoNghiemThu(models.Model):
             tong_so_ngay_phat += so_ngay_tp
         self.write({
             'bsd_so_ngay_tre': tong_so_ngay_phat,
-            'bsd_tien_lp_ut': tien_phat,
+            'bsd_tien_lp_ut': tong_tien_phat,
         })
 
     # DV.21.02 In thông báo nghiệm thu
