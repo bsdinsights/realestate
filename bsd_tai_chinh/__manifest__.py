@@ -34,6 +34,7 @@
         'views/bsd_huy_gc_views.xml',
         'wizards/bsd_wizard_ut_lp_views.xml',
         'wizards/bsd_wizard_cn_qsdd_views.xml',
+        'wizards/bsd_wizard_tt_dot_views.xml',
         'reports/report_bsd_phieu_thu_views.xml',
         'reports/report_bsd_hoan_tien_views.xml',
         'reports/report_bsd_uoc_tinh_lp_views.xml',

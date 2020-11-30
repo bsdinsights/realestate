@@ -178,10 +178,6 @@ class BsdPhieuThu(models.Model):
 
         # Kiểm tra thanh toán dư để tạo thanh toán trả trước
         co_tt_du, tien_tt_du, tien_tt = self._kiem_tra_tt_du()
-        _logger.debug("xác nhận")
-        _logger.debug(co_tt_du)
-        _logger.debug(tien_tt_du)
-        _logger.debug(tien_tt)
         if co_tt_du:
             self.tao_tt_tra_truoc(tien_du=tien_tt_du)
         self.write({

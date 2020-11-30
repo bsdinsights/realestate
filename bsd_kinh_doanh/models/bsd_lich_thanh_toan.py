@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 
 from odoo import models, fields, api
-import datetime
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -9,7 +8,7 @@ _logger = logging.getLogger(__name__)
 class BsdBaoGiaLTT(models.Model):
     _name = 'bsd.lich_thanh_toan'
     _description = "Lịch thanh toán cho báo giá"
-    _rec_name = 'bsd_ten_dtt'
+    _rec_name = "bsd_ten_dtt"
 
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", help="Bảng tính giá", copy=False)
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Phiếu đặt cọc", readonly=True, copy=False)
@@ -69,12 +68,24 @@ class BsdBaoGiaLTT(models.Model):
     bsd_ngay_cb4 = fields.Date(string="Ngày TBNN 4", readonly=True, help="Ngày tạo thông báo nhắc nợ", copy=False)
     bsd_ngay_cb5 = fields.Date(string="Ngày TBNN 5", readonly=True, help="Ngày tạo thông báo nhắc nợ", copy=False)
 
-    # def write(self, vals):
-    #     _logger.debug("Write ne")
-    #     _logger.debug(vals)
-    #     if 'bsd_ngay_hh_tt' in vals:
-    #         ngay_hh = datetime.datetime.strptime(vals['bsd_ngay_hh_tt'], '%Y-%m-%d')
-    #         vals['bsd_ngay_ah'] = ngay_hh + datetime.timedelta(days=self.bsd_cs_tt_id.bsd_lai_phat_tt_id.bsd_an_han)
-    #         vals['bsd_ngay_ah'] = vals['bsd_ngay_ah'].strftime('%Y-%m-%d')
-    #         _logger.debug(vals['bsd_ngay_ah'])
-    #     return super(BsdBaoGiaLTT, self).write(vals)
+    def _get_name(self):
+        dot_tt = self
+        name = dot_tt.bsd_ten_dtt or ''
+        if self._context.get('show_info'):
+            if dot_tt.bsd_thanh_toan == 'chua_tt':
+                tt = "Chưa thanh toán"
+            elif dot_tt.bsd_thanh_toan == 'dang_tt':
+                tt = "Đang thanh toán"
+            else:
+                tt = "Đã thanh toán"
+            name = "%s - %s - %s" % (dot_tt.bsd_ten_dtt, tt,  '{:,.0f} đ'
+                                     .format(dot_tt.bsd_tien_phai_tt).replace(',', '.'))
+        return name
+
+    def name_get(self):
+        res = []
+        _logger.debug("gọi tới hàm này")
+        for dot_tt in self:
+            name = dot_tt._get_name()
+            res.append((dot_tt.id, name))
+        return res

@@ -726,12 +726,6 @@ class BsdBaoGiaLTT(models.Model):
             else:
                 each.bsd_ma_ht = each.bsd_ten_dtt
 
-    def name_get(self):
-        res = []
-        for dot_tt in self:
-            res.append((dot_tt.id, "%s" % dot_tt.bsd_ten_dtt))
-        return res
-
 
 class BsdKhuyenMai(models.Model):
     _inherit = 'bsd.bao_gia_km'
