@@ -24,8 +24,12 @@ class BsdWizardReportGCTC(models.TransientModel):
                                   default='bsd_mau_in_gc_tc_chuan')
 
     def action_in(self):
-        """Call when button 'Get Report' clicked.
-        """
+        tai_khoan = self.bsd_gc_tc_id.bsd_khach_hang_id.bank_ids
+        tai_khoan = tai_khoan.filtered(lambda t: t.bsd_tk_chinh)
+        if not tai_khoan:
+            raise UserError("Khách hàng chưa cấu hình tài khoản chính.\nVui lòng chọn tài khoản chính cho khách hàng.")
+        if len(tai_khoan) > 1:
+            raise UserError("Khách hàng cấu hình nhiều hơn 1 tài khoản chính.\nVui lòng kiểm tra lại thông tin.")
         data = {
             'ids': self.bsd_gc_tc_id.ids,
             'model': self.bsd_gc_tc_id._name,

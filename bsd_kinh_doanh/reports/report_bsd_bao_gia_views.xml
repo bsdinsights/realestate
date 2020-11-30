@@ -161,6 +161,42 @@
                             </table>
                             </div>
                         </div>
+                        <!--Thông tin chiết khấu-->
+                        <div class="row mt8">
+                            <div class="col-12">
+                                <table class="table table-bordered table-sm"
+                                 style="border: 2px !important; border-style: solid !important; border-color: #000000 !important;">
+                            <thead>
+                              <tr class="text-center " style="background-color:#EBEBEB !important;font-size:17px">
+                                <th colspan="5" style="border: 1px solid black !important;">
+                                    CHIẾT KHẤU (tất cả số tiền được thể hiện bằng VNĐ)
+                                </th>
+                              </tr>
+                              <tr>
+                                <tr class="text-center" style="background-color:#EBEBEB !important;font-size:17px">
+                                  <th width="40%" style="border: 1px solid black !important;">
+                                    <div>Giá bán</div>
+                                    <div>(không bao gồm VAT và phí bảo trì)</div>
+                                  </th>
+                                  <th class="align-top" width="30%" style="border: 1px solid black !important;">
+                                    <div>Tỷ lệ chiết khâu(%)</div>
+                                  </th>
+                                  <th class="align-top" width="30%" style="border: 1px solid black !important;">
+                                    <div>Tổng tiền chiết khấu</div>
+                                  </th>
+                                </tr>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr class="text-center ">
+                                <td style="border: 1px solid black !important;"><div t-esc="doc.bsd_gia_ban + doc.bsd_tien_bg" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                <td style="border: 1px solid black !important;"><span t-esc="tl_ck"/> %</td>
+                                <td style="border: 1px solid black !important;"><div t-field="doc.bsd_tien_ck" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                            </div>
+                        </div>
                         <!--Chi tiết giá bán-->
                         <div class="row mt8">
                             <div class="col-12">
@@ -199,7 +235,7 @@
                             </thead>
                             <tbody>
                               <tr class="text-center ">
-                                <td style="border: 1px solid black !important;"><div t-field="doc.bsd_gia_ban" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+                                <td style="border: 1px solid black !important;"><div t-field="doc.bsd_gia_truoc_thue" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
                                 <td style="border: 1px solid black !important;"><div t-field="doc.bsd_tien_qsdd" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
                                 <td style="border: 1px solid black !important;"><div t-field="doc.bsd_tien_thue" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
                                 <td style="border: 1px solid black !important;"><div t-field="doc.bsd_tien_pbt" t-options='{"widget": "monetary", "display_currency": currency}'/></td>

@@ -55,7 +55,7 @@ class ReportBsdBaoGia(models.AbstractModel):
             'chu_tk': tai_khoan.acc_holder_name,
             'so_tk': tai_khoan.acc_number,
             'ngan_hang': tai_khoan.bank_id.name,
-            'chi_nhanh': tai_khoan.bsd_chi_nhanh
-
+            'chi_nhanh': tai_khoan.bsd_chi_nhanh,
+            'tl_ck': sum(bao_gia.bsd_ps_ck_ids.mapped('bsd_tl_ck')) + sum(bao_gia.bsd_ck_db_ids.mapped('bsd_tl_ck'))
         }
         return res

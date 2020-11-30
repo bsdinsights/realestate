@@ -333,6 +333,28 @@ class BsdGiuCho(models.Model):
             self.write({
                 'state': 'het_han'
             })
+            # Cập nhật trạng thái unit
+            giu_cho = self.env['bsd.giu_cho'].search([('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                      ('state', 'in', ['dat_cho', 'dang_cho', 'giu_cho']),
+                                                      ('id', '!=', self.id)])
+            if not self.bsd_unit_id.bsd_dot_mb_id:
+                if not giu_cho:
+                    self.bsd_unit_id.write({
+                        'state': 'chuan_bi',
+                    })
+                elif not giu_cho.filtered(lambda g: g.state in ['dang_cho', 'giu_cho']):
+                    self.bsd_unit_id.write({
+                        'state': 'dat_cho'
+                    })
+            else:
+                if not giu_cho:
+                    self.bsd_unit_id.write({
+                        'state': 'san_sang',
+                    })
+                elif not giu_cho.filtered(lambda g: g.state in ['dang_cho', 'giu_cho']):
+                    self.bsd_unit_id.write({
+                        'state': 'dat_cho'
+                    })
         elif not self.bsd_truoc_mb:
             if self.state == 'giu_cho':
                 self.write({
