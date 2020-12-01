@@ -151,15 +151,17 @@
                         <page string="Công chứng">
                             <group>
                                 <group string="CÔNG CHỨNG">
+<!--                                    <field name="bsd_giay_cn"/>-->
                                     <field name="bsd_so_cch"/>
                                     <field name="bsd_noi_cch"/>
                                     <field name="bsd_ngay_cch"/>
-                                    <field name="bsd_ngay_cn_tt"/>
+                                    <field name="bsd_tt_cch"/>
                                 </group>
                                 <group string="THÔNG BÁO NỘP THUẾ">
                                     <field name="bsd_so_tb"/>
                                     <field name="bsd_noi_tb"/>
                                     <field name="bsd_ngay_tb"/>
+                                    <field name="bsd_gcn_nt"/>
                                 </group>
                             </group>
                         </page>

@@ -76,18 +76,22 @@ class BsdChuyenNhuong(models.Model):
                                       states={'nhap': [('readonly', False)], 'da_xn_ttlk': [('readonly', False)]})
     bsd_so_cch = fields.Char(string="Số công chứng", help="Số công chứng", readonly=True,
                              states={'nhap': [('readonly', False)], 'da_xn_ttlk': [('readonly', False)]})
-    bsd_noi_cch = fields.Many2one('res.country.state', string="Nơi công chứng", readonly=True,
-                                  states={'nhap': [('readonly', False)], 'da_xn_ttlk': [('readonly', False)]})
+    bsd_noi_cch = fields.Char(string="Nơi công chứng", readonly=True,
+                              states={'nhap': [('readonly', False)], 'da_xn_ttlk': [('readonly', False)]})
     bsd_ngay_cch = fields.Date(string="Ngày công chứng", help="Ngày công chứng", readonly=True,
                                states={'nhap': [('readonly', False)], 'da_xn_ttlk': [('readonly', False)]})
     bsd_so_tb = fields.Char(string="Số thông báo", help="Số thông báo", readonly=True,
                             states={'nhap': [('readonly', False)], 'da_xn_ttlk': [('readonly', False)]})
-    bsd_noi_tb = fields.Many2one('res.country.state', string="Nơi thông báo", help="Nơi thông báo", readonly=True,
-                                 states={'nhap': [('readonly', False)], 'da_xn_ttlk': [('readonly', False)]})
+    bsd_noi_tb = fields.Char(string="Nơi thông báo", help="Nơi thông báo", readonly=True,
+                             states={'nhap': [('readonly', False)], 'da_xn_ttlk': [('readonly', False)]})
     bsd_ngay_tb = fields.Date(string="Ngày thông báo", help="Ngày thông báo", readonly=True,
                               states={'nhap': [('readonly', False)], 'da_xn_ttlk': [('readonly', False)]})
-    bsd_ngay_cn_tt = fields.Datetime(string="Ngày cập nhật", help="Ngày cập nhật thông tin công chứng", readonly=True,
-                                     states={'nhap': [('readonly', False)], 'da_xn_ttlk': [('readonly', False)]})
+    bsd_gcn_nt = fields.Char(string="GCN.Nộp thuế", help="Giấy chứng nhận đã nộp thuế", readonly=True,
+                             states={'nhap': [('readonly', False)], 'da_xn_ttlk': [('readonly', False)]})
+    bsd_giay_cn = fields.Char(string="GCN.Chủ đầu tư", help="Giấy chứng nhận chủ đầu tư", readonly=True,
+                              states={'nhap': [('readonly', False)], 'da_xn_ttlk': [('readonly', False)]})
+    bsd_tt_cch = fields.Char(string="Thông tin công chứng", readonly=True,
+                             states={'nhap': [('readonly', False)], 'da_xn_ttlk': [('readonly', False)]})
     state = fields.Selection([('nhap', 'Nháp'), ('cho_xn_ttlk', 'Chờ xác nhận TTLK'),
                               ('da_xn_ttlk', 'Đã xác nhận TTLK'),
                               ('xac_nhan', 'Xác nhận'),

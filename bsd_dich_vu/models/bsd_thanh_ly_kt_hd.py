@@ -48,7 +48,7 @@ class BsdThanhLyKetThucHopDong(models.Model):
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
-                              ('da_tl', 'Đã thanh lý'),
+                              ('da_tl', 'Hoàn thành'),
                               ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
 

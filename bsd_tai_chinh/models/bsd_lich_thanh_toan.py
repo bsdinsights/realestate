@@ -186,4 +186,24 @@ class BsdBaoGiaLTT(models.Model):
                     'bsd_tien_phat': tien_phat
                 })
 
+    def _get_name(self):
+        dot_tt = self
+        name = dot_tt.bsd_ten_dtt or ''
+        if self._context.get('show_info'):
+            if dot_tt.bsd_thanh_toan == 'chua_tt':
+                tt = "Chưa TT"
+            elif dot_tt.bsd_thanh_toan == 'dang_tt':
+                tt = "Đang TT"
+            else:
+                tt = "Đã TT"
+            name = "%s - %s - %s" % (dot_tt.bsd_ten_dtt, tt,  '{:,.0f} đ'
+                                     .format(dot_tt.bsd_tien_phai_tt).replace(',', '.'))
+        return name
 
+    def name_get(self):
+        res = []
+        _logger.debug("gọi tới hàm này")
+        for dot_tt in self:
+            name = dot_tt._get_name()
+            res.append((dot_tt.id, name))
+        return res

@@ -26,14 +26,14 @@ class BsdNghiemThu(models.Model):
                                    help="Thông báo nghiệm thu",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_loai = fields.Selection([('dat', 'Đạt'), ('khong_dat', 'Không đạt')], help="Kết quả nghiệm thu",
+    bsd_loai = fields.Selection([('dat', 'Đạt'), ('khong_dat', 'Sản phẩm lỗi')], help="Kết quả nghiệm thu",
                                 string="Loại kết quả", required=True, default='dat',
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
+    bsd_tt_loi = fields.Html(string="Thông tin lỗi SP", help="Thông tin lỗi sản phẩm của chủ đầu tư")
+    bsd_tt_yc_sc = fields.Html(string="Thông tin yêu cầu sửa chữa", help="Thông tin yêu cầu sửa chữa của khách hàng")
     bsd_yc_sc = fields.Boolean(string="Yêu cầu sửa chữa",
-                               help="Đánh dấu kết quả nghiệm thu có yêu cầu sửa chữa hay không",
-                               readonly=True,
-                               states={'nhap': [('readonly', False)]})
+                               help="Đánh dấu kết quả nghiệm thu có yêu cầu sửa chữa hay không")
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
@@ -85,13 +85,6 @@ class BsdNghiemThu(models.Model):
                               ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
     bsd_ly_do_huy = fields.Char(string="Lý do hủy", readonly=True, tracking=2)
-
-    @api.onchange('bsd_loai')
-    def _onchange_loai(self):
-        if self.bsd_loai == 'dat':
-            self.bsd_yc_sc = False
-        else:
-            self.bsd_yc_sc = True
 
     @api.onchange('bsd_duyet_yc')
     def _onchange_duyet(self):

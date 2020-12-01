@@ -19,7 +19,7 @@
                                                               'required':[('bsd_so_nk','=','ngan_hang')]}"/>
                             <field name="bsd_tien_kh"/>
                             <field name="bsd_tien"/>
-                            <field name="bsd_tien_da_tt"/>
+                            <field name="bsd_tien_lp_ut" readonly="1" force_save="1"/>
                             <field name="bsd_tien_con_lai"/>
                             <field name="bsd_hd_ban_id" readonly="1" force_save="1"
                                    options="{'no_create':true}"/>
@@ -77,7 +77,6 @@
                                                               'required':[('bsd_so_nk','=','ngan_hang')]}"/>
                             <field name="bsd_tien_kh"/>
                             <field name="bsd_tien"/>
-                            <field name="bsd_tien_da_tt"/>
                             <field name="bsd_tien_con_lai"/>
                             <field name="currency_id" invisible="1"/>
                             <field name="company_id" invisible="1"/>

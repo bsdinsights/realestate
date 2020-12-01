@@ -48,9 +48,7 @@
                                 </group>
                                 <group>
                                     <field name="bsd_loai"/>
-                                    <field name="bsd_yc_sc"
-                                           attrs="{'readonly':[('bsd_loai', '=', 'khong_dat')]}"/>
-                                    <field name="bsd_yc_sc" invisible="1"/>
+                                    <field name="bsd_yc_sc"/>
                                     <field name="bsd_dien_giai"/>
                                 </group>
                             </group>
@@ -114,6 +112,12 @@
                                     <field name="bsd_don_gia_pql"/>
                                 </group>
                             </group>
+                        </page>
+                        <page string="Chi tiết lỗi" attrs="{'invisible':[('bsd_loai','=', 'dat')]}">
+                            <field name="bsd_tt_loi" nolabel="1"/>
+                        </page>
+                        <page string="Yêu cầu sửa chữa" attrs="{'invisible':[('bsd_yc_sc','=', False)]}">
+                            <field name="bsd_tt_yc_sc" nolabel="1"/>
                         </page>
                     </notebook>
                 </sheet>

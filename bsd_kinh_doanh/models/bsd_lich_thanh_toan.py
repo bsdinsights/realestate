@@ -68,24 +68,3 @@ class BsdBaoGiaLTT(models.Model):
     bsd_ngay_cb4 = fields.Date(string="Ngày TBNN 4", readonly=True, help="Ngày tạo thông báo nhắc nợ", copy=False)
     bsd_ngay_cb5 = fields.Date(string="Ngày TBNN 5", readonly=True, help="Ngày tạo thông báo nhắc nợ", copy=False)
 
-    def _get_name(self):
-        dot_tt = self
-        name = dot_tt.bsd_ten_dtt or ''
-        if self._context.get('show_info'):
-            if dot_tt.bsd_thanh_toan == 'chua_tt':
-                tt = "Chưa thanh toán"
-            elif dot_tt.bsd_thanh_toan == 'dang_tt':
-                tt = "Đang thanh toán"
-            else:
-                tt = "Đã thanh toán"
-            name = "%s - %s - %s" % (dot_tt.bsd_ten_dtt, tt,  '{:,.0f} đ'
-                                     .format(dot_tt.bsd_tien_phai_tt).replace(',', '.'))
-        return name
-
-    def name_get(self):
-        res = []
-        _logger.debug("gọi tới hàm này")
-        for dot_tt in self:
-            name = dot_tt._get_name()
-            res.append((dot_tt.id, name))
-        return res

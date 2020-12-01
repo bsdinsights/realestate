@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_round
 import datetime
 import logging
 _logger = logging.getLogger(__name__)
@@ -16,7 +17,7 @@ class BsdWizardTTDOT(models.TransientModel):
                               default=lambda self: fields.Date.today())
 
     @api.constrains('bsd_ngay_pt')
-    def _onchange_ngay_pt(self):
+    def _constrains_ngay_pt(self):
         today = datetime.date.today()
         if self.bsd_ngay_pt > today:
             raise UserError(_("Ngày thanh toán không được lớn hơn ngày hiện tại."))
@@ -25,8 +26,6 @@ class BsdWizardTTDOT(models.TransientModel):
     def default_get(self, fields_list):
         res = super(BsdWizardTTDOT, self).default_get(fields_list)
         hd_ban = self.env['bsd.hd_ban'].browse(self._context.get('active_ids', []))
-        _logger.debug("Load thanh toán")
-        _logger.debug(hd_ban.bsd_ltt_ids)
         res.update({
             'bsd_hd_ban_id': hd_ban.id,
             'bsd_unit_id': hd_ban.bsd_unit_id.id,
@@ -47,6 +46,57 @@ class BsdWizardTTDOT(models.TransientModel):
         })
         return res
 
+    @api.onchange('bsd_ltt_ids')
+    def _onchange_dot_tt(self):
+        # Tổng tiền các đợt thanh toán đã chọn
+        # Tính tổng tiền phạt thanh toán
+        dot_tt_ids = self.bsd_ltt_ids.sorted('bsd_stt')
+        cs_tt = self.bsd_hd_ban_id.bsd_cs_tt_id
+        tong_so_ngay_phat = 0
+        tong_tien_phat = 0
+        _logger.debug("số lần lập")
+        _logger.debug(dot_tt_ids)
+        for dot_tt in dot_tt_ids:
+            # Kiểm tra ngày làm mốc tính lãi phạt
+            han_tinh_phat = dot_tt.bsd_ngay_hh_tt
+            if dot_tt.bsd_tinh_phat == 'nah':
+                han_tinh_phat = dot_tt.bsd_ngay_ah
+            # Số ngày tính lãi phạt
+            so_ngay_nam = cs_tt.bsd_lai_phat_tt_id.bsd_so_ngay_nam
+            if self.bsd_ngay_pt > han_tinh_phat:
+                # Số ngày tính phạt
+                so_ngay_tp = (self.bsd_ngay_pt - han_tinh_phat).days
+                # Tính lãi phạt
+                tien_phat = float_round(dot_tt.bsd_tien_phai_tt * (dot_tt.bsd_lai_phat/100 / so_ngay_nam) * so_ngay_tp, 0)
+                # Kiểm tra lãi phạt đã vượt lãi phạt tối đa của đợt chưa
+                tong_tien_phat = dot_tt.bsd_tien_phat + tien_phat
+                if dot_tt.bsd_tien_td == 0 and dot_tt.bsd_tl_td != 0:
+                    tien_phat_toi_da = dot_tt.bsd_tien_dot_tt * dot_tt.bsd_tl_td / 100
+                    if tong_tien_phat > tien_phat_toi_da:
+                        tien_phat = tien_phat_toi_da - dot_tt.bsd_tien_phat
+                elif dot_tt.bsd_tien_td != 0 and dot_tt.bsd_tl_td == 0:
+                    tien_phat_toi_da = dot_tt.bsd_tien_td
+                    if tong_tien_phat > tien_phat_toi_da:
+                        tien_phat = tien_phat_toi_da - dot_tt.bsd_tien_phat
+                elif dot_tt.bsd_tien_td != 0 and dot_tt.bsd_tl_td != 0:
+                    tien_phat_toi_da_1 = dot_tt.bsd_tien_dot_tt * dot_tt.bsd_tl_td / 100
+                    tien_phat_toi_da_2 = dot_tt.bsd_tien_td
+                    tien_phat_toi_da = tien_phat_toi_da_1 if tien_phat_toi_da_1 < tien_phat_toi_da_2 else tien_phat_toi_da_2
+                    if tong_tien_phat > tien_phat_toi_da:
+                        tien_phat = tien_phat_toi_da - dot_tt.bsd_tien_phat
+            else:
+                so_ngay_tp = 0
+                tien_phat = 0
+            _logger.debug("tiền từng đợt")
+            _logger.debug(tien_phat)
+            _logger.debug(dot_tt)
+            tong_tien_phat += tien_phat
+            tong_so_ngay_phat += so_ngay_tp
+        _logger.debug("tổng tiền")
+        _logger.debug(tong_tien_phat)
+        self.bsd_tien_lp_ut = tien_phat
+        self.bsd_tien = sum(self.bsd_ltt_ids.mapped('bsd_tien_phai_tt'))
+
     def _get_pt(self):
         return self.env.ref('bsd_danh_muc.bsd_tien_mat').id
 
@@ -63,20 +113,22 @@ class BsdWizardTTDOT(models.TransientModel):
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng", required=True)
     bsd_tien_kh = fields.Monetary(string="Tiền", help="Tiền", required=True)
     bsd_tien = fields.Monetary(string="Tiền thanh toán", help="Tiền thanh toán", readonly=1)
-    bsd_tien_da_tt = fields.Monetary(string="Tiền đã thanh toán", help="Tiền đã thanh toán",
-                                     compute='_compute_tien_ct', store=True)
-    bsd_tien_con_lai = fields.Monetary(string="Tiền còn lại", help="Tiền còn lại",
+    bsd_tien_con_lai = fields.Monetary(string="Còn lại", help="Còn lại",
                                        compute='_compute_tien_ct', store=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     bsd_ltt_ids = fields.Many2many('bsd.lich_thanh_toan', string="Đợt thanh toán")
     bsd_ct_ids = fields.One2many('bsd.wizard.tt_dot.ct', 'bsd_tt_dot_id', string="DS đợt thanh toán")
+    bsd_tien_lp_ut = fields.Monetary(string="Tiền phạt ước tính", readonly=True)
 
-    @api.depends('bsd_tien')
+    @api.depends('bsd_tien', 'bsd_tien_kh')
     def _compute_tien_ct(self):
         for each in self:
-            each.bsd_tien_da_tt = 0
-            each.bsd_tien_con_lai = 0
+            con_lai = each.bsd_tien_kh - each.bsd_tien
+            if con_lai < 0:
+                each.bsd_tien_con_lai = 0
+            else:
+                each.bsd_tien_con_lai = con_lai
 
     def action_xac_nhan(self):
         _logger.debug("Xác nhận")

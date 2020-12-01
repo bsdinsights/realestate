@@ -89,7 +89,7 @@
                   action="bsd_tb_bg_action"
                   parent="bsd_thong_bao_hd_menu_2"/>
     <menuitem id="bsd_hd_ban_cn_menu_action_2"
-              name="Chuyển nhượng HĐ"
+              name="Chuyển nhượng"
               sequence="15"
               action="bsd_hd_ban_cn_action"
               web_icon="fa fa-share,#FFFFFF,#c0b66d"/>
