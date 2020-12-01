@@ -13,12 +13,15 @@
             <xpath expr="//header" position="inside">
                 <button string="Thanh toán"
                         name="action_thanh_toan"
-                        sequence="30"
+                        sequence="1"
                         states="dat_cho"
                         type="object"
                         class="oe_highlight"/>
             </xpath>
             <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_pt" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_pt', '=', 0)]}">
+                    <field name="bsd_so_pt" widget="statinfo" string="Thanh toán"/>
+                </button>
                 <button name="action_view_ht" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_ht', '=', 0)]}">
                     <field name="bsd_so_ht" widget="statinfo" string="Hoàn tiền"/>
                 </button>

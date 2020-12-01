@@ -39,15 +39,9 @@ class BsdPhieuThu(models.Model):
                                     ('dot_tt', 'Đợt thanh toán'),
                                     ('pql', 'Phí quản lý'),
                                     ('pbt', 'Phí bảo trì'),
-                                    ('pps', 'Phí phát sinh')], default="tra_truoc", required=True, string="Loại phiếu thu",
+                                    ('pps', 'Phí phát sinh')], default="tra_truoc", required=True, string="Loại",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    # bsd_loai_hd = fields.Selection([('dat_coc', 'Đặt cọc'),
-    #                                 ('hd_ban', 'Hợp đồng bán')], string="Loại hợp đồng",
-    #                                help="""Thông tin ghi nhận thu tiền theo đợt thanh toán
-    #                                        của Đặt cọc hay hợp đồng bán""",
-    #                                readonly=True,
-    #                                states={'nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})

@@ -199,22 +199,23 @@ class BsdHdBan(models.Model):
             'state': 'ht_tt'
         })
 
-    # Tạo thanh toán
-    def action_thanh_toan(self):
-        action = self.env.ref('bsd_tai_chinh.bsd_wizard_tt_dot_action').read()[0]
-        return action
-
     # # Tạo thanh toán
     # def action_thanh_toan(self):
-    #     context = {
-    #         'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-    #         'default_bsd_du_an_id': self.bsd_du_an_id.id,
-    #         'default_bsd_hd_ban_id': self.id,
-    #         'default_bsd_unit_id': self.bsd_unit_id.id
-    #     }
-    #     action = self.env.ref('bsd_tai_chinh.bsd_phieu_thu_action').read()[0]
-    #     action['context'] = context
+    #     action = self.env.ref('bsd_tai_chinh.bsd_wizard_tt_dot_action').read()[0]
     #     return action
+
+    # Tạo thanh toán
+    def action_thanh_toan(self):
+        context = {
+            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_hd_ban_id': self.id,
+            'default_bsd_unit_id': self.bsd_unit_id.id,
+            'default_bsd_loai_pt': 'dot_tt',
+        }
+        action = self.env.ref('bsd_tai_chinh.bsd_phieu_thu_action_popup').read()[0]
+        action['context'] = context
+        return action
 
     def action_uoc_tinh_lp(self):
         action = self.env.ref('bsd_tai_chinh.bsd_wizard_uoc_tinh_lp_action').read()[0]

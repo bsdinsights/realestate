@@ -177,7 +177,7 @@
         <field name="name">bsd.phieu_thu.form</field>
         <field name="model">bsd.phieu_thu</field>
         <field name="arch" type="xml">
-            <form>
+            <form create="false">
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
@@ -227,7 +227,6 @@
                                    domain="[('state', '=', 'phat_hanh')]"
                                    options="{'no_create':true}"/>
                             <field name="bsd_unit_id" force_save="1" readonly="1"
-                                   context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                    options="{'no_create':true}"
                                    domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"
                                    attrs="{'invisible':[('bsd_loai_pt','not in',['giu_cho','dat_coc','dot_tt','pql','pbt','pps'])],

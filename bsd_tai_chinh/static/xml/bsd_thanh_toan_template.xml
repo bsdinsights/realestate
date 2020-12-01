@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-extend="ListView.buttons">
-        <t t-jquery="button.o_list_button_add" t-operation="after">
-            <button t-if="widget.modelName == 'bsd.phieu_thu'"
-                    class="btn btn-primary oe_tt_button"
-                    type="button" accesskey="f">Thanh toán</button>
-        </t>
-    </t>
+<!--    <t t-extend="ListView.buttons">-->
+<!--        <t t-jquery="button.o_list_button_add" t-operation="after">-->
+<!--            <button t-if="widget.modelName == 'bsd.phieu_thu'"-->
+<!--                    class="btn btn-primary oe_tt_button"-->
+<!--                    type="button" accesskey="f">Thanh toán</button>-->
+<!--        </t>-->
+<!--    </t>-->
 </templates>

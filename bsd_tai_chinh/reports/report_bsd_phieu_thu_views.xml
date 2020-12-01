@@ -99,10 +99,10 @@
                             <div class="row" style="line-height:8px">
                                 <div class="col-12 ml32">
                                     <t t-if="doc.bsd_khach_hang_id.is_company">
-                                        <p>Họ và tên người nộp tiền: <strong t-field="doc.bsd_khach_hang_id.name"/></p>
+                                        <p>Họ và tên người nộp tiền: <strong t-field="doc.bsd_khach_hang_id.display_name"/></p>
                                     </t>
                                     <t t-else="">
-                                        <p>Họ và tên người nộp tiền: <strong t-field="doc.bsd_khach_hang_id.bsd_ten"/></p>
+                                        <p>Họ và tên người nộp tiền: <strong t-field="doc.bsd_khach_hang_id.display_name"/></p>
                                     </t>
                                     <p class="mt8">Địa chỉ: <span t-field="doc.bsd_khach_hang_id.bsd_dia_chi_lh"/></p>
                                     <p>Lý do nộp: <span t-field="doc.bsd_dien_giai"/></p>
