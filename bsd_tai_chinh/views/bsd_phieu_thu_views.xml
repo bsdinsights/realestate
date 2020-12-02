@@ -111,7 +111,11 @@
         <field name="name">bsd.phieu_thu.tree</field>
         <field name="model">bsd.phieu_thu</field>
         <field name="arch" type="xml">
-            <tree default_order="bsd_ngay_pt desc">
+            <tree default_order="bsd_ngay_pt desc"
+                  decoration-success="state=='da_gs'"
+                  decoration-muted="state=='huy'"
+                  delete="false" duplicate="false"
+            >
                 <field name="bsd_so_pt"/>
                 <field name="bsd_ngay_pt"/>
                 <field name="bsd_loai_pt"/>

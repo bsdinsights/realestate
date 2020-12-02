@@ -93,7 +93,6 @@ class BsdThongBaoBanGiao(models.Model):
                               ('hoan_thanh', 'Hoàn thành'),
                               ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
-    bsd_so_bg_sp = fields.Integer(string="# Bàn giao sp", compute="_compute_bg_sp")
 
     @api.onchange('bsd_hd_ban_id')
     def _onchange_hd_ban(self):
@@ -102,11 +101,6 @@ class BsdThongBaoBanGiao(models.Model):
         self.bsd_tien_pql = self.bsd_hd_ban_id.bsd_tien_pql
         dot_cuoi = self.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_cs_tt_ct_id.bsd_dot_cuoi)
         self.bsd_tien_ng = self.bsd_hd_ban_id.bsd_tong_gia - self.bsd_hd_ban_id.bsd_tien_pbt - self.bsd_hd_ban_id.bsd_tien_tt_hd - dot_cuoi.bsd_tien_dot_tt
-
-    def _compute_bg_sp(self):
-        for each in self:
-            # ban_giao = self.env['bsd.bg_sp'].search([('bsd_tb_nt_id', '=', self.id)])
-            each.bsd_so_bg_sp = 1
 
     # def action_view_ban_giao(self):
     #     action = self.env.ref('bsd_kinh_doanh.bsd_ban_giao_action').read()[0]

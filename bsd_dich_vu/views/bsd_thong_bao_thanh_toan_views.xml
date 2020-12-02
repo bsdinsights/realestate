@@ -79,8 +79,7 @@
         <field name="name">bsd.tb_tt.tree</field>
         <field name="model">bsd.tb_tt</field>
         <field name="arch" type="xml">
-            <tree decoration-warning="state=='nhap'"
-                  decoration-info="state=='xac_nhan'"
+            <tree decoration-warning="state=='xac_nhan'"
                   decoration-success="state=='hoan_thanh'"
                   decoration-muted="state=='huy'"
             >

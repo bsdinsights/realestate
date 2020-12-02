@@ -81,7 +81,7 @@ class BsdNghiemThu(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan_tt', 'Xác nhận thông tin'),
-                              ('xac_nhan', 'Xác nhận'), ('dong_nt', 'Đóng nghiệm thu'),
+                              ('xac_nhan', 'Xác nhận'), ('dong_nt', 'Hoàn thành'),
                               ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
     bsd_ly_do_huy = fields.Char(string="Lý do hủy", readonly=True, tracking=2)

@@ -52,7 +52,7 @@
                                     <field name="bsd_dien_giai"/>
                                 </group>
                             </group>
-                            <group string="YÊU CẦU SỬA CHỮA">
+                            <group string="YÊU CẦU SỬA CHỮA" attrs="{'invisible':[('bsd_yc_sc', '=', False)]}">
                                 <group>
                                     <field name="bsd_duyet_yc"
                                            attrs="{'invisible':[('bsd_yc_sc', '=', False)]}"/>
@@ -133,13 +133,43 @@
         <field name="name">bsd.nghiem_thu.tree</field>
         <field name="model">bsd.nghiem_thu</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree decoration-warning="state=='xac_nhan_tt'"
+                  decoration-info="state=='xac_nhan'"
+                  decoration-success="state=='dong_nt'"
+                  decoration-muted="state=='huy'">
                 <field name="bsd_ma_nt"/>
                 <field name="bsd_ngay_tao_nt"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_unit_id"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_hd_ban_id"/>
                 <field name="state"/>
             </tree>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_nghiem_thu_filter">
+        <field name="name">bsd.nghiem_thu.list.filter</field>
+        <field name="model">bsd.nghiem_thu</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_hd_ban_id"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_unit_id"/>
+                <field name="state"/>
+                <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_tb_filter"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
+                    <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
+                    <filter string="Hợp đồng" name="bsd_hd_ban_id" domain="[]" context="{'group_by': 'bsd_hd_ban_id'}"/>
+                    <filter string="Trạng thái" name="state" domain="[]" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_nghiem_thu_action">
         <field name="name">Nghiệm thu</field>
         <field name="res_model">bsd.nghiem_thu</field>

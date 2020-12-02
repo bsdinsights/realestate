@@ -88,7 +88,7 @@ class BsdDanhSachThongBao(models.TransientModel):
             JOIN product_template AS tmpl ON tmpl.id = unit.product_tmpl_id 
             WHERE hd_ban.id IN {0} AND cn.id IN {1};
         """.format(str_hd_ban, str_cn))
-        item_ids = [x for x in self.env.cr.fetchall() for i in range(1, 1000)]
+        item_ids = [x for x in self.env.cr.fetchall()]
         # DV.20.02 Tạo dự liệu bảng thông báo nghiệm thu
         if self.bsd_loai == 'nt':
             for item in item_ids:

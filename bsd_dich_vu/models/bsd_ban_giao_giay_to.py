@@ -44,7 +44,7 @@ class BsdBanGiaoGiayTo(models.Model):
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
-                              ('ban_giao', 'Bàn giao'),
+                              ('ban_giao', 'Hoàn thành'),
                               ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
 

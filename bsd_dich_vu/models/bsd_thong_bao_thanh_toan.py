@@ -21,7 +21,7 @@ class BsdThongBaoThanhToan(models.Model):
          'Mã thông báo thanh toán đã tồn tại !')
     ]
     bsd_ngay_tao_tb = fields.Date(string="Ngày", help="Ngày tạo thông báo thanh toán",
-                                  required=True, default=lambda self: fields.Date.now(),
+                                  required=True, default=lambda self: fields.Date.today(),
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_tieu_de = fields.Char(string="Tiêu đề", help="Tiêu đề thông báo", required=True,

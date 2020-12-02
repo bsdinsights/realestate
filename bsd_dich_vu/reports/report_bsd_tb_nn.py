@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 
 from odoo import api, models, fields
+from odoo.tools.float_utils import float_round
+from odoo.exceptions import UserError
 import logging
 import datetime
 from dateutil import tz
@@ -21,8 +23,12 @@ class BsdWizardReportTBNN(models.TransientModel):
                                   default='bsd_mau_in_tb_nn_html')
 
     def action_in(self):
-        """Call when button 'Get Report' clicked.
-        """
+        tai_khoan = self.bsd_tb_nn_id.bsd_du_an_id.bsd_tk_ng_ids
+        tai_khoan = tai_khoan.filtered(lambda t: t.bsd_tk_chinh)
+        if not tai_khoan:
+            raise UserError("Dự án chưa cấu hình tài khoản chính.\nVui lòng chọn tài khoản chính cho dự án.")
+        if len(tai_khoan) > 1:
+            raise UserError("Dự án cấu hình nhiều hơn 1 tài khoản chính.\nVui lòng kiểm tra lại thông tin.")
         data = {
             'ids': self.bsd_tb_nn_id.ids,
             'model': self.bsd_tb_nn_id._name,
@@ -41,6 +47,12 @@ class ReportBsdTBNN(models.AbstractModel):
     @api.model
     def _get_report_values(self, docids, data=None):
         doc = self.env['bsd.tb_nn'].browse(data['ids'])
+        tai_khoan = doc.bsd_du_an_id.bsd_tk_ng_ids
+        tai_khoan = tai_khoan.filtered(lambda t: t.bsd_tk_chinh)
+        if not tai_khoan:
+            raise UserError("Dự án chưa cấu hình tài khoản chính.\nVui lòng chọn tài khoản chính cho dự án.")
+        if len(tai_khoan) > 1:
+            raise UserError("Dự án cấu hình nhiều hơn 1 tài khoản chính.\nVui lòng kiểm tra lại thông tin.")
         ngay_ht = datetime.datetime.now()
         from_zone = tz.gettz('UTC')
         to_zone = tz.gettz(self._context['tz'])
@@ -59,7 +71,7 @@ class ReportBsdTBNN(models.AbstractModel):
                     so_ngay_tp = (doc.bsd_ngay_ut - dot_tt.bsd_ngay_hh_tt).days
                 else:
                     so_ngay_tp = (doc.bsd_ngay_ut - dot_tt.bsd_ngay_ah).days
-            tien_phat = dot_tt.bsd_tien_phai_tt * so_ngay_tp * (dot_tt.bsd_lai_phat / 36500)
+            tien_phat = float_round(dot_tt.bsd_tien_phai_tt * so_ngay_tp * (dot_tt.bsd_lai_phat / 36500), 0)
             list_dot.append({
                 'ten_dot': dot_tt.bsd_ten_dtt,
                 'ty_le': dot_tt.bsd_cs_tt_ct_id.bsd_tl_tt,
@@ -77,9 +89,12 @@ class ReportBsdTBNN(models.AbstractModel):
             'docs': doc,
             'ngay_ht': ngay_ht,
             'ngay_tinh_lp': ngay_ht.strftime("%d/%m/%Y"),
-            'list_dot': list_dot
+            'list_dot': list_dot,
+            'currency_id': doc.currency_id,
+            'chu_tk': tai_khoan.acc_holder_name,
+            'so_tk': tai_khoan.acc_number,
+            'ngan_hang': tai_khoan.bank_id.name,
+            'chi_nhanh': tai_khoan.bsd_chi_nhanh,
 
         }
-        _logger.debug("dữ liệu in")
-        _logger.debug(res)
         return res

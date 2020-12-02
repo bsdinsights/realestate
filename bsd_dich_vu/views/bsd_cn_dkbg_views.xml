@@ -122,7 +122,9 @@
         <field name="name">bsd.cn_dkbg.tree</field>
         <field name="model">bsd.cn_dkbg</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree decoration-warning="state=='xac_nhan'"
+                  decoration-success="state=='duyet'"
+                  decoration-muted="state=='huy'">
                 <field name="bsd_ma"/>
                 <field name="bsd_ten"/>
                 <field name="bsd_loai"/>
@@ -142,6 +144,7 @@
             <search string="Lọc dữ liệu">
                 <field name="bsd_ma"/>
                 <field name="bsd_du_an_id"/>
+                <field name="state"/>
                 <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_cn_dkbg_filter"/>
                 <filter string="Có tạo TBNT" name="bsd_co_tbnt" domain="[('bsd_co_tbnt', '=', True)]"/>
                 <filter string="Có tạo TBBG" name="bsd_co_tbbg" domain="[('bsd_co_tbbg', '=', True)]"/>

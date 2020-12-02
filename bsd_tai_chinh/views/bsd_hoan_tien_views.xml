@@ -101,7 +101,10 @@
         <field name="name">bsd.hoan_tien.tree</field>
         <field name="model">bsd.hoan_tien</field>
         <field name="arch" type="xml">
-            <tree create="false" duplicate="false">
+            <tree create="false"
+                  decoration-success="state=='xac_nhan'"
+                  decoration-muted="state=='huy'"
+                  duplicate="false">
                 <field name="bsd_so_ct"/>
                 <field name="bsd_ngay_ct"/>
                 <field name="bsd_khach_hang_id"/>

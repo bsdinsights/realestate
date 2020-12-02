@@ -76,7 +76,7 @@
                                     <p>Quý Khách hàng</p>
                                 </div>
                                 <div class="col-9">
-                                    <p>:  <b t-field="doc.bsd_khach_hang_id.bsd_ten"></b></p>
+                                    <p>:  <b t-field="doc.bsd_khach_hang_id.display_name"></b></p>
                                 </div>
                             </div>
                             <div class="row">
@@ -187,12 +187,15 @@
                                                 <tr class="text-center">
                                                     <td><span t-esc="dot['ten_dot']"/></td>
                                                     <td><span t-esc="dot['ty_le']"/></td>
-                                                    <td><span t-esc="dot['tien_chua_tt']"/></td>
+                                                    <td><span t-esc="dot['tien_chua_tt']"
+                                                              t-options='{"widget": "monetary", "display_currency": currency_id}'/></td>
                                                     <td><span t-esc="dot['ngay_den_han']"/></td>
                                                     <td><span t-esc="dot['so_ngay_tp']"/></td>
                                                     <td><span t-esc="dot['lai_phat']"/></td>
-                                                    <td><span t-esc="dot['tien_phat']"/></td>
-                                                    <td><span t-esc="dot['tong_tien']"/></td>
+                                                    <td><span t-esc="dot['tien_phat']"
+                                                              t-options='{"widget": "monetary", "display_currency": currency_id}'/></td>
+                                                    <td><span t-esc="dot['tong_tien']"
+                                                              t-options='{"widget": "monetary", "display_currency": currency_id}'/></td>
                                                     <td><span t-esc="dot['ghi_chu']"/></td>
                                                 </tr>
                                             </t>
@@ -218,30 +221,22 @@
                                     <b>Hoặc bằng chuyển khoản:</b>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-3 ml16">
-                                    <p>Đơn vị thụ hưởng</p>
+                            <ul>
+                                <div class="row">
+                                    <div class="col-2">
+                                        <li><span>Chủ tài khoản</span></li>
+                                        <li><span>Số tài khoản</span></li>
+                                        <li><span>Ngân hàng</span></li>
+                                        <li><span>Chi nhánh</span></li>
+                                    </div>
+                                    <div class="col-10">
+                                        <div>: <span t-esc="chu_tk"/></div>
+                                        <div>: <span t-esc="so_tk"/></div>
+                                        <div>: <span t-esc="ngan_hang"/></div>
+                                        <div>: <span t-esc="chi_nhanh"/></div>
+                                    </div>
                                 </div>
-                                <div class="col-3">
-                                    <p>: <b t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/> </p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-3 ml16">
-                                    <p>Tài khoản số </p>
-                                </div>
-                                <div class="col-3">
-                                    <p>:</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-3 ml16">
-                                    <p>Tại Ngân hàng</p>
-                                </div>
-                                <div class="col-3">
-                                    <p>:</p>
-                                </div>
-                            </div>
+                            </ul>
                             <div class="row">
                                 <div class="col-12">
                                     <p>Lãi phạt chậm thanh toán áp dụng theo Khoản 2.3, Điều 2 của Hợp đồng. Lãi phát sinh
@@ -268,7 +263,7 @@
                                     <p><b t-field="doc.bsd_du_an_id.bsd_chu_dt_id.name"/></p>
                                     <p><b t-field="doc.bsd_du_an_id.bsd_chu_dt_id.bsd_nguoi_dd_id.function"/> </p>
                                     <p style="margin-top: 100px">
-                                        <b t-field="doc.bsd_du_an_id.bsd_chu_dt_id.bsd_nguoi_dd_id.bsd_ten"/>
+                                        <b t-field="doc.bsd_du_an_id.bsd_chu_dt_id.bsd_nguoi_dd_id.display_name"/>
                                     </p>
                                 </div>
 

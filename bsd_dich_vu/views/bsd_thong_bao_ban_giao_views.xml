@@ -39,11 +39,6 @@
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button name="action_view_ban_giao" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_bg_sp', '=', 0)]}">
-                            <field name="bsd_so_bg_sp" widget="statinfo" string="Bàn giao sp"/>
-                        </button>
-                    </div>
                     <notebook>
                         <page string="Thông tin chung">
                             <group>
@@ -124,7 +119,9 @@
         <field name="name">bsd.tb_bg.tree</field>
         <field name="model">bsd.tb_bg</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree decoration-warning="state=='xac_nhan'"
+                  decoration-success="state=='hoan_thanh'"
+                  decoration-muted="state=='huy'">
                 <field name="bsd_ma_tb"/>
                 <field name="bsd_ngay_tao_tb"/>
                 <field name="bsd_du_an_id"/>
@@ -135,6 +132,29 @@
             </tree>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_tb_bg_filter">
+        <field name="name">bsd.tb_bg.list.filter</field>
+        <field name="model">bsd.tb_bg</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_hd_ban_id"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_unit_id"/>
+                <field name="state"/>
+                <filter string="TB của tôi" domain="[('create_uid', '=', uid)]" name="my_tb_filter"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
+                    <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
+                    <filter string="Hợp đồng" name="bsd_hd_ban_id" domain="[]" context="{'group_by': 'bsd_hd_ban_id'}"/>
+                    <filter string="Trạng thái" name="state" domain="[]" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="bsd_tb_bg_action">
         <field name="name">Thông báo bàn giao</field>
         <field name="res_model">bsd.tb_bg</field>
