@@ -103,14 +103,12 @@ class BsdPhieuThu(models.Model):
 
     @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien')
     def _compute_tien_ct(self):
-        _logger.debug("Tính toán lại tiền phiếu thu")
         for each in self:
             each.bsd_tien_da_tt = sum(each.bsd_ct_ids.mapped('bsd_tien_pb'))
             each.bsd_tien_con_lai = each.bsd_tien - each.bsd_tien_da_tt
 
     @api.onchange('bsd_loai_pt', 'bsd_gc_tc_id', 'bsd_dot_tt_id', 'bsd_dat_coc_id', 'bsd_giu_cho_id')
     def _onchange_tien(self):
-        _logger.debug("onchange tiền")
         if self.bsd_loai_pt == 'gc_tc' and self.bsd_gc_tc_id:
             gc_tc = self.env['bsd.gc_tc'].search([('id', '=', self.bsd_gc_tc_id.id)])
             self.bsd_tien_kh = gc_tc.bsd_tien_phai_tt
@@ -368,7 +366,7 @@ class BsdPhieuThu(models.Model):
                 bsd_tien_tt = bsd_tien_phai_tt
             else:
                 bsd_tien_tt = self.bsd_tien_kh
-        if self.bsd_loai_pt == 'dot_tt' and self.bsd_dot_tt_id:
+        if self.bsd_loai_pt in ['dot_tt', 'pbt', 'pql'] and self.bsd_dot_tt_id:
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)])
             if cong_no_ct:
                 bsd_tien_phai_tt = self.bsd_dot_tt_id.bsd_tien_dot_tt - sum(cong_no_ct.mapped('bsd_tien_pb'))

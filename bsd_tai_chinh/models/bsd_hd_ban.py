@@ -41,17 +41,13 @@ class BsdHdBan(models.Model):
     # DV.01.13 Theo dõi giao dịch khuyến mãi
     def tao_giao_dich_khuyen_mai(self, ngay_tt):
         ngay_tt = ngay_tt.date()
-        _logger.debug("tạo giao dịch chiết khấu")
         # Các khuyến mãi có điều kiện của hợp đồng
         km_hd = self.bsd_dot_mb_id.bsd_km_ids\
             .filtered(lambda k: k.bsd_loai != 'khong')
-        _logger.debug(km_hd)
         # Kiểm tra khuyến mãi của hợp đồng đã tạo khuyến mãi
         km_da_ps_gd = self.env['bsd.ps_gd_km'].search([('bsd_hd_ban_id', '=', self.id)]).mapped('bsd_khuyen_mai_id')
-        _logger.debug(km_da_ps_gd)
         # Các khuyến mãi chưa tạo giao dịch
         km_ids = km_hd - km_da_ps_gd
-        _logger.debug(km_ids)
         # Kiểm tra thời điểm thanh toán nằm trong khuyến mãi
         km_ids = km_ids.filtered(lambda k: k.bsd_tu_ngay <= ngay_tt <= k.bsd_den_ngay)
         # Lấy ngày thanh toán đặc cọc
@@ -199,23 +195,23 @@ class BsdHdBan(models.Model):
             'state': 'ht_tt'
         })
 
-    # Tạo thanh toán
-    def action_thanh_toan(self):
-        action = self.env.ref('bsd_tai_chinh.bsd_wizard_tt_dot_action').read()[0]
-        return action
-
     # # Tạo thanh toán
     # def action_thanh_toan(self):
-    #     context = {
-    #         'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-    #         'default_bsd_du_an_id': self.bsd_du_an_id.id,
-    #         'default_bsd_hd_ban_id': self.id,
-    #         'default_bsd_unit_id': self.bsd_unit_id.id,
-    #         'default_bsd_loai_pt': 'dot_tt',
-    #     }
-    #     action = self.env.ref('bsd_tai_chinh.bsd_phieu_thu_action_popup').read()[0]
-    #     action['context'] = context
+    #     action = self.env.ref('bsd_tai_chinh.bsd_wizard_tt_dot_action').read()[0]
     #     return action
+
+    # Tạo thanh toán
+    def action_thanh_toan(self):
+        context = {
+            'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_hd_ban_id': self.id,
+            'default_bsd_unit_id': self.bsd_unit_id.id,
+            'default_bsd_loai_pt': 'dot_tt',
+        }
+        action = self.env.ref('bsd_tai_chinh.bsd_phieu_thu_action_popup').read()[0]
+        action['context'] = context
+        return action
 
     def action_uoc_tinh_lp(self):
         action = self.env.ref('bsd_tai_chinh.bsd_wizard_uoc_tinh_lp_action').read()[0]

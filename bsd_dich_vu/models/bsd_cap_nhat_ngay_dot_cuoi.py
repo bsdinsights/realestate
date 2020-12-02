@@ -128,7 +128,7 @@ class BsdCapNhatNDC(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã cập nhật dự kiến bàn giao.'))
+            raise UserError(_('Dự án chưa có mã cập nhật ngày TT cuôi.'))
         vals['bsd_ma_cn'] = sequence.next_by_id()
         return super(BsdCapNhatNDC, self).create(vals)
 
