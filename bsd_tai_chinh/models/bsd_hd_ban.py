@@ -104,7 +104,7 @@ class BsdHdBan(models.Model):
         # Kiểm tra nếu hợp đồng có duyệt đặc biệt thì ko cập nhật trạng thái đủ dk
         if self.bsd_duyet_db:
             return
-        if self.state == 'tt_dot1':
+        if self.state in ['tt_dot1', 'da_ky_ttdc']:
             self.write({
                 'state': 'du_dk'
             })

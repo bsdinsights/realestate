@@ -214,15 +214,12 @@ class BsdCanTru(models.Model):
             self.env['bsd.cong_no_ct'].create({
                 'bsd_ngay_pb': self.bsd_ngay_can_tru,
                 'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                'bsd_gc_tc_id': ct.bsd_gc_tc_id.id,
-                'bsd_giu_cho_id': ct.bsd_giu_cho_id.id,
-                'bsd_dat_coc_id': ct.bsd_dat_coc_id.id,
                 'bsd_hd_ban_id': ct.bsd_hd_ban_id.id,
                 'bsd_phi_ps_id': ct.bsd_phi_ps_id.id,
                 'bsd_phieu_thu_id': self.bsd_phieu_thu_id.id,
                 'bsd_tien_pb': ct.bsd_tien_can_tru,
                 'bsd_loai': ct.bsd_loai_ct,
-                'state': 'hoan_thanh',
+                'state': 'hieu_luc',
                 'bsd_can_tru_id': self.id,
             })
         for ct in ct_dtt:
@@ -234,7 +231,7 @@ class BsdCanTru(models.Model):
                 'bsd_phieu_thu_id': self.bsd_phieu_thu_id.id,
                 'bsd_tien_pb': ct.bsd_tien_can_tru,
                 'bsd_loai': ct.bsd_loai_ct,
-                'state': 'hoan_thanh',
+                'state': 'hieu_luc',
                 'bsd_can_tru_id': self.id,
             })
 

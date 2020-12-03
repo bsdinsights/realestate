@@ -12,7 +12,7 @@ class BsdBaoGiaLTT(models.Model):
 
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", help="Bảng tính giá", copy=False)
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Phiếu đặt cọc", readonly=True, copy=False)
-    bsd_stt = fields.Integer(string='Số thứ tự', help="Số thứ tự đợt thanh toán", readonly=True)
+    bsd_stt = fields.Integer(string='Số TT', help="Số thứ tự đợt thanh toán", readonly=True)
     bsd_ma_dtt = fields.Char(string="Mã đợt TT", help="Mã đợt thanh toán", required=True, readonly=True)
     bsd_ten_dtt = fields.Char(string="Tên đợt TT", help="Tên đợt thanh toán", required=True)
     bsd_ngay_hh_tt = fields.Date(string="Hạn thanh toán", help="Thời hạn thanh toán của đợt thanh toán")
@@ -40,7 +40,7 @@ class BsdBaoGiaLTT(models.Model):
                                       help="Đợt thanh toán theo chính sách thanh toán")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-    bsd_dot_ky_hd = fields.Boolean(string="Đợt ký hợp đồng", help="Đánh dấu đợt thanh toán là đợt ký hợp đồng")
+    bsd_dot_ky_hd = fields.Boolean(string="Đợt ký HĐ", help="Đánh dấu đợt thanh toán là đợt ký hợp đồng")
     bsd_parent_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán", readonly=True, copy=False)
     bsd_child_ids = fields.One2many('bsd.lich_thanh_toan', 'bsd_parent_id', string="Phí", readonly=True)
     bsd_loai = fields.Selection([('dtt', 'Đợt thanh toán'),

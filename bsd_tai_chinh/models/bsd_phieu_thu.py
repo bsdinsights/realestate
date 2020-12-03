@@ -368,10 +368,11 @@ class BsdPhieuThu(models.Model):
                 bsd_tien_tt = self.bsd_tien_kh
         if self.bsd_loai_pt in ['dot_tt', 'pbt', 'pql'] and self.bsd_dot_tt_id:
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)])
+            tien_bg_dc = self.bsd_dot_tt_id.bsd_tien_dot_tt - self.bsd_dot_tt_id.bsd_tien_dc
             if cong_no_ct:
-                bsd_tien_phai_tt = self.bsd_dot_tt_id.bsd_tien_dot_tt - sum(cong_no_ct.mapped('bsd_tien_pb'))
+                bsd_tien_phai_tt = tien_bg_dc - sum(cong_no_ct.mapped('bsd_tien_pb'))
             else:
-                bsd_tien_phai_tt = self.bsd_dot_tt_id.bsd_tien_dot_tt
+                bsd_tien_phai_tt = tien_bg_dc
             if self.bsd_tien_kh > bsd_tien_phai_tt:
                 flag = True
                 bsd_tien_tt_du = self.bsd_tien_kh - bsd_tien_phai_tt

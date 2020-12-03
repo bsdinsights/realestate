@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+import datetime
 
 
 class BsdCapNhatNDC(models.Model):
@@ -73,8 +74,10 @@ class BsdCapNhatNDC(models.Model):
             })
         # Cập nhật hạn thanh toán đợt cuối
         for ct in ct_ids:
+            so_ngay_ah = ct.bsd_dot_tt_id.bsd_cs_tt_id.bsd_lai_phat_tt_id.bsd_an_han
             ct.bsd_dot_tt_id.write({
-                'bsd_ngay_hh_tt': ct.bsd_ngay_dtt
+                'bsd_ngay_hh_tt': ct.bsd_ngay_dtt,
+                'bsd_ngay_ah': ct.bsd_ngay_dtt + datetime.timedelta(days=so_ngay_ah)
             })
         if self.state == 'xac_nhan':
             self.write({

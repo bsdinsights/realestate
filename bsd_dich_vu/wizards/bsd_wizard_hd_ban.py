@@ -23,7 +23,7 @@ class BsdXacNhanInTTDC(models.TransientModel):
         self.bsd_hd_ban_id.write({
             'bsd_ngay_in_ttdc': self.bsd_ngay_in_ttdc,
             'bsd_ngay_hh_ttdc': self.bsd_ngay_in_ttdc + datetime.timedelta(days=self.bsd_hd_ban_id.bsd_du_an_id.bsd_hh_hd),
-            'bsd_ma_so_hd': self.bsd_ma_ttdc,
+            'bsd_so_ttdc': self.bsd_ma_ttdc,
         })
 
 
