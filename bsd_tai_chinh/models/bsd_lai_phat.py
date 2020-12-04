@@ -31,7 +31,9 @@ class BsdLaiPhat(models.Model):
                                        ('da_tt', 'Đã thanh toán')], string="Thanh toán", default="chua_tt",
                                       help="Thanh toán",
                                       required=True, readonly=True)
-    bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_lai_phat_id', string="Chi tiết")
+    bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_lai_phat_id',
+                                 domain=[('bsd_loai', '=', 'pt_lp'), ('state', '=', 'hieu_luc')],
+                                 string="Chi tiết")
 
     @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien_phat')
     def _compute_tien_tt(self):
@@ -45,3 +47,26 @@ class BsdLaiPhat(models.Model):
                 each.bsd_thanh_toan = 'dang_tt'
             else:
                 each.bsd_thanh_toan = 'chua_tt'
+
+    def _get_name(self):
+        lp = self
+        name = lp.bsd_hd_ban_id.bsd_ma_hd_ban or ''
+        if self._context.get('show_info'):
+            if lp.bsd_thanh_toan == 'chua_tt':
+                tt = "Chưa TT"
+            elif lp.bsd_thanh_toan == 'dang_tt':
+                tt = "Đang TT"
+            else:
+                tt = "Đã TT"
+            name = "%s - %s -%s - %s" % (lp.bsd_hd_ban_id.bsd_ma_hd_ban,
+                                         lp.bsd_dot_tt_id.bsd_ten_dtt,
+                                         tt,
+                                         '{:,.0f} đ'.format(lp.bsd_tien_phai_tt).replace(',', '.'))
+        return name
+
+    def name_get(self):
+        res = []
+        for lp in self:
+            name = lp._get_name()
+            res.append((lp.id, name))
+        return res

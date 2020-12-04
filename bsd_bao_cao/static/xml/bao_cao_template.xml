@@ -46,12 +46,10 @@
                         <button class="btn btn-primary oe_right" id="search">Báo cáo</button>
                     </div>
                 </div>
-                <div id="chart">
-                </div>
             </div>
+            <div id="chart"/>
         </div>
     </t>
-
     <t t-name="bsd_bao_cao.dot_tt">
         <div class="row">
             <div class="col-12">

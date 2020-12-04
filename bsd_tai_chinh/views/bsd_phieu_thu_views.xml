@@ -18,7 +18,7 @@
                             states="da_gs"
                             confirm="Bạn có muốn cấn trừ công nợ cho chứng từ này không?"
                             attrs="{'invisible':['|',('bsd_tien_con_lai', '=', 0),
-                                                 '|',('bsd_loai_pt', 'not in',['tra_truoc','khac','pps'])]}"
+                                                 '|',('bsd_loai_pt', 'not in',['tra_truoc'])]}"
                             class="oe_highlight"/>
                     <button string="In"
                             name="action_in"
@@ -28,76 +28,86 @@
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
-                    <group>
-                        <group>
-                            <field name="bsd_so_pt"/>
-                            <field name="bsd_ngay_pt"
-                                   widget="date"/>
-                            <field name="bsd_loai_pt"/>
-                            <field name="bsd_khach_hang_id"
-                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_pt_tt_id"
-                                   attrs="{'required':True}"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_so_nk"/>
-                            <field name="bsd_tk_nh_id" attrs="{'invisible':[('bsd_so_nk','!=','ngan_hang')],
-                                                              'required':[('bsd_so_nk','=','ngan_hang')]}"/>
-                            <field name="bsd_ngan_hang_id" attrs="{'invisible':[('bsd_so_nk','!=','ngan_hang')],
-                                                              'required':[('bsd_so_nk','=','ngan_hang')]}"/>
+                    <notebook>
+                        <page string="Thông tin chung">
+                            <group>
+                                <group>
+                                    <field name="bsd_so_pt"/>
+                                    <field name="bsd_ngay_pt"
+                                           widget="date"/>
+                                    <field name="bsd_loai_pt"/>
+                                    <field name="bsd_khach_hang_id"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_pt_tt_id"
+                                           attrs="{'required':True}"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_so_nk"/>
+                                    <field name="bsd_tk_nh_id" attrs="{'invisible':[('bsd_so_nk','!=','ngan_hang')],
+                                                                      'required':[('bsd_so_nk','=','ngan_hang')]}"/>
+                                    <field name="bsd_ngan_hang_id" attrs="{'invisible':[('bsd_so_nk','!=','ngan_hang')],
+                                                                      'required':[('bsd_so_nk','=','ngan_hang')]}"/>
 
-                        </group>
-                        <group>
-                            <field name="bsd_du_an_id"
-                                   domain="[('state', '=', 'phat_hanh')]"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_unit_id"
-                                   context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
-                                   options="{'no_create':true}"
-                                   domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"
-                                   attrs="{'invisible':[('bsd_loai_pt','not in',['giu_cho','dat_coc','dot_tt','pql','pbt','pps'])],
-                                           'required':[('bsd_loai_pt','in',['giu_cho','dat_coc','dot_tt','pql','pbt','pps'])]}"/>
-                            <field name="bsd_gc_tc_id"
-                                   options="{'no_create':true}"
-                                   domain="[('bsd_khach_hang_id','in',[bsd_khach_hang_id]),('bsd_du_an_id','in',[bsd_du_an_id]),
-                                            ('state','=','xac_nhan')]"
-                                   attrs="{'invisible':[('bsd_loai_pt','not in',['gc_tc'])],
-                                           'required':[('bsd_loai_pt','in',['gc_tc'])]}"/>
-                            <field name="bsd_giu_cho_id"
-                                   options="{'no_create':true}"
-                                   domain="[('bsd_khach_hang_id','in',[bsd_khach_hang_id]),('bsd_unit_id','in',[bsd_unit_id]),
-                                            ('state','=','dat_cho')]"
-                                   attrs="{'invisible':[('bsd_loai_pt','not in',['giu_cho'])],
-                                           'required':[('bsd_loai_pt','in',['giu_cho'])]}"/>
-                            <field name="bsd_dat_coc_id"
-                                   options="{'no_create':true}"
-                                   domain="[('bsd_khach_hang_id','in',[bsd_khach_hang_id]),('bsd_unit_id','in',[bsd_unit_id]),
-                                            ('state','=','xac_nhan')]"
-                                   attrs="{'required':[('bsd_loai_pt','=','dat_coc')],
-                                           'invisible':[('bsd_loai_pt','!=','dat_coc')]}"/>
-                            <field name="bsd_hd_ban_id"
-                                   options="{'no_create':true}"
-                                   domain="[('bsd_khach_hang_id','in',[bsd_khach_hang_id]),('bsd_unit_id','in',[bsd_unit_id]),
-                                            ('state','not in',['thanh_ly','huy'])]"
-                                   attrs="{'required':[('bsd_loai_pt','in',['dot_tt','pql','pbt','pps'])],
-                                           'invisible':[('bsd_loai_pt','not in',['dot_tt','pql','pbt','pps'])]}"
-                            />
-                            <field name="bsd_dot_tt_id"
-                                   options="{'no_create':true}"
-                                   attrs="{'required':[('bsd_loai_pt','in',['dot_tt','pql','pbt'])],
-                                           'invisible':[('bsd_loai_pt','not in',['dot_tt','pql','pbt','pps'])]}"
-                            />
-                            <field name="currency_id"/>
-                            <field name="company_id" invisible="1"/>
-                            <field name="bsd_tien_kh"/>
-                            <field name="bsd_tien" readonly="1"/>
-                            <field name="bsd_tien_da_tt"
-                                   attrs="{'invisible':[('bsd_loai_pt', 'not in', ['tra_truoc','pps'])]}"/>
-                            <field name="bsd_tien_con_lai"
-                                   attrs="{'invisible':[('bsd_loai_pt', 'not in', ['tra_truoc','pps'])]}"/>
-                            <field name="bsd_dien_giai"/>
-                        </group>
-                    </group>
+                                </group>
+                                <group>
+                                    <field name="bsd_du_an_id"
+                                           domain="[('state', '=', 'phat_hanh')]"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_unit_id"
+                                           context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                           options="{'no_create':true}"
+                                           domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"
+                                           attrs="{'invisible':[('bsd_loai_pt','not in',['giu_cho','dat_coc','hd'])],
+                                                   'required':[('bsd_loai_pt','in',['giu_cho','dat_coc','hd'])]}"/>
+                                    <field name="bsd_gc_tc_id"
+                                           options="{'no_create':true}"
+                                           domain="[('bsd_khach_hang_id','in',[bsd_khach_hang_id]),('bsd_du_an_id','in',[bsd_du_an_id]),
+                                                    ('state','=','xac_nhan')]"
+                                           attrs="{'invisible':[('bsd_loai_pt','not in',['gc_tc'])],
+                                                   'required':[('bsd_loai_pt','in',['gc_tc'])]}"/>
+                                    <field name="bsd_giu_cho_id"
+                                           options="{'no_create':true}"
+                                           domain="[('bsd_khach_hang_id','in',[bsd_khach_hang_id]),('bsd_unit_id','in',[bsd_unit_id]),
+                                                    ('state','=','dat_cho')]"
+                                           attrs="{'invisible':[('bsd_loai_pt','not in',['giu_cho'])],
+                                                   'required':[('bsd_loai_pt','in',['giu_cho'])]}"/>
+                                    <field name="bsd_dat_coc_id"
+                                           options="{'no_create':true}"
+                                           domain="[('bsd_khach_hang_id','in',[bsd_khach_hang_id]),('bsd_unit_id','in',[bsd_unit_id]),
+                                                    ('state','=','xac_nhan')]"
+                                           attrs="{'required':[('bsd_loai_pt','=','dat_coc')],
+                                                   'invisible':[('bsd_loai_pt','!=','dat_coc')]}"/>
+                                    <field name="bsd_hd_ban_id"
+                                           options="{'no_create':true}"
+                                           domain="[('bsd_khach_hang_id','in',[bsd_khach_hang_id]),('bsd_unit_id','in',[bsd_unit_id]),
+                                                    ('state','not in',['thanh_ly','huy'])]"
+                                           attrs="{'required':[('bsd_loai_pt','=','hd')],
+                                                   'invisible':[('bsd_loai_pt','!=','hd')]}"
+                                    />
+                                    <field name="currency_id"/>
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="bsd_tien_kh"/>
+                                    <field name="bsd_tien" readonly="1"/>
+                                    <field name="bsd_tien_da_tt"
+                                           attrs="{'invisible':[('bsd_loai_pt', 'not in', ['tra_truoc','pps'])]}"/>
+                                    <field name="bsd_tien_con_lai"
+                                           attrs="{'invisible':[('bsd_loai_pt', 'not in', ['tra_truoc','pps'])]}"/>
+                                    <field name="bsd_tien_lp_ut"/>
+                                    <field name="bsd_dien_giai"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Chi tiết thanh toán">
+                            <field name="bsd_ct_ids">
+                                <tree>
+                                    <field name="display_name"/>
+                                    <field name="bsd_tien_pb"/>
+                                    <field name="state"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="company_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
@@ -121,6 +131,7 @@
                 <field name="bsd_loai_pt"/>
                 <field name="bsd_du_an_id"/>
                 <field name="bsd_khach_hang_id"/>
+                <field name="bsd_tien_kh"/>
                 <field name="bsd_tien"/>
                 <field name="state"/>
                 <field name="currency_id" invisible="1"/>

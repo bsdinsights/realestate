@@ -15,8 +15,8 @@ class BsdCongNoCT(models.Model):
 
     bsd_ngay_pb = fields.Datetime(string="Ngày", help="Ngày phân bổ")
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng")
-    bsd_tien_pb = fields.Monetary(string="Tiền", help="Tiền phân bổ")
-
+    display_name = fields.Char(string="Chứng từ", help="Tên chứng từ")
+    bsd_tien_pb = fields.Monetary(string="Tiền thanh toán", help="Tiền phân bổ")
     bsd_gc_tc_id = fields.Many2one('bsd.gc_tc', string="Giữ chỗ thiện chí", help="Giữ chỗ thiện chí")
     bsd_giu_cho_id = fields.Many2one('bsd.giu_cho', string="Giữ chỗ", help="Giữ chỗ")
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Đặt cọc")
@@ -29,22 +29,24 @@ class BsdCongNoCT(models.Model):
     bsd_lai_phat_id = fields.Many2one('bsd.lai_phat', string="Lãi phạt", help="Lãi phạt")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-    state = fields.Selection([('hieu_luc', 'Hiệu lực'), ('huy', 'Hủy')],
+    state = fields.Selection([('hieu_luc', 'Hiệu lực'), ('vo_hieu_luc', 'Vô hiệu lực')],
                              string="Tình trạng",
-                             default='hieu_luc', required=True, readonly=True, tracking=1)
+                             default='vo_hieu_luc', required=True, readonly=True, tracking=1)
 
-    bsd_loai = fields.Selection([('pt_gctc', 'Phiếu thanh toán - Giữ chỗ thiện chí'),
-                                 ('pt_gc', 'Phiếu thanh toán - Giữ chỗ'),
-                                 ('pt_dc', 'Phiếu thanh toán - Đặt cọc'),
-                                 ('pt_dtt', 'Phiếu thanh toán - Đợt thanh toán'),
-                                 ('pt_ht', 'Phiếu thanh toán - Hoàn tiền'),
-                                 ('pt_pps', 'Phiếu thanh toán - Phí phát sinh')], string="Phân loại",
+    bsd_loai = fields.Selection([('pt_gctc', 'Giữ chỗ thiện chí'),
+                                 ('pt_gc', 'Giữ chỗ'),
+                                 ('pt_dc', 'Đặt cọc'),
+                                 ('pt_dtt', 'Đợt thanh toán'),
+                                 ('pt_ht', 'Hoàn tiền'),
+                                 ('pt_pps', 'Phí phát sinh'),
+                                 ('pt_lp', 'Lãi phạt chậm TT')], string="Phân loại",
                                 help="Phân loại", required=True)
     bsd_can_tru_id = fields.Many2one('bsd.can_tru', string="Cấn trừ", readonly=True)
 
     def kiem_tra_chung_tu(self):
         if self.bsd_loai == 'pt_gctc':
-            cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_gc_tc_id', '=', self.bsd_gc_tc_id.id)])
+            cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_gc_tc_id', '=', self.bsd_gc_tc_id.id),
+                                                            ('state', '=', 'hieu_luc')])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             _logger.debug(self.bsd_gc_tc_id.bsd_tien_gc)
             if self.bsd_gc_tc_id.bsd_tien_gc < tien:
@@ -64,7 +66,8 @@ class BsdCongNoCT(models.Model):
                 self.bsd_gc_tc_id.create_stt()
 
         elif self.bsd_loai == 'pt_gc':
-            cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_giu_cho_id', '=', self.bsd_giu_cho_id.id)])
+            cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_giu_cho_id', '=', self.bsd_giu_cho_id.id),
+                                                            ('state', '=', 'hieu_luc')])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             if self.bsd_giu_cho_id.bsd_tien_gc < tien:
                 raise UserError("Không thể thực hiện thanh toán dư.")
@@ -81,7 +84,7 @@ class BsdCongNoCT(models.Model):
 
         elif self.bsd_loai == 'pt_dc':
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dat_coc_id', '=', self.bsd_dat_coc_id.id),
-                                                            ('bsd_dot_tt_id', '=', False)])
+                                                            ('state', '=', 'hieu_luc')])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb')) + self.bsd_dat_coc_id.bsd_tien_gc
             if self.bsd_dat_coc_id.bsd_tien_dc < tien:
                 raise UserError("Không thể thực hiện thanh toán dư.")
@@ -89,10 +92,12 @@ class BsdCongNoCT(models.Model):
                 self.bsd_dat_coc_id.cap_nhat_trang_thai()
 
         elif self.bsd_loai == 'pt_dtt':
+            _logger.debug("Kiểm tra đợt tt")
             # Kiểm tra đợt thanh toán đã có hạn thanh toán chưa
             if not self.bsd_dot_tt_id.bsd_ngay_hh_tt:
                 raise UserError('Đợt thanh toán chưa có hạn thanh toán.\nVui lòng kiểm tra lại thông tin.')
-            cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)])
+            cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id),
+                                                            ('state', '=', 'hieu_luc')])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             if self.bsd_dot_tt_id.bsd_tien_dot_tt < tien:
                 raise UserError("Không thể thực hiện thanh toán dư.")
@@ -113,7 +118,6 @@ class BsdCongNoCT(models.Model):
             tien_thu_dot = self.bsd_dot_tt_id.bsd_tien_dot_tt - self.bsd_dot_tt_id.bsd_tien_dc
             if float_utils.float_compare(tien_thu_dot, tien, 4) == 0:
                 # Gọi hàm xử lý khi thanh toán đợt 1 cho hợp đồng
-                _logger.debug("thanh toán đủ")
                 if self.bsd_dot_tt_id.bsd_stt == 1:
                     hd_ban.action_tt_dot1()
                 # Gọi hàm xử lý khi thanh toán đợt đủ điều kiện làm hợp đồng
@@ -144,5 +148,30 @@ class BsdCongNoCT(models.Model):
     @api.model
     def create(self, vals):
         rec = super(BsdCongNoCT, self).create(vals)
-        rec.kiem_tra_chung_tu()
+        # Sinh trường tên hiển thị của chứng từ
+        if rec.bsd_loai == 'pt_gctc':
+            ma_da = rec.bsd_gc_tc_id.bsd_du_an_id.bsd_ma_da
+            ma_gctc = rec.bsd_gc_tc_id.bsd_ma_gctc
+            rec.write({
+                'display_name': ma_da + ' - ' + ma_gctc
+            })
+        elif rec.bsd_loai == 'pt_gc':
+            ma_unit = rec.bsd_giu_cho_id.bsd_unit_id.bsd_ma_unit
+            ma_gc = rec.bsd_giu_cho_id.bsd_ma_gctc
+            rec.write({
+                'display_name': ma_unit + ' - ' + ma_gc
+            })
+        elif rec.bsd_loai == 'pt_dc':
+            ma_unit = rec.bsd_dat_coc_id.bsd_unit_id.bsd_ma_unit
+            ma_dc = rec.bsd_dat_coc_id.bsd_ma_dat_coc
+            rec.write({
+                'display_name': ma_unit + ' - ' + ma_dc
+            })
+        elif rec.bsd_loai == 'pt_dtt':
+            ma_unit = rec.bsd_hd_ban_id.bsd_unit_id.bsd_ma_unit
+            ma_hd = rec.bsd_hd_ban_id.bsd_ma_hd_ban
+            ma_dot = rec.bsd_dot_tt_id.bsd_ten_dtt
+            rec.write({
+                'display_name': ma_unit + ' - ' + ma_hd + ' - ' + ma_dot
+            })
         return rec

@@ -8,19 +8,13 @@
                 <sheet>
                     <group>
                         <group>
+                            <field name="bsd_loai"/>
                             <field name="bsd_ngay_pt"/>
-                            <field name="bsd_pt_tt_id"
-                                   attrs="{'required':True}"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_so_nk"/>
-                            <field name="bsd_tk_nh_id" attrs="{'invisible':[('bsd_so_nk','!=','ngan_hang')],
-                                                              'required':[('bsd_so_nk','=','ngan_hang')]}"/>
-                            <field name="bsd_ngan_hang_id" attrs="{'invisible':[('bsd_so_nk','!=','ngan_hang')],
-                                                              'required':[('bsd_so_nk','=','ngan_hang')]}"/>
                             <field name="bsd_tien_kh"/>
                             <field name="bsd_tien"/>
                             <field name="bsd_tien_lp_ut" readonly="1" force_save="1"/>
-                            <field name="bsd_tien_con_lai"/>
+                        </group>
+                        <group>
                             <field name="bsd_hd_ban_id" readonly="1" force_save="1"
                                    options="{'no_create':true}"/>
                             <field name="bsd_khach_hang_id" readonly="1" force_save="1"
@@ -33,18 +27,45 @@
                                    readonly="1" force_save="1"
                                    options="{'no_create':true}"
                                    domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
+                            <field name="bsd_tien_con_lai"/>
                             <field name="currency_id" invisible="1"/>
                             <field name="company_id" invisible="1"/>
                         </group>
+                    </group>
+<!--                    Hiện thị theo loại đợt thanh toán-->
+                    <group attrs="{'invisible':[('bsd_loai', '!=', 'dtt')]}">
                         <group string="ĐỢT THANH TOÁN">
                             <field name="bsd_ltt_ids" nolabel="1"
                                    context="{'show_info':True}"
                                    widget="many2many_checkboxes"/>
                         </group>
+                        <group string="PHÍ">
+                            <field name="bsd_dot_phi_ids" nolabel="1"
+                                   context="{'show_info':True}"
+                                   widget="many2many_checkboxes"/>
+                            <field name="bsd_phi_ps_ids" nolabel="1"
+                                   context="{'show_info':True}"
+                                   widget="many2many_checkboxes"/>
+                            <field name="bsd_lai_phat_ids" nolabel="1"
+                                   context="{'show_info':True}"
+                                   widget="many2many_checkboxes"/>
+                        </group>
+                    </group>
+<!--                    Hiển thị theo loại phí bảo trì và phí quản lý-->
+                    <group attrs="{'invisible':[('bsd_loai', '!=', 'pbt_pql')]}">
+
+                    </group>
+<!--                    Hiển thị theo loại phí bảo trì và phí quản lý-->
+                    <group attrs="{'invisible':[('bsd_loai', '!=', 'lp')]}">
+
+                    </group>
+<!--                    Hiển thị theo loại phí bảo trì và phí quản lý-->
+                    <group attrs="{'invisible':[('bsd_loai', '!=', 'pps')]}">
+
                     </group>
                 </sheet>
                 <footer>
-                    <button name="action_tao" string="Chọn đợt" type="object" class="oe_highlight"/>
+                    <button name="action_tao" string="Tạo" type="object" class="oe_highlight oe_right"/>
                     <button string="Hủy" special="cancel"/>
                 </footer>
             </form>
@@ -52,92 +73,9 @@
     </record>
 
     <record model="ir.actions.act_window" id="bsd_wizard_tt_dot_action">
-        <field name="name">Thanh toán đợt</field>
+        <field name="name">Thanh toán HĐ</field>
         <field name="res_model">bsd.wizard.tt_dot</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
-    </record>
-
-    <record model="ir.ui.view" id="bsd_wizard_tt_dot_form_2">
-        <field name="name">bsd.wizard.tt_dot.form</field>
-        <field name="model">bsd.wizard.tt_dot</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <group>
-                        <group>
-                            <field name="bsd_ngay_pt"/>
-                            <field name="bsd_pt_tt_id"
-                                   attrs="{'required':True}"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_so_nk"/>
-                            <field name="bsd_tk_nh_id" attrs="{'invisible':[('bsd_so_nk','!=','ngan_hang')],
-                                                              'required':[('bsd_so_nk','=','ngan_hang')]}"/>
-                            <field name="bsd_ngan_hang_id" attrs="{'invisible':[('bsd_so_nk','!=','ngan_hang')],
-                                                              'required':[('bsd_so_nk','=','ngan_hang')]}"/>
-                            <field name="bsd_tien_kh"/>
-                            <field name="bsd_tien"/>
-                            <field name="bsd_tien_con_lai"/>
-                            <field name="currency_id" invisible="1"/>
-                            <field name="company_id" invisible="1"/>
-                        </group>
-                        <group>
-                            <field name="bsd_hd_ban_id" readonly="1" force_save="1"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_khach_hang_id" readonly="1" force_save="1"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_du_an_id"
-                                   readonly="1" force_save="1"
-                                   domain="[('state', '=', 'phat_hanh')]"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_unit_id"
-                                   readonly="1" force_save="1"
-                                   options="{'no_create':true}"
-                                   domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
-                        </group>
-                    </group>
-                    <field name="bsd_ct_ids">
-                        <tree create="false" delete="false" editable="bottom">
-                            <field name="bsd_stt"/>
-                            <field name="bsd_dot_tt_id"/>
-                            <field name="bsd_tien_dot_tt"/>
-                            <field name="bsd_co_tt_lp"/>
-                            <field name="bsd_lp_ut"/>
-                            <field name="currency_id" invisible="1"/>
-                            <field name="company_id" invisible="1"/>
-                            <field name="bsd_tt_dot_id" invisible="1"/>
-                        </tree>
-                        <form create="false" delete="false" duplicate="false">
-                            <sheet>
-                                <group>
-                                    <group>
-                                        <field name="bsd_stt"/>
-                                        <field name="bsd_dot_tt_id"/>
-                                    </group>
-                                    <group>
-                                        <field name="bsd_co_tt_lp"/>
-                                        <field name="bsd_lp_ut"/>
-                                    </group>
-                                </group>
-                            </sheet>
-                        </form>
-                    </field>
-                </sheet>
-                <footer>
-                    <button name="action_xac_nhan" string="Tùy chỉnh" type="object" class="oe_highlight"/>
-                    <button string="Hủy" special="cancel"/>
-                </footer>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.actions.act_window" id="bsd_wizard_tt_dot_action_2">
-        <field name="name">Thanh toán đợt</field>
-        <field name="res_model">bsd.wizard.tt_dot</field>
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
-        <field name="view_ids"
-               eval="[(5, 0, 0),
-                      (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_wizard_tt_dot_form_2')})]"/>
     </record>
 </odoo>

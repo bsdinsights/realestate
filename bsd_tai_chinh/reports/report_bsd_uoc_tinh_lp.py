@@ -46,7 +46,7 @@ class ReportBsdUocTinhLaiPhat(models.AbstractModel):
             .filtered(lambda d: d.bsd_thanh_toan != 'da_tt' and d.bsd_ngay_hh_tt)\
             .sorted('bsd_stt')
         tong_tien_chua_tt = 0
-        tong_tien_phat = 0
+        tong_tien_phat_t = 0
         lich_tt = []
         for dot_tt in dot_tt_ids:
             # Kiểm tra ngày làm mốc tính lãi phạt
@@ -94,12 +94,12 @@ class ReportBsdUocTinhLaiPhat(models.AbstractModel):
                 'tong_tien_phat': dot_tt.bsd_tien_phat + tien_phat,
             })
         for d in lich_tt:
-            tong_tien_phat += d['tong_tien_phat']
+            tong_tien_phat_t += d['tong_tien_phat']
         doc.update({
             'lich_tt': lich_tt,
             'tong_tien_chua_tt': tong_tien_chua_tt,
-            'tong_tien_phat': tong_tien_phat,
-            'tong_tien': tong_tien_chua_tt + tong_tien_phat
+            'tong_tien_phat': tong_tien_phat_t,
+            'tong_tien': tong_tien_chua_tt + tong_tien_phat_t
         })
         _logger.debug(doc)
         return doc

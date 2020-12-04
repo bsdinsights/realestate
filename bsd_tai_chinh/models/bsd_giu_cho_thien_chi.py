@@ -15,7 +15,7 @@ class BsdGiuChoThienChi(models.Model):
     bsd_tien_phai_tt = fields.Monetary(string="Phải thanh toán", help="Đã thanh toán",
                                        compute="_compute_tien_tt", store=True)
     bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_gc_tc_id', string="Công nợ chứng tự",
-                                 domain=[('bsd_loai', '=', 'pt_gctc')],
+                                 domain=[('bsd_loai', '=', 'pt_gctc'), ('state', '=', 'hieu_luc')],
                                  readonly=True)
 
     bsd_ngay_tt = fields.Datetime(compute='_compute_tien_tt', store=True)

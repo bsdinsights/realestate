@@ -34,7 +34,7 @@ class BsdBaoGiaLTT(models.Model):
     bsd_tien_phai_tt = fields.Monetary(string="Phải thanh toán", help="Đã thanh toán",
                                        compute="_compute_tien_tt", store=True)
     bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_dot_tt_id', string="Công nợ chứng tự",
-                                 domain=[('bsd_loai', '=', 'pt_dtt')], readonly=True)
+                                 domain=[('bsd_loai', '=', 'pt_dtt'), ('state', '=', 'hieu_luc')], readonly=True)
     bsd_ngay_tt = fields.Datetime(compute='_compute_tien_tt', store=True)
     bsd_thanh_toan = fields.Selection(compute='_compute_tien_tt', store=True)
 
@@ -157,7 +157,7 @@ class BsdBaoGiaLTT(models.Model):
             # Số ngày tính phạt
             so_ngay_tp = (ngay_tt - han_tinh_phat).days
             # Tính lãi phạt
-            tien_phat = float_round(tien_tt * (self.bsd_lai_phat/100 / so_ngay_nam) * so_ngay_tp,0)
+            tien_phat = float_round(tien_tt * (self.bsd_lai_phat/100 / so_ngay_nam) * so_ngay_tp, 0)
             # Kiểm tra lãi phạt đã vượt lãi phạt tối đa của đợt chưa
             tong_tien_phat = self.bsd_tien_phat + tien_phat
             if self.bsd_tien_td == 0 and self.bsd_tl_td != 0:
@@ -190,19 +190,37 @@ class BsdBaoGiaLTT(models.Model):
         dot_tt = self
         name = dot_tt.bsd_ten_dtt or ''
         if self._context.get('show_info'):
-            if dot_tt.bsd_thanh_toan == 'chua_tt':
-                tt = "Chưa TT"
-            elif dot_tt.bsd_thanh_toan == 'dang_tt':
-                tt = "Đang TT"
+            if dot_tt.bsd_loai == 'dtt':
+                if dot_tt.bsd_thanh_toan == 'chua_tt':
+                    tt = "Chưa TT"
+                elif dot_tt.bsd_thanh_toan == 'dang_tt':
+                    tt = "Đang TT"
+                else:
+                    tt = "Đã TT"
+                name = "%s - %s - %s" % (dot_tt.bsd_ten_dtt, tt,  '{:,.0f} đ'
+                                         .format(dot_tt.bsd_tien_phai_tt).replace(',', '.'))
+            elif dot_tt.bsd_loai == 'pbt':
+                if dot_tt.bsd_thanh_toan == 'chua_tt':
+                    tt = "Chưa TT"
+                elif dot_tt.bsd_thanh_toan == 'dang_tt':
+                    tt = "Đang TT"
+                else:
+                    tt = "Đã TT"
+                name = "%s - %s -%s - %s" % (dot_tt.bsd_ten_dtt, 'PBT', tt,  '{:,.0f} đ'
+                                         .format(dot_tt.bsd_tien_phai_tt).replace(',', '.'))
             else:
-                tt = "Đã TT"
-            name = "%s - %s - %s" % (dot_tt.bsd_ten_dtt, tt,  '{:,.0f} đ'
-                                     .format(dot_tt.bsd_tien_phai_tt).replace(',', '.'))
+                if dot_tt.bsd_thanh_toan == 'chua_tt':
+                    tt = "Chưa TT"
+                elif dot_tt.bsd_thanh_toan == 'dang_tt':
+                    tt = "Đang TT"
+                else:
+                    tt = "Đã TT"
+                name = "%s - %s -%s - %s" % (dot_tt.bsd_ten_dtt, 'PQL', tt,  '{:,.0f} đ'
+                                         .format(dot_tt.bsd_tien_phai_tt).replace(',', '.'))
         return name
 
     def name_get(self):
         res = []
-        _logger.debug("gọi tới hàm này")
         for dot_tt in self:
             name = dot_tt._get_name()
             res.append((dot_tt.id, name))
