@@ -58,11 +58,11 @@
         </field>
     </record>
     <record model="ir.actions.act_window" id="bsd_cong_no_ct_action">
-        <field name="name">Công nợ chứng từ</field>
+        <field name="name">Chi tiết thanh toán</field>
         <field name="res_model">bsd.cong_no_ct</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
-            <p>Công nợ khách hàng</p>
+            <p>Chi tiết thanh toán</p>
         </field>
     </record>
 </odoo>

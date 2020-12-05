@@ -9,9 +9,9 @@ _logger = logging.getLogger(__name__)
 
 class BsdCongNoCT(models.Model):
     _name = 'bsd.cong_no_ct'
-    _description = 'Công nợ chứng từ'
+    _description = 'Chi tiết thanh toán'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _rec_name = 'bsd_khach_hang_id'
+    _rec_name = 'display_name'
 
     bsd_ngay_pb = fields.Datetime(string="Ngày", help="Ngày phân bổ")
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng")
@@ -29,9 +29,9 @@ class BsdCongNoCT(models.Model):
     bsd_lai_phat_id = fields.Many2one('bsd.lai_phat', string="Lãi phạt", help="Lãi phạt")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-    state = fields.Selection([('hieu_luc', 'Hiệu lực'), ('vo_hieu_luc', 'Vô hiệu lực')],
+    state = fields.Selection([('nhap', 'Nháp'), ('hieu_luc', 'Hiệu lực'), ('vo_hieu_luc', 'Vô hiệu lực')],
                              string="Tình trạng",
-                             default='vo_hieu_luc', required=True, readonly=True, tracking=1)
+                             default='nhap', required=True, readonly=True, tracking=1)
 
     bsd_loai = fields.Selection([('pt_gctc', 'Giữ chỗ thiện chí'),
                                  ('pt_gc', 'Giữ chỗ'),

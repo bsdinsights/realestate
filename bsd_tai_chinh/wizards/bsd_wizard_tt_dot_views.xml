@@ -39,29 +39,42 @@
                                    context="{'show_info':True}"
                                    widget="many2many_checkboxes"/>
                         </group>
-                        <group string="PHÍ">
-                            <field name="bsd_dot_phi_ids" nolabel="1"
-                                   context="{'show_info':True}"
-                                   widget="many2many_checkboxes"/>
-                            <field name="bsd_phi_ps_ids" nolabel="1"
-                                   context="{'show_info':True}"
-                                   widget="many2many_checkboxes"/>
-                            <field name="bsd_lai_phat_ids" nolabel="1"
-                                   context="{'show_info':True}"
-                                   widget="many2many_checkboxes"/>
+                        <group>
+                            <group col="2" colspan="2"
+                                    string="Phí bảo trì &amp; Phí quản lý">
+                                <field name="bsd_dot_phi_ids" nolabel="1"
+                                       context="{'show_info':True}"
+                                       widget="many2many_checkboxes"/>
+                            </group>
+                            <group col="2" colspan="2" string="Tiền phạt chậm TT">
+                                <field name="bsd_phi_ps_ids" nolabel="1"
+                                       context="{'show_info':True}"
+                                       widget="many2many_checkboxes"/>
+                            </group>
+                            <group col="2" colspan="2" string="Phí phát sinh">
+                                <field name="bsd_lai_phat_ids" nolabel="1"
+                                       context="{'show_info':True}"
+                                       widget="many2many_checkboxes"/>
+                            </group>
                         </group>
                     </group>
 <!--                    Hiển thị theo loại phí bảo trì và phí quản lý-->
-                    <group attrs="{'invisible':[('bsd_loai', '!=', 'pbt_pql')]}">
-
+                    <group string="Phí bảo trì &amp; Phí quản lý" attrs="{'invisible':[('bsd_loai', '!=', 'pbt_pql')]}">
+                            <field name="bsd_dot_phi_ids" nolabel="1"
+                                   context="{'show_info':True}"
+                                   widget="many2many_checkboxes"/>
                     </group>
-<!--                    Hiển thị theo loại phí bảo trì và phí quản lý-->
-                    <group attrs="{'invisible':[('bsd_loai', '!=', 'lp')]}">
-
+<!--                    Hiển thị theo lãi phạt chậm thanh toán-->
+                    <group string="Tiền phạt chậm TT" attrs="{'invisible':[('bsd_loai', '!=', 'lp')]}">
+                            <field name="bsd_lai_phat_ids" nolabel="1"
+                                   context="{'show_info':True}"
+                                   widget="many2many_checkboxes"/>
                     </group>
-<!--                    Hiển thị theo loại phí bảo trì và phí quản lý-->
-                    <group attrs="{'invisible':[('bsd_loai', '!=', 'pps')]}">
-
+<!--                    Hiển thị theo loại phí phát sinh-->
+                    <group string="Phí phát sinh" attrs="{'invisible':[('bsd_loai', '!=', 'pps')]}">
+                            <field name="bsd_phi_ps_ids" nolabel="1"
+                                   context="{'show_info':True}"
+                                   widget="many2many_checkboxes"/>
                     </group>
                 </sheet>
                 <footer>

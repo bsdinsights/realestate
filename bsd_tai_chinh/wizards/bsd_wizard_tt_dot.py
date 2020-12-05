@@ -176,7 +176,7 @@ class BsdWizardTTDOT(models.TransientModel):
                 'bsd_phieu_thu_id': phieu_thu.id,
                 'bsd_tien_pb': tien_phai_tt,
                 'bsd_loai': 'pt_dtt',
-                'state': 'vo_hieu_luc',
+                'state': 'nhap',
             })
         return {
             'type': 'ir.actions.act_window',

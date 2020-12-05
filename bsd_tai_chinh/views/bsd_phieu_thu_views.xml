@@ -12,6 +12,12 @@
                             attrs="{'invisible': ['|',('id', '=',False)]}"
                             type="object"
                             class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            states="nhap"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
                     <button string="Cấn trừ"
                             name="action_can_tru"
                             type="object"
@@ -36,6 +42,9 @@
                                     <field name="bsd_ngay_pt"
                                            widget="date"/>
                                     <field name="bsd_loai_pt"/>
+                                    <field name="bsd_du_an_id"
+                                           domain="[('state', '=', 'phat_hanh')]"
+                                           options="{'no_create':true}"/>
                                     <field name="bsd_khach_hang_id"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_pt_tt_id"
@@ -49,9 +58,6 @@
 
                                 </group>
                                 <group>
-                                    <field name="bsd_du_an_id"
-                                           domain="[('state', '=', 'phat_hanh')]"
-                                           options="{'no_create':true}"/>
                                     <field name="bsd_unit_id"
                                            context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                            options="{'no_create':true}"
@@ -83,7 +89,7 @@
                                            attrs="{'required':[('bsd_loai_pt','=','hd')],
                                                    'invisible':[('bsd_loai_pt','!=','hd')]}"
                                     />
-                                    <field name="currency_id"/>
+                                    <field name="currency_id" invisible="1"/>
                                     <field name="company_id" invisible="1"/>
                                     <field name="bsd_tien_kh"/>
                                     <field name="bsd_tien" readonly="1"/>

@@ -102,6 +102,7 @@ class BsdPhieuThu(models.Model):
                               ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
                              required=True, readonly=True, default='nhap', tracking=1)
     bsd_tien_lp_ut = fields.Monetary(string="Lãi phạt ước tính", help="Tiền lãi phạt ước tính thanh toán")
+    bsd_tt_id = fields.Many2one(string="TT trả trước", help="Thanh toán trả trước khi thanh toán có dư", readonly=True)
 
     @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien')
     def _compute_tien_ct(self):
@@ -453,6 +454,11 @@ class BsdPhieuThu(models.Model):
     def action_in(self):
         return self.env.ref('bsd_tai_chinh.bsd_phieu_thu_report_action').read()[0]
 
+    # Action hủy
+    def action_huy(self):
+        if self.state == 'nhap':
+            self.write({'state': 'huy'})
+
     @api.model
     def create(self, vals):
         if 'bsd_du_an_id' in vals:
@@ -465,10 +471,11 @@ class BsdPhieuThu(models.Model):
 
     # Tạo ra thanh toán trả trước khi thanh toán dư
     def tao_tt_tra_truoc(self, tien_du=0):
-        self.env['bsd.phieu_thu'].create({
-            'bsd_loai_pt': 'tra_truoc',
-            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-            'bsd_du_an_id': self.bsd_du_an_id.id,
-            'bsd_pt_tt_id': self.bsd_pt_tt_id.id,
-            'bsd_tien_kh': tien_du,
-        }).action_xac_nhan()
+        tra_truoc = self.env['bsd.phieu_thu'].create({
+                        'bsd_loai_pt': 'tra_truoc',
+                        'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                        'bsd_du_an_id': self.bsd_du_an_id.id,
+                        'bsd_pt_tt_id': self.bsd_pt_tt_id.id,
+                        'bsd_tien_kh': tien_du,
+                    }).action_xac_nhan()
+        self.write({'bsd_tt_id': tra_truoc.id})
