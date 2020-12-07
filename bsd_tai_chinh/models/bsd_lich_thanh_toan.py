@@ -200,23 +200,10 @@ class BsdBaoGiaLTT(models.Model):
                 name = "%s - %s - %s" % (dot_tt.bsd_ten_dtt, tt,  '{:,.0f} đ'
                                          .format(dot_tt.bsd_tien_phai_tt).replace(',', '.'))
             elif dot_tt.bsd_loai == 'pbt':
-                if dot_tt.bsd_thanh_toan == 'chua_tt':
-                    tt = "Chưa TT"
-                elif dot_tt.bsd_thanh_toan == 'dang_tt':
-                    tt = "Đang TT"
-                else:
-                    tt = "Đã TT"
-                name = "%s - %s -%s - %s" % (dot_tt.bsd_ten_dtt, 'PBT', tt,  '{:,.0f} đ'
-                                         .format(dot_tt.bsd_tien_phai_tt).replace(',', '.'))
+
+                name = "%s - %s" % (dot_tt.bsd_ten_dtt, 'Phí bảo trì')
             else:
-                if dot_tt.bsd_thanh_toan == 'chua_tt':
-                    tt = "Chưa TT"
-                elif dot_tt.bsd_thanh_toan == 'dang_tt':
-                    tt = "Đang TT"
-                else:
-                    tt = "Đã TT"
-                name = "%s - %s -%s - %s" % (dot_tt.bsd_ten_dtt, 'PQL', tt,  '{:,.0f} đ'
-                                         .format(dot_tt.bsd_tien_phai_tt).replace(',', '.'))
+                name = "%s - %s" % (dot_tt.bsd_ten_dtt, 'Phí quản lý')
         return name
 
     def name_get(self):

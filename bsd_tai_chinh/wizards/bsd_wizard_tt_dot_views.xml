@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record model="ir.ui.view" id="bsd_wizard_tt_dot_form">
-        <field name="name">bsd.wizard.tt_dot.form</field>
-        <field name="model">bsd.wizard.tt_dot</field>
+        <field name="name">bsd.wizard.tt_hd.form</field>
+        <field name="model">bsd.wizard.tt_hd</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
@@ -11,8 +11,10 @@
                             <field name="bsd_loai"/>
                             <field name="bsd_ngay_pt"/>
                             <field name="bsd_tien_kh"/>
-                            <field name="bsd_tien"/>
-                            <field name="bsd_tien_lp_ut" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_con_lai" readonly="1" force_save="1"/>
+                            <field name="bsd_so_pps" invisible="1"/>
+                            <field name="bsd_so_phi" invisible="1"/>
+                            <field name="bsd_so_lp" invisible="1"/>
                         </group>
                         <group>
                             <field name="bsd_hd_ban_id" readonly="1" force_save="1"
@@ -27,55 +29,61 @@
                                    readonly="1" force_save="1"
                                    options="{'no_create':true}"
                                    domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
-                            <field name="bsd_tien_con_lai"/>
                             <field name="currency_id" invisible="1"/>
                             <field name="company_id" invisible="1"/>
                         </group>
                     </group>
-<!--                    Hiện thị theo loại đợt thanh toán-->
-                    <group attrs="{'invisible':[('bsd_loai', '!=', 'dtt')]}">
-                        <group string="ĐỢT THANH TOÁN">
-                            <field name="bsd_ltt_ids" nolabel="1"
-                                   context="{'show_info':True}"
-                                   widget="many2many_checkboxes"/>
-                        </group>
-                        <group>
-                            <group col="2" colspan="2"
-                                    string="Phí bảo trì &amp; Phí quản lý">
-                                <field name="bsd_dot_phi_ids" nolabel="1"
-                                       context="{'show_info':True}"
-                                       widget="many2many_checkboxes"/>
-                            </group>
-                            <group col="2" colspan="2" string="Tiền phạt chậm TT">
-                                <field name="bsd_phi_ps_ids" nolabel="1"
-                                       context="{'show_info':True}"
-                                       widget="many2many_checkboxes"/>
-                            </group>
-                            <group col="2" colspan="2" string="Phí phát sinh">
-                                <field name="bsd_lai_phat_ids" nolabel="1"
-                                       context="{'show_info':True}"
-                                       widget="many2many_checkboxes"/>
-                            </group>
-                        </group>
-                    </group>
-<!--                    Hiển thị theo loại phí bảo trì và phí quản lý-->
-                    <group string="Phí bảo trì &amp; Phí quản lý" attrs="{'invisible':[('bsd_loai', '!=', 'pbt_pql')]}">
-                            <field name="bsd_dot_phi_ids" nolabel="1"
-                                   context="{'show_info':True}"
-                                   widget="many2many_checkboxes"/>
-                    </group>
-<!--                    Hiển thị theo lãi phạt chậm thanh toán-->
-                    <group string="Tiền phạt chậm TT" attrs="{'invisible':[('bsd_loai', '!=', 'lp')]}">
-                            <field name="bsd_lai_phat_ids" nolabel="1"
-                                   context="{'show_info':True}"
-                                   widget="many2many_checkboxes"/>
-                    </group>
-<!--                    Hiển thị theo loại phí phát sinh-->
-                    <group string="Phí phát sinh" attrs="{'invisible':[('bsd_loai', '!=', 'pps')]}">
-                            <field name="bsd_phi_ps_ids" nolabel="1"
-                                   context="{'show_info':True}"
-                                   widget="many2many_checkboxes"/>
-                    </group>
+                    <field name="bsd_ltt_ids"
+                           attrs="{'invisible':[('bsd_loai', '!=', 'dtt')]}" nolabel="1">
+                        <tree editable="bottom" create="false" delete="false">
+                            <field name="bsd_dot_tt_id" readonly="1"/>
+                            <field name="bsd_tien_dot_tt"/>
+                            <field name="bsd_tien_phai_tt"/>
+                            <field name="bsd_tien_tt"/>
+                            <field name="bsd_tien_lp"/>
+                            <field name="bsd_tt_phat"/>
+                            <field name="bsd_tien_lp_ut" readonly="1" force_save="1"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </tree>
+                    </field>
+                    <field name="bsd_dot_phi_ids"
+                           attrs="{'invisible':[('bsd_so_phi', '=',0)]}"
+                           context="{'show_info':True}"
+                           nolabel="1">
+                        <tree editable="bottom" create="false" delete="false">
+                            <field name="bsd_phi_tt_id" readonly="1"/>
+                            <field name="bsd_tien_phi_tt"/>
+                            <field name="bsd_tien_phai_tt"/>
+                            <field name="bsd_tien_tt"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </tree>
+                    </field>
+                    <field name="bsd_dot_lp_ids"
+                           attrs="{'invisible':['|',('bsd_so_lp', '=',0),('bsd_loai','=','dtt')]}"
+                           nolabel="1">
+                        <tree editable="bottom" create="false" delete="false">
+                            <field name="bsd_dot_lp_id" readonly="1"/>
+                            <field name="bsd_tien_pl"/>
+                            <field name="bsd_tp_phai_tt"/>
+                            <field name="bsd_tt_phat"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </tree>
+                    </field>
+                    <field name="bsd_phi_ps_ids"
+                           attrs="{'invisible':[('bsd_so_pps', '=',0)]}"
+                           nolabel="1">
+                        <tree editable="bottom" create="false" delete="false">
+                            <field name="bsd_pps_id" readonly="1"/>
+                            <field name="bsd_tien_phi_tt"/>
+                            <field name="bsd_tien_phai_tt"/>
+                            <field name="bsd_tien_tt"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </tree>
+                    </field>
                 </sheet>
                 <footer>
                     <button name="action_tao" string="Tạo" type="object" class="oe_highlight oe_right"/>
@@ -87,7 +95,7 @@
 
     <record model="ir.actions.act_window" id="bsd_wizard_tt_dot_action">
         <field name="name">Thanh toán HĐ</field>
-        <field name="res_model">bsd.wizard.tt_dot</field>
+        <field name="res_model">bsd.wizard.tt_hd</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>

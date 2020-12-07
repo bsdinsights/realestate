@@ -37,6 +37,8 @@ class BsdCongNoCT(models.Model):
                                  ('pt_gc', 'Giữ chỗ'),
                                  ('pt_dc', 'Đặt cọc'),
                                  ('pt_dtt', 'Đợt thanh toán'),
+                                 ('pt_pql', 'Phí quản lý'),
+                                 ('pt_pbt', 'Phí bảo trì'),
                                  ('pt_ht', 'Hoàn tiền'),
                                  ('pt_pps', 'Phí phát sinh'),
                                  ('pt_lp', 'Lãi phạt chậm TT')], string="Phân loại",
@@ -173,5 +175,26 @@ class BsdCongNoCT(models.Model):
             ma_dot = rec.bsd_dot_tt_id.bsd_ten_dtt
             rec.write({
                 'display_name': ma_unit + ' - ' + ma_hd + ' - ' + ma_dot
+            })
+        elif rec.bsd_loai == 'pt_pql':
+            ma_unit = rec.bsd_hd_ban_id.bsd_unit_id.bsd_ma_unit
+            ma_hd = rec.bsd_hd_ban_id.bsd_ma_hd_ban
+            ma_dot = rec.bsd_dot_tt_id.bsd_ten_dtt
+            rec.write({
+                'display_name': ma_unit + ' - ' + ma_hd + ' - ' + ma_dot + ' - ' + 'PQL'
+            })
+        elif rec.bsd_loai == 'pt_pbt':
+            ma_unit = rec.bsd_hd_ban_id.bsd_unit_id.bsd_ma_unit
+            ma_hd = rec.bsd_hd_ban_id.bsd_ma_hd_ban
+            ma_dot = rec.bsd_dot_tt_id.bsd_ten_dtt
+            rec.write({
+                'display_name': ma_unit + ' - ' + ma_hd + ' - ' + ma_dot + ' - ' + 'PBT'
+            })
+        elif rec.bsd_loai == 'pt_lp':
+            ma_unit = rec.bsd_hd_ban_id.bsd_unit_id.bsd_ma_unit
+            ma_hd = rec.bsd_hd_ban_id.bsd_ma_hd_ban
+            ma_dot = rec.bsd_lai_phat_id.bsd_dot_tt_id.bsd_ten_dtt
+            rec.write({
+                'display_name': ma_unit + ' - ' + ma_hd + ' - ' + ma_dot + ' - ' + 'tiền phạt'
             })
         return rec

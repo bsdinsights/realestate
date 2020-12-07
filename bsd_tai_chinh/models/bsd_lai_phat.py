@@ -50,18 +50,8 @@ class BsdLaiPhat(models.Model):
 
     def _get_name(self):
         lp = self
-        name = lp.bsd_hd_ban_id.bsd_ma_hd_ban or ''
-        if self._context.get('show_info'):
-            if lp.bsd_thanh_toan == 'chua_tt':
-                tt = "Chưa TT"
-            elif lp.bsd_thanh_toan == 'dang_tt':
-                tt = "Đang TT"
-            else:
-                tt = "Đã TT"
-            name = "%s - %s -%s - %s" % (lp.bsd_hd_ban_id.bsd_ma_hd_ban,
-                                         lp.bsd_dot_tt_id.bsd_ten_dtt,
-                                         tt,
-                                         '{:,.0f} đ'.format(lp.bsd_tien_phai_tt).replace(',', '.'))
+        name = "%s - %s" % (lp.bsd_hd_ban_id.bsd_ma_hd_ban,
+                            lp.bsd_dot_tt_id.bsd_ten_dtt)
         return name
 
     def name_get(self):

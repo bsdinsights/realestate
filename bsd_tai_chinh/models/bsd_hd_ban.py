@@ -197,7 +197,41 @@ class BsdHdBan(models.Model):
 
     # Tạo thanh toán
     def action_thanh_toan(self):
+        wizard_tt = self.env['bsd.wizard.tt_hd'].create({
+            'bsd_tien_kh': 0,
+            'bsd_hd_ban_id': self.id,
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_du_an_id': self.bsd_du_an_id.id,
+            'bsd_unit_id': self.bsd_unit_id.id,
+        })
+        for dot_tt in self.bsd_ltt_ids\
+                .filtered(lambda x: (x.bsd_thanh_toan != 'da_tt' or x.bsd_tien_phat > 0) and x.bsd_ngay_hh_tt)\
+                .sorted('bsd_stt'):
+            self.env['bsd.wizard.ct_dot'].create({
+                'bsd_dot_tt_id': dot_tt.id,
+                'bsd_wizard_tt_id': wizard_tt.id
+            })
+        # Kiểm tra sản phẩm đã có ngày chứng nhận cất nóc mới thu dc pql,pbt
+        if self.bsd_unit_id.bsd_ngay_cn:
+            for phi in (self.bsd_dot_pbt_ids + self.bsd_dot_pql_ids):
+                self.env['bsd.wizard.ct_phi'].create({
+                    'bsd_phi_tt_id': phi.id,
+                    'bsd_wizard_tt_id': wizard_tt.id
+                })
+        for pps in self.bsd_phi_ps_ids:
+            self.env['bsd.wizard.ct_pps'].create({
+                'bsd_pps_id': pps.id,
+                'bsd_wizard_tt_id': wizard_tt.id
+            })
+        for dot_tt in self.bsd_ltt_ids\
+                .filtered(lambda x: x.bsd_tien_phat > 0 and x.bsd_ngay_hh_tt)\
+                .sorted('bsd_stt'):
+            self.env['bsd.wizard.ct_lp'].create({
+                'bsd_dot_lp_id': dot_tt.id,
+                'bsd_wizard_tt_id': wizard_tt.id
+            })
         action = self.env.ref('bsd_tai_chinh.bsd_wizard_tt_dot_action').read()[0]
+        action['res_id'] = wizard_tt.id
         return action
 
     # Tạo thanh toán

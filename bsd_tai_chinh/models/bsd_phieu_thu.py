@@ -223,80 +223,50 @@ class BsdPhieuThu(models.Model):
     # TC.01.03 - Ghi số phiếu thu Giữ chỗ thiện chí
     def _gs_pt_gc_tc(self, time):
         # ghi công nợ giảm
-        giam_id = self.env['bsd.cong_no'].create({
-                        'bsd_chung_tu': self.bsd_so_pt,
-                        'bsd_ngay': time,
-                        'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                        'bsd_du_an_id': self.bsd_du_an_id.id,
-                        'bsd_ps_giam': self.bsd_tien,
-                        'bsd_ps_tang': 0,
-                        'bsd_loai_ct': 'phieu_thu',
-                        'bsd_phat_sinh': 'giam',
-                        'bsd_phieu_thu_id': self.id,
-                        'state': 'da_gs',
+        self.env['bsd.cong_no'].create({
+            'bsd_chung_tu': self.bsd_so_pt,
+            'bsd_ngay': time,
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_du_an_id': self.bsd_du_an_id.id,
+            'bsd_ps_giam': self.bsd_tien,
+            'bsd_ps_tang': 0,
+            'bsd_loai_ct': 'phieu_thu',
+            'bsd_phat_sinh': 'giam',
+            'bsd_phieu_thu_id': self.id,
+            'state': 'da_gs',
         })
-        # tạo record trong bảng công nợ chứng từ
-        # self.env['bsd.cong_no_ct'].create({
-        #     'bsd_ngay_pb': time,
-        #     'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-        #     'bsd_gc_tc_id': self.bsd_gc_tc_id.id,
-        #     'bsd_phieu_thu_id': self.id,
-        #     'bsd_tien_pb': self.bsd_tien,
-        #     'bsd_loai': 'pt_gctc',
-        #     'state': 'hieu_luc',
-        # })
 
     # TC.01.04 - Ghi số phiếu thu Giữ chỗ
     def _gs_pt_giu_cho(self, time):
         # ghi công nợ giảm
-        giam_id = self.env['bsd.cong_no'].create({
-                        'bsd_chung_tu': self.bsd_so_pt,
-                        'bsd_ngay': time,
-                        'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                        'bsd_du_an_id': self.bsd_du_an_id.id,
-                        'bsd_ps_giam': self.bsd_tien,
-                        'bsd_ps_tang': 0,
-                        'bsd_loai_ct': 'phieu_thu',
-                        'bsd_phat_sinh': 'giam',
-                        'bsd_phieu_thu_id': self.id,
-                        'state': 'da_gs',
+        self.env['bsd.cong_no'].create({
+            'bsd_chung_tu': self.bsd_so_pt,
+            'bsd_ngay': time,
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_du_an_id': self.bsd_du_an_id.id,
+            'bsd_ps_giam': self.bsd_tien,
+            'bsd_ps_tang': 0,
+            'bsd_loai_ct': 'phieu_thu',
+            'bsd_phat_sinh': 'giam',
+            'bsd_phieu_thu_id': self.id,
+            'state': 'da_gs',
         })
-        # tạo record trong bảng công nợ chứng từ
-        # self.env['bsd.cong_no_ct'].create({
-        #     'bsd_ngay_pb': time,
-        #     'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-        #     'bsd_giu_cho_id': self.bsd_giu_cho_id.id,
-        #     'bsd_phieu_thu_id': self.id,
-        #     'bsd_tien_pb': self.bsd_tien,
-        #     'bsd_loai': 'pt_gc',
-        #     'state': 'hieu_luc',
-        # })
 
     # TC.01.05 Ghi sổ phiếu thu Đặt cọc
     def _gs_pt_dat_coc(self, time):
         # ghi công nợ giảm
-        giam_id = self.env['bsd.cong_no'].create({
-                        'bsd_chung_tu': self.bsd_so_pt,
-                        'bsd_ngay': time,
-                        'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                        'bsd_du_an_id': self.bsd_du_an_id.id,
-                        'bsd_ps_giam': self.bsd_tien,
-                        'bsd_ps_tang': 0,
-                        'bsd_loai_ct': 'phieu_thu',
-                        'bsd_phat_sinh': 'giam',
-                        'bsd_phieu_thu_id': self.id,
-                        'state': 'da_gs',
+        self.env['bsd.cong_no'].create({
+            'bsd_chung_tu': self.bsd_so_pt,
+            'bsd_ngay': time,
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_du_an_id': self.bsd_du_an_id.id,
+            'bsd_ps_giam': self.bsd_tien,
+            'bsd_ps_tang': 0,
+            'bsd_loai_ct': 'phieu_thu',
+            'bsd_phat_sinh': 'giam',
+            'bsd_phieu_thu_id': self.id,
+            'state': 'da_gs',
         })
-        # tạo record trong bảng công nợ chứng từ
-        # self.env['bsd.cong_no_ct'].create({
-        #     'bsd_ngay_pb': time,
-        #     'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-        #     'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
-        #     'bsd_phieu_thu_id': self.id,
-        #     'bsd_tien_pb': self.bsd_tien,
-        #     'bsd_loai': 'pt_dc',
-        #     'state': 'hieu_luc',
-        # })
 
     # TC.01.06 Ghi sổ phiếu đợt thanh toán hợp đồng bán
     # TC.01.10 Ghi sổ phí quản lý, phí bảo trì là 1 đợt thanh toán
@@ -321,17 +291,6 @@ class BsdPhieuThu(models.Model):
                         'bsd_phieu_thu_id': self.id,
                         'state': 'da_gs',
         })
-        # tạo record trong bảng công nợ chứng từ
-        # self.env['bsd.cong_no_ct'].create({
-        #     'bsd_ngay_pb': time,
-        #     'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-        #     'bsd_phieu_thu_id': self.id,
-        #     'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
-        #     'bsd_dot_tt_id': self.bsd_dot_tt_id.id,
-        #     'bsd_tien_pb': self.bsd_tien,
-        #     'bsd_loai': 'pt_dtt',
-        #     'state': 'hieu_luc',
-        # })
 
     # TC.01.08 - Kiểm tra thanh toán dư
     def _kiem_tra_tt_du(self):
@@ -458,6 +417,9 @@ class BsdPhieuThu(models.Model):
     def action_huy(self):
         if self.state == 'nhap':
             self.write({'state': 'huy'})
+            self.bsd_ct_ids.write({
+                'state': 'vo_hieu_luc'
+            })
 
     @api.model
     def create(self, vals):
