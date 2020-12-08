@@ -169,7 +169,7 @@ class BsdCongNoCT(models.Model):
             })
         elif rec.bsd_loai == 'pt_gc':
             ma_unit = rec.bsd_giu_cho_id.bsd_unit_id.bsd_ma_unit
-            ma_gc = rec.bsd_giu_cho_id.bsd_ma_gctc
+            ma_gc = rec.bsd_giu_cho_id.bsd_ma_gc
             rec.write({
                 'display_name': ma_unit + ' - ' + ma_gc
             })

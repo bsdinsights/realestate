@@ -74,9 +74,6 @@ class BsdPhieuThu(models.Model):
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
-    bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán",
-                                    readonly=True,
-                                    states={'nhap': [('readonly', False)]})
     bsd_tien_kh = fields.Monetary(string="Tiền khách hàng", help="Số tiền thanh toán của khách hàng", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})

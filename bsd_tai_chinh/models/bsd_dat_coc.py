@@ -74,12 +74,11 @@ class BsdDatCoc(models.Model):
     # Tạo thanh toán
     def action_thanh_toan(self):
         context = {
-            'default_bsd_loai_pt': 'dat_coc',
             'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
             'default_bsd_du_an_id': self.bsd_du_an_id.id,
             'default_bsd_dat_coc_id': self.id,
             'default_bsd_unit_id': self.bsd_unit_id.id
         }
-        action = self.env.ref('bsd_tai_chinh.bsd_phieu_thu_action_popup').read()[0]
+        action = self.env.ref('bsd_tai_chinh.bsd_wizard_tt_dat_coc_action').read()[0]
         action['context'] = context
         return action
