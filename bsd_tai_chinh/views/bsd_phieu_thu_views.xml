@@ -97,7 +97,7 @@
                                            attrs="{'invisible':[('bsd_loai_pt', 'not in', ['tra_truoc','pps'])]}"/>
                                     <field name="bsd_tien_con_lai"
                                            attrs="{'invisible':[('bsd_loai_pt', 'not in', ['tra_truoc','pps'])]}"/>
-                                    <field name="bsd_tien_lp_ut"/>
+                                    <field name="bsd_tt_id"/>
                                     <field name="bsd_dien_giai"/>
                                 </group>
                             </group>
@@ -106,6 +106,7 @@
                             <field name="bsd_ct_ids">
                                 <tree>
                                     <field name="display_name"/>
+                                    <field name="bsd_loai"/>
                                     <field name="bsd_tien_pb"/>
                                     <field name="state"/>
                                     <field name="currency_id" invisible="1"/>

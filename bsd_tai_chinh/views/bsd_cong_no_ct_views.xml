@@ -4,7 +4,7 @@
         <field name="name">bsd.cong_no_ct.form</field>
         <field name="model">bsd.cong_no_ct</field>
         <field name="arch" type="xml">
-            <form>
+            <form create="false" duplicate="false">
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
@@ -13,21 +13,25 @@
                         <group>
                             <field name="bsd_ngay_pb"/>
                             <field name="bsd_khach_hang_id"
-                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
                                    options="{'no_create':true}"/>
-                            <field name="currency_id"/>
-                            <field name="bsd_tien_pb"/>
+                            <field name="currency_id" invisible="1"/>
                             <field name="bsd_loai"/>
+                            <field name="bsd_hd_ban_id"
+                                   attrs="{'invisible':[('bsd_loai', 'not in', ['pt_dtt','pt_pql','pt_pbt','pt_pps','pt_lp'])]}"/>
                         </group>
                         <group>
-                            <field name="bsd_gc_tc_id"/>
-                            <field name="bsd_giu_cho_id"/>
-                            <field name="bsd_dat_coc_id"/>
-                            <field name="bsd_hd_ban_id"/>
-                            <field name="bsd_dot_tt_id"/>
                             <field name="bsd_phieu_thu_id"/>
-                            <field name="bsd_hoan_tien_id"/>
-                            <field name="bsd_phi_ps_id"/>
+                            <field name="bsd_gc_tc_id" attrs="{'invisible':[('bsd_loai', '!=', 'pt_gctc')]}"/>
+                            <field name="bsd_giu_cho_id" attrs="{'invisible':[('bsd_loai', '!=', 'pt_gc')]}"/>
+                            <field name="bsd_dat_coc_id" attrs="{'invisible':[('bsd_loai', '!=', 'pt_dc')]}"/>
+                            <field name="bsd_dot_tt_id"
+                                   attrs="{'invisible':[('bsd_loai', 'not in', ['pt_dtt','pt_pql','pt_pbt'])]}"/>
+                            <field name="bsd_phi_ps_id" attrs="{'invisible':[('bsd_loai', '!=', 'pt_pps')]}"/>
+                            <field name="bsd_lai_phat_id" attrs="{'invisible':[('bsd_loai', '!=', 'pt_lp')]}"/>
+                            <field name="bsd_hoan_tien_id"
+                                   attrs="{'invisible':[('bsd_loai', '!=', 'pt_ht')]}"/>
+                            <field name="bsd_tien_pb"/>
+                            <field name="currency_id" invisible="1"/>
                         </group>
                     </group>
                 </sheet>
@@ -43,17 +47,15 @@
         <field name="name">bsd.cong_no_ct.tree</field>
         <field name="model">bsd.cong_no_ct</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree create="false" duplicate="false">
                 <field name="bsd_ngay_pb"/>
                 <field name="bsd_khach_hang_id"/>
-                <field name="bsd_gc_tc_id"/>
-                <field name="bsd_giu_cho_id"/>
-                <field name="bsd_dat_coc_id"/>
-                <field name="bsd_hd_ban_id"/>
-                <field name="bsd_dot_tt_id"/>
+                <field name="display_name"/>
+                <field name="bsd_loai"/>
                 <field name="bsd_phieu_thu_id"/>
                 <field name="bsd_tien_pb"/>
                 <field name="state"/>
+                <field name="currency_id" invisible="1"/>
             </tree>
         </field>
     </record>

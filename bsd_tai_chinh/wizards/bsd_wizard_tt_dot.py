@@ -115,7 +115,7 @@ class BsdWizardTTDOT(models.TransientModel):
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True)
     bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", required=True)
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng", required=True)
-    bsd_tien_kh = fields.Monetary(string="Tiền", help="Tiền", required=True)
+    bsd_tien_kh = fields.Monetary(string="Tiền khách hàng", help="Tiền của khách hàng", required=True)
     bsd_tien_con_lai = fields.Monetary(string="Còn lại", help="Còn lại")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
@@ -144,6 +144,43 @@ class BsdWizardTTDOT(models.TransientModel):
     def _compute_lp(self):
         for each in self:
             each.bsd_so_lp = len(each.bsd_dot_lp_ids)
+
+    @api.onchange('bsd_hd_ban_id')
+    def _onchange_hd(self):
+        self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
+        self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
+        self.bsd_du_an_id = self.bsd_hd_ban_id.bsd_du_an_id
+
+    def action_chon_hd(self):
+        for dot_tt in self.bsd_hd_ban_id.bsd_ltt_ids\
+                .filtered(lambda x: (x.bsd_thanh_toan != 'da_tt' or x.bsd_tien_phat > 0) and x.bsd_ngay_hh_tt)\
+                .sorted('bsd_stt'):
+            self.env['bsd.wizard.ct_dot'].create({
+                'bsd_dot_tt_id': dot_tt.id,
+                'bsd_wizard_tt_id': self.id
+            })
+        # Kiểm tra sản phẩm đã có ngày chứng nhận cất nóc mới thu dc pql,pbt
+        if self.bsd_unit_id.bsd_ngay_cn:
+            for phi in (self.bsd_hd_ban_id.bsd_dot_pbt_ids + self.bsd_hd_ban_id.bsd_dot_pql_ids):
+                self.env['bsd.wizard.ct_phi'].create({
+                    'bsd_phi_tt_id': phi.id,
+                    'bsd_wizard_tt_id': self.id
+                })
+        for pps in self.bsd_hd_ban_id.bsd_phi_ps_ids:
+            self.env['bsd.wizard.ct_pps'].create({
+                'bsd_pps_id': pps.id,
+                'bsd_wizard_tt_id': self.id
+            })
+        for dot_tt in self.bsd_hd_ban_id.bsd_ltt_ids\
+                .filtered(lambda x: x.bsd_tien_phat > 0 and x.bsd_ngay_hh_tt)\
+                .sorted('bsd_stt'):
+            self.env['bsd.wizard.ct_lp'].create({
+                'bsd_dot_tt_id': dot_tt.id,
+                'bsd_wizard_tt_id': self.id
+            })
+        action = self.env.ref('bsd_tai_chinh.bsd_wizard_tt_dot_action').read()[0]
+        action['res_id'] = self.id
+        return action
 
     def action_tao(self):
         # Tạo thanh toán
@@ -213,7 +250,9 @@ class BsdWizardTTDOT(models.TransientModel):
         for lp in dot_lp:
             dot_tt = lp.bsd_dot_tt_id
             tien_lp = lp.bsd_tt_phat
-            lai_phat_dot = self.env['bsd.lai_phat'].search([('bsd_dot_tt_id', '=', dot_tt.id)]).sorted('bsd_ngay_lp')
+            lai_phat_dot = self.env['bsd.lai_phat'].search([('bsd_dot_tt_id', '=', dot_tt.id)])\
+                .filtered(lambda x: x.bsd_thanh_toan != 'da_tt')\
+                .sorted('bsd_ngay_lp')
             for lai_phat in lai_phat_dot:
                 if tien_lp > lai_phat.bsd_tien_phat:
                     tien_phat = lai_phat.bsd_tien_phat
@@ -336,12 +375,12 @@ class BsdWizardChitietPPS(models.TransientModel):
 
 class BsdWizardChitietLP(models.TransientModel):
     _name = 'bsd.wizard.ct_lp'
-    _rec_name = 'bsd_dot_lp_id'
+    _rec_name = 'bsd_dot_tt_id'
 
     bsd_wizard_tt_id = fields.Many2one('bsd.wizard.tt_hd', string="TT")
-    bsd_dot_lp_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt tính phạt", help="Đợt thanh toán của hợp đồng")
-    bsd_tien_pl = fields.Monetary(related='bsd_dot_lp_id.bsd_tien_phat', string="Tiền phạt")
-    bsd_tp_phai_tt = fields.Monetary(related='bsd_dot_lp_id.bsd_tp_phai_tt')
+    bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt tính phạt", help="Đợt thanh toán của hợp đồng")
+    bsd_tien_pl = fields.Monetary(related='bsd_dot_tt_id.bsd_tien_phat', string="Tiền phạt")
+    bsd_tp_phai_tt = fields.Monetary(related='bsd_dot_tt_id.bsd_tp_phai_tt')
     bsd_tt_phat = fields.Monetary(string="TT phạt", help="Tiền thanh toán phạt")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)

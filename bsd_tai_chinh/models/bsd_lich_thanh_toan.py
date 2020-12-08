@@ -21,7 +21,9 @@ class BsdBaoGiaLTT(models.Model):
                                      compute='_compute_tien_phat', store=True)
     bsd_lai_phat_ids = fields.One2many('bsd.lai_phat', 'bsd_dot_tt_id', string="DS lãi phạt")
 
-    @api.depends('bsd_lai_phat_ids')
+    @api.depends('bsd_lai_phat_ids', 'bsd_lai_phat_ids.bsd_tien_da_tt',
+                 'bsd_lai_phat_ids.bsd_tien_phat',
+                 'bsd_lai_phat_ids.bsd_tien_phai_tt', 'bsd_lai_phat_ids.bsd_so_ngay')
     def _compute_tien_phat(self):
         for each in self:
             each.bsd_tien_phat = sum(each.bsd_lai_phat_ids.mapped('bsd_tien_phat'))
@@ -34,7 +36,8 @@ class BsdBaoGiaLTT(models.Model):
     bsd_tien_phai_tt = fields.Monetary(string="Phải thanh toán", help="Đã thanh toán",
                                        compute="_compute_tien_tt", store=True)
     bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_dot_tt_id', string="Công nợ chứng tự",
-                                 domain=[('bsd_loai', '=', 'pt_dtt'), ('state', '=', 'hieu_luc')], readonly=True)
+                                 domain=[('bsd_loai', 'in', ['pt_dtt', 'pt_pql', 'pt_pbt']),
+                                         ('state', '=', 'hieu_luc')], readonly=True)
     bsd_ngay_tt = fields.Datetime(compute='_compute_tien_tt', store=True)
     bsd_thanh_toan = fields.Selection(compute='_compute_tien_tt', store=True)
 

@@ -120,8 +120,6 @@ class BsdHdBan(models.Model):
         dot_dkbg = self.bsd_ltt_ids.filtered(lambda l: l.bsd_ma_dtt == 'DKBG')
         dot_sau_ky_hd = self.bsd_ltt_ids.filtered(lambda l: dot_ky_hd.bsd_stt < l.bsd_stt < dot_dkbg.bsd_stt)
         # Lấy đợt thanh toán sau ký hợp đồng
-        _logger.debug("123")
-        _logger.debug(dot_sau_ky_hd)
         dot_state = dot_sau_ky_hd.mapped('bsd_thanh_toan')
         if self.state == 'da_ky' and 'da_tt' in dot_state:
             self.write({
@@ -227,7 +225,7 @@ class BsdHdBan(models.Model):
                 .filtered(lambda x: x.bsd_tien_phat > 0 and x.bsd_ngay_hh_tt)\
                 .sorted('bsd_stt'):
             self.env['bsd.wizard.ct_lp'].create({
-                'bsd_dot_lp_id': dot_tt.id,
+                'bsd_dot_tt_id': dot_tt.id,
                 'bsd_wizard_tt_id': wizard_tt.id
             })
         action = self.env.ref('bsd_tai_chinh.bsd_wizard_tt_dot_action').read()[0]

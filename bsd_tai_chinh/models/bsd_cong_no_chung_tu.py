@@ -12,6 +12,7 @@ class BsdCongNoCT(models.Model):
     _description = 'Chi tiết thanh toán'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'display_name'
+    _order = 'bsd_ngay_pb desc'
 
     bsd_ngay_pb = fields.Datetime(string="Ngày", help="Ngày phân bổ")
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng")
@@ -22,7 +23,9 @@ class BsdCongNoCT(models.Model):
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Đặt cọc")
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng")
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán")
-    bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thanh toán", help="Phiếu thanh toán")
+    bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thanh toán",
+                                       required=True,
+                                       help="Phiếu thanh toán")
     bsd_hoan_tien_id = fields.Many2one('bsd.hoan_tien', string="Hoàn tiền", help="Hoàn tiền")
     bsd_phi_ps_id = fields.Many2one('bsd.phi_ps', string="Phí phát sinh", help="Phí phát sinh")
     bsd_thanh_ly_id = fields.Many2one('bsd.thanh_ly', string="Thanh lý", help="Thanh lý")
@@ -39,9 +42,9 @@ class BsdCongNoCT(models.Model):
                                  ('pt_dtt', 'Đợt thanh toán'),
                                  ('pt_pql', 'Phí quản lý'),
                                  ('pt_pbt', 'Phí bảo trì'),
-                                 ('pt_ht', 'Hoàn tiền'),
                                  ('pt_pps', 'Phí phát sinh'),
-                                 ('pt_lp', 'Lãi phạt chậm TT')], string="Phân loại",
+                                 ('pt_lp', 'Lãi phạt chậm TT'),
+                                 ('pt_ht', 'Hoàn tiền')], string="Phân loại",
                                 help="Phân loại", required=True)
     bsd_can_tru_id = fields.Many2one('bsd.can_tru', string="Cấn trừ", readonly=True)
 
@@ -52,7 +55,7 @@ class BsdCongNoCT(models.Model):
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             _logger.debug(self.bsd_gc_tc_id.bsd_tien_gc)
             if self.bsd_gc_tc_id.bsd_tien_gc < tien:
-                raise UserError("Không thể thực hiện thanh toán dư.")
+                raise UserError("Không thể thực hiện thanh toán dư giữ chỗ thiện chí")
             elif self.bsd_gc_tc_id.bsd_tien_gc == tien:
                 gc_th_rap_can = self.env['bsd.gc_tc'].search([('bsd_du_an_id', '=', self.bsd_gc_tc_id.bsd_du_an_id.id),
                                                               ('state', '=', 'giu_cho')])
@@ -72,7 +75,7 @@ class BsdCongNoCT(models.Model):
                                                             ('state', '=', 'hieu_luc')])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             if self.bsd_giu_cho_id.bsd_tien_gc < tien:
-                raise UserError("Không thể thực hiện thanh toán dư.")
+                raise UserError("Không thể thực hiện thanh toán dư giữ chỗ")
             # Kiểm tra nếu là giữ chỗ trước mở bán nếu thanh toán đủ thì chuyển trạng thái sang giữ chỗ
             if self.bsd_giu_cho_id.bsd_truoc_mb and not self.bsd_giu_cho_id.bsd_gc_da:
                 if self.bsd_giu_cho_id.bsd_tien_gc == tien:
@@ -89,12 +92,11 @@ class BsdCongNoCT(models.Model):
                                                             ('state', '=', 'hieu_luc')])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb')) + self.bsd_dat_coc_id.bsd_tien_gc
             if self.bsd_dat_coc_id.bsd_tien_dc < tien:
-                raise UserError("Không thể thực hiện thanh toán dư.")
+                raise UserError("Không thể thực hiện thanh toán dư đặt cọc")
             if self.bsd_dat_coc_id.bsd_tien_dc == tien:
                 self.bsd_dat_coc_id.cap_nhat_trang_thai()
 
-        elif self.bsd_loai == 'pt_dtt':
-            _logger.debug("Kiểm tra đợt tt")
+        elif self.bsd_loai in ['pt_dtt', 'pt_pql', 'pt_pbt']:
             # Kiểm tra đợt thanh toán đã có hạn thanh toán chưa
             if not self.bsd_dot_tt_id.bsd_ngay_hh_tt:
                 raise UserError('Đợt thanh toán chưa có hạn thanh toán.\nVui lòng kiểm tra lại thông tin.')
@@ -102,7 +104,7 @@ class BsdCongNoCT(models.Model):
                                                             ('state', '=', 'hieu_luc')])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             if self.bsd_dot_tt_id.bsd_tien_dot_tt < tien:
-                raise UserError("Không thể thực hiện thanh toán dư.")
+                raise UserError("Không thể thực hiện thanh toán dư đợt")
 
             hd_ban = self.bsd_dot_tt_id.bsd_hd_ban_id
             # Kiểm tra điều kiện đợt tt tạo giao dịch chiết khấu và khuyến mãi
@@ -138,14 +140,22 @@ class BsdCongNoCT(models.Model):
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_phieu_thu_id', '=', self.bsd_phieu_thu_id.id)])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             if self.bsd_phieu_thu_id.bsd_tien < tien:
-                raise UserError("Không thể thực hiện thanh toán dư.")
+                raise UserError("Không thể thực hiện thanh toán dư hoàn tiền.")
 
         elif self.bsd_loai == 'pt_pps':
-            cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_phi_ps_id', '=', self.bsd_phi_ps_id.id)])
+            cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_phi_ps_id', '=', self.bsd_phi_ps_id.id),
+                                                            ('state', '=', 'hieu_luc')])
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             if self.bsd_phi_ps_id.bsd_tong_tien < tien:
-                raise UserError("Không thể thực hiện thanh toán dư.")
+                raise UserError("Không thể thực hiện thanh toán dư phí phát sinh.")
             self.bsd_phi_ps_id.bsd_hd_ban_id.action_du_dkbg()
+
+        elif self.bsd_loai == 'pt_lp':
+            cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_lai_phat_id', '=', self.bsd_lai_phat_id.id),
+                                                            ('state', '=', 'hieu_luc')])
+            tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
+            if self.bsd_lai_phat_id.bsd_tien_phat < tien:
+                raise UserError("Không thể thực hiện thanh toán dư lãi phạt.")
 
     @api.model
     def create(self, vals):
@@ -198,3 +208,10 @@ class BsdCongNoCT(models.Model):
                 'display_name': ma_unit + ' - ' + ma_hd + ' - ' + ma_dot + ' - ' + 'tiền phạt'
             })
         return rec
+
+
+# Kiểm tra nếu thu phí quản lý, phí bảo trì Sản phẩm phải có ngày cất nóc
+# if self.bsd_loai in ['pt_pql', 'pt_pbt']:
+#     if not self.bsd_unit_id.bsd_ngay_cn:
+#         raise UserError(_('Sản phẩm chưa có ngày chứng nhận cất nóc.\n'
+#                           'Vui lòng kiểm tra thông tin sản phẩm trên hợp đồng.'))

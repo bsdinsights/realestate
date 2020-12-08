@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-<!--    <t t-extend="ListView.buttons">-->
-<!--        <t t-jquery="button.o_list_button_add" t-operation="after">-->
-<!--            <button t-if="widget.modelName == 'bsd.phieu_thu'"-->
-<!--                    class="btn btn-primary oe_tt_button"-->
-<!--                    type="button" accesskey="f">Thanh toán</button>-->
-<!--        </t>-->
-<!--    </t>-->
+    <t t-extend="ListView.buttons">
+        <t t-jquery="button.o_list_button_add" t-operation="replace">
+            <button t-if="widget.modelName == 'bsd.phieu_thu'"
+                    class="btn btn-primary oe_tt_tt_button"
+                    type="button" accesskey="q">Trả trước</button>
+            <button t-if="widget.modelName == 'bsd.phieu_thu'"
+                    class="btn btn-primary oe_tt_gctc_button"
+                    type="button" accesskey="w">Giữ chỗ TC</button>
+            <button t-if="widget.modelName == 'bsd.phieu_thu'"
+                    class="btn btn-primary oe_tt_gc_button"
+                    type="button" accesskey="e">Giữ chỗ</button>
+            <button t-if="widget.modelName == 'bsd.phieu_thu'"
+                    class="btn btn-primary oe_tt_dc_button"
+                    type="button" accesskey="r">Đặt cọc</button>
+            <button t-if="widget.modelName == 'bsd.phieu_thu'"
+                    class="btn btn-primary oe_tt_hd_button"
+                    type="button" accesskey="t">Hợp đồng</button>
+        </t>
+    </t>
 </templates>
