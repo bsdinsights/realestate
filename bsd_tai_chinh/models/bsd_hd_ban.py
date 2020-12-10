@@ -20,6 +20,8 @@ class BsdHdBan(models.Model):
     bsd_lai_phat_ids = fields.One2many('bsd.lai_phat', 'bsd_hd_ban_id', string="Lãi phạt", readonly=True)
     bsd_lt_phai_tt = fields.Monetary(string="Tiền phạt phải TT", compute='_compute_lp_tt', store=True)
 
+    bsd_phieu_thu_ids = fields.One2many('bsd.phieu_thu', 'bsd_hd_ban_id', string="Thanh toán", readonly=True)
+
     @api.depends('bsd_lai_phat_ids', 'bsd_lai_phat_ids.bsd_tien_phai_tt')
     def _compute_lp_tt(self):
         for each in self:

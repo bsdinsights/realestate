@@ -87,7 +87,7 @@ class BsdPhiPhatSinh(models.Model):
                                       compute='_compute_tien_tt', store=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'), ('ghi_so', 'Ghi sổ'), ('huy', 'Hủy')],
+    state = fields.Selection([('nhap', 'Nháp'), ('ghi_so', 'Xác nhận'), ('huy', 'Hủy')],
                              string="Trạng thái", help="Trạng thái", required=True, readonly=True, default='nhap',
                              tracking=1)
 
@@ -109,20 +109,11 @@ class BsdPhiPhatSinh(models.Model):
             else:
                 each.bsd_ngay_tt = None
 
-    # TC.15.01 Xác nhận phí phát sinh
+    # TC.15.02 Ghi sổ phí phát sinh
     def action_xac_nhan(self):
         if self.bsd_hd_ban_id.state == 'thanh_ly':
             raise UserError(_('Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin!'))
         if self.state == 'nhap':
-            self.write({
-                'state': 'xac_nhan'
-            })
-
-    # TC.15.02 Ghi sổ phí phát sinh
-    def action_ghi_so(self):
-        if self.bsd_hd_ban_id.state == 'thanh_ly':
-            raise UserError(_('Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin!'))
-        if self.state == 'xac_nhan':
             self.write({
                 'state': 'ghi_so'
             })
@@ -167,7 +158,7 @@ class BsdPhiPhatSinh(models.Model):
 
     # TC.15.04 Hủy phí phát sinh
     def action_huy(self):
-        if self.state in ['nhap', 'xac_nhan']:
+        if self.state == 'nhap':
             self.write({
                 'state': 'huy'
             })

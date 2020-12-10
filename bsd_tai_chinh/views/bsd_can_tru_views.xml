@@ -22,44 +22,34 @@
                 <sheet>
                     <group>
                         <group>
+                            <field name="bsd_so_ct"/>
+                            <field name="bsd_ngay_ct"/>
                             <field name="bsd_khach_hang_id"
-                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
                                    options="{'no_create':true}"/>
-                            <field name="bsd_ma_kh"/>
-                            <field name="bsd_ngay_can_tru"/>
-                            <field name="bsd_tien_can_tru"/>
+                            <field name="bsd_ma_kh" readonly="1" force_save="1"/>
+                            <field name="bsd_hd_ban_id"
+                                   domain="[('bsd_khach_hang_id', '=',bsd_khach_hang_id)]"
+                                   options="{'no_create':true}"/>
                         </group>
                         <group>
-                            <field name="bsd_loai_ct"/>
-                            <field name="bsd_phieu_thu_id"
+                            <field name="bsd_du_an_id" readonly="1" force_save="1"/>
+                            <field name="bsd_phieu_thu_ids" widget="many2many_tags"
                                    options="{'no_create':true}"
-                                   domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id]),
-                                            ('bsd_loai_pt', 'in', ['tra_truoc','khac','pps']),
+                                   context="{'show_info':True}"
+                                   domain="[('bsd_khach_hang_id', '=', bsd_khach_hang_id),
+                                            ('bsd_du_an_id', '=', bsd_du_an_id),
+                                            ('bsd_loai_pt', 'in', ['tra_truoc']),
+                                            ('bsd_tien_con_lai', '>', 0),
                                             ('state', '=', 'da_gs')]"/>
-                            <field name="bsd_ngay_ct"/>
-                            <field name="bsd_tien_con_lai"/>
+                            <field name="bsd_tong_tien_pt" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_can_tru"/>
                             <field name="company_id" invisible="1"/>
                             <field name="currency_id" invisible="1"/>
                         </group>
-                    </group>
-                    <group string="LỌC CÔNG NỢ">
-                        <group>
-                            <field name="bsd_loai"/>
-                        </group>
-                        <group>
-                            <field name="bsd_hd_ban_id"
-                                   options="{'no_create':true}"
-                                   attrs="{'invisible':[('bsd_loai', '=', 'tat_ca')]}"/>
-                            <field name="bsd_dot_tt_id"
-                                   options="{'no_create':true}"
-                                   domain="[('bsd_hd_ban_id', '=', bsd_hd_ban_id),('bsd_loai', '=', 'dtt')]"
-                                   attrs="{'invisible':[('bsd_loai', '!=', 'pps')]}"/>
-                        </group>
                         <button string="Load"
-                                name="action_load"
-                                type="object"
-                                states="nhap"
-                                class="oe_right oe_highlight"/>
+                                    name="action_load"
+                                    type="object"
+                                    class="oe_highlight oe_right"/>
                     </group>
                     <field name="bsd_ct_ids" nolabel="1" >
                         <tree editable="top" create="false" delete="false">
@@ -101,7 +91,6 @@
             <tree>
                 <field name="bsd_khach_hang_id"/>
                 <field name="bsd_ma_kh" readonly="1"/>
-                <field name="bsd_phieu_thu_id"/>
                 <field name="state"/>
             </tree>
         </field>

@@ -11,7 +11,6 @@ class BsdCongNoCT(models.Model):
     _name = 'bsd.cong_no_ct'
     _description = 'Chi tiết thanh toán'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _rec_name = 'display_name'
     _order = 'bsd_ngay_pb desc'
 
     bsd_ngay_pb = fields.Datetime(string="Ngày", help="Ngày phân bổ")
@@ -209,7 +208,22 @@ class BsdCongNoCT(models.Model):
             })
         return rec
 
+    def _get_name(self):
+        ct = self
+        name = ct.display_name or ''
+        if self._context.get('show_info'):
+            if ct.bsd_loai == 'pt_dtt':
+                name = "%s - %s" % (ct.bsd_dot_tt_id.bsd_ten_dtt, '{:,.0f} đ'.format(ct.bsd_tien_pb).replace(',', '.'))
+        _logger.debug("lấy tên")
+        _logger.debug(name)
+        return name
 
+    def name_get(self):
+        res = []
+        for ct in self:
+            name = ct._get_name()
+            res.append((ct.id, name))
+        return res
 # Kiểm tra nếu thu phí quản lý, phí bảo trì Sản phẩm phải có ngày cất nóc
 # if self.bsd_loai in ['pt_pql', 'pt_pbt']:
 #     if not self.bsd_unit_id.bsd_ngay_cn:

@@ -71,6 +71,25 @@
                         </tree>
                     </field>
                 </page>
+                <page string="Thanh toán">
+                    <field name="bsd_phieu_thu_ids">
+                        <tree default_order="bsd_ngay_pt desc"
+                              decoration-success="state=='da_gs'"
+                              decoration-muted="state=='huy'"
+                              delete="false" duplicate="false" create="false">
+                            <field name="bsd_so_pt"/>
+                            <field name="bsd_ngay_pt" widget="date"/>
+                            <field name="bsd_tien_kh"/>
+                            <field name="bsd_tien"/>
+                            <field name="bsd_ct_ids"
+                                   context="{'show_info':True}"
+                                   widget="many2many_tags"/>
+                            <field name="state"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
+                        </tree>
+                    </field>
+                </page>
             </xpath>
         </field>
     </record>

@@ -6,6 +6,9 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <widget name="web_ribbon" text="Đã TT" attrs="{'invisible':[('bsd_thanh_toan', '!=', 'da_tt')]}"/>
+                    <widget name="web_ribbon" text="Đang TT" bg_color="bg-warning" attrs="{'invisible':[('bsd_thanh_toan', '!=', 'dang_tt')]}"/>
+                    <widget name="web_ribbon" text="Chưa TT" bg_color="bg-danger" attrs="{'invisible':[('bsd_thanh_toan', '!=', 'chua_tt')]}"/>
                     <group>
                         <group>
                             <field name="company_id" invisible="1"/>
@@ -21,7 +24,7 @@
                             <field name="bsd_tien_phat"/>
                             <field name="bsd_tien_da_tt"/>
                             <field name="bsd_tien_phai_tt"/>
-                            <field name="bsd_thanh_toan"/>
+                            <field name="bsd_thanh_toan" invisible="1"/>
                         </group>
                     </group>
                 </sheet>
@@ -43,6 +46,8 @@
                 <field name="bsd_tien_da_tt"/>
                 <field name="bsd_tien_phai_tt"/>
                 <field name="bsd_thanh_toan"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="company_id" invisible="1"/>
             </tree>
         </field>
     </record>

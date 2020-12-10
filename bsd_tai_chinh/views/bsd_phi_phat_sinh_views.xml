@@ -12,12 +12,6 @@
                             confirm="Bạn có muốn xác nhận chứng từ này không?"
                             attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
                             class="oe_highlight"/>
-                    <button string="Ghi sổ"
-                            name="action_ghi_so"
-                            type="object"
-                            confirm="Bạn có muốn ghi sổ chứng từ này không?"
-                            states="xac_nhan"
-                            class="oe_highlight"/>
                     <button string="Cấn trừ"
                             name="action_can_tru"
                             type="object"
@@ -29,7 +23,7 @@
                             name="action_huy"
                             confirm="Bạn có muốn hủy chứng từ này không?"
                             type="object"
-                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap','xac_nhan'])]}"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
                             class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>

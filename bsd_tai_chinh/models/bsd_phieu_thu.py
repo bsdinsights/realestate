@@ -78,11 +78,9 @@ class BsdPhieuThu(models.Model):
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_tien = fields.Monetary(string="Tiền thanh toán", help="Tiền thanh toán", readonly=1)
-    bsd_tien_da_tt = fields.Monetary(string="Tiền đã thanh toán", help="Tiền đã thanh toán",
-                                     compute='_compute_tien_ct', store=True)
     bsd_tien_con_lai = fields.Monetary(string="Tiền còn lại", help="Tiền còn lại",
                                        compute='_compute_tien_ct', store=True)
-    bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_phieu_thu_id', string="Công nợ chứng tự", readonly=True)
+    bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_phieu_thu_id', string="Chi tiết TT", readonly=True)
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
@@ -97,13 +95,10 @@ class BsdPhieuThu(models.Model):
     bsd_tt_id = fields.Many2one('bsd.phieu_thu', string="TT trả trước",
                                 help="Thanh toán trả trước khi thanh toán có dư", readonly=True)
 
-    @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien')
+    @api.depends('bsd_tien_kh', 'bsd_tien')
     def _compute_tien_ct(self):
         for each in self:
-            each.bsd_tien_da_tt = sum(each.bsd_ct_ids
-                                      .filtered(lambda x: x.state == 'hieu_luc')
-                                      .mapped('bsd_tien_pb'))
-            each.bsd_tien_con_lai = each.bsd_tien - each.bsd_tien_da_tt
+            each.bsd_tien_con_lai = each.bsd_tien_kh - each.bsd_tien
 
     # TC.01.01 Xác nhận phiếu thu
     def action_xac_nhan(self):
@@ -200,27 +195,6 @@ class BsdPhieuThu(models.Model):
     def action_can_tru(self):    
         if self.bsd_hd_ban_id.state == 'thanh_ly':
             raise UserError(_('Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin!'))
-        list_ct = []
-        if self.bsd_loai_pt == 'pps':
-            if self.bsd_dot_tt_id:
-                phi_ps_ids = self.env['bsd.phi_ps'].search([('bsd_dot_tt_id', '=', self.bsd_dot_tt_id.id)])
-            elif self.bsd_hd_ban_id:
-                phi_ps_ids = self.env['bsd.phi_ps'].search([('bsd_hd_ban_id', '=', self.bsd_hd_ban_id.id)])
-            else:
-                phi_ps_ids = []
-
-            for phi_ps in phi_ps_ids:
-                ct_can_tru = (0, 0, {
-                                        'bsd_phi_ps_id': phi_ps.id,
-                                        'bsd_dot_tt_id': phi_ps.bsd_dot_tt_id.id,
-                                        'bsd_hd_ban_id': phi_ps.bsd_hd_ban_id.id,
-                                        'bsd_so_ct': phi_ps.bsd_ma_ps,
-                                        'bsd_loai_ct': 'pt_pps',
-                                        'bsd_tien': phi_ps.bsd_tong_tien,
-                                        'bsd_tien_phai_tt': phi_ps.bsd_tien_phai_tt,
-                                    }
-                              )
-                list_ct.append(ct_can_tru)
         return {
             'type': 'ir.actions.act_window',
             'name': 'Cấn trừ công nợ',
@@ -228,11 +202,8 @@ class BsdPhieuThu(models.Model):
             'view_mode': 'form',
             'target': 'current',
             'context': {'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                        'default_bsd_loai': 'pps',
                         'default_bsd_hd_ban_id': self.bsd_hd_ban_id.id,
-                        'default_dot_tt_id': self.bsd_dot_tt_id.id,
                         'default_bsd_phieu_thu_id': self.id,
-                        'default_bsd_ct_ids': list_ct
                         }
         }
 
@@ -258,6 +229,20 @@ class BsdPhieuThu(models.Model):
         vals['bsd_so_pt'] = sequence.next_by_id()
         return super(BsdPhieuThu, self).create(vals)
 
+    def _get_name(self):
+        pt = self
+        name = pt.bsd_so_pt or ''
+        if self._context.get('show_info'):
+            name = "%s - %s" % (pt.bsd_so_pt, '{:,.0f} đ'.format(pt.bsd_tien_con_lai).replace(',', '.'))
+        return name
+
+    def name_get(self):
+        res = []
+        for pt in self:
+            name = pt._get_name()
+            res.append((pt.id, name))
+        return res
+
     # Tạo ra thanh toán trả trước khi thanh toán dư
     def tao_tt_tra_truoc(self, tien_du=0):
         tra_truoc = self.env['bsd.phieu_thu'].create({
@@ -268,6 +253,4 @@ class BsdPhieuThu(models.Model):
                         'bsd_tien_kh': tien_du,
                     })
         tra_truoc.action_xac_nhan()
-        _logger.debug("Tạo thanh toán trả trước")
-        _logger.debug(tra_truoc)
         self.write({'bsd_tt_id': tra_truoc.id})

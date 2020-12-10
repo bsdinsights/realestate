@@ -93,8 +93,6 @@
                                     <field name="company_id" invisible="1"/>
                                     <field name="bsd_tien_kh"/>
                                     <field name="bsd_tien" readonly="1"/>
-                                    <field name="bsd_tien_da_tt"
-                                           attrs="{'invisible':[('bsd_loai_pt', 'not in', ['tra_truoc','pps'])]}"/>
                                     <field name="bsd_tien_con_lai"
                                            attrs="{'invisible':[('bsd_loai_pt', 'not in', ['tra_truoc','pps'])]}"/>
                                     <field name="bsd_tt_id"/>

@@ -48,7 +48,6 @@ class BsdWizardTTDOT(models.TransientModel):
     @api.onchange('bsd_ltt_ids', 'bsd_dot_phi_ids', 'bsd_tien_kh',
                   'bsd_phi_ps_ids', 'bsd_loai', 'bsd_dot_lp_ids')
     def _onchange_tien(self):
-        _logger.debug("call tính tiền")
         if self.bsd_loai == 'dtt':
             self.bsd_tien_con_lai = self.bsd_tien_kh - \
                 sum(self.bsd_ltt_ids.mapped(lambda r: r.bsd_tien_tt + r.bsd_tt_phat)) - \

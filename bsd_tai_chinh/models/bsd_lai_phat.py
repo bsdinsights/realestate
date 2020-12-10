@@ -15,7 +15,7 @@ class BsdLaiPhat(models.Model):
     bsd_ngay_lp = fields.Datetime(string="Ngày tính phạt", readonly=True, required=True)
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", readonly=True, required=True)
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán", required=True, readonly=True)
-    bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Thanh toán", required=True, readonly=True)
+    bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu TT", required=True, readonly=True)
     bsd_tien_tt = fields.Monetary(string="Tiền thanh toán", readonly=True)
     bsd_tien_phat = fields.Monetary(string="Tiền phạt", readonly=True)
     bsd_so_ngay = fields.Integer(string="Số ngày", readonly=True)
@@ -28,9 +28,8 @@ class BsdLaiPhat(models.Model):
                                        compute="_compute_tien_tt", store=True)
     bsd_thanh_toan = fields.Selection([('chua_tt', 'Chưa thanh toán'),
                                        ('dang_tt', 'Đang thanh toán'),
-                                       ('da_tt', 'Đã thanh toán')], string="Thanh toán", default="chua_tt",
-                                      help="Thanh toán",
-                                      required=True, readonly=True)
+                                       ('da_tt', 'Đã thanh toán')], string="Thanh toán",
+                                      help="Thanh toán", compute='_compute_tien_tt', store=True)
     bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_lai_phat_id',
                                  domain=[('bsd_loai', '=', 'pt_lp'), ('state', '=', 'hieu_luc')],
                                  string="Chi tiết")
