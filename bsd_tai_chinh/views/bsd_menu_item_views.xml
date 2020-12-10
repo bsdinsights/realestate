@@ -13,7 +13,7 @@
               action="bsd_cong_no_ct_action"
               parent="bsd_main_tai_chinh_root"/>
     <menuitem id="bsd_lai_phat_menu_action"
-              name="Lãi phạt"
+              name="Tiền phạt chậm TT"
               sequence="13"
               action="bsd_lai_phat_action"
               parent="bsd_main_tai_chinh_root"/>

@@ -5,6 +5,9 @@
         <field name="model">bsd.lai_phat</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
                 <sheet>
                     <widget name="web_ribbon" text="Đã TT" attrs="{'invisible':[('bsd_thanh_toan', '!=', 'da_tt')]}"/>
                     <widget name="web_ribbon" text="Đang TT" bg_color="bg-warning" attrs="{'invisible':[('bsd_thanh_toan', '!=', 'dang_tt')]}"/>
@@ -46,13 +49,14 @@
                 <field name="bsd_tien_da_tt"/>
                 <field name="bsd_tien_phai_tt"/>
                 <field name="bsd_thanh_toan"/>
+                <field name="state"/>
                 <field name="currency_id" invisible="1"/>
                 <field name="company_id" invisible="1"/>
             </tree>
         </field>
     </record>
     <record model="ir.actions.act_window" id="bsd_lai_phat_action">
-        <field name="name">Lãi phạt</field>
+        <field name="name">Tiền phạt chậm TT</field>
         <field name="res_model">bsd.lai_phat</field>
         <field name="view_mode">tree,form</field>
     </record>

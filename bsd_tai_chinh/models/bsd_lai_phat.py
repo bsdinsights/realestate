@@ -9,7 +9,7 @@ _logger = logging.getLogger(__name__)
 
 class BsdLaiPhat(models.Model):
     _name = 'bsd.lai_phat'
-    _description = 'Lãi phạt'
+    _description = 'Tiền phạt chậm thanh toán'
     _rec_name = 'bsd_hd_ban_id'
 
     bsd_ngay_lp = fields.Datetime(string="Ngày tính phạt", readonly=True, required=True)
@@ -33,6 +33,9 @@ class BsdLaiPhat(models.Model):
     bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_lai_phat_id',
                                  domain=[('bsd_loai', '=', 'pt_lp'), ('state', '=', 'hieu_luc')],
                                  string="Chi tiết")
+    state = fields.Selection([('hieu_luc', 'Hiệu lực'), ('vo_hieu_luc', 'Vô hiệu lực')],
+                             string="Trạng thái",
+                             required=True, default='hieu_luc')
 
     @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien_phat')
     def _compute_tien_tt(self):

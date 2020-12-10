@@ -77,7 +77,8 @@ class BsdPhieuThu(models.Model):
     bsd_tien_kh = fields.Monetary(string="Tiền khách hàng", help="Số tiền thanh toán của khách hàng", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
-    bsd_tien = fields.Monetary(string="Tiền thanh toán", help="Tiền thanh toán", readonly=1)
+    bsd_tien = fields.Monetary(string="Tiền thanh toán", help="Tiền thanh toán",
+                               compute='_compute_tien_ct', store=True)
     bsd_tien_con_lai = fields.Monetary(string="Tiền còn lại", help="Tiền còn lại",
                                        compute='_compute_tien_ct', store=True)
     bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_phieu_thu_id', string="Chi tiết TT", readonly=True)
@@ -95,9 +96,10 @@ class BsdPhieuThu(models.Model):
     bsd_tt_id = fields.Many2one('bsd.phieu_thu', string="TT trả trước",
                                 help="Thanh toán trả trước khi thanh toán có dư", readonly=True)
 
-    @api.depends('bsd_tien_kh', 'bsd_tien')
+    @api.depends('bsd_ct_ids', 'bsd_ct_ids.state', 'bsd_tien')
     def _compute_tien_ct(self):
         for each in self:
+            each.bsd_tien = sum(each.bsd_ct_ids.filtered(lambda x: x.state == 'hieu_luc').mapped('bsd_tien_pb'))
             each.bsd_tien_con_lai = each.bsd_tien_kh - each.bsd_tien
 
     # TC.01.01 Xác nhận phiếu thu

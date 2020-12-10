@@ -1,13 +1,15 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-bsd_phieu_thu_manager,Phiếu thu,model_bsd_phieu_thu,bsd_tai_chinh.group_manager,1,1,1,1
-bsd_cong_no_manager,Công nợ khách hàng,model_bsd_cong_no,bsd_tai_chinh.group_manager,1,1,1,1
-bsd_cong_no_ct_manager,Công nợ chứng từ khách hàng,model_bsd_cong_no_ct,bsd_tai_chinh.group_manager,1,1,1,1
-bsd_can_tru_manager,Cấn trừ công nợ,model_bsd_can_tru,bsd_tai_chinh.group_manager,1,1,1,1
-bsd_can_tru_ct_manager,Chi tiết cấn trừ,model_bsd_can_tru_ct,bsd_tai_chinh.group_manager,1,1,1,1
-bsd_hoan_tien_manager,Hoàn tiền khách hàng,model_bsd_hoan_tien,bsd_tai_chinh.group_manager,1,1,1,1
-bsd_phi_ps_manager,Phí phát sinh,model_bsd_phi_ps,bsd_tai_chinh.group_manager,1,1,1,1
-bsd_lai_phat_manager,Lãi phạt,model_bsd_lai_phat,bsd_tai_chinh.group_manager,1,1,1,1
-bsd_cn_qsdd_manager,Cập nhật giá trị QSDĐ,model_bsd_cn_qsdd,bsd_tai_chinh.group_manager,1,1,1,1
-bsd_cn_qsdd_unit_manager,Cập nhật giá trị QSDĐ chi tiết,model_bsd_cn_qsdd_unit,bsd_tai_chinh.group_manager,1,1,1,1
+bsd_phieu_thu_manager,Phiếu thu,model_bsd_phieu_thu,bsd_tai_chinh.group_manager,1,1,1,0
+bsd_cong_no_manager,Công nợ khách hàng,model_bsd_cong_no,bsd_tai_chinh.group_manager,1,1,1,0
+bsd_cong_no_ct_manager,Chi tiết thanh toán,model_bsd_cong_no_ct,bsd_tai_chinh.group_manager,1,1,1,0
+bsd_can_tru_manager,Cấn trừ công nợ,model_bsd_can_tru,bsd_tai_chinh.group_manager,1,1,1,0
+bsd_can_tru_ct_dot_manager,Cấn trừ chi tiết đợt,model_bsd_can_tru_ct_dot,bsd_tai_chinh.group_manager,1,1,1,0
+bsd_can_tru_ct_phi_manager,Cấn trừ chi tiết phí,model_bsd_can_tru_ct_phi,bsd_tai_chinh.group_manager,1,1,1,0
+bsd_can_tru_ct_pps_manager,Cấn trừ chi tiết pps,model_bsd_can_tru_ct_pps,bsd_tai_chinh.group_manager,1,1,1,0
+bsd_hoan_tien_manager,Hoàn tiền khách hàng,model_bsd_hoan_tien,bsd_tai_chinh.group_manager,1,1,1,0
+bsd_phi_ps_manager,Phí phát sinh,model_bsd_phi_ps,bsd_tai_chinh.group_manager,1,1,1,0
+bsd_lai_phat_manager,Tiền phạt chậm thanh toán,model_bsd_lai_phat,bsd_tai_chinh.group_manager,1,1,1,0
+bsd_cn_qsdd_manager,Cập nhật giá trị QSDĐ,model_bsd_cn_qsdd,bsd_tai_chinh.group_manager,1,1,1,0
+bsd_cn_qsdd_unit_manager,Cập nhật giá trị QSDĐ chi tiết,model_bsd_cn_qsdd_unit,bsd_tai_chinh.group_manager,1,1,1,0
 
 

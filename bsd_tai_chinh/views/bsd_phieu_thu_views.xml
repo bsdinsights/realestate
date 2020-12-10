@@ -16,9 +16,8 @@
                             name="action_huy"
                             states="nhap"
                             attrs="{'invisible': ['|',('id', '=',False)]}"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Cấn trừ"
+                            type="object"/>
+                    <button string="Tạo cấn trừ"
                             name="action_can_tru"
                             type="object"
                             states="da_gs"

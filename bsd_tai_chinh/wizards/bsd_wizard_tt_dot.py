@@ -119,7 +119,6 @@ class BsdWizardTTDOT(models.TransientModel):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     bsd_ltt_ids = fields.One2many('bsd.wizard.ct_dot', 'bsd_wizard_tt_id', string="Đợt thanh toán")
-
     bsd_dot_phi_ids = fields.One2many('bsd.wizard.ct_phi', 'bsd_wizard_tt_id', string="Phí")
     bsd_so_phi = fields.Integer(string="# Phí", compute='_compute_phi', store=True)
 

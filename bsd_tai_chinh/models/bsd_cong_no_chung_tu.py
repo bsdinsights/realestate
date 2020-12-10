@@ -206,6 +206,12 @@ class BsdCongNoCT(models.Model):
             rec.write({
                 'display_name': ma_unit + ' - ' + ma_hd + ' - ' + ma_dot + ' - ' + 'tiền phạt'
             })
+        elif rec.bsd_loai == 'pt_pps':
+            ma_hd = rec.bsd_hd_ban_id.bsd_ma_hd_ban
+            ten_pps = rec.bsd_phi_ps_id.bsd_ten_ps
+            rec.write({
+                'display_name': ma_hd + ' - ' + ten_pps
+            })
         return rec
 
     def _get_name(self):
