@@ -29,6 +29,7 @@ class BsdWizardReportNghiemThu(models.TransientModel):
         if not self.bsd_nghiem_thu_id.bsd_ngay_in_bb:
             self.bsd_nghiem_thu_id.write({
                 'bsd_ngay_in_bb': fields.Datetime.now(),
+                'bsd_nguoi_in_id': self.env.uid
             })
         ref_id = 'bsd_dich_vu.' + self.bsd_mau_in
         return self.env.ref(ref_id).report_action(self, data=data)

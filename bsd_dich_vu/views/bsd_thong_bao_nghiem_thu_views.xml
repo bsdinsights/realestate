@@ -50,68 +50,59 @@
                             <field name="bsd_so_nt" widget="statinfo" string="Nghiệm thu"/>
                         </button>
                     </div>
-                    <notebook>
-                        <page string="Thông tin chung">
-                            <group>
-                                <group>
-                                    <field name="bsd_ma_tb"/>
-                                    <field name="bsd_ngay_tao_tb"/>
-                                    <field name="bsd_doi_tuong"/>
-                                    <field name="bsd_tao_td"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_cn_dkbg_unit_id"
-                                           options="{'no_create':true}"/>
-                                    <field name="bsd_ngay_nt"/>
-                                    <field name="bsd_ngay_ut"/>
-                                </group>
-                            </group>
-                            <group string="XÁC NHẬN">
-                                <group>
-                                    <field name="bsd_ngay_in"/>
-                                    <field name="bsd_nguoi_in_id"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_ngay_gui"/>
-                                    <field name="bsd_ngay_dong"/>
-                                </group>
-                            </group>
-                        </page>
-                        <page string="Sản phẩm">
-                            <group>
-                                <group>
-                                    <field name="company_id" invisible="1"/>
-                                    <field name="currency_id" invisible="1"/>
-                                    <field name="bsd_du_an_id" options="{'no_create':true}"/>
-                                    <field name="bsd_unit_id"
-                                           context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
-                                           options="{'no_create':true}"
-                                    />
-                                </group>
-                                <group>
-                                    <field name="bsd_hd_ban_id" options="{'no_create':true}"/>
-                                    <field name="bsd_khach_hang_id"
-                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
-                                           options="{'no_create':true}"/>
-                                </group>
-                            </group>
-                            <group string="CÔNG NỢ">
-                                <group>
-                                    <field name="bsd_tien_ng"/>
-                                    <field name="bsd_tien_pbt"/>
-                                    <field name="bsd_tien_pql"/>
-                                    <field name="bsd_thang_pql"/>
-                                    <field name="bsd_don_gia_pql"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_tien_lp"/>
-                                    <field name="bsd_so_ngay_tre"/>
-                                    <field name="bsd_tien_lp_ut"/>
-                                    <field name="bsd_tong_tien"/>
-                                </group>
-                            </group>
-                        </page>
-                    </notebook>
+                    <group>
+                        <group>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="bsd_ma_tb"/>
+                            <field name="bsd_ngay_tao_tb"/>
+                            <field name="bsd_doi_tuong"/>
+                            <field name="bsd_tao_td"/>
+                        </group>
+                        <group>
+                            <field name="bsd_cn_dkbg_unit_id"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_ngay_nt"/>
+                            <field name="bsd_ngay_ut"/>
+                        </group>
+                    </group>
+                    <group string="HỢP ĐỒNG">
+                        <group>
+                            <field name="bsd_hd_ban_id" options="{'no_create':true}"/>
+                            <field name="bsd_khach_hang_id"
+                                   options="{'no_create':true}"/>
+                        </group>
+                        <group>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                            <field name="bsd_unit_id"
+                                   options="{'no_create':true}"/>
+                        </group>
+                    </group>
+                    <group string="CÔNG NỢ">
+                        <group>
+                            <field name="bsd_tien_ng"/>
+                            <field name="bsd_tien_pbt"/>
+                            <field name="bsd_tien_pql"/>
+                            <field name="bsd_thang_pql"/>
+                            <field name="bsd_don_gia_pql"/>
+                        </group>
+                        <group>
+                            <field name="bsd_tien_lp"/>
+                            <field name="bsd_so_ngay_tre"/>
+                            <field name="bsd_tien_lp_ut"/>
+                            <field name="bsd_tong_tien"/>
+                        </group>
+                    </group>
+                    <group string="XÁC NHẬN">
+                        <group>
+                            <field name="bsd_ngay_in"/>
+                            <field name="bsd_nguoi_in_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ngay_gui"/>
+                            <field name="bsd_ngay_dong"/>
+                        </group>
+                    </group>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>

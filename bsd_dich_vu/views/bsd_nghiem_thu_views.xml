@@ -16,16 +16,10 @@
                     <button string="Phí phát sinh"
                             name="action_phi_ps"
                             states="xac_nhan_tt"
-                            attrs="{'invisible': ['|',('bsd_co_pps', '=',False)]}"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="In biên bản"
-                            name="action_in_bb"
-                            attrs="{'invisible': [('state', '=','nhap')]}"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Đóng nghiệm thu"
-                            name="action_dong_nt"
+                            name="action_dong"
                             states="xac_nhan"
                             attrs="{'invisible': ['|',('bsd_ngay_in_bb', '=',False)]}"
                             type="object"
@@ -52,64 +46,56 @@
                                     <field name="bsd_dien_giai"/>
                                 </group>
                             </group>
-                            <group string="YÊU CẦU SỬA CHỮA" attrs="{'invisible':[('bsd_yc_sc', '=', False)]}">
-                                <group>
-                                    <field name="bsd_duyet_yc"
-                                           attrs="{'invisible':[('bsd_yc_sc', '=', False)]}"/>
-                                    <field name="bsd_ly_do"
-                                           attrs="{'invisible':['|',('bsd_duyet_yc','=','co'),('bsd_yc_sc', '=', False)]}"/>
-                                    <field name="bsd_so_ngay_sc"
-                                           attrs="{'invisible':['|',('bsd_duyet_yc','=','khong'),('bsd_yc_sc', '=', False)]}"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_ngay_nt_lai"
-                                           attrs="{'invisible':['|',('bsd_duyet_yc','=','khong'),'&amp;',('bsd_loai','=','dat'),('bsd_yc_sc', '=', False)]}"/>
-                                    <field name="bsd_co_pps"
-                                           attrs="{'invisible':['|',('bsd_yc_sc', '=', False),('bsd_duyet_yc','=','khong')]}"/>
-                                    <field name="bsd_tien_ps"
-                                           attrs="{'invisible':['|',('bsd_co_pps', '=', False),('bsd_yc_sc', '=', False)]}"/>
-                                    <field name="bsd_dot_tt_id" options="{'no_create':true}"
-                                           attrs="{'invisible':['|',('bsd_co_pps', '=', False),('bsd_yc_sc', '=', False)]}"/>
-                                </group>
-                            </group>
-                            <group string="XÁC NHẬN">
-                                <group>
-                                    <field name="bsd_ngay_kt_xn"/>
-                                    <field name="bsd_ngay_in_bb"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_ngay_nt_tt"/>
-                                    <field name="bsd_nguoi_nt_id" options="{'no_create':true}"/>
-                                </group>
-                            </group>
-                        </page>
-                        <page string="Sản phẩm">
-                            <group>
+                            <group string="HỢP ĐỒNG">
                                 <group>
                                     <field name="company_id" invisible="1"/>
                                     <field name="currency_id" invisible="1"/>
                                     <field name="bsd_du_an_id" options="{'no_create':true}"/>
                                     <field name="bsd_unit_id"
-                                           context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
                                            options="{'no_create':true}"
                                     />
                                 </group>
                                 <group>
                                     <field name="bsd_hd_ban_id" options="{'no_create':true}"/>
                                     <field name="bsd_khach_hang_id"
-                                           context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
                                            options="{'no_create':true}"/>
                                 </group>
                             </group>
-                            <group string="CÔNG NỢ">
+                            <group string="PHẢN HỒI CHỦ ĐẦU TƯ" attrs="{'invisible':[('bsd_yc_sc', '=', False)]}">
                                 <group>
-                                    <field name="bsd_tien_ng"/>
-                                    <field name="bsd_tien_pbt"/>
-                                    <field name="bsd_tien_pql"/>
+                                    <field name="bsd_duyet_yc"
+                                           attrs="{'invisible':[('bsd_yc_sc', '=', False)]}"/>
+                                    <field name="bsd_so_ngay_sc"
+                                           attrs="{'invisible':['|',('bsd_duyet_yc','=','khong'),('bsd_yc_sc', '=', False)]}"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_thang_pql"/>
-                                    <field name="bsd_don_gia_pql"/>
+                                    <field name="bsd_ly_do"
+                                           attrs="{'invisible':['|',('bsd_duyet_yc','=','co'),('bsd_yc_sc', '=', False)]}"/>
+                                    <field name="bsd_ngay_nt_lai"
+                                           attrs="{'invisible':['|',('bsd_duyet_yc','=','khong'),'&amp;',('bsd_loai','=','dat'),('bsd_yc_sc', '=', False)]}"/>
+                                    <field name="bsd_tien_ps"
+                                           attrs="{'invisible':[('bsd_yc_sc', '=', False)]}"/>
+                                </group>
+                            </group>
+                            <group string="XÁC NHẬN CỦA KHÁCH HÀNG" attrs="{'invisible':[('bsd_yc_sc', '=', False)]}">
+                                <group>
+                                    <field name="bsd_ngay_nt_lai_kh"/>
+                                    <field name="bsd_tien_ps_kh"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_kt_xn"/>
+                                    <field name="bsd_dot_tt_id"/>
+                                </group>
+                            </group>
+                            <group string="XÁC NHẬN">
+                                <group>
+                                    <field name="bsd_ngay_in_bb"/>
+                                    <field name="bsd_nguoi_in_id"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_nt_tt"/>
+                                    <field name="bsd_nguoi_nt_id" options="{'no_create':true}"/>
+                                    <field name="bsd_ly_do_huy" attrs="{'invisible':[('state', '!=', 'huy')]}"/>
                                 </group>
                             </group>
                         </page>

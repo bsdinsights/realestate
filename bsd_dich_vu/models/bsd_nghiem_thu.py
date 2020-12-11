@@ -20,12 +20,15 @@ class BsdNghiemThu(models.Model):
     ]
     bsd_ngay_tao_nt = fields.Datetime(string="Ngày", help="Ngày tạo nghiệm thu",
                                       required=True, default=lambda self: fields.Datetime.now(),
-                                      readonly=True,
-                                      states={'nhap': [('readonly', False)]})
+                                      readonly=True,)
     bsd_tb_nt_id = fields.Many2one('bsd.tb_nt', string="TB nghiệm thu", required=True,
                                    help="Thông báo nghiệm thu",
-                                   readonly=True,
-                                   states={'nhap': [('readonly', False)]})
+                                   readonly=True)
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", readonly=True)
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Sản phẩm", readonly=True)
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng", readonly=True)
+    bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng", readonly=True)
+
     bsd_loai = fields.Selection([('dat', 'Đạt'), ('khong_dat', 'Sản phẩm lỗi')], help="Kết quả nghiệm thu",
                                 string="Loại kết quả", required=True, default='dat',
                                 readonly=True,
@@ -33,7 +36,9 @@ class BsdNghiemThu(models.Model):
     bsd_tt_loi = fields.Html(string="Thông tin lỗi SP", help="Thông tin lỗi sản phẩm của chủ đầu tư")
     bsd_tt_yc_sc = fields.Html(string="Thông tin yêu cầu sửa chữa", help="Thông tin yêu cầu sửa chữa của khách hàng")
     bsd_yc_sc = fields.Boolean(string="Yêu cầu sửa chữa",
-                               help="Đánh dấu kết quả nghiệm thu có yêu cầu sửa chữa hay không")
+                               help="Đánh dấu kết quả nghiệm thu có yêu cầu sửa chữa hay không",
+                               readonly=True,
+                               states={'nhap': [('readonly', False)]})
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
@@ -50,34 +55,18 @@ class BsdNghiemThu(models.Model):
     bsd_ngay_nt_lai = fields.Date(string="Ngày nghiệm thu lại", help="Ngày nghiệm thu lại",
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
-    bsd_co_pps = fields.Boolean(string="Phí phát sinh", help="Sửa chữa có phát sinh chi phí",
-                                readonly=True,
-                                states={'nhap': [('readonly', False)]})
     bsd_tien_ps = fields.Monetary(string="Chi phí phát sinh", help="Chi phí phát sinh từ yêu cầu sửa chữa",
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
-    bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán", readonly=True,
-                                    help="""Đợt thanh toán được yêu cầu thanh toán 
-                                            thêm phí phát sinh từ yêu cầu sửa chữa""")
-    bsd_ngay_kt_xn = fields.Datetime(string="Xác nhận PPS", help="Ngày kế toán xác nhận phí phát sinh", readonly=True)
-    bsd_ngay_in_bb = fields.Datetime(string="Ngày in biên bản", help="Ngày in biên bản nghiệm thu theo loại kết quả",
-                                     readonly=True)
-    bsd_ngay_nt_tt = fields.Datetime(string="Ngày nghiệm thu", help="Ngày thực hiện nghiệm thu",
-                                     readonly=True,
-                                     states={'nhap': [('readonly', False)]})
-    bsd_nguoi_nt_id = fields.Many2one("hr.employee", help="Người thực hiện nghiệm thu",
+    bsd_ngay_kt_xn = fields.Date(string="Xác nhận PPS", help="Ngày kế toán xác nhận phí phát sinh", readonly=True)
+    bsd_ngay_in_bb = fields.Date(string="Ngày in biên bản", help="Ngày in biên bản nghiệm thu theo loại kết quả",
+                                 readonly=True)
+    bsd_nguoi_in_id = fields.Many2one('res.users', string="Người in", help="Người in biên bản", readonly=True)
+    bsd_ngay_nt_tt = fields.Date(string="Ngày nghiệm thu", help="Ngày thực hiện nghiệm thu",
+                                 readonly=True)
+    bsd_nguoi_nt_id = fields.Many2one("res.users", help="Người thực hiện nghiệm thu",
                                       readonly=True,
-                                      states={'nhap': [('readonly', False)]},
                                       string="Người nghiệm thu")
-    bsd_du_an_id = fields.Many2one(related='bsd_tb_nt_id.bsd_du_an_id', store=True)
-    bsd_unit_id = fields.Many2one(related='bsd_tb_nt_id.bsd_unit_id', store=True)
-    bsd_hd_ban_id = fields.Many2one(related='bsd_tb_nt_id.bsd_hd_ban_id', store=True)
-    bsd_khach_hang_id = fields.Many2one(related='bsd_tb_nt_id.bsd_khach_hang_id', store=True)
-    bsd_tien_ng = fields.Monetary(related='bsd_tb_nt_id.bsd_tien_ng')
-    bsd_tien_pbt = fields.Monetary(related='bsd_tb_nt_id.bsd_tien_pbt')
-    bsd_tien_pql = fields.Monetary(related='bsd_tb_nt_id.bsd_tien_pql')
-    bsd_thang_pql = fields.Integer(related='bsd_tb_nt_id.bsd_thang_pql')
-    bsd_don_gia_pql = fields.Monetary(related='bsd_tb_nt_id.bsd_don_gia_pql')
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan_tt', 'Xác nhận thông tin'),
@@ -86,6 +75,17 @@ class BsdNghiemThu(models.Model):
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
     bsd_ly_do_huy = fields.Char(string="Lý do hủy", readonly=True, tracking=2)
 
+    bsd_ngay_nt_lai_kh = fields.Date(string="Ngày nghiệm thu lại",
+                                     help="Ngày nghiệm thu lại đã xác nhận với khách hàng",
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
+    bsd_tien_ps_kh = fields.Monetary(string="Chi phí phát sinh", help="Chi phí phát sinh đã xác nhận với khách hàng",
+                                     readonly=True,
+                                     states={'nhap': [('readonly', False)]})
+    bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán", readonly=True,
+                                    help="""Đợt thanh toán được yêu cầu thanh toán 
+                                            thêm phí phát sinh từ yêu cầu sửa chữa""")
+
     @api.onchange('bsd_duyet_yc')
     def _onchange_duyet(self):
         self.bsd_co_pps = False
@@ -93,12 +93,12 @@ class BsdNghiemThu(models.Model):
     # DV.10.01 Xác nhận nghiệm thu
     def action_xac_nhan(self):
         # Kiểm tra sản phẩm nghiệm thu
-        kiem_tra = self._kiem_tra_nt()
+        kiem_tra = self.kiem_tra_nt()
         if isinstance(kiem_tra, dict):
             return kiem_tra
         else:
             if self.state == 'nhap':
-                if self.bsd_co_pps:
+                if self.bsd_tien_ps:
                     self.write({
                         'state': 'xac_nhan_tt',
                     })
@@ -110,7 +110,7 @@ class BsdNghiemThu(models.Model):
     # DV.10.02 Phí phát sinh
     def action_phi_ps(self):
         # Kiểm tra sản phẩm nghiệm thu
-        kiem_tra = self._kiem_tra_nt()
+        kiem_tra = self.kiem_tra_nt()
         if isinstance(kiem_tra, dict):
             return kiem_tra
         else:
@@ -122,10 +122,13 @@ class BsdNghiemThu(models.Model):
         action = self.env.ref('bsd_dich_vu.bsd_nghiem_thu_report_action').read()[0]
         return action
 
-    # DV.10.04 Đóng nghiệm thu
-    def action_dong_nt(self):
+    def action_dong(self):
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_dong_nt_action').read()[0]
+        return action
+
+    def kiem_tra_ket_qua_nt(self):
         # Kiểm tra sản phẩm nghiệm thu
-        kiem_tra = self._kiem_tra_nt()
+        kiem_tra = self.kiem_tra_nt()
         if isinstance(kiem_tra, dict):
             return kiem_tra
         else:
@@ -146,7 +149,7 @@ class BsdNghiemThu(models.Model):
         pass
 
     # DV.10.07 Kiểm tra điều kiện nghiệm thu sản phẩm
-    def _kiem_tra_nt(self):
+    def kiem_tra_nt(self):
         # Kiểm tra hợp đồng
         if self.bsd_hd_ban_id.state == 'thanh_ly':
             if self.state in ['nhap', 'xac_nhan_tt', 'xac_nhan']:
@@ -156,7 +159,6 @@ class BsdNghiemThu(models.Model):
                 })
             message_id = self.env['message.wizard'].create(
                 {'message': _('Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin')})
-            _logger.debug("kiểm tra hd")
             return {
                 'name': _('Thông báo'),
                 'type': 'ir.actions.act_window',

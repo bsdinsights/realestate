@@ -207,6 +207,16 @@ class BsdBaoGiaLTT(models.Model):
                 name = "%s - %s" % (dot_tt.bsd_ten_dtt, 'Phí bảo trì')
             else:
                 name = "%s - %s" % (dot_tt.bsd_ten_dtt, 'Phí quản lý')
+        elif self._context.get('show_info_date'):
+            if dot_tt.bsd_thanh_toan == 'chua_tt':
+                tt = "Chưa TT"
+            elif dot_tt.bsd_thanh_toan == 'dang_tt':
+                tt = "Đang TT"
+            else:
+                tt = "Đã TT"
+            name = "%s - %s - %s - %s" % (dot_tt.bsd_ten_dtt, tt, '{:,.0f} đ'
+                                          .format(dot_tt.bsd_tien_phai_tt).replace(',', '.'),
+                                          dot_tt.bsd_ngay_hh_tt.strftime("%d/%m/%Y") if dot_tt.bsd_ngay_hh_tt else 'Đợt cuối')
         return name
 
     def name_get(self):
@@ -215,3 +225,5 @@ class BsdBaoGiaLTT(models.Model):
             name = dot_tt._get_name()
             res.append((dot_tt.id, name))
         return res
+
+

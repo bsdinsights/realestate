@@ -45,8 +45,8 @@ class BsdThongBaoNghiemThu(models.Model):
     bsd_ngay_in = fields.Datetime(string="Ngày in", help="Ngày in thông báo nghiệm thu", readonly=True)
     bsd_nguoi_in_id = fields.Many2one("res.users", string="Người in", help="Người in thông báo nghiệm thu",
                                       readonly=True)
-    bsd_ngay_gui = fields.Datetime(string="Ngày gửi", help="Ngày gửi nghiệm thu", readonly=True)
-    bsd_ngay_dong = fields.Datetime(string="Ngày đóng", help="Ngày đóng nghiệm thu", readonly=True)
+    bsd_ngay_gui = fields.Date(string="Ngày gửi", help="Ngày gửi nghiệm thu", readonly=True)
+    bsd_ngay_dong = fields.Date(string="Ngày đóng", help="Ngày đóng nghiệm thu", readonly=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
@@ -96,7 +96,8 @@ class BsdThongBaoNghiemThu(models.Model):
                                  each.bsd_tien_pql + each.bsd_tien_lp + each.bsd_tien_lp_ut
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
-    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
+    state = fields.Selection([('nhap', 'Nháp'),
+                              ('xac_nhan', 'Xác nhận'),
                               ('hoan_thanh', 'Hoàn thành'),
                               ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
@@ -196,7 +197,6 @@ class BsdThongBaoNghiemThu(models.Model):
     def action_dong_tb(self):
         action = self.env.ref('bsd_dich_vu.bsd_wizard_tb_nt_action').read()[0]
         action['context'] = {'loai_ngay': 'ngay_dong'}
-        _logger.debug(action)
         return action
 
     # DV.21.05 Hủy thông báo nghiệm thu
@@ -211,6 +211,10 @@ class BsdThongBaoNghiemThu(models.Model):
         self.env['bsd.nghiem_thu'].create({
             'bsd_ngay_tao_nt': fields.Datetime.now(),
             'bsd_tb_nt_id': self.id,
+            'bsd_du_an_id': self.bsd_du_an_id.id,
+            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+            'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
+            'bsd_unit_id': self.bsd_unit_id.id,
             'state': 'nhap',
         })
 

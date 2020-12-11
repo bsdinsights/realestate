@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_nghiem_thu_form_inherit">
+        <field name="name">bsd.nghiem_thu.form.inherit</field>
+        <field name="model">bsd.nghiem_thu</field>
+        <field name="inherit_id" ref="bsd_dich_vu.bsd_nghiem_thu_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_huy']" position="before">
+                <button string="In biên bản"
+                        name="action_in_bb"
+                        attrs="{'invisible': [('state', 'not in',['xac_nhan','dong_nt']),
+                                              '|',('bsd_phi_ps_id', '!=',False),
+                                              ('bsd_tt_thanh_toan','!=','da_tt')]}"
+                        type="object"
+                        class="oe_highlight"/>
+            </xpath>
+            <xpath expr="//notebook/page[1]" position="inside">
+                <group string="PHÍ PHÁT SINH">
+                    <group>
+                        <field name="bsd_phi_ps_id"/>
+                    </group>
+                    <group>
+                        <field name="bsd_tt_thanh_toan"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

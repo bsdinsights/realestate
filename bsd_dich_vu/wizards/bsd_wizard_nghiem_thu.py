@@ -15,17 +15,17 @@ class BsdWizardNghiemThu(models.TransientModel):
     bsd_nghiem_thu_id = fields.Many2one('bsd.nghiem_thu', string="Nghiệm thu sản phẩm", default=_get_nghiem_thu,
                                         readonly=True)
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", readonly=True)
-    bsd_dot_tt_ids = fields.Many2many('bsd.lich_thanh_toan', string="Đợt thanh toán")
+    bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán", required=True)
 
     @api.onchange('bsd_nghiem_thu_id')
     def _onchange_nghiem_thu(self):
         self.bsd_hd_ban_id = self.bsd_nghiem_thu_id.bsd_hd_ban_id
 
     def action_xac_nhan(self):
-        if len(self.bsd_dot_tt_ids) != 1:
-            raise UserError(_("vui lòng kiểm tra lại đợt thanh toán"))
+        # Kiểm tra điều kiện nghiệm thu
+        self.bsd_nghiem_thu_id.kiem_tra_nt()
         self.bsd_nghiem_thu_id.write({
-            'bsd_dot_tt_id': self.bsd_dot_tt_ids.id,
+            'bsd_dot_tt_id': self.bsd_dot_tt_id.id,
             'bsd_ngay_kt_xn': fields.Datetime.now(),
             'state': 'xac_nhan',
         })
@@ -48,3 +48,23 @@ class BsdHuyNghiemThu(models.TransientModel):
             'bsd_ly_do_huy': self.bsd_ly_do,
             'state': 'huy',
         })
+
+
+class BsdDongNT(models.TransientModel):
+    _name = 'bsd.wizard.dong_nt'
+    _description = 'Ghi nhận ngày đóng nghiệm thu'
+
+    def _get_nghiem_thu(self):
+        nghiem_thu = self.env['bsd.nghiem_thu'].browse(self._context.get('active_ids', []))
+        return nghiem_thu
+
+    bsd_nghiem_thu_id = fields.Many2one('bsd.nghiem_thu', string="Nghiệm thu sản phẩm", default=_get_nghiem_thu,
+                                        readonly=True)
+    bsd_ngay = fields.Date(string="Ngày đóng NT", required=True, default=lambda self: fields.Date.today())
+
+    def action_xac_nhan(self):
+        self.bsd_nghiem_thu_id.write({
+            'bsd_ngay_nt_tt': self.bsd_ngay,
+            'bsd_nguoi_nt_id': self.env.uid,
+        })
+        self.bsd_nghiem_thu_id.kiem_tra_ket_qua_nt()
