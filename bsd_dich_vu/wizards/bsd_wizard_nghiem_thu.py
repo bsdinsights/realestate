@@ -12,7 +12,7 @@ class BsdWizardNghiemThu(models.TransientModel):
         nghiem_thu = self.env['bsd.nghiem_thu'].browse(self._context.get('active_ids', []))
         return nghiem_thu
 
-    bsd_nghiem_thu_id = fields.Many2one('bsd.nghiem_thu', string="Nghiệm thu sản phẩm", default=_get_nghiem_thu,
+    bsd_nghiem_thu_id = fields.Many2one('bsd.nghiem_thu', string="Nghiệm thu SP", default=_get_nghiem_thu,
                                         readonly=True)
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", readonly=True)
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán", required=True)
@@ -39,7 +39,7 @@ class BsdHuyNghiemThu(models.TransientModel):
         nghiem_thu = self.env['bsd.nghiem_thu'].browse(self._context.get('active_ids', []))
         return nghiem_thu
 
-    bsd_nghiem_thu_id = fields.Many2one('bsd.nghiem_thu', string="Nghiệm thu sản phẩm", default=_get_nghiem_thu,
+    bsd_nghiem_thu_id = fields.Many2one('bsd.nghiem_thu', string="Nghiệm thu SP", default=_get_nghiem_thu,
                                         readonly=True)
     bsd_ly_do = fields.Char(string="Lý do hủy", required=True)
 
@@ -58,7 +58,7 @@ class BsdDongNT(models.TransientModel):
         nghiem_thu = self.env['bsd.nghiem_thu'].browse(self._context.get('active_ids', []))
         return nghiem_thu
 
-    bsd_nghiem_thu_id = fields.Many2one('bsd.nghiem_thu', string="Nghiệm thu sản phẩm", default=_get_nghiem_thu,
+    bsd_nghiem_thu_id = fields.Many2one('bsd.nghiem_thu', string="Nghiệm thu SP", default=_get_nghiem_thu,
                                         readonly=True)
     bsd_ngay = fields.Date(string="Ngày đóng NT", required=True, default=lambda self: fields.Date.today())
 

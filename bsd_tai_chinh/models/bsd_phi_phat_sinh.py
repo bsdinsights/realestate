@@ -18,16 +18,17 @@ class BsdPhiPhatSinh(models.Model):
          'Mã phí phát sinh đã tồn tại !'),
     ]
 
-    bsd_ngay_ps = fields.Datetime(string="Ngày", help="Ngày tạo", required=True,
-                                  default=lambda self: fields.Datetime.now(),
-                                  readonly=True,
-                                  states={'nhap': [('readonly', False)]})
+    bsd_ngay_ps = fields.Date(string="Ngày", help="Ngày tạo", required=True,
+                              default=lambda self: fields.Date.today(),
+                              readonly=True,
+                              states={'nhap': [('readonly', False)]})
     bsd_ten_ps = fields.Char(string="Tiêu đề", help="Tiêu đề", required=True,
                              readonly=True,
                              states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
+    bsd_nghiem_thu_id = fields.Many2one('bsd.nghiem_thu', string="Nghiệm thu", readonly=True)
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng", required=True,
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})

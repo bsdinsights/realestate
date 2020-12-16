@@ -48,8 +48,6 @@ class BsdDanhSachThongBao(models.TransientModel):
             raise UserError(_("Có sản phẩm bị trùng cập nhật dự kiến bàn giao"))
         # Lấy hợp đồng tạo thông báo
         hd_ban_ids = tuple(cn_dkbg_ct.mapped('bsd_hd_ban_id').ids)
-        _logger.debug("id hợp đồng")
-        _logger.debug(str(hd_ban_ids))
         if not hd_ban_ids:
             return
         elif len(hd_ban_ids) == 1:

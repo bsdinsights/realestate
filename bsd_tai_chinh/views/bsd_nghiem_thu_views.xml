@@ -8,9 +8,14 @@
             <xpath expr="//button[@name='action_huy']" position="before">
                 <button string="In biên bản"
                         name="action_in_bb"
-                        attrs="{'invisible': [('state', 'not in',['xac_nhan','dong_nt']),
-                                              '|',('bsd_phi_ps_id', '!=',False),
+                        attrs="{'invisible': ['|',('state', 'not in',['xac_nhan','dong_nt']),
+                                              '|',('bsd_phi_ps_id', '=',False),
                                               ('bsd_tt_thanh_toan','!=','da_tt')]}"
+                        type="object"
+                        class="oe_highlight"/>
+                <button string="Thanh toán PPS"
+                        name="action_tt_pps"
+                        attrs="{'invisible': ['|',('state', 'not in',['xac_nhan']),('bsd_tt_thanh_toan','=','da_tt')]}"
                         type="object"
                         class="oe_highlight"/>
             </xpath>
@@ -21,6 +26,7 @@
                     </group>
                     <group>
                         <field name="bsd_tt_thanh_toan"/>
+                        <field name="bsd_tien_phai_tt"/>
                     </group>
                 </group>
             </xpath>

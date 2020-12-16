@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<!--    Phiếu thu pop_up -->
+    <record model="ir.ui.view" id="bsd_wizard_tt_pps_nt_form">
+        <field name="name">bsd.wizard.tt_pps_nt.form</field>
+        <field name="model">bsd.wizard.tt_pps_nt</field>
+        <field name="arch" type="xml">
+            <form create="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ngay_pt"/>
+                            <field name="bsd_tien_kh"/>
+                            <field name="bsd_khach_hang_id"
+                                   readonly="1"
+                                   force_save="1"
+                                   context="{'show_info':True}"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_nghiem_thu_id"
+                                   readonly="1"
+                                   force_save="1"
+                                   domain="[('bsd_khach_hang_id', '=', bsd_khach_hang_id)]"
+                                   options="{'no_create':true}"/>
+                        </group>
+                        <group>
+                            <field name="bsd_du_an_id" readonly="1" force_save="1"/>
+                            <field name="bsd_hd_ban_id" readonly="1" force_save="1"/>
+                            <field name="bsd_unit_id" readonly="1" force_save="1"/>
+                            <field name="bsd_phi_ps_id" readonly="1" force_save="1"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_tao" string="Tạo" type="object" class="oe_highlight"/>
+                    <button string="Hủy" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_tt_pps_nt_action">
+        <field name="name">Thanh toán phí phát sinh khi nghiệm thu</field>
+        <field name="res_model">bsd.wizard.tt_pps_nt</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

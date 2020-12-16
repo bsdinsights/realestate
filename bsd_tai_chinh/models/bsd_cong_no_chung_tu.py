@@ -208,7 +208,10 @@ class BsdCongNoCT(models.Model):
             })
         elif rec.bsd_loai == 'pt_pps':
             ma_hd = rec.bsd_hd_ban_id.bsd_ma_hd_ban
-            ten_pps = rec.bsd_phi_ps_id.bsd_ten_ps
+            ten_pps = rec.bsd_phi_ps_id.bsd_ma_ps
+            _logger.debug("Tên phí")
+            _logger.debug(ma_hd)
+            _logger.debug(ten_pps)
             rec.write({
                 'display_name': ma_hd + ' - ' + ten_pps
             })

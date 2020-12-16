@@ -7,13 +7,17 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="bsd_nghiem_thu_id" invisible="1"/>
-                        <field name="bsd_hd_ban_id"/>
-                        <field name="bsd_dot_tt_id"
-                               widget="radio"
-                               context="{'show_info_date':True}"
-                               domain="[('bsd_hd_ban_id', '=',bsd_hd_ban_id),
-                                        ('bsd_loai', '=', 'dtt')]"/>
+                        <group>
+                            <field name="bsd_nghiem_thu_id" invisible="1"/>
+                            <field name="bsd_hd_ban_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_dot_tt_id"
+                                   widget="radio"
+                                   context="{'show_info_date':True}"
+                                   domain="[('bsd_hd_ban_id', '=',bsd_hd_ban_id),
+                                            ('bsd_loai', '=', 'dtt')]"/>
+                        </group>
                     </group>
                 </sheet>
                 <footer>

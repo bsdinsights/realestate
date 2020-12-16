@@ -64,6 +64,7 @@
                                    options="{'no_create':true}"/>
                             <field name="bsd_ngay_nt"/>
                             <field name="bsd_ngay_ut"/>
+                            <field name="bsd_nghiem_thu_id"/>
                         </group>
                     </group>
                     <group string="HỢP ĐỒNG">

@@ -59,6 +59,7 @@ class BsdThongBaoNghiemThu(models.Model):
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
+    bsd_nghiem_thu_id = fields.Many2one('bsd.nghiem_thu', string="Nghiệm thu trước", readonly=True)
     bsd_tien_ng = fields.Monetary(string="Nợ gốc",
                                   help="Tổng số tiền đợt thanh toán mà khách hàng chưa thanh toán và "
                                        "không bao gồm đợt thanh toán cuối",
@@ -208,6 +209,7 @@ class BsdThongBaoNghiemThu(models.Model):
 
     # DV.21.06 Tự động tạo nghiệm thu sản phẩm
     def tao_nt_sp(self):
+        phi_ps = self.env['bsd.phi_ps'].search([('bsd_nghiem_thu_id', '=', self.bsd_nghiem_thu_id.id)], limit=1)
         self.env['bsd.nghiem_thu'].create({
             'bsd_ngay_tao_nt': fields.Datetime.now(),
             'bsd_tb_nt_id': self.id,
@@ -215,6 +217,8 @@ class BsdThongBaoNghiemThu(models.Model):
             'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
             'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
             'bsd_unit_id': self.bsd_unit_id.id,
+            'bsd_nghiem_thu_id': self.bsd_nghiem_thu_id.id,
+            'bsd_phi_ps_id': phi_ps.id,
             'state': 'nhap',
         })
 

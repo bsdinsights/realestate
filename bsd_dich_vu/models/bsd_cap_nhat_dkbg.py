@@ -324,7 +324,6 @@ class BsdCapNhatDKBGUnit(models.Model):
 
     @api.model
     def create(self, vals):
-        _logger.debug("tạo chi tiết")
         if not vals['bsd_ngay_htt_moi']:
             if 'bsd_cn_dkbg_id' in vals:
                 cn_dkbg = self.env['bsd.cn_dkbg'].browse(vals['bsd_cn_dkbg_id'])
