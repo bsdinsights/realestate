@@ -49,6 +49,12 @@
                         <button name="action_view_nghiem_thu" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_nt', '=', 0)]}">
                             <field name="bsd_so_nt" widget="statinfo" string="Nghiệm thu"/>
                         </button>
+                        <button name="action_schedule_meeting" type="object" class="oe_stat_button" icon="fa-calendar" context="{'partner_id': bsd_khach_hang_id, 'search_default_bsd_tb_nt_id': id}">
+                            <div class="o_stat_info">
+                                <field name="meeting_count" class="o_stat_value"/>
+                                <span class="o_stat_text">Cuộc gặp</span>
+                            </div>
+                        </button>
                     </div>
                     <group>
                         <group>

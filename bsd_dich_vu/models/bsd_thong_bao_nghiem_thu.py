@@ -103,6 +103,13 @@ class BsdThongBaoNghiemThu(models.Model):
                               ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
     bsd_so_nt = fields.Integer(string="# Ngiệm thu", compute="_compute_nt")
+    meeting_count = fields.Integer('# Meetings', compute='_compute_meeting_count')
+
+    def _compute_meeting_count(self):
+        meeting_data = self.env['calendar.event'].read_group([('bsd_tb_nt_id', 'in', self.ids)], ['bsd_tb_nt_id'], ['bsd_tb_nt_id'])
+        mapped_data = {m['bsd_tb_nt_id'][0]: m['bsd_tb_nt_id_count'] for m in meeting_data}
+        for lead in self:
+            lead.meeting_count = mapped_data.get(lead.id, 0)
     
     def _compute_nt(self):
         for each in self:
@@ -232,3 +239,32 @@ class BsdThongBaoNghiemThu(models.Model):
             raise UserError(_('Dự án chưa có mã thông báo nghiệm thu.'))
         vals['bsd_ma_tb'] = sequence.next_by_id()
         return super(BsdThongBaoNghiemThu, self).create(vals)
+
+    # Hẹn ngày gặp khách hàng
+    def action_schedule_meeting(self):
+        """ Open meeting's calendar view to schedule meeting on current opportunity.
+            :return dict: dictionary value for created Meeting view
+        """
+        self.ensure_one()
+        action = self.env.ref('calendar.action_calendar_event').read()[0]
+        partner_ids = self.env.user.partner_id.ids
+        if self.bsd_khach_hang_id:
+            partner_ids.append(self.bsd_khach_hang_id.id)
+        action['context'] = {
+            'default_bsd_tb_nt_id': self.id,
+            'default_partner_id': self.bsd_khach_hang_id.id,
+            'default_partner_ids': partner_ids,
+            'default_name': self.bsd_doi_tuong,
+        }
+        return action
+
+    def log_meeting(self, meeting_subject, meeting_date, duration):
+        if not duration:
+            duration = _('unknown')
+        else:
+            duration = str(duration)
+        meet_date = fields.Datetime.from_string(meeting_date)
+        meeting_usertime = fields.Datetime.to_string(fields.Datetime.context_timestamp(self, meet_date))
+        html_time = "<time datetime='%s+00:00'>%s</time>" % (meeting_date, meeting_usertime)
+        message = _("Meeting scheduled at '%s'<br> Subject: %s <br> Duration: %s hours") % (html_time, meeting_subject, duration)
+        return self.message_post(body=message)

@@ -39,9 +39,31 @@ class BsdDanhSachThongBao(models.TransientModel):
                 raise UserError(_(" Cập nhật DKBG: {} đã tạo thông báo"
                                   .format(','.join(da_tao_ct.mapped('bsd_ten')))))
         # Lấy các chi tiết thỏa điều kiện trạng thái duyệt và có hợp đồng chưa thanh lý
-        cn_dkbg_ct = self.env['bsd.cn_dkbg_unit'].search([('bsd_cn_dkbg_id', 'in', self.bsd_cn_dkbg_ids.ids),
-                                                         ('state', '=', 'duyet')])
-        cn_dkbg_ct = cn_dkbg_ct.filtered(lambda c: c.bsd_hd_ban_id.state != 'thanh_ly')
+        cn_dkbg_ct = self.env['bsd.cn_dkbg_unit']
+        for cn_dkbg in self.bsd_cn_dkbg_ids:
+            each_ct_khong_tl = cn_dkbg.bsd_ct_ids.filtered(lambda c: c.bsd_hd_ban_id.state != 'thanh_ly')
+            cn_dkbg_ct_da_tl = cn_dkbg.bsd_ct_ids - each_ct_khong_tl
+            message = ''
+            if cn_dkbg_ct_da_tl:
+                hop_dong = cn_dkbg_ct_da_tl.mapped('bsd_hd_ban_id')
+                if hop_dong:
+                    message += "<ul><li>Những hợp đồng đã bị thanh lý: {}</li>".format(
+                        ','.join(hop_dong.mapped('bsd_ma_hd_ban')))
+            # Nếu tạo thông báo bàn giao thì kiểm tra tình trạng thanh toán đợt dự kiến bàn giao
+            if self.bsd_loai != 'nt':
+                each_chua_tt = each_ct_khong_tl.filtered(lambda c: c.bsd_dot_tt_id.bsd_thanh_toan == 'chua_tt')
+                cn_dkbg_ct_da_tt = each_ct_khong_tl - each_chua_tt
+                # ghi chú các hợp đồng đã hoặc đang thanh toán
+                if cn_dkbg_ct_da_tt:
+                    hop_dong = cn_dkbg_ct_da_tt.mapped('bsd_hd_ban_id')
+                    if hop_dong:
+                        message += "<ul><li>Những hợp đồng đã thanh toán hoặc đang thanh toán: {}</li>".format(
+                            ','.join(hop_dong.mapped('bsd_ma_hd_ban')))
+                # gán lại biến
+                each_ct_khong_tl = each_chua_tt
+            cn_dkbg_ct += each_ct_khong_tl
+            # note trên cập nhật ngày dự kiến bàn giao chi tiết
+            cn_dkbg.message_post(body=message)
         # Lấy các unit ở chi tiết
         unit_ids = cn_dkbg_ct.mapped('bsd_unit_id')
         if len(unit_ids) < len(cn_dkbg_ct):
@@ -49,6 +71,16 @@ class BsdDanhSachThongBao(models.TransientModel):
         # Lấy hợp đồng tạo thông báo
         hd_ban_ids = tuple(cn_dkbg_ct.mapped('bsd_hd_ban_id').ids)
         if not hd_ban_ids:
+            if self.bsd_loai == 'nt':
+                # Cập nhật field đã tạo thông báo nghiệm thu
+                self.bsd_cn_dkbg_ids.write({
+                    'bsd_da_tao_tbnt': True
+                })
+            else:
+                # Cập nhật field đã tạo thông báo bàn giao
+                self.bsd_cn_dkbg_ids.write({
+                    'bsd_da_tao_tbbg': True
+                })
             return
         elif len(hd_ban_ids) == 1:
             str_hd_ban = str(hd_ban_ids).replace(',', '')
@@ -78,7 +110,8 @@ class BsdDanhSachThongBao(models.TransientModel):
                     hd_ban.bsd_lt_phai_tt,
                     ct.bsd_dot_tt_id,
                     ct.bsd_ngay_htt_moi,
-                    ct.bsd_ngay_dkbg_moi 
+                    ct.bsd_ngay_dkbg_moi,
+                    ct.bsd_so_tb 
             FROM bsd_hd_ban AS hd_ban 
             JOIN bsd_cn_dkbg_unit AS ct ON ct.bsd_hd_ban_id = hd_ban.id 
             JOIN bsd_cn_dkbg AS cn ON cn.id = ct.bsd_cn_dkbg_id 
@@ -127,16 +160,17 @@ class BsdDanhSachThongBao(models.TransientModel):
                     'bsd_don_gia_pql': item[8],
                     'bsd_ngay_bg': item[9],
                     'bsd_ngay_ut': item[10],
-                    'bsd_doi_tuong': "Thông báo nghiệm thu " + item[11],
+                    'bsd_doi_tuong': "Thông báo bàn giao " + item[11],
                     'bsd_tao_td': True,
                     'bsd_cn_dkbg_unit_id': item[12],
                     'bsd_tien_lp': item[13],
                     'bsd_dot_tt_id': item[14],
                     'bsd_ngay_hh_tt': item[15],
                     'bsd_ngay_dkbg': item[16],
+                    'bsd_so_tb': item[17],
                     'state': 'nhap',
-                })
-            # Cập nhật field đã tạo thông báo nghiệm thu
+                }).action_uoc_tinh_tien_phat()
+            # Cập nhật field đã tạo thông báo bàn giao
             self.bsd_cn_dkbg_ids.write({
                 'bsd_da_tao_tbbg': True
             })

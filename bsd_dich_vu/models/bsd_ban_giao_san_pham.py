@@ -25,6 +25,9 @@ class BsdBanGiaoSanPham(models.Model):
     bsd_ten_bg = fields.Char(string="Tiêu đề", required=True,
                              readonly=True,
                              states={'nhap': [('readonly', False)]})
+    bsd_tb_bg_id = fields.Many2one('bsd.tb_bg', string="TB bàn giao", required=True,
+                                   help="Thông báo bàn giao sản phẩm",
+                                   readonly=True)
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
@@ -37,13 +40,12 @@ class BsdBanGiaoSanPham(models.Model):
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng", required=True,
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
-    bsd_duyet_bgdb = fields.Boolean(related="bsd_hd_ban_id.bsd_duyet_bgdb")
-    bsd_tien_tt_hd = fields.Monetary(related="bsd_hd_ban_id.bsd_tien_tt_hd",
+    bsd_duyet_bgdb = fields.Boolean(string="Duyệt BGĐB", help="Duyệt bàn giao đặc biệt", readonly=True)
+    bsd_tien_tt_hd = fields.Monetary(string="Tiền thanh toán HĐ",
                                      help="Tổng tiền khách hàng thanh toán(Không bao gồm phí bảo trì, phí quản lý")
-    bsd_tl_tt_hd = fields.Float(related="bsd_hd_ban_id.bsd_tl_tt_hd")
-    bsd_dt_tt = fields.Float(related="bsd_unit_id.bsd_dt_tt")
-    bsd_ngay_dkbg = fields.Date(related="bsd_hd_ban_id.bsd_ngay_dkbg", string="Ngày DKBG theo hợp đồng",
-                                help="Ngày dự kiến bàn giao trên hợp đồng")
+    bsd_tl_tt_hd = fields.Float(string="Tỷ lệ thanh toán HĐ", help="Tỷ lệ thanh toán của hợp đồng", readonly=True)
+    bsd_dt_tt = fields.Float(string="Diện tích thực tế", readonly=True, help="Diện tích thực tế của sản phẩm")
+    bsd_ngay_dkbg = fields.Date(string="Ngày DKBG theo HĐ", help="Ngày dự kiến bàn giao trên hợp đồng", readonly=True)
     bsd_ngay_in = fields.Datetime(string="Ngày in", help="Ngày in biên bản bàn giao sản phẩm", readonly=True)
     bsd_nguoi_in_id = fields.Many2one('res.users', string="Người in", help="Người in biên bản bàn giao sản phẩm",
                                       readonly=True)
@@ -63,6 +65,12 @@ class BsdBanGiaoSanPham(models.Model):
     def _onchange_hd_ban(self):
         self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
         self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
+        self.bsd_duyet_bgdb = self.bsd_hd_ban_id.bsd_unit_id
+        self.bsd_tien_tt_hd = self.bsd_hd_ban_id.bsd_unit_id
+        self.bsd_tl_tt_hd = self.bsd_hd_ban_id.bsd_unit_id
+        self.bsd_dt_tt = self.bsd_hd_ban_id.bsd_unit_id.bsd_unit_id
+        self.bsd_ngay_dkbg = self.bsd_hd_ban_id.bsd_unit_id
+
 
     # DV.11.01 Xác nhận bàn giao sản phẩm
     def action_xac_nhan(self):

@@ -14,7 +14,7 @@
                             <field name="bsd_loai"/>
                         </group>
                     </group>
-                    <field name="bsd_cn_dkbg_ids" nolabel="1">
+                    <field name="bsd_cn_dkbg_ids" nolabel="1" readonly="1">
                         <tree>
                             <field name="bsd_ma"/>
                             <field name="bsd_ngay_ttcn"/>
