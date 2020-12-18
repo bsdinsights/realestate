@@ -1,4 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-
+    <record id="nvkd_assign_khach_hang_rule" model="ir.rule">
+        <field name="name">NVKD: Chỉ thấy thông tin khách hàng của mình</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="domain_force">[('user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('bsd_kinh_doanh.group_user'))]"/>
+        <field name="perm_read">True</field>
+        <field name="perm_create">True</field>
+        <field name="perm_write">True</field>
+        <field name="perm_unlink">False</field>
+    </record>
+    <record id="nvkd_share_khach_hang_rule" model="ir.rule">
+        <field name="name">NVKD: Chia sẻ thông tin khách hàng</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="domain_force">[('bsd_nvkd_ids','parent_of',user.id)]</field>
+        <field name="groups" eval="[(4, ref('bsd_kinh_doanh.group_user'))]"/>
+        <field name="perm_read">True</field>
+        <field name="perm_create">False</field>
+        <field name="perm_write">False</field>
+        <field name="perm_unlink">False</field>
+    </record>
+        <record id="tpkd_khach_hang_rule" model="ir.rule">
+        <field name="name">TPKD: Thầy toàn bộ khách hàng</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('bsd_kinh_doanh.group_manager'))]"/>
+    </record>
 </odoo>

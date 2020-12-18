@@ -196,6 +196,15 @@
                                 </tree>
                             </field>
                         </page>
+                        <page string="NVKD">
+                            <field name="bsd_nvkd_ids">
+                                <tree>
+                                    <field name="display_name"/>
+                                    <field name="mobile"/>
+                                    <field name="email"/>
+                                </tree>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
                 <div class="oe_chatter">

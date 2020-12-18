@@ -8,4 +8,5 @@ from . import bsd_wizard_them_unit
 from . import bsd_wizard_huy_gc
 from . import bsd_wizard_chiet_khau_dac_biet
 from . import bsd_wizard_dot_mb
+from . import bsd_wizard_assign_kh
 

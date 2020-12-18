@@ -1,35 +1,35 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-bsd_dot_mb_manager,Đợt mở bán,model_bsd_dot_mb,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_dot_mb_sgd_manager,Sàn giao dịch cho đợt mở bán,model_bsd_dot_mb_sgd,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_dot_mb_cb_manager,Unit chuẩn bị cho đợt mở bán,model_bsd_dot_mb_cb,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_dot_mb_unit_manager,Unit phát hành cho đợt mở bán,model_bsd_dot_mb_unit,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_dot_mb_manager,Đợt mở bán,model_bsd_dot_mb,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_dot_mb_sgd_manager,Sàn giao dịch cho đợt mở bán,model_bsd_dot_mb_sgd,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_dot_mb_cb_manager,Unit chuẩn bị cho đợt mở bán,model_bsd_dot_mb_cb,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_dot_mb_unit_manager,Unit phát hành cho đợt mở bán,model_bsd_dot_mb_unit,bsd_kinh_doanh.group_user,1,1,1,0
 
-bsd_gc_tc_manager, Phiếu giữ chỗ thiện chí,model_bsd_gc_tc,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_rap_can_manager, Phiếu ráp căn,model_bsd_rap_can,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_giu_cho_manager, Phiếu giữ chỗ,model_bsd_giu_cho,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_bao_gia_manager, Bảng tính giá,model_bsd_bao_gia,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_bao_gia_km_manager, Thông tin khuyến mãi bảng tính giá,model_bsd_bao_gia_km,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_ps_ck_manager, Phát sinh chiết khấu thương mại,model_bsd_ps_ck,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_ps_gd_ck_manager, Phát sinh giao dịch chiết khấu,model_bsd_ps_gd_ck,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_ban_giao_manager,Thông tin bàn giao cho bảng tính giá,model_bsd_ban_giao,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_lich_thanh_toan_manager, Lịch thanh toán cho bảng tính giá,model_bsd_lich_thanh_toan,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_dat_coc_manager, Phiếu đặt cọc,model_bsd_dat_coc,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_chuyen_gc_manager, Phiếu chuyển tên khách hàng giữ chỗ,model_bsd_chuyen_gc,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_thu_hoi_manager, Thu hồi căn hộ của đợt mở bán,model_bsd_thu_hoi,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_them_unit_manager, Thêm căn hộ của đợt mở bán,model_bsd_them_unit,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_them_unit_cb_manager, Thêm căn hộ của đợt mở bán chi tiết,model_bsd_them_unit_cb,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_huy_gc_manager, Phiếu đề nghị hủy giữ chỗ,model_bsd_huy_gc,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_ck_db, Chiết khấu đặc biệt,model_bsd_ck_db,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_gc_tc_manager, Phiếu giữ chỗ thiện chí,model_bsd_gc_tc,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_rap_can_manager, Phiếu ráp căn,model_bsd_rap_can,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_giu_cho_manager, Phiếu giữ chỗ,model_bsd_giu_cho,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_bao_gia_manager, Bảng tính giá,model_bsd_bao_gia,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_bao_gia_km_manager, Thông tin khuyến mãi bảng tính giá,model_bsd_bao_gia_km,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_ps_ck_manager, Phát sinh chiết khấu thương mại,model_bsd_ps_ck,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_ps_gd_ck_manager, Phát sinh giao dịch chiết khấu,model_bsd_ps_gd_ck,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_ban_giao_manager,Thông tin bàn giao cho bảng tính giá,model_bsd_ban_giao,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_lich_thanh_toan_manager, Lịch thanh toán cho bảng tính giá,model_bsd_lich_thanh_toan,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_dat_coc_manager, Phiếu đặt cọc,model_bsd_dat_coc,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_chuyen_gc_manager, Phiếu chuyển tên khách hàng giữ chỗ,model_bsd_chuyen_gc,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_thu_hoi_manager, Thu hồi căn hộ của đợt mở bán,model_bsd_thu_hoi,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_them_unit_manager, Thêm căn hộ của đợt mở bán,model_bsd_them_unit,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_them_unit_cb_manager, Thêm căn hộ của đợt mở bán chi tiết,model_bsd_them_unit_cb,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_huy_gc_manager, Phiếu đề nghị hủy giữ chỗ,model_bsd_huy_gc,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_ck_db, Chiết khấu đặc biệt,model_bsd_ck_db,bsd_kinh_doanh.group_user,1,1,1,0
 
-bsd_loai_cty_manager, Loại công ty,model_bsd_loai_cong_ty,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_cty_nganh_nghe_manager, Ngành nghề hoạt động của công ty,model_bsd_cty_nganh_nghe,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_loai_cty_manager, Loại công ty,model_bsd_loai_cong_ty,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_cty_nganh_nghe_manager, Ngành nghề hoạt động của công ty,model_bsd_cty_nganh_nghe,bsd_kinh_doanh.group_user,1,1,1,0
 
-bsd_loai_kh_cn_manager,Loại khách hàng cá nhân,model_bsd_loai_kh_cn,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_quan_tam_manager,Phiếu quan tâm,model_bsd_quan_tam,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_dat_coc_chuyen_dd,Phiếu thay đổi đại diện ký TTĐC/HĐMB,model_bsd_dat_coc_chuyen_dd,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_gia_han_gc_manager,Phiếu gia hạn giữ chỗ,model_bsd_gia_han_gc,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_gia_han_gc_ct_manager,Chi tiết giữ chỗ gia hạn,model_bsd_gia_han_gc_ct,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_gia_han_gctc_ct_manager,Chi tiết giữ chỗ thiện chí,model_bsd_gia_han_gctc_ct,bsd_kinh_doanh.group_manager,1,1,1,1
-bsd_dong_so_huu_manager, Thông tin người đồng sở hữu,model_bsd_dong_so_huu,bsd_kinh_doanh.group_manager,1,1,1,1
+bsd_loai_kh_cn_manager,Loại khách hàng cá nhân,model_bsd_loai_kh_cn,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_quan_tam_manager,Phiếu quan tâm,model_bsd_quan_tam,bsd_kinh_doanh.group_manager,1,1,1,0
+bsd_dat_coc_chuyen_dd,Phiếu thay đổi đại diện ký TTĐC/HĐMB,model_bsd_dat_coc_chuyen_dd,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_gia_han_gc_manager,Phiếu gia hạn giữ chỗ,model_bsd_gia_han_gc,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_gia_han_gc_ct_manager,Chi tiết giữ chỗ gia hạn,model_bsd_gia_han_gc_ct,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_gia_han_gctc_ct_manager,Chi tiết giữ chỗ thiện chí,model_bsd_gia_han_gctc_ct,bsd_kinh_doanh.group_user,1,1,1,0
+bsd_dong_so_huu_manager, Thông tin người đồng sở hữu,model_bsd_dong_so_huu,bsd_kinh_doanh.group_user,1,1,1,0
 
 

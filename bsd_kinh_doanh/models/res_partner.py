@@ -10,6 +10,8 @@ _logger = logging.getLogger(__name__)
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
+    bsd_nvkd_ids = fields.Many2many('res.users', string="NV kinh doanh", relation='bsd_nvkd_rel',
+                                    column1="kh_id", column2='nvkd_id')
     bsd_ho_tl = fields.Char(string="Họ và tên lót", help="Họ và tên lót")
     bsd_search_ten = fields.Char(string="Search tên", compute='_compute_search_name', store=True)
 
