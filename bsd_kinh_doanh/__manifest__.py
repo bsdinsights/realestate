@@ -16,6 +16,7 @@
         'security/user_groups.xml',
         'security/ir.model.access.csv',
         'security/bsd_security.xml',
+        'views/assets.xml',
         'views/bsd_kh_ca_nhan_views.xml',
         'views/bsd_kh_doanh_nghiep_views.xml',
         'views/bsd_dot_mo_ban_views.xml',

@@ -10,8 +10,6 @@ _logger = logging.getLogger(__name__)
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    bsd_nvkd_ids = fields.Many2many('res.users', string="NV kinh doanh", relation='bsd_nvkd_rel',
-                                    column1="kh_id", column2='nvkd_id')
     bsd_ho_tl = fields.Char(string="Họ và tên lót", help="Họ và tên lót")
     bsd_search_ten = fields.Char(string="Search tên", compute='_compute_search_name', store=True)
 
@@ -74,6 +72,12 @@ class ResPartner(models.Model):
     bsd_sl_giu_cho = fields.Integer(string="# Giữ chỗ", compute="_compute_sl_gc", store=True)
 
     bsd_nguoi_bh_id = fields.Many2one('res.partner', string="Người bảo hộ", help="Người bảo hộ")
+
+    hide_action_buttons = fields.Boolean('Hide Action Buttons', compute='_compute_hide_action_buttons')
+
+    def _compute_hide_action_buttons(self):
+        for each in self:
+            each.hide_action_buttons = True
 
     @api.constrains('bsd_cmnd')
     def _constrains_cmnd(self):
@@ -233,3 +237,10 @@ class BsdLoaikhcn(models.Model):
     _rec_name = 'bsd_ten'
 
     bsd_ten = fields.Char(string="Loại khách hàng", required=True)
+
+
+class ResUsers(models.Model):
+    _inherit = 'res.users'
+
+    bsd_kh_ids = fields.Many2many('res.partner', string="Khách hàng",
+                                  relation="bsd_kh_rel", column1="nvkd_id", column2="kh_id")

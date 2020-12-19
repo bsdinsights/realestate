@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="assets_backend" name="hide_create_edit_buttons" inherit_id="web.assets_backend">
+            <xpath expr="script[last()]" position="after">
+                <script type="text/javascript" src="/bsd_kinh_doanh/static/js/hide_action_buttons.js"/>
+            </xpath>
+        </template>
+    </data>
+</odoo>
