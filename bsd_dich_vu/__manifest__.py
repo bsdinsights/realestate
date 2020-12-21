@@ -10,7 +10,6 @@
                 'bsd_kinh_doanh',
                 'bsd_du_an',
                 'bsd_danh_muc',
-                'crm',
     ],
     'data': [
         'security/user_groups.xml',
@@ -44,6 +43,7 @@
         'views/bsd_thong_bao_nhac_no_views.xml',
         'views/bsd_dat_coc_views.xml',
         'wizards/bsd_wizard_tao_thong_bao_tt_nn_views.xml',
+        'views/bsd_thong_bao_dttt_views.xml',
         'views/bsd_menu_item_views.xml',
         'views/product_template_views.xml',
         'wizards/bsd_wizard_hd_ban_views.xml',
@@ -67,6 +67,7 @@
         'wizards/bsd_wizard_tb_tl_views.xml',
         'wizards/bsd_wizard_thanh_ly_views.xml',
         'wizards/bsd_wizard_pl_views.xml',
+        'wizards/bsd_wizard_cn_dttt_views.xml',
         'reports/report_bsd_uoc_tinh_views.xml',
         'reports/report_bsd_hd_ban_views.xml',
         'reports/report_bsd_hd_ban_cn_views.xml',

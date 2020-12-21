@@ -26,6 +26,6 @@ from . import bsd_thong_bao_thanh_toan
 from . import bsd_thong_bao_nhac_no
 
 from . import bsd_dat_coc
-from . import calender
+from . import bsd_thong_bao_dttt
 
 

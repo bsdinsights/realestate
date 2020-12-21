@@ -46,16 +46,6 @@ class BsdPLTDTT(models.Model):
                                    help="Phiếu cập nhật diện tích thông thủy thực tế",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_dt_tt_tt = fields.Float(string="Diện tích thực tế", help="Diện tích thông thủy thực tế",
-                                related='bsd_dt_tt_id.bsd_dt_tt_tt', store=True)
-    bsd_dt_tt_tk = fields.Float(string="Diện tích thiết kế",
-                                help="Diện tích thông thủy thiết kế",
-                                related="bsd_dt_tt_id.bsd_dt_tt_tk", store=True)
-    bsd_dt_cl_tt = fields.Float(string="% Chênh lệch thực tế", help="% Chênh lệch thực tế", readonly=True,
-                                related="bsd_dt_tt_id.bsd_dt_cl_tt", store=True)
-    bsd_dt_cl = fields.Float(string="% Chênh lệch cho phép", help="% Chênh lệch cho phép",
-                             related="bsd_dt_tt_id.bsd_dt_cl", store=True)
-
     bsd_ten_unit_moi = fields.Char(string="Tên Sản phẩm (mới)", help="Tên Sản phẩm mới",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})

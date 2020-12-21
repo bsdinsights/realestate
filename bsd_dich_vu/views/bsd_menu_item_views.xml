@@ -58,7 +58,7 @@
         <menuitem id="bsd_dt_tt_menu_action_2"
                   name="Diện tích thực tế"
                   sequence="108"
-                  action="bsd_dt_tt_action"
+                  action="bsd_cn_dttt_action"
                   parent="bsd_phu_luc_menu_2"/>
     <menuitem id="bsd_thong_bao_tt_nn_menu_2"
               name="Thông báo TT/ NN"
@@ -110,9 +110,13 @@
         <menuitem id="bsd_dt_tt_menu_action_2"
                   name="Diện tích thực tế"
                   sequence="103"
-                  action="bsd_dt_tt_action"
+                  action="bsd_cn_dttt_action"
                   parent="bsd_cn_tt_hd_menu_2"/>
-
+        <menuitem id="bsd_tb_dttt_menu_action_2"
+                  name="TB kết quả đo đạt thực tế"
+                  sequence="104"
+                  action="bsd_tb_kq_dttt_action"
+                  parent="bsd_cn_tt_hd_menu_2"/>
     <menuitem id="bsd_nghiem_thu_menu_action_2"
               name="Nghiệm thu"
               sequence="27"

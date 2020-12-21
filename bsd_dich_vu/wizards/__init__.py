@@ -23,3 +23,4 @@ from . import bsd_wizard_tb_tl
 from . import bsd_wizard_thanh_ly
 from . import bsd_wizard_tao_thong_bao_tt_nn
 from . import bsd_wizard_pl
+from . import bsd_wizard_cn_dttt

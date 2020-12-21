@@ -48,10 +48,6 @@
                                            'required':[('bsd_loai_pl','=','dien_tich')]}"
                                    domain="[('bsd_unit_id', 'in',[bsd_unit_id]),('state','=','duyet')]"
                                    options="{'no_create':true}"/>
-                            <field name="bsd_dt_tt_tt"/>
-                            <field name="bsd_dt_tt_tk"/>
-                            <field name="bsd_dt_cl_tt"/>
-                            <field name="bsd_dt_cl"/>
                             <field name="bsd_ten_unit_moi"
                                    attrs="{'readonly':['|',('bsd_loai_pl','=', 'dien_tich'), ('state','!=','nhap')],
                                            'required':[('bsd_loai_pl','=','ten_ch')]}"/>
