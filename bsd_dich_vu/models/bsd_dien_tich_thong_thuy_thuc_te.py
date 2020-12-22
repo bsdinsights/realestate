@@ -115,6 +115,10 @@ class BsdCapNhatDTTT(models.Model):
             })
             # Kiểm tra các chi tiết để đưa ra xử lý
             for ct in ct_ids:
+                # Cập nhật diện tích thực tế vào sản phẩm
+                ct.bsd_unit_id.write({
+                    'bsd_dt_tt': ct.bsd_dt_tt_tt
+                })
                 # Nếu không có sai lệch thì tạo thư thông báo kết quả đo đạt cho khách hàng
                 if ct.bsd_cl_tt == 0:
                     ct.write({'bsd_loai': 'tb_kq'})

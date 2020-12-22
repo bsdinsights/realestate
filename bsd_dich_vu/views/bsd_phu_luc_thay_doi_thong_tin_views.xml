@@ -28,33 +28,71 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="bsd_ma_pl_tti"/>
-                            <field name="bsd_ngay_pl_tti"/>
+                            <field name="bsd_ma"/>
+                            <field name="bsd_ngay"/>
                             <field name="bsd_loai_pl"/>
                             <field name="bsd_khach_hang_id"
-                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
                                    options="{'no_create':true}"/>
                             <field name="bsd_hd_ban_id"
                                    options="{'no_create':true}"
                                    domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id])]"/>
-                            <field name="bsd_du_an_id"/>
-                            <field name="bsd_unit_id"/>
                             <field name="bsd_dien_giai"/>
                         </group>
                         <group>
-
-                            <field name="bsd_dt_tt_id"
-                                   attrs="{'readonly':['|',('bsd_loai_pl','=', 'ten_ch'), ('state','!=','nhap')],
-                                           'required':[('bsd_loai_pl','=','dien_tich')]}"
-                                   domain="[('bsd_unit_id', 'in',[bsd_unit_id]),('state','=','duyet')]"
+                            <field name="bsd_du_an_id"/>
+                            <field name="bsd_unit_id"/>
+                            <field name="bsd_cn_dttt_unit_id"
+                                   attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"
                                    options="{'no_create':true}"/>
+                            <label for="bsd_dt_tt_tk" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"/>
+                            <div class="o_row no-gutters d-flex" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}">
+                                <field name="bsd_dt_tt_tk" class="mr-1" readonly="1" force_save="1"
+                                       attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"/>
+                                <span>m2</span>
+                            </div>
+                            <label for="bsd_dt_tt_tt" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"/>
+                            <div class="o_row no-gutters d-flex" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}">
+                                <field name="bsd_dt_tt_tt" class="mr-1" readonly="1" force_save="1"
+                                       attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"/>
+                                <span>m2</span>
+                            </div>
+                            <label for="bsd_cl_cp" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"/>
+                            <div class="o_row no-gutters d-flex" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}">
+                                <field name="bsd_cl_cp" class="mr-1" readonly="1"
+                                        attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"
+                                       force_save="1"/>
+                                <span>%</span>
+                            </div>
+                            <label for="bsd_cl_tt" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"/>
+                            <div class="o_row no-gutters d-flex" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}">
+                                <field name="bsd_cl_tt" class="mr-1" readonly="1"
+                                        attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"
+                                       force_save="1"/>
+                                <span>%</span>
+                            </div>
                             <field name="bsd_ten_unit_moi"
-                                   attrs="{'readonly':['|',('bsd_loai_pl','=', 'dien_tich'), ('state','!=','nhap')],
+                                   attrs="{'invisible':[('bsd_loai_pl','=', 'dien_tich')],
                                            'required':[('bsd_loai_pl','=','ten_ch')]}"/>
-                            <field name="bsd_ten_unit_cu"/>
-                            <field name="bsd_ngay_ky_pl"/>
+                            <field name="bsd_ten_unit_cu"
+                                   attrs="{'invisible':[('bsd_loai_pl','=', 'dien_tich')]}"/>
                         </group>
                     </group>
+                            <group string="XÉT DUYỆT">
+                                <group>
+                                    <field name="bsd_ngay_xn"/>
+                                    <field name="bsd_nguoi_xn_id"/>
+                                    <field name="bsd_ngay_huy"/>
+                                    <field name="bsd_nguoi_huy_id"/>
+                                    <field name="bsd_ly_do_huy"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_duyet"/>
+                                    <field name="bsd_nguoi_duyet_id"/>
+                                    <field name="bsd_ngay_ky_pl"/>
+                                    <field name="bsd_nguoi_xn_ky_id"/>
+                                    <field name="bsd_ly_do"/>
+                                </group>
+                            </group>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
@@ -69,7 +107,11 @@
         <field name="model">bsd.pl_tti</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="bsd_ma_pl_tti"/>
+                <field name="bsd_ma"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="bsd_hd_ban_id"/>
+                <field name="bsd_unit_id"/>
                 <field name="state"/>
             </tree>
         </field>
@@ -80,7 +122,7 @@
         <field name="model">bsd.pl_tti</field>
         <field name="arch" type="xml">
             <search string="Lọc dữ liệu">
-                <field name="bsd_ma_pl_tti"/>
+                <field name="bsd_ma"/>
                 <field name="bsd_khach_hang_id"/>
                 <field name="bsd_unit_id"/>
                 <field name="bsd_du_an_id"/>
@@ -95,7 +137,7 @@
     </record>
 
     <record model="ir.actions.act_window" id="bsd_pl_tti_action">
-        <field name="name">Thay đổi thông tin</field>
+        <field name="name">PL thay đổi thông tin</field>
         <field name="res_model">bsd.pl_tti</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
