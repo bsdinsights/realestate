@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+import datetime
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -28,12 +29,12 @@ class BsdThongBaoThanhToan(models.Model):
                               readonly=True,
                               states={'nhap': [('readonly', False)]})
 
-    bsd_ngay_in = fields.Datetime(string="Ngày in", help="Ngày in thông báo bàn giao", readonly=True)
-    bsd_nguoi_xn_id = fields.Many2one('res.users', string="Người xác nhận",
+    bsd_ngay_in = fields.Date(string="Ngày in", help="Ngày in thông báo bàn giao", readonly=True)
+    bsd_nguoi_in_id = fields.Many2one('res.users', string="Người in",
+                                      help="Người in thông báo thanh toán", readonly=True)
+    bsd_nguoi_gui_id = fields.Many2one('res.users', string="Người gửi",
                                       help="Người xác nhận thông tin trên thông báo thanh toán", readonly=True)
-    bsd_ngay_xn = fields.Datetime(string="Ngày xác nhận", help="Ngày xác nhận thông tin thông báo",
-                                  readonly=True)
-    bsd_ngay_gui = fields.Datetime(string="Ngày gửi", help="Ngày gửi", readonly=True)
+    bsd_ngay_gui = fields.Date(string="Ngày gửi", help="Ngày gửi", readonly=True)
     bsd_loai = fields.Selection([('tb_tt', 'Thông báo thanh toán'),
                                  ('tb_tt_dot_cuoi', 'Thông báo thanh toán đợt cuối')],
                                 string="Loại", required=True, help="Phân loại thông báo",
@@ -76,8 +77,6 @@ class BsdThongBaoThanhToan(models.Model):
         if self.state == 'nhap':
             self.write({
                 'state': 'xac_nhan',
-                'bsd_nguoi_xn_id': self.env.uid,
-                'bsd_ngay_xn': fields.Datetime.now()
             })
             self.bsd_dot_tt_id.write({
                 'bsd_tb_tt': True,
@@ -86,6 +85,12 @@ class BsdThongBaoThanhToan(models.Model):
 
     def action_in_tb(self):
         return self.env.ref('bsd_dich_vu.bsd_tb_tt_report_action').read()[0]
+
+    def action_gui_tb(self):
+        self.write({
+            'bsd_ngay_gui': datetime.date.today(),
+            'state': 'da_gui',
+        })
 
     # DV.16.05 Hủy thông báo bàn giao
     def action_huy(self):

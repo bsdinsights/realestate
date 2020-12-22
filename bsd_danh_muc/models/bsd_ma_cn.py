@@ -47,7 +47,7 @@ class BsdMaBoChungTu(models.Model):
                                     ('bsd.cn_dkbg', 'Cập nhật dự kiến bàn giao'),
                                     ('bsd.tb_tt', 'Thông báo thanh toán'),
                                     ('bsd.tb_nn', 'Thông báo nhắc nợ'),
-                                    ('bsd.ds_tb', 'Danh sách thông báo'),
+                                    ('bsd.tb_kq_dttt', 'Thông báo kết quả đo đạt'),
                                     ('bsd.tb_nt', 'Thông báo nghiệm thu'),
                                     ('bsd.tb_dttt', 'Thông báo kết quả đo đạt thực tế'),
                                     ('bsd.tb_bg', 'Thông báo bàn giao'),

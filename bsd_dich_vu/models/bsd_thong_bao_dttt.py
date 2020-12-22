@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+import datetime
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -29,13 +30,11 @@ class BsdThongBaoKetQuaDoDat(models.Model):
                               states={'nhap': [('readonly', False)]})
 
     bsd_ngay_in = fields.Date(string="Ngày in", help="Ngày in thông báo", readonly=True)
-    bsd_nguoi_in_id = fields.Many2one(string="Người in",
+    bsd_nguoi_in_id = fields.Many2one('res.users',string="Người in",
                                       help="Người in thông báo diện tích thông thủy thực tế cho khách hàng",
                                       readonly=True)
-    bsd_nguoi_xn_id = fields.Many2one('res.users', string="Người xác nhận",
+    bsd_nguoi_gui_id = fields.Many2one('res.users', string="Người gửi",
                                       help="Người xác nhận thông tin trên thông báo thanh toán", readonly=True)
-    bsd_ngay_xn = fields.Date(string="Ngày xác nhận", help="Ngày xác nhận thông tin thông báo",
-                              readonly=True)
     bsd_ngay_gui = fields.Date(string="Ngày gửi", help="Ngày gửi thông báo kết quả đo đạt thực tế", readonly=True)
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True,
                                    readonly=True,
@@ -80,12 +79,17 @@ class BsdThongBaoKetQuaDoDat(models.Model):
         if self.state == 'nhap':
             self.write({
                 'state': 'xac_nhan',
-                'bsd_nguoi_xn_id': self.env.uid,
-                'bsd_ngay_xn': fields.Date.today()
             })
 
     def action_in_tb(self):
-        return self.env.ref('bsd_dich_vu.bsd_tb_tt_report_action').read()[0]
+        return self.env.ref('bsd_dich_vu.bsd_tb_kq_dttt_report_action').read()[0]
+
+    def action_gui_tb(self):
+        self.write({
+            'bsd_ngay_gui': datetime.date.today(),
+            'bsd_nguoi_gui_id': self.env.uid,
+            'state': 'da_gui',
+        })
 
     # DV.16.05 Hủy thư thông báo diện tích thông thủy thực tế
     def action_huy(self):

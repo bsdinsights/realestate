@@ -69,22 +69,19 @@
                             />
                     <button string="Tạo PL PTTT"
                             name="action_tao_pl_pttt"
-                            attrs="{'invisible':['|',('bsd_ngay_ky_hdb', '=', False)]}"
-                            states="thanh_ly"
+                            attrs="{'invisible':['|',('bsd_ngay_ky_hdb', '=', False),('state', '=', 'thanh_ly')]}"
                             type="object"
                             class="oe_highlight"
                             />
                     <button string="Tạo PL CKTM"
                             name="action_tao_pl_cktm"
-                            attrs="{'invisible':['|',('bsd_ngay_ky_hdb', '=', False)]}"
-                            states="thanh_ly"
+                            attrs="{'invisible':['|',('bsd_ngay_ky_hdb', '=', False),('state', '=', 'thanh_ly')]}"
                             type="object"
                             class="oe_highlight"
                             />
                     <button string="Tạo PL ĐKBG"
                             name="action_tao_pl_dkbg"
-                            attrs="{'invisible':['|',('bsd_ngay_ky_hdb', '=', False)]}"
-                            states="thanh_ly"
+                            attrs="{'invisible':['|',('bsd_ngay_ky_hdb', '=', False),('state', '=', 'thanh_ly')]}"
                             type="object"
                             class="oe_highlight"
                             />

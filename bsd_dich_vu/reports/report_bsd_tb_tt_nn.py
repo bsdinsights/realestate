@@ -35,7 +35,8 @@ class BsdWizardReportThongBaoTT(models.TransientModel):
             'model': self.bsd_tb_tt_id._name,
         }
         self.bsd_tb_tt_id.write({
-            'bsd_ngay_in': datetime.datetime.now(),
+            'bsd_ngay_in': datetime.date.today(),
+            'bsd_nguoi_in_id': self.env.uid,
         })
         ref_id = 'bsd_dich_vu.' + self.bsd_mau_in
         return self.env.ref(ref_id).report_action(self, data=data)

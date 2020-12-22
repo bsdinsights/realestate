@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="bsd_tb_kq_dttt_report_wizard_form">
+            <field name="name">bsd.tb_kq_dttt.report.wizard.form</field>
+            <field name="model">bsd.tb_kq_dttt.report.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="In thông báo kết quả đo đạt">
+                    <group>
+                        <group>
+                            <field name="bsd_mau_in"/>
+                            <field name="bsd_tb_kq_dttt_id"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_in" string="In" type="object" class="oe_highlight"/>
+                        <button string="Hủy" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <act_window id="bsd_tb_kq_dttt_report_action"
+                    name="Chọn mẫu in thông báo"
+                    res_model="bsd.tb_kq_dttt.report.wizard"
+                    view_mode="form"
+                    target="new"/>
+
+        <record id="bsd_giay_in_bsd_tb_kq_dttt" model="report.paperformat">
+            <field name="name">Giấy in thông báo kết quả đo đạt</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">17</field>
+            <field name="margin_right">17</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="bsd_mau_in_bsd_tb_kq_dttt_html" model="ir.actions.report">
+            <field name="name">Thông báo kết quả đo đạt (html)</field>
+            <field name="model">bsd.tb_tt.report.wizard</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">bsd_dich_vu.bsd_tb_kq_dttt_view</field>
+            <field name="multi">False</field>
+            <field name="paperformat_id" ref="bsd_dich_vu.bsd_giay_in_bsd_tb_kq_dttt"/>
+        </record>
+
+        <record id="bsd_mau_in_tb_tt" model="ir.actions.report">
+            <field name="name">Thông báo kết quả đo đạtn</field>
+            <field name="model">bsd.tb_tt.report.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">bsd_dich_vu.bsd_tb_kq_dttt_view</field>
+            <field name="multi">False</field>
+            <field name="paperformat_id" ref="bsd_dich_vu.bsd_giay_in_bsd_tb_kq_dttt"/>
+        </record>
+
+        <template id="bsd_tb_kq_dttt_view">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="doc" t-value="doc.with_context(lang=lang)" />
+                    <t t-call="web.external_layout">
+                        <div class="page bsd_font">
+                            <div class="row">
+                                Thông báo kết quả đo đạt
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

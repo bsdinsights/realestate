@@ -81,6 +81,7 @@
         'reports/report_bsd_thanh_ly_views.xml',
         'reports/report_bsd_tb_tt_nn_views.xml',
         'reports/report_bsd_tb_nhac_no_views.xml',
+        'reports/report_bsd_tb_kq_dttt_views.xml',
         'views/assets.xml',
     ],
     'application': True,

@@ -113,8 +113,28 @@ class BsdCapNhatDTTT(models.Model):
             ct_ids.write({
                 'state': 'duyet'
             })
+            # Kiểm tra các chi tiết để đưa ra xử lý
             for ct in ct_ids:
-                pass
+                # Nếu không có sai lệch thì tạo thư thông báo kết quả đo đạt cho khách hàng
+                if ct.bsd_cl_tt == 0:
+                    ct.write({'bsd_loai': 'tb_kq'})
+                    self.env['bsd.tb_kq_dttt'].create({
+                        'bsd_tieu_de': "Kết quả đo đạt sản phẩm " + ct.bsd_unit_id.bsd_ma_unit,
+                        'bsd_khach_hang_id': ct.bsd_hd_ban_id.bsd_khach_hang_id.id,
+                        'bsd_du_an_id': ct.bsd_du_an_id.id,
+                        'bsd_hd_ban_id': ct.bsd_hd_ban_id.id,
+                        'bsd_unit_id': ct.bsd_unit_id.id,
+                        'bsd_dt_tt_tk': ct.bsd_dt_tt_tk,
+                        'bsd_dt_tt_tt': ct.bsd_dt_tt_tt,
+                        'bsd_cl_cp': ct.bsd_cl_cp,
+                        'bsd_cl_tt': ct.bsd_cl_tt,
+                    })
+                # Nếu sai lệch nằm trong giới hạn cho phép thì tạo th
+                elif abs(ct.bsd_cl_tt) < ct.bsd_ct_cp:
+                    ct.write({'bsd_loai': 'td_tt'})
+                # Nếu nằm ngoài giới hạn cho phép thì tạo phụ lục thay đổi diện tích
+                else:
+                    ct.write({'bsd_loai': 'td_dt'})
 
     # Không duyệt cập nhật DTTT
     def action_khong_duyet(self):
@@ -168,7 +188,7 @@ class BsdCapNhatDTTTDUnit(models.Model):
                            readonly=True,
                            states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", readonly=True)
-    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", readonly=True)
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", readonly=True, required=True)
     bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
@@ -215,13 +235,13 @@ class BsdCapNhatDTTTDUnit(models.Model):
 
     @api.model
     def create(self, vals):
+        if 'bsd_unit_id' in vals:
+            unit = self.env['product.product'].browse(vals['bsd_unit_id'])
+        vals['bsd_du_an_id'] = unit.bsd_du_an_id.id
+        vals['bsd_hd_ban_id'] = unit.bsd_hd_ban_id.id
+        vals['bsd_dt_tt_tk'] = unit.bsd_dt_sd
+        vals['bsd_cl_cp'] = unit.bsd_dt_cl
         res = super(BsdCapNhatDTTTDUnit, self).create(vals)
-        res.write({
-            'bsd_du_an_id': res.bsd_unit_id.bsd_du_an_id.id,
-            'bsd_hd_ban_id': res.bsd_unit_id.bsd_hd_ban_id.id,
-            'bsd_dt_tt_tk': res.bsd_unit_id.bsd_dt_sd,
-            'bsd_cl_cp': res.bsd_unit_id.bsd_dt_cl,
-        })
         if res.bsd_dt_tt_tt <= 0:
             raise UserError(_("Diện tích thực tế không thể nhỏ hơn hoặc bằng 0"))
         else:

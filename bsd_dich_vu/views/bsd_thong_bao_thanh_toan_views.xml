@@ -18,6 +18,12 @@
                             attrs="{'invisible': [('state', 'in',['nhap','huy'])]}"
                             type="object"
                             class="oe_highlight"/>
+                    <button string="Gửi thông báo"
+                            name="action_gui_tb"
+                            states="xac_nhan"
+                            type="object"
+                            attrs="{'invisible': ['|',('bsd_ngay_in', '=',False)]}"
+                            class="oe_highlight"/>
                     <button string="Hủy"
                             name="action_huy"
                             type="object"
@@ -59,11 +65,11 @@
                     <group string="XÁC NHẬN">
                         <group>
                             <field name="bsd_ngay_in"/>
-                            <field name="bsd_ngay_gui"/>
+                            <field name="bsd_nguoi_in_id"/>
                         </group>
                         <group>
-                            <field name="bsd_ngay_xn"/>
-                            <field name="bsd_nguoi_xn_id"/>
+                            <field name="bsd_ngay_gui"/>
+                            <field name="bsd_nguoi_gui_id"/>
                         </group>
                     </group>
                 </sheet>
