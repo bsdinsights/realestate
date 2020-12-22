@@ -35,7 +35,7 @@ class BsdPLTDTT(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
+    state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'), ('duyet', 'Duyệt'),
                               ('dk_pl', 'Đã ký phụ lục'), ('huy', 'Hủy')],
                              string="Trạng thái", help="Trạng thái", required=True, default="nhap", tracking=1)
     bsd_loai_pl = fields.Selection([('dien_tich', 'Diện tích'), ('ten_ch', 'Tên Sản phẩm')], required=True,
@@ -74,20 +74,45 @@ class BsdPLTDTT(models.Model):
 
     # DV.03.01 - Xác nhận phụ lục hợp đồng
     def action_xac_nhan(self):
+        # Kiểm tra hợp đồng đã bị thanh lý chưa
+        if self.bsd_hd_ban_id.state == 'thanh_ly':
+            raise UserError(_("Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin."))
         self.write({
             'state': 'xac_nhan',
+            'bsd_ngay_xn': datetime.date.today(),
+            'bsd_nguoi_xn_id': self.env.uid,
         })
 
-    # DV.03.02 - Ký phụ lục hợp đồng
-    def action_ky_pl(self):
-        action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_pl_tti_action').read()[0]
-        return action
-
-    # DV.03.03 - Hủy phụ lục hợp đồng
+    # Hủy phụ lục hợp đồng
     def action_huy(self):
-        self.write({
-            'state': 'huy'
-        })
+        if self.state in ['nhap', 'xac_nhan']:
+            return self.env.ref('bsd_dich_vu.bsd_wizard_huy_pl_action').read()[0]
+
+    # Không duyệt phụ lục hợp đồng
+    def action_khong_duyet(self):
+        if self.state == 'xac_nhan':
+            action = self.env.ref('bsd_dich_vu.bsd_wizard_khong_duyet_pl_action').read()[0]
+            return action
+
+    def action_duyet(self):
+        # Kiểm tra hợp đồng đã bị thanh lý chưa
+        if self.bsd_hd_ban_id.state == 'thanh_ly':
+            raise UserError(_("Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin."))
+        if self.state == 'xac_nhan':
+            self.write({
+                'bsd_nguoi_duyet_id': self.env.uid,
+                'bsd_ngay_duyet': fields.Date.today(),
+                'state': 'duyet',
+            })
+
+    # Ký phụ lục hợp đồng
+    def action_ky_pl(self):
+        # Kiểm tra hợp đồng đã bị thanh lý chưa
+        if self.bsd_hd_ban_id.state == 'thanh_ly':
+            raise UserError(_("Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin."))
+        if self.state == 'duyet':
+            action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_pl_action').read()[0]
+            return action
 
     @api.model
     def create(self, vals):
@@ -96,7 +121,7 @@ class BsdPLTDTT(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có quy định mã phụ lục thay đổi giá trị QSDĐ.\n'
+            raise UserError(_('Dự án chưa có quy định mã phụ lục thay đổi thông tin.\n'
                               'Vui lòng kiểm tra lại thông tin.'))
         vals['bsd_ma'] = sequence.next_by_id()
-        res = super(BsdPLTDTT, self).create(vals)
+        return super(BsdPLTDTT, self).create(vals)

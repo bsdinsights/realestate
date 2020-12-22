@@ -134,8 +134,20 @@ class BsdCapNhatDTTT(models.Model):
                         'bsd_cl_tt': ct.bsd_cl_tt,
                     })
                 # Nếu sai lệch nằm trong giới hạn cho phép thì tạo th
-                elif abs(ct.bsd_cl_tt) < ct.bsd_ct_cp:
+                elif abs(ct.bsd_cl_tt) < ct.bsd_cl_cp:
                     ct.write({'bsd_loai': 'td_tt'})
+                    self.env['bsd.pl_tti'].create({
+                        'bsd_khach_hang_id': ct.bsd_hd_ban_id.bsd_khach_hang_id.id,
+                        'bsd_du_an_id': ct.bsd_du_an_id.id,
+                        'bsd_hd_ban_id': ct.bsd_hd_ban_id.id,
+                        'bsd_unit_id': ct.bsd_unit_id.id,
+                        'bsd_dt_tt_tk': ct.bsd_dt_tt_tk,
+                        'bsd_dt_tt_tt': ct.bsd_dt_tt_tt,
+                        'bsd_cl_cp': ct.bsd_cl_cp,
+                        'bsd_cl_tt': ct.bsd_cl_tt,
+                        'bsd_loai_pl': 'dien_tich',
+                        'bsd_cn_dttt_unit_id': ct.id
+                    })
                 # Nếu nằm ngoài giới hạn cho phép thì tạo phụ lục thay đổi diện tích
                 else:
                     ct.write({'bsd_loai': 'td_dt'})

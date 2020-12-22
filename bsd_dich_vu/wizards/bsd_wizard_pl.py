@@ -38,6 +38,12 @@ class BsdKyPL(models.TransientModel):
                 'bsd_loai_pl': 'qsdd',
                 'bsd_pl_qsdd_id': pl_qsdd.id
             })
+        elif self._context.get('active_model', []) == 'bsd.pl_tti':
+            pl_tti = self.env['bsd.pl_tti'].browse(self._context.get('active_ids', []))
+            res.update({
+                'bsd_loai_pl': 'tti',
+                'bsd_pl_tti_id': pl_tti.id
+            })
         return res
 
     bsd_pl_pttt_id = fields.Many2one('bsd.pl_pttt', string="Phụ lục", readonly=True)
@@ -45,8 +51,10 @@ class BsdKyPL(models.TransientModel):
     bsd_pl_dkbg_id = fields.Many2one('bsd.pl_dkbg', string="Phụ lục", readonly=True)
     bsd_pl_qsdd_id = fields.Many2one('bsd.pl_qsdd', string="Phụ lục", readonly=True)
     bsd_ngay_ky_pl = fields.Date(string="Ngày ký phụ lục", required=True)
+    bsd_pl_tti_id = fields.Many2one('bsd.pl_tti', string="Phụ lục", readonly=True)
     bsd_loai_pl = fields.Selection([('pttt', 'PTTT'), ('cktm', 'CKTM'),
-                                    ('dkbg', 'ĐKBG'), ('qsdd', 'QSDĐ')])
+                                    ('dkbg', 'ĐKBG'), ('qsdd', 'QSDĐ'),
+                                    ('tti', 'Thay đổi thông tin')])
 
     def action_xac_nhan(self):
         if self.bsd_pl_pttt_id:
@@ -77,6 +85,12 @@ class BsdKyPL(models.TransientModel):
                 'state': 'dk_pl',
             })
             self.bsd_pl_qsdd_id.thay_doi_qsdd()
+        if self.bsd_pl_tti_id:
+            self.bsd_pl_tti_id.write({
+                'bsd_ngay_ky_pl': self.bsd_ngay_ky_pl,
+                'bsd_nguoi_xn_ky_id': self.env.uid,
+                'state': 'dk_pl',
+            })
 
 
 class BsdKhongDuyetPL(models.TransientModel):
@@ -112,14 +126,22 @@ class BsdKhongDuyetPL(models.TransientModel):
                 'bsd_loai_pl': 'qsdd',
                 'bsd_pl_qsdd_id': pl_qsdd.id
             })
+        elif self._context.get('active_model', []) == 'bsd.pl_tti':
+            pl_tti = self.env['bsd.pl_tti'].browse(self._context.get('active_ids', []))
+            res.update({
+                'bsd_loai_pl': 'tti',
+                'bsd_pl_tti_id': pl_tti.id
+            })
         return res
 
     bsd_pl_pttt_id = fields.Many2one('bsd.pl_pttt', string="Phụ lục", readonly=True)
     bsd_pl_cktm_id = fields.Many2one('bsd.pl_cktm', string="Phụ lục", readonly=True)
     bsd_pl_dkbg_id = fields.Many2one('bsd.pl_dkbg', string="Phụ lục", readonly=True)
     bsd_pl_qsdd_id = fields.Many2one('bsd.pl_qsdd', string="Phụ lục", readonly=True)
+    bsd_pl_tti_id = fields.Many2one('bsd.pl_tti', string="Phụ lục", readonly=True)
     bsd_loai_pl = fields.Selection([('pttt', 'PTTT'), ('cktm', 'CKTM'),
-                                    ('dkbg', 'ĐKBG'), ('qsdd', 'QSDĐ')])
+                                    ('dkbg', 'ĐKBG'), ('qsdd', 'QSDĐ'),
+                                    ('tti', 'Thay đổi thông tin')])
     bsd_ly_do = fields.Char(string="Lý do", required=True)
 
     def action_xac_nhan(self):
@@ -140,6 +162,11 @@ class BsdKhongDuyetPL(models.TransientModel):
             })
         elif self.bsd_pl_qsdd_id:
             self.bsd_pl_qsdd_id.write({
+                'bsd_ly_do': self.bsd_ly_do,
+                'state': 'nhap',
+            })
+        elif self.bsd_pl_tti_id:
+            self.bsd_pl_tti_id.write({
                 'bsd_ly_do': self.bsd_ly_do,
                 'state': 'nhap',
             })
@@ -178,14 +205,22 @@ class BsdHuytPL(models.TransientModel):
                 'bsd_loai_pl': 'qsdd',
                 'bsd_pl_qsdd_id': pl_qsdd.id
             })
+        elif self._context.get('active_model', []) == 'bsd.pl_tti':
+            pl_tti = self.env['bsd.pl_tti'].browse(self._context.get('active_ids', []))
+            res.update({
+                'bsd_loai_pl': 'tti',
+                'bsd_pl_tti_id': pl_tti.id
+            })
         return res
 
     bsd_pl_pttt_id = fields.Many2one('bsd.pl_pttt', string="Phụ lục", readonly=True)
     bsd_pl_cktm_id = fields.Many2one('bsd.pl_cktm', string="Phụ lục", readonly=True)
     bsd_pl_dkbg_id = fields.Many2one('bsd.pl_dkbg', string="Phụ lục", readonly=True)
     bsd_pl_qsdd_id = fields.Many2one('bsd.pl_qsdd', string="Phụ lục", readonly=True)
+    bsd_pl_tti_id = fields.Many2one('bsd.pl_tti', string="Phụ lục", readonly=True)
     bsd_loai_pl = fields.Selection([('pttt', 'PTTT'), ('cktm', 'CKTM'),
-                                    ('dkbg', 'ĐKBG'), ('qsdd', 'QSDĐ')])
+                                    ('dkbg', 'ĐKBG'), ('qsdd', 'QSDĐ'),
+                                    ('tti', 'Thay đổi thông tin')])
     bsd_ly_do = fields.Char(string="Lý do", required=True)
 
     def action_xac_nhan(self):
@@ -212,6 +247,13 @@ class BsdHuytPL(models.TransientModel):
             })
         elif self.bsd_pl_qsdd_id:
             self.bsd_pl_qsdd_id.write({
+                'bsd_ly_do_huy': self.bsd_ly_do,
+                'state': 'huy',
+                'bsd_ngay_huy': fields.Date.today(),
+                'bsd_nguoi_huy_id': self.env.uid
+            })
+        elif self.bsd_pl_tti_id:
+            self.bsd_pl_tti_id.write({
                 'bsd_ly_do_huy': self.bsd_ly_do,
                 'state': 'huy',
                 'bsd_ngay_huy': fields.Date.today(),

@@ -48,7 +48,6 @@
         'views/product_template_views.xml',
         'wizards/bsd_wizard_hd_ban_views.xml',
         'wizards/bsd_wizard_ky_pl_dsh_views.xml',
-        'wizards/bsd_wizard_ky_pl_tti_views.xml',
         'wizards/bsd_wizard_ms_hdb_views.xml',
         'wizards/bsd_wizard_uoc_tinh_ck_tt_views.xml',
         'wizards/bsd_wizard_gd_km_views.xml',

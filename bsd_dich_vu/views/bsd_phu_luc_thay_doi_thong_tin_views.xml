@@ -8,20 +8,30 @@
                 <header>
                     <button string="Xác nhận"
                             name="action_xac_nhan"
-                            states="nhap"
-                            confirm="Bạn có muốn xác nhận hợp đồng không?"
-                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            confirm="Bạn có muốn xác nhận phụ lục hợp đồng không?"
+                            attrs="{'invisible': ['|', ('state', '!=', 'nhap'),('id', '=', False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Duyệt"
+                            name="action_duyet"
+                            comfirm="Bạn có chắc muốn duyệt phụ lục hợp đồng này?"
+                            states="xac_nhan"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Ký phụ lục"
                             name="action_ky_pl"
+                            states="duyet"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Không duyệt"
+                            name="action_khong_duyet"
                             states="xac_nhan"
                             type="object"
                             class="oe_highlight"/>
                     <button string="Hủy"
                             name="action_huy"
-                            confirm="Bạn có chắc hủy phụ lục hợp đồng"
-                            states="xac_nhan"
+                            states="nhap,xac_nhan"
+                            ttrs="{'invisible': ['|',('id', '=',False)]}"
                             type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
@@ -39,8 +49,8 @@
                             <field name="bsd_dien_giai"/>
                         </group>
                         <group>
-                            <field name="bsd_du_an_id"/>
-                            <field name="bsd_unit_id"/>
+                            <field name="bsd_du_an_id" readonly="1" force_save="1"/>
+                            <field name="bsd_unit_id" readonly="1" force_save="1"/>
                             <field name="bsd_cn_dttt_unit_id"
                                    attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"
                                    options="{'no_create':true}"/>
