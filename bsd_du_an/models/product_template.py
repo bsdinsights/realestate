@@ -358,6 +358,34 @@ class ProductTemplate(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        for vals in vals_list:
+            if 'bsd_ngay_dkbg' not in vals:
+                du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+                vals['bsd_ngay_dkbg'] = du_an.bsd_ngay_dkbg
+            if 'bsd_qsdd_m2' not in vals:
+                du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+                vals['bsd_qsdd_m2'] = du_an.bsd_qsdd_m2
+            if 'bsd_tl_pbt' not in vals:
+                du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+                vals['bsd_tl_pbt'] = du_an.bsd_tl_pbt
+            if 'bsd_tien_gc' not in vals:
+                du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+                vals['bsd_tien_gc'] = du_an.bsd_tien_gc
+            if 'bsd_tien_dc' not in vals:
+                du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+                vals['bsd_tien_dc'] = du_an.bsd_tien_dc
+            if 'bsd_tl_tc' not in vals:
+                du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+                vals['bsd_tl_tc'] = du_an.bsd_tl_dc
+            if 'bsd_thang_pql' not in vals:
+                du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+                vals['bsd_thang_pql'] = du_an.bsd_thang_pql
+            if 'bsd_don_gia_pql' not in vals:
+                du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+                vals['bsd_don_gia_pql'] = du_an.bsd_pql_m2
+            if 'bsd_dk_bg' not in vals:
+                du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+                vals['bsd_dk_bg'] = du_an.bsd_dk_bg
         templates = super(ProductTemplate, self).create(vals_list)
         for template in templates:
             du_an = template.bsd_du_an_id
@@ -373,46 +401,6 @@ class ProductTemplate(models.Model):
                 template.write({
                     'bsd_ten_unit': toa_nha.bsd_ma_tn + du_an.bsd_dd_khu +
                                     tang.bsd_ten_tang + du_an.bsd_dd_tang + templates.bsd_ky_tu_sp
-                })
-            if not template.bsd_ngay_dkbg:
-                template.write({
-                    'bsd_ngay_dkbg': du_an.bsd_ngay_dkbg
-                })
-            if not template.bsd_qsdd_m2:
-                template.write({
-                    'bsd_qsdd_m2': du_an.bsd_qsdd_m2
-                })
-            if not template.bsd_tl_pbt:
-                template.write({
-                    'bsd_tl_pbt': du_an.bsd_tl_pbt
-                })
-            if not template.bsd_tien_gc:
-                template.write({
-                    'bsd_tien_gc': du_an.bsd_tien_gc
-                })
-            if not template.bsd_tien_dc:
-                template.write({
-                    'bsd_tien_dc': du_an.bsd_tien_dc
-                })
-            if not template.bsd_tl_tc:
-                template.write({
-                    'bsd_tl_tc': du_an.bsd_tl_dc
-                })
-            if not template.bsd_tl_tc:
-                template.write({
-                    'bsd_tl_tc': du_an.bsd_tl_dc
-                })
-            if not template.bsd_thang_pql:
-                template.write({
-                    'bsd_thang_pql': du_an.bsd_thang_pql
-                })
-            if not template.bsd_don_gia_pql:
-                template.write({
-                    'bsd_don_gia_pql': du_an.bsd_pql_m2
-                })
-            if not template.bsd_dk_bg:
-                template.write({
-                    'bsd_dk_bg': du_an.bsd_dk_bg
                 })
             if not template.bsd_loai_sd_ids:
                 template.write({

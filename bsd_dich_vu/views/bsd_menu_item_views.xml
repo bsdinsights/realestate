@@ -55,10 +55,10 @@
                   sequence='107'
                   action='bsd_pl_tti_action'
                   parent='bsd_phu_luc_menu_2' />
-        <menuitem id="bsd_dt_tt_menu_action_2"
-                  name="Diện tích thực tế"
+        <menuitem id="bsd_pl_cldt_menu_action_2"
+                  name="Điều chỉnh chênh lệch diện tích"
                   sequence="108"
-                  action="bsd_cn_dttt_action"
+                  action="bsd_pl_cldt_action"
                   parent="bsd_phu_luc_menu_2"/>
     <menuitem id="bsd_thong_bao_tt_nn_menu_2"
               name="Thông báo TT/ NN"

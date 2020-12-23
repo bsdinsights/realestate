@@ -3,7 +3,6 @@
 from odoo import models, fields, api, _
 from odoo.tools.float_utils import float_round
 from odoo.exceptions import UserError
-import datetime
 
 
 class BsdCapNhatDTTT(models.Model):
@@ -241,6 +240,69 @@ class BsdCapNhatDTTTDUnit(models.Model):
                              string="Trạng thái", default="nhap", required=True, readonly=True)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+
+    # field giá hiện tại
+    bsd_tien_ck_ht = fields.Monetary(string="Tiền chiết khấu", help="Tiền chiết khấu hiện tại", readonly=True)
+    bsd_qsdd_m2_ht = fields.Monetary(string="QSDĐ/ m2 hiện tại", help="Giá trị quyền sử dụng đất trên m2", readonly=True)
+    bsd_gia_ban_ht = fields.Monetary(string="Giá bán", help="Giá bán", readonly=True)
+    bsd_tien_bg_ht = fields.Monetary(string="Giá trị ĐKBG", help="Tổng tiền bàn giao", readonly=True)
+    bsd_gia_truoc_thue_ht = fields.Monetary(string="Giá bán trước thuế",
+                                            help="""Giá bán trước thuế: bằng giá bán cộng tiền bàn giao trừ 
+                                            chiết khấu""",
+                                            readonly=True)
+    bsd_tien_qsdd_ht = fields.Monetary(string="Giá trị QSDĐ",
+                                       help="""Giá trị sử dụng đất: bằng QSDĐ/m2 nhân với diện tích sử dung""",
+                                       readonly=True)
+    bsd_tien_thue_ht = fields.Monetary(string="Tiền thuế hiện tại",
+                                       help="""Tiền thuế: Giá bán trước thuế trừ giá trị QSDĐ, nhân với thuế suất""",
+                                       readonly=True)
+    bsd_tien_pbt_ht = fields.Monetary(string="Phí bảo trì", help="Phí bảo trì: bằng % phí bảo trì nhân với giá bán",
+                                      readonly=True)
+    bsd_tong_gia_ht = fields.Monetary(string="Tổng giá bán",
+                                      help="""Tổng giá bán: bằng Giá bán trước thuế cộng Tiền thuế cộng phí bảo trì""",
+                                      readonly=True)
+    bsd_tien_pql_ht = fields.Monetary(string="Phí quản lý", help="Số tiền phí quản lý hiện tại", readonly=True)
+
+    # field giá bán mới
+    bsd_dg_tt = fields.Monetary(string="Đơn giá tt (thiết kế)", help="Đơn giá thông thủy")
+    bsd_cl_dt = fields.Float(string="Chênh lệch diện tích", help="Chênh lệch diện tích")
+    bsd_gia_truoc_thue_moi = fields.Monetary(string="Giá bán trước thuế",
+                                             help="""Giá bán trước thuế: bằng giá bán cộng tiền bàn giao trừ 
+                                             chiết khấu""", compute='_compute_gia_truoc_thue', store=True,
+                                             readonly=True)
+    bsd_tien_qsdd_moi = fields.Monetary(string="Giá trị QSDĐ",
+                                        help="""Giá trị sử dụng đất: bằng QSDĐ/m2 nhân với diện tích sử dung""",
+                                        readonly=True)
+    bsd_tien_thue_moi = fields.Monetary(string="Tiền thuế mới",
+                                        help="""Tiền thuế: Giá bán trước thuế trừ giá trị QSDĐ, nhân với thuế suất""",
+                                        readonly=True, compute='_compute_tien_thue', store=True)
+    bsd_tien_pbt_moi = fields.Monetary(string="Phí bảo trì", help="Phí bảo trì: bằng % phí bảo trì nhân với giá bán",
+                                       readonly=True)
+    bsd_tong_gia_moi = fields.Monetary(string="Tổng giá bán",
+                                       help="""Tổng giá bán: bằng Giá bán trước thuế cộng Tiền thuế cộng phí bảo trì""",
+                                       readonly=True, compute='_compute_tong_gia', store=True)
+    bsd_tien_pql_moi = fields.Monetary(string="Phí quản lý", help="Số tiền phí quản lý mới",
+                                       compute="_compute_pbt", store=True)
+    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", readonly=True)
+
+    @api.depends('bsd_thue_suat', 'bsd_gia_truoc_thue_moi', 'bsd_tien_qsdd_moi')
+    def _compute_tien_thue(self):
+        for each in self:
+            each.bsd_tien_thue_moi = (each.bsd_gia_truoc_thue_moi - each.bsd_qsdd_m2_ht) * each.bsd_thue_suat / 100
+
+    @api.depends('bsd_dg_tt', 'bsd_dt_tt_tt')
+    def _compute_gia_truoc_thue(self):
+        for each in self:
+            each.bsd_gia_truoc_thue_moi = each.bsd_dg_tt * each.bsd_dt_tt_tt
+
+    @api.depends('bsd')
+    def _compute_pbt(self):
+        for each in self:
+            each.bsd_tien_pbt_moi = each.b
+    @api.depends('bsd_gia_truoc_thue_moi', 'bsd_tien_thue_moi', 'bsd_tien_pbt_moi')
+    def _compute_tong_gia(self):
+        for each in self:
+            each.bsd_tong_gia_moi = each.bsd_gia_truoc_thue_moi + each.bsd_tien_thue_moi + each.bsd_tien_pbt_moi
 
     def action_huy(self):
         if self.state == 'nhap':

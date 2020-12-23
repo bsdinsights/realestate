@@ -199,9 +199,36 @@
                                     <span>%</span>
                                 </div>
                             </div>
+                            <field name="bsd_tien_cl"/>
                             <field name="company_id" invisible="1"/>
                             <field name="currency_id" invisible="1"/>
                         </group>
+                    </group>
+                    <group string="SẢN PHẨM">
+                        <group>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="bsd_gia_ban_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_bg_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_ck_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_gia_truoc_thue_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_qsdd_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_thue_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_pbt_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tong_gia_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_pql_ht" readonly="1" force_save="1"/>
+                        </group>
+                            <group>
+                                <field name="bsd_gia_ban_moi"/>
+                                <field name="bsd_tien_bg_moi"/>
+                                <field name="bsd_tien_ck_moi"/>
+                                <field name="bsd_gia_truoc_thue_moi"/>
+                                <field name="bsd_tien_qsdd_moi"/>
+                                <field name="bsd_tien_thue_moi"/>
+                                <field name="bsd_tien_pbt_moi"/>
+                                <field name="bsd_tong_gia_moi"/>
+                                <field name="bsd_tien_pql_moi"/>
+                            </group>
                     </group>
                 </sheet>
             </form>
