@@ -86,6 +86,7 @@
                             </group>
                             <group string="SẢN PHẨM">
                                 <group>
+                                    <field name="bsd_tl_pbt" invisible="1" force_save="1"/>
                                     <field name="company_id" invisible="1"/>
                                     <field name="currency_id" invisible="1"/>
                                     <field name="bsd_gia_ban_ht"/>

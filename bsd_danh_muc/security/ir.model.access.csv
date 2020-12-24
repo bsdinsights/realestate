@@ -1,49 +1,49 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-bsd_quan_huyen_manager,Danh mục quận huyện,model_bsd_quan_huyen,bsd_danh_muc.group_manager,1,1,1,1
-bsd_phuong_xa_manager,Danh mục phường xã,model_bsd_phuong_xa,bsd_danh_muc.group_manager,1,1,1,1
-bsd_lai_suat_manager,Danh mục lãi suất,model_bsd_lai_suat,bsd_danh_muc.group_manager,1,1,1,1
-bsd_dk_bg_manager, Điều kiện bàn giao,model_bsd_dk_bg,bsd_danh_muc.group_manager,1,1,1,1
-bsd_pt_tt_manager,Phương thức thanh toán,model_bsd_pt_tt,bsd_danh_muc.group_manager,1,1,1,1
+access_bsd_quan_huyen,Danh mục quận huyện,model_bsd_quan_huyen,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_phuong_xa,Danh mục phường xã,model_bsd_phuong_xa,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_lai_suat,Danh mục lãi suất,model_bsd_lai_suat,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_dk_bg, Điều kiện bàn giao,model_bsd_dk_bg,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_pt_tt,Phương thức thanh toán,model_bsd_pt_tt,bsd_danh_muc.group_user,1,1,1,0
 
-bsd_pmg_ttc_manager,Phí môi giới,model_bsd_pmg_ttc,bsd_danh_muc.group_manager,1,1,1,1
-bsd_pmg_ctv_manager,Phí môi giới ctv,model_bsd_pmg_ctv,bsd_danh_muc.group_manager,1,1,1,1
-bsd_pmg_cty_manager,Phí môi giới cty,model_bsd_pmg_cty,bsd_danh_muc.group_manager,1,1,1,1
+access_bsd_pmg_ttc,Phí môi giới,model_bsd_pmg_ttc,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_pmg_ctv,Phí môi giới ctv,model_bsd_pmg_ctv,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_pmg_cty,Phí môi giới cty,model_bsd_pmg_cty,bsd_danh_muc.group_user,1,1,1,0
 
-bsd_tknh_ad_manager,Tài khoản ngân hàng đang áp dụng,model_bsd_tknh_ad,bsd_danh_muc.group_manager,1,1,1,1
-bsd_tknh_ch_manager,Tài khoản ngân hàng đang áp dụng căn hộ,model_bsd_tknh_ch,bsd_danh_muc.group_manager,1,1,1,1
+access_bsd_tknh_ad,Tài khoản ngân hàng đang áp dụng,model_bsd_tknh_ad,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_tknh_ch,Tài khoản ngân hàng đang áp dụng căn hộ,model_bsd_tknh_ch,bsd_danh_muc.group_user,1,1,1,0
 
-bsd_khuyen_mai_manager,chương trình khuyến mãi,model_bsd_khuyen_mai,bsd_danh_muc.group_manager,1,1,1,1
+access_bsd_khuyen_mai,chương trình khuyến mãi,model_bsd_khuyen_mai,bsd_danh_muc.group_user,1,1,1,0
 
-bsd_chiet_khau_manager,Quản lý chiết khấu,model_bsd_chiet_khau,bsd_danh_muc.group_manager,1,1,1,1
+access_bsd_chiet_khau,Quản lý chiết khấu,model_bsd_chiet_khau,bsd_danh_muc.group_user,1,1,1,0
 
-bsd_ck_ch_manager,Quản lý chiết khấu chung,model_bsd_ck_ch,bsd_danh_muc.group_manager,1,1,1,1
-bsd_ck_ch_ct_manager,Quản lý chiết khấu chung chi tiết,model_bsd_ck_ch_ct,bsd_danh_muc.group_manager,1,1,1,1
+access_bsd_ck_ch,Quản lý chiết khấu chung,model_bsd_ck_ch,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_ck_ch_ct,Quản lý chiết khấu chung chi tiết,model_bsd_ck_ch_ct,bsd_danh_muc.group_user,1,1,1,0
 
-bsd_ck_ms_manager,Quản lý chiết khấu mua sỉ,model_bsd_ck_ms,bsd_danh_muc.group_manager,1,1,1,1
-bsd_ck_ms_ct_manager,Quản lý chiết khấu mua sỉ chi tiết,model_bsd_ck_ms_ct,bsd_danh_muc.group_manager,1,1,1,1
+access_bsd_ck_ms,Quản lý chiết khấu mua sỉ,model_bsd_ck_ms,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_ck_ms_ct,Quản lý chiết khấu mua sỉ chi tiết,model_bsd_ck_ms_ct,bsd_danh_muc.group_user,1,1,1,0
 
-bsd_ck_nb_manager,Quản lý chiết khấu nội bộ,model_bsd_ck_nb,bsd_danh_muc.group_manager,1,1,1,1
-bsd_ck_nb_ct_manager,Quản lý chiết khấu nội bộ chi tiết,model_bsd_ck_nb_ct,bsd_danh_muc.group_manager,1,1,1,
+access_bsd_ck_nb,Quản lý chiết khấu nội bộ,model_bsd_ck_nb,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_ck_nb_ct,Quản lý chiết khấu nội bộ chi tiết,model_bsd_ck_nb_ct,bsd_danh_muc.group_user,1,1,1,
 
-bsd_ck_ttth_manager,Quản lý chiết khấu thanh toán trước hạn,model_bsd_ck_ttth,bsd_danh_muc.group_manager,1,1,1,1
-bsd_ck_ttth_ct_manager,Quản lý chiết khấu thanh toán trước hạn,model_bsd_ck_ttth_ct,bsd_danh_muc.group_manager,1,1,1,1
+access_bsd_ck_ttth,Quản lý chiết khấu thanh toán trước hạn,model_bsd_ck_ttth,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_ck_ttth_ct,Quản lý chiết khấu thanh toán trước hạn,model_bsd_ck_ttth_ct,bsd_danh_muc.group_user,1,1,1,0
 
-bsd_ck_cstt_manager,Quản lý chiết khấu theo chính sách thanh toán,model_bsd_ck_cstt,bsd_danh_muc.group_manager,1,1,1,1
-bsd_ck_cstt_ct_manager,Quản lý chiết khấu theo chính sách thanh toán chi tiết,model_bsd_ck_cstt_ct,bsd_danh_muc.group_manager,1,1,1,1
+access_bsd_ck_cstt,Quản lý chiết khấu theo chính sách thanh toán,model_bsd_ck_cstt,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_ck_cstt_ct,Quản lý chiết khấu theo chính sách thanh toán chi tiết,model_bsd_ck_cstt_ct,bsd_danh_muc.group_user,1,1,1,0
 
-bsd_ck_ttn_manager,Quản lý chiết khấu thanh toán nhanh,model_bsd_ck_ttn,bsd_danh_muc.group_manager,1,1,1,1
-bsd_ck_ttn_ct_manager,Quản lý chiết khấu thanh toán nhanh,model_bsd_ck_ttn_ct,bsd_danh_muc.group_manager,1,1,1,1
+access_bsd_ck_ttn,Quản lý chiết khấu thanh toán nhanh,model_bsd_ck_ttn,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_ck_ttn_ct,Quản lý chiết khấu thanh toán nhanh,model_bsd_ck_ttn_ct,bsd_danh_muc.group_user,1,1,1,0
 
-bsd_lai_phat_tt_manager, Thông tin lãi phạt thanh toán,model_bsd_lai_phat_tt,bsd_danh_muc.group_manager,1,1,1,1
+access_bsd_lai_phat_tt, Thông tin lãi phạt thanh toán,model_bsd_lai_phat_tt,bsd_danh_muc.group_user,1,1,1,0
 
-bsd_cs_tt_manager,Thông tin chính sách thanh toán,model_bsd_cs_tt,bsd_danh_muc.group_manager,1,1,1,1
-bsd_cs_tt_ct_manager,Thông tin chi tiết chính sách thanh toán,model_bsd_cs_tt_ct,bsd_danh_muc.group_manager,1,1,1,1
+access_bsd_cs_tt,Thông tin chính sách thanh toán,model_bsd_cs_tt,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_cs_tt_ct,Thông tin chi tiết chính sách thanh toán,model_bsd_cs_tt_ct,bsd_danh_muc.group_user,1,1,1,0
 
-bsd_ma_bo_cn_manager,Mã bộ chứng từ dự án,model_bsd_ma_bo_cn,bsd_danh_muc.group_manager,1,1,1,1
-bsd_ma_bo_cn_chung_manager,Mã bộ chứng từ chung,model_bsd_ma_bo_cn_chung,bsd_danh_muc.group_manager,1,1,1,1
+access_bsd_ma_bo_cn,Mã bộ chứng từ dự án,model_bsd_ma_bo_cn,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_ma_bo_cn_chung,Mã bộ chứng từ chung,model_bsd_ma_bo_cn_chung,bsd_danh_muc.group_user,1,1,1,0
 
-bsd_thue_suat_manager,Thuế suất,model_bsd_thue_suat,bsd_danh_muc.group_manager,1,1,1,1
+access_bsd_thue_suat,Thuế suất,model_bsd_thue_suat,bsd_danh_muc.group_user,1,1,1,0
 
-bsd_bang_gia_manager,Khai báo bảng giá,product.model_product_pricelist,bsd_danh_muc.group_manager,1,1,1,1
-bsd_bang_gia_chi_tiet_manager,Khai báo chi tiết bảng giá,product.model_product_pricelist_item,bsd_danh_muc.group_manager,1,1,1,1
+access_bsd_bang_gia,Khai báo bảng giá,product.model_product_pricelist,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_bang_gia_chi_tiet,Khai báo chi tiết bảng giá,product.model_product_pricelist_item,bsd_danh_muc.group_user,1,1,1,0
 

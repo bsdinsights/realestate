@@ -17,10 +17,10 @@ class BsdHuyGC(models.Model):
         ('bsd_ma_huy_gc_unique', 'unique (bsd_ma_huy_gc)',
          'Mã hủy giữ chỗ đã tồn tại !'),
     ]
-    bsd_ngay_huy_gc = fields.Datetime(string="Ngày", help="Ngày hủy", required=True,
-                                      default=lambda self: fields.Datetime.now(),
-                                      readonly=True,
-                                      states={'nhap': [('readonly', False)]})
+    bsd_ngay_huy_gc = fields.Date(string="Ngày", help="Ngày hủy", required=True,
+                                  default=lambda self: fields.Date.today(),
+                                  readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án",required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})

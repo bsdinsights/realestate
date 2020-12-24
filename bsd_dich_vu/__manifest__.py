@@ -10,6 +10,7 @@
                 'bsd_kinh_doanh',
                 'bsd_du_an',
                 'bsd_danh_muc',
+                'calendar'
     ],
     'data': [
         'security/user_groups.xml',

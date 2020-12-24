@@ -191,10 +191,13 @@ class BsdGiuCho(models.Model):
             raise UserError(_("Khách hàng đã tạo giữ chỗ sản phẩm này.\nVui lòng kiểm tra lại thông tin."))
 
     # Kiểm tra sản phẩm có thuộc dự án đã chọn hay ko
+    # Kiểm tra dự án đã phát hành hay chưa
     @api.constrains('bsd_unit_id', 'bsd_du_an_id')
     def _constrain_da(self):
         if self.bsd_unit_id.bsd_du_an_id != self.bsd_du_an_id:
             raise UserError(_("Sản phẩm không nằm trong dự án.\nVui lòng kiểm tra lại thông tin."))
+        if self.bsd_du_an_id.state != 'phat_hanh':
+            raise UserError(_("Dự án chưa ban hành.\nVui lòng kiểm tra lại thông tin."))
 
     @api.onchange('bsd_ngay_gc', 'bsd_du_an_id',)
     def _onchange_ngay_gc(self):

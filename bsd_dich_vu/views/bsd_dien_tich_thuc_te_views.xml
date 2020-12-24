@@ -219,15 +219,15 @@
                             <field name="bsd_tien_pql_ht" readonly="1" force_save="1"/>
                         </group>
                             <group>
-                                <field name="bsd_gia_ban_moi"/>
-                                <field name="bsd_tien_bg_moi"/>
-                                <field name="bsd_tien_ck_moi"/>
-                                <field name="bsd_gia_truoc_thue_moi"/>
-                                <field name="bsd_tien_qsdd_moi"/>
-                                <field name="bsd_tien_thue_moi"/>
-                                <field name="bsd_tien_pbt_moi"/>
-                                <field name="bsd_tong_gia_moi"/>
-                                <field name="bsd_tien_pql_moi"/>
+<!--                                <field name="bsd_gia_ban_moi"/>-->
+<!--                                <field name="bsd_tien_bg_moi"/>-->
+<!--                                <field name="bsd_tien_ck_moi"/>-->
+<!--                                <field name="bsd_gia_truoc_thue_moi"/>-->
+<!--                                <field name="bsd_tien_qsdd_moi"/>-->
+<!--                                <field name="bsd_tien_thue_moi"/>-->
+<!--                                <field name="bsd_tien_pbt_moi"/>-->
+<!--                                <field name="bsd_tong_gia_moi"/>-->
+<!--                                <field name="bsd_tien_pql_moi"/>-->
                             </group>
                     </group>
                 </sheet>

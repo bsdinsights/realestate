@@ -62,6 +62,12 @@ class BsdRapCan(models.Model):
             if self.bsd_unit_id.bsd_dot_mb_id:
                 raise UserError("Sản phẩm đang nằm trong đợt mở bán.\nBạn không được phép thực hiện Ráp căn!")
 
+    # Kiểm tra dự án đã phát hành hay chưa
+    @api.constrains('bsd_du_an_id')
+    def _constrain_da(self):
+        if self.bsd_du_an_id.state != 'phat_hanh':
+            raise UserError(_("Dự án chưa ban hành.\nVui lòng kiểm tra lại thông tin."))
+
     # KD.06.01 xác nhận ráp căn
     def action_xac_nhan(self):
         # Ghi nhận giờ ngày thanh toán

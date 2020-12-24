@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record model="ir.module.category" id="module_bsd_du_an">
-        <field name="name">Quản lý dự án</field>
+        <field name="name">Dự án</field>
         <field name="description">Phân quyền truy cập cho</field>
         <field name="sequence">20</field>
     </record>
@@ -16,9 +16,5 @@
         <field name="name">Quản lý</field>
         <field name="implied_ids" eval="[(4,ref('bsd_du_an.group_user'))]"/>
         <field name="category_id" ref="module_bsd_du_an"/>
-    </record>
-
-    <record id="base.default_user" model="res.users">
-            <field name="groups_id" eval="[(4,ref('bsd_du_an.group_manager'))]"/>
     </record>
 </odoo>

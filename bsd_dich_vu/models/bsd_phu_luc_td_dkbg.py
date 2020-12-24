@@ -55,6 +55,7 @@ class BsdPLDKBG(models.Model):
         self.bsd_tong_gia_ht = self.bsd_hd_ban_id.bsd_tong_gia
         self.bsd_tien_da_tt = self.bsd_hd_ban_id.bsd_tien_tt_hd
         self.bsd_thue_suat = self.bsd_hd_ban_id.bsd_thue_suat
+        self.bsd_tl_pbt = self.bsd_hd_ban_id.bsd_tl_pbt
 
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án",
                                    help="Tên dự án", required=True, readonly=True)
@@ -103,7 +104,7 @@ class BsdPLDKBG(models.Model):
                                         help="""Tiền thuế: Giá bán trước thuế trừ giá trị QSDĐ, nhân với thuế suất""",
                                         readonly=True, compute='_compute_tien_thue', store=True)
     bsd_tien_pbt_moi = fields.Monetary(string="Phí bảo trì", help="Phí bảo trì: bằng % phí bảo trì nhân với giá bán",
-                                       readonly=True)
+                                       compute='_compute_pbt', store=True)
     bsd_tong_gia_moi = fields.Monetary(string="Tổng giá bán",
                                        help="""Tổng giá bán: bằng Giá bán trước thuế cộng Tiền thuế cộng phí bảo trì""",
                                        readonly=True, compute='_compute_tong_gia', store=True)
@@ -134,6 +135,7 @@ class BsdPLDKBG(models.Model):
                                     help="Khi số tiền đã thu lớn hơn tiền thanh toán hợp đồng mới", readonly=True)
     bsd_da_co_lich = fields.Boolean(default=False)
     bsd_dot_ps_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt phát sinh")
+    bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì", readonly=True)
 
     @api.depends('bsd_thue_suat', 'bsd_gia_truoc_thue_moi', 'bsd_tien_qsdd_moi')
     def _compute_tien_thue(self):
@@ -144,6 +146,11 @@ class BsdPLDKBG(models.Model):
     def _compute_gia_truoc_thue(self):
         for each in self:
             each.bsd_gia_truoc_thue_moi = each.bsd_gia_ban_moi - each.bsd_tien_ck_moi + each.bsd_tien_bg_moi
+
+    @api.depends('bsd_gia_truoc_thue_moi', 'bsd_tl_pbt')
+    def _compute_pbt(self):
+        for each in self:
+            each.bsd_tien_pbt = each.bsd_gia_truoc_thue_moi * each.bsd_tl_pbt / 100
 
     @api.depends('bsd_gia_truoc_thue_moi', 'bsd_tien_thue_moi', 'bsd_tien_pbt_moi')
     def _compute_tong_gia(self):
@@ -167,6 +174,9 @@ class BsdPLDKBG(models.Model):
             raise UserError(_("Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin."))
         if not self.bsd_ltt_ids:
             raise UserError(_("Chưa tạo lịch thanh toán mới.\nVui lòng kiểm tra lại thông tin."))
+        # Kiểm tra phí bảo trì đã được thanh toán chưa
+        if self.bsd_hd_ban_id.bsd_dot_pbt_ids.filtered(lambda x: x.bsd_thanh_toan != 'chua_tt'):
+            raise UserError(_("Tiền phí bảo trì đang hoặc đã thanh toán.\nVui lòng kiểm tra lại thông tin."))
         self.write({
             'state': 'xac_nhan',
             'bsd_nguoi_xn_id': self.env.uid,
@@ -177,6 +187,9 @@ class BsdPLDKBG(models.Model):
         # Kiểm tra hợp đồng đã bị thanh lý chưa
         if self.bsd_hd_ban_id.state == 'thanh_ly':
             raise UserError(_("Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin."))
+        # Kiểm tra phí bảo trì đã được thanh toán chưa
+        if self.bsd_hd_ban_id.bsd_dot_pbt_ids.filtered(lambda x: x.bsd_thanh_toan != 'chua_tt'):
+            raise UserError(_("Tiền phí bảo trì đang hoặc đã thanh toán.\nVui lòng kiểm tra lại thông tin."))
         if self.state == 'xac_nhan':
             self.write({
                 'bsd_nguoi_duyet_id': self.env.uid,
@@ -301,6 +314,9 @@ class BsdPLDKBG(models.Model):
         # Kiểm tra hợp đồng đã bị thanh lý chưa
         if self.bsd_hd_ban_id.state == 'thanh_ly':
             raise UserError(_("Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin."))
+        # Kiểm tra phí bảo trì đã được thanh toán chưa
+        if self.bsd_hd_ban_id.bsd_dot_pbt_ids.filtered(lambda x: x.bsd_thanh_toan != 'chua_tt'):
+            raise UserError(_("Tiền phí bảo trì đang hoặc đã thanh toán.\nVui lòng kiểm tra lại thông tin."))
         if self.state == 'duyet':
             action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_pl_action').read()[0]
             return action
@@ -327,15 +343,17 @@ class BsdPLDKBG(models.Model):
                     'bsd_pl_dkbg_id': self.id,
                     'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
             })
-        _logger.debug("debug1")
         # Cập nhật lại tỷ lệ chiết khấu của hợp đồng
         self.bsd_hd_ban_id.write({
-            'bsd_tien_ck': self.bsd_tien_ck_moi,
+            'bsd_tien_bg': self.bsd_tien_bg_moi,
+            'bsd_tien_ck': self.bsd_tien_ck_moi
         })
-        _logger.debug("debug2")
+        # Cập nhật lại số tiền phí bảo trì mới
+        self.bsd_hd_ban_id.bsd_dot_pbt_ids.write({
+            'bsd_tien_dot_tt': self.bsd_tien_pbt_moi
+        })
         # Lấy các đợt chưa thanh toán ra khỏi hợp đồng
         self.bsd_ltt_ht_ids.filtered(lambda x: x.bsd_thanh_toan == 'chua_tt').write({'bsd_hd_ban_id': False})
-        _logger.debug("debug3")
         # Kiểm tra nếu có tiền thu vượt hợp đồng
         if self.bsd_tien_vuot > 0:
             # Tạo thanh toán trả trước ứng với số tiền thu vượt
@@ -348,7 +366,6 @@ class BsdPLDKBG(models.Model):
             }).action_xac_nhan()
             # Gắn những đợt 0 đồng vào hợp đồng
             self.bsd_ltt_ids.write({'bsd_hd_ban_id': self.bsd_hd_ban_id.id})
-            _logger.debug("debug4")
         elif self.bsd_tien_ps > 0:
             dot_ps = self.bsd_dot_ps_id
             dot_ps.write({'bsd_hd_ban_id': self.bsd_hd_ban_id.id})
@@ -360,7 +377,6 @@ class BsdPLDKBG(models.Model):
                 'bsd_loai': 'pl_hd',
                 'bsd_tien_ps': self.bsd_tien_ps
             })
-            _logger.debug("debug5")
         # Thêm các đợt mới vào hợp đồng
         elif self.bsd_tien_vuot == 0 and self.bsd_tien_ps == 0:
             self.bsd_ltt_ids\
@@ -371,7 +387,6 @@ class BsdPLDKBG(models.Model):
             dot_thu_pql = self.bsd_ltt_ids.filtered(lambda x: x.bsd_tinh_pql)
             self.bsd_hd_ban_id.bsd_dot_pbt_ids.write({'bsd_parent_id': dot_thu_pbt.id})
             self.bsd_hd_ban_id.bsd_dot_pql_ids.write({'bsd_parent_id': dot_thu_pql.id})
-            _logger.debug("debug6")
 
     # Hủy phụ lục hợp đồng
     def action_huy(self):

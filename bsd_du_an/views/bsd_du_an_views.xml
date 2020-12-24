@@ -14,18 +14,29 @@
                             <field name="bsd_sl_unit" widget="statinfo" string="Căn hộ"/>
                         </button>
                     </div>
+                    <field name="image_1920" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;: &quot;image_128&quot;}"/>
+                    <div class="oe_title">
+                        <div>
+                            <label for="bsd_ten_da" class="oe_edit_only"/>
+                            <h2>
+                                <field name="bsd_ten_da"/>
+                            </h2>
+                        </div>
+                        <div>
+                            <label for="bsd_ma_da"/>
+                            <field name="bsd_ma_da"/>
+                        </div>
+                    </div>
                     <notebook>
                         <page string="Thông tin chung">
                             <group>
                                 <group>
                                     <field name="currency_id" invisible="1"/>
                                     <field name="company_id" invisible="1"/>
-                                    <field name="bsd_ma_da"/>
                                     <field name="bsd_chu_dt_id"
                                            options="{'no_quick_create': true}"
                                            context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_dn_form',
                                                      'default_is_company': True, 'default_bsd_la_kh': True}"/>
-                                    <field name="bsd_ten_da"/>
                                     <field name="bsd_loai_da"/>
                                     <field name="bsd_mh_kd"/>
                                     <field name="bsd_loai_sd_ids"
@@ -49,6 +60,7 @@
                                         <field name="bsd_tong_dt" class="mr-1"/>
                                         <span>m2</span>
                                     </div>
+                                    <field name="bsd_dien_giai"/>
                                 </group>
                             </group>
                             <group string="ĐỊNH DẠNG MÃ CĂN HỘ">
@@ -252,16 +264,48 @@
             </search>
         </field>
     </record>
-
+<!--    Màn hình kanban view-->
+    <record model="ir.ui.view" id="bsd_du_an_kanban">
+        <field name="name">bsd.du_an.kanban</field>
+        <field name="model">bsd.du_an</field>
+        <field name="arch" type="xml">
+                <kanban>
+                    <field name="id"/>
+                    <field name="bsd_ma_da"/>
+                    <field name="bsd_ten_da"/>
+                    <field name="bsd_loai_da"/>
+                    <field name="bsd_mh_kd"/>
+                    <field name="bsd_loai_sd_ids"/>
+                    <field name="state"/>
+                    <field name="image_1920"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
+                                <t t-set="placeholder" t-value="'/base/static/img/company_image.png'"/>
+                                <div class="o_kanban_image_fill_left o_kanban_image_full" t-attf-style="background-image: url(#{kanban_image('bsd.du_an', 'image_128', record.id.raw_value, placeholder)})" role="img"/>
+                                <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title oe_partner_heading"><field name="bsd_ten_da"/></strong>
+                                    <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
+                                    <div><span>Mã: </span><field name="bsd_ma_da"/></div>
+                                    <div><span>Loại: </span><field name="bsd_loai_da"/></div>
+                                    <div><field name="bsd_loai_sd_ids" widget="many2many_tags"/></div>
+                                    <div><span>Tình trạng: </span><field name="state"/></div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+        </field>
+    </record>
     <record model="ir.actions.act_window" id="bsd_du_an_action">
         <field name="name">Dự án</field>
         <field name="res_model">bsd.du_an</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">kanban,tree,form</field>
         <field name="help" type="xml">
             <p>Tạo mới dự án</p>
         </field>
     </record>
-<record model="ir.ui.view" id="bsd_du_an_form_popup">
+    <record model="ir.ui.view" id="bsd_du_an_form_popup">
         <field name="name">bsd.du_an.form</field>
         <field name="model">bsd.du_an</field>
         <field name="arch" type="xml">

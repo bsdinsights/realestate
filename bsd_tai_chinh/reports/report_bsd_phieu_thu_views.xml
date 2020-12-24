@@ -65,50 +65,50 @@
                     <t t-set="doc" t-value="doc.with_context(lang=lang)" />
                     <t t-call="web.external_layout">
                         <div class="page bsd_font mt8">
-                            <div class="row" style="line-height:8px">
-                                <div class="col-4 mt16">
-                                    <p><b>Đơn vị: <span t-field="doc.company_id.name"/></b></p>
-                                    <p><b>Bộ phận: Kế toán</b></p>
+                            <div class="row">
+                                <div class="col-6 mt16">
+                                    <div><b>Đơn vị: <span t-field="doc.bsd_du_an_id.bsd_chu_dt_id.display_name"/></b></div>
+                                    <div><b>Bộ phận: Kế toán</b></div>
                                 </div>
-                                <div class="col-4"/>
+                                <div class="col-2"/>
                                 <div class="col-4 mt16">
-                                    <p class="text-center"><b>Mẫu số: 01 - TT</b></p>
-                                    <p class="text-center">(Ban hành theo QĐ số: 48/2006/QĐ - BTC</p>
-                                    <p class="text-center"> Ngày 14/09/2006 của Bộ trưởng BTC)</p>
+                                    <div class="text-center"><b>Mẫu số: 01 - TT</b></div>
+                                    <div class="text-center">(Ban hành theo QĐ số: 48/2006/QĐ - BTC</div>
+                                    <div class="text-center"> Ngày 14/09/2006 của Bộ trưởng BTC)</div>
                                 </div>
                             </div>
-                            <div class="row mt32" style="line-height:8px">
+                            <div class="row mt32">
                                 <div class="col-12">
                                     <h3 class="text-center">PHIẾU THU</h3>
-                                    <p class="text-center">
+                                    <div class="text-center">
                                         Ngày <span t-esc="ngay_pt.day"/>
                                         tháng <span t-esc="ngay_pt.month"/>
                                         năm <span t-esc="ngay_pt.year"/>
-                                    </p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row" style="line-height:8px">
+                            <div class="row">
                                 <div class="col-9"/>
                                 <div class="col-3">
-                                    <p>Quyển số:..................................</p>
-                                    <p>Số:...............................................</p>
-                                    <p>Nợ:...............................................</p>
-                                    <p>Có:...............................................</p>
+                                    <div>Quyển số:..................................</div>
+                                    <div>Số:...............................................</div>
+                                    <div>Nợ:...............................................</div>
+                                    <div>Có:...............................................</div>
                                 </div>
                             </div>
-                            <div class="row" style="line-height:8px">
+                            <div class="row">
                                 <div class="col-12 ml32">
                                     <t t-if="doc.bsd_khach_hang_id.is_company">
-                                        <p>Họ và tên người nộp tiền: <strong t-field="doc.bsd_khach_hang_id.display_name"/></p>
+                                        <div>Họ và tên người nộp tiền: <strong t-field="doc.bsd_khach_hang_id.display_name"/></div>
                                     </t>
                                     <t t-else="">
-                                        <p>Họ và tên người nộp tiền: <strong t-field="doc.bsd_khach_hang_id.display_name"/></p>
+                                        <div>Họ và tên người nộp tiền: <strong t-field="doc.bsd_khach_hang_id.display_name"/></div>
                                     </t>
-                                    <p class="mt8">Địa chỉ: <span t-field="doc.bsd_khach_hang_id.bsd_dia_chi_lh"/></p>
-                                    <p>Lý do nộp: <span t-field="doc.bsd_dien_giai"/></p>
-                                    <p>Số tiền: <span t-field="doc.bsd_tien_kh"/></p>
-                                    <p>(Viết bằng chữ): <span t-esc="tien_chu"/></p>
-                                    <p>Kèm theo:...........................Chứng từ gốc.</p>
+                                    <div class="mt8">Địa chỉ: <span t-field="doc.bsd_khach_hang_id.bsd_dia_chi_lh"/></div>
+                                    <div>Lý do nộp: <span t-field="doc.bsd_dien_giai"/></div>
+                                    <div>Số tiền: <span t-field="doc.bsd_tien_kh"/></div>
+                                    <div>(Viết bằng chữ): <span t-esc="tien_chu"/></div>
+                                    <div>Kèm theo:...........................Chứng từ gốc.</div>
                                 </div>
                             </div>
                             <div class="row mt32">
@@ -120,26 +120,26 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mt16" style="line-height:8px">
+                            <div class="row mt16">
                                 <div class="col-2 offset-1">
-                                    <p class="text-center"><b>Giám đốc</b></p>
-                                    <p class="text-center">(Ký, họ tên, đóng dấu)</p>
+                                    <div class="text-center"><b>Giám đốc</b></div>
+                                    <div class="text-center">(Ký, họ tên, đóng dấu)</div>
                                 </div>
                                 <div class="col-2">
-                                    <p class="text-center"><b>Kế toán trưởng</b></p>
-                                    <p class="text-center">(Ký, họ tên)</p>
+                                    <div class="text-center"><b>Kế toán trưởng</b></div>
+                                    <div class="text-center">(Ký, họ tên)</div>
                                 </div>
                                 <div class="col-2">
-                                    <p class="text-center"><b>Người nộp tiền</b></p>
-                                    <p class="text-center">(Ký, họ tên)</p>
+                                    <div class="text-center"><b>Người nộp tiền</b></div>
+                                    <div class="text-center">(Ký, họ tên)</div>
                                 </div>
                                 <div class="col-2">
-                                    <p class="text-center"><b>Người lập phiếu</b></p>
-                                    <p class="text-center">(Ký, họ tên)</p>
+                                    <div class="text-center"><b>Người lập phiếu</b></div>
+                                    <div class="text-center">(Ký, họ tên)</div>
                                 </div>
                                 <div class="col-2">
-                                    <p class="text-center"><b>Thủ quỹ</b></p>
-                                    <p class="text-center">(Ký, họ tên)</p>
+                                    <div class="text-center"><b>Thủ quỹ</b></div>
+                                    <div class="text-center">(Ký, họ tên)</div>
                                 </div>
                             </div>
                         </div>

@@ -39,8 +39,8 @@
                             type="object"
                             sequence="50"
                             confirm="Bạn có muốn hủy giữ chỗ không?"
-                            states="xac_nhan"
-                            attrs="{'invisible':['|',('bsd_thanh_toan', '!=','chua_tt')]}"/>
+                            states="xac_nhan,nhap"
+                            attrs="{'invisible':['|','|',('bsd_thanh_toan', '!=','chua_tt'),('id', '=',False)]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>

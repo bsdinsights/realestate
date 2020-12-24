@@ -125,10 +125,10 @@ class BsdDatCoc(models.Model):
     bsd_tien_pbt = fields.Monetary(string="Phí bảo trì", help="Phí bảo trì: bằng % phí bảo trì nhân với giá bán",
                                    compute="_compute_tien_pbt", store=True)
 
-    @api.depends('bsd_gia_ban', 'bsd_tl_pbt')
+    @api.depends('bsd_gia_truoc_thue', 'bsd_tl_pbt')
     def _compute_tien_pbt(self):
         for each in self:
-            each.bsd_tien_pbt = each.bsd_gia_ban * each.bsd_tl_pbt / 100
+            each.bsd_tien_pbt = each.bsd_gia_truoc_thue * each.bsd_tl_pbt / 100
 
     bsd_tong_gia = fields.Monetary(string="Tổng giá bán",
                                    help="""Tổng giá bán: bằng Giá bán trước thuế cộng Tiền thuế cộng phí bảo trì""",

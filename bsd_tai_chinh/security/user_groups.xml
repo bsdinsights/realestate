@@ -17,9 +17,4 @@
         <field name="implied_ids" eval="[(4,ref('bsd_tai_chinh.group_user'))]"/>
         <field name="category_id" ref="module_bsd_tai_chinh"/>
     </record>
-
-    <record id="base.default_user" model="res.users">
-            <field name="groups_id" eval="[(4,ref('bsd_tai_chinh.group_manager'))]"/>
-    </record>
-
 </odoo>

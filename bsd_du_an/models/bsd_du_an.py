@@ -9,7 +9,7 @@ _logger = logging.getLogger(__name__)
 class BsdProject(models.Model):
     _name = "bsd.du_an"
     _rec_name = "bsd_ten_da"
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin', 'image.mixin']
     _description = "Thông tin dự án"
 
     bsd_ten_da = fields.Char(string="Tên dự án", required=True, help="Tên dự án",
@@ -210,6 +210,7 @@ class BsdProject(models.Model):
                              help="% thanh toán đủ điều kiện bàn giao(tối thiểu",
                              readonly=True,
                              states={'chuan_bi': [('readonly', False)]})
+    bsd_dien_giai = fields.Text(string="Mô tả", help="Mô tả dự án")
 
     @api.constrains('bsd_tl_dc')
     def _check_ty_le_coc(self):

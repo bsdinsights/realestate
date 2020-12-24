@@ -135,6 +135,12 @@ class BsdGiuChoThienChi(models.Model):
             if record.bsd_tien_gc < 0:
                 raise ValidationError("Tiền giữ chỗ phải lớn hơn 0.")
 
+    # Kiểm tra dự án đã phát hành hay chưa
+    @api.constrains('bsd_du_an_id')
+    def _constrain_da(self):
+        if self.bsd_du_an_id.state != 'phat_hanh':
+            raise UserError(_("Dự án chưa ban hành.\nVui lòng kiểm tra lại thông tin."))
+
     def _compute_chuyen_gc(self):
         for each in self:
             chuyen_gc = self.env['bsd.chuyen_gc'].search([('bsd_gc_tc_id', '=', self.id)])

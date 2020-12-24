@@ -155,7 +155,7 @@ class BsdPhieuThu(models.Model):
         # Cập nhật trạng thái hiệu lực các chi tiết
         for ct in self.bsd_ct_ids:
             ct.write({
-                'bsd_ngay_pb': fields.Datetime.now(),
+                'bsd_ngay_pb': get_time,
                 'state': 'hieu_luc',
             })
             # Cập nhật trạng thái chứng từ gốc và số tiền thanh toán

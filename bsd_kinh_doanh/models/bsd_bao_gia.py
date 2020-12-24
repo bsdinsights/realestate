@@ -236,10 +236,10 @@ class BsdBaoGia(models.Model):
             so_ngay = datetime.timedelta(days=each.bsd_du_an_id.bsd_hh_bg)
             each.bsd_ngay_hl_bg = each.bsd_ngay_bao_gia + so_ngay
 
-    @api.depends('bsd_gia_ban', 'bsd_tl_pbt')
+    @api.depends('bsd_gia_truoc_thue', 'bsd_tl_pbt')
     def _compute_tien_pbt(self):
         for each in self:
-            each.bsd_tien_pbt = each.bsd_gia_ban * each.bsd_tl_pbt / 100
+            each.bsd_tien_pbt = each.bsd_gia_truoc_thue * each.bsd_tl_pbt / 100
 
     @api.onchange('bsd_unit_id', 'bsd_bang_gia_id')
     def _onchange_gia_ban(self):

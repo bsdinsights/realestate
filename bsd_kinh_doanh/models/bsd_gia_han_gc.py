@@ -62,7 +62,9 @@ class BsdGiaHanGiuCho(models.Model):
                                    states={'nhap': [('readonly', False)]})
     bsd_loai_gc = fields.Selection([('gc_tc', 'Giữ chỗ thiện chí'),
                                     ('giu_cho', 'Giữ chỗ')], string="Loại giữ chỗ", required=True)
-    bsd_loai_gh = fields.Selection([('san_pham', 'Sản phẩm'), ('hang_loat', 'Hàng loạt')], string="Loại gia hạn",
+    bsd_loai_gh = fields.Selection([('du_an', 'Giữ chỗ dự án'),
+                                    ('san_pham', 'Giữ chỗ sản phẩm'),
+                                    ('hang_loat', 'Hàng loạt')], string="Loại gia hạn",
                                    readonly=True, required=True, default='hang_loat',
                                    states={'nhap': [('readonly', False)]})
     bsd_so_ngay = fields.Integer(string="Số ngày gia hạn", help="Số ngày gia hạn cho giữ chỗ", required=True,
@@ -71,10 +73,10 @@ class BsdGiaHanGiuCho(models.Model):
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('da_duyet', 'Đã duyệt'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
                              required=True, default='nhap', tracking=1)
-    bsd_ct_ids = fields.One2many('bsd.gia_han_gc_ct', 'bsd_gia_han_id', string="DS giữ chỗ",
+    bsd_ct_ids = fields.One2many('bsd.gia_han_gc_ct', 'bsd_gia_han_id', string="Giữ chỗ",
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
-    bsd_gctc_ct_ids = fields.One2many('bsd.gia_han_gctc_ct', 'bsd_gia_han_id', string="DS giữ chỗ thiện chí",
+    bsd_gctc_ct_ids = fields.One2many('bsd.gia_han_gctc_ct', 'bsd_gia_han_id', string="Giữ chỗ thiện chí",
                                       readonly=True,
                                       states={'nhap': [('readonly', False)]})
     bsd_dien_giai = fields.Char(string="Diễn giải",
@@ -187,12 +189,14 @@ class BsdGiaHanGiuChoChiTiet(models.Model):
     _description = 'Chi tiết các giữ chỗ được gia hạn'
 
     bsd_gia_han_id = fields.Many2one('bsd.gia_han_gc', string="Gia hạn GC", help="Gia hạn giữ chỗ", required=True)
-    bsd_so_ngay = fields.Integer(string="Số ngày", related='bsd_gia_han_id.bsd_so_ngay')
+    bsd_ngay_gh = fields.Date(string="Ngày gia hạn", help="Ngày gia hạn của giữ chỗ")
     bsd_ly_do = fields.Char(string="Lý do", help="Lý do giữ chỗ không được gia hạn", readonly=True)
     bsd_giu_cho_id = fields.Many2one('bsd.giu_cho', string="Giữ chỗ", help="Giữ chỗ")
+    bsd_han_ht = fields.Date(string="Hạn giữ chỗ", help="Hạn giữ chỗ hiện tại", readonly=True)
     state = fields.Selection([('cho_duyet', 'Chờ duyệt'),
                               ('hieu_luc', 'Hiệu lực'),
-                              ('huy', 'Hủy')], string="Trạng thái", required=True, default='cho_duyet')
+                              ('huy', 'Hủy')], string="Trạng thái",
+                             readony=True, required=True, default='cho_duyet')
 
 
 class BsdGiaHanGiuChoThienChiChiTiet(models.Model):
@@ -200,9 +204,12 @@ class BsdGiaHanGiuChoThienChiChiTiet(models.Model):
     _description = 'Chi tiết các giữ chỗ thiện chí được gia hạn'
 
     bsd_gia_han_id = fields.Many2one('bsd.gia_han_gc', string="Gia hạn GC", help="Gia hạn giữ chỗ", required=True)
-    bsd_so_ngay = fields.Integer(string="Số ngày", related='bsd_gia_han_id.bsd_so_ngay')
+    bsd_ngay_gh = fields.Date(string="Ngày gia hạn", help="Ngày gia hạn của giữ chỗ")
     bsd_ly_do = fields.Char(string="Lý do", help="Lý do giữ chỗ không được gia hạn", readonly=True)
-    bsd_gc_tc_id = fields.Many2one('bsd.gc_tc', string="Giữ chỗ thiện chí", help="Giữ chỗ thiện chí")
+    bsd_gc_tc_id = fields.Many2one('bsd.gc_tc', string="Giữ chỗ thiện chí", help="Giữ chỗ thiện chí", required=True)
+    bsd_han_ht = fields.Date(string="Hạn giữ chỗ", help="Hạn giữ chỗ hiện tại", readonly=True)
     state = fields.Selection([('cho_duyet', 'Chờ duyệt'),
                               ('hieu_luc', 'Hiệu lực'),
-                              ('huy', 'Hủy')], string="Trạng thái", required=True, default='cho_duyet')
+                              ('huy', 'Hủy')], string="Trạng thái",
+                             required=True, readony=True,
+                             default='cho_duyet')

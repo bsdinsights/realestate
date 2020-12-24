@@ -1,19 +1,19 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-bsd_hd_ban_manager,Hợp đồng mua bán,model_bsd_hd_ban,bsd_dich_vu.group_user,1,1,1,0
-bsd_dong_so_huu_manager,Người đồng sở hữu,model_bsd_dong_so_huu,bsd_dich_vu.group_user,1,1,1,0
-bsd_pl_dsh_manager,Phụ lục hợp đồng đồng sở hữu,model_bsd_pl_dsh,bsd_dich_vu.group_user,1,1,1,0
-bsd_pl_dsh_moi_manager,Đồng sở hữu mới,model_bsd_pl_dsh_moi,bsd_dich_vu.group_user,1,1,1,0
-bsd_pl_dsh_cu_manager,Đồng sở hữu,model_bsd_pl_dsh_cu,bsd_dich_vu.group_user,1,1,1,0
-bsd_pl_tti_manager,Phụ lục thay đổi thông tin,model_bsd_pl_tti,bsd_dich_vu.group_user,1,1,1,0
-bsd_pl_pttt_manager,Phụ lục thay đổi phương thức thanh toán,model_bsd_pl_pttt,bsd_dich_vu.group_user,1,1,1,0
-bsd_pl_cktm_manager,Phụ lục thay đổi chiết khấu thương mại,model_bsd_pl_cktm,bsd_dich_vu.group_user,1,1,1,0
-bsd_pl_dkbg_manager,Phụ lục thay đổi điều kiện bàn giao,model_bsd_pl_dkbg,bsd_dich_vu.group_user,1,1,1,0
-bsd_pl_qsdd_manager,Phụ lục thay đổi giá trị QSDĐ,model_bsd_pl_qsdd,bsd_dich_vu.group_user,1,1,1,0
-bsd_pl_cldt,Phụ lục điều chỉnh chênh lệch diện tích,model_bsd_pl_cldt,bsd_dich_vu.group_user,1,1,1,0
-bsd_ps_gd_km_manager, Bảng phát sinh giao dịch khuyến mãi,model_bsd_ps_gd_km,bsd_kinh_doanh.group_user,1,1,1,0
-bsd_hd_ban_cn_manager, Chuyển nhượng hợp đồng,model_bsd_hd_ban_cn,bsd_dich_vu.group_user,1,1,1,0
-bsd_cn_dsh_moi_manager, Đồng sở hữu mới (chuyển nhượng),model_bsd_cn_dsh_moi,bsd_dich_vu.group_user,1,1,1,0
-bsd_cn_dsh_cu_manager, Đồng sở hữu (chuyển nhượng),model_bsd_cn_dsh_cu,bsd_dich_vu.group_user,1,1,1,0
+access_bsd_hd_ban,Hợp đồng mua bán,model_bsd_hd_ban,bsd_dich_vu.group_user,1,1,1,0
+access_bsd_dong_so_huu,Người đồng sở hữu,model_bsd_dong_so_huu,bsd_dich_vu.group_user,1,1,1,0
+access_bsd_pl_dsh,Phụ lục hợp đồng đồng sở hữu,model_bsd_pl_dsh,bsd_dich_vu.group_user,1,1,1,0
+access_bsd_pl_dsh_moi,Đồng sở hữu mới,model_bsd_pl_dsh_moi,bsd_dich_vu.group_user,1,1,1,0
+access_bsd_pl_dsh_cu,Đồng sở hữu,model_bsd_pl_dsh_cu,bsd_dich_vu.group_user,1,1,1,0
+access_bsd_pl_tti,Phụ lục thay đổi thông tin,model_bsd_pl_tti,bsd_dich_vu.group_user,1,1,1,0
+access_bsd_pl_pttt,Phụ lục thay đổi phương thức thanh toán,model_bsd_pl_pttt,bsd_dich_vu.group_user,1,1,1,0
+access_bsd_pl_cktm,Phụ lục thay đổi chiết khấu thương mại,model_bsd_pl_cktm,bsd_dich_vu.group_user,1,1,1,0
+access_bsd_pl_dkbg,Phụ lục thay đổi điều kiện bàn giao,model_bsd_pl_dkbg,bsd_dich_vu.group_user,1,1,1,0
+access_bsd_pl_qsdd,Phụ lục thay đổi giá trị QSDĐ,model_bsd_pl_qsdd,bsd_dich_vu.group_user,1,1,1,0
+access_bsd_pl_cldt,Phụ lục điều chỉnh chênh lệch diện tích,model_bsd_pl_cldt,bsd_dich_vu.group_user,1,1,1,0
+access_bsd_ps_gd_km, Bảng phát sinh giao dịch khuyến mãi,model_bsd_ps_gd_km,bsd_kinh_doanh.group_user,1,1,1,0
+access_bsd_hd_ban_cn, Chuyển nhượng hợp đồng,model_bsd_hd_ban_cn,bsd_dich_vu.group_user,1,1,1,0
+access_bsd_cn_dsh_moi, Đồng sở hữu mới (chuyển nhượng),model_bsd_cn_dsh_moi,bsd_dich_vu.group_user,1,1,1,0
+access_bsd_cn_dsh_cu, Đồng sở hữu (chuyển nhượng),model_bsd_cn_dsh_cu,bsd_dich_vu.group_user,1,1,1,0
 
 bsd_cn_dkbg,Cập nhật dự kiến bàn giao,model_bsd_cn_dkbg,bsd_dich_vu.group_user,1,1,1,0
 bsd_cn_dkbg_unit,Cập nhật dự kiến bàn giao unit,model_bsd_cn_dkbg_unit,bsd_dich_vu.group_user,1,1,1,0

@@ -308,7 +308,7 @@ class ProductTemplate(models.Model):
     @api.depends('bsd_don_gia_pql', 'bsd_dt_sd', 'bsd_thang_pql')
     def _compute_tien_pql(self):
         for each in self:
-            each.bsd_tien_pql = each.bsd_don_gia_pql * each.bsd_dt_sd * each.bsd_thang_pql
+            each.bsd_tien_pql = each.bsd_don_gia_pql * each.bsd_dt_sd * each.bsd_thang_pql * 1.1
 
     @api.depends('bsd_dt_sd', 'bsd_qsdd_m2')
     def _compute_bsd_tong_gtsd_dat(self):

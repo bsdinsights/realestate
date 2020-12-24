@@ -50,6 +50,7 @@
                             <field name="bsd_ct_ids">
                                 <tree>
                                     <field name="bsd_giu_cho_id"/>
+                                    <field name="bsd_ngay_gh"/>
                                     <field name="bsd_ly_do"/>
                                     <field name="state"/>
                                 </tree>
@@ -60,6 +61,7 @@
                             <field name="bsd_gctc_ct_ids">
                                 <tree>
                                     <field name="bsd_gc_tc_id"/>
+                                    <field name="bsd_ngay_gh"/>
                                     <field name="bsd_ly_do"/>
                                     <field name="state"/>
                                 </tree>
@@ -137,7 +139,7 @@
                                     <field name="bsd_du_an_id" readonly="1" force_save="1"
                                            domain="[('state', '!=','chuan_bi')]"
                                            options="{'no_create':true}"/>
-                                    <field name="bsd_so_ngay"/>
+                                    <field name="bsd_so_ngay" attrs="{'invisible':[('bsd_loai_gc', '!=', 'hang_loat')]}"/>
                                     <field name="bsd_dien_giai"/>
                                 </group>
                             </group>
@@ -146,6 +148,7 @@
                             <field name="bsd_ct_ids">
                                 <tree>
                                     <field name="bsd_giu_cho_id"/>
+                                    <field name="bsd_ngay_gh"/>
                                     <field name="bsd_ly_do"/>
                                     <field name="state"/>
                                 </tree>
@@ -206,6 +209,7 @@
                             <field name="bsd_gctc_ct_ids">
                                 <tree>
                                     <field name="bsd_gc_tc_id"/>
+                                    <field name="bsd_ngay_gh"/>
                                     <field name="bsd_ly_do"/>
                                     <field name="state"/>
                                 </tree>
@@ -230,6 +234,47 @@
         <field name="target">new</field>
         <field name="view_id" ref="bsd_gia_han_gctc_form_popup"/>
         <field name="binding_model_id" ref="model_bsd_gc_tc"/>
-        <field name="context">{'default_bsd_loai_gh':'san_pham', 'default_bsd_loai_gc':'gc_tc'}</field>
+        <field name="context">{'default_bsd_loai_gh':'du_an', 'default_bsd_loai_gc':'gc_tc'}</field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_gia_han_gctc_ct_form_popup">
+        <field name="name">bsd.gia_han_gctc_ct.form</field>
+        <field name="model">bsd.gia_han_gctc_ct</field>
+        <field name="arch" type="xml">
+            <form duplicate="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_gia_han_id" readonly="1" force_save="1"/>
+                            <field name="bsd_gc_tc_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ngay_gh"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_gia_han_gc_ct_form_popup">
+        <field name="name">bsd.gia_han_gc_ct.form</field>
+        <field name="model">bsd.gia_han_gc_ct</field>
+        <field name="arch" type="xml">
+            <form duplicate="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_gia_han_id" readonly="1" force_save="1"/>
+                            <field name="bsd_giu_cho_id"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ngay_gh"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
     </record>
 </odoo>

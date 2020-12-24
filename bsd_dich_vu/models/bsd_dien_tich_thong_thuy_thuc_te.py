@@ -295,10 +295,11 @@ class BsdCapNhatDTTTDUnit(models.Model):
         for each in self:
             each.bsd_gia_truoc_thue_moi = each.bsd_dg_tt * each.bsd_dt_tt_tt
 
-    @api.depends('bsd')
+    @api.depends('bsd_tien_pbt_ht')
     def _compute_pbt(self):
         for each in self:
-            each.bsd_tien_pbt_moi = each.b
+            each.bsd_tien_pbt_moi = each.bsd_tien_pbt_ht
+
     @api.depends('bsd_gia_truoc_thue_moi', 'bsd_tien_thue_moi', 'bsd_tien_pbt_moi')
     def _compute_tong_gia(self):
         for each in self:
