@@ -36,7 +36,9 @@ class BsdGiaHanGiuCho(models.Model):
                     raise UserError(_("Chọn giữ chỗ nằm ở 2 dự án khác nhau.\nVui lòng kiểm tra lại."))
                 item = []
                 for gc in giu_cho:
-                    item.append((0, 0, {'bsd_giu_cho_id': gc.id, 'state': 'cho_duyet'}))
+                    item.append((0, 0, {'bsd_giu_cho_id': gc.id,
+                                        'bsd_han_ht': gc.bsd_ngay_hh_gc,
+                                        'state': 'cho_duyet'}))
                 res.update({
                     'bsd_du_an_id': du_an.id,
                     'bsd_tieu_de': "Gia hạn giữ chỗ",
@@ -50,7 +52,9 @@ class BsdGiaHanGiuCho(models.Model):
                     raise UserError(_("Chọn giữ chỗ nằm ở 2 dự án khác nhau.\nVui lòng kiểm tra lại."))
                 item = []
                 for gc in gc_tc:
-                    item.append((0, 0, {'bsd_gc_tc_id': gc.id, 'state': 'cho_duyet'}))
+                    item.append((0, 0, {'bsd_gc_tc_id': gc.id,
+                                        'bsd_han_ht': gc.bsd_ngay_hh_gctc,
+                                        'state': 'cho_duyet'}))
                 res.update({
                     'bsd_du_an_id': du_an.id,
                     'bsd_tieu_de': "Gia hạn giữ chỗ thiện chí",
@@ -61,17 +65,19 @@ class BsdGiaHanGiuCho(models.Model):
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_loai_gc = fields.Selection([('gc_tc', 'Giữ chỗ thiện chí'),
-                                    ('giu_cho', 'Giữ chỗ')], string="Loại giữ chỗ", required=True)
+                                    ('giu_cho', 'Giữ chỗ')], string="Loại giữ chỗ", required=True,
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
     bsd_loai_gh = fields.Selection([('du_an', 'Giữ chỗ dự án'),
                                     ('san_pham', 'Giữ chỗ sản phẩm'),
                                     ('hang_loat', 'Hàng loạt')], string="Loại gia hạn",
                                    readonly=True, required=True, default='hang_loat',
                                    states={'nhap': [('readonly', False)]})
-    bsd_so_ngay = fields.Integer(string="Số ngày gia hạn", help="Số ngày gia hạn cho giữ chỗ", required=True,
+    bsd_so_ngay = fields.Integer(string="Số ngày gia hạn", help="Số ngày gia hạn cho giữ chỗ",
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
-                              ('da_duyet', 'Đã duyệt'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
+                              ('da_duyet', 'Duyệt'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
                              required=True, default='nhap', tracking=1)
     bsd_ct_ids = fields.One2many('bsd.gia_han_gc_ct', 'bsd_gia_han_id', string="Giữ chỗ",
                                  readonly=True,
@@ -84,6 +90,17 @@ class BsdGiaHanGiuCho(models.Model):
                                 states={'nhap': [('readonly', False)]})
     bsd_ngay_duyet = fields.Datetime(string="Ngày duyệt", readonly=True)
     bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
+
+    @api.onchange('bsd_so_ngay', 'bsd_loai_gh', 'bsd_loai_gc')
+    def _onchange_so_ngay(self):
+        if self.bsd_loai_gh == 'hang_loat':
+            if self.bsd_loai_gc == 'gc_tc':
+                for ct in self.bsd_gctc_ct_ids:
+                    ct.bsd_ngay_gh = ct.bsd_han_ht + datetime.timedelta(days=self.bsd_so_ngay)
+                    _logger.debug(ct.bsd_ngay_gh)
+            elif self.bsd_loai_gc == 'giu_cho':
+                for ct in self.bsd_ct_ids:
+                    ct.bsd_ngay_gh = ct.bsd_han_ht + datetime.timedelta(days=self.bsd_so_ngay)
 
     def action_xac_nhan(self):
         if self.state == 'nhap':
@@ -119,7 +136,7 @@ class BsdGiaHanGiuCho(models.Model):
                             'state': 'hieu_luc',
                         })
                         ct.bsd_giu_cho_id.write({
-                            'bsd_ngay_hh_gc': ct.bsd_giu_cho_id.bsd_ngay_hh_gc + datetime.timedelta(days=self.bsd_so_ngay)
+                            'bsd_ngay_hh_gc': ct.bsd_ngay_gh
                         })
                     else:
                         ct.write({
@@ -132,7 +149,7 @@ class BsdGiaHanGiuCho(models.Model):
                             'state': 'hieu_luc',
                         })
                         ct.bsd_gc_tc_id.write({
-                            'bsd_ngay_hh_gctc': ct.bsd_gc_tc_id.bsd_ngay_hh_gctc + datetime.timedelta(days=self.bsd_so_ngay)
+                            'bsd_ngay_hh_gctc': ct.bsd_ngay_gh
                         })
                     else:
                         ct.write({
@@ -141,7 +158,7 @@ class BsdGiaHanGiuCho(models.Model):
 
     # KD.05.07.04 Hủy chuyển tên khách hàng giữ chỗ
     def action_huy(self):
-        if self.state == 'xac_nhan':
+        if self.state in ['xac_nhan', 'nhap']:
             self.write({
                 'state': 'huy'
             })
@@ -162,10 +179,14 @@ class BsdGiaHanGiuCho(models.Model):
                     SELECT id FROM bsd_giu_cho 
                         WHERE bsd_du_an_id = {0} AND state IN ('dang_cho','giu_cho')
                 """.format(res.bsd_du_an_id.id))
-                gc_ids = [item[0] for item in self.env.cr.fetchall()]
+                gc_ids = self.env['bsd.giu_cho'].browse([item[0] for item in self.env.cr.fetchall()])
                 list_ct = []
                 for gc in gc_ids:
-                    list_ct.append((0, 0, {'bsd_giu_cho_id': gc, 'state': 'cho_duyet'}))
+                    list_ct.append((0, 0, {'bsd_giu_cho_id': gc.id,
+                                           'bsd_han_ht': gc.bsd_ngay_hh_gc,
+                                           'bsd_ngay_gh': gc.bsd_ngay_hh_gc + datetime.timedelta(
+                                               days=res.bsd_so_ngay),
+                                           'state': 'cho_duyet'}))
                 res.write({
                     'bsd_ct_ids': list_ct
                 })
@@ -174,10 +195,14 @@ class BsdGiaHanGiuCho(models.Model):
                     SELECT id FROM bsd_gc_tc 
                         WHERE bsd_du_an_id = {0} AND state IN ('cho_rc','giu_cho')
                 """.format(res.bsd_du_an_id.id))
-                gc_tc_ids = [item[0] for item in self.env.cr.fetchall()]
+                gc_tc_ids = self.env['bsd.gc_tc'].browse([item[0] for item in self.env.cr.fetchall()])
                 list_ct = []
                 for gc in gc_tc_ids:
-                    list_ct.append((0, 0, {'bsd_gc_tc_id': gc, 'state': 'cho_duyet'}))
+                    list_ct.append((0, 0, {'bsd_gc_tc_id': gc.id,
+                                           'bsd_han_ht': gc.bsd_ngay_hh_gctc,
+                                           'bsd_ngay_gh': gc.bsd_ngay_hh_gctc + datetime.timedelta(
+                                                days=res.bsd_so_ngay),
+                                           'state': 'cho_duyet'}))
                 res.write({
                     'bsd_gctc_ct_ids': list_ct
                 })
@@ -189,10 +214,10 @@ class BsdGiaHanGiuChoChiTiet(models.Model):
     _description = 'Chi tiết các giữ chỗ được gia hạn'
 
     bsd_gia_han_id = fields.Many2one('bsd.gia_han_gc', string="Gia hạn GC", help="Gia hạn giữ chỗ", required=True)
-    bsd_ngay_gh = fields.Date(string="Ngày gia hạn", help="Ngày gia hạn của giữ chỗ")
+    bsd_ngay_gh = fields.Datetime(string="Ngày gia hạn", help="Ngày gia hạn của giữ chỗ")
     bsd_ly_do = fields.Char(string="Lý do", help="Lý do giữ chỗ không được gia hạn", readonly=True)
     bsd_giu_cho_id = fields.Many2one('bsd.giu_cho', string="Giữ chỗ", help="Giữ chỗ")
-    bsd_han_ht = fields.Date(string="Hạn giữ chỗ", help="Hạn giữ chỗ hiện tại", readonly=True)
+    bsd_han_ht = fields.Datetime(string="Hạn giữ chỗ", help="Hạn giữ chỗ hiện tại", readonly=True)
     state = fields.Selection([('cho_duyet', 'Chờ duyệt'),
                               ('hieu_luc', 'Hiệu lực'),
                               ('huy', 'Hủy')], string="Trạng thái",
@@ -204,10 +229,10 @@ class BsdGiaHanGiuChoThienChiChiTiet(models.Model):
     _description = 'Chi tiết các giữ chỗ thiện chí được gia hạn'
 
     bsd_gia_han_id = fields.Many2one('bsd.gia_han_gc', string="Gia hạn GC", help="Gia hạn giữ chỗ", required=True)
-    bsd_ngay_gh = fields.Date(string="Ngày gia hạn", help="Ngày gia hạn của giữ chỗ")
+    bsd_ngay_gh = fields.Datetime(string="Ngày gia hạn", help="Ngày gia hạn của giữ chỗ")
     bsd_ly_do = fields.Char(string="Lý do", help="Lý do giữ chỗ không được gia hạn", readonly=True)
     bsd_gc_tc_id = fields.Many2one('bsd.gc_tc', string="Giữ chỗ thiện chí", help="Giữ chỗ thiện chí", required=True)
-    bsd_han_ht = fields.Date(string="Hạn giữ chỗ", help="Hạn giữ chỗ hiện tại", readonly=True)
+    bsd_han_ht = fields.Datetime(string="Hạn giữ chỗ", help="Hạn giữ chỗ hiện tại", readonly=True)
     state = fields.Selection([('cho_duyet', 'Chờ duyệt'),
                               ('hieu_luc', 'Hiệu lực'),
                               ('huy', 'Hủy')], string="Trạng thái",

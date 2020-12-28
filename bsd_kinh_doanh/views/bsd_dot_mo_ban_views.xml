@@ -139,7 +139,9 @@
                         </page>
                         <page string="Khuyến mãi">
                             <field name="id" invisible="1"/>
-                            <field name="bsd_km_ids" nolabel="1" context="{'default_bsd_dot_mb_id':id}">
+                            <field name="bsd_km_ids" nolabel="1"
+                                   domain="[('bsd_du_an_id', '=', bsd_du_an_id), ('state', '=','duyet'),
+                                   '|',('bsd_dot_mb_id', '=',id),('bsd_dot_mb_id', '=',False)]">
                                 <tree editable="bottom">
                                     <field name="bsd_ma_km"/>
                                     <field name="bsd_ten_km"/>

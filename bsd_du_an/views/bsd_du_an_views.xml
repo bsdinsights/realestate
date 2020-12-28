@@ -24,7 +24,7 @@
                         </div>
                         <div>
                             <label for="bsd_ma_da"/>
-                            <field name="bsd_ma_da"/>
+                            <field name="bsd_ma_da" attrs="{'readonly':[('id','!=', False)]}"/>
                         </div>
                     </div>
                     <notebook>

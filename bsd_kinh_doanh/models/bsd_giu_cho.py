@@ -103,6 +103,21 @@ class BsdGiuCho(models.Model):
     bsd_so_bao_gia = fields.Integer(string="# Bảng tính giá", compute='_compute_bao_gia')
     bsd_so_huy_gc = fields.Integer(string="# Hủy giữ chỗ", compute='_compute_huy_gc')
     bsd_so_chuyen_gc = fields.Integer(string="# Chuyển GC", compute='_compute_chuyen_gc')
+    bsd_so_gia_han = fields.Integer(string="# Gia hạn", compute='_compute_gia_han')
+
+    def _compute_gia_han(self):
+        for each in self:
+            gia_han = self.env['bsd.gia_han_gc_ct'].search([('bsd_giu_cho_id', '=', self.id),
+                                                           ('state', '=', 'hieu_luc')])
+            each.bsd_so_gia_han = len(gia_han)
+
+    def action_view_gia_han(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_gia_han_gc_ct_action').read()[0]
+
+        gia_han = self.env['bsd.gia_han_gc_ct'].search([('bsd_giu_cho_id', '=', self.id),
+                                                       ('state', '=', 'hieu_luc')])
+        action['domain'] = [('id', 'in', gia_han.ids)]
+        return action
 
     # 3 field ctv , sàn gd, giới thiệu không tồn tại đồng thời
     # Khách hàng không được trùng với mô giới

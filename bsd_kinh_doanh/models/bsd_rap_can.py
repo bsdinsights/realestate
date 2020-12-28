@@ -149,17 +149,18 @@ class BsdRapCan(models.Model):
                 raise UserError("Bạn cần hủy Giữ chỗ trước khi hủy ráp căn.")
         else:
             pass
-        self.write({
-            'state': 'huy',
-            'bsd_ngay_huy_rc': fields.Datetime.now(),
-            'bsd_nguoi_huy_id': self.env.uid,
-        })
-        self.bsd_gc_tc_id.write({
-            'bsd_ngay_huy_rc': fields.Datetime.now(),
-        })
-        self.bsd_unit_id.write({
-            'state': 'chuan_bi',
-        })
+        if self.state in ['nhap', 'xac_nhan']:
+            self.write({
+                'state': 'huy',
+                'bsd_ngay_huy_rc': fields.Datetime.now(),
+                'bsd_nguoi_huy_id': self.env.uid,
+            })
+            self.bsd_gc_tc_id.write({
+                'bsd_ngay_huy_rc': fields.Datetime.now(),
+            })
+            self.bsd_unit_id.write({
+                'state': 'chuan_bi',
+            })
 
     # KD.06.06 Ràng buộc giữ chỗ thiện chí khi ráp căn
     @api.model

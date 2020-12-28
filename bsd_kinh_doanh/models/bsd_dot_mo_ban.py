@@ -241,8 +241,6 @@ class BsdDotMoBan(models.Model):
                         ids_tang += self.env['bsd.tang'].search([('bsd_toa_nha_id', 'in', ids_toa_nha),
                                                                  ('bsd_stt', '>=', tu_tang_stt),
                                                                  ('bsd_stt', '<=', den_tang_stt)]).ids
-                _logger.debug("id tầng")
-                _logger.debug(ids_tang)
             # Nếu chỉ điền từ tầng không điền đến tầng
             elif not tu_tang_id and den_tang_id:
                 if tu_toa_nha_id == den_toa_nha_id:
@@ -395,7 +393,6 @@ class BsdDotMoBan(models.Model):
 
     # Thu hồi toàn bộ đợt mở bán
     def action_thu_hoi(self):
-        _logger.debug('Thu hồi đợt mơt bán')
         # Kiểm tra trạng thái record
         if self.state != 'ph':
             pass

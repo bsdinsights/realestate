@@ -99,6 +99,7 @@ class ProductPriceListItem(models.Model):
     _inherit = 'product.pricelist.item'
 
     bsd_ngay_duyet = fields.Date(related='pricelist_id.bsd_ngay_duyet', store=True)
+    bsd_state = fields.Selection(related='pricelist_id.state', store=True)
     date_start = fields.Date(string='Ngày bắt đầu', related='pricelist_id.bsd_ngay_bd', store=True)
     date_end = fields.Date(string='Ngày kết thúc', related='pricelist_id.bsd_ngay_kt', store=True)
     applied_on = fields.Selection([

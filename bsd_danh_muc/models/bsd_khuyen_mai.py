@@ -20,6 +20,8 @@ class BsdKhuyenMai(models.Model):
     bsd_ten_km = fields.Char(string="Tên", help="Tên khuyến mãi", required=True,
                              readonly=True,
                              states={'nhap': [('readonly', False)]})
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True, readonly=True,
+                                   states={'nhap': [('readonly', False)]})
     bsd_gia_tri = fields.Monetary(string="Giá trị", help="Giá trị (tiền) được hưởng khuyến mãi", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
@@ -108,10 +110,10 @@ class BsdKhuyenMai(models.Model):
     @api.model
     def create(self, vals):
         sequence = False
-        if vals.get('bsd_ma_km', '/') == '/':
-            sequence = self.env['bsd.ma_bo_cn'].search([('bsd_loai_cn', '=', 'bsd.khuyen_mai')], limit=1).bsd_ma_tt_id
-            vals['bsd_ma_km'] = self.env['ir.sequence'].next_by_code('bsd.khuyen_mai') or '/'
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Danh mục mã chưa khai báo mã chương trình khuyến mãi'))
+            raise UserError(_('Dự án chưa có mã khuyến mãi.'))
         vals['bsd_ma_km'] = sequence.next_by_id()
         return super(BsdKhuyenMai, self).create(vals)

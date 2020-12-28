@@ -20,7 +20,7 @@
                             type="object"/>
                     <button string="Hủy"
                             name="action_huy"
-                            states="xac_nhan,duyet"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap','xac_nhan'])]}"
                             confirm="Bạn có muốn Hủy Ráp Căn không?"
                             type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>

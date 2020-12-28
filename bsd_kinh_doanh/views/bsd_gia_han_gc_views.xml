@@ -20,7 +20,8 @@
                             type="object"/>
                     <button string="Hủy"
                             name="action_huy"
-                            states="xac_nhan"
+                            states="xac_nhan,nhap"
+                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
                             confirm="Bạn có muốn Hủy yêu cầu không?"
                             type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
@@ -40,7 +41,8 @@
                                 <group>
                                     <field name="bsd_loai_gc"/>
                                     <field name="bsd_loai_gh"/>
-                                    <field name="bsd_so_ngay"/>
+                                    <field name="bsd_so_ngay" attrs="{'required':[('bsd_loai_gh', '=', 'hang_loat')],
+                                                                      'invisible':[('bsd_loai_gh', '!=', 'hang_loat')]}"/>
                                     <field name="bsd_dien_giai"/>
                                 </group>
                             </group>
@@ -50,6 +52,7 @@
                             <field name="bsd_ct_ids">
                                 <tree>
                                     <field name="bsd_giu_cho_id"/>
+                                    <field name="bsd_han_ht" readonly="1" force_save="1"/>
                                     <field name="bsd_ngay_gh"/>
                                     <field name="bsd_ly_do"/>
                                     <field name="state"/>
@@ -61,6 +64,7 @@
                             <field name="bsd_gctc_ct_ids">
                                 <tree>
                                     <field name="bsd_gc_tc_id"/>
+                                    <field name="bsd_han_ht" readonly="1" force_save="1"/>
                                     <field name="bsd_ngay_gh"/>
                                     <field name="bsd_ly_do"/>
                                     <field name="state"/>
@@ -146,11 +150,12 @@
                         </page>
                         <page string="Danh sách giữ chỗ">
                             <field name="bsd_ct_ids">
-                                <tree>
-                                    <field name="bsd_giu_cho_id"/>
-                                    <field name="bsd_ngay_gh"/>
+                                <tree editable="bottom" create="false">
+                                    <field name="bsd_giu_cho_id" readonly="1" force_save="1"/>
+                                    <field name="bsd_han_ht" readonly="1" force_save="1"/>
+                                    <field name="bsd_ngay_gh" required="1"/>
                                     <field name="bsd_ly_do"/>
-                                    <field name="state"/>
+                                    <field name="state" readonly="1" force_save="1"/>
                                 </tree>
                             </field>
                         </page>
@@ -200,18 +205,18 @@
                                     <field name="bsd_du_an_id" readonly="1" force_save="1"
                                            domain="[('state', '!=','chuan_bi')]"
                                            options="{'no_create':true}"/>
-                                    <field name="bsd_so_ngay"/>
                                     <field name="bsd_dien_giai"/>
                                 </group>
                             </group>
                         </page>
                         <page string="Danh sách giữ chỗ thiện chí">
                             <field name="bsd_gctc_ct_ids">
-                                <tree>
-                                    <field name="bsd_gc_tc_id"/>
-                                    <field name="bsd_ngay_gh"/>
+                                <tree editable="bottom" create="false">
+                                    <field name="bsd_gc_tc_id" readonly="1" force_save="1"/>
+                                    <field name="bsd_han_ht" readonly="1" force_save="1"/>
+                                    <field name="bsd_ngay_gh" required="1"/>
                                     <field name="bsd_ly_do"/>
-                                    <field name="state"/>
+                                    <field name="state" readonly="1" force_save="1"/>
                                 </tree>
                             </field>
                         </page>
@@ -245,16 +250,27 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="bsd_gia_han_id" readonly="1" force_save="1"/>
                             <field name="bsd_gc_tc_id"/>
                         </group>
                         <group>
                             <field name="bsd_ngay_gh"/>
-                            <field name="state"/>
                         </group>
                     </group>
                 </sheet>
             </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_gia_han_gctc_ct_tree">
+        <field name="name">bsd.gia_han_gctc_ct.form</field>
+        <field name="model">bsd.gia_han_gctc_ct</field>
+        <field name="arch" type="xml">
+            <tree duplicate="false" create="false" delete="false">
+                <field name="bsd_gia_han_id"/>
+                <field name="bsd_han_ht"/>
+                <field name="bsd_ngay_gh"/>
+                <field name="bsd_ly_do"/>
+                <field name="state"/>
+            </tree>
         </field>
     </record>
     <record model="ir.ui.view" id="bsd_gia_han_gc_ct_form_popup">
@@ -265,16 +281,39 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="bsd_gia_han_id" readonly="1" force_save="1"/>
                             <field name="bsd_giu_cho_id"/>
                         </group>
                         <group>
                             <field name="bsd_ngay_gh"/>
-                            <field name="state"/>
                         </group>
                     </group>
                 </sheet>
             </form>
         </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_gia_han_gc_ct_tree">
+        <field name="name">bsd.gia_han_gc_ct.form</field>
+        <field name="model">bsd.gia_han_gc_ct</field>
+        <field name="arch" type="xml">
+            <tree duplicate="false" create="false" delete="false">
+                <field name="bsd_gia_han_id"/>
+                <field name="bsd_han_ht"/>
+                <field name="bsd_ngay_gh"/>
+                <field name="bsd_ly_do"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="bsd_gia_han_gc_ct_action" model="ir.actions.act_window">
+        <field name="name">Gia hạn</field>
+        <field name="res_model">bsd.gia_han_gc_ct</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">new</field>
+    </record>
+    <record id="bsd_gia_han_gctc_ct_action" model="ir.actions.act_window">
+        <field name="name">Gia hạn</field>
+        <field name="res_model">bsd.gia_han_gctc_ct</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">new</field>
     </record>
 </odoo>

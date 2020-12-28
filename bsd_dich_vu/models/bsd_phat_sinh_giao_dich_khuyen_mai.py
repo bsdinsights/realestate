@@ -8,7 +8,7 @@ _logger = logging.getLogger(__name__)
 
 class BsdPSGDKM(models.Model):
     _name = 'bsd.ps_gd_km'
-    _description = 'Thông tin phát sinh giao dịch chiết khấu'
+    _description = 'Thông tin phát sinh khuyến mãi giao dịch'
     _rec_name = 'bsd_ma_ht'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 

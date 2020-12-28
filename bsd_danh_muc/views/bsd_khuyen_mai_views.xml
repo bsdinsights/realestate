@@ -38,8 +38,13 @@
                             <field name="company_id" invisible="1"/>
                             <field name="bsd_ma_km"/>
                             <field name="bsd_ten_km"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
                             <field name="bsd_gia_tri"/>
                             <field name="bsd_loai_km"/>
+                            <field name="bsd_tu_ngay"/>
+                            <field name="bsd_den_ngay"/>
+                        </group>
+                        <group>
                             <field name="bsd_loai"/>
                             <field name="bsd_tong_tt" attrs="{'required':[('bsd_loai', 'in', ['tien','ty_le_tien'])],
                                                                 'readonly':[('bsd_loai', 'in', ['ty_le','khong'])]}"/>
@@ -51,10 +56,6 @@
                                                                 'readonly':[('bsd_loai', 'in', ['tien','khong'])]}"/>
                                 <span>%</span>
                             </div>
-                        </group>
-                        <group>
-                            <field name="bsd_tu_ngay"/>
-                            <field name="bsd_den_ngay"/>
                             <field name="bsd_ngay_hldc"/>
                             <field name="bsd_dien_giai"/>
                             <field name="bsd_nguoi_duyet_id"/>
@@ -100,7 +101,7 @@
     </record>
 
     <record model="ir.actions.act_window" id="bsd_khuyen_mai_action">
-        <field name="name">Chương trình khuyến mãi</field>
+        <field name="name">Khuyến mãi</field>
         <field name="res_model">bsd.khuyen_mai</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">

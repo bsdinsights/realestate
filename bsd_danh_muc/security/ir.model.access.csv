@@ -37,7 +37,7 @@ access_bsd_ck_ttn_ct,Quản lý chiết khấu thanh toán nhanh,model_bsd_ck_tt
 access_bsd_lai_phat_tt, Thông tin lãi phạt thanh toán,model_bsd_lai_phat_tt,bsd_danh_muc.group_user,1,1,1,0
 
 access_bsd_cs_tt,Thông tin chính sách thanh toán,model_bsd_cs_tt,bsd_danh_muc.group_user,1,1,1,0
-access_bsd_cs_tt_ct,Thông tin chi tiết chính sách thanh toán,model_bsd_cs_tt_ct,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_cs_tt_ct,Thông tin chi tiết chính sách thanh toán,model_bsd_cs_tt_ct,bsd_danh_muc.group_user,1,1,1,1
 
 access_bsd_ma_bo_cn,Mã bộ chứng từ dự án,model_bsd_ma_bo_cn,bsd_danh_muc.group_user,1,1,1,0
 access_bsd_ma_bo_cn_chung,Mã bộ chứng từ chung,model_bsd_ma_bo_cn_chung,bsd_danh_muc.group_user,1,1,1,0

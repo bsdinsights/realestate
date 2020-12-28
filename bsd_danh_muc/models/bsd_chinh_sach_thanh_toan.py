@@ -127,6 +127,15 @@ class BsdChinhSachThanhToan(models.Model):
     bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True, copy=False)
     bsd_ngay_duyet = fields.Date(string="Ngày duyệt", readonly=True, copy=False)
 
+    @api.constrains('bsd_ct_ids')
+    def _constrains_ct(self):
+        for each in self:
+            list_ct = each.bsd_ct_ids.mapped('bsd_stt')
+            _logger.debug(list_ct)
+            _logger.debug(set(list_ct))
+            if len(set(list_ct)) < len(list_ct):
+                raise UserError(_("Số thứ tự trùng.\nVui lòng kiểm tra lại thông tin"))
+
     # Kiểm tra dữ liệu ngày hiệu lực
     @api.constrains('bsd_tu_ngay', 'bsd_den_ngay')
     def _constrains_ngay(self):
@@ -341,13 +350,6 @@ class BsdChinhSachThanhToanChiTiet(models.Model):
         for each in self:
             if each.bsd_ngay_thang > 31:
                 raise UserError(_("Ngày trong tháng không được lớn hơn 31"))
-
-    @api.constrains('bsd_stt', 'bsd_cs_tt_id')
-    def _constrains_cs_tt(self):
-        for each in self:
-            list_ct = each.bsd_cs_tt_id.bsd_ct_ids.mapped('bsd_stt')
-            if len(set(list_ct)) < len(list_ct):
-                raise UserError(_("Sô thứ tự trùng.\nVui lòng kiểm tra lại thông tin"))
 
     @api.model
     def create(self, vals):

@@ -27,7 +27,7 @@ class BsdChietKhau(models.Model):
     bsd_loai_ck = fields.Selection([('chung', 'Chung'),
                                     ('noi_bo', 'Nội bộ'),
                                     ('mua_si', 'Mua sỉ'),
-                                    ('ltt', 'Lịch thanh toán'),
+                                    ('ltt', 'Phương thức thanh toán'),
                                     ('ttth', 'Thanh toán trước hạn'),
                                     ('ttn', 'Thanh toán nhanh')], string="Loại chiết khấu",
                                    default='chung', required=True, help="Loại chiết khấu",

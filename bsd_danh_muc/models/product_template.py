@@ -12,7 +12,8 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     bsd_pricelist_ids = fields.One2many('product.pricelist.item', 'product_tmpl_id',
-                                        string="Chi tiết giá", readonly=True)
+                                        string="Chi tiết giá", readonly=True,
+                                        domain=[('bsd_state', '=', 'duyet')])
 
     def action_view_gia(self):
         action = self.env.ref('bsd_danh_muc.bsd_chi_tiet_gia_action').read()[0]
