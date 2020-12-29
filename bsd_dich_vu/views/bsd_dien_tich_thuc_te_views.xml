@@ -87,7 +87,7 @@
                                     <field name="bsd_dt_tt_tt" string="DT thực tế (m2)"/>
                                     <field name="bsd_cl_cp" string="CL cho phép (%)"/>
                                     <field name="bsd_cl_tt" string="CL thực tế (%)"/>
-                                    <field name="bsd_tien_cl"/>
+                                    <field name="bsd_tong_cl"/>
                                     <field name="state"/>
                                     <field name="bsd_loai"/>
                                     <field name="company_id" invisible="1"/>
@@ -152,13 +152,16 @@
         <field eval="1" name="priority"/>
         <field name="arch" type="xml">
             <form duplicate="false">
-                <header>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
-                </header>
                 <sheet>
+                    <widget name="web_ribbon" text="Duyệt"
+                            attrs="{'invisible':[('state', '!=', 'duyet')]}"/>
+                    <widget name="web_ribbon" text="Hủy"
+                            bg_color="bg-danger"
+                            attrs="{'invisible':[('state', '!=', 'huy')]}"/>
                     <group>
                         <group>
-                            <field name="bsd_ngay" readonly="1" force_save="1"/>
+                            <field name="state" invisible="1"/>
+                            <field name="bsd_ngay" invisible="1" force_save="1"/>
                             <field name="bsd_cn_dttt_id"
                                    readonly="1" force_save="1"
                                    options="{'no_create':true}"/>
@@ -180,26 +183,19 @@
                             </div>
                             <label for="bsd_dt_tt_tt"/>
                             <div class="o_row no-gutters d-flex">
-                                <div class="col">
                                     <field name="bsd_dt_tt_tt" class="mr-1"/>
                                     <span>m2</span>
-                                </div>
                             </div>
                             <label for="bsd_cl_cp"/>
                             <div class="o_row no-gutters d-flex">
-                                <div class="col">
-                                    <field name="bsd_cl_cp" class="mr-1" readonly="1" force_save="1"/>
-                                    <span>%</span>
-                                </div>
+                                <field name="bsd_cl_cp" class="mr-1" readonly="1" force_save="1"/>
+                                <span>%</span>
                             </div>
                             <label for="bsd_cl_tt"/>
                             <div class="o_row no-gutters d-flex">
-                                <div class="col">
-                                    <field name="bsd_cl_tt" class="mr-1" readonly="1" force_save="1"/>
-                                    <span>%</span>
-                                </div>
+                                <field name="bsd_cl_tt" class="mr-1" readonly="1" force_save="1"/>
+                                <span>%</span>
                             </div>
-                            <field name="bsd_tien_cl"/>
                             <field name="company_id" invisible="1"/>
                             <field name="currency_id" invisible="1"/>
                         </group>
@@ -208,26 +204,38 @@
                         <group>
                             <field name="company_id" invisible="1"/>
                             <field name="currency_id" invisible="1"/>
+                            <label for="bsd_thue_suat"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_thue_suat" class="mr-1" readonly="1" force_save="1"/>
+                                <span>%</span>
+                            </div>
                             <field name="bsd_gia_ban_ht" readonly="1" force_save="1"/>
                             <field name="bsd_tien_bg_ht" readonly="1" force_save="1"/>
                             <field name="bsd_tien_ck_ht" readonly="1" force_save="1"/>
                             <field name="bsd_gia_truoc_thue_ht" readonly="1" force_save="1"/>
                             <field name="bsd_tien_qsdd_ht" readonly="1" force_save="1"/>
                             <field name="bsd_tien_thue_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tong_gia_ko_pbt_ht" readonly="1" force_save="1"/>
                             <field name="bsd_tien_pbt_ht" readonly="1" force_save="1"/>
-                            <field name="bsd_tong_gia_ht" readonly="1" force_save="1"/>
                             <field name="bsd_tien_pql_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tong_gia_ht" readonly="1" force_save="1"/>
                         </group>
                             <group>
-<!--                                <field name="bsd_gia_ban_moi"/>-->
-<!--                                <field name="bsd_tien_bg_moi"/>-->
-<!--                                <field name="bsd_tien_ck_moi"/>-->
-<!--                                <field name="bsd_gia_truoc_thue_moi"/>-->
-<!--                                <field name="bsd_tien_qsdd_moi"/>-->
-<!--                                <field name="bsd_tien_thue_moi"/>-->
-<!--                                <field name="bsd_tien_pbt_moi"/>-->
-<!--                                <field name="bsd_tong_gia_moi"/>-->
-<!--                                <field name="bsd_tien_pql_moi"/>-->
+                                <field name="bsd_dg_tt"/>
+                                <label for="bsd_cl_dt"/>
+                                <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_cl_dt" class="mr-1" readonly="1" force_save="1"/>
+                                        <span>m2</span>
+                                </div>
+                                <field name="bsd_gia_truoc_thue_moi"/>
+                                <field name="bsd_tien_thue_moi"/>
+                                <field name="bsd_tong_gia_ko_pbt_moi"/>
+                                <field name="bsd_tien_pbt_moi"/>
+                                <field name="bsd_tien_pql_moi"/>
+                                <field name="bsd_cl_hd"/>
+                                <field name="bsd_cl_pbt"/>
+                                <field name="bsd_cl_pql"/>
+                                <field name="bsd_tong_cl"/>
                             </group>
                     </group>
                 </sheet>
@@ -277,13 +285,10 @@
         <field name="model">bsd.cn_dttt_unit</field>
         <field name="arch" type="xml">
             <form duplicate="false">
-                <header>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
-                </header>
                 <sheet>
                     <group>
                         <group>
-                            <field name="bsd_ngay" readonly="1" force_save="1"/>
+                            <field name="bsd_ngay" invisible="1"/>
                             <field name="bsd_cn_dttt_id"
                                    readonly="1" force_save="1"
                                    options="{'no_create':true}"/>
@@ -294,6 +299,9 @@
                                    domain="[('bsd_du_an_id', '=',bsd_du_an_id)]"
                                    options="{'no_create':true}"/>
                             <field name="bsd_hd_ban_id" readonly="1" force_save="1"/>
+                            <field name="bsd_dot_tt_id"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_hd_ban_id', '=', bsd_hd_ban_id)]"/>
                         </group>
                         <group>
                             <label for="bsd_dt_tt_tk"/>
@@ -318,7 +326,44 @@
                             </div>
                             <field name="company_id" invisible="1"/>
                             <field name="currency_id" invisible="1"/>
+                            <field name="state" invisible="1"/>
                         </group>
+                    </group>
+                    <group string="SẢN PHẨM">
+                        <group>
+                            <label for="bsd_thue_suat"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_thue_suat" class="mr-1" readonly="1" force_save="1"/>
+                                <span>%</span>
+                            </div>
+                            <field name="bsd_gia_ban_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_bg_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_ck_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_gia_truoc_thue_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_qsdd_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_thue_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tong_gia_ko_pbt_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_pbt_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_pql_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tong_gia_ht" readonly="1" force_save="1"/>
+                        </group>
+                            <group>
+                                <field name="bsd_dg_tt" readonly="1" force_save="1"/>
+                                <label for="bsd_cl_dt" readonly="1" force_save="1"/>
+                                <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_cl_dt" class="mr-1" readonly="1" force_save="1"/>
+                                        <span>m2</span>
+                                </div>
+                                <field name="bsd_gia_truoc_thue_moi" readonly="1" force_save="1"/>
+                                <field name="bsd_tien_thue_moi" readonly="1" force_save="1"/>
+                                <field name="bsd_tong_gia_ko_pbt_moi" readonly="1" force_save="1"/>
+                                <field name="bsd_tien_pbt_moi" readonly="1" force_save="1"/>
+                                <field name="bsd_tien_pql_moi" readonly="1" force_save="1"/>
+                                <field name="bsd_cl_hd" readonly="1" force_save="1"/>
+                                <field name="bsd_cl_pbt" readonly="1" force_save="1"/>
+                                <field name="bsd_cl_pql" readonly="1" force_save="1"/>
+                                <field name="bsd_tong_cl" readonly="1" force_save="1"/>
+                            </group>
                     </group>
                 </sheet>
                 <footer>

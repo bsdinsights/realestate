@@ -143,7 +143,7 @@ class BsdHopDongMuaBan(models.Model):
                               ('tt_dot1', 'Thanh toán đợt 1'),
                               ('da_ky_ttdc', 'Đã ký TTĐC'),
                               ('du_dk', 'Đủ điều kiện'),
-                              ('da_ky', 'Đã ký HĐ'),
+                              ('da_ky', 'Đã ký HĐMB'),
                               ('dang_tt', 'Đang thanh toán'),
                               ('du_dkbg', 'Đủ ĐKBG'),
                               ('da_bg', 'Đã bàn giao'),
