@@ -30,88 +30,102 @@
                             class="oe_highlight"/>
                     <button string="Hủy"
                             name="action_huy"
-                            states="nhap,xac_nhan"
-                            ttrs="{'invisible': ['|',('id', '=',False)]}"
+                            attrs="{'invisible': ['|', ('state', '!=', 'nhap'),('id', '=', False)]}"
                             type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
-                    <notebook>
-                        <page string="Thông tin chung">
-                            <group>
-                                <group>
-                                    <field name="bsd_ma"/>
-                                    <field name="bsd_ngay" readonly="1"/>
-                                    <field name="bsd_khach_hang_id"
-                                           options="{'no_create':true}"/>
-                                    <field name="bsd_hd_ban_id"
-                                           options="{'no_create':true}"
-                                           domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id])]"/>
-                                    <field name="bsd_du_an_id" readonly="1" force_save="1"/>
-                                    <field name="bsd_unit_id" readonly="1" force_save="1"/>
-                                    <label for="bsd_thue_suat"/>
-                                    <div class="o_row no-gutters d-flex">
-                                        <field name="bsd_thue_suat" readonly="1" class="mr-1"/>
-                                        <span>%</span>
-                                    </div>
-                                </group>
-                                <group>
-                                    <field name="bsd_tien_da_tt" readonly="1" force_save="1"/>
-                                    <label for="bsd_dt_sd"/>
-                                    <div class="o_row no-gutters d-flex">
-                                        <field name="bsd_dt_sd" readonly="1" class="mr-1"/>
-                                        <span>m2</span>
-                                    </div>
-                                    <label for="bsd_dt_tt"/>
-                                    <div class="o_row no-gutters d-flex">
-                                        <field name="bsd_dt_tt" readonly="1" class="mr-1"/>
-                                        <span>m2</span>
-                                    </div>
-                                    <field name="bsd_dien_giai"/>
-                                </group>
-                            </group>
-                            <group string="SẢN PHẨM">
-                                <group>
-                                    <field name="company_id" invisible="1"/>
-                                    <field name="currency_id" invisible="1"/>
-                                    <field name="bsd_gia_ban_ht" readonly="1" force_save="1"/>
-                                    <field name="bsd_tien_ck_ht" readonly="1" force_save="1"/>
-                                    <field name="bsd_tien_bg_ht" readonly="1" force_save="1"/>
-                                    <field name="bsd_gia_truoc_thue_ht" readonly="1" force_save="1"/>
-                                    <field name="bsd_tien_qsdd_ht" readonly="1" force_save="1"/>
-                                    <field name="bsd_tien_thue_ht" readonly="1" force_save="1"/>
-                                    <field name="bsd_tien_pbt_ht" readonly="1" force_save="1"/>
-                                    <field name="bsd_tong_gia_ht" readonly="1" force_save="1"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_gia_ban_moi"/>
-                                    <field name="bsd_tien_ck_moi"/>
-                                    <field name="bsd_tien_bg_moi"/>
-                                    <field name="bsd_gia_truoc_thue_moi"/>
-                                    <field name="bsd_tien_qsdd_moi"/>
-                                    <field name="bsd_tien_thue_moi"/>
-                                    <field name="bsd_tien_pbt_moi"/>
-                                    <field name="bsd_tong_gia_moi"/>
-                                </group>
-                            </group>
-                            <group string="XÉT DUYỆT">
-                                <group>
-                                    <field name="bsd_ngay_xn"/>
-                                    <field name="bsd_nguoi_xn_id"/>
-                                    <field name="bsd_ngay_huy"/>
-                                    <field name="bsd_nguoi_huy_id"/>
-                                    <field name="bsd_ly_do_huy"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_ngay_duyet"/>
-                                    <field name="bsd_nguoi_duyet_id"/>
-                                    <field name="bsd_ngay_ky_pl"/>
-                                    <field name="bsd_nguoi_xn_ky_id"/>
-                                    <field name="bsd_ly_do"/>
-                                </group>
-                            </group>
-                        </page>
-                    </notebook>
+                    <group>
+                        <group>
+                            <field name="bsd_ma"/>
+                            <field name="bsd_ngay" readonly="1"/>
+                            <field name="bsd_khach_hang_id"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_hd_ban_id"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id])]"/>
+                            <field name="bsd_du_an_id" readonly="1" force_save="1"/>
+                            <field name="bsd_unit_id" readonly="1" force_save="1"/>
+                        </group>
+                        <group>
+                            <field name="bsd_cn_dttt_unit_id" readonly="1" force_save="1"/>
+                            <label for="bsd_dt_tt_tk"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_dt_tt_tk" readonly="1" class="mr-1"/>
+                                <span>m2</span>
+                            </div>
+                            <label for="bsd_dt_tt_tt"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_dt_tt_tt" readonly="1" class="mr-1"/>
+                                <span>m2</span>
+                            </div>
+                            <label for="bsd_cl_cp"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_cl_cp" class="mr-1" readonly="1" force_save="1"/>
+                                <span>%</span>
+                            </div>
+                            <label for="bsd_cl_tt"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_cl_tt" class="mr-1" readonly="1" force_save="1"/>
+                                <span>%</span>
+                            </div>
+                            <field name="bsd_dot_tt_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="SẢN PHẨM">
+                        <group>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                            <label for="bsd_thue_suat"/>
+                            <div class="o_row no-gutters d-flex">
+                                <field name="bsd_thue_suat" class="mr-1" readonly="1" force_save="1"/>
+                                <span>%</span>
+                            </div>
+                            <field name="bsd_gia_ban_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_bg_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_ck_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_gia_truoc_thue_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_qsdd_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_thue_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tong_gia_ko_pbt_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_pbt_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_pql_ht" readonly="1" force_save="1"/>
+                            <field name="bsd_tong_gia_ht" readonly="1" force_save="1"/>
+                        </group>
+                        <group>
+                            <field name="bsd_dg_tt"/>
+                            <label for="bsd_cl_dt"/>
+                            <div class="o_row no-gutters d-flex">
+                                    <field name="bsd_cl_dt" class="mr-1" readonly="1" force_save="1"/>
+                                    <span>m2</span>
+                            </div>
+                            <field name="bsd_gia_truoc_thue_moi"/>
+                            <field name="bsd_tien_thue_moi"/>
+                            <field name="bsd_tong_gia_ko_pbt_moi"/>
+                            <field name="bsd_tien_pbt_moi"/>
+                            <field name="bsd_tien_pql_moi"/>
+                            <field name="bsd_cl_hd"/>
+                            <field name="bsd_cl_pbt"/>
+                            <field name="bsd_cl_pql"/>
+                            <field name="bsd_tong_cl"/>
+                        </group>
+                    </group>
+                    <group string="XÉT DUYỆT">
+                        <group>
+                            <field name="bsd_ngay_xn"/>
+                            <field name="bsd_nguoi_xn_id"/>
+                            <field name="bsd_ngay_huy"/>
+                            <field name="bsd_nguoi_huy_id"/>
+                            <field name="bsd_ly_do_huy"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ngay_duyet"/>
+                            <field name="bsd_nguoi_duyet_id"/>
+                            <field name="bsd_ngay_ky_pl"/>
+                            <field name="bsd_nguoi_xn_ky_id"/>
+                            <field name="bsd_ly_do"/>
+                        </group>
+                    </group>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>

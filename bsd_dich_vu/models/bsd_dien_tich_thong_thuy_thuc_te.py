@@ -152,6 +152,15 @@ class BsdCapNhatDTTT(models.Model):
                 # Nếu nằm ngoài giới hạn cho phép thì tạo phụ lục thay đổi diện tích
                 else:
                     ct.write({'bsd_loai': 'td_dt'})
+                    data_pl = ct.copy_data()[0]
+                    data_pl.update({
+                        'bsd_cn_dttt_unit_id': ct.id
+                    })
+                    del data_pl['bsd_ngay']
+                    del data_pl['bsd_cn_dttt_id']
+                    del data_pl['bsd_loai']
+                    _logger.debug(data_pl)
+                    self.env['bsd.pl_cldt'].create(data_pl)
 
     # Không duyệt cập nhật DTTT
     def action_khong_duyet(self):
@@ -353,9 +362,6 @@ class BsdCapNhatDTTTDUnit(models.Model):
             cl_tt = float_round((res.bsd_dt_tt_tt - res.bsd_dt_tt_tk) / res.bsd_dt_tt_tk * 100, 2)
             don_gia_tt = float_round(hd_ban.bsd_gia_truoc_thue / res.bsd_dt_tt_tk, 0)
             gia_truoc_thue_moi = don_gia_tt * res.bsd_dt_tt_tt
-            _logger.debug("Tiền thuế mới")
-            _logger.debug(res)
-            _logger.debug(gia_truoc_thue_moi)
             tien_thue_moi = float_round(
                     (gia_truoc_thue_moi - hd_ban.bsd_tien_qsdd) * hd_ban.bsd_thue_suat / 100, 0)
             tien_pbt_moi = float_round(gia_truoc_thue_moi * hd_ban.bsd_tl_pbt / 100, 0)
@@ -384,6 +390,10 @@ class BsdCapNhatDTTTDUnit(models.Model):
                 'bsd_tien_pql_moi': tien_pql_moi,
                 'bsd_cl_hd': cl_hd,
                 'bsd_cl_pbt': tien_pbt_moi - hd_ban.bsd_tien_pbt,
-                'bsd_cl_pql': tien_pql_moi - hd_ban.bsd_tien_pql
+                'bsd_cl_pql': tien_pql_moi - hd_ban.bsd_tien_pql,
             })
+            if not res.bsd_dot_tt_id:
+                res.write({
+                    'bsd_dot_tt_id': hd_ban.bsd_ltt_ids.filtered(lambda x: x.bsd_ma_dtt == 'DBGC')
+                })
         return res

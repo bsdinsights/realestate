@@ -168,10 +168,11 @@
                             <field name="bsd_du_an_id"
                                    force_save="1"
                                    options="{'no_create':true}" readonly="1"/>
-                            <field name="bsd_unit_id"
+                            <field name="bsd_unit_id" readonly="1"
                                    domain="[('bsd_du_an_id', '=',bsd_du_an_id)]"
                                    options="{'no_create':true}"/>
                             <field name="bsd_hd_ban_id" readonly="1" force_save="1"/>
+                            <field name="bsd_dot_tt_id" options="{'no_create':true}"/>
                         </group>
                         <group>
                             <label for="bsd_dt_tt_tk"/>

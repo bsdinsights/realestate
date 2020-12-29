@@ -67,6 +67,7 @@ class BsdMaBoChungTu(models.Model):
                                     ('bsd.pl_dkbg', 'Phụ lục thay đổi ĐKBG'),
                                     ('bsd.pl_qsdd', 'Phụ lục thay đổi QSDĐ'),
                                     ('bsd.pl_tti', 'Phụ lục thay đổi thông tin'),
+                                    ('bsd.pl_cldt', 'Phụ lục điều chỉnh chênh lệch diện tích'),
                                     ('bsd.tb_kq_dttt', 'Thư thông báo kết quả đo đạt thực tế'),
                                     ('bsd.can_tru', 'Cấn trừ'),
                                     ('bsd.hoa_hong', 'Hoa hồng'),
