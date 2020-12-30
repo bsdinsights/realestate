@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_pl_cldt_form_inherit">
+        <field name="name">bsd.pl_cldt.form.inherit</field>
+        <field name="model">bsd.pl_cldt</field>
+        <field name="inherit_id" ref="bsd_dich_vu.bsd_pl_cldt_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_thanh_toan" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_phieu_thu_id', '=', False)]}">
+                    <field name="bsd_phieu_thu_id" widget="statinfo" string="Thanh toán trả trước"/>
+                </button>
+                <button name="action_view_phi_ps" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_phi_ps_id', '=', False)]}">
+                    <field name="bsd_phi_ps_id" widget="statinfo"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

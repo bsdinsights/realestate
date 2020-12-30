@@ -32,8 +32,16 @@ class BsdPhiPhatSinh(models.Model):
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng", required=True,
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
-    bsd_unit_id = fields.Many2one(related='bsd_hd_ban_id.bsd_unit_id', store=True)
-    bsd_khach_hang_id = fields.Many2one(related='bsd_hd_ban_id.bsd_khach_hang_id', store=True)
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Sản phẩm", required=True,
+                                  readonly=True)
+    bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng", required=True,
+                                        readonly=True)
+
+    @api.onchange('bsd_hd_ban_id')
+    def _onchange_hd(self):
+        self.bsd_unit_id = self.bsd_hd_ban_id.bsd_unit_id
+        self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
+
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán", required=True,
                                     help="Đợt thanh toán đính kèm phí phát sinh",
                                     readonly=True,
@@ -50,7 +58,7 @@ class BsdPhiPhatSinh(models.Model):
     @api.model
     def _method_choice(self):
         choices = [('bg_gt', 'Bàn giao giấy tờ'), ('khac', 'Khác')]
-        if self.env['res.users'].has_group('base.group_system'):
+        if self.env['res.users'].has_group('bsd_dich_vu.group_manager'):
             choices += [('nt', 'Nghiệm thu'), ('pl_hd', 'Phụ lục HĐ'), ('vp_hd', 'Vi phạm HĐ')]
         return choices
 

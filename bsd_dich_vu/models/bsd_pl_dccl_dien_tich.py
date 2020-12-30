@@ -95,8 +95,13 @@ class BsdPLCLDT(models.Model):
                                         help="""Tiền thuế: Giá bán trước thuế trừ giá trị QSDĐ, nhân với thuế suất""",
                                         readonly=True)
     bsd_tong_gia_ko_pbt_moi = fields.Monetary(string="Tổng giá bán mới (không bao gồm PBT)",
+                                              compute='_compute_gia_ko_pbt', store=True,
                                               help="Công thức: bằng giá bán trước thuế cộng tiền thuế", readonly=True)
 
+    @api.depends('bsd_tien_thue_moi', 'bsd_gia_truoc_thue_moi')
+    def _compute_gia_ko_pbt(self):
+        for each in self:
+            each.bsd_tong_gia_ko_pbt_moi = each.bsd_tien_thue_moi + each.bsd_gia_truoc_thue_moi
     bsd_tien_pbt_moi = fields.Monetary(string="Phí bảo trì mới",
                                        help="Phí bảo trì: bằng % phí bảo trì nhân với giá bán",
                                        readonly=True)
@@ -104,7 +109,14 @@ class BsdPLCLDT(models.Model):
     bsd_cl_pbt = fields.Monetary(string="Chênh lệch PBT", help="Chênh lệch phí bảo trì", readonly=True)
     bsd_cl_hd = fields.Monetary(string="Chênh lệch HĐ", help="Chênh lệch hợp đồng", readonly=True)
     bsd_cl_pql = fields.Monetary(string="Chênh lệch PQL", help="Chênh lệch phí quản lý", readonly=True)
-    bsd_tong_cl = fields.Monetary(string="Tổng chênh lệch", help="Tổng giá trị chênh lệch")
+    bsd_tong_cl = fields.Monetary(string="Tổng chênh lệch", help="Tổng giá trị chênh lệch", compute='_compute_tong_cl',
+                                  store=True,
+                                  readonly=True)
+
+    @api.depends('bsd_cl_pbt', 'bsd_cl_hd', 'bsd_cl_pql')
+    def _compute_tong_cl(self):
+        for each in self:
+            each.bsd_tong_cl = each.bsd_cl_pbt + each.bsd_cl_pql + each.bsd_cl_hd
     # field xác nhận
     bsd_ngay_ky_pl = fields.Date(string="Ngày ký PL", help="Ngày ký phụ lục hợp đồng", readonly=True)
     bsd_nguoi_xn_ky_id = fields.Many2one('res.users', string="Người xác nhận ký",
@@ -130,14 +142,11 @@ class BsdPLCLDT(models.Model):
         if self.bsd_hd_ban_id.state == 'thanh_ly':
             raise UserError(_("Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin."))
         # Kiểm tra đợt thanh toán chưa thanh toán hoàn tất
-        if self.bsd_dot_ct_id.bsd_thanh_toan == 'da_tt':
-            raise UserError(_("Đợt cấn trừ đã thanh toán hoàn tất.\nVui lòng kiểm tra lại thông tin."))
-        if self.bsd_dot_ct_id.bsd_hd_ban_id.id != self.bsd_hd_ban_id.id:
-            raise UserError(_("Đợt cấn trừ đã hết hiệu lực.\nVui lòng kiểm tra lại thông tin."))
-        if self.bsd_cl_thue < 0:
-            if self.bsd_dot_ct_id.bsd_tien_phai_tt < abs(self.bsd_cl_thue):
-                raise UserError(_("Số tiền phải thanh toán của đợt không thể thực hiện cấn trừ.\n"
-                                  "Vui lòng chọn đợt khác."))
+        if self.bsd_dot_tt_id.bsd_thanh_toan == 'da_tt':
+            raise UserError(_("Đợt thanh toán đã thanh toán hoàn tất.\nVui lòng kiểm tra lại thông tin."))
+        if self.bsd_dot_tt_id.bsd_hd_ban_id.id != self.bsd_hd_ban_id.id:
+            raise UserError(_("Đợt thanh toán đã hết hiệu lực.\nVui lòng kiểm tra lại thông tin."))
+
         self.write({
             'state': 'xac_nhan',
             'bsd_nguoi_xn_id': self.env.uid,
@@ -164,6 +173,37 @@ class BsdPLCLDT(models.Model):
             action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_pl_action').read()[0]
             return action
 
+    # Cập nhật thông tin sau khi xác nhận ký hợp đồng
+    def thay_doi_cldt(self):
+        # Kiểm tra tổng tiền chênh lệch âm tạo thanh toán trả trước cho khách hàng
+        if self.bsd_tong_cl < 0:
+            phieu_thu = self.env['bsd.phieu_thu'].create({
+                            'bsd_du_an_id': self.bsd_du_an_id.id,
+                            'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                            'bsd_tien_kh': abs(self.bsd_tong_cl),
+                            'bsd_loai_pt': 'tra_truoc',
+                            'bsd_dien_giai': "Phát sinh từ phụ lục điều chỉnh chênh lệch diện tích"
+                        })
+            phieu_thu.action_xac_nhan()
+            self.write({
+                'bsd_phieu_thu_id': phieu_thu.id,
+            })
+        else:
+            phi_ps = self.env['bsd.phi_ps'].create({
+                'bsd_ten_ps': "Phí phát sinh khi cập nhật diện tích sản phẩm " + self.bsd_unit_id.bsd_ma_unit,
+                'bsd_du_an_id': self.bsd_du_an_id.id,
+                'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
+                'bsd_unit_id': self.bsd_unit_id.id,
+                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                'bsd_dot_tt_id': self.bsd_dot_tt_id.id,
+                'bsd_loai': 'pl_hd',
+                'bsd_tien_ps': self.bsd_tong_cl,
+            })
+            phi_ps.action_xac_nhan()
+            self.write({
+                'bsd_phi_ps_id': phi_ps.id
+            })
+
     # Hủy phụ lục hợp đồng
     def action_huy(self):
         if self.state in ['nhap', 'xac_nhan']:
@@ -174,6 +214,17 @@ class BsdPLCLDT(models.Model):
         if self.state == 'xac_nhan':
             action = self.env.ref('bsd_dich_vu.bsd_wizard_khong_duyet_pl_action').read()[0]
             return action
+
+    def action_view_thanh_toan(self):
+        action = self.env.ref('bsd_tai_chinh.bsd_phieu_thu_action').read()[0]
+
+        form_view = [(self.env.ref('bsd_tai_chinh.bsd_phieu_thu_form').id, 'form')]
+        if 'views' in action:
+            action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+        else:
+            action['views'] = form_view
+        action['res_id'] = self.bsd_phieu_thu_id.id
+        return action
 
     @api.model
     def create(self, vals):

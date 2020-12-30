@@ -331,6 +331,7 @@ class BsdCapNhatDTTTDUnit(models.Model):
     bsd_cl_hd = fields.Monetary(string="Chênh lệch HĐ", help="Chênh lệch hợp đồng")
     bsd_cl_pql = fields.Monetary(string="Chênh lệch PQL", help="Chênh lệch phí quản lý")
     bsd_tong_cl = fields.Monetary(string="Tổng chênh lệch", help="Tổng giá trị chênh lệch", compute='_compute_tong_cl',
+                                  store=True,
                                   readonly=True)
 
     @api.depends('bsd_cl_pbt', 'bsd_cl_hd', 'bsd_cl_pql')

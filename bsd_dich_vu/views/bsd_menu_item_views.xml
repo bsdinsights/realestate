@@ -56,7 +56,7 @@
                   action='bsd_pl_tti_action'
                   parent='bsd_phu_luc_menu_2' />
         <menuitem id="bsd_pl_cldt_menu_action_2"
-                  name="Điều chỉnh chênh lệch diện tích"
+                  name="Điều chỉnh CLDT"
                   sequence="108"
                   action="bsd_pl_cldt_action"
                   parent="bsd_phu_luc_menu_2"/>

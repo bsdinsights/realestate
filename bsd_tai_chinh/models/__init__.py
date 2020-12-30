@@ -15,3 +15,4 @@ from . import bsd_huy_gc
 from . import bsd_lai_phat
 from . import bsd_cn_qsdd
 from . import bsd_nghiem_thu
+from . import bsd_pl_dccl_dien_tich
