@@ -15,6 +15,7 @@
                             <field name="bsd_pl_qsdd_id" attrs="{'invisible':[('bsd_loai_pl', '!=','qsdd')]}"/>
                             <field name="bsd_pl_tti_id" attrs="{'invisible':[('bsd_loai_pl', '!=','tti')]}"/>
                             <field name="bsd_pl_cldt_id" attrs="{'invisible':[('bsd_loai_pl', '!=','cldt')]}"/>
+                            <field name="bsd_pl_dsh_id" attrs="{'invisible':[('bsd_loai_pl', '!=','dsh')]}"/>
                         </group>
                         <group>
                             <field name="bsd_ngay_ky_pl"/>
@@ -52,6 +53,7 @@
                             <field name="bsd_pl_qsdd_id" attrs="{'invisible':[('bsd_loai_pl', '!=','qsdd')]}"/>
                             <field name="bsd_pl_tti_id" attrs="{'invisible':[('bsd_loai_pl', '!=','tti')]}"/>
                             <field name="bsd_pl_cldt_id" attrs="{'invisible':[('bsd_loai_pl', '!=','cldt')]}"/>
+                            <field name="bsd_pl_dsh_id" attrs="{'invisible':[('bsd_loai_pl', '!=','dsh')]}"/>
                         </group>
                         <group>
                             <field name="bsd_ly_do"/>
@@ -89,6 +91,7 @@
                             <field name="bsd_pl_qsdd_id" attrs="{'invisible':[('bsd_loai_pl', '!=','qsdd')]}"/>
                             <field name="bsd_pl_tti_id" attrs="{'invisible':[('bsd_loai_pl', '!=','tti')]}"/>
                             <field name="bsd_pl_cldt_id" attrs="{'invisible':[('bsd_loai_pl', '!=','cldt')]}"/>
+                            <field name="bsd_pl_dsh_id" attrs="{'invisible':[('bsd_loai_pl', '!=','dsh')]}"/>
                         </group>
                         <group>
                             <field name="bsd_ly_do"/>

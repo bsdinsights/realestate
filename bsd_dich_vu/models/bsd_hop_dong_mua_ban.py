@@ -236,8 +236,14 @@ class BsdHopDongMuaBan(models.Model):
     bsd_so_pl_dkbg = fields.Integer(string="# PL ĐKBG", compute='_compute_pl_dkbg')
     bsd_so_pl_qsdd = fields.Integer(string="# PL QSDĐ", compute='_compute_pl_qsdd')
     bsd_so_pl_tdtt = fields.Integer(string="# PL TĐTT", compute='_compute_pl_tdtt')
+    bsd_so_pl_cldt = fields.Integer(string="# PL CLDT", compute='_compute_pl_cldt')
     bsd_ps_gd_ck_ids = fields.One2many('bsd.ps_gd_ck', 'bsd_hd_ban_id', domain=[('state', '=', 'xac_nhan')],
                                        string="Chiết khấu giao dịch", readonly=True)
+
+    def _compute_pl_cldt(self):
+        for each in self:
+            pl_cldt = self.env['bsd.pl_cldt'].search([('bsd_hd_ban_id', '=', self.id)])
+            each.bsd_so_pl_cldt = len(pl_cldt)
 
     def _compute_pl_tdtt(self):
         for each in self:
@@ -268,6 +274,21 @@ class BsdHopDongMuaBan(models.Model):
         for each in self:
             ds_td = self.env['bsd.ds_td'].search([('bsd_hd_ban_id', '=', self.id)])
             each.bsd_so_ds_td = len(ds_td)
+
+    def action_view_pl_cldt(self):
+        action = self.env.ref('bsd_dich_vu.bsd_pl_cldt_action').read()[0]
+
+        pl_cldt = self.env['bsd.pl_cldt'].search([('bsd_hd_ban_id', '=', self.id)])
+        if len(pl_cldt) > 1:
+            action['domain'] = [('id', 'in', pl_cldt.ids)]
+        elif pl_cldt:
+            form_view = [(self.env.ref('bsd_dich_vu.bsd_pl_cldt_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = pl_cldt.id
+        return action
 
     def action_view_pl_tdtt(self):
         action = self.env.ref('bsd_dich_vu.bsd_pl_tti_action').read()[0]

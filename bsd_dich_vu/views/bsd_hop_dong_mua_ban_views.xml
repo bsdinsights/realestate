@@ -104,6 +104,9 @@
                         <button name="action_view_pl_tdtt" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_pl_tdtt', '=', 0)]}">
                             <field name="bsd_so_pl_tdtt" widget="statinfo" string="PL TĐTT"/>
                         </button>
+                        <button name="action_view_pl_cldt" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_pl_cldt', '=', 0)]}">
+                            <field name="bsd_so_pl_cldt" widget="statinfo" string="PL CLDT"/>
+                        </button>
                         <button name="action_view_ds_td" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_ds_td', '=', 0)]}">
                             <field name="bsd_so_ds_td" widget="statinfo" string="DS theo dõi"/>
                         </button>
