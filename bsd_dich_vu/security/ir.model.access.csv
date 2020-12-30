@@ -39,6 +39,8 @@ bsd_cn_dttt,Cập nhật diện tích thông thủy thực tế,model_bsd_cn_dtt
 bsd_cn_dttt_unit,Cập nhật diện tích thông thủy thực tế chi tiết,model_bsd_cn_dttt_unit,bsd_dich_vu.group_user,1,1,1,0
 
 bsd_tb_kt_dttt,Thông báo kết quả đo đạt thực tế,model_bsd_tb_kq_dttt,bsd_dich_vu.group_user,1,1,1,0
+access_bsd_vay_nh,Yêu cầu vay ngân hàng,model_bsd_vay_nh,bsd_dich_vu.group_user,1,1,1,0
+
 
 
 

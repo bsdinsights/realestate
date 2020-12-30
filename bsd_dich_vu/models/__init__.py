@@ -29,5 +29,6 @@ from . import bsd_dat_coc
 from . import bsd_thong_bao_dttt
 from . import calender
 from . import bsd_pl_dccl_dien_tich
+from . import bsd_vay_nh
 
 

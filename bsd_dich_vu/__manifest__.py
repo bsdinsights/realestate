@@ -46,6 +46,7 @@
         'views/bsd_dat_coc_views.xml',
         'wizards/bsd_wizard_tao_thong_bao_tt_nn_views.xml',
         'views/bsd_thong_bao_dttt_views.xml',
+        'views/bsd_vay_nh_views.xml',
         'views/bsd_menu_item_views.xml',
         'views/product_template_views.xml',
         'wizards/bsd_wizard_hd_ban_views.xml',
