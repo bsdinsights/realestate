@@ -20,7 +20,7 @@ class BsdVayNganHang(models.Model):
     ]
     bsd_ngay = fields.Date(string="Ngày", help="Ngày tạo yêu cầu vay ngân hàng của khách hàng",
                            required=True, default=lambda self: fields.Date.today(),
-                           eadonly=True,
+                           readonly=True,
                            states={'nhap': [('readonly', False)]})
     bsd_ten = fields.Char(string="Tiêu đề", required=True, help="Tiêu đề",
                           readonly=True,
@@ -46,16 +46,34 @@ class BsdVayNganHang(models.Model):
                                        required=True,
                                        readonly=True,
                                        states={'nhap': [('readonly', False)]})
-    bsd_tien_vay = fields.Monetary(string="Số tiền vay", help="Số tiền vay ngân hàng", required=True)
-    bsd_so_nam_vay = fields.Integer(string="Số năm vay", help="Số năm vay ngân hàng", required=True)
-    bsd_lai_suat = fields.Float(string="Lãi suất", help="Lãi suất vay ngân hàng", required=True)
+    bsd_tien_vay = fields.Monetary(string="Số tiền vay", help="Số tiền vay ngân hàng", required=True,
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_so_nam_vay = fields.Integer(string="Số năm vay", help="Số năm vay ngân hàng", required=True,
+                                    readonly=True,
+                                    states={'nhap': [('readonly', False)]})
+    bsd_lai_suat = fields.Float(string="Lãi suất", help="Lãi suất vay ngân hàng", required=True,
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
+                              ('da_tc', 'Đã thế chấp'),
+                              ('da_gc', 'Đã giải chấp'),
                               ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
     bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+    bsd_ngay_xn = fields.Date(string='Ngày xác nhận', help="Ngày xác nhận yêu cầu vay thế chấp của ngân hàng",
+                              readonly=True)
+    bsd_nguoi_xn_id = fields.Many2one('res.users', string="Người xác nhận",
+                                      help="Người xác nhận yêu cần vay của khách hàng", readonly=True)
+    bsd_ngay_tc = fields.Date(string='Ngày duyệt thế chấp', help="Ngày duyệt thế chấp ngân hàng", readonly=True)
+    bsd_nguoi_tc_id = fields.Many2one('res.users', string="Người duyệt thế chấp",
+                                            help="Người duyệt thế chấp ngân hàng", readonly=True)
+    bsd_ngay_gc = fields.Date(string='Ngày duyệt giải chấp', help="Ngày duyệt giải chấp ngân hàng", readonly=True)
+    bsd_nguoi_gc_id = fields.Many2one('res.users', string="Người duyệt giải chấp",
+                                            help="Người duyệt giải chấp ngân hàng", readonly=True)
 
     @api.constrains('bsd_hd_ban_id')
     def _constrains_hd(self):
@@ -73,15 +91,55 @@ class BsdVayNganHang(models.Model):
         if thanh_ly:
             raise UserError(_("Hợp đồng đang thanh lý. Vui lòng kiểm tra lại thông tin."))
         # Kiểm tra hợp đồng có đang chuyển nhượng hay ko
-        chuyen_nhuong = self.env['bsd.hd_ban_cn'].search([('bsd_hd_ban_id', '=', self.bsd_hd_ban_id.id)],
-                                                         ('state', 'not in', ['huy', 'duyet']))
+        chuyen_nhuong = self.env['bsd.hd_ban_cn'].search([('bsd_hd_ban_id', '=', self.bsd_hd_ban_id.id),
+                                                         ('state', 'not in', ['huy', 'duyet'])])
         if chuyen_nhuong:
             raise UserError(_("Hợp đồng đang chuyển nhượng. Vui lòng kiểm tra lại thông tin."))
         # Kiểm tra hợp đồng có phụ lục đồng sở hữu nào đang có hiệu lực hay ko
-        pl_dsh = self.env['bsd.pl_dsh'].search([('bsd_hd_ban_id', '=', self.bsd_hd_ban_id.id)],
-                                                ('state', 'not in', ['huy', 'dk_pl']))
+        pl_dsh = self.env['bsd.pl_dsh'].search([('bsd_hd_ban_id', '=', self.bsd_hd_ban_id.id),
+                                                ('state', 'not in', ['huy', 'dk_pl'])])
         if pl_dsh:
             raise UserError(_("Hợp đồng đang có phụ lục thay đổi đồng sở hữu. Vui lòng kiểm tra lại thông tin."))
+
+    def action_xac_nhan(self):
+        # kiểm tra hợp đồng
+        self._constrains_hd()
+        if self.state == 'nhap':
+            self.write({
+                'state': 'xac_nhan',
+                'bsd_ngay_xn': fields.Date.today(),
+                'bsd_nguoi_xn_id': self.env.uid,
+            })
+        # Cập nhật trạng thái tình trạng vay của sản phẩm
+        self.bsd_unit_id.write({
+            'bsd_tt_vay': '1'
+        })
+
+    def action_the_chap(self):
+        if self.state == 'xac_nhan':
+            self.write({
+                'state': 'da_tc',
+                'bsd_nguoi_tc_id': self.env.uid,
+                'bsd_ngay_tc': fields.Date.today()
+            })
+
+    def action_giai_chap(self):
+        if self.state == 'da_tc':
+            self.write({
+                'state': 'da_gc',
+                'bsd_nguoi_gc_id': self.env.uid,
+                'bsd_ngay_gc': fields.Date.today()
+            })
+        # Cập nhật trạng thái tình trạng vay của sản phẩm
+        self.bsd_unit_id.write({
+            'bsd_tt_vay': '0'
+        })
+
+    def action_huy(self):
+        if self.state in ['nhap', 'xac_nhan']:
+            self.write({
+                'state': 'huy',
+            })
 
     @api.model
     def create(self, vals):

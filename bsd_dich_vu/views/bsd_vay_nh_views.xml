@@ -6,6 +6,31 @@
         <field name="arch" type="xml">
             <form duplicate="false">
                 <header>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            states="nhap"
+                            confirm="Bạn có muốn xác nhận yêu cầu không?"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Thế chấp"
+                            name="action_the_chap"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn xác nhận thế chấp không?"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Giải chấp"
+                            name="action_giai_chap"
+                            states="da_tc"
+                            confirm="Bạn có muốn xác nhận giải chấp không?"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"
+                            confirm="Bạn có muốn hủy yêu cầu này không ?"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            states="nhap"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
@@ -18,13 +43,14 @@
                             <field name="bsd_khach_hang_id"
                                    context="{'show_info':True}"
                                    options="{'no_create':true}"/>
-                        </group>
-                        <group>
                             <field name="bsd_hd_ban_id" options="{'no_create':true}"
                                    domain="[('bsd_khach_hang_id', '=', bsd_khach_hang_id),
                                             ('bsd_ngay_ky_hdb', '!=', False),
                                             ('bsd_du_an_id', '=', bsd_du_an_id), ('state', '!=', 'thanh_ly')]"/>
+                        </group>
+                        <group>
                             <field name="bsd_unit_id" readonly="1" force_save="1"/>
+                            <field name="bsd_ngan_hang_id"/>
                             <field name="bsd_tien_vay"/>
                             <label for="bsd_so_nam_vay"/>
                             <div class="o_row no-gutters d-flex">
@@ -38,6 +64,19 @@
                             </div>
                             <field name="currency_id" invisible="1"/>
                             <field name="company_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="XÉT DUYỆT">
+                        <group>
+                            <field name="bsd_ngay_xn"/>
+                            <field name="bsd_nguoi_xn_id"/>
+                            <field name="bsd_ly_do"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ngay_tc"/>
+                            <field name="bsd_nguoi_tc_id"/>
+                            <field name="bsd_ngay_gc"/>
+                            <field name="bsd_nguoi_gc_id"/>
                         </group>
                     </group>
                 </sheet>
