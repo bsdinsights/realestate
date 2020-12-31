@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_cn_dkbg_form">
-        <field name="name">bsd.cn_dkbg.form</field>
-        <field name="model">bsd.cn_dkbg</field>
+    <record model="ir.ui.view" id="bsd_xn_dhs_form">
+        <field name="name">bsd.xn_dhs.form</field>
+        <field name="model">bsd.xn_dhs</field>
         <field name="arch" type="xml">
             <form duplicate="false">
                 <header>
@@ -44,17 +44,10 @@
                                 <group>
                                     <field name="bsd_ma"/>
                                     <field name="bsd_ngay"/>
-                                    <field name="bsd_ten"/>
-                                    <field name="bsd_du_an_id" options="{'no_create':true}"/>
-                                    <field name="bsd_loai"/>
                                 </group>
                                 <group>
-                                    <field name="bsd_ngay_ttcn"/>
-                                    <field name="bsd_ngay_ut"/>
-                                    <field name="bsd_ngay_htt_moi"/>
-                                    <field name="bsd_co_tbnt"/>
-                                    <field name="bsd_co_tbbg"/>
-                                    <field name="bsd_dien_giai"/>
+                                    <field name="bsd_ten"/>
+                                    <field name="bsd_du_an_id" options="{'no_create':true}"/>
                                 </group>
                             </group>
                             <group string="XÁC NHẬN">
@@ -68,15 +61,6 @@
                                 </group>
                                 <field name="bsd_ly_do"  attrs="{'invisible':[('bsd_ly_do','=',False)]}"/>
                             </group>
-                            <group string="THÔNG BÁO">
-                                <group>
-                                    <field name="bsd_da_tao_tbnt"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_da_tao_tbbg"/>
-                                </group>
-                            </group>
-
                         </page>
                         <page string="Danh sách sản phẩm">
                             <button string="Thêm SP"
@@ -85,18 +69,17 @@
                                     states="nhap"
                                     attrs="{'invisible': ['|',('id', '=',False)]}"
                                     class="oe_highlight oe_right"/>
-                            <field name="bsd_ct_ids">
+                            <field name="bsd_ct_ids" attrs="{'invisible': ['|',('id', '=',False)]}">
                                 <tree>
                                     <field name="bsd_du_an_id" optional="hide"/>
                                     <field name="bsd_unit_id"/>
-                                    <field name="bsd_unit_state" optional="hide"/>
                                     <field name="bsd_hd_ban_id"/>
-                                    <field name="bsd_dot_tt_id"/>
-                                    <field name="bsd_ngay_htt"/>
-                                    <field name="bsd_ngay_dkbg_ht"/>
-                                    <field name="bsd_ngay_htt_moi"/>
-                                    <field name="bsd_ngay_dkbg_moi"/>
-                                    <field name="bsd_so_tb"/>
+                                    <field name="bsd_cmnd_hc"/>
+                                    <field name="bsd_hk_ttt"/>
+                                    <field name="bsd_hdmb"/>
+                                    <field name="bsd_hd_vat"/>
+                                    <field name="bsd_tt_hn"/>
+                                    <field name="bsd_hs_ids" widget="many2many_tags"/>
                                     <field name="state"/>
                                     <button name="action_huy"
                                             string="Hủy"
@@ -107,29 +90,25 @@
                                             confirm="Bạn có muốn Hủy chi tiết không?"/>
                                 </tree>
                                 <form>
-                                    <header>
-                                        <field name="state" widget="statusbar" statusbar_visible="0"/>
-                                    </header>
                                     <sheet>
                                         <group>
                                             <group>
-                                                <field name="bsd_cn_dkbg_id" readonly="1" force_save="1"/>
-                                                <field name="bsd_ngay"/>
-                                                <field name="bsd_unit_id"
+                                                <field name="bsd_xn_dhs_id" readonly="1"/>
+                                                <field name="bsd_ngay" readonly="1"/>
+                                                <field name="bsd_du_an_id" readonly="1"/>
+                                                <field name="bsd_unit_id" readonly="1"
                                                        domain="[('bsd_du_an_id', '=',bsd_du_an_id)]"
                                                        options="{'no_create':true}"/>
-                                                <field name="bsd_ngay_dkbg_moi"/>
-                                                <field name="bsd_ngay_htt_moi"/>
-                                                <field name="bsd_so_tb"/>
-
+                                                <field name="bsd_hd_ban_id" readonly="1"/>
+                                                <field name="bsd_dot_tt_id" readonly="1"/>
                                             </group>
                                             <group>
-                                                <field name="bsd_du_an_id" readonly="1" force_save="1"/>
-                                                <field name="bsd_hd_ban_id" readonly="1" force_save="1"/>
-                                                <field name="bsd_unit_state" readonly="1" force_save="1"/>
-                                                <field name="bsd_dot_tt_id" readonly="1" force_save="1"/>
-                                                <field name="bsd_ngay_htt" readonly="1" force_save="1"/>
-                                                <field name="bsd_ngay_dkbg_ht" readonly="1"/>
+                                                <field name="bsd_cmnd_hc"/>
+                                                <field name="bsd_hk_ttt"/>
+                                                <field name="bsd_hdmb"/>
+                                                <field name="bsd_hd_vat"/>
+                                                <field name="bsd_tt_hn"/>
+                                                <field name="bsd_hs_ids" widget="many2many_tags"/>
                                             </group>
                                         </group>
                                     </sheet>
@@ -146,59 +125,49 @@
             </form>
         </field>
     </record>
-    <record model="ir.ui.view" id="bsd_cn_dkbg_tree">
-        <field name="name">bsd.cn_dkbg.tree</field>
-        <field name="model">bsd.cn_dkbg</field>
+    <record model="ir.ui.view" id="bsd_xn_dhs_tree">
+        <field name="name">bsd.xn_dhs.tree</field>
+        <field name="model">bsd.xn_dhs</field>
         <field name="arch" type="xml">
             <tree decoration-warning="state=='xac_nhan'"
                   decoration-success="state=='duyet'"
                   decoration-muted="state=='huy'">
                 <field name="bsd_ma"/>
                 <field name="bsd_ten"/>
-                <field name="bsd_loai"/>
-                <field name="bsd_co_tbnt"/>
-                <field name="bsd_da_tao_tbnt"/>
-                <field name="bsd_co_tbbg"/>
-                <field name="bsd_da_tao_tbbg"/>
+                <field name="bsd_du_an_id"/>
                 <field name="state"/>
             </tree>
         </field>
     </record>
 
-    <record model="ir.ui.view" id="bsd_cn_dkbg_filter">
-        <field name="name">bsd.cn_dkbg.list.filter</field>
-        <field name="model">bsd.cn_dkbg</field>
+    <record model="ir.ui.view" id="bsd_xn_dhs_filter">
+        <field name="name">bsd.xn_dhs.list.filter</field>
+        <field name="model">bsd.xn_dhs</field>
         <field name="arch" type="xml">
             <search string="Lọc dữ liệu">
                 <field name="bsd_ma"/>
                 <field name="bsd_du_an_id"/>
                 <field name="state"/>
-                <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_cn_dkbg_filter"/>
-                <filter string="Có tạo TBNT" name="bsd_co_tbnt" domain="[('bsd_co_tbnt', '=', True)]"/>
-                <filter string="Có tạo TBBG" name="bsd_co_tbbg" domain="[('bsd_co_tbbg', '=', True)]"/>
-                <filter string="Chưa tạo TBNT" name="bsd_da_tao_tbnt" domain="[('bsd_co_tbbg', '=', False)]"/>
-                <filter string="Chưa tạo TBBG" name="bsd_da_tao_tbbg" domain="[('bsd_co_tbbg', '=', False)]"/>
                 <group expand="0" string="Group by">
                     <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
-                    <filter string="Loại cập nhật" name="bsd_loai" domain="[]" context="{'group_by': 'bsd_loai'}"/>
                     <filter string="Trạng thái" name="state" domain="[]" context="{'group_by': 'state'}"/>
                 </group>
             </search>
         </field>
     </record>
 
-    <record model="ir.actions.act_window" id="bsd_cn_dkbg_action">
-        <field name="name">Cập nhật ngày DKBG</field>
-        <field name="res_model">bsd.cn_dkbg</field>
+    <record model="ir.actions.act_window" id="bsd_xn_dhs_action">
+        <field name="name">Xác nhận đủ hồ sơ làm giấy tờ</field>
+        <field name="res_model">bsd.xn_dhs</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
-            <p>Tạo phiếu cập nhật ngày dự kiến bàn giao</p>
+            <p>Tạo xác nhận hồ sơ làm giấy tời</p>
         </field>
     </record>
 
-    <record model="ir.ui.view" id="bsd_cn_dkbg_unit_form_popup">
-        <field name="name">bsd.cn_dkbg_unit.form</field>
-        <field name="model">bsd.cn_dkbg_unit</field>
+    <record model="ir.ui.view" id="bsd_xn_dhs_unit_form_popup">
+        <field name="name">bsd.xn_dhs_unit.form</field>
+        <field name="model">bsd.xn_dhs_unit</field>
         <field name="arch" type="xml">
             <form duplicate="false">
                 <header>
@@ -207,23 +176,22 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="bsd_cn_dkbg_id" readonly="1" force_save="1"/>
+                            <field name="bsd_xn_dhs_id" readonly="1" force_save="1"/>
                             <field name="bsd_ngay"/>
+                            <field name="bsd_du_an_id" readonly="1" force_save="1"/>
                             <field name="bsd_unit_id"
                                    domain="[('bsd_du_an_id', '=',bsd_du_an_id)]"
                                    options="{'no_create':true}"/>
-                            <field name="bsd_ngay_dkbg_moi"/>
-                            <field name="bsd_ngay_htt_moi"/>
-                            <field name="bsd_so_tb"/>
-
+                            <field name="bsd_hd_ban_id" readonly="1" force_save="1"/>
+                            <field name="bsd_dot_tt_id" readonly="1" force_save="1"/>
                         </group>
                         <group>
-                            <field name="bsd_du_an_id" readonly="1" force_save="1"/>
-                            <field name="bsd_hd_ban_id" readonly="1" force_save="1"/>
-                            <field name="bsd_unit_state" readonly="1" force_save="1"/>
-                            <field name="bsd_dot_tt_id" readonly="1" force_save="1"/>
-                            <field name="bsd_ngay_htt" readonly="1" force_save="1"/>
-                            <field name="bsd_ngay_dkbg_ht" readonly="1"/>
+                            <field name="bsd_cmnd_hc"/>
+                            <field name="bsd_hk_ttt"/>
+                            <field name="bsd_hdmb"/>
+                            <field name="bsd_hd_vat"/>
+                            <field name="bsd_tt_hn"/>
+                            <field name="bsd_hs_ids" widget="many2many_tags"/>
                         </group>
                     </group>
                 </sheet>
@@ -235,13 +203,13 @@
             </form>
         </field>
     </record>
-    <record model="ir.actions.act_window" id="bsd_cn_dkbg_unit_action_popup">
-        <field name="name">Cập nhật DKBG chi tiết</field>
-        <field name="res_model">bsd.cn_dkbg_unit</field>
+    <record model="ir.actions.act_window" id="bsd_xn_dhs_unit_action_popup">
+        <field name="name">Chi tiết</field>
+        <field name="res_model">bsd.xn_dhs_unit</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
         <field name="view_ids"
                eval="[(5, 0, 0),
-                      (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_cn_dkbg_unit_form_popup')})]"/>
+                      (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_xn_dhs_unit_form_popup')})]"/>
     </record>
 </odoo>

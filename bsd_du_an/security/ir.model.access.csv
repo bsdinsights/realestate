@@ -10,8 +10,10 @@ access_bsd_loai_sp,Quản lý thông tin loại sản phẩm,model_bsd_loai_sp,b
 access_bsd_tt_kt,Quản lý thông tin kỹ thuật,model_bsd_tt_kt,bsd_du_an.group_user,1,1,1,0
 access_bsd_tt_kt_ct,Quản lý thông tin kỹ thuật chi tiết ,model_bsd_tt_kt_ct,bsd_du_an.group_user,1,1,1,0
 
-access_bsd_view, Hướng nhìn của sản phẩm,model_bsd_view,bsd_du_an.group_user,1,1,1,0
-access_bsd_lh_sd, Loại hình sử dụng của dự án,model_bsd_lh_sd,bsd_du_an.group_user,1,1,1,0
+access_bsd_view,Hướng nhìn của sản phẩm,model_bsd_view,bsd_du_an.group_user,1,1,1,0
+access_bsd_lh_sd,Loại hình sử dụng của dự án,model_bsd_lh_sd,bsd_du_an.group_user,1,1,1,0
 access_bsd_trinh_tu,Sequence,base.model_ir_sequence,bsd_du_an.group_user,1,1,1,0
 access_bsd_product_template,Khai báo sản phẩm,product.model_product_template,bsd_du_an.group_user,1,1,1,0
+access_bsd_hs_gt,Danh sách hồ sơ giấy tờ,model_bsd_hs_gt,bsd_du_an.group_user,1,1,1,0
+
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_hs_gt_tree">
+        <field name="name">bsd.hs_gt.tree</field>
+        <field name="model">bsd.hs_gt</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="bsd_ten"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_hs_gt_action">
+        <field name="name">Danh sách hồ sơ giấy tờ</field>
+        <field name="res_model">bsd.hs_gt</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo hồ sơ giấy tờ</p>
+        </field>
+    </record>
+</odoo>

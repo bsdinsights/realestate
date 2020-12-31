@@ -122,6 +122,11 @@
                   sequence="105"
                   action="bsd_vay_nh_action"
                   parent="bsd_cn_tt_hd_menu_2"/>
+        <menuitem id="bsd_xn_dhs_menu_action_2"
+                  name="Xác nhận đủ hồ sơ"
+                  sequence="106"
+                  action="bsd_xn_dhs_action"
+                  parent="bsd_cn_tt_hd_menu_2"/>
     <menuitem id="bsd_nghiem_thu_menu_action_2"
               name="Nghiệm thu"
               sequence="27"

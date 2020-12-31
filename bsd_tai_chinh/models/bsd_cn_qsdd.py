@@ -57,19 +57,48 @@ class BsdCapNhatGTQSDD(models.Model):
                              'default_bsd_du_an_id': self.bsd_du_an_id.id}
         return action
 
-    # Xác nhận cập nhật giá trị QSDĐ
+    # Xác nhận khách hàng đã nộp đủ hồ sơ
     def action_xac_nhan(self):
         if not self.bsd_ct_ids.filtered(lambda x: x.state == 'nhap'):
             raise UserError("Không có sản phẩm cập nhật giá trị QSDĐ.\nVui lòng kiểm tra lại thông tin.")
-        if self.state == 'nhap':
+        message = ''
+        ct_ids = self.bsd_ct_ids.filtered(lambda x: x.state == 'xac_nhan')
+        # Lọc các hợp đồng đã bị thanh lý
+        hop_dong_da_tl = ct_ids.mapped('bsd_hd_ban_id').filtered(lambda h: h.state == 'thanh_ly')
+        hop_dong_chua_tt = ct_ids.mapped('bsd_hd_ban_id').filtered(lambda h: h.state != 'thanh_ly')
+        if hop_dong_da_tl:
+            message += "<ul><li>Những hợp đồng đã bị thanh lý: {}</li>"\
+                .format(','.join(hop_dong_da_tl.mapped('bsd_ma_hd_ban')))
+        # Lọc các unit đã bàn giao
+        unit = ct_ids.mapped('bsd_unit_id').filtered(lambda h: h.bsd_ngay_bg)
+        if unit:
+            message += "<li>Những Sản phẩm đã bàn giao: {}</li>".format(','.join(unit.mapped('bsd_ten_unit')))
+        if message:
+            # Cập nhật trạng thái nháp
             self.write({
-                'state': 'xac_nhan',
-                'bsd_ngay_xn': fields.Date.today(),
-                'bsd_nguoi_xn_id': self.env.uid,
+                'bsd_ly_do': message
             })
-            for ct in self.bsd_ct_ids:
-                if ct.state == 'nhap':
-                    ct.write({'state': 'xac_nhan'})
+            self.message_post(body=message)
+            message_id = self.env['message.wizard'].create(
+                {'message': _(message)})
+            return {
+                'name': _('Thông báo'),
+                'type': 'ir.actions.act_window',
+                'view_mode': 'form',
+                'res_model': 'message.wizard',
+                'res_id': message_id.id,
+                'target': 'new'
+            }
+        else:
+            if self.state == 'nhap':
+                self.write({
+                    'state': 'xac_nhan',
+                    'bsd_ngay_xn': fields.Date.today(),
+                    'bsd_nguoi_xn_id': self.env.uid,
+                })
+                for ct in self.bsd_ct_ids:
+                    if ct.state == 'nhap':
+                        ct.write({'state': 'xac_nhan'})
 
     # Duyệt cập nhật giá trị QSDĐ
     def action_duyet(self):

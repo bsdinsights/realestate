@@ -75,7 +75,8 @@ class BsdMaBoChungTu(models.Model):
                                     ('bsd.phi_ps', 'Phí phát sinh'),
                                     ('bsd.mien_giam', 'Miễn giảm thanh toán'),
                                     ('bsd.ps_gd_km', 'Khuyến mãi giao dịch'),
-                                    ('bsd.vay_nh', 'Vay ngân hàng')
+                                    ('bsd.vay_nh', 'Vay ngân hàng'),
+                                    ('bsd.xn_dhs', 'Xác nhận đủ hồ sơ'),
                                     ],
                                    string="Loại chứng từ", help="Loại chứng từ được đặt mã", required=True,
                                    readonly=True,
