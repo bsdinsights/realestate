@@ -36,7 +36,7 @@ class BsdCapNhatGTQSDD(models.Model):
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
                               ('duyet', 'Duyệt'), ('huy', 'Hủy')],
                              string="Trạng thái", default="nhap", required=True, readonly=True, tracking=1)
-    bsd_ly_do = fields.Html(string="Lý do", readonly=True, tracking=2)
+    bsd_ly_do = fields.Html(string="Lý do", readonly=True)
     bsd_ct_ids = fields.One2many('bsd.cn_qsdd_unit', 'bsd_cn_qsdd_id', string="Cập nhật QSDĐ chi tiết")
 
     # tính năng import dự liệu
@@ -62,7 +62,7 @@ class BsdCapNhatGTQSDD(models.Model):
         if not self.bsd_ct_ids.filtered(lambda x: x.state == 'nhap'):
             raise UserError("Không có sản phẩm cập nhật giá trị QSDĐ.\nVui lòng kiểm tra lại thông tin.")
         message = ''
-        ct_ids = self.bsd_ct_ids.filtered(lambda x: x.state == 'xac_nhan')
+        ct_ids = self.bsd_ct_ids
         # Lọc các hợp đồng đã bị thanh lý
         hop_dong_da_tl = ct_ids.mapped('bsd_hd_ban_id').filtered(lambda h: h.state == 'thanh_ly')
         hop_dong_chua_tt = ct_ids.mapped('bsd_hd_ban_id').filtered(lambda h: h.state != 'thanh_ly')

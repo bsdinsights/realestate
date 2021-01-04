@@ -34,7 +34,7 @@ class BsdXacNhanDHS(models.Model):
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'), ('duyet', 'Duyệt'), ('huy', 'Hủy')],
                              string='Trạng thái', help="Trạng thái",
                              required=True, readonly=True, default='nhap', tracking=1)
-    bsd_ly_do = fields.Char(string="Lý do", help="Lý do", readonly=True, tracking=2)
+    bsd_ly_do = fields.Html(string="Lý do", help="Lý do", readonly=True)
     bsd_ct_ids = fields.One2many('bsd.xn_dhs_unit', 'bsd_xn_dhs_id', string="Cập nhật NDC chi tiết",
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
@@ -58,11 +58,10 @@ class BsdXacNhanDHS(models.Model):
         return action
 
     def action_xac_nhan(self):
-        if not self.bsd_ct_ids.filtered(lambda x: x.state == 'nhap'):
-            raise UserError("Không có sản phẩm cập nhật giá trị QSDĐ.\nVui lòng kiểm tra lại thông tin.")
+        ct_ids = self.bsd_ct_ids.filtered(lambda x: x.state == 'nhap')
+        if not ct_ids:
+            raise UserError("Không có sản phẩm .\nVui lòng kiểm tra lại thông tin.")
         message = ''
-        ct_ids = self.bsd_ct_ids.filtered(lambda x: x.state == 'xac_nhan')
-        _logger.debug(ct_ids)
         # Lọc các hợp đồng đã bị thanh lý
         hop_dong_da_tl = ct_ids.mapped('bsd_hd_ban_id').filtered(lambda h: h.state == 'thanh_ly')
         if hop_dong_da_tl:
@@ -71,34 +70,36 @@ class BsdXacNhanDHS(models.Model):
         # Lọc các hợp đồng chưa nộp giấy cmnd
         ct_no_cmnd = ct_ids.filtered(lambda x: not x.bsd_cmnd_hc)
         if ct_no_cmnd:
-            message += "<ul><li>Những sản phẩm chưa nộp giấy CMND/ Hộ chiếu: {}</li>"\
+            message += "<li>Những sản phẩm chưa nộp giấy CMND/ Hộ chiếu: {}</li>"\
                 .format(','.join(ct_no_cmnd.mapped('bsd_hd_ban_id').mapped('bsd_ma_hd_ban')))
 
         # Lọc các hợp đồng chưa nộp Hộ khẩu/ Thẻ thường trú
         ct_no_hk = ct_ids.filtered(lambda x: not x.bsd_hk_ttt)
         if ct_no_hk:
-            message += "<ul><li>Những sản phẩm chưa nộp hộ khẩu/ thẻ thường trú: {}</li>"\
+            message += "<li>Những sản phẩm chưa nộp hộ khẩu/ thẻ thường trú: {}</li>"\
                 .format(','.join(ct_no_hk.mapped('bsd_hd_ban_id').mapped('bsd_ma_hd_ban')))
 
         # Lọc các hợp đồng chưa nộp hợp đồng mua bán
         ct_no_hd = ct_ids.filtered(lambda x: not x.bsd_hdmb)
         if ct_no_hd:
-            message += "<ul><li>Những sản phẩm chưa nộp hợp đồng mua bán: {}</li>"\
+            message += "<li>Những sản phẩm chưa nộp hợp đồng mua bán: {}</li>"\
                 .format(','.join(ct_no_hd.mapped('bsd_hd_ban_id').mapped('bsd_ma_hd_ban')))
 
         # Lọc các hợp đồng chưa nộp hóa đơn thuế VAT
         ct_no_vat = ct_ids.filtered(lambda x: not x.bsd_hd_vat)
         if ct_no_vat:
-            message += "<ul><li>Những sản phẩm chưa nộp hóa đơn thuế VAT: {}</li>"\
+            message += "<li>Những sản phẩm chưa nộp hóa đơn thuế VAT: {}</li>"\
                 .format(','.join(ct_no_vat.mapped('bsd_hd_ban_id').mapped('bsd_ma_hd_ban')))
 
         # Lọc các hợp đồng chưa nộp giấy xác nhận tình trạng hôn nhân
         ct_no_tthn = ct_ids.filtered(lambda x: not x.bsd_tt_hn)
         if ct_no_tthn:
-            message += "<ul><li>Những sản phẩm chưa nộp giấy xác nhận tình trạng hôn nhân: {}</li>"\
+            message += "<li>Những sản phẩm chưa nộp giấy xác nhận tình trạng hôn nhân: {}</li>"\
                 .format(','.join(ct_no_tthn.mapped('bsd_hd_ban_id').mapped('bsd_ma_hd_ban')))
-
+        _logger.debug("thông tin")
+        _logger.debug(message)
         if message:
+            message += '</ul'
             # Cập nhật trạng thái nháp
             self.write({
                 'bsd_ly_do': message
@@ -124,6 +125,88 @@ class BsdXacNhanDHS(models.Model):
                 for ct in self.bsd_ct_ids:
                     if ct.state == 'nhap':
                         ct.write({'state': 'xac_nhan'})
+
+    def action_khong_duyet(self):
+        action = self.env.ref('bsd_dich_vu.bsd_wizard_khong_duyet_xn_dhs_action').read()[0]
+        return action
+
+    # Hủy cập nhật giá trị QSDĐ
+    def action_huy(self):
+        if self.state in ['nhap', 'xac_nhan']:
+            self.write({
+                'state': 'huy'
+            })
+
+    def action_duyet(self):
+        ct_ids = self.bsd_ct_ids.filtered(lambda x: x.state == 'xac_nhan')
+        if not ct_ids:
+            raise UserError("Không có sản phẩm .\nVui lòng kiểm tra lại thông tin.")
+        message = ''
+        # Lọc các hợp đồng đã bị thanh lý
+        hop_dong_da_tl = ct_ids.mapped('bsd_hd_ban_id').filtered(lambda h: h.state == 'thanh_ly')
+        if hop_dong_da_tl:
+            message += "<ul><li>Những hợp đồng đã bị thanh lý: {}</li>".format(','.join(hop_dong_da_tl.mapped('bsd_ma_hd_ban')))
+
+        # Lọc các hợp đồng chưa nộp giấy cmnd
+        ct_no_cmnd = ct_ids.filtered(lambda x: not x.bsd_cmnd_hc)
+        if ct_no_cmnd:
+            message += "<li>Những sản phẩm chưa nộp giấy CMND/ Hộ chiếu: {}</li>"\
+                .format(','.join(ct_no_cmnd.mapped('bsd_hd_ban_id').mapped('bsd_ma_hd_ban')))
+
+        # Lọc các hợp đồng chưa nộp Hộ khẩu/ Thẻ thường trú
+        ct_no_hk = ct_ids.filtered(lambda x: not x.bsd_hk_ttt)
+        if ct_no_hk:
+            message += "<li>Những sản phẩm chưa nộp hộ khẩu/ thẻ thường trú: {}</li>"\
+                .format(','.join(ct_no_hk.mapped('bsd_hd_ban_id').mapped('bsd_ma_hd_ban')))
+
+        # Lọc các hợp đồng chưa nộp hợp đồng mua bán
+        ct_no_hd = ct_ids.filtered(lambda x: not x.bsd_hdmb)
+        if ct_no_hd:
+            message += "<li>Những sản phẩm chưa nộp hợp đồng mua bán: {}</li>"\
+                .format(','.join(ct_no_hd.mapped('bsd_hd_ban_id').mapped('bsd_ma_hd_ban')))
+
+        # Lọc các hợp đồng chưa nộp hóa đơn thuế VAT
+        ct_no_vat = ct_ids.filtered(lambda x: not x.bsd_hd_vat)
+        if ct_no_vat:
+            message += "<li>Những sản phẩm chưa nộp hóa đơn thuế VAT: {}</li>"\
+                .format(','.join(ct_no_vat.mapped('bsd_hd_ban_id').mapped('bsd_ma_hd_ban')))
+
+        # Lọc các hợp đồng chưa nộp giấy xác nhận tình trạng hôn nhân
+        ct_no_tthn = ct_ids.filtered(lambda x: not x.bsd_tt_hn)
+        if ct_no_tthn:
+            message += "<li>Những sản phẩm chưa nộp giấy xác nhận tình trạng hôn nhân: {}</li>"\
+                .format(','.join(ct_no_tthn.mapped('bsd_hd_ban_id').mapped('bsd_ma_hd_ban')))
+        if message:
+            message += '</ul'
+            # Cập nhật trạng thái nháp
+            self.write({
+                'bsd_ly_do': message
+            })
+            self.message_post(body=message)
+            message_id = self.env['message.wizard'].create(
+                {'message': _(message)})
+            return {
+                'name': _('Thông báo'),
+                'type': 'ir.actions.act_window',
+                'view_mode': 'form',
+                'res_model': 'message.wizard',
+                'res_id': message_id.id,
+                'target': 'new'
+            }
+        else:
+            if self.state == 'xac_nhan':
+                self.write({
+                    'state': 'duyet',
+                    'bsd_ngay_duyet': fields.Date.today(),
+                    'bsd_nguoi_duyet_id': self.env.uid,
+                    'bsd_ly_do': ''
+                })
+            # Cập nhật trạng thái duyệt cập nhật chi tiết
+            ct_ids.write({
+                'state': 'duyet'
+            })
+            # Cập nhật trạng thái xác nhận đã nhận hồ sơ làm giấy tờ cho sản phẩm này
+            ct_ids.mapped('bsd_unit_id').sudo().write({'bsd_xn_du_hs': '1'})
 
     @api.model
     def create(self, vals):

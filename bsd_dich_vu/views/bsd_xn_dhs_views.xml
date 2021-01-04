@@ -59,7 +59,11 @@
                                     <field name="bsd_ngay_duyet"/>
                                     <field name="bsd_nguoi_duyet_id"/>
                                 </group>
-                                <field name="bsd_ly_do"  attrs="{'invisible':[('bsd_ly_do','=',False)]}"/>
+                            </group>
+                            <group string="LÝ DO" attrs="{'invisible':[('bsd_ly_do','=',False)]}">
+                                <field name="bsd_ly_do"
+                                       nolabel='1'
+                                       attrs="{'invisible':[('bsd_ly_do','=',False)]}"/>
                             </group>
                         </page>
                         <page string="Danh sách sản phẩm">
