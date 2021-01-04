@@ -14,3 +14,4 @@ from . import report_bsd_thanh_ly
 from . import report_bsd_tb_tt_nn
 from . import report_bsd_tb_nn
 from . import report_bsd_tb_kq_dttt
+from . import report_bsd_vp_hd

@@ -219,6 +219,19 @@ class BsdXacNhanDHS(models.Model):
         vals['bsd_ma'] = sequence.next_by_id()
         return super(BsdXacNhanDHS, self).create(vals)
 
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        args = list(args or [])
+        if name:
+            if operator == 'ilike':
+                args += [('bsd_ten', operator, name)]
+            elif operator == '=':
+                args += [('bsd_ma', operator, name)]
+        access_rights_uid = name_get_uid or self._uid
+        ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
+        recs = self.browse(ids)
+        return models.lazy_name_get(recs.with_user(access_rights_uid))
+
 
 class BsdXacNhanDHSChiTiet(models.Model):
     _name = 'bsd.xn_dhs_unit'
@@ -267,7 +280,6 @@ class BsdXacNhanDHSChiTiet(models.Model):
 
     @api.onchange('bsd_unit_id')
     def _onchange_unit(self):
-        _logger.debug("Onchange")
         hd_ban = self.bsd_unit_id.bsd_hd_ban_id
         if hd_ban:
             dot_tt = hd_ban.bsd_ltt_ids.filtered(lambda x: x.bsd_ma_dtt == 'DBGC')[0]
@@ -275,3 +287,11 @@ class BsdXacNhanDHSChiTiet(models.Model):
             dot_tt = False
         self.bsd_hd_ban_id = hd_ban
         self.bsd_dot_tt_id = dot_tt
+
+    @api.model
+    def create(self, vals):
+        unit = self.env['product.product'].browse(vals['bsd_unit_id'])
+        vals['bsd_du_an_id'] = unit.bsd_du_an_id.id
+        vals['bsd_hd_ban_id'] = unit.bsd_hd_ban_id.id
+        vals['bsd_dot_tt_id'] = unit.bsd_hd_ban_id.bsd_ltt_ids.filtered(lambda x: x.bsd_ma_dtt == 'DBGC')[0].id
+        return super(BsdXacNhanDHSChiTiet, self).create(vals)

@@ -31,5 +31,6 @@ from . import calender
 from . import bsd_pl_dccl_dien_tich
 from . import bsd_vay_nh
 from . import bsd_xn_dhs
+from . import bsd_vi_pham_hd
 
 

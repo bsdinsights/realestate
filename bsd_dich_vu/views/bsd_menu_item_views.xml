@@ -127,6 +127,11 @@
                   sequence="106"
                   action="bsd_xn_dhs_action"
                   parent="bsd_cn_tt_hd_menu_2"/>
+        <menuitem id="bsd_vp_hd_menu_action"
+                  name="Vi phạm hợp đồng"
+                  sequence="107"
+                  action="bsd_vp_hd_action"
+                  parent="bsd_cn_tt_hd_menu_2"/>
     <menuitem id="bsd_nghiem_thu_menu_action_2"
               name="Nghiệm thu"
               sequence="27"
