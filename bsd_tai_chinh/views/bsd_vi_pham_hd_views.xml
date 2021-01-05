@@ -9,9 +9,9 @@
                 <button name="action_view_pps" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_phi_ps', '=', 0)]}">
                     <field name="bsd_so_phi_ps" widget="statinfo" string="Phí PS"/>
                 </button>
-<!--                <button name="action_view_ht" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_ht', '=', 0)]}">-->
-<!--                    <field name="bsd_so_ht" widget="statinfo" string="Hoàn tiền"/>-->
-<!--                </button>-->
+                <button name="action_view_ht" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_ht', '=', 0)]}">
+                    <field name="bsd_so_ht" widget="statinfo" string="Hoàn tiền"/>
+                </button>
             </xpath>
         </field>
     </record>

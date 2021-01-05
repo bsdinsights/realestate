@@ -1,5 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_bsd_du_an,Quản lý thông tin dự án,model_bsd_du_an,bsd_du_an.group_manager,1,1,1,0
+access_bsd_du_an,Quản lý thông tin dự án,model_bsd_du_an,bsd_du_an.group_user,1,1,1,0
 access_bsd_da_nh,Ngân hàng tài trợ của dự án,model_bsd_da_nh,bsd_du_an.group_user,1,1,1,0
 access_bsd_da_nh_vay,Ngân hàng cho vay của dự án,model_bsd_da_nh_vay,bsd_du_an.group_user,1,1,1,0
 access_bsd_da_tknh,Tài khoản ngân hàng của dự án,model_bsd_da_tknh,bsd_du_an.group_user,1,1,1,0

@@ -70,22 +70,16 @@ class BsdHoanTien(models.Model):
         return choices
 
     bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Thanh toán trả trước", help="Thanh toán trả trước",
-                                       readonly=True,
-                                       states={'nhap': [('readonly', False)]})
+                                       readonly=True)
     bsd_gc_tc_id = fields.Many2one('bsd.gc_tc', string="Giữ chỗ thiện chí", help="Giữ chỗ thiện chí",
-                                   readonly=True,
-                                   states={'nhap': [('readonly', False)]})
+                                   readonly=True)
     bsd_giu_cho_id = fields.Many2one('bsd.giu_cho', string="Giữ chỗ", help="Giữ chỗ",
-                                     readonly=True,
-                                     states={'nhap': [('readonly', False)]})
+                                     readonly=True)
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Đặt cọc",
-                                     readonly=True,
-                                     states={'nhap': [('readonly', False)]})
+                                     readonly=True)
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng",
-                                    readonly=True,
-                                    states={'nhap': [('readonly', False)]})
-    bsd_vp_hd_id = fields.Many2one('bsd.vp_hd', string="Vi phạm HĐ", help="Vi phạm hợp đồng", readonly=True,
-                                   states={'nhap': [('readonly', False)]})
+                                    readonly=True)
+    bsd_vp_hd_id = fields.Many2one('bsd.vp_hd', string="Vi phạm HĐ", help="Vi phạm hợp đồng", readonly=True)
     bsd_thanh_ly_id = fields.Many2one('bsd.thanh_ly', string="Thanh lý", help="Thanh lý")
 
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
