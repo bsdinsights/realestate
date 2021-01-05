@@ -43,8 +43,8 @@ access_bsd_vay_nh,Yêu cầu vay ngân hàng,model_bsd_vay_nh,bsd_dich_vu.group_
 access_bsd_xn_dhs,Xác nhận đủ hồ sơ làm giấy tờ,model_bsd_xn_dhs,bsd_dich_vu.group_user,1,1,1,0
 access_bsd_xn_dhs_unit,Xác nhận đủ hồ sơ làm giấy tờ sản phẩm,model_bsd_xn_dhs_unit,bsd_dich_vu.group_user,1,1,1,0
 access_bsd_vp_hd,Vi phạm hợp đồng,model_bsd_vp_hd,bsd_dich_vu.group_user,1,1,1,0
-
-
+access_bsd_cn_htt,Cập nhật ngày đến hạn thanh toán,model_bsd_cn_htt,bsd_dich_vu.group_user,1,1,1,0
+access_bsd_cn_htt_ct,Cập nhật ngày đến hạn thanh toán chi tiết,model_bsd_cn_htt_ct,bsd_dich_vu.group_user,1,1,1,0
 
 
 

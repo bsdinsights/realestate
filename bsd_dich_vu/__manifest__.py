@@ -49,6 +49,7 @@
         'views/bsd_vay_nh_views.xml',
         'views/bsd_xn_dhs_views.xml',
         'views/bsd_vi_pham_hd_views.xml',
+        'views/bsd_cn_htt_views.xml',
         'views/bsd_menu_item_views.xml',
         'views/product_template_views.xml',
         'wizards/bsd_wizard_hd_ban_views.xml',

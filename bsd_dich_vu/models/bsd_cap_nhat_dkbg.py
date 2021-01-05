@@ -22,9 +22,9 @@ class BsdCapNhatDKBG(models.Model):
     bsd_ten = fields.Char(string="Tiêu đề", help="Tiêu đề", required=True,
                           readonly=True,
                           states={'nhap': [('readonly', False)]})
-    bsd_ngay = fields.Datetime(string="Ngày tạo", required=True, default=lambda self: fields.Datetime.now(),
-                               readonly=True,
-                               states={'nhap': [('readonly', False)]})
+    bsd_ngay = fields.Date(string="Ngày tạo", required=True, default=lambda self: fields.Date.today(),
+                           readonly=True,
+                           states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Dự án", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
