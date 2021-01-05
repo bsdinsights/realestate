@@ -32,6 +32,9 @@ class BsdViPhamHopDong(models.Model):
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", required=True,
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
+    bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt TT",
+                                    readonly=True, help="Đợt thanh toán",
+                                    states={'nhap': [('readonly', False)]})
     bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", readonly=True, required=True,
                                   states={'nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one("res.partner", string="Khách hàng", reaonly=True,
@@ -57,6 +60,7 @@ class BsdViPhamHopDong(models.Model):
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
                               ('duyet', 'Duyệt'),
+                              ('da_ky', 'Đã ký'),
                               ('huy', 'Hủy')],
                              string="Trạng thái", default='nhap', required=True, readonly=True, tracking=1)
     bsd_ly_do = fields.Char(string="Lý do", readonly=True)
@@ -66,6 +70,9 @@ class BsdViPhamHopDong(models.Model):
     bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
     bsd_ngay_in = fields.Date(string="Ngày in", help="Ngày in", readonly=True)
     bsd_nguoi_in_id = fields.Many2one('res.users', string="Người in", readonly=True)
+    bsd_ngay_ky = fields.Date(string="Ngày ký", help="Ngày ký", readonly=True)
+    bsd_nguoi_xn_ky_id = fields.Many2one('res.users', string="Người xn ký",
+                                         help="Người xác nhận khách hàng đã ký biên bản", readonly=True)
 
     @api.onchange('bsd_hd_ban_id')
     def _onchange_hd(self):
@@ -132,6 +139,14 @@ class BsdViPhamHopDong(models.Model):
     def action_ky(self):
         action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_vp_hd_action').read()[0]
         return action
+
+    def action_xu_ly(self):
+        # nếu là chủ đầu tư thì tạo hoàn tiền
+        if self.bsd_ben_vp == 'chu_dt':
+            pass
+        # nếu là khách hàng thì tạo phí phát sinh
+        else:
+            pass
 
     # DV.09.06 Không duyệt chuyển nhượng
     def action_khong_duyet(self):

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_vp_hd_form_inherit">
+        <field name="name">bsd.vp_hd.form.inherit</field>
+        <field name="model">bsd.vp_hd</field>
+        <field name="inherit_id" ref="bsd_dich_vu.bsd_vp_hd_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_pps" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_phi_ps', '=', 0)]}">
+                    <field name="bsd_so_phi_ps" widget="statinfo" string="Phí PS"/>
+                </button>
+<!--                <button name="action_view_ht" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_ht', '=', 0)]}">-->
+<!--                    <field name="bsd_so_ht" widget="statinfo" string="Hoàn tiền"/>-->
+<!--                </button>-->
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

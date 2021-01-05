@@ -16,3 +16,4 @@ from . import bsd_lai_phat
 from . import bsd_cn_qsdd
 from . import bsd_nghiem_thu
 from . import bsd_pl_dccl_dien_tich
+from . import bsd_vi_pham_hd

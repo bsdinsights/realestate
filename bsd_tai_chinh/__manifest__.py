@@ -34,6 +34,7 @@
         'views/bsd_huy_gc_views.xml',
         'views/bsd_nghiem_thu_views.xml',
         'views/bsd_pl_dccl_dien_tich_views.xml',
+        'views/bsd_vi_pham_hd_views.xml',
         'wizards/bsd_wizard_ut_lp_views.xml',
         'wizards/bsd_wizard_cn_qsdd_views.xml',
         'wizards/bsd_wizard_tt_dot_views.xml',

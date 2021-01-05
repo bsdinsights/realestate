@@ -29,6 +29,7 @@ class BsdPhiPhatSinh(models.Model):
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
     bsd_nghiem_thu_id = fields.Many2one('bsd.nghiem_thu', string="Nghiệm thu", readonly=True)
+    bsd_vp_hd_id = fields.Many2one('bsd.vp_hd', string="Vi phạm HĐ", readonly=True)
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng", required=True,
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
@@ -59,7 +60,9 @@ class BsdPhiPhatSinh(models.Model):
     def _method_choice(self):
         choices = [('bg_gt', 'Bàn giao giấy tờ'), ('khac', 'Khác')]
         if self.env['res.users'].has_group('bsd_dich_vu.group_manager'):
-            choices += [('nt', 'Nghiệm thu'), ('pl_hd', 'Phụ lục HĐ'), ('vp_hd', 'Vi phạm HĐ')]
+            choices += [('nt', 'Nghiệm thu'),
+                        ('pl_hd', 'Phụ lục HĐ'),
+                        ('vp_hd', 'Vi phạm HĐ')]
         return choices
 
     bsd_tien_ps = fields.Monetary(string="Số tiền", help="Số tiền", required=True,

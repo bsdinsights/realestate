@@ -24,6 +24,12 @@
                             confirm="Bạn có muốn duyệt yêu cầu này không?"
                             type="object"
                             class="oe_highlight"/>
+                    <button string="Xác nhận ký"
+                            name="action_ky"
+                            states="duyet"
+                            attrs="{'invisible': ['|',('bsd_ngay_in', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
                     <button string="Không duyệt"
                             name="action_khong_duyet"
                             states="xac_nhan"
@@ -38,6 +44,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box"/>
                     <group>
                         <group>
                             <field name="bsd_ma"/>
@@ -65,7 +72,12 @@
                             <field name="bsd_so_tp_tt"/>
                         </group>
                         <group>
-                             <field name="bsd_khach_hang_id" readonly="1" force_save="1"/>
+                            <field name="bsd_khach_hang_id" readonly="1" force_save="1"/>
+                            <field name="bsd_dot_tt_id"
+                                   attrs="{'required':[('bsd_ben_vp','=','khach_hang')],
+                                            'invisible':[('bsd_ben_vp','!=','khach_hang')]}"
+                                   options="{'no_create': true}"
+                                   domain="[('bsd_hd_ban_id', '=', bsd_hd_ban_id)]"/>
                             <field name="bsd_chu_dt_id" readonly="1" force_save="1"/>
                         </group>
                     </group>
@@ -79,6 +91,8 @@
                         <group>
                             <field name="bsd_ngay_in"/>
                             <field name="bsd_nguoi_in_id"/>
+                            <field name="bsd_ngay_ky"/>
+                            <field name="bsd_nguoi_xn_ky_id"/>
                             <field name="bsd_ly_do"/>
                         </group>
                     </group>

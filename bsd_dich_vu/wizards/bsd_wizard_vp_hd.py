@@ -39,6 +39,7 @@ class BsdWizardKyVPHD(models.TransientModel):
     def action_xac_nhan(self):
         self.bsd_vp_hd_id.write({
             'bsd_ngay_ky': self.bsd_ngay_ky,
-            'bsd_nguoi_ky_id': self.env.uid,
+            'bsd_nguoi_xn_ky_id': self.env.uid,
             'state': 'da_ky',
         })
+        self.bsd_vp_hd_id.action_xu_ly()

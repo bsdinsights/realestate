@@ -36,7 +36,8 @@
                             <field name="bsd_ngay_ps"/>
                             <field name="bsd_ten_ps"/>
                             <field name="bsd_du_an_id" options="{'no_create':true}"/>
-                            <field name="bsd_nghiem_thu_id"/>
+                            <field name="bsd_nghiem_thu_id" attrs="{'invisible':[('bsd_loai','!=', 'nt')]}"/>
+                            <field name="bsd_vp_hd_id" attrs="{'invisible':[('bsd_loai','!=', 'vp_hd')]}"/>
                         </group>
                         <group>
                             <field name="bsd_hd_ban_id"

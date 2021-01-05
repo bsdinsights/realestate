@@ -84,9 +84,8 @@ class BsdHoanTien(models.Model):
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
-    # bsd_ps_gd_ck_id = fields.Many2one('bsd.ps_gd_ck', string="Giao dịch chiết khấu", help="Giao dịch chiết khấu",
-    #                                   readonly=True,
-    #                                   states={'nhap': [('readonly', False)]})
+    bsd_vp_hd_id = fields.Many2one('bsd.vp_hd', string="Vi phạm HĐ", help="Vi phạm hợp đồng", readonly=True,
+                                   states={'nhap': [('readonly', False)]})
     bsd_thanh_ly_id = fields.Many2one('bsd.thanh_ly', string="Thanh lý", help="Thanh lý")
 
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
