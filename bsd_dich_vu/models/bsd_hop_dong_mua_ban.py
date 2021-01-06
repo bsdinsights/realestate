@@ -758,6 +758,8 @@ class BsdBaoGiaLTT(models.Model):
 
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True, copy=False)
     bsd_ma_ht = fields.Char(string="Mã hệ thống", help="Mã hệ thống", compute='_compute_ma_ht', store=True)
+    bsd_cn_htt_ct_ids = fields.One2many('bsd.cn_htt_ct', 'bsd_dot_tt_id', string="Lịch sử gia hạn",
+                                        domain=[('state', '=', 'duyet')], readonly=True)
 
     @api.depends('bsd_hd_ban_id.bsd_ma_hd_ban', 'bsd_ten_dtt')
     def _compute_ma_ht(self):

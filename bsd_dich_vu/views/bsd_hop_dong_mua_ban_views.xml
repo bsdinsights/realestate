@@ -1214,4 +1214,18 @@
                eval="[(5, 0, 0),
                       (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_dich_vu.bsd_hd_ban_form_popup')})]"/>
     </record>
+
+    <record model="ir.ui.view" id="bsd_lich_thanh_toan_tree">
+        <field name="name">bsd.lich_thanh_toan.tree</field>
+        <field name="model">bsd.lich_thanh_toan</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_hd_ban_id"/>
+                <field name="bsd_ten_dtt"/>
+                <field name="bsd_ngay_hh_tt"/>
+                <field name="bsd_tien_dot_tt"/>
+                <field name="bsd_thanh_toan"/>
+            </tree>
+        </field>
+    </record>
 </odoo>

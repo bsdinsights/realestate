@@ -133,7 +133,7 @@
                   action="bsd_vp_hd_action"
                   parent="bsd_cn_tt_hd_menu_2"/>
         <menuitem id="bsd_cn_htt_menu_action"
-                  name="CN.HTT"
+                  name="CN.Hạn thanh toán"
                   sequence="108"
                   action="bsd_cn_htt_action"
                   parent="bsd_cn_tt_hd_menu_2"/>

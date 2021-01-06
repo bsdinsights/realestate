@@ -190,6 +190,7 @@ class BsdCapNhatDKBG(models.Model):
             self.write({
                 'state': 'huy'
             })
+            self.bsd_ct_ids.write({'state': 'huy'})
 
     @api.model
     def create(self, vals):

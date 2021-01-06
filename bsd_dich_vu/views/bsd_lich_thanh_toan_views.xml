@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_lich_thanh_toan_tree">
+        <field name="name">bsd.lich_thanh_toan.tree</field>
+        <field name="model">bsd.lich_thanh_toan</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_hd_ban_id"/>
+                <field name="bsd_ten_dtt"/>
+                <field name="bsd_ngay_hh_tt"/>
+                <field name="bsd_tien_dot_tt"/>
+                <field name="bsd_thanh_toan"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_lich_thanh_toan_form_inherit">
+        <field name="name">bsd.lich_thanh_toan.form.inherit</field>
+        <field name="model">bsd.lich_thanh_toan</field>
+        <field name="inherit_id" ref="bsd_kinh_doanh.bsd_lich_thanh_toan_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Lịch sử gia hạn">
+                    <field name="bsd_cn_htt_ct_ids">
+                        <tree>
+                            <field name="bsd_cn_htt_id"/>
+                            <field name="bsd_ngay_htt_ht"/>
+                            <field name="bsd_ngay_htt_moi"/>
+                            <field name="state"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -24,3 +24,4 @@ from . import bsd_wizard_pl
 from . import bsd_wizard_cn_dttt
 from . import bsd_wizard_xn_dhs
 from . import bsd_wizard_vp_hd
+from . import bsd_wizard_cn_htt
