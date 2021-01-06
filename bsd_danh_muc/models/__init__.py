@@ -24,3 +24,5 @@ from . import res_country
 from . import bsd_du_an
 from . import bsd_thue_suat
 from . import product_template
+from . import bsd_hoa_hong
+

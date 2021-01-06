@@ -37,6 +37,7 @@
         'views/bsd_ma_bo_cn_chung_views.xml',
         'views/bsd_du_an_views.xml',
         'views/bsd_thue_suat_views.xml',
+        'views/bsd_hoa_hong_views.xml',
         'views/bsd_menu_item_views.xml',
         'views/bsd_res_country_views.xml',
         'wizards/bsd_wizard_khong_duyet_khuyen_mai_views.xml',

@@ -43,6 +43,7 @@ access_bsd_ma_bo_cn,Mã bộ chứng từ dự án,model_bsd_ma_bo_cn,bsd_danh_m
 access_bsd_ma_bo_cn_chung,Mã bộ chứng từ chung,model_bsd_ma_bo_cn_chung,bsd_danh_muc.group_user,1,1,1,0
 
 access_bsd_thue_suat,Thuế suất,model_bsd_thue_suat,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_hoa_hong,Hoa hồng,model_bsd_hoa_hong,bsd_danh_muc.group_user,1,1,1,0
 
 access_bsd_bang_gia,Khai báo bảng giá,product.model_product_pricelist,bsd_danh_muc.group_user,1,1,1,0
 access_bsd_bang_gia_chi_tiet,Khai báo chi tiết bảng giá,product.model_product_pricelist_item,bsd_danh_muc.group_user,1,1,1,0

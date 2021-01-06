@@ -20,7 +20,11 @@
                                     <field name="bsd_ma_dtt"/>
                                     <field name="bsd_ten_dtt"/>
                                     <field name="bsd_ngay_hh_tt" readonly="0"/>
-                                    <field name="bsd_tl_tt"/>
+                                    <label for="bsd_tl_tt"/>
+                                    <div class="o_row no-gutters d-flex">
+                                        <field name="bsd_tl_tt" class="mr-1"/>
+                                        <span>%</span>
+                                    </div>
                                     <field name="bsd_tien_dot_tt"/>
                                     <field name="bsd_tien_dc"/>
                                 </group>
