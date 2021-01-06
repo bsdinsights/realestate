@@ -78,7 +78,7 @@ class BsdMaBoChungTu(models.Model):
                                     ('bsd.vay_nh', 'Vay ngân hàng'),
                                     ('bsd.xn_dhs', 'Xác nhận đủ hồ sơ'),
                                     ('bsd.vp_hd', 'Vi phạm hợp đồng'),
-                                    ],
+                                    ('bsd.cn_htt', 'Cập nhật ngày đến hạn thanh toán')],
                                    string="Loại chứng từ", help="Loại chứng từ được đặt mã", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})

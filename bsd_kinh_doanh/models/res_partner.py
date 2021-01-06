@@ -197,6 +197,8 @@ class ResPartner(models.Model):
             raise UserError(_('Danh mục mã dùng chung chưa khai báo mã khách hàng.'))
         if sequence:
             vals['bsd_ma_kh'] = sequence.next_by_id()
+        # Cập nhật nhân viên kinh doanh assign
+        vals['user_id'] = self.env.uid
         res = super(ResPartner, self).create(vals)
         return res
 
