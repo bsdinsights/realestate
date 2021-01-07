@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="nvkd_share_khach_hang_rule" model="ir.rule">
-        <field name="name">NVKD: Chia sẻ thông tin khách hàng</field>
+    <record id="nvkd_quan_ly_khach_hang_rule" model="ir.rule">
+        <field name="name">NVKD: Quản lý thông tin khách hàng</field>
         <field name="model_id" ref="bsd_kinh_doanh.model_res_partner"/>
-        <field name="domain_force">['|',('id','in',user.bsd_kh_ids.ids),
-            '|',('user_id','=',False),'|',('id','=',user.partner_id.id),('user_id','=',user.id)]</field>
+        <field name="domain_force">['|',('id','=',user.partner_id.id),('user_id','=',user.id)]</field>
         <field name="groups" eval="[(4, ref('bsd_kinh_doanh.group_user'))]"/>
         <field name="perm_read" eval="1"/>
         <field name="perm_write" eval="1"/>
@@ -12,8 +11,19 @@
         <field name="perm_unlink" eval="0"/>
     </record>
 
+    <record id="nvkd_xem_khach_hang_rule" model="ir.rule">
+        <field name="name">NVKD: Xem thông tin khách hàng</field>
+        <field name="model_id" ref="bsd_kinh_doanh.model_res_partner"/>
+        <field name="domain_force">[('id','in',user.bsd_kh_ids.ids)]</field>
+        <field name="groups" eval="[(4, ref('bsd_kinh_doanh.group_user'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="0"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
     <record id="share_nhan_vien_rule" model="ir.rule">
-        <field name="name">Thông tin người dùng</field>
+        <field name="name">Thông tin người dùng hệ thống</field>
         <field name="model_id" ref="bsd_kinh_doanh.model_res_partner"/>
         <field name="domain_force">[('bsd_la_kh','=',False)]</field>
         <field name="groups" eval="[(6,0,
@@ -24,7 +34,7 @@
              ref('bsd_danh_muc.group_user')]
         )]"/>
         <field name="perm_read" eval="1"/>
-        <field name="perm_write" eval="1"/>
+        <field name="perm_write" eval="0"/>
         <field name="perm_create" eval="0"/>
         <field name="perm_unlink" eval="0"/>
     </record>

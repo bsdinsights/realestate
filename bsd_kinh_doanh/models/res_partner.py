@@ -73,19 +73,14 @@ class ResPartner(models.Model):
 
     bsd_nguoi_bh_id = fields.Many2one('res.partner', string="Người bảo hộ", help="Người bảo hộ")
 
-    hide_action_buttons = fields.Boolean('Hide Action Buttons', compute='_compute_hide_action_buttons')
-
-    def _compute_hide_action_buttons(self):
-        for each in self:
-            each.hide_action_buttons = True
-
     @api.constrains('bsd_cmnd')
     def _constrains_cmnd(self):
         if self.env['res.users'].has_group('bsd_kinh_doanh.group_manager'):
             pass
         else:
             khach_hang = self.env['res.partner'].search([('bsd_cmnd', '=', self.bsd_cmnd),
-                                                         ('id', '!=', self.id)])
+                                                         ('id', '!=', self.id),
+                                                         ('bsd_cmnd', '!=', False)])
             if khach_hang:
                 raise UserError("Chứng minh nhân dân đã được sử dụng.")
 
@@ -101,7 +96,6 @@ class ResPartner(models.Model):
     def _constrains_email(self):
         if self.email:
             match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', self.email)
-            _logger.debug(match)
             if not match:
                 raise ValidationError('Nhập thông tin email không đúng.')
 

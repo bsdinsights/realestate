@@ -27,7 +27,6 @@
                         <page string="THÔNG TIN CÁ NHÂN">
                             <group>
                                 <group>
-                                    <field name="hide_action_buttons"/>
                                     <field name="bsd_ho_tl"/>
                                     <field name="name" required="1"/>
                                     <field name="bsd_ngay_sinh"/>
