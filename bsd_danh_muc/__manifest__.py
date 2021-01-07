@@ -50,6 +50,7 @@
         'wizards/bsd_wizard_khong_duyet_ck_ttn_views.xml',
         'wizards/bsd_wizard_khong_duyet_cs_tt_views.xml',
         'wizards/bsd_wizard_khong_duyet_bang_gia_views.xml',
+        'wizards/bsd_wizard_hoa_hong_views.xml',
         'wizards/bsd_wizard_dk_bg_views.xml',
         'reports/bsd_report_phuong_thuc_tt_views.xml',
         'views/product_template_views.xml'

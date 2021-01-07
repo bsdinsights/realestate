@@ -39,5 +39,17 @@ record = model.browse(env.context['active_id'])
 record.auto_kt_km()
             </field>
         </record>
+        <record model="base.automation" id="bsd_hoa_hong_het_han">
+            <field name="name">Kiểm tra hiệu lực hoa hồng</field>
+            <field name="model_id" ref="bsd_danh_muc.model_bsd_hoa_hong"></field>
+            <field name="trigger">on_time</field>
+            <field name="filter_domain">[('state', '=', 'duyet')]</field>
+            <field name="trg_date_id" ref="bsd_danh_muc.field_bsd_hoa_hong__bsd_den_ngay"></field>
+            <field name="state">code</field>
+            <field name="code">
+record = model.browse(env.context['active_id'])
+record.auto_kt_hh()
+            </field>
+        </record>
     </data>
 </odoo>

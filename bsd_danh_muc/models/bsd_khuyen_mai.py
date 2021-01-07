@@ -87,7 +87,7 @@ class BsdKhuyenMai(models.Model):
             self.write({
                 'state': 'duyet',
                 'bsd_nguoi_duyet_id': self.env.uid,
-                'bsd_ngay_duyet': fields.Datetime.now()
+                'bsd_ngay_duyet': fields.Date.today()
             })
 
     # DM.12.04 Không duyệt khuyến mãi
