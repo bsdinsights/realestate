@@ -5,9 +5,7 @@ access_bsd_lai_suat,Danh mục lãi suất,model_bsd_lai_suat,bsd_danh_muc.group
 access_bsd_dk_bg, Điều kiện bàn giao,model_bsd_dk_bg,bsd_danh_muc.group_user,1,1,1,0
 access_bsd_pt_tt,Phương thức thanh toán,model_bsd_pt_tt,bsd_danh_muc.group_user,1,1,1,0
 
-access_bsd_pmg_ttc,Phí môi giới,model_bsd_pmg_ttc,bsd_danh_muc.group_user,1,1,1,0
-access_bsd_pmg_ctv,Phí môi giới ctv,model_bsd_pmg_ctv,bsd_danh_muc.group_user,1,1,1,0
-access_bsd_pmg_cty,Phí môi giới cty,model_bsd_pmg_cty,bsd_danh_muc.group_user,1,1,1,0
+access_bsd_phi_mg,Phí môi giới,model_bsd_phi_mg,bsd_danh_muc.group_user,1,1,1,0
 
 access_bsd_tknh_ad,Tài khoản ngân hàng đang áp dụng,model_bsd_tknh_ad,bsd_danh_muc.group_user,1,1,1,0
 access_bsd_tknh_ch,Tài khoản ngân hàng đang áp dụng căn hộ,model_bsd_tknh_ch,bsd_danh_muc.group_user,1,1,1,0

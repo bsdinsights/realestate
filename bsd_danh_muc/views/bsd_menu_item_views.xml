@@ -105,7 +105,7 @@
               action="product.product_pricelist_action2"
               parent="bsd_cs_bh_menu_2"/>
         <menuitem id="bsd_cs_tt_menu_action_2"
-                  name="Phương thức thanh toán"
+                  name="Phương thức TT"
                   sequence="2"
                   action="bsd_cs_tt_action"
                   parent="bsd_cs_bh_menu_2"/>
@@ -161,7 +161,7 @@
               parent="bsd_cs_bh_menu_2"
               action="bsd_khuyen_mai_action"/>
     <menuitem id="bsd_lai_phat_tt_menu_action_2"
-          name="Lãi phạt chậm thanh toán"
+          name="Lãi phạt chậm TT"
           sequence="6"
           action="bsd_lai_phat_tt_action"
           parent="bsd_cs_bh_menu_2"/>
@@ -170,10 +170,15 @@
           sequence="7"
           action="bsd_hoa_hong_action"
           parent="bsd_cs_bh_menu_2"/>
+    <menuitem id="bsd_phi_mg_menu_action_2"
+          name="Phí môi giới"
+          sequence="8"
+          action="bsd_phi_mg_action"
+          parent="bsd_cs_bh_menu_2"/>
 
-    <menuitem id="bsd_pmg_ttc_menu_action"
+    <menuitem id="bsd_phi_mg_menu_action"
           name="Phí môi giới"
           sequence="12"
-          action="bsd_pmg_ttc_action"
+          action="bsd_phi_mg_action"
           web_icon="fa fa-percent,#FFFFFF,#a45858"/>
 </odoo>

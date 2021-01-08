@@ -12,3 +12,4 @@ from . import bsd_wizard_khong_duyet_cs_tt
 from . import bsd_wizard_khong_duyet_bang_gia
 from . import bsd_wizard_hoa_hong
 from . import bsd_wizard_dk_bg
+from . import bsd_wizard_phi_ps

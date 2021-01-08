@@ -3,22 +3,23 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import logging
+
 _logger = logging.getLogger(__name__)
 
 
-class BsdHoaHong(models.Model):
-    _name = 'bsd.hoa_hong'
-    _rec_name = 'bsd_ten'
-    _description = "Thông tin hoa hồng"
+class BsdPhiMoiGioi(models.Model):
+    _name = 'bsd.phi_mg'
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    _description = "Phí môi giới"
+    _rec_name = 'bsd_ten'
 
-    bsd_ma = fields.Char(string="Mã", help="Mã hoa hồng", required=True, readonly=True, copy=False,
+    bsd_ma = fields.Char(string="Mã", help="Mã phí môi giới", required=True, readonly=True, copy=False,
                          default='/')
     _sql_constraints = [
         ('bsd_ma_unique', 'unique (bsd_ma)',
-         'Mã hoa hồng đã tồn tại !'),
+         'Mã phí môi giới đã tồn tại !'),
     ]
-    bsd_ten = fields.Char(string="Tiêu đề", required=True, help="Tên hoa hồng",
+    bsd_ten = fields.Char(string="Tiêu đề", required=True, help="Tên phí môi giới",
                           readonly=True,
                           states={'nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True,
@@ -28,16 +29,16 @@ class BsdHoaHong(models.Model):
                                  ('ky_ttdc', 'Ký TTĐC/ HDĐC'),
                                  ('ky_hd', 'Ký HĐMB'),
                                  ('dot_tt', 'Đợt thanh toán')],
-                                string="Loại", help="Loại hoa hồng", required=True,
+                                string="Loại", help="Loại phí môi giới", required=True,
                                 readonly=True, default='dat_coc',
                                 states={'nhap': [('readonly', False)]})
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng hoa hồng",
+    bsd_tu_ngay = fields.Date(string="Từ ngày", help="Ngày bắt đầu áp dụng phí môi giới",
                               readonly=True, required=True,
                               states={'nhap': [('readonly', False)]})
-    bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng hoa hồng",
+    bsd_den_ngay = fields.Date(string="Đến ngày", help="Ngày kết thúc áp dụng phí môi giới",
                                readonly=True, required=True,
                                states={'nhap': [('readonly', False)]})
     bsd_phuong_thuc = fields.Selection([('gia_tri', 'Giá trị'),
@@ -72,9 +73,22 @@ class BsdHoaHong(models.Model):
                                   states={'nhap': [('readonly', False)]})
     bsd_tl_dtt = fields.Float(string="HH đợt TT", help="Tỷ lệ hoa hồng nhận khi khách đợt thanh toán", readonly=True,
                               states={'nhap': [('readonly', False)]})
-    bsd_tien_dtt = fields.Monetary(string="HH đợt TT (tiền)", help="Tiền hoa hồng nhận khi khách đợt thanh toán", readonly=True,
+    bsd_tien_dtt = fields.Monetary(string="HH đợt TT (tiền)", help="Tiền hoa hồng nhận khi khách đợt thanh toán",
+                                   readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_tl_tt_hd = fields.Float(string="Tỷ lệ TT", help="Tỷ lệ thanh toán hợp đồng để nhận được hoa hồng", readonly=True,
+    bsd_loai_tg = fields.Selection([('co_dinh', 'Cố định'),
+                                    ('ky_hd', "Sau ngày ký HĐ"),
+                                    ('dot_tt', 'Đợt thanh toán')], string='Loại thời gian',
+                                   help="Loại thời gian bắt đầu tính phí môi giới", readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_ngay_cd = fields.Date(string="Ngày cố định", help="Ngày cố định bắt đầu tính phí môi giới",
+                              readonly=True,
+                              states={'nhap': [('readonly', False)]})
+    bsd_dot_bd = fields.Integer(string="Từ đợt tt", help='Đợt thanh toán bắt đầu tính phí môi giới',
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
+    bsd_dot_kt = fields.Integer(string="Đến đợt tt", help="Đợt thanh toán kết thúc tính phí môi giới",
+                                readonly=True,
                                 states={'nhap': [('readonly', False)]})
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
@@ -88,13 +102,6 @@ class BsdHoaHong(models.Model):
     bsd_ly_do = fields.Char(string="Lý do", readonly=True)
     bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
     bsd_ngay_duyet = fields.Date(string="Ngày duyệt", readonly=True)
-
-    # Kiểm tra tỷ lệ thanh toán hợp đồng
-    @api.constrains("bsd_loai", "bsd_tl_tt_hd")
-    def _constraint_tt_hd(self):
-        if self.bsd_loai == 'dot_tt':
-            if not 0 <= self.bsd_tl_tt_hd <= 100:
-                raise UserError(_("Nhập sai giá trị tỷ lệ thanh toán hợp đồng. Vui lòng kiểm tra lại thông tin."))
 
     # Kiểm tra số lượng
     @api.constrains("bsd_sl_tu", "bsd_sl_den", "bsd_tien_tu", "bsd_tien_den", "bsd_cach_tinh")
@@ -139,21 +146,21 @@ class BsdHoaHong(models.Model):
             if not 0 <= self.bsd_tien_dtt:
                 raise UserError(_("Nhập sai giá trị tiền đợt thanh toán. Vui lòng kiểm tra lại thông tin."))
 
-    # Kiểm tra trùng dữ liệu hoa hồng
+    # Kiểm tra trùng dữ liệu phí môi giới
     @api.constrains('bsd_loai', 'bsd_phuong_thuc', 'bsd_cach_tinh', 'bsd_tu_ngay', 'bsd_den_ngay')
     def _constraint_record(self):
-        # Lấy tất cả hoa hồng cùng loại
-        hoa_hong = self.env['bsd.hoa_hong'].search([('bsd_loai', '=', self.bsd_loai),
+        # Lấy tất cả phí môi giới cùng loại
+        phi_mg = self.env['bsd.phi_mg'].search([('bsd_loai', '=', self.bsd_loai),
                                                     ('bsd_phuong_thuc', '=', self.bsd_phuong_thuc),
                                                     ('bsd_cach_tinh', '=', self.bsd_cach_tinh),
                                                     ('id', '!=', self.id),
                                                     ('state', '!=', 'huy'),
                                                     ('bsd_du_an_id', '=', self.bsd_du_an_id.id)])
         if self.bsd_cach_tinh == 'so_luong':
-            hoa_hong_time = hoa_hong.filtered(lambda m: not (m.bsd_sl_den < self.bsd_sl_tu < self.bsd_sl_den
-                                                         or self.bsd_sl_tu < self.bsd_sl_den < m.bsd_sl_tu))
-            if hoa_hong_time:
-                khoang_time = [(t.bsd_tu_ngay, t.bsd_den_ngay) for t in hoa_hong_time.sorted('bsd_tu_ngay')]
+            phi_mg_time = phi_mg.filtered(lambda m: not (m.bsd_sl_den < self.bsd_sl_tu < self.bsd_sl_den
+                                                             or self.bsd_sl_tu < self.bsd_sl_den < m.bsd_sl_tu))
+            if phi_mg_time:
+                khoang_time = [(t.bsd_tu_ngay, t.bsd_den_ngay) for t in phi_mg_time.sorted('bsd_tu_ngay')]
                 flag_time = True
                 if self.bsd_tu_ngay < self.bsd_den_ngay < khoang_time[0][0]:
                     flag_time = False
@@ -168,11 +175,11 @@ class BsdHoaHong(models.Model):
                             _logger.debug("Nằm trong khoảng cho phep")
                             flag_time = False
                 if flag_time:
-                    raise UserError("Đã tồn tại hoa hồng này.\nVui lòng kiểm tra lại thông tin.")
-            hoa_hong_sl = hoa_hong.filtered(lambda m: not (m.bsd_den_ngay < self.bsd_tu_ngay < self.bsd_den_ngay
-                                                       or self.bsd_tu_ngay < self.bsd_den_ngay < m.bsd_tu_ngay))
-            if hoa_hong_sl:
-                so_luong = [(t.bsd_sl_tu, t.bsd_sl_den) for t in hoa_hong_sl.sorted('bsd_sl_tu')]
+                    raise UserError("Đã tồn tại phí môi giới này.\nVui lòng kiểm tra lại thông tin.")
+            phi_mg_sl = phi_mg.filtered(lambda m: not (m.bsd_den_ngay < self.bsd_tu_ngay < self.bsd_den_ngay
+                                                           or self.bsd_tu_ngay < self.bsd_den_ngay < m.bsd_tu_ngay))
+            if phi_mg_sl:
+                so_luong = [(t.bsd_sl_tu, t.bsd_sl_den) for t in phi_mg_sl.sorted('bsd_sl_tu')]
                 flag_sl = True
                 if self.bsd_sl_tu < self.bsd_sl_den < so_luong[0][0]:
                     flag_sl = False
@@ -187,12 +194,12 @@ class BsdHoaHong(models.Model):
                             _logger.debug("Nằm trong khoảng cho phep")
                             flag_sl = False
                 if flag_sl:
-                    raise UserError("Đã tồn tại hoa hồng này.\nVui lòng kiểm tra lại thông tin.")
+                    raise UserError("Đã tồn tại phí môi giới này.\nVui lòng kiểm tra lại thông tin.")
         else:
-            hoa_hong_time = hoa_hong.filtered(lambda m: not (m.bsd_tien_den < self.bsd_tien_tu < self.bsd_tien_den
-                                                         or self.bsd_tien_tu < self.bsd_tien_den < m.bsd_tien_tu))
-            if hoa_hong_time:
-                khoang_time = [(t.bsd_tu_ngay, t.bsd_den_ngay) for t in hoa_hong_time.sorted('bsd_tu_ngay')]
+            phi_mg_time = phi_mg.filtered(lambda m: not (m.bsd_tien_den < self.bsd_tien_tu < self.bsd_tien_den
+                                                             or self.bsd_tien_tu < self.bsd_tien_den < m.bsd_tien_tu))
+            if phi_mg_time:
+                khoang_time = [(t.bsd_tu_ngay, t.bsd_den_ngay) for t in phi_mg_time.sorted('bsd_tu_ngay')]
                 flag_time = True
                 if self.bsd_tu_ngay < self.bsd_den_ngay < khoang_time[0][0]:
                     flag_time = False
@@ -207,11 +214,11 @@ class BsdHoaHong(models.Model):
                             _logger.debug("Nằm trong khoảng cho phep")
                             flag_time = False
                 if flag_time:
-                    raise UserError("Đã tồn tại hoa hồng này.\nVui lòng kiểm tra lại thông tin.")
-            hoa_hong_tien = hoa_hong.filtered(lambda m: not (m.bsd_den_ngay < self.bsd_tu_ngay < self.bsd_den_ngay
-                                                       or self.bsd_tu_ngay < self.bsd_den_ngay < m.bsd_tu_ngay))
-            if hoa_hong_tien:
-                so_tien = [(t.bsd_tien_tu, t.bsd_tien_den) for t in hoa_hong_tien.sorted('bsd_tien_tu')]
+                    raise UserError("Đã tồn tại phí môi giới này.\nVui lòng kiểm tra lại thông tin.")
+            phi_mg_tien = phi_mg.filtered(lambda m: not (m.bsd_den_ngay < self.bsd_tu_ngay < self.bsd_den_ngay
+                                                             or self.bsd_tu_ngay < self.bsd_den_ngay < m.bsd_tu_ngay))
+            if phi_mg_tien:
+                so_tien = [(t.bsd_tien_tu, t.bsd_tien_den) for t in phi_mg_tien.sorted('bsd_tien_tu')]
                 flag_tien = True
                 if self.bsd_tien_tu < self.bsd_sl_den < so_tien[0][0]:
                     flag_tien = False
@@ -226,7 +233,7 @@ class BsdHoaHong(models.Model):
                             _logger.debug("Nằm trong khoảng cho phep")
                             flag_tien = False
                 if flag_tien:
-                    raise UserError("Đã tồn tại hoa hồng này.\nVui lòng kiểm tra lại thông tin.")
+                    raise UserError("Đã tồn tại phí môi giới này.\nVui lòng kiểm tra lại thông tin.")
 
     def action_xac_nhan(self):
         if self.state == 'nhap':
@@ -244,7 +251,7 @@ class BsdHoaHong(models.Model):
             })
 
     def action_khong_duyet(self):
-        action = self.env.ref('bsd_danh_muc.bsd_wizard_hoa_hong_action').read()[0]
+        action = self.env.ref('bsd_danh_muc.bsd_wizard_phi_mg_action').read()[0]
         return action
 
     # DM.12.03 Hủy khuyến mãi
@@ -267,6 +274,6 @@ class BsdHoaHong(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
-            raise UserError(_('Dự án chưa có mã hoa hồng.'))
+            raise UserError(_('Dự án chưa có mã phí môi giới.'))
         vals['bsd_ma'] = sequence.next_by_id()
-        return super(BsdHoaHong, self).create(vals)
+        return super(BsdPhiMoiGioi, self).create(vals)

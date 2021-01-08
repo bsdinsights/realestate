@@ -58,6 +58,9 @@
                             <field name="bsd_tien_den"
                                    attrs="{'invisible':[('bsd_cach_tinh', '!=', 'so_tien')],
                                            'required':[('bsd_cach_tinh', '=', 'so_tien')]}"/>
+                            <field name="bsd_tl_tt_hd"
+                                   attrs="{'invisible':['|',('bsd_loai', '!=', 'dot_tt')],
+                                           'required':[('bsd_loai', '=', 'dot_tt')]}"/>
                             <field name="bsd_tl_dc"
                                    attrs="{'invisible':['|',('bsd_loai', '!=', 'dat_coc'),('bsd_phuong_thuc', '!=', 'phan_tram')],
                                            'required':[('bsd_loai', '=', 'dat_coc'),('bsd_phuong_thuc', '=', 'phan_tram')]}"/>
