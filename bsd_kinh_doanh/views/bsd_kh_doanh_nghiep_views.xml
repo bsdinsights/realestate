@@ -141,6 +141,13 @@
                                     </form>
                             </field>
                         </page>
+                        <page string="Nhân viên KD">
+                            <group>
+                                <group>
+                                    <field name="user_id" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
                         <page string="Giữ chỗ thiện chí">
                             <field name="bsd_gc_tc_ids">
                                 <tree create="false">

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_wizard_assign_kh_form">
+        <field name="name">bsd.wizard.assign_kh.form</field>
+        <field name="model">bsd.wizard.assign_kh</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_nvkd_id"/>
+                        </group>
+                    </group>
+                    <field name="bsd_khach_hang_ids" nolabel="1">
+                        <tree>
+                            <field name="bsd_ma_kh"/>
+                            <field name="display_name"/>
+                            <field name="mobile"/>
+                            <field name="bsd_dia_chi_lh"/>
+                        </tree>
+                    </field>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_assign_kh_action">
+        <field name="name">Chuyển nhân viên KD</field>
+        <field name="res_model">bsd.wizard.assign_kh</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+        <field name="binding_model_id" ref="model_res_partner"/>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_wizard_share_kh_form">
+        <field name="name">bsd.wizard.share_kh.form</field>
+        <field name="model">bsd.wizard.share_kh</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_nvkd_id"/>
+                        </group>
+                    </group>
+                    <field name="bsd_khach_hang_ids" nolabel="1">
+                        <tree>
+                            <field name="bsd_ma_kh"/>
+                            <field name="display_name"/>
+                            <field name="mobile"/>
+                            <field name="bsd_dia_chi_lh"/>
+                        </tree>
+                    </field>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_share_kh_action">
+        <field name="name">Chia sẻ khách hàng</field>
+        <field name="res_model">bsd.wizard.share_kh</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+        <field name="binding_model_id" ref="model_res_partner"/>
+    </record>
+</odoo>

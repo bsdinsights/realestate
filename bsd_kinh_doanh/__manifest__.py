@@ -50,6 +50,7 @@
         'wizards/bsd_wizard_huy_gc_views.xml',
         'wizards/bsd_wizard_chiet_khau_dac_biet_views.xml',
         'wizards/bsd_wizard_dot_mb_views.xml',
+        'wizards/bsd_wizard_assign_kh_views.xml',
         'reports/report_bsd_gc_tc_views.xml',
         'reports/report_bsd_giu_cho_views.xml',
         'reports/report_bsd_bao_gia_views.xml',
