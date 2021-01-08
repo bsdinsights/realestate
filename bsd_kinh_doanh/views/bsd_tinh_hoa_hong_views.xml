@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_tinh_hoa_hong_form">
+        <field name="name">bsd.tinh_hoa_hong.form</field>
+        <field name="model">bsd.tinh_hoa_hong</field>
+        <field name="arch" type="xml">
+            <form duplicate="false">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ma"/>
+                            <field name="bsd_ten"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                            <field name="bsd_toa_nha_id"/>
+                            <field name="bsd_tang_id"/>
+
+                        </group>
+                        <group>
+                            <field name="bsd_cach_tinh"/>
+                            <field name="bsd_tu_ngay"/>
+                            <field name="bsd_den_ngay"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_tinh_hoa_hong_tree">
+        <field name="name">bsd.tinh_hoa_hong.tree</field>
+        <field name="model">bsd.tinh_hoa_hong</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma"/>
+                <field name="bsd_ten"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_toa_nha_id"/>
+                <field name="bsd_cach_tinh"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="bsd_tinh_hoa_hong_action">
+        <field name="name">Tính hoa hồng</field>
+        <field name="res_model">bsd.tinh_hoa_hong</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo tính hoa hồng</p>
+        </field>
+    </record>
+</odoo>

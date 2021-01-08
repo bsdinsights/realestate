@@ -175,10 +175,4 @@
           sequence="8"
           action="bsd_phi_mg_action"
           parent="bsd_cs_bh_menu_2"/>
-
-    <menuitem id="bsd_phi_mg_menu_action"
-          name="Phí môi giới"
-          sequence="12"
-          action="bsd_phi_mg_action"
-          web_icon="fa fa-percent,#FFFFFF,#a45858"/>
 </odoo>

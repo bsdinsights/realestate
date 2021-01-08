@@ -38,6 +38,7 @@
         'views/bsd_lich_thanh_toan_views.xml',
         'views/bsd_dat_coc_chuyen_dd_views.xml',
         'views/bsd_gia_han_gc_views.xml',
+        'views/bsd_tinh_hoa_hong_views.xml',
         'views/bsd_menu_item_views.xml',
         'data/bsd_automation_data.xml',
         'data/bsd_sequence_data.xml',

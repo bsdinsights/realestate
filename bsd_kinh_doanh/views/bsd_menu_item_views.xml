@@ -99,4 +99,14 @@
               sequence="6"
               action="bsd_kh_dn_action"
               web_icon="fa fa-address-card-o,#FFFFFF,#6c6f92"/>
+    <menuitem id="bsd_tinh_hh_phi_mg_menu"
+          name="Tính HH&amp;PMG"
+          sequence="12"
+          web_icon="fa fa-percent,#FFFFFF,#a45858"/>
+    <menuitem id="bsd_phi_mg_menu_action"
+          name="Tính hoa hồng"
+          sequence="11"
+          action="bsd_tinh_hoa_hong_action"
+          parent="bsd_tinh_hh_phi_mg_menu"
+    />
 </odoo>

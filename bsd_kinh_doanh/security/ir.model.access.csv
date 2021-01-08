@@ -34,4 +34,7 @@ access_bsd_dong_so_huu,Thông tin người đồng sở hữu,model_bsd_dong_so_
 
 access_bsd_khach_hang,Phòng kinh doanh / khách hàng,model_res_partner,bsd_kinh_doanh.group_user,1,1,1,0
 
+access_bsd_tinh_hoa_hong,Tính hoa hồng cho nhân viên,model_bsd_tinh_hoa_hong,bsd_kinh_doanh.group_user,1,1,1,0
+
+
 
