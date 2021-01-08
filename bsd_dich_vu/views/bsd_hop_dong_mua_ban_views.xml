@@ -139,6 +139,23 @@
                                 </group>
                             </group>
                             <field name="bsd_co_ttdc" invisible="1"/>
+                            <group string="MÔI GIỚI">
+                                <group>
+                                    <field name="bsd_nvbh_id"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_san_gd_id"
+                                           context="{'show_ma_kh': True}"
+                                           options="{'no_create':true}"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ctv_id"
+                                           context="{'show_ma_kh': True}"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_gioi_thieu_id"
+                                           context="{'show_ma_kh': True}"
+                                           options="{'no_create':true}"/>
+                                </group>
+                            </group>
                             <group string="THỎA THUẬN ĐẶT CỌC" attrs="{'invisible':[('bsd_co_ttdc', '=', False)]}">
                                 <group>
                                     <field name="bsd_co_ttdc" readonly="1" force_save="1"/>
@@ -917,6 +934,20 @@
                                 </group>
                             </group>
                             <field name="bsd_co_ttdc" invisible="1"/>
+                            <group string="MÔI GIỚI">
+                                <group>
+                                    <field name="bsd_nvbh_id"
+                                           readonly="1" force_save="1"/>
+                                    <field name="bsd_san_gd_id"
+                                           readonly="1" force_save="1"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ctv_id"
+                                           readonly="1" force_save="1"/>
+                                    <field name="bsd_gioi_thieu_id"
+                                           readonly="1" force_save="1"/>
+                                </group>
+                            </group>
                             <group string="THỎA THUẬN ĐẶT CỌC" attrs="{'invisible':[('bsd_co_ttdc', '=', False)]}">
                                 <group>
                                     <field name="bsd_co_ttdc"/>

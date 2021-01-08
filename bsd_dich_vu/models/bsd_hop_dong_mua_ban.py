@@ -30,6 +30,15 @@ class BsdHopDongMuaBan(models.Model):
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Tên đặt cọc", required=True,
                                      readonly=True,
                                      states={'nhap': [('readonly', False)]})
+    # môi giới
+    bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên KD", help="Nhân viên kinh doanh",
+                                  readonly=True, required=True)
+    bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch", domain=[('is_company', '=', True)],
+                                    readonly=True, help="Sàn giao dịch")
+    bsd_ctv_id = fields.Many2one('res.partner', string="Công tác viên", domain=[('is_company', '=', False)],
+                                 help="Cộng tác viên", readonly=True)
+    bsd_gioi_thieu_id = fields.Many2one('res.partner', string="Giới thiệu", help="Cá nhân hoặc đơn vị giới thiệu",
+                                        readonly=True)
     bsd_thue_id = fields.Many2one('bsd.thue_suat', string="Thuế", help="Thuế")
     bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", related="bsd_thue_id.bsd_thue_suat",
                                  store=True, digits=(12, 2))
@@ -56,6 +65,10 @@ class BsdHopDongMuaBan(models.Model):
             each.bsd_tien_ck = each.bsd_dat_coc_id.bsd_tien_ck
             each.bsd_tien_thue = each.bsd_dat_coc_id.bsd_tien_thue
             each.bsd_tien_pbt = each.bsd_dat_coc_id.bsd_tien_pbt
+            each.bsd_nvbh_id = each.bsd_dat_coc_id.bsd_nvbh_id
+            each.bsd_san_gd_id = each.bsd_dat_coc_id.bsd_san_gd_id
+            each.bsd_ctv_id = each.bsd_dat_coc_id.bsd_ctv_id
+            each.bsd_gioi_thieu_id = each.bsd_dat_coc_id.bsd_gioi_thieu_id
 
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
