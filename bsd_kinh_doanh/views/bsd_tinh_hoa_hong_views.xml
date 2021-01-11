@@ -6,6 +6,18 @@
         <field name="arch" type="xml">
             <form duplicate="false">
                 <header>
+                    <button string="Tính hoa hồng"
+                            name="action_tinh_hh"
+                            states="nhap"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            sequence="100"
+                            states="nhap"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="0"/>
                 </header>
                 <sheet>
@@ -13,10 +25,15 @@
                         <group>
                             <field name="bsd_ma"/>
                             <field name="bsd_ten"/>
-                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
-                            <field name="bsd_toa_nha_id"/>
-                            <field name="bsd_tang_id"/>
-
+                            <field name="bsd_du_an_id"
+                                   domain="[('state', '=', 'phat_hanh')]"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_toa_nha_id"
+                                   domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_tang_id"
+                                   domain="[('bsd_toa_nha_id', '=', bsd_toa_nha_id)]"
+                                   options="{'no_create':true}"/>
                         </group>
                         <group>
                             <field name="bsd_cach_tinh"/>
@@ -52,6 +69,19 @@
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
             <p>Tạo tính hoa hồng</p>
+        </field>
+    </record>
+<!--    Thêm đợt mở bán vào hoa hồng master data-->
+    <record model="ir.ui.view" id="bsd_hoa_hong_form_inherit">
+        <field name="name">bsd.hoa_hong.form.inherit</field>
+        <field name="model">bsd.hoa_hong</field>
+        <field name="inherit_id" ref="bsd_danh_muc.bsd_hoa_hong_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bsd_den_ngay']" position="after">
+                <field name="bsd_dot_mb_id"
+                       domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"
+                       options="{'no_create':true}"/>
+            </xpath>
         </field>
     </record>
 </odoo>

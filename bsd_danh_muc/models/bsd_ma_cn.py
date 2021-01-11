@@ -72,6 +72,7 @@ class BsdMaBoChungTu(models.Model):
                                     ('bsd.can_tru', 'Cấn trừ'),
                                     ('bsd.hoa_hong', 'Hoa hồng'),
                                     ('bsd.phi_mg', 'Phí môi giới'),
+                                    ('bsd.tinh_hoa_hong', 'Tính hoa hồng'),
                                     ('bsd.phi_ps', 'Phí phát sinh'),
                                     ('bsd.mien_giam', 'Miễn giảm thanh toán'),
                                     ('bsd.ps_gd_km', 'Khuyến mãi giao dịch'),
