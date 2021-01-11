@@ -104,6 +104,38 @@ class BsdGiuCho(models.Model):
     bsd_so_huy_gc = fields.Integer(string="# Hủy giữ chỗ", compute='_compute_huy_gc')
     bsd_so_chuyen_gc = fields.Integer(string="# Chuyển GC", compute='_compute_chuyen_gc')
     bsd_so_gia_han = fields.Integer(string="# Gia hạn", compute='_compute_gia_han')
+    bsd_so_chuyen_ut_gc = fields.Integer(string="# Chuyển UT", compute='_compute_chuyen_ut_gc')
+
+    # tiện ích chuyển độ ưu tiên
+    def action_chuyen_ut_gc(self):
+        context = {
+            'default_bsd_giu_cho_ch_id': self.id,
+            'default_bsd_du_an_id': self.bsd_du_an_id.id,
+            'default_bsd_loai_gc': 'giu_cho',
+        }
+        action = self.env.ref('bsd_kinh_doanh.bsd_chuyen_ut_gc_action_popup').read()[0]
+        action['context'] = context
+        return action
+
+    def _compute_chuyen_ut_gc(self):
+        for each in self:
+            chuyen_ut_gc = self.env['bsd.chuyen_ut_gc'].search([('bsd_giu_cho_ch_id', '=', self.id)])
+            each.bsd_so_chuyen_ut_gc = len(chuyen_ut_gc)
+
+    def action_view_chuyen_ut_gc(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_chuyen_ut_gc_action').read()[0]
+
+        chuyen_gc = self.env['bsd.chuyen_ut_gc'].search([('bsd_giu_cho_ch_id', '=', self.id)])
+        if len(chuyen_gc) > 1:
+            action['domain'] = [('id', 'in', chuyen_gc.ids)]
+        elif chuyen_gc:
+            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_chuyen_ut_gc_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = chuyen_gc.id
+        return action
 
     def _compute_gia_han(self):
         for each in self:

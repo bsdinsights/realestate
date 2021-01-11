@@ -31,4 +31,36 @@
         <field name="target">new</field>
         <field name="view_mode">form</field>
     </record>
+
+    <record model="ir.ui.view" id="bsd_wizard_chuyen_ut_gc_form">
+        <field name="name">bsd.wizard.chuyen_ut_gc.form</field>
+        <field name="model">bsd.wizard.chuyen_ut_gc</field>
+        <field name="arch" type="xml">
+            <form string="Ghi nhận lý do từ chối">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_chuyen_ut_gc_id"/>
+
+                        </group>
+                        <group>
+                            <field name="bsd_ly_do"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_chuyen_ut_gc_action">
+        <field name="name">Ghi nhận lý do</field>
+        <field name="res_model">bsd.wizard.chuyen_ut_gc</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
 </odoo>

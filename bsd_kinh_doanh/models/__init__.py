@@ -27,3 +27,4 @@ from . import bsd_gia_han_gc
 from . import bsd_dong_so_huu
 from . import bsd_chiet_khau_giao_dich
 from . import bsd_tinh_hoa_hong
+from . import bsd_chuyen_ut_gc

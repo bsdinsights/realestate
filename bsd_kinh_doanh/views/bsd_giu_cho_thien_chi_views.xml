@@ -18,16 +18,21 @@
                             states="giu_cho"
                             sequence="20"
                             class="oe_highlight"/>
-                    <button string="Chuyển GC"
-                            name="action_chuyen_gc"
-                            type="object"
-                            sequence="40"
-                            states="cho_rc,giu_cho"/>
                     <button string="In"
                             name="action_in"
                             states="cho_rc,giu_cho,dong_gc"
                             sequence="20"
                             type="object"/>
+                    <button string="Chuyển GC"
+                            name="action_chuyen_gc"
+                            type="object"
+                            sequence="40"
+                            states="cho_rc,giu_cho"/>
+                    <button string="Chuyển ưu tiên"
+                            name="action_chuyen_ut_gc"
+                            type="object"
+                            sequence="40"
+                            states="cho_rc,giu_cho"/>
                     <button string="Đề nghị hủy"
                             name="action_de_nghi_huy"
                             type="object"
@@ -56,6 +61,9 @@
                         </button>
                         <button name="action_view_rap_can" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_rap_can', '=', 0)]}">
                             <field name="bsd_so_rap_can" widget="statinfo" string="Ráp căn"/>
+                        </button>
+                        <button name="action_view_chuyen_ut_gc" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_chuyen_ut_gc', '=', 0)]}">
+                            <field name="bsd_so_chuyen_ut_gc" widget="statinfo" string="Chuyển UT"/>
                         </button>
                     </div>
                     <group>

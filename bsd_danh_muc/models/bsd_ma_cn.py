@@ -25,6 +25,7 @@ class BsdMaBoChungTu(models.Model):
                                     ('bsd.rap_can', 'Ráp căn'),
                                     ('bsd.giu_cho', 'Giữ chỗ'),
                                     ('bsd.chuyen_gc', 'Chuyển giữ chỗ'),
+                                    ('bsd.chuyen_ut_gc', 'Chuyển độ ưu tiên giữ chỗ'),
                                     ('product.pricelist', 'Bảng giá'),
                                     ('bsd.lai_phat_tt', 'Lãi phạt chậm thanh toán'),
                                     ('bsd.cs_tt', 'Phương thức thanh toán'),

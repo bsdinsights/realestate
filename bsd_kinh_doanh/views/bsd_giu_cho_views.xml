@@ -26,6 +26,11 @@
                             type="object"
                             sequence="40"
                             states="dang_cho,giu_cho"/>
+                    <button string="Chuyển ưu tiên"
+                            name="action_chuyen_ut_gc"
+                            type="object"
+                            sequence="40"
+                            states="cho_rc,giu_cho"/>
                     <button string="Hủy"
                             type="object"
                             name="action_huy_chua_tt"
@@ -58,6 +63,9 @@
                         </button>
                         <button name="action_view_huy_gc" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_huy_gc', '=', 0)]}">
                             <field name="bsd_so_huy_gc" widget="statinfo" string="Đề nghị hủy"/>
+                        </button>
+                        <button name="action_view_chuyen_ut_gc" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_chuyen_ut_gc', '=', 0)]}">
+                            <field name="bsd_so_chuyen_ut_gc" widget="statinfo" string="Chuyển UT"/>
                         </button>
                     </div>
                     <group>
