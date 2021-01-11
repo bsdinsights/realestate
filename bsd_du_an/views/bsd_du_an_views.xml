@@ -178,7 +178,7 @@
                                 </group>
                             </group>
                         </page>
-                        <page  string="Ngân hàng">
+                        <page string="Ngân hàng">
                             <group string="NGÂN HÀNG TÀI TRỢ" nolabel="1">
                                 <field name="bsd_nh_tt_ids" nolabel="1">
                                     <tree editable="bottom">
@@ -225,6 +225,11 @@
                                         </sheet>
                                     </form>
                                 </field>
+                            </group>
+                        </page>
+                        <page string="Tiện ích">
+                            <group>
+                                <field name="bsd_tien_ich_ids" widget="many2many_tags"/>
                             </group>
                         </page>
                     </notebook>

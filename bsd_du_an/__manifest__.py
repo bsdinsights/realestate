@@ -21,6 +21,7 @@
         'views/bsd_loai_san_pham_views.xml',
         'views/bsd_thong_tin_ky_thuat_views.xml',
         'views/bsd_hs_gt_views.xml',
+        'views/bsd_tien_ich_views.xml',
         'views/bsd_menu_item_views.xml',
         'wizards/message_wizard_views.xml'
     ],
