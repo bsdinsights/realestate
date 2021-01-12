@@ -34,11 +34,21 @@
                         <group>
                             <field name="bsd_ma"/>
                             <field name="bsd_ngay"/>
-                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
-                            <field name="bsd_dien_giai"/>
+                            <field name="bsd_du_an_id"
+                                   domain="[('state','=','phat_hanh')]"
+                                   options="{'no_create':true}"/>
                         </group>
                         <group>
                             <field name="bsd_loai_gc"/>
+                            <field name="bsd_unit_id" domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"
+                                   attrs="{'invisible':[('bsd_loai_gc','!=','giu_cho')],
+                                           'required':[('bsd_loai_gc','=','giu_cho')]}"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_dien_giai"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="ĐƯỢC CHUYỂN">
                             <field name="bsd_gc_tc_dc_id"
                                    domain="[('bsd_du_an_id','=',bsd_du_an_id),
                                             ('bsd_thanh_toan', '=', 'da_tt'),
@@ -46,6 +56,19 @@
                                    options="{'no_create':true}"
                                    attrs="{'invisible':[('bsd_loai_gc','!=','gc_tc')],
                                            'required':[('bsd_loai_gc', '=','gc_tc')]}"/>
+                            <field name="bsd_giu_cho_dc_id"
+                                   domain="[('bsd_du_an_id','=',bsd_du_an_id),
+                                            ('bsd_thanh_toan', '=', 'da_tt'),
+                                            ('bsd_unit_id','=',bsd_unit_id),
+                                            ('state', '=', 'huy')]"
+                                   options="{'no_create':true}"
+                                   attrs="{'invisible':[('bsd_loai_gc','!=','giu_cho')],
+                                           'required':[('bsd_loai_gc', '=','giu_cho')]}"/>
+                            <field name="bsd_kh_dc_id" readonly="1" force_save="1" string="Khách hàng"/>
+                            <field name="bsd_stt_dc" readonly="1" force_save="1" string="Số thứ tự"/>
+                            <field name="bsd_ngay_dc" readonly="1" force_save="1" string="Ngày ưu tiên"/>
+                        </group>
+                        <group string="CẦN CHUYỂN">
                             <field name="bsd_gc_tc_ch_id"
                                    domain="[('bsd_du_an_id','=',bsd_du_an_id),
                                             ('bsd_thanh_toan', '=', 'da_tt'),
@@ -53,20 +76,17 @@
                                    options="{'no_create':true}"
                                    attrs="{'invisible':[('bsd_loai_gc','!=','gc_tc')],
                                            'required':[('bsd_loai_gc', '=','gc_tc')]}"/>
-                            <field name="bsd_giu_cho_dc_id"
-                                   domain="[('bsd_du_an_id','=',bsd_du_an_id),
-                                            ('bsd_thanh_toan', '=', 'da_tt'),
-                                            ('state', '=', 'huy')]"
-                                   options="{'no_create':true}"
-                                   attrs="{'invisible':[('bsd_loai_gc','!=','giu_cho')],
-                                           'required':[('bsd_loai_gc', '=','giu_cho')]}"/>
                             <field name="bsd_giu_cho_ch_id"
                                    domain="[('bsd_du_an_id','=',bsd_du_an_id),
+                                            ('bsd_unit_id','=',bsd_unit_id),
                                             ('bsd_thanh_toan', '=', 'da_tt'),
                                             ('state', 'in', ['dang_cho','giu_cho'])]"
                                    options="{'no_create':true}"
                                    attrs="{'invisible':[('bsd_loai_gc','!=','giu_cho')],
                                            'required':[('bsd_loai_gc', '=','giu_cho')]}"/>
+                            <field name="bsd_kh_ch_id" readonly="1" force_save="1" string="Khách hàng"/>
+                            <field name="bsd_stt_ch" readonly="1" force_save="1" string="Số thứ tự"/>
+                            <field name="bsd_ngay_ch" readonly="1" force_save="1" string="Ngày ưu tiên"/>
                         </group>
                     </group>
                     <group string="XÉT DUYỆT">
@@ -144,13 +164,22 @@
                         <group>
                             <field name="bsd_ma"/>
                             <field name="bsd_ngay"/>
-                            <field name="bsd_du_an_id"
-                                    readonly="1" force_save="1"
+                            <field name="bsd_du_an_id" readonly="1" force_save="1"
+                                   domain="[('state','=','phat_hanh')]"
                                    options="{'no_create':true}"/>
-                            <field name="bsd_dien_giai"/>
                         </group>
                         <group>
                             <field name="bsd_loai_gc" readonly="1" force_save="1"/>
+                            <field name="bsd_unit_id" domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"
+                                   attrs="{'invisible':[('bsd_loai_gc','!=','giu_cho')],
+                                           'required':[('bsd_loai_gc','=','giu_cho')]}"
+                                   readonly="1" force_save="1"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_dien_giai"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="ĐƯỢC CHUYỂN">
                             <field name="bsd_gc_tc_dc_id"
                                    domain="[('bsd_du_an_id','=',bsd_du_an_id),
                                             ('bsd_thanh_toan', '=', 'da_tt'),
@@ -158,29 +187,37 @@
                                    options="{'no_create':true}"
                                    attrs="{'invisible':[('bsd_loai_gc','!=','gc_tc')],
                                            'required':[('bsd_loai_gc', '=','gc_tc')]}"/>
-                            <field name="bsd_gc_tc_ch_id"
-                                   readonly="1" force_save="1"
+                            <field name="bsd_giu_cho_dc_id"
+                                   domain="[('bsd_du_an_id','=',bsd_du_an_id),
+                                            ('bsd_thanh_toan', '=', 'da_tt'),
+                                            ('bsd_unit_id','=',bsd_unit_id),
+                                            ('state', '=', 'huy')]"
+                                   options="{'no_create':true}"
+                                   attrs="{'invisible':[('bsd_loai_gc','!=','giu_cho')],
+                                           'required':[('bsd_loai_gc', '=','giu_cho')]}"/>
+                            <field name="bsd_kh_dc_id" readonly="1" force_save="1" string="Khách hàng"/>
+                            <field name="bsd_stt_dc" readonly="1" force_save="1" string="Số thứ tự"/>
+                            <field name="bsd_ngay_dc" readonly="1" force_save="1" string="Ngày ưu tiên"/>
+                        </group>
+                        <group string="CẦN CHUYỂN">
+                            <field name="bsd_gc_tc_ch_id" readonly="1" force_save="1"
                                    domain="[('bsd_du_an_id','=',bsd_du_an_id),
                                             ('bsd_thanh_toan', '=', 'da_tt'),
                                             ('state', 'in', ['cho_rc','giu_cho'])]"
                                    options="{'no_create':true}"
                                    attrs="{'invisible':[('bsd_loai_gc','!=','gc_tc')],
                                            'required':[('bsd_loai_gc', '=','gc_tc')]}"/>
-                            <field name="bsd_giu_cho_dc_id"
+                            <field name="bsd_giu_cho_ch_id" readonly="1" force_save="1"
                                    domain="[('bsd_du_an_id','=',bsd_du_an_id),
-                                            ('bsd_thanh_toan', '=', 'da_tt'),
-                                            ('state', '=', 'huy')]"
-                                   options="{'no_create':true}"
-                                   attrs="{'invisible':[('bsd_loai_gc','!=','giu_cho')],
-                                           'required':[('bsd_loai_gc', '=','giu_cho')]}"/>
-                            <field name="bsd_giu_cho_ch_id"
-                                   readonly="1" force_save="1"
-                                   domain="[('bsd_du_an_id','=',bsd_du_an_id),
+                                            ('bsd_unit_id','=',bsd_unit_id),
                                             ('bsd_thanh_toan', '=', 'da_tt'),
                                             ('state', 'in', ['dang_cho','giu_cho'])]"
                                    options="{'no_create':true}"
                                    attrs="{'invisible':[('bsd_loai_gc','!=','giu_cho')],
                                            'required':[('bsd_loai_gc', '=','giu_cho')]}"/>
+                            <field name="bsd_kh_ch_id" readonly="1" force_save="1" string="Khách hàng"/>
+                            <field name="bsd_stt_ch" readonly="1" force_save="1" string="Số thứ tự"/>
+                            <field name="bsd_ngay_ch" readonly="1" force_save="1" string="Ngày ưu tiên"/>
                         </group>
                     </group>
                 </sheet>

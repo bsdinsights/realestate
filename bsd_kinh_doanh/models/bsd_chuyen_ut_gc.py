@@ -28,10 +28,46 @@ class BsdChuyenGiuCho(models.Model):
                                    help="Loại phiếu giữ chỗ", default="gc_tc",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_gc_tc_ch_id = fields.Many2one('bsd.gc_tc', string="GCTC cần chuyển",
                                       help="Phiếu giữ chỗ thiện chí cần chuyển",
                                       readonly=True,
                                       states={'nhap': [('readonly', False)]})
+    bsd_kh_ch_id = fields.Many2one('res.partner', string="KH cần chuyển",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_stt_ch = fields.Integer(string="Số TT cần chuyển",
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
+    bsd_ngay_ch = fields.Date(string="Ngày ut cần chuyển", readonly=True,
+                              states={'nhap': [('readonly', False)]})
+    bsd_kh_dc_id = fields.Many2one('res.partner', string="KH được chuyển",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_stt_dc = fields.Integer(string="Số TT được chuyển",
+                                readonly=True,
+                                states={'nhap': [('readonly', False)]})
+    bsd_ngay_dc = fields.Date(string="Ngày UT được chuyển", readonly=True,
+                              states={'nhap': [('readonly', False)]})
+
+    @api.onchange('bsd_loai_gc', 'bsd_gc_tc_ch_id', 'bsd_giu_cho_ch_id',
+                  'bsd_gc_tc_dc_id', 'bsd_giu_cho_dc_id')
+    def _onchange_giu_cho(self):
+        if self.bsd_loai_gc == 'gc_tc':
+            self.bsd_kh_ch_id = self.bsd_gc_tc_ch_id.bsd_khach_hang_id
+            self.bsd_stt_ch = self.bsd_gc_tc_ch_id.bsd_stt
+            self.bsd_ngay_ch = self.bsd_gc_tc_ch_id.bsd_ngay_ut
+            self.bsd_kh_dc_id = self.bsd_gc_tc_dc_id.bsd_khach_hang_id
+            self.bsd_stt_dc = self.bsd_gc_tc_dc_id.bsd_stt
+            self.bsd_ngay_dc = self.bsd_gc_tc_dc_id.bsd_ngay_ut
+        else:
+            self.bsd_kh_ch_id = self.bsd_giu_cho_ch_id.bsd_khach_hang_id
+            self.bsd_stt_ch = self.bsd_giu_cho_ch_id.bsd_stt_bg
+            self.bsd_ngay_ch = self.bsd_giu_cho_ch_id.bsd_ngay_hh_bg
+            self.bsd_kh_dc_id = self.bsd_giu_cho_dc_id.bsd_khach_hang_id
+            self.bsd_stt_dc = self.bsd_giu_cho_dc_id.bsd_stt_bg
+            self.bsd_ngay_dc = self.bsd_giu_cho_dc_id.bsd_ngay_hh_bg
     bsd_gc_tc_dc_id = fields.Many2one('bsd.gc_tc', string="GCTC được chuyển",
                                       help="Phiếu giữ chỗ thiện chí được chuyển",
                                       readonly=True,

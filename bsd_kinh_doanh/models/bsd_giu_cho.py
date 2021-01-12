@@ -112,6 +112,7 @@ class BsdGiuCho(models.Model):
             'default_bsd_giu_cho_ch_id': self.id,
             'default_bsd_du_an_id': self.bsd_du_an_id.id,
             'default_bsd_loai_gc': 'giu_cho',
+            'default_bsd_unit_id': self.bsd_unit_id.id
         }
         action = self.env.ref('bsd_kinh_doanh.bsd_chuyen_ut_gc_action_popup').read()[0]
         action['context'] = context
