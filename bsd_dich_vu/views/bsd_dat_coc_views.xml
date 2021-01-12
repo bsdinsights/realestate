@@ -23,7 +23,6 @@
                 <button string="Theo dõi"
                         name="action_tao_ds_tt"
                         states="da_tc,dat_coc"
-                        class="oe_highlight"
                         comfirm="Bạn có chắc muốn tạo theo dõi thanh lý đặt cọc?"
                         type="object"
                         />

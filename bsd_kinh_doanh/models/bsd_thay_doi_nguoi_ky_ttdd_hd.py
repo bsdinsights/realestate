@@ -66,7 +66,9 @@ class BsdThayDoiNguoiKy(models.Model):
                               ('da_duyet', 'Đã duyệt'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
                              required=True, default='nhap', tracking=1)
     bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
-    bsd_ngay_duyet = fields.Datetime(string="Ngày duyệt", readonly=True)
+    bsd_ngay_duyet = fields.Date(string="Ngày duyệt", readonly=True)
+    bsd_nguoi_xn_id = fields.Many2one('res.users', string="Người xác nhận", readonly=True)
+    bsd_ngay_xn = fields.Date(string="Ngày xác nhận", readonly=True)
 
     @api.constrains('bsd_kh_moi_id', 'bsd_kh_ht_id')
     def _constrains_kh_moi(self):
@@ -85,6 +87,8 @@ class BsdThayDoiNguoiKy(models.Model):
         if self.state == 'nhap':
             self.write({
                 'state': 'xac_nhan',
+                'bsd_ngay_xn': fields.Date.today(),
+                'bsd_nguoi_xn_id': self.env.uid,
             })
 
     # KD.05.07.02 Duyệt chuyển tên khách hàng giữ chỗ

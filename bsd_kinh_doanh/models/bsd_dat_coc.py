@@ -184,9 +184,11 @@ class BsdDatCoc(models.Model):
                                     states={'xac_nhan': [('readonly', False)],
                                             'da_tc': [('readonly', False)]})
     bsd_dong_sh_ids = fields.One2many('bsd.dong_so_huu', 'bsd_dat_coc_id', string="Đồng sở hữu", readonly=True)
-    bsd_nguoi_dd_id = fields.Many2one('res.partner', string="Người ký TTĐC/HĐ",required=True, tracking=2,
+    bsd_nguoi_dd_id = fields.Many2one('res.partner', string="Người ký TTĐC/HĐ", required=True, tracking=2,
                                       help="Người đại diện ký thỏa thuận đặt cọc và hợp đồng mua bán", readonly=True)
-    bsd_so_chuyen_dd = fields.Integer(string="# Phiếu thay đổi thông tin", compute="_compute_chuyen_dd")
+    bsd_so_chuyen_dd = fields.Integer(string="# Phiếu thay đổi người đại diện ký TTĐC/HĐMB",
+                                      compute="_compute_chuyen_dd")
+    bsd_so_td_tt = fields.Integer(string="# Phiếu thay đổi thông tin", compute="_compute_td_tt")
 
     def _compute_chuyen_dd(self):
         for each in self:
@@ -208,7 +210,33 @@ class BsdDatCoc(models.Model):
             action['res_id'] = chuyen_dd.id
         # Prepare the context.
         context = {
-            'default_bsd_tieu_de': 'Phiếu thay đổi đại diện đặt cọc ' + self.bsd_ma_dat_coc,
+            'default_bsd_tieu_de': 'Phiếu thay đổi đại diện ký ' + self.bsd_ma_dat_coc,
+            'default_bsd_dat_coc_id': self.id
+        }
+        action['context'] = context
+        return action
+
+    def _compute_td_tt(self):
+        for each in self:
+            td_tt = self.env['bsd.dat_coc.td_tt'].search([('bsd_dat_coc_id', '=', self.id)])
+            each.bsd_so_td_tt = len(td_tt)
+
+    def action_view_td_tt(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_dat_coc_td_tt_action').read()[0]
+
+        td_tt = self.env['bsd.dat_coc.td_tt'].search([('bsd_dat_coc_id', '=', self.id)])
+        if len(td_tt) > 1:
+            action['domain'] = [('id', 'in', td_tt.ids)]
+        elif td_tt:
+            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_dat_coc_td_tt_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = td_tt.id
+        # Prepare the context.
+        context = {
+            'default_bsd_tieu_de': 'Phiếu thay đổi đặt cọc ' + self.bsd_ma_dat_coc,
             'default_bsd_dat_coc_id': self.id
         }
         action['context'] = context
@@ -385,17 +413,20 @@ class BsdDatCoc(models.Model):
         recs = self.browse(ids)
         return models.lazy_name_get(recs.with_user(access_rights_uid))
 
-    # # Tạo thong báo hủy giữ chỗ
-    # def tao_tb_huy_gc(self):
-    #     giu_cho = self.bsd_bao_gia_id.bsd_giu_cho_id
-    #     giu_cho.activity_schedule(act_type_xmlid='mail.mail_activity_data_todo',
-    #                               summary='Hủy giữ chỗ đặt cọc bị hủy')
-
     # Tạo phiếu thay đổi người ký TTĐC/HĐMB
     def action_tao_thay_doi(self):
         action = self.env.ref('bsd_kinh_doanh.bsd_dat_coc_chuyen_dd_action_popup').read()[0]
         action['context'] = {
             'default_bsd_tieu_de': 'Phiếu thay đổi đại diện đặt cọc ' + self.bsd_ma_dat_coc,
+            'default_bsd_dat_coc_id': self.id
+        }
+        return action
+
+    # Tạo phiếu thay đổi thông tin đặt cọc
+    def action_tao_td_tt(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_dat_coc_td_tt_action_popup').read()[0]
+        action['context'] = {
+            'default_bsd_tieu_de': 'Phiếu thay đổi thông tin đặt cọc ' + self.bsd_ma_dat_coc,
             'default_bsd_dat_coc_id': self.id
         }
         return action

@@ -73,6 +73,11 @@
                   sequence="2"
                   action="bsd_kinh_doanh.bsd_dat_coc_chuyen_dd_action"
                   parent="bsd_dat_coc_menu_2"/>
+        <menuitem id="bsd_dat_coc_td_tt_menu_action_2"
+                  name="Thay đổi thông tin"
+                  sequence="2"
+                  action="bsd_kinh_doanh.bsd_dat_coc_td_tt_action"
+                  parent="bsd_dat_coc_menu_2"/>
     <menuitem id="bsd_dot_mb_menu_2"
               name="Đợt mở bán"
               sequence="3"

@@ -22,3 +22,4 @@ class BsdDongSoHuu(models.Model):
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", readonly=True)
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", readonly=True)
     bsd_chuyen_dd_id = fields.Many2one('bsd.dat_coc.chuyen_dd', string="Thay đổi người ký TTĐC/HĐMB")
+    bsd_td_tt_id = fields.Many2one('bsd.dat_coc.td_tt', string="Thay đổi thông tin ")

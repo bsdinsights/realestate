@@ -27,13 +27,15 @@
                             name="action_ky_dc"
                             states="da_tc"
                             attrs="{'invisible':['|',('bsd_ngay_up_dc', '=',False),'|',('bsd_ngay_ky_dc', '=',True)]}"
-                            type="object"
-                            class="oe_highlight"/>
+                            type="object"/>
                     <button string="Thay đổi người ký TTĐC/HĐ"
                             name="action_tao_thay_doi"
                             states="da_tc"
-                            type="object"
-                            class="oe_highlight"/>
+                            type="object"/>
+                    <button string="Thay đổi TT"
+                            name="action_tao_td_tt"
+                            states="da_tc"
+                            type="object"/>
                     <button string="Hủy"
                             name="action_huy"
                             sequence="100"
@@ -45,7 +47,10 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_chuyen_dd" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_chuyen_dd', '=', 0)]}">
-                            <field name="bsd_so_chuyen_dd" widget="statinfo" string="Phiếu thay đổi thông tin"/>
+                            <field name="bsd_so_chuyen_dd" widget="statinfo" string="Phiếu thay đổi người đại diện"/>
+                        </button>
+                        <button name="action_view_td_tt" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_td_tt', '=', 0)]}">
+                            <field name="bsd_so_td_tt" widget="statinfo" string="Phiếu thay đổi thông tin"/>
                         </button>
                     </div>
                     <notebook>

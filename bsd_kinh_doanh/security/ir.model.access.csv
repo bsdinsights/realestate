@@ -38,5 +38,7 @@ access_bsd_tinh_hoa_hong,Tính hoa hồng cho nhân viên,model_bsd_tinh_hoa_hon
 
 access_bsd_chuyen_ut_gc, Phiếu chuyển độ ưu tiên giữ chỗ,model_bsd_chuyen_ut_gc,bsd_kinh_doanh.group_user,1,1,1,0
 
+access_bsd_dat_coc_td_tt,Phiếu thay đổi thông tin đặt cọc,model_bsd_dat_coc_td_tt,bsd_kinh_doanh.group_user,1,1,1,0
+
 
 

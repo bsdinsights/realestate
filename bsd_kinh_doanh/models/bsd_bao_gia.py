@@ -633,16 +633,18 @@ class BsdBaoGiaKhuyenMai(models.Model):
     bsd_ma_km = fields.Char(related='bsd_khuyen_mai_id.bsd_ma_km')
     bsd_tu_ngay = fields.Date(related='bsd_khuyen_mai_id.bsd_tu_ngay')
     bsd_den_ngay = fields.Date(related='bsd_khuyen_mai_id.bsd_den_ngay')
-    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", required=True)
+    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá")
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán")
     bsd_ngay_hldc = fields.Date(related='bsd_khuyen_mai_id.bsd_ngay_hldc')
     bsd_gia_tri = fields.Monetary(related='bsd_khuyen_mai_id.bsd_gia_tri')
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc")
+    bsd_td_tt_id = fields.Many2one('bsd.td_tt', string="Thay đổi TT đặt cọc")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
     @api.onchange('bsd_dot_mb_id')
     def _onchange_dot_mb(self):
+        _logger.debug("onchange khuyến mãi")
         res = {}
         list_id = []
         if self.bsd_dot_mb_id:

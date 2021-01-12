@@ -46,6 +46,7 @@ class BsdMaBoChungTu(models.Model):
                                     ('bsd.bao_gia', 'Bảng tính giá'),
                                     ('bsd.dat_coc', 'Đặt cọc'),
                                     ('bsd.dat_coc.chuyen_dd', 'Thay đổi đại diện ký TTĐC/HĐMB'),
+                                    ('bsd.dat_coc.td_tt', 'Thay đổi thông tin đặt cọc'),
                                     ('bsd.ds_td', 'Danh sách theo dõi'),
                                     ('bsd.tb_tl', 'Thông báo thanh lý'),
                                     ('bsd.thanh_ly', 'Thanh lý'),
