@@ -37,21 +37,41 @@ class BsdBaoGiaChonCK(models.TransientModel):
     @api.model
     def default_get(self, fields_list):
         res = super(BsdBaoGiaChonCK, self).default_get(fields_list)
-        bao_gia = self.env['bsd.bao_gia'].browse(self._context.get('active_ids', []))
-        res.update({
-            'bsd_bao_gia_id': bao_gia.id,
-            'bsd_dot_mb_id': bao_gia.bsd_dot_mb_id.id,
-            'bsd_cs_tt_id': bao_gia.bsd_cs_tt_id.id,
-            'bsd_ck_ch_ids': [(6, 0, bao_gia.bsd_ps_ck_ids
-                               .filtered(lambda x: x.bsd_loai_ck == 'chung')
-                               .mapped('bsd_chiet_khau_id').ids)],
-            'bsd_ck_nb_ids': [(6, 0, bao_gia.bsd_ps_ck_ids
-                               .filtered(lambda x: x.bsd_loai_ck == 'noi_bo')
-                               .mapped('bsd_chiet_khau_id').ids)],
-            'bsd_ck_pttt_ids': [(6, 0, bao_gia.bsd_ps_ck_ids
-                                 .filtered(lambda x: x.bsd_loai_ck == 'ltt')
-                                 .mapped('bsd_chiet_khau_id').ids)]
-        })
+        _logger.debug(self._context)
+        if self._context.get('active_model') == 'bsd.bao_gia':
+            bao_gia = self.env['bsd.bao_gia'].browse(self._context.get('active_ids', []))
+            res.update({
+                'bsd_bao_gia_id': bao_gia.id,
+                'bsd_loai': 'bao_gia',
+                'bsd_dot_mb_id': bao_gia.bsd_dot_mb_id.id,
+                'bsd_cs_tt_id': bao_gia.bsd_cs_tt_id.id,
+                'bsd_ck_ch_ids': [(6, 0, bao_gia.bsd_ps_ck_ids
+                                   .filtered(lambda x: x.bsd_loai_ck == 'chung')
+                                   .mapped('bsd_chiet_khau_id').ids)],
+                'bsd_ck_nb_ids': [(6, 0, bao_gia.bsd_ps_ck_ids
+                                   .filtered(lambda x: x.bsd_loai_ck == 'noi_bo')
+                                   .mapped('bsd_chiet_khau_id').ids)],
+                'bsd_ck_pttt_ids': [(6, 0, bao_gia.bsd_ps_ck_ids
+                                     .filtered(lambda x: x.bsd_loai_ck == 'ltt')
+                                     .mapped('bsd_chiet_khau_id').ids)]
+            })
+        elif self._context.get('active_model') == 'bsd.dat_coc.td_tt':
+            td_tt = self.env['bsd.dat_coc.td_tt'].browse(self._context.get('active_ids', []))
+            res.update({
+                'bsd_td_tt_id': td_tt.id,
+                'bsd_loai': 'td_tt',
+                'bsd_dot_mb_id': td_tt.bsd_dot_mb_id.id,
+                'bsd_cs_tt_id': td_tt.bsd_dat_coc_id.bsd_cs_tt_id.id,
+                'bsd_ck_ch_ids': [(6, 0, td_tt.bsd_ps_ck_ht_ids
+                                   .filtered(lambda x: x.bsd_loai_ck == 'chung')
+                                   .mapped('bsd_chiet_khau_id').ids)],
+                'bsd_ck_nb_ids': [(6, 0, td_tt.bsd_ps_ck_ht_ids
+                                   .filtered(lambda x: x.bsd_loai_ck == 'noi_bo')
+                                   .mapped('bsd_chiet_khau_id').ids)],
+                'bsd_ck_pttt_ids': [(6, 0, td_tt.bsd_ps_ck_ht_ids
+                                     .filtered(lambda x: x.bsd_loai_ck == 'ltt')
+                                     .mapped('bsd_chiet_khau_id').ids)]
+            })
         return res
 
     @api.onchange('bsd_bao_gia_id', 'bsd_dot_mb_id', 'bsd_cs_tt_id')
@@ -72,6 +92,9 @@ class BsdBaoGiaChonCK(models.TransientModel):
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá")
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán")
     bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="Phương thức TT")
+    bsd_td_tt_id = fields.Many2one('bsd.dat_coc.td_tt', string="Thay đổi thông tin")
+    bsd_loai = fields.Selection([('bao_gia', 'Bảng tính giá'),
+                                 ('td_tt', 'Thay đổi thông tin')])
     bsd_ck_ch_ids = fields.Many2many('bsd.chiet_khau', relation="chung_rel", string="Chiết khấu chung")
     bsd_ck_nb_ids = fields.Many2many('bsd.chiet_khau', relation="noi_bo_rel", string="Chiết khấu nội bộ")
     bsd_ck_pttt_ids = fields.Many2many('bsd.chiet_khau', relation="pttt_rel", string="Chiết khấu theo PTTT")
@@ -97,10 +120,15 @@ class BsdBaoGiaChonCK(models.TransientModel):
                                       'bsd_tl_ck': ck_pttt.bsd_tl_ck,
                                       'bsd_ck_cstt_id': self.bsd_dot_mb_id.bsd_ck_cstt_id.id,
                                       'bsd_cs_tt_id': self.bsd_cs_tt_id.id}))
-        self.bsd_bao_gia_id.bsd_ps_ck_ids.unlink()
-        self.bsd_bao_gia_id.write({
-            'bsd_ps_ck_ids': list_ps_ck
-        })
+        if self.bsd_loai == 'bao_gia':
+            self.bsd_bao_gia_id.bsd_ps_ck_ids.unlink()
+            self.bsd_bao_gia_id.write({
+                'bsd_ps_ck_ids': list_ps_ck
+            })
+        else:
+            self.bsd_td_tt_id.write({
+                'bsd_ps_ck_moi_ids': list_ps_ck
+            })
 
 
 class BsdBaoGiaChonDKBG(models.TransientModel):

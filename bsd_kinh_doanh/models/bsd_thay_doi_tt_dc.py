@@ -51,6 +51,16 @@ class BsdThayDoiThongTinDatCoc(models.Model):
     bsd_km_ht_ids = fields.Many2many('bsd.bao_gia_km', string="Khuyến mãi hiện tại", readonly=True)
     bsd_km_moi_ids = fields.One2many('bsd.bao_gia_km', 'bsd_td_tt_id', string="Khuyến mãi mới", readonly=True,
                                      states={'xac_nhan': [('readonly', False)]})
+    bsd_cs_tt_ht_id = fields.Many2one('bsd.cs_tt', string="PTTT hiện tại", readonly=True)
+    bsd_cs_tt_moi_id = fields.Many2one('bsd.cs_tt', string="PTTT mới", readonly=True,
+                                       states={'xac_nhan': [('readonly', False)]})
+    bsd_ps_ck_ht_ids = fields.Many2many('bsd.ps_ck', string="Chiết khấu hiện tại", readonly=True)
+    bsd_ps_ck_moi_ids = fields.One2many('bsd.ps_ck', 'bsd_td_tt_id', string="Chiết khấu mới", readonly=True,
+                                        states={'xac_nhan': [('readonly', False)]})
+    bsd_ck_db_ht_ids = fields.Many2many('bsd.ck_db', string="CK đặt biệt hiện tại", readonly=True)
+    bsd_ck_db_moi_ids = fields.One2many('bsd.ck_db', 'bsd_td_tt_id', string="CK đặt biệt mới", readonly=True,
+                                        states={'xac_nhan': [('readonly', False)]})
+    bsd_ltt_ids = fields.Many2many('bsd.lich_thanh_toan', string="Lịch thanh toán", readonly=True)
 
     @api.onchange('bsd_dat_coc_id', 'bsd_loai_td')
     def _onchange_dat_coc(self):
@@ -62,7 +72,14 @@ class BsdThayDoiThongTinDatCoc(models.Model):
             self.bsd_dsh_ht_ids = [(6, 0, self.bsd_dat_coc_id.bsd_dong_sh_ids.ids)]
         elif self.bsd_loai_td == 'khuyen_mai':
             self.bsd_km_ht_ids = [(6, 0, self.bsd_dat_coc_id.bsd_km_ids.ids)]
-
+        elif self.bsd_loai_td == 'pt_tt':
+            self.bsd_cs_tt_ht_id = self.bsd_dat_coc_id.bsd_cs_tt_id
+            self.bsd_ps_ck_ht_ids = [(6, 0, self.bsd_dat_coc_id.bsd_ps_ck_ids.filtered(lambda x: x.bsd_cs_tt_id).ids)]
+            self.bsd_ltt_ids = [(6, 0, self.bsd_dat_coc_id.bsd_ltt_ids.ids)]
+        elif self.bsd_loai_td == 'ck_tm':
+            self.bsd_ps_ck_ht_ids = [(6, 0, self.bsd_dat_coc_id.bsd_ps_ck_ids.ids)]
+            self.bsd_ck_db_ht_ids = [(6, 0, self.bsd_dat_coc_id.bsd_ck_db_ids.ids)]
+            self.bsd_ltt_ids = [(6, 0, self.bsd_dat_coc_id.bsd_ltt_ids.ids)]
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
                               ('duyet', 'Duyệt'),
@@ -72,6 +89,27 @@ class BsdThayDoiThongTinDatCoc(models.Model):
     bsd_ngay_duyet = fields.Date(string="Ngày duyệt", readonly=True)
     bsd_nguoi_xn_id = fields.Many2one('res.users', string="Người xác nhận", readonly=True)
     bsd_ngay_xn = fields.Date(string="Ngày xác nhận", readonly=True)
+
+    @api.constrains('bsd_cs_tt_ht_id', 'bsd_cs_tt_moi_id')
+    def _constraint_pt_tt(self):
+        if self.bsd_loai_td == 'pt_tt':
+            if self.bsd_cs_tt_moi_id == self.bsd_cs_tt_ht_id:
+                raise UserError(_("Không thể chọn trùng với phương thức hiện tại. Vui lòng kiểm tra lại thông tin."))
+
+    @api.onchange("bsd_cs_tt_moi_id")
+    def _onchange_cs_tt(self):
+        self.sudo().write({
+            'bsd_ps_ck_moi_ids': [(5,)]
+        })
+
+    def action_chon_ck(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_wizard_chon_ck_action').read()[0]
+        return action
+
+    def action_ck_db(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_ck_db_td_tt_action_popup').read()[0]
+        action['context'] = {'default_bsd_td_tt_id': self.id}
+        return action
 
     # KD Xác nhận phiếu chuyển người đại diện đặt cọc
     def action_xac_nhan(self):
@@ -88,7 +126,7 @@ class BsdThayDoiThongTinDatCoc(models.Model):
     def action_duyet(self):
         # Kiểm tra đặt cọc đã tạo hợp đồng chưa và đặt cọc còn hiệu lực không
         if self.bsd_dat_coc_id.state not in ['da_tc']:
-            raise UserError("Đặt cọc đã hết hiệu lực.\nVui lòng kiểm tra lại thông tin.")
+            raise UserError("Đặt cọc đã được ký hoặc đã hết hiệu lực.\nVui lòng kiểm tra lại thông tin.")
         if self.state == 'xac_nhan':
             self.write({
                 'state': 'duyet',
@@ -102,6 +140,73 @@ class BsdThayDoiThongTinDatCoc(models.Model):
             self.bsd_dat_coc_id.write({
                 'bsd_dong_sh_ids': [(6, 0, self.bsd_dsh_moi_ids.ids)]
             })
+            message = ''
+            # Các đồng sở hữu hết hiệu lực
+            dsh_ht = self.bsd_dsh_ht_ids.mapped('bsd_dong_sh_id')
+            if dsh_ht:
+                message += "<li>Đồng sở hữu hết hiệu lực : {}</li>".format(
+                    ','.join(dsh_ht.mapped('display_name')))
+            # Các đồng sở hữu cập nhật mới
+            dsh_moi = self.bsd_dsh_moi_ids.mapped('bsd_dong_sh_id')
+            if dsh_moi:
+                message += "<li>Đồng sở hữu mới: {}</li>".format(','.join(dsh_moi.mapped('display_name')))
+            if message:
+                self.bsd_dat_coc_id.message_post(body='<ul>' + message + '</ul>')
+        # Thay đổi thông tin khuyến mãi
+        elif self.bsd_loai_td == 'khuyen_mai':
+            if len(self.bsd_km_moi_ids) != len(self.bsd_km_moi_ids.mapped('bsd_khuyen_mai_id')):
+                raise UserError(_("Khuyến mãi bị trùng dữ liệu. Vui lòng kiểm tra lại thông tin."))
+            self.bsd_dat_coc_id.write({
+                'bsd_km_ids': [(6, 0, self.bsd_km_moi_ids.ids)]
+            })
+            message = ''
+            # các khuyến mãi ngưng áp dụng cho đặt cọc
+            km_ht = self.bsd_km_ht_ids.mapped('bsd_khuyen_mai_id')
+            if km_ht:
+                message += "<li>Ngưng áp dụng khuyến mãi : {}</li>".format(
+                    ','.join(km_ht.mapped('bsd_ten_km')))
+            # các khuyến mãi mới áp dụng cho đặt cọc
+            km_moi = self.bsd_km_moi_ids.mapped('bsd_khuyen_mai_id')
+            if km_moi:
+                message += "<li>Áp dụng khuyến mãi: {}</li>".format(','.join(km_moi.mapped('bsd_ten_km')))
+            if message:
+                self.bsd_dat_coc_id.message_post(body='<ul>' + message + '</ul>')
+        # Thay đổi thông tin phương thức thanh toán
+        elif self.bsd_loai_td == 'pt_tt':
+            if len(self.bsd_ps_ck_moi_ids) != len(self.bsd_ps_ck_moi_ids.mapped('bsd_chiet_khau_id')):
+                raise UserError(_("Chiết khấu theo PTTT bị trùng dữ liệu. Vui lòng kiểm tra lại thông tin."))
+            # Cập nhật phương thức thanh toán mới
+            self.bsd_dat_coc_id.write({
+                'bsd_cs_tt_id': self.bsd_cs_tt_moi_id.id
+            })
+            # bỏ liên kết chiết khấu theo pttt hiện tại
+            for ck_pttt in self.bsd_ps_ck_ht_ids:
+                self.bsd_dat_coc_id.write({
+                    'bsd_ps_ck_ids': [(3, ck_pttt.id)]
+                })
+            # Ghi nhận chiết khấu theo phương thức thanh toán mới
+            for ck_pttt_moi in self.bsd_ps_ck_moi_ids:
+                self.bsd_dat_coc_id.write({
+                    'bsd_ps_ck_ids': [(4, ck_pttt_moi.id)]
+                })
+            # Tính lại lịch thanh toán
+            self.bsd_dat_coc_id.action_lich_tt()
+        # Thay đổi chiết khấu thương mại
+        elif self.bsd_loai_td == 'ck_tm':
+            if len(self.bsd_ps_ck_moi_ids) != len(self.bsd_ps_ck_moi_ids.mapped('bsd_chiet_khau_id')):
+                raise UserError(_("Chiết khấu bị trùng dữ liệu. Vui lòng kiểm tra lại thông tin."))
+            # bỏ liên kết chiết khấu theo pttt hiện tại
+            for ck_pttt in self.bsd_ps_ck_ht_ids:
+                self.bsd_dat_coc_id.write({
+                    'bsd_ps_ck_ids': [(3, ck_pttt.id)]
+                })
+            # Ghi nhận chiết khấu theo phương thức thanh toán mới
+            for ck_pttt_moi in self.bsd_ps_ck_moi_ids:
+                self.bsd_dat_coc_id.write({
+                    'bsd_ps_ck_ids': [(4, ck_pttt_moi.id)]
+                })
+            # Tính lại lịch thanh toán
+            self.bsd_dat_coc_id.action_lich_tt()
 
     def action_huy(self):
         if self.state in ['nhap', 'xac_nhan']:

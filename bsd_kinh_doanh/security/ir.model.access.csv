@@ -9,7 +9,7 @@ access_bsd_rap_can, Phiếu ráp căn,model_bsd_rap_can,bsd_kinh_doanh.group_use
 access_bsd_giu_cho, Phiếu giữ chỗ,model_bsd_giu_cho,bsd_kinh_doanh.group_user,1,1,1,0
 access_bsd_bao_gia, Bảng tính giá,model_bsd_bao_gia,bsd_kinh_doanh.group_user,1,1,1,0
 access_bsd_bao_gia_km, Thông tin khuyến mãi bảng tính giá,model_bsd_bao_gia_km,bsd_kinh_doanh.group_user,1,1,1,0
-access_bsd_ps_ck, Phát sinh chiết khấu thương mại,model_bsd_ps_ck,bsd_kinh_doanh.group_user,1,1,1,0
+access_bsd_ps_ck, Phát sinh chiết khấu thương mại,model_bsd_ps_ck,bsd_kinh_doanh.group_user,1,1,1,1
 access_bsd_ps_gd_ck, Phát sinh giao dịch chiết khấu,model_bsd_ps_gd_ck,bsd_kinh_doanh.group_user,1,1,1,0
 access_bsd_ban_giao,Thông tin bàn giao cho bảng tính giá,model_bsd_ban_giao,bsd_kinh_doanh.group_user,1,1,1,0
 access_bsd_lich_thanh_toan, Lịch thanh toán cho bảng tính giá,model_bsd_lich_thanh_toan,bsd_kinh_doanh.group_user,1,1,1,0

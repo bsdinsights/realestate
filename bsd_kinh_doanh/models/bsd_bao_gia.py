@@ -266,7 +266,6 @@ class BsdBaoGia(models.Model):
                  'bsd_gia_ban')
     def _compute_tien_ck(self):
         for each in self:
-            _logger.debug("tính tiền chiết khấu")
             tien_ps_ck = 0
             for ck in each.bsd_ps_ck_ids:
                 if ck.bsd_cach_tinh == 'phan_tram':
@@ -638,7 +637,7 @@ class BsdBaoGiaKhuyenMai(models.Model):
     bsd_ngay_hldc = fields.Date(related='bsd_khuyen_mai_id.bsd_ngay_hldc')
     bsd_gia_tri = fields.Monetary(related='bsd_khuyen_mai_id.bsd_gia_tri')
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc")
-    bsd_td_tt_id = fields.Many2one('bsd.td_tt', string="Thay đổi TT đặt cọc")
+    bsd_td_tt_id = fields.Many2one('bsd.dat_coc.td_tt', string="Thay đổi TT đặt cọc")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 

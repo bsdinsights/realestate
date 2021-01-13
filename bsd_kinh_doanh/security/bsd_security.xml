@@ -29,8 +29,6 @@
         <field name="groups" eval="[(6,0,
             [ref('bsd_kinh_doanh.group_user'),
              ref('bsd_du_an.group_user'),
-             ref('bsd_dich_vu.group_user'),
-             ref('bsd_tai_chinh.group_user'),
              ref('bsd_danh_muc.group_user')]
         )]"/>
         <field name="perm_read" eval="1"/>

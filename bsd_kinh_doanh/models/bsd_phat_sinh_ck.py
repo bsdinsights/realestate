@@ -15,7 +15,7 @@ class BsdPsCk(models.Model):
                                     ('noi_bo', 'Nội bộ'),
                                     ('ltt', 'Phương thức TT')], string="Loại chiết khấu",
                                    default='chung', required=True, help="Loại chiết khấu")
-    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", help="Tên báo giá", required=True)
+    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Báo giá", help="Tên báo giá")
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Tên Đặt cọc", readonly=True)
     bsd_ck_ch_id = fields.Many2one('bsd.ck_ch', string="Chiết khấu chung")
     bsd_ck_nb_id = fields.Many2one('bsd.ck_nb', string="Chiết khấu nội bộ")
@@ -32,18 +32,31 @@ class BsdPsCk(models.Model):
     bsd_tl_ck = fields.Float(string="Tỷ lệ CK", help="Tỷ lệ chiết khấu được hưởng")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+    bsd_td_tt_id = fields.Many2one('bsd.dat_coc.td_tt', string="Thay đổi TT đặt cọc")
 
     @api.onchange('bsd_bao_gia_id')
     def _onchange_bao_gia(self):
+        _logger.debug("onchange báo giá")
         self.bsd_ck_ch_id = self.bsd_bao_gia_id.bsd_dot_mb_id.bsd_ck_ch_id
         self.bsd_ck_cstt_id = self.bsd_bao_gia_id.bsd_dot_mb_id.bsd_ck_cstt_id
         self.bsd_ck_nb_id = self.bsd_bao_gia_id.bsd_dot_mb_id.bsd_ck_nb_id
         self.bsd_cs_tt_id = self.bsd_bao_gia_id.bsd_cs_tt_id
 
+    @api.onchange('bsd_td_tt_id')
+    def _onchange_td_tt(self):
+        _logger.debug("onchange td_tt")
+        self.bsd_ck_ch_id = self.bsd_td_tt_id.bsd_dot_mb_id.bsd_ck_ch_id
+        self.bsd_ck_cstt_id = self.bsd_td_tt_id.bsd_dot_mb_id.bsd_ck_cstt_id
+        self.bsd_ck_nb_id = self.bsd_td_tt_id.bsd_dot_mb_id.bsd_ck_nb_id
+
     @api.onchange('bsd_ck_ch_id', 'bsd_loai_ck', 'bsd_ck_cstt_id', 'bsd_ck_nb_id', 'bsd_cs_tt_id')
     def _onchange_ck(self):
         res = {}
         list_id = []
+        _logger.debug("onchange phát sinh")
+        _logger.debug(self.bsd_cs_tt_id)
+        _logger.debug(self.bsd_ck_cstt_id)
+        _logger.debug(self.bsd_loai_ck)
         if self.bsd_loai_ck == 'chung' and self.bsd_ck_ch_id:
             list_id = self.env['bsd.ck_ch_ct'].search([('bsd_ck_ch_id', '=', self.bsd_ck_ch_id.id)])\
                         .mapped('bsd_chiet_khau_id').ids

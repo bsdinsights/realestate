@@ -77,7 +77,6 @@ class BsdDatCoc(models.Model):
         self.bsd_tien_pql = self.bsd_bao_gia_id.bsd_tien_pql
         self.bsd_thue_id = self.bsd_bao_gia_id.bsd_thue_id
         self.bsd_co_ttdc = self.bsd_bao_gia_id.bsd_du_an_id.bsd_hd_coc
-        self.bsd_tien_ck = self.bsd_bao_gia_id.bsd_tien_ck
 
     # Hết thông tin load từ báo giá
     bsd_ten_sp = fields.Char(related="bsd_unit_id.name", store=True)
@@ -92,7 +91,7 @@ class BsdDatCoc(models.Model):
                                  digits=(12, 2))
     bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì",
                               related="bsd_unit_id.bsd_tl_pbt", store=True)
-    bsd_tien_ck = fields.Monetary(string="Chiết khấu", help="Tổng tiền chiết khấu", store=True)
+    bsd_tien_ck = fields.Monetary(string="Chiết khấu", help="Tổng tiền chiết khấu", compute="_compute_tien_ck", store=True)
 
     bsd_tien_bg = fields.Monetary(string="Giá trị ĐKBG", help="Tổng tiền bàn giao",
                                   compute='_compute_tien_bg', store=True)
@@ -117,6 +116,26 @@ class BsdDatCoc(models.Model):
     bsd_tien_thue = fields.Monetary(string="Tiền thuế",
                                     help="""Tiền thuế: Giá bán trước thuế trừ giá trị QSDĐ, nhân với thuế suất""",
                                     compute='_compute_tien_thue', store=True)
+
+    @api.depends('bsd_ps_ck_ids.bsd_tien', 'bsd_ps_ck_ids.bsd_tl_ck', 'bsd_ps_ck_ids.bsd_cach_tinh',
+                 'bsd_ck_db_ids.bsd_tien', 'bsd_ck_db_ids.bsd_tl_ck', 'bsd_ck_db_ids.bsd_cach_tinh',
+                 'bsd_ck_db_ids.state',
+                 'bsd_gia_ban')
+    def _compute_tien_ck(self):
+        for each in self:
+            tien_ps_ck = 0
+            for ck in each.bsd_ps_ck_ids:
+                if ck.bsd_cach_tinh == 'phan_tram':
+                    tien_ps_ck += ck.bsd_tl_ck * \
+                                       (each.bsd_gia_ban + each.bsd_tien_bg) / 100
+                else:
+                    tien_ps_ck += ck.bsd_tien
+            for ck_db in each.bsd_ck_db_ids.filtered(lambda t: t.state == 'duyet'):
+                if ck_db.bsd_cach_tinh == 'phan_tram':
+                    tien_ps_ck += ck_db.bsd_tl_ck * (each.bsd_gia_ban + each.bsd_tien_bg) / 100
+                else:
+                    tien_ps_ck += ck_db.bsd_tien
+            each.bsd_tien_ck = tien_ps_ck
 
     @api.depends('bsd_thue_suat', 'bsd_gia_truoc_thue', 'bsd_tien_qsdd')
     def _compute_tien_thue(self):
@@ -430,3 +449,192 @@ class BsdDatCoc(models.Model):
             'default_bsd_dat_coc_id': self.id
         }
         return action
+
+    # Tạo lịch thanh toán khi thay đổi lịch thanh toán, chiết khấu, điều kiện bàn giao
+    def action_lich_tt(self):
+        # Xóa liên kết với đặt cọc hiện tại
+        self.bsd_ltt_ids.write({'bsd_dat_coc_id': False})
+        self.bsd_dot_pbt_ids.write({'bsd_dat_coc_id': False})
+        self.bsd_dot_pql_ids.write({'bsd_dat_coc_id': False})
+
+        # hàm cộng tháng
+        def add_months(sourcedate, months):
+            month = sourcedate.month - 1 + months
+            year = sourcedate.year + month // 12
+            month = month % 12 + 1
+            day = min(sourcedate.day, calendar.monthrange(year, month)[1])
+            return datetime.date(year, month, day)
+
+        # tạo biến cục bộ
+        stt = 0  # Đánh số thứ tự record đợt thanh toán
+        ngay_hh_tt = datetime.datetime.now()  # Ngày giá trị mặc đính tính ngày hết hạn thanh toán
+        cs_tt = self.bsd_cs_tt_id
+        dot_tt_ids = cs_tt.bsd_ct_ids
+        lai_phat = cs_tt.bsd_lai_phat_tt_id
+        # dùng để tính tiền đợt thanh toán cuối
+        tong_tien_dot_tt = 0
+        # Kiểm tra chính sách thanh toán chi tiết
+        if len(dot_tt_ids.filtered(lambda x: x.bsd_cach_tinh == 'dkbg')) > 1:
+            raise UserError(_("Chính sách thanh toán chi tiết có nhiều hơn 1 đợt dự kiến bàn giao."))
+        if len(dot_tt_ids.filtered(lambda x: x.bsd_dot_cuoi)) > 1:
+            raise UserError(_("Chính sách thanh toán chi tiết có nhiều hơn 1 đợt dự thanh toán cuối."))
+        # Tạo các đợt thanh toán
+        for dot in dot_tt_ids.sorted('bsd_stt'):
+            # Tạo dữ liệu đợt cố định
+            if dot.bsd_cach_tinh == 'cd' and not dot.bsd_dot_cuoi:
+                dot_cd = dot
+                stt += 1
+                # cập nhật lại ngày hết hạn thanh toán
+                ngay_hh_tt = dot_cd.bsd_ngay_cd
+                # tính tiền đợt thanh toán
+                tien_dot_tt = dot_cd.bsd_tl_tt * (self.bsd_tong_gia - self.bsd_tien_pbt) / 100
+                # làm trong tiền đợt thanh toán
+                tien_dot_tt = tien_dot_tt - (tien_dot_tt % 1000)
+                # cộng tiền đợt thanh toán
+                tong_tien_dot_tt += tien_dot_tt
+                self.bsd_ltt_ids.\
+                    create(self._cb_du_lieu_dtt(stt, 'CD', dot_cd, lai_phat, ngay_hh_tt, cs_tt,
+                                                tien_dot_tt, dot_cd.bsd_tinh_pql, dot_cd.bsd_tinh_pbt))
+            # Tạo dữ liệu đợt tự động
+            elif dot.bsd_cach_tinh == 'td':
+                dot_td = dot
+                ngay_hh_tt_td = ngay_hh_tt
+                list_ngay_hh_tt_td = []
+                if dot_td.bsd_lap_lai == '1':
+                    for dot_i in range(0, dot_td.bsd_so_dot):
+                        if dot_td.bsd_tiep_theo == 'ngay':
+                            ngay_hh_tt_td += datetime.timedelta(days=dot_td.bsd_so_ngay)
+                        else:
+                            ngay_hh_tt_td = add_months(ngay_hh_tt_td, dot_td.bsd_so_thang)
+                        list_ngay_hh_tt_td.append(ngay_hh_tt_td)
+                else:
+                    if dot_td.bsd_tiep_theo == 'ngay':
+                        ngay_hh_tt_td += datetime.timedelta(days=dot_td.bsd_so_ngay)
+                    else:
+                        ngay_hh_tt_td = add_months(ngay_hh_tt_td, dot_td.bsd_so_thang)
+                    list_ngay_hh_tt_td.append(ngay_hh_tt_td)
+                # cộng thời gian gia hạn cuối của đợt tự động
+                list_ngay_hh_tt_td[-1] += datetime.timedelta(days=dot_td.bsd_ngay_gh)
+                # Gán lại ngày cuối cùng tự động thanh toán
+                ngay_hh_tt = list_ngay_hh_tt_td[-1]
+                # Kiểm tra nếu đợt tự động có tích chọn thu phí quản lý hoặc phí bảo trì
+                # thì gắn vào đợt tự động đầu tiên
+                da_tao_pql = False
+                da_tao_pbt = False
+                for ngay in list_ngay_hh_tt_td:
+                    stt += 1
+                    if dot_td.bsd_ngay_thang > 0:
+                        last_day = calendar.monthrange(ngay.year, ngay.month)[1]
+
+                        if dot_td.bsd_ngay_thang > last_day:
+                            ngay = ngay.replace(day=last_day)
+                        else:
+                            ngay = ngay.replace(day=dot_td.bsd_ngay_thang)
+                    tien_dot_tt = dot_td.bsd_tl_tt * (self.bsd_tong_gia - self.bsd_tien_pbt) / 100
+                    # làm trong tiền đợt thanh toán
+                    tien_dot_tt = tien_dot_tt - (tien_dot_tt % 1000)
+                    # cộng tiền đợt thanh toán
+                    tong_tien_dot_tt += tien_dot_tt
+                    if dot_td.bsd_tinh_pql and not dot_td.bsd_tinh_pbt and not da_tao_pql:
+                        self.bsd_ltt_ids.create(
+                            self._cb_du_lieu_dtt(stt, 'TD', dot_td, lai_phat, ngay, cs_tt, tien_dot_tt, True, False))
+                        da_tao_pql = True
+                    elif not dot_td.bsd_tinh_pql and dot_td.bsd_tinh_pbt and not da_tao_pbt:
+                        self.bsd_ltt_ids.create(
+                            self._cb_du_lieu_dtt(stt, 'TD', dot_td, lai_phat, ngay, cs_tt, tien_dot_tt, False, True))
+                        da_tao_pbt = True
+                    elif dot_td.bsd_tinh_pql and dot_td.bsd_tinh_pbt and not da_tao_pbt and not da_tao_pql:
+                        self.bsd_ltt_ids.create(
+                            self._cb_du_lieu_dtt(stt, 'TD', dot_td, lai_phat, ngay, cs_tt, tien_dot_tt, True, True))
+                        da_tao_pql = True
+                        da_tao_pbt = True
+                    else:
+                        self.bsd_ltt_ids.create(
+                            self._cb_du_lieu_dtt(stt, 'TD', dot_td, lai_phat, ngay, cs_tt, tien_dot_tt, False, False))
+
+            # Tạo đợt thanh toán theo dự kiến bàn giao
+            elif dot.bsd_cach_tinh == 'dkbg':
+                dot_dkbg = dot
+                ngay_hh_tt_dkbg = self.bsd_unit_id.bsd_ngay_dkbg or self.bsd_unit_id.bsd_du_an_id.bsd_ngay_dkbg or False
+                stt += 1
+                # cập nhật lại ngày hết hạn thanh toán
+                ngay_hh_tt = ngay_hh_tt_dkbg
+                tien_dot_tt = dot_dkbg.bsd_tl_tt * (self.bsd_tong_gia - self.bsd_tien_pbt) / 100
+                # làm trong tiền đợt thanh toán
+                tien_dot_tt = tien_dot_tt - (tien_dot_tt % 1000)
+                # cộng tiền đợt thanh toán
+                tong_tien_dot_tt += tien_dot_tt
+                self.bsd_ltt_ids.\
+                    create(self._cb_du_lieu_dtt(stt, 'DKBG', dot_dkbg, lai_phat, ngay_hh_tt_dkbg, cs_tt,
+                                                tien_dot_tt, dot_dkbg.bsd_tinh_pql, dot_dkbg.bsd_tinh_pbt))
+
+            # Tạo đợt thanh toán cuối
+            elif dot.bsd_dot_cuoi:
+                dot_cuoi = dot
+                stt += 1
+                tien_dot_tt = (self.bsd_tong_gia - self.bsd_tien_pbt) - tong_tien_dot_tt
+                self.bsd_ltt_ids.\
+                    create(self._cb_du_lieu_dtt(stt, 'DBGC', dot_cuoi, lai_phat, False, cs_tt,
+                                                tien_dot_tt, dot_cuoi.bsd_tinh_pql, dot_cuoi.bsd_tinh_pbt))
+
+        # Tạo đợt thu phí quản lý
+        dot_pql = self.bsd_ltt_ids.filtered(lambda d: d.bsd_tinh_pql)
+        if dot_pql:
+            dot_pql = dot_pql[0]
+            self.bsd_ltt_ids.create({
+                'bsd_stt': dot_pql.bsd_stt,
+                'bsd_ma_dtt': 'PQL',
+                'bsd_ten_dtt': dot_pql.bsd_ten_dtt,
+                'bsd_ngay_hh_tt': dot_pql.bsd_ngay_hh_tt,
+                'bsd_tien_dot_tt': self.bsd_tien_pql,
+                'bsd_cs_tt_id': dot_pql.bsd_cs_tt_id.id,
+                'bsd_cs_tt_ct_id': dot_pql.bsd_cs_tt_ct_id.id,
+                'bsd_dat_coc_id': self.id,
+                'bsd_parent_id': dot_pql.id,
+                'bsd_loai': 'pql'
+            })
+        # Tạo đợt thu phí bảo trì
+        dot_pbt = self.bsd_ltt_ids.filtered(lambda d: d.bsd_tinh_pbt)
+        if dot_pbt:
+            dot_pbt = dot_pbt[0]
+            self.bsd_ltt_ids.create({
+                'bsd_stt': dot_pbt.bsd_stt,
+                'bsd_ma_dtt': 'PBT',
+                'bsd_ten_dtt': dot_pbt.bsd_ten_dtt,
+                'bsd_ngay_hh_tt': dot_pbt.bsd_ngay_hh_tt,
+                'bsd_tien_dot_tt': self.bsd_tien_pbt,
+                'bsd_cs_tt_id': dot_pbt.bsd_cs_tt_id.id,
+                'bsd_cs_tt_ct_id': dot_pbt.bsd_cs_tt_ct_id.id,
+                'bsd_dat_coc_id': self.id,
+                'bsd_parent_id': dot_pbt.id,
+                'bsd_loai': 'pbt'
+            })
+
+    def _cb_du_lieu_dtt(self, stt, ma_dtt, dot_tt, lai_phat, ngay_hh_tt, cs_tt, tien_dot_tt, tinh_pql, tinh_pbt):
+        res = {}
+        if ngay_hh_tt:
+            ngay_ah_cd = ngay_hh_tt + datetime.timedelta(days=lai_phat.bsd_an_han)
+        else:
+            ngay_ah_cd = False
+        res.update({
+            'bsd_stt': stt,
+            'bsd_ma_dtt': ma_dtt,
+            'bsd_ten_dtt': 'Đợt ' + str(stt),
+            'bsd_ngay_hh_tt': ngay_hh_tt,
+            'bsd_tien_dot_tt': tien_dot_tt,
+            'bsd_tl_tt': dot_tt.bsd_tl_tt,
+            'bsd_tinh_pql': tinh_pql,
+            'bsd_tinh_pbt': tinh_pbt,
+            'bsd_ngay_ah': ngay_ah_cd,
+            'bsd_tinh_phat': lai_phat.bsd_tinh_phat,
+            'bsd_lai_phat': lai_phat.bsd_lai_phat,
+            'bsd_tien_td': lai_phat.bsd_tien_td,
+            'bsd_tl_td': lai_phat.bsd_tl_td,
+            'bsd_cs_tt_id': cs_tt.id,
+            'bsd_cs_tt_ct_id': dot_tt.id,
+            'bsd_dat_coc_id': self.id,
+            'bsd_dot_ky_hd': dot_tt.bsd_dot_ky_hd,
+            'bsd_tien_dc': 0,
+            'bsd_loai': 'dtt'
+        })
+        return res

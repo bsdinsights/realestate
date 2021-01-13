@@ -33,7 +33,7 @@ class BsdChietKhauDacBiet(models.Model):
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Nội dung về yêu cầu chiết khấu đặc biệt",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
-    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá", required=True,
+    bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', string="Bảng tính giá",
                                      readonly=True,
                                      states={'nhap': [('readonly', False)]})
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Tên Đặt cọc", readonly=True)
@@ -60,6 +60,7 @@ class BsdChietKhauDacBiet(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
     bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
+    bsd_td_tt_id = fields.Many2one('bsd.dat_coc.td_tt', string="Thay đổi thông tin")
 
     @api.onchange('bsd_bao_gia_id')
     def _onchange_bao_gia(self):
@@ -70,6 +71,16 @@ class BsdChietKhauDacBiet(models.Model):
         self.bsd_cs_tt_id = self.bsd_bao_gia_id.bsd_cs_tt_id
         self.bsd_tien_gc = self.bsd_bao_gia_id.bsd_tien_gc
         self.bsd_tien_dc = self.bsd_bao_gia_id.bsd_tien_dc
+
+    @api.onchange('bsd_td_tt_id')
+    def _onchange_td_tt(self):
+        self.bsd_du_an_id = self.bsd_td_tt_id.bsd_du_an_id
+        self.bsd_khach_hang_id = self.bsd_td_tt_id.bsd_khach_hang_id
+        self.bsd_unit_id = self.bsd_td_tt_id.bsd_unit_id
+        self.bsd_dot_mb_id = self.bsd_td_tt_id.bsd_dot_mb_id
+        self.bsd_cs_tt_id = self.bsd_td_tt_id.bsd_dat_coc_id.bsd_cs_tt_id
+        self.bsd_tien_gc = self.bsd_td_tt_id.bsd_dat_coc_id.bsd_tien_gc
+        self.bsd_tien_dc = self.bsd_td_tt_id.bsd_dat_coc_id.bsd_tien_dc
 
     # DM.13.01 Xác nhận chiết khấu
     def action_xac_nhan(self):
