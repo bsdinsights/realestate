@@ -119,7 +119,7 @@ class BsdDatCoc(models.Model):
 
     @api.depends('bsd_ps_ck_ids.bsd_tien', 'bsd_ps_ck_ids.bsd_tl_ck', 'bsd_ps_ck_ids.bsd_cach_tinh',
                  'bsd_ck_db_ids.bsd_tien', 'bsd_ck_db_ids.bsd_tl_ck', 'bsd_ck_db_ids.bsd_cach_tinh',
-                 'bsd_ck_db_ids.state',
+                 'bsd_ck_db_ids.state', 'bsd_tien_bg',
                  'bsd_gia_ban')
     def _compute_tien_ck(self):
         for each in self:

@@ -37,7 +37,7 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <group>
+                    <group attrs="{'invisible':[('bsd_loai', '!=', 'td_tt_pttt')]}">
                         <group string="CHIẾT KHẤU CHUNG">
                             <field name="bsd_ck_ch_ids"
                                    context="{'show_info':True}"
@@ -77,6 +77,46 @@
         <field name="res_model">bsd.wizard.bao_gia.chon_ck</field>
         <field name="target">new</field>
         <field name="view_mode">form</field>
+    </record>
+
+    <!--Chọn chiết khấu theo phương thức thanh toán-->
+    <record model="ir.ui.view" id="bsd_wizard_chon_ck_pttt_form">
+        <field name="name">bsd.wizard.chon_ck.form</field>
+        <field name="model">bsd.wizard.bao_gia.chon_ck</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group string="CHIẾT KHẤU THEO PHƯƠNG THỨC THANH TOÁN">
+                            <field name="bsd_ck_pttt_ids"
+                                   context="{'show_info':True}"
+                                   widget="many2many_checkboxes" nolabel="1"/>
+                        </group>
+                        <group>
+                            <field name="bsd_bao_gia_id" invisible="1"/>
+                            <field name="bsd_dot_mb_id" invisible="1"/>
+                            <field name="bsd_cs_tt_id" invisible="1"/>
+                            <field name="bsd_loai" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_chon_ck_pttt_action">
+        <field name="name">Chọn chiết khấu</field>
+        <field name="res_model">bsd.wizard.bao_gia.chon_ck</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+        <field name="view_ids"
+               eval="[(5, 0, 0),
+                      (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_wizard_chon_ck_pttt_form')})]"/>
     </record>
 
     <record model="ir.ui.view" id="bsd_wizard_chon_dkbg_form">

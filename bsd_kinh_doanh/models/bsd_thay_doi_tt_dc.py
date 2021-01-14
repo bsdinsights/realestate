@@ -11,6 +11,7 @@ class BsdThayDoiThongTinDatCoc(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma'
     _description = 'Phiếu thay đổi thông tin đặt cọc'
+    _order = 'bsd_ngay desc'
 
     bsd_ma = fields.Char(string="Mã", help="Mã phiếu thay đổi thông tin đặt cọc",
                          required=True, readonly=True, copy=False,
@@ -43,7 +44,8 @@ class BsdThayDoiThongTinDatCoc(models.Model):
                                     ('khuyen_mai', 'Khuyến mãi'),
                                     ('pt_tt', "Phương thức thanh toán"),
                                     ('dk_bg', "Điều kiện bàn giao"),
-                                    ('ck_tm', "Chiết khấu thương mại")], string="Loại", default='dong_sh',
+                                    ('ck_tm', "Chiết khấu thương mại"),
+                                    ('ck_db', "Chiết khấu đặt biệt")], string="Loại", default='dong_sh',
                                    required=True, readonly=True, states={'nhap': [('readonly', False)]})
     bsd_dsh_ht_ids = fields.Many2many('bsd.dong_so_huu', string="Đồng sở hữu ht", readonly=True)
     bsd_dsh_moi_ids = fields.One2many('bsd.dong_so_huu', 'bsd_td_tt_id', string="Đồng sở hữu mới", readonly=True,
@@ -60,6 +62,9 @@ class BsdThayDoiThongTinDatCoc(models.Model):
     bsd_ck_db_ht_ids = fields.Many2many('bsd.ck_db', string="CK đặt biệt hiện tại", readonly=True)
     bsd_ck_db_moi_ids = fields.One2many('bsd.ck_db', 'bsd_td_tt_id', string="CK đặt biệt mới", readonly=True,
                                         states={'xac_nhan': [('readonly', False)]})
+    bsd_bg_ht_ids = fields.Many2many('bsd.ban_giao', string="ĐKBG hiện tại", help="Điều kiện bàn giao hiện tại", readonly=True)
+    bsd_bg_moi_ids = fields.One2many('bsd.ban_giao', 'bsd_td_tt_id', string="Điều kiện bàn giao", readonly=True,
+                                     states={'xac_nhan': [('readonly', False)]})
     bsd_ltt_ids = fields.Many2many('bsd.lich_thanh_toan', string="Lịch thanh toán", readonly=True)
 
     @api.onchange('bsd_dat_coc_id', 'bsd_loai_td')
@@ -78,8 +83,14 @@ class BsdThayDoiThongTinDatCoc(models.Model):
             self.bsd_ltt_ids = [(6, 0, self.bsd_dat_coc_id.bsd_ltt_ids.ids)]
         elif self.bsd_loai_td == 'ck_tm':
             self.bsd_ps_ck_ht_ids = [(6, 0, self.bsd_dat_coc_id.bsd_ps_ck_ids.ids)]
+            self.bsd_ltt_ids = [(6, 0, self.bsd_dat_coc_id.bsd_ltt_ids.ids)]
+        elif self.bsd_loai_td == 'ck_db':
             self.bsd_ck_db_ht_ids = [(6, 0, self.bsd_dat_coc_id.bsd_ck_db_ids.ids)]
             self.bsd_ltt_ids = [(6, 0, self.bsd_dat_coc_id.bsd_ltt_ids.ids)]
+        elif self.bsd_loai_td == 'dk_bg':
+            self.bsd_bg_ht_ids = [(6, 0, self.bsd_dat_coc_id.bsd_bg_ids.ids)]
+            self.bsd_ltt_ids = [(6, 0, self.bsd_dat_coc_id.bsd_ltt_ids.ids)]
+
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
                               ('duyet', 'Duyệt'),
@@ -104,6 +115,15 @@ class BsdThayDoiThongTinDatCoc(models.Model):
 
     def action_chon_ck(self):
         action = self.env.ref('bsd_kinh_doanh.bsd_wizard_chon_ck_action').read()[0]
+        return action
+
+    def action_chon_ck_pttt(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_wizard_chon_ck_pttt_action').read()[0]
+        action['context'] = {'loai': 'ltt'}
+        return action
+
+    def action_chon_dkbg(self):
+        action = self.env.ref('bsd_kinh_doanh.bsd_wizard_chon_dkbg_action').read()[0]
         return action
 
     def action_ck_db(self):
@@ -191,6 +211,24 @@ class BsdThayDoiThongTinDatCoc(models.Model):
                 })
             # Tính lại lịch thanh toán
             self.bsd_dat_coc_id.action_lich_tt()
+            # ghi chú
+            message = ''
+            # Phương thức thanh toán hiện tại
+            if self.bsd_cs_tt_ht_id:
+                message += "<li>Ngưng áp dụng PTTT: {}</li>".format(
+                    ','.join(self.bsd_cs_tt_ht_id.bsd_ten_cstt))
+            # Chiết khấu theo phương thức thanh toán ngưng áp dụng
+            if self.bsd_ps_ck_ht_ids:
+                message += "<li>Ngưng áp dụng chiết khấu: {}</li>".format(
+                    ','.join(self.self.bsd_ps_ck_ht_ids.mapped('bsd_chiet_khau_id').mapped('bsd_ten_ck')))
+            # Phương thức thanh toán mới
+            if self.bsd_cs_tt_moi_id:
+                message += "<li>Áp dụng PTTT: {}</li>".format(','.join(self.bsd_cs_tt_moi_id.bsd_ten_cstt))
+            if self.bsd_ps_ck_moi_ids:
+                message += "<li>Áp dụng chiết khấu: {}</li>".format(
+                    ','.join(self.self.bsd_ps_ck_moi_ids.mapped('bsd_chiet_khau_id').mapped('bsd_ten_ck')))
+            if message:
+                self.bsd_dat_coc_id.message_post(body='<ul>' + message + '</ul>')
         # Thay đổi chiết khấu thương mại
         elif self.bsd_loai_td == 'ck_tm':
             if len(self.bsd_ps_ck_moi_ids) != len(self.bsd_ps_ck_moi_ids.mapped('bsd_chiet_khau_id')):
@@ -207,6 +245,67 @@ class BsdThayDoiThongTinDatCoc(models.Model):
                 })
             # Tính lại lịch thanh toán
             self.bsd_dat_coc_id.action_lich_tt()
+            # ghi chú
+            message = ''
+            # Chiết khấu ngưng áp dụng
+            if self.bsd_ps_ck_ht_ids:
+                message += "<li>Ngưng áp dụng chiết khấu: {}</li>".format(
+                    ','.join(self.bsd_ps_ck_ht_ids.mapped('bsd_chiet_khau_id').mapped('bsd_ten_ck')))
+            if self.bsd_ps_ck_moi_ids:
+                message += "<li>Áp dụng chiết khấu: {}</li>".format(
+                    ','.join(self.bsd_ps_ck_moi_ids.mapped('bsd_chiet_khau_id').mapped('bsd_ten_ck')))
+            if message:
+                self.bsd_dat_coc_id.message_post(body='<ul>' + message + '</ul>')
+        # Thay đổi chiết khấu đặc biệt
+        elif self.bsd_loai_td == 'ck_db':
+            # bỏ liên kết chiết khấu đặt biệt hiện tại
+            for ck_db_ht in self.bsd_ck_db_ht_ids:
+                self.bsd_dat_coc_id.write({
+                    'bsd_ck_db_ids': [(3, ck_db_ht.id)]
+                })
+            # Ghi nhận chiết khấu đặt biệt:
+            for ck_db_moi in self.bsd_ck_db_moi_ids:
+                self.bsd_dat_coc_id.write({
+                    'bsd_ck_db_ids': [(4, ck_db_moi.id)]
+                })
+            # Tính lại lịch thanh toán
+            self.bsd_dat_coc_id.action_lich_tt()
+            # ghi chú
+            message = ''
+            # Chiết khấu đặt biệttoán ngưng áp dụng
+            if self.bsd_ck_db_ht_ids:
+                message += "<li>Ngưng áp dụng chiết khấu đặc biệt: {}</li>".format(
+                    ','.join(self.bsd_ck_db_ht_ids.mapped('bsd_ten_ck_db')))
+            if self.bsd_ck_db_moi_ids:
+                message += "<li>Áp dụng chiết khấu đặt biệt: {}</li>".format(
+                    ','.join(self.bsd_ck_db_moi_ids.mapped('bsd_ten_ck_db')))
+            if message:
+                self.bsd_dat_coc_id.message_post(body='<ul>' + message + '</ul>')
+        # Thay đổi điều kiện bàn giao
+        elif self.bsd_loai_td == 'dk_bg':
+            # bỏ liên kết điều kiện bàn giao
+            for bg_ht in self.bsd_bg_ht_ids:
+                self.bsd_dat_coc_id.write({
+                    'bsd_bg_ids': [(3, bg_ht.id)]
+                })
+            # Ghi nhận điều kiện bàn giao mới
+            for bg_moi in self.bsd_bg_moi_ids:
+                self.bsd_dat_coc_id.write({
+                    'bsd_bg_ids': [(4, bg_moi.id)]
+                })
+            # Tính lại lịch thanh toán
+            self.bsd_dat_coc_id.action_lich_tt()
+            # ghi chú
+            message = ''
+            # Điều kiện bàn giao ngưng áp dụng
+            if self.bsd_bg_ht_ids:
+                message += "<li>Ngưng áp dụng ĐKBG: {}</li>".format(
+                    ','.join(self.bsd_bg_ht_ids.mapped('bsd_dk_bg_id').mapped('bsd_ten_dkbg')))
+            if self.bsd_bg_moi_ids:
+                message += "<li>Áp dụng ĐKBG: {}</li>".format(
+                    ','.join(self.bsd_bg_moi_ids.mapped('bsd_dk_bg_id').mapped('bsd_ten_dkbg')))
+            if message:
+                self.bsd_dat_coc_id.message_post(body='<ul>' + message + '</ul>')
 
     def action_huy(self):
         if self.state in ['nhap', 'xac_nhan']:

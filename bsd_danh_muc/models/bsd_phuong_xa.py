@@ -12,7 +12,7 @@ class BsdPhuongXa(models.Model):
     bsd_quoc_gia_id = fields.Many2one('res.country', string="Quốc gia", required=True)
     bsd_tinh_thanh_id = fields.Many2one('res.country.state', string="Tỉnh thành",
                                         required=True)
-    bsd_quan_huyen_id = fields.Many2one('bsd.quan_huyen', string="Quận huyên", required=True)
+    bsd_quan_huyen_id = fields.Many2one('bsd.quan_huyen', string="Quận huyện", required=True)
     bsd_ten = fields.Char(string="Tên phường xã", required=True)
     bsd_ma = fields.Char(string="Mã phường xã", required=True)
     _sql_constraints = [

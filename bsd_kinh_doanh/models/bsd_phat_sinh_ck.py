@@ -36,7 +36,6 @@ class BsdPsCk(models.Model):
 
     @api.onchange('bsd_bao_gia_id')
     def _onchange_bao_gia(self):
-        _logger.debug("onchange báo giá")
         self.bsd_ck_ch_id = self.bsd_bao_gia_id.bsd_dot_mb_id.bsd_ck_ch_id
         self.bsd_ck_cstt_id = self.bsd_bao_gia_id.bsd_dot_mb_id.bsd_ck_cstt_id
         self.bsd_ck_nb_id = self.bsd_bao_gia_id.bsd_dot_mb_id.bsd_ck_nb_id
@@ -44,7 +43,6 @@ class BsdPsCk(models.Model):
 
     @api.onchange('bsd_td_tt_id')
     def _onchange_td_tt(self):
-        _logger.debug("onchange td_tt")
         self.bsd_ck_ch_id = self.bsd_td_tt_id.bsd_dot_mb_id.bsd_ck_ch_id
         self.bsd_ck_cstt_id = self.bsd_td_tt_id.bsd_dot_mb_id.bsd_ck_cstt_id
         self.bsd_ck_nb_id = self.bsd_td_tt_id.bsd_dot_mb_id.bsd_ck_nb_id
@@ -53,10 +51,6 @@ class BsdPsCk(models.Model):
     def _onchange_ck(self):
         res = {}
         list_id = []
-        _logger.debug("onchange phát sinh")
-        _logger.debug(self.bsd_cs_tt_id)
-        _logger.debug(self.bsd_ck_cstt_id)
-        _logger.debug(self.bsd_loai_ck)
         if self.bsd_loai_ck == 'chung' and self.bsd_ck_ch_id:
             list_id = self.env['bsd.ck_ch_ct'].search([('bsd_ck_ch_id', '=', self.bsd_ck_ch_id.id)])\
                         .mapped('bsd_chiet_khau_id').ids
@@ -77,13 +71,3 @@ class BsdPsCk(models.Model):
     def _onchange_chiet_khau(self):
         self.bsd_tien = self.bsd_chiet_khau_id.bsd_tien_ck
         self.bsd_tl_ck = self.bsd_chiet_khau_id.bsd_tl_ck
-
-    # R.31
-    @api.depends('bsd_cach_tinh', 'bsd_tien', 'bsd_tl_ck', 'bsd_bao_gia_id.bsd_gia_ban', 'bsd_bao_gia_id.bsd_tien_bg')
-    def _compute_tien_ck(self):
-        for each in self:
-            if each.bsd_cach_tinh == 'phan_tram':
-                each.bsd_tien_ck = each.bsd_tl_ck * \
-                                   (each.bsd_bao_gia_id.bsd_gia_ban + each.bsd_bao_gia_id.bsd_tien_bg) / 100
-            else:
-                each.bsd_tien_ck = each.bsd_tien

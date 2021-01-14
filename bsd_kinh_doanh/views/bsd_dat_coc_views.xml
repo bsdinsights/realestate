@@ -47,10 +47,10 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_chuyen_dd" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_chuyen_dd', '=', 0)]}">
-                            <field name="bsd_so_chuyen_dd" widget="statinfo" string="Phiếu thay đổi người đại diện"/>
+                            <field name="bsd_so_chuyen_dd" widget="statinfo" string="Người đại diện"/>
                         </button>
                         <button name="action_view_td_tt" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_td_tt', '=', 0)]}">
-                            <field name="bsd_so_td_tt" widget="statinfo" string="Phiếu thay đổi thông tin"/>
+                            <field name="bsd_so_td_tt" widget="statinfo" string="Thay đổi TT"/>
                         </button>
                     </div>
                     <notebook>
@@ -161,8 +161,8 @@
                                 </group>
                                 <group>
                                     <field name="bsd_gia_ban"/>
-                                    <field name="bsd_tien_ck" readonly="1" force_save="1"/>
                                     <field name="bsd_tien_bg"/>
+                                    <field name="bsd_tien_ck" readonly="1" force_save="1"/>
                                     <field name="bsd_gia_truoc_thue"/>
                                     <field name="bsd_tien_qsdd"/>
                                     <field name="bsd_tien_thue"/>
@@ -817,8 +817,8 @@
                                 </group>
                                 <group>
                                     <field name="bsd_gia_ban" readonly="1" force_save="1"/>
-                                    <field name="bsd_tien_ck" readonly="1" force_save="1"/>
                                     <field name="bsd_tien_bg"/>
+                                    <field name="bsd_tien_ck" readonly="1" force_save="1"/>
                                     <field name="bsd_gia_truoc_thue"/>
                                     <field name="bsd_tien_qsdd"/>
                                     <field name="bsd_tien_thue"/>

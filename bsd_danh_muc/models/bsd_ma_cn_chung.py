@@ -64,7 +64,6 @@ class BsdMaBoChungTu(models.Model):
                 sequence = each.bsd_ma_tt_id._get_current_sequence()
                 sequence.sudo().number_next = each.bsd_so_tt
 
-    @api.model
     def _create_sequence(self, vals):
         prefix = vals['bsd_ma_cn']
         suffix = vals['bsd_ma_ht']
