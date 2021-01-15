@@ -55,6 +55,24 @@ class ResPartner(models.Model):
     bsd_so_nha_ts = fields.Char(string="Số nhà (TS)", help="Số nhà, tên đường đặt trụ sở công ty")
     bsd_cung_ts = fields.Boolean(string="Đây là địa chỉ trụ sở", help="Đãy là địa chỉ trụ sợ")
 
+    # Xóa field khi thay đổi quốc gia trụ sở
+    @api.onchange('bsd_quoc_gia_ts_id')
+    def _onchange_quoc_gia_ts(self):
+        self.bsd_tinh_ts_id = False
+        self.bsd_quan_ts_id = False
+        self.bsd_phuong_ts_id = False
+
+    # Xóa field khi thay đổi tỉnh thành trụ sở
+    @api.onchange('bsd_tinh_ts_id')
+    def _onchange_tinh_ts(self):
+        self.bsd_quan_ts_id = False
+        self.bsd_phuong_ts_id = False
+
+    # Xóa field khi thay đổi tỉnh thành trụ sở
+    @api.onchange('bsd_quan_ts_id')
+    def _onchange_quan_ts(self):
+        self.bsd_phuong_ts_id = False
+
     @api.onchange('bsd_cung_ts')
     def _onchange_ts(self):
         if self.bsd_cung_ts:
@@ -78,9 +96,15 @@ class ResPartner(models.Model):
                 each.bsd_dia_chi_ts += each.bsd_tinh_ts_id.name + ', '
             if each.bsd_quoc_gia_ts_id:
                 each.bsd_dia_chi_ts += each.bsd_quoc_gia_ts_id.name
+    #
+    # @api.model
+    # def default_get(self, fields_list):
+    #     res = super(ResPartner, self).default_get(fields_list)
+    #     return res
 
-    @api.onchange('name')
-    def _onchange_ma_da(self):
+    @api.onchange('bsd_la_kh')
+    def _onchange_la_kh(self):
+        _logger.debug("onchange tìm người đại diện")
         res = {}
         self.env.cr.execute("""SELECT bsd_cn_id FROM bsd_loai_cn_rel 
                                 WHERE bsd_loai_id = {0}

@@ -104,7 +104,10 @@ class BsdPhieuThu(models.Model):
 
     # TC.01.01 Xác nhận phiếu thu
     def action_xac_nhan(self):
-        # TC.01.09
+        # Kiểm tra dự án
+        if self.bsd_du_an_id.state != 'phat_hanh':
+            raise UserError(_("Dự án đang ở giai đoạn chuẩn bị, không thể xác nhận giữ chỗ thiện chí."
+                              "\nVui lòng kiểm tra lại thông tin."))
         # Kiểm tra hợp đồng đã bị thanh lý chưa
         if self.bsd_hd_ban_id.state == 'thanh_ly':
             raise UserError(_('Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin hợp đồng.'))

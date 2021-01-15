@@ -239,7 +239,7 @@
         <field name="target">new</field>
         <field name="view_id" ref="bsd_gia_han_gctc_form_popup"/>
         <field name="binding_model_id" ref="model_bsd_gc_tc"/>
-        <field name="context">{'default_bsd_loai_gh':'du_an', 'default_bsd_loai_gc':'gc_tc'}</field>
+        <field name="context">{'default_bsd_loai_gh':'san_pham', 'default_bsd_loai_gc':'gc_tc'}</field>
     </record>
 
     <record model="ir.ui.view" id="bsd_gia_han_gctc_ct_form_popup">

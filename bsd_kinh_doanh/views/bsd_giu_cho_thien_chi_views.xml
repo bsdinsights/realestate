@@ -71,6 +71,7 @@
                             <field name="bsd_ma_gctc"/>
                             <field name="bsd_ngay_gctc" readonly="1" force_save="1"/>
                             <field name="bsd_khach_hang_id"
+                                   domain="[('bsd_la_kh', '=', True)]"
                                    context="{'show_ma_kh': True}"
                                    options="{'no_create':true}"/>
 

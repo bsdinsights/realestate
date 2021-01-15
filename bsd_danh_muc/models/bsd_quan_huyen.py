@@ -22,3 +22,16 @@ class BsdQuanHuyen(models.Model):
     state = fields.Selection([('active', "Đang sử dụng"),
                               ('inactive', "Không sử dụng")], string='Trạng thái',
                              default='active', tracking=1, help="Trạng thái")
+
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        args = list(args or [])
+        if name:
+            if operator == 'ilike':
+                args += [('bsd_ten', operator, name)]
+            elif operator == '=':
+                args += [('bsd_ma', operator, name)]
+        access_rights_uid = name_get_uid or self._uid
+        ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
+        recs = self.browse(ids)
+        return models.lazy_name_get(recs.with_user(access_rights_uid))

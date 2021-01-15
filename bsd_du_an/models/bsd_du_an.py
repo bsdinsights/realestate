@@ -211,9 +211,15 @@ class BsdProject(models.Model):
                              readonly=True,
                              states={'chuan_bi': [('readonly', False)]})
     bsd_dien_giai = fields.Text(string="Mô tả", help="Mô tả dự án")
-    bsd_tien_ich_ids = fields.Many2many('bsd.du_an.tien_ich', string="Tiện ích", help="Tiện ích của dự án",
-                                    readonly=True,
-                                    states={'chuan_bi': [('readonly', False)]})
+    bsd_tien_ich_ids = fields.Many2many('bsd.du_an.tien_ich', string="Tiện ích nội khu",
+                                        help="Tiện ích nội khu của dự án",
+                                        readonly=True,
+                                        states={'chuan_bi': [('readonly', False)]})
+    bsd_tien_ich_nk_ids = fields.Many2many('bsd.du_an.tien_ich', string="Tiện ích ngoại khu",
+                                           help="Tiện ích ngoại khu dự án",
+                                           relation='bsd_du_an_nk_rel',
+                                           readonly=True,
+                                           states={'chuan_bi': [('readonly', False)]})
 
     @api.constrains('bsd_tl_dc')
     def _check_ty_le_coc(self):
@@ -423,5 +429,15 @@ class BsdLoaiHinhSuDung(models.Model):
 class BsdTienIch(models.Model):
     _name = 'bsd.du_an.tien_ich'
     _rec_name = 'bsd_ten'
+
+    bsd_ma = fields.Char(string="Mã", help="Mã tiện ích", required=True)
+
+    _sql_constraints = [
+        ('bsd_ma_unique', 'unique (bsd_ma)',
+         'Mã tiện ích đã tồn tại !'),
+    ]
+
     bsd_ten = fields.Char(string="Tiện ích", help="Tiện ích của dự án", required=True)
+    bsd_mo_ta = fields.Char(string="Mô tả", help="Mô tả tiện ích")
+    bsd_loai = fields.Selection([('noi', 'Nội khu'), ('ngoai', 'Ngoại khu')], string="Loại", required=True)
 

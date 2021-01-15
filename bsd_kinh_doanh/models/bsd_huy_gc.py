@@ -221,9 +221,7 @@ class BsdHuyGC(models.Model):
                     'bsd_tt_ht': 'chua_ht'
                 })
 
-        # Theo dõi công nợ hủy giữ chỗ
         if self.bsd_giu_cho_id and self.bsd_loai_gc == 'giu_cho':
-            # Tạo điều chỉnh giảm
             if self.bsd_hoan_tien:
                 # tạo record trong bảng hoàn tiền
                 ht = self.env['bsd.hoan_tien'].create({

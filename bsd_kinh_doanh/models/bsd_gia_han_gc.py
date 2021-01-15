@@ -68,8 +68,7 @@ class BsdGiaHanGiuCho(models.Model):
                                     ('giu_cho', 'Giữ chỗ')], string="Loại giữ chỗ", required=True,
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    bsd_loai_gh = fields.Selection([('du_an', 'Giữ chỗ dự án'),
-                                    ('san_pham', 'Giữ chỗ sản phẩm'),
+    bsd_loai_gh = fields.Selection([('san_pham', 'Sản phẩm'),
                                     ('hang_loat', 'Hàng loạt')], string="Loại gia hạn",
                                    readonly=True, required=True, default='hang_loat',
                                    states={'nhap': [('readonly', False)]})

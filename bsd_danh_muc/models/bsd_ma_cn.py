@@ -147,6 +147,10 @@ class BsdMaBoChungTu(models.Model):
 
     @api.model
     def create(self, vals):
+        if 'bsd_du_an_id' in vals:
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            if du_an.state != 'chuan_bi':
+                raise UserError(_("Dự án đã phát hành. Vui lòng kiểm tra lại thông tin."))
         if not vals.get('bsd_ma_tt_id'):
             vals.update({'bsd_ma_tt_id': self.sudo()._create_sequence(vals).id})
         return super(BsdMaBoChungTu, self).create(vals)

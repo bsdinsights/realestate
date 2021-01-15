@@ -109,6 +109,9 @@ class BsdGiuCho(models.Model):
             time_gc = self.bsd_du_an_id.bsd_gc_tmb
             ngay_hh_bg = self.bsd_ngay_tt
             ngay_hh_gc = self.bsd_ngay_tt + datetime.timedelta(days=time_gc)
+            # Kiểm tra ngày hết hạn giữ chỗ còn hiệu lực hay ko
+            if ngay_hh_gc <= datetime.datetime.now():
+                raise UserError(_("Hạn giữ chỗ trước hiện tại. Vui lòng kiểm tra lại thông tin."))
             stt = self.bsd_unit_id.bsd_sequence_gc_id.next_by_id()
             if giu_cho_unit:
                 self.write({

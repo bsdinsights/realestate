@@ -65,15 +65,12 @@
                                            required="1"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_tinh_lh_id"
-                                           required="1"
                                            domain="[('country_id', 'in',[bsd_quoc_gia_lh_id])]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_quan_lh_id"
-                                           required="1"
                                            domain="[('bsd_tinh_thanh_id', 'in',[bsd_tinh_lh_id])]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_phuong_lh_id"
-                                           required="1"
                                            domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_lh_id])]"
                                            options="{'no_create':true}"/>
                                     <field name="bsd_so_nha_lh"

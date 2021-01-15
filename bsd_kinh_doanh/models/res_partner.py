@@ -145,6 +145,42 @@ class ResPartner(models.Model):
             self.bsd_phuong_tt_id = self.bsd_phuong_lh_id
             self.bsd_so_nha_tt = self.bsd_so_nha_lh
 
+    # Xóa field khi thay đổi quốc gia thường trú
+    @api.onchange('bsd_quoc_gia_tt_id')
+    def _onchange_quoc_gia_tt(self):
+        self.bsd_tinh_tt_id = False
+        self.bsd_quan_tt_id = False
+        self.bsd_phuong_tt_id = False
+
+    # Xóa field khi thay đổi tỉnh thành thường trú
+    @api.onchange('bsd_tinh_tt_id')
+    def _onchange_tinh_tt(self):
+        self.bsd_quan_tt_id = False
+        self.bsd_phuong_tt_id = False
+
+    # Xóa field khi thay đổi tỉnh thành thường trú
+    @api.onchange('bsd_quan_tt_id')
+    def _onchange_quan_tt(self):
+        self.bsd_phuong_tt_id = False
+
+    # Xóa field khi thay đổi quốc gia liên hệ
+    @api.onchange('bsd_quoc_gia_lh_id')
+    def _onchange_quoc_gia_lh(self):
+        self.bsd_tinh_lh_id = False
+        self.bsd_quan_lh_id = False
+        self.bsd_phuong_lh_id = False
+
+    # Xóa field khi thay đổi tỉnh thành liên hệ
+    @api.onchange('bsd_tinh_lh_id')
+    def _onchange_tinh_lh(self):
+        self.bsd_quan_lh_id = False
+        self.bsd_phuong_lh_id = False
+
+    # Xóa field khi thay đổi tỉnh thành liên hệ
+    @api.onchange('bsd_quan_lh_id')
+    def _onchange_quan_lh(self):
+        self.bsd_phuong_lh_id = False
+
     # R.02 Tạo thông tin địa chỉ thường chú
     @api.depends('bsd_quoc_gia_tt_id', 'bsd_tinh_tt_id', 'bsd_quan_tt_id', 'bsd_phuong_tt_id', 'bsd_so_nha_tt')
     def _compute_dia_chi_tt(self):
@@ -180,17 +216,40 @@ class ResPartner(models.Model):
     @api.model
     def create(self, vals):
         sequence = False
-        if vals.get('bsd_ma_kh', '/') == '/' and not vals.get('is_company') and vals.get('bsd_la_kh'):
+        if vals.get('bsd_ma_kh', '/') == '/' and not vals.get('is_company'):
+            _logger.debug("Chạy tới cái này")
             sequence = self.env['bsd.ma_bo_cn_chung'].search([('bsd_loai_cn', '=', 'bsd.kh_cn'),
                                                         ('state', '=', 'active')], limit=1).bsd_ma_tt_id
+            _logger.debug(sequence)
             vals['bsd_ma_kh'] = self.env['ir.sequence'].next_by_code('bsd.kh_cn') or '/'
-        if vals.get('bsd_ma_kh', '/') == '/' and vals.get('is_company') and vals.get('bsd_la_kh'):
+        if vals.get('bsd_ma_kh', '/') == '/' and vals.get('is_company'):
             sequence = self.env['bsd.ma_bo_cn_chung'].search([('bsd_loai_cn', '=', 'bsd.kh_dn'),
                                                               ('state', '=', 'active')], limit=1).bsd_ma_tt_id
-        if not sequence and vals.get('bsd_la_kh'):
+        if not sequence:
             raise UserError(_('Danh mục mã dùng chung chưa khai báo mã khách hàng.'))
         if sequence:
             vals['bsd_ma_kh'] = sequence.next_by_id()
+        # Kiểm tra field cũng là địa chỉ thường trú
+        if vals.get('bsd_cung_dc'):
+            _logger.debug("tạo địa chỉ thường trứ")
+            if not vals.get('bsd_quoc_gia_tt_id'):
+                vals['bsd_quoc_gia_tt_id'] = vals.get('bsd_quoc_gia_lh_id')
+            if not vals.get('bsd_tinh_tt_id'):
+                vals['bsd_tinh_tt_id'] = vals.get('bsd_tinh_lh_id')
+            if not vals.get('bsd_quan_tt_id'):
+                vals['bsd_quan_tt_id'] = vals.get('bsd_quan_lh_id')
+            if not vals.get('bsd_phuong_tt_id'):
+                vals['bsd_phuong_tt_id'] = vals.get('bsd_phuong_lh_id')
+            if not vals.get('bsd_so_nha_tt'):
+                vals['bsd_so_nha_tt'] = vals.get('bsd_so_nha_lh')
+        # Kiểm tra field cũng là địa chỉ trụ sở
+        if vals.get('bsd_cung_ts'):
+            vals['bsd_quoc_gia_ts_id'] = vals.get('bsd_quoc_gia_lh_id')
+            vals['bsd_tinh_ts_id'] = vals.get('bsd_tinh_lh_id')
+            vals['bsd_quan_ts_id'] = vals.get('bsd_quan_lh_id')
+            vals['bsd_phuong_ts_id'] = vals.get('bsd_phuong_lh_id')
+            vals['bsd_so_nha_ts'] = vals.get('bsd_so_nha_lh')
+
         # Cập nhật nhân viên kinh doanh assign
         vals['user_id'] = self.env.uid
         res = super(ResPartner, self).create(vals)
@@ -221,8 +280,11 @@ class ResPartner(models.Model):
     @api.model
     def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
         args = list(args or [])
-        if not (name == '' and operator == 'ilike'):
-            args += [('bsd_search_ten', operator, name)]
+        if name:
+            if operator == 'ilike':
+                args += [('bsd_search_ten', operator, name)]
+            elif operator == '=':
+                args += [('bsd_ma_kh', operator, name)]
         access_rights_uid = name_get_uid or self._uid
         ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
         recs = self.browse(ids)

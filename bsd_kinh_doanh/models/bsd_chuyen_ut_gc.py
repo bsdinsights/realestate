@@ -125,6 +125,18 @@ class BsdChuyenGiuCho(models.Model):
                 'bsd_stt': self.bsd_gc_tc_dc_id.bsd_stt,
                 'bsd_ngay_ut': self.bsd_gc_tc_dc_id.bsd_ngay_ut
             })
+            # Cập nhật lại trạng thái giữ chỗ
+            # Lấy giữ chỗ đã có trạng thái là giữ chỗ của dự án
+            gc_tc_dang_uu_tien = self.env['bsd.gc_tc'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                                 ('state', '=', 'giu_cho')], limit=1)
+            # Kiểm tra ngày thứ tự của giữ chỗ dc chuyển có nhỏ hơn giữ chỗ đang ưu tiên hay ko
+            if self.bsd_gc_tc_ch_id.bsd_ngay_ut < gc_tc_dang_uu_tien.bsd_ngay_ut:
+                self.bsd_gc_tc_ch_id.write({
+                    'state': 'giu_cho'
+                })
+                gc_tc_dang_uu_tien.write({
+                    'state': 'cho_rc'
+                })
         else:
             if self.bsd_giu_cho_dc_id.state != 'huy':
                 raise UserError("Giữ chỗ thiện chí chưa hủy.\nVui lòng kiểm tra lại thông tin.")
@@ -134,6 +146,19 @@ class BsdChuyenGiuCho(models.Model):
                 'bsd_stt_bg': self.bsd_giu_cho_dc_id.bsd_stt_bg,
                 'bsd_ngay_hh_bg': self.bsd_giu_cho_dc_id.bsd_ngay_hh_bg
             })
+            # Cập nhật lại trạng thái giữ chỗ
+            # Lấy giữ chỗ đã có trạng thái là giữ chỗ của dự án
+            giu_cho_dang_uu_tien = self.env['bsd.giu_cho'].search([('bsd_du_an_id', '=', self.bsd_du_an_id.id),
+                                                                   ('bsd_unit_id', '=', self.bsd_unit_id.id),
+                                                                   ('state', '=', 'giu_cho')], limit=1)
+            # Kiểm tra ngày thứ tự của giữ chỗ dc chuyển có nhỏ hơn giữ chỗ đang ưu tiên hay ko
+            if self.bsd_giu_cho_ch_id.bsd_ngay_hh_bg < giu_cho_dang_uu_tien.bsd_ngay_hh_bg:
+                self.bsd_giu_cho_ch_id.write({
+                    'state': 'giu_cho'
+                })
+                giu_cho_dang_uu_tien.write({
+                    'state': 'dang_cho'
+                })
 
     def action_khong_duyet(self):
         action = self.env.ref('bsd_kinh_doanh.bsd_wizard_chuyen_ut_gc_action').read()[0]

@@ -18,13 +18,15 @@
                     <div class="oe_title">
                         <div>
                             <label for="bsd_ten_da" class="oe_edit_only"/>
-                            <h2>
+                            <h1>
                                 <field name="bsd_ten_da"/>
-                            </h2>
+                            </h1>
                         </div>
                         <div>
-                            <label for="bsd_ma_da"/>
-                            <field name="bsd_ma_da" attrs="{'readonly':[('id','!=', False)]}"/>
+                            <h3>
+                                <label for="bsd_ma_da"/>
+                                <field name="bsd_ma_da" attrs="{'readonly':[('id','!=', False)]}"/>
+                            </h3>
                         </div>
                     </div>
                     <notebook>
@@ -228,8 +230,29 @@
                             </group>
                         </page>
                         <page string="Tiện ích">
-                            <group>
-                                <field name="bsd_tien_ich_ids" widget="many2many_tags"/>
+                            <group string="Nội khu">
+                                <field name="bsd_tien_ich_ids"
+                                       domain="[('bsd_loai', '=', 'noi')]"
+                                       nolabel="1">
+                                    <tree>
+                                        <field name="bsd_ma"/>
+                                        <field name="bsd_ten"/>
+                                        <field name="bsd_mo_ta"/>
+                                        <field name="bsd_loai"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <group string="Ngoại khu">
+                                <field name="bsd_tien_ich_nk_ids"
+                                       domain="[('bsd_loai', '=', 'ngoai')]"
+                                       nolabel="1">
+                                    <tree>
+                                        <field name="bsd_ma"/>
+                                        <field name="bsd_ten"/>
+                                        <field name="bsd_mo_ta"/>
+                                        <field name="bsd_loai"/>
+                                    </tree>
+                                </field>
                             </group>
                         </page>
                     </notebook>

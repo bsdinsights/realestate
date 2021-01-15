@@ -5,7 +5,10 @@
         <field name="model">bsd.du_an.tien_ich</field>
         <field name="arch" type="xml">
             <tree editable="top">
+                <field name="bsd_ma"/>
                 <field name="bsd_ten"/>
+                <field name="bsd_mo_ta"/>
+                <field name="bsd_loai"/>
             </tree>
         </field>
     </record>

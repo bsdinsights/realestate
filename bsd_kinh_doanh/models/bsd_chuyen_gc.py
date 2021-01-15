@@ -51,7 +51,7 @@ class BsdChuyenGiuCho(models.Model):
     bsd_nguoi_duyet_id = fields.Many2one('res.users', string="Người duyệt", readonly=True)
     bsd_ngay_duyet = fields.Date(string="Ngày duyệt", readonly=True)
     state = fields.Selection([('nhap', 'Nháp'), ('xac_nhan', 'Xác nhận'),
-                              ('da_duyet', 'Đã duyệt'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
+                              ('duyet', 'Duyệt'), ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
                              required=True, default='nhap', tracking=1)
 
     # KD.05.07.01 Xác nhận phiếu chuyển tên khách hàng giữ chỗ

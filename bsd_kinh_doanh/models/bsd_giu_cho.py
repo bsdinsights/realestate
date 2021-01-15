@@ -331,6 +331,9 @@ class BsdGiuCho(models.Model):
 
     # KD07.01 Xác nhận giữ chỗ
     def action_xac_nhan(self):
+        if self.bsd_du_an_id.state != 'phat_hanh':
+            raise UserError(_("Dự án đang ở giai đoạn chuẩn bị, không thể xác nhận giữ chỗ."
+                              "\nVui lòng kiểm tra lại thông tin."))
         if not self.bsd_dot_mb_id:
             self._tao_rec_cong_no()
             now = datetime.datetime.now()

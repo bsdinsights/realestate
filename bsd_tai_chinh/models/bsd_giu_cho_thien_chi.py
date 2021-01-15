@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import datetime
 import logging
@@ -98,11 +98,14 @@ class BsdGiuChoThienChi(models.Model):
 
     # Sinh số thứ tự cho phiếu
     def create_stt(self):
-        stt = self.bsd_du_an_id.bsd_sequence_gc_tc_id.next_by_id()
         # Tính ngày ưu tiên ráp căn
         # Cập nhật lại hạn giữ chỗ thiện chí khi thanh toán
         bsd_ngay_hh_gctc = self.bsd_ngay_tt + datetime.timedelta(days=self.bsd_du_an_id.bsd_gc_tmb)
+        # Kiểm tra lại hạn giữ chỗ có lớn hơn thời gian hiện tại
+        if bsd_ngay_hh_gctc <= datetime.datetime.now():
+            raise UserError(_("Hạn giữ chỗ thiện chí trước hiện tại. Vui lòng kiểm tra lại thông tin."))
         ngay_ut = self.bsd_ngay_tt
+        stt = self.bsd_du_an_id.bsd_sequence_gc_tc_id.next_by_id()
         self.write({
             'bsd_stt': stt,
             'bsd_ngay_ut': ngay_ut,
