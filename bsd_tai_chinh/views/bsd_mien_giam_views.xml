@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_mien_giam_form">
+        <field name="name">bsd.mien_giam.form</field>
+        <field name="model">bsd.mien_giam</field>
+        <field name="arch" type="xml">
+            <form duplicate="false">
+                <header>
+                    <button string="Nhập SP (excel)"
+                            name="action_nhap_sp"
+                            type="object"
+                            states="nhap"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            class="oe_highlight"/>
+                    <button string="Xác nhận"
+                            name="action_xac_nhan"
+                            states="nhap"
+                            confirm="Bạn có muốn xác nhận yêu cầu không?"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Duyệt"
+                            name="action_duyet"
+                            states="xac_nhan"
+                            confirm="Bạn có muốn duyệt yêu cầu này không?"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Không duyệt"
+                            name="action_khong_duyet"
+                            states="xac_nhan"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button string="Hủy"
+                            name="action_huy"
+                            type="object"
+                            attrs="{'invisible': ['|',('id', '=',False)]}"
+                            states="xac_nhan,nhap"/>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <notebook>
+                        <page string="Thông tin chung">
+                            <group>
+                                <group>
+                                    <field name="bsd_ma"/>
+                                    <field name="bsd_ngay"/>
+                                    <field name="bsd_ten"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_du_an_id"
+                                           domain="[('state','=', 'phat_hanh')]"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_hd_ban_id"
+                                           domain="[('bsd_du_an_id','=', bsd_du_an_id), ('state','=','thanh_ly')]"
+                                           options="{'no_create':true}"/>
+                                    <field name="bsd_unit_id" readonly="1" force_save="1"/>
+                                    <field name="bsd_khach_hang_id" readonly="1" force_save="1"/>
+                                    <field name="id" invisible="1"/>
+                                </group>
+                            </group>
+                            <group string="XÁC NHẬN">
+                                <group>
+                                    <field name="bsd_ngay_xn"/>
+                                    <field name="bsd_nguoi_xn_id"/>
+                                </group>
+                                <group>
+                                    <field name="bsd_ngay_duyet"/>
+                                    <field name="bsd_nguoi_duyet_id"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="bsd_ly_do"/>
+                            </group>
+                        </page>
+                        <page string="Chi tiết miễn giảm">
+                            <button string="Thêm đợt"
+                                    name="action_them_dot"
+                                    type="object"
+                                    states="nhap"
+                                    attrs="{'invisible': ['|',('id', '=',False)]}"
+                                    class="oe_highlight oe_right"/>
+                            <field name="bsd_ct_ids" nolabel="1"
+                                   attrs="{'invisible':[('id','=',False)]}"
+                                   context="{'default_bsd_mien_giam_id': id,
+                                         'default_bsd_hd_ban_id': bsd_hd_ban_id}">
+                                <tree create="false" delete="false">
+                                    <field name="bsd_mien_giam_id" invisible="1"/>
+                                    <field name="bsd_hd_ban_id" invisible="1" force_save="1"/>
+                                    <field name="bsd_loai"/>
+                                    <field name="bsd_dot_tt_id"/>
+                                    <field name="bsd_tien_mg"/>
+                                    <field name="state"/>
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <button string="Hủy" name="action_huy"
+                                            states="nhap"
+                                            type="object" class="oe_highlight oe_right"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="bsd_mien_giam_tree">
+        <field name="name">bsd.mien_giam.tree</field>
+        <field name="model">bsd.mien_giam</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_ma"/>
+                <field name="bsd_ten"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_hd_ban_id"/>
+                <field name="bsd_khach_hang_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_mien_giam_filter">
+        <field name="name">bsd.mien_giam.list.filter</field>
+        <field name="model">bsd.mien_giam</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_ma"/>
+                <field name="bsd_du_an_id"/>
+                <field name="bsd_hd_ban_id"/>
+                <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_mien_giam_filter"/>
+                <group expand="0" string="Group by">
+                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                    <filter string="Hợp đồng" name="bsd_hd_ban_id" domain="[]" context="{'group_by': 'bsd_hd_ban_id'}"/>
+                    <filter string="Trạng thái" name="state" domain="[]" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_mien_giam_action">
+        <field name="name">Miễn giảm</field>
+        <field name="res_model">bsd.mien_giam</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="xml">
+            <p>Tạo miễn giảm</p>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_mien_giam_ct_form_popup">
+        <field name="name">bsd.mien_giam.ct.form</field>
+        <field name="model">bsd.mien_giam.ct</field>
+        <field name="arch" type="xml">
+            <form duplicate="false">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="0"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_ngay" readonly="1" force_save="1"/>
+                            <field name="bsd_mien_giam_id"
+                                   readonly="1" force_save="1"
+                                   options="{'no_create':true}"/>
+                            <field name="bsd_hd_ban_id" readonly="1" force_save="1"/>
+                        </group>
+                        <group>
+                            <field name="bsd_loai"/>
+                            <field name="bsd_dot_tt_id"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_hd_ban_id', '=', bsd_hd_ban_id)]"/>
+                            <field name="bsd_tien_mg"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="ĐỢT THANH TOÁN">
+                            <field name="bsd_tien_dot_tt" string="Tổng tiền" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_mg_dot" string="Đã miễn giảm" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_dot_dtt" string="Đã thanh toán" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_dot_ptt" string="Phải thanh toán" readonly="1" force_save="1"/>
+                        </group>
+                        <group string="TIỀN PHẠT">
+                            <field name="bsd_tien_phat" string="Tổng tiền" readonly="1" force_save="1"/>
+                            <field name="bsd_tien_mg_lp" string="Đã miễn giảm" readonly="1" force_save="1"/>
+                            <field name="bsd_tp_da_tt" string="Đã thanh toán" readonly="1" force_save="1"/>
+                            <field name="bsd_tp_phai_tt" string="Phải thanh toán" readonly="1" force_save="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Tạo" name="action_tao" type="object" class="oe_highlight"/>
+                    <button string="Hủy" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_mien_giam_ct_filter">
+        <field name="name">bsd.mien_giam.ct.filter</field>
+        <field name="model">bsd.mien_giam.ct</field>
+        <field name="arch" type="xml">
+            <search string="Lọc dữ liệu">
+                <field name="bsd_mien_giam_id"/>
+                <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_mien_giam_filter"/>
+                <group expand="0" string="Group by">
+                    <filter string="Miễn giảm" name="bsd_mien_giam_id" domain="[]" context="{'group_by': 'bsd_mien_giam_id'}"/>
+                    <filter string="Trạng thái" name="state" domain="[]" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bsd_mien_giam_unit_tree">
+        <field name="name">bsd.mien_giam.ct.tree</field>
+        <field name="model">bsd.mien_giam.ct</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="bsd_mien_giam_id"/>
+                <field name="bsd_hd_ban_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_mien_giam_ct_action_popup">
+        <field name="name">Thêm đợt thanh toán</field>
+        <field name="res_model">bsd.mien_giam.ct</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_ids"
+               eval="[(5, 0, 0),
+                      (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_mien_giam_ct_form_popup')})]"/>
+    </record>
+</odoo>

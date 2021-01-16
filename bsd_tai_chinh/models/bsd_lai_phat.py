@@ -36,12 +36,13 @@ class BsdLaiPhat(models.Model):
     state = fields.Selection([('hieu_luc', 'Hiệu lực'), ('vo_hieu_luc', 'Vô hiệu lực')],
                              string="Trạng thái",
                              required=True, default='hieu_luc')
+    bsd_tien_mg = fields.Monetary(string="Tiền miễn giảm", help="Tiền miễn giảm", readonly=True)
 
-    @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien_phat')
+    @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien_phat', 'bsd_tien_mg')
     def _compute_tien_tt(self):
         for each in self:
             each.bsd_tien_da_tt = sum(each.bsd_ct_ids.mapped('bsd_tien_pb'))
-            each.bsd_tien_phai_tt = each.bsd_tien_phat - each.bsd_tien_da_tt
+            each.bsd_tien_phai_tt = each.bsd_tien_phat - each.bsd_tien_da_tt - each.bsd_tien_mg
 
             if each.bsd_tien_phai_tt == 0:
                 each.bsd_thanh_toan = 'da_tt'

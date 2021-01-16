@@ -68,7 +68,7 @@
     <menuitem id="bsd_mien_giam_menu_action_2"
               name="Miễn giảm"
               sequence="23"
-              action="bsd_tai_chinh.bsd_phieu_thu_action"
+              action="bsd_tai_chinh.bsd_mien_giam_action"
               web_icon="fa fa-life-ring,#FFFFFF,#c0b66d"
     />
 

@@ -27,6 +27,7 @@
                             <field name="bsd_tien_phat"/>
                             <field name="bsd_tien_da_tt"/>
                             <field name="bsd_tien_phai_tt"/>
+                            <field name="bsd_tien_mg"/>
                             <field name="bsd_thanh_toan" invisible="1"/>
                         </group>
                     </group>
@@ -46,6 +47,7 @@
                 <field name="bsd_tien_tt"/>
                 <field name="bsd_so_ngay"/>
                 <field name="bsd_tien_phat"/>
+                <field name="bsd_tien_mg"/>
                 <field name="bsd_tien_da_tt"/>
                 <field name="bsd_tien_phai_tt"/>
                 <field name="bsd_thanh_toan"/>

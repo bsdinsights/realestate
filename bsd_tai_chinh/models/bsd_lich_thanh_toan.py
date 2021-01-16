@@ -19,17 +19,21 @@ class BsdBaoGiaLTT(models.Model):
                                      compute='_compute_tien_phat', store=True)
     bsd_so_ngay_tre = fields.Integer(string="Số ngày trễ", help="Số ngày trễ của đợt",
                                      compute='_compute_tien_phat', store=True)
+    bsd_tien_mg_lp = fields.Monetary(string="Miễn giảm phạt", help="Tiền miễn giảm lãi phạt chậm thanh toán",
+                                     compute='_compute_tien_phat', store=True)
     bsd_lai_phat_ids = fields.One2many('bsd.lai_phat', 'bsd_dot_tt_id', string="DS lãi phạt")
 
     @api.depends('bsd_lai_phat_ids', 'bsd_lai_phat_ids.bsd_tien_da_tt',
                  'bsd_lai_phat_ids.bsd_tien_phat',
-                 'bsd_lai_phat_ids.bsd_tien_phai_tt', 'bsd_lai_phat_ids.bsd_so_ngay')
+                 'bsd_lai_phat_ids.bsd_tien_phai_tt',
+                 'bsd_lai_phat_ids.bsd_so_ngay', 'bsd_lai_phat_ids.bsd_tien_mg')
     def _compute_tien_phat(self):
         for each in self:
             each.bsd_tien_phat = sum(each.bsd_lai_phat_ids.mapped('bsd_tien_phat'))
             each.bsd_tp_da_tt = sum(each.bsd_lai_phat_ids.mapped('bsd_tien_da_tt'))
             each.bsd_tp_phai_tt = sum(each.bsd_lai_phat_ids.mapped('bsd_tien_phai_tt'))
             each.bsd_so_ngay_tre = sum(each.bsd_lai_phat_ids.mapped('bsd_so_ngay'))
+            each.bsd_tien_mg_lp = sum(each.bsd_lai_phat_ids.mapped('bsd_tien_mg'))
 
     bsd_tien_da_tt = fields.Monetary(string="Đã thanh toán", help="Đã thanh toán",
                                      compute="_compute_tien_tt", store=True)
@@ -40,12 +44,13 @@ class BsdBaoGiaLTT(models.Model):
                                          ('state', '=', 'hieu_luc')], readonly=True)
     bsd_ngay_tt = fields.Datetime(compute='_compute_tien_tt', store=True)
     bsd_thanh_toan = fields.Selection(compute='_compute_tien_tt', store=True)
+    bsd_tien_mg_dot = fields.Monetary(string="Miễn giảm đợt", help="Tiền miễn giảm đợt", readonly=True)
 
-    @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien_dot_tt', 'bsd_tien_dc')
+    @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien_dot_tt', 'bsd_tien_dc', 'bsd_tien_mg_dot')
     def _compute_tien_tt(self):
         for each in self:
             each.bsd_tien_da_tt = sum(each.bsd_ct_ids.mapped('bsd_tien_pb'))
-            each.bsd_tien_phai_tt = each.bsd_tien_dot_tt - each.bsd_tien_da_tt - each.bsd_tien_dc
+            each.bsd_tien_phai_tt = each.bsd_tien_dot_tt - each.bsd_tien_da_tt - each.bsd_tien_dc - each.bsd_tien_mg_dot
 
             if each.bsd_tien_phai_tt == 0:
                 each.bsd_thanh_toan = 'da_tt'
@@ -191,7 +196,7 @@ class BsdBaoGiaLTT(models.Model):
 
     def _get_name(self):
         dot_tt = self
-        name = dot_tt.bsd_ten_dtt or ''
+        name = dot_tt.bsd_ma_ht or ''
         if self._context.get('show_info'):
             if dot_tt.bsd_loai == 'dtt':
                 if dot_tt.bsd_thanh_toan == 'chua_tt':

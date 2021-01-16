@@ -6,6 +6,7 @@
         <field name="inherit_id" ref="bsd_kinh_doanh.bsd_lich_thanh_toan_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='bsd_ngay_tt']" position="before">
+                <field name="bsd_tien_mg_dot"/>
                 <field name="bsd_tien_da_tt"/>
                 <field name="bsd_tien_phai_tt"/>
             </xpath>
@@ -15,6 +16,7 @@
                         <group>
                             <field name="bsd_loai" invisible="1"/>
                             <field name="bsd_tien_phat"/>
+                            <field name="bsd_tien_mg_lp"/>
                             <field name="bsd_so_ngay_tre"/>
                         </group>
                         <group>

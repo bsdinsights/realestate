@@ -457,8 +457,13 @@ class BsdHopDongMuaBan(models.Model):
         # private implementation of name_search, allows passing a dedicated user
         # for the name_get part to solve some access rights issues
         args = list(args or [])
-        if not (name == '' and operator == 'ilike'):
-            args += [('bsd_ten_sp', operator, name)]
+        # if not (name == '' and operator == 'ilike'):
+        #     args += [('bsd_ten_sp', operator, name)]
+        if name:
+            if operator == 'ilike':
+                args += [('bsd_ten_sp', operator, name)]
+            elif operator == '=':
+                args += [('bsd_ma_hd_ban', operator, name)]
         access_rights_uid = name_get_uid or self._uid
         ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
         recs = self.browse(ids)
@@ -767,21 +772,35 @@ class BsdBanGiao(models.Model):
 
 class BsdBaoGiaLTT(models.Model):
     _inherit = 'bsd.lich_thanh_toan'
-    _rec_name = "bsd_ma_ht"
 
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng mua bán", help="Hợp đồng mua bán", readonly=True, copy=False)
     bsd_ma_ht = fields.Char(string="Mã hệ thống", help="Mã hệ thống", compute='_compute_ma_ht', store=True)
     bsd_cn_htt_ct_ids = fields.One2many('bsd.cn_htt_ct', 'bsd_dot_tt_id', string="Lịch sử gia hạn",
                                         domain=[('state', '=', 'duyet')], readonly=True)
 
-    @api.depends('bsd_hd_ban_id.bsd_ma_hd_ban', 'bsd_ten_dtt')
+    # Sinh mã của đợt thanh toán
+    @api.depends('bsd_hd_ban_id.bsd_ma_hd_ban', 'bsd_ten_dtt', 'bsd_ma_dtt')
     def _compute_ma_ht(self):
         for each in self:
             if each.bsd_hd_ban_id:
-                each.bsd_ma_ht = '{ten_dtt}-{ma_hd}'.format(ten_dtt=each.bsd_ten_dtt,
-                                                            ma_hd=each.bsd_hd_ban_id.bsd_ma_hd_ban)
+                each.bsd_ma_ht = '{ma_hd}-{ten_dtt}-{ma_dtt}'.format(ten_dtt=each.bsd_ten_dtt,
+                                                                     ma_dtt=each.bsd_ma_dtt,
+                                                                     ma_hd=each.bsd_hd_ban_id.bsd_ma_hd_ban)
             else:
                 each.bsd_ma_ht = each.bsd_ten_dtt
+
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        args = list(args or [])
+        if name:
+            if operator == 'ilike':
+                args += [('bsd_ma_ht', operator, name)]
+            elif operator == '=':
+                args += [('bsd_ma_ht', operator, name)]
+        access_rights_uid = name_get_uid or self._uid
+        ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
+        recs = self.browse(ids)
+        return models.lazy_name_get(recs.with_user(access_rights_uid))
 
 
 class BsdKhuyenMai(models.Model):
