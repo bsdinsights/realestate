@@ -5,6 +5,11 @@
         <field name="model">bsd.hd_ban</field>
         <field name="inherit_id" ref="bsd_dich_vu.bsd_hd_ban_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_mg" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_mg', '=', 0)]}">
+                    <field name="bsd_so_mg" widget="statinfo" string="Miễn giảm"/>
+                </button>
+            </xpath>
             <xpath expr="//button[@name='action_xac_nhan']" position="before">
                 <button string="Thanh toán"
                         name="action_thanh_toan"
@@ -12,11 +17,16 @@
                         type="object"
                         class="oe_highlight"/>
             </xpath>
-                        <xpath expr="//button[@name='action_xac_nhan']" position="after">
+            <xpath expr="//button[@name='action_xac_nhan']" position="after">
                 <button string="Ước tính lãi phạt"
                         name="action_uoc_tinh_lp"
                         attrs="{'invisible':[('state', 'in',['thanh_ly','da_ht','bg_gt','ht_tt'])]}"
                         type="object"
+                        class="oe_highlight"/>
+                <button string="Miễn giảm"
+                        name="action_mien_giam"
+                        type="object"
+                        attrs="{'invisible':[('state', 'in',['thanh_ly','da_ht','bg_gt','ht_tt'])]}"
                         class="oe_highlight"/>
             </xpath>
             <xpath expr="//field[@name='bsd_ltt_ids']" position="before">

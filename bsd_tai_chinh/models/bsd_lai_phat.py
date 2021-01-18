@@ -12,7 +12,7 @@ class BsdLaiPhat(models.Model):
     _description = 'Tiền phạt chậm thanh toán'
     _rec_name = 'bsd_hd_ban_id'
 
-    bsd_ngay_lp = fields.Datetime(string="Ngày tính phạt", readonly=True, required=True)
+    bsd_ngay_lp = fields.Date(string="Ngày tính phạt", readonly=True, required=True)
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", readonly=True, required=True)
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán", required=True, readonly=True)
     bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu TT", required=True, readonly=True)

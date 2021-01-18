@@ -21,6 +21,27 @@ class BsdHdBan(models.Model):
     bsd_lt_phai_tt = fields.Monetary(string="Tiền phạt phải TT", compute='_compute_lp_tt', store=True)
 
     bsd_phieu_thu_ids = fields.One2many('bsd.phieu_thu', 'bsd_hd_ban_id', string="Thanh toán", readonly=True)
+    bsd_so_mg = fields.Integer(string="# Miễn giảm", compute='_compute_so_mg')
+
+    def _compute_so_mg(self):
+        for each in self:
+            mien_giam = self.env['bsd.mien_giam'].search([('bsd_hd_ban_id', '=', self.id)])
+            each.bsd_so_mg = len(mien_giam)
+
+    def action_view_mg(self):
+        action = self.env.ref('bsd_tai_chinh.bsd_mien_giam_action').read()[0]
+
+        mien_giam = self.env['bsd.mien_giam'].search([('bsd_hd_ban_id', '=', self.id)])
+        if len(mien_giam) > 1:
+            action['domain'] = [('id', 'in', mien_giam.ids)]
+        elif mien_giam:
+            form_view = [(self.env.ref('bsd_tai_chinh.bsd_mien_giam_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = mien_giam.id
+        return action
 
     @api.depends('bsd_lai_phat_ids', 'bsd_lai_phat_ids.bsd_tien_phai_tt')
     def _compute_lp_tt(self):
@@ -95,7 +116,6 @@ class BsdHdBan(models.Model):
 
     # DV.01.15 - Cập nhật trạng thái Thanh toán đợt 1
     def action_tt_dot1(self):
-        _logger.debug("Cập nhật đợt thanh toán 1")
         if self.state == 'ht_dc' and not self.bsd_duyet_db:
             self.write({
                 'state': 'tt_dot1'
@@ -156,13 +176,22 @@ class BsdHdBan(models.Model):
         if dot_dkbg.bsd_thanh_toan != 'da_tt':
             return
         # Kiểm tra các phí phát sinh từ đợt dkbg trở về trước
-        dot_pps = self.bsd_ltt_ids.filtered(lambda d: d.bsd_stt <= dot_dkbg.bsd_stt)
+        dot_tt_truoc_bg = self.bsd_ltt_ids.filtered(lambda d: d.bsd_stt <= dot_dkbg.bsd_stt)
         # Lấy các phí phát sinh
         phi_ps_ids = self.env['bsd.phi_ps'].search([('bsd_hd_ban_id', '=', self.id),
-                                                    ('bsd_dot_tt_id', 'in', dot_pps.ids),
+                                                    ('bsd_dot_tt_id', 'in', dot_tt_truoc_bg.ids),
                                                     ('state', '=', 'ghi_so')])
         phi_ps_ids = phi_ps_ids.filtered(lambda p: p.bsd_thanh_toan != 'da_tt')
         if phi_ps_ids:
+            return
+
+        # Kiểm tra khách hàng đã thanh toán hết tiền phạt chậm tt hay chưa
+        # Lấy các tiền phạt chậm thanh toán của các đợt thanh toán
+        lai_phat_ids = self.env['bsd.lai_phat'].search([('bsd_hd_ban_id', '=', self.id),
+                                                        ('bsd_dot_tt_id', 'in', dot_tt_truoc_bg.ids),
+                                                        ('state', '=', 'hieu_luc')])
+        lai_phat_ids = lai_phat_ids.filtered(lambda p: p.bsd_thanh_toan != 'da_tt')
+        if lai_phat_ids:
             return
         # Kiểm tra tỷ lệ thanh toán của hợp đồng với điều kiện bàn giao trên sản phẩm
         if self.bsd_tl_tt_hd < self.bsd_unit_id.bsd_dk_bg:
@@ -171,10 +200,6 @@ class BsdHdBan(models.Model):
         self.write({
             'state': 'du_dkbg'
         })
-        # Cập nhật trạng thái unit
-        # self.bsd_unit_id.write({
-        #     'state': 'du_dkbg'
-        # })
 
     # DV.01.23 Cập nhật trạng thái hoàn tất thanh toán
     def action_ht_tt(self):
@@ -190,6 +215,10 @@ class BsdHdBan(models.Model):
         # Kiểm tra đã thu đủ phí phát sinh chưa
         if self.bsd_phi_ps_ids.filtered(lambda p: p.bsd_thanh_toan != 'da_tt'):
             return
+        # Kiểm tra đã thu đủ tiền phạt chưa
+        if self.bsd_lai_phat_ids.filtered(lambda p: p.bsd_thanh_toan != 'da_tt'):
+            return
+
         # Cập nhật trạng thái hoàn tất thanh toán
         self.write({
             'state': 'ht_tt'
@@ -234,20 +263,15 @@ class BsdHdBan(models.Model):
         action['res_id'] = wizard_tt.id
         return action
 
-    # Tạo thanh toán
-    # def action_thanh_toan(self):
-    #     context = {
-    #         'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-    #         'default_bsd_du_an_id': self.bsd_du_an_id.id,
-    #         'default_bsd_hd_ban_id': self.id,
-    #         'default_bsd_unit_id': self.bsd_unit_id.id,
-    #         'default_bsd_loai_pt': 'dot_tt',
-    #     }
-    #     action = self.env.ref('bsd_tai_chinh.bsd_phieu_thu_action_popup').read()[0]
-    #     action['context'] = context
-    #     return action
-
     def action_uoc_tinh_lp(self):
         action = self.env.ref('bsd_tai_chinh.bsd_wizard_uoc_tinh_lp_action').read()[0]
         return action
 
+    def action_mien_giam(self):
+        action = self.env.ref('bsd_tai_chinh.bsd_mien_giam_action_popup').read()[0]
+        action['context'] = {'default_bsd_hd_ban_id': self.id,
+                             'default_bsd_ten': 'Miễn giảm hợp đồng ' + self.bsd_ma_hd_ban,
+                             'default_bsd_du_an_id': self.bsd_du_an_id.id,
+                             'default_bsd_unit_id': self.bsd_unit_id.id,
+                             'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id}
+        return action
