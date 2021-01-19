@@ -110,7 +110,7 @@ class ProductTemplate(models.Model):
     bsd_dt_sh = fields.Float(string="Diện tích sổ hồng", help="Diện tích sổ hồng",
                              readonly=True,
                              states={'chuan_bi': [('readonly', False)]})
-    bsd_don_gia = fields.Monetary(string="Đơn giá bán/m2", help="Đơn giá bán trước thuế theo m2",
+    bsd_don_gia = fields.Monetary(string="Đơn giá bán/ m2", help="Đơn giá bán trước thuế theo m2",
                                   readonly=True,
                                   states={'chuan_bi': [('readonly', False)]})
     list_price = fields.Monetary(string="Giá bán", help="Giá bán trước thuế của sản phẩm",

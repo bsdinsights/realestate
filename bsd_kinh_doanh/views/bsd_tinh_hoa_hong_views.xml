@@ -60,6 +60,7 @@
                 <field name="bsd_du_an_id"/>
                 <field name="bsd_toa_nha_id"/>
                 <field name="bsd_cach_tinh"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>

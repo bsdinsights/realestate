@@ -8,10 +8,10 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="bsd_nvkd_id"/>
+                            <field name="bsd_nvkd_id" options="{'no_create':true}"/>
                         </group>
                     </group>
-                    <field name="bsd_khach_hang_ids" nolabel="1">
+                    <field name="bsd_khach_hang_ids" nolabel="1" options="{'no_create':true}">
                         <tree>
                             <field name="bsd_ma_kh"/>
                             <field name="display_name"/>
@@ -45,10 +45,10 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="bsd_nvkd_id"/>
+                            <field name="bsd_nvkd_id" options="{'no_create':true}"/>
                         </group>
                     </group>
-                    <field name="bsd_khach_hang_ids" nolabel="1">
+                    <field name="bsd_khach_hang_ids" options="{'no_create':true}" nolabel="1">
                         <tree>
                             <field name="bsd_ma_kh"/>
                             <field name="display_name"/>

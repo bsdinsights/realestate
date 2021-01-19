@@ -216,15 +216,15 @@ class ResPartner(models.Model):
     @api.model
     def create(self, vals):
         sequence = False
-        if vals.get('bsd_ma_kh', '/') == '/' and not vals.get('is_company'):
-            _logger.debug("Chạy tới cái này")
+        if vals.get('bsd_ma_kh', '/') == '/' and vals.get('company_type') == 'person':
             sequence = self.env['bsd.ma_bo_cn_chung'].search([('bsd_loai_cn', '=', 'bsd.kh_cn'),
-                                                        ('state', '=', 'active')], limit=1).bsd_ma_tt_id
-            _logger.debug(sequence)
-            vals['bsd_ma_kh'] = self.env['ir.sequence'].next_by_code('bsd.kh_cn') or '/'
-        if vals.get('bsd_ma_kh', '/') == '/' and vals.get('is_company'):
+                                                              ('state', '=', 'active')], limit=1).bsd_ma_tt_id
+        if vals.get('bsd_ma_kh', '/') == '/' and vals.get('company_type') == 'company':
             sequence = self.env['bsd.ma_bo_cn_chung'].search([('bsd_loai_cn', '=', 'bsd.kh_dn'),
                                                               ('state', '=', 'active')], limit=1).bsd_ma_tt_id
+        _logger.debug("Tạo khách hàng")
+        _logger.debug(vals)
+        _logger.debug(sequence)
         if not sequence:
             raise UserError(_('Danh mục mã dùng chung chưa khai báo mã khách hàng.'))
         if sequence:

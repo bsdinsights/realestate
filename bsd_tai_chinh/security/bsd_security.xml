@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-
+    <record id="share_nhan_vien_rule" model="ir.rule">
+        <field name="name">Thông tin người dùng hệ thống</field>
+        <field name="model_id" ref="bsd_kinh_doanh.model_res_partner"/>
+        <field name="domain_force">[('bsd_la_kh','=',False)]</field>
+        <field name="groups" eval="[(6,0,
+            [ref('bsd_kinh_doanh.group_user'),
+             ref('bsd_du_an.group_user'),
+             ref('bsd_tai_chinh.group_user'),
+             ref('bsd_dich_vu.group_user'),
+             ref('bsd_danh_muc.group_user'),]
+        )]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="0"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
 </odoo>
