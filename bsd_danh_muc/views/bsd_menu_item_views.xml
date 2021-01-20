@@ -81,6 +81,11 @@
               sequence="15"
               action="bsd_ma_bo_cn_chung_action"
               parent="bsd_main_danh_muc_root"/>
+    <menuitem id="bsd_tien_ich_menu_action_2"
+              name="Tiện ích"
+              sequence="105"
+              action="bsd_du_an.bsd_tien_ich_action"
+              parent="bsd_main_danh_muc_root"/>
 
 
 <!-- Không sử dụng ở bản demo -->

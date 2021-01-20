@@ -46,7 +46,7 @@ class BsdDatCoc(models.Model):
                 'state': 'da_tc',
             })
         if self.bsd_unit_id.state == 'dat_coc':
-            self.bsd_unit_id.write({
+            self.bsd_unit_id.sudo().write({
                 'state': 'da_tc'
             })
         # Đánh dấu hoàn thành cho giữ chỗ chuyển sang đặt cọc

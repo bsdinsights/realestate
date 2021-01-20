@@ -2,7 +2,7 @@
 
 from odoo import api, models, fields
 from odoo.exceptions import UserError
-from odoo.tools.float_utils import float_round,float_repr
+from odoo.tools.float_utils import float_round, float_repr
 import logging
 import datetime
 _logger = logging.getLogger(__name__)
@@ -33,14 +33,10 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
             item_ttn = dot_mb.bsd_ck_ttn_id.bsd_ct_ids.\
                 filtered(lambda c: c.bsd_tu_ngay <= ngay_ut <= c.bsd_den_ngay)
             ck_ttn = item_ttn[0].bsd_chiet_khau_id if item_ttn else False
-        # lấy các đợt thanh toán trước hạn
+        # lấy các đợt thanh toán trước hạn chưa thanh toán đủ
         dot_tt = hd_ban.bsd_ltt_ids\
-            .filtered(lambda t: t.bsd_ngay_hh_tt and ngay_ut < t.bsd_ngay_hh_tt)\
+            .filtered(lambda t: t.bsd_ngay_hh_tt and ngay_ut < t.bsd_ngay_hh_tt and t.bsd_thanh_toan != 'da_tt')\
             .sorted('bsd_stt')
-
-        _logger.debug("chiết khấu")
-        _logger.debug(ck_ttth)
-        _logger.debug(ck_ttn)
 
         doc['khach_hang'] = {
             'name': khach_hang.name,
@@ -74,61 +70,32 @@ class ReportBsdUocTinhCKTT(models.AbstractModel):
             pass
         else:
             so_tien_ut_can_tru = data['bsd_tien_ut']
-            if data['bsd_tien_ut'] < dot_tt[0].bsd_tien_phai_tt:
-                bsd_tien_tt = data['bsd_tien_ut']
-                bsd_so_ngay_th = (dot_tt[0].bsd_ngay_hh_tt - ngay_ut).days
-                bsd_tl_ck_dot = ck_ttth.bsd_tl_ck * bsd_so_ngay_th
-                bsd_tien_ck = bsd_tien_tt * bsd_tl_ck_dot / 100
+            for dot in dot_tt:
+                # Kiểm tra số tiền có thể thanh toán
+                if so_tien_ut_can_tru > dot.bsd_tien_phai_tt:
+                    bsd_tien_tt_1 = dot.bsd_tien_phai_tt
+                    so_tien_ut_can_tru -= dot.bsd_tien_phai_tt
+                else:
+                    bsd_tien_tt_1 = so_tien_ut_can_tru
+                    so_tien_ut_can_tru = 0
+                bsd_so_ngay_th = (dot.bsd_ngay_hh_tt - ngay_ut).days
+                bsd_tl_ck_dot = ck_ttth.bsd_tl_ck / ck_ttth.bsd_so_ngay_nam * bsd_so_ngay_th
+                bsd_tien_ck = float_round(bsd_tien_tt_1 * bsd_tl_ck_dot / 100, 0)
                 tong_tien_ck_ttth += bsd_tien_ck
                 doc['ck_ttth'].append({
-                    'bsd_stt': dot_tt[0].bsd_stt,
-                    'bsd_ten_dtt': dot_tt[0].bsd_ten_dtt,
-                    'bsd_ngay_hh_tt': dot_tt[0].bsd_ngay_hh_tt.strftime("%d/%m/%Y"),
+                    'bsd_stt': dot.bsd_stt,
+                    'bsd_ten_dtt': dot.bsd_ten_dtt,
+                    'bsd_ngay_hh_tt': dot.bsd_ngay_hh_tt.strftime("%d/%m/%Y"),
                     'bsd_ngay_tt': ngay_ut.strftime("%d/%m/%Y"),
                     'bsd_so_ngay_th': bsd_so_ngay_th,
-                    'bsd_tien_dot_tt': dot_tt[0].bsd_tien_dot_tt,
+                    'bsd_tien_dot_tt': dot.bsd_tien_dot_tt,
                     'bsd_tl_ck_dot': bsd_tl_ck_dot,
                     'bsd_tien_ck': bsd_tien_ck,
-                    'bsd_tien_tt': bsd_tien_tt,
+                    'bsd_tien_tt': bsd_tien_tt_1,
                 })
-            else:
-                for dot in dot_tt:
-                    so_tien_ut_can_tru -= dot.bsd_tien_phai_tt
-                    if so_tien_ut_can_tru >= 0:
-                        bsd_tien_tt = dot.bsd_tien_phai_tt
-                    else:
-                        bsd_tien_tt = abs(so_tien_ut_can_tru)
-                        bsd_so_ngay_th = (dot.bsd_ngay_hh_tt - ngay_ut).days
-                        bsd_tl_ck_dot = ck_ttth.bsd_tl_ck * bsd_so_ngay_th
-                        bsd_tien_ck = bsd_tien_tt * bsd_tl_ck_dot / 100
-                        tong_tien_ck_ttth += bsd_tien_ck
-                        doc['ck_ttth'].append({
-                            'bsd_stt': dot.bsd_stt,
-                            'bsd_ten_dtt': dot.bsd_ten_dtt,
-                            'bsd_ngay_hh_tt': dot.bsd_ngay_hh_tt.strftime("%d/%m/%Y"),
-                            'bsd_ngay_tt': ngay_ut.strftime("%d/%m/%Y"),
-                            'bsd_so_ngay_th': bsd_so_ngay_th,
-                            'bsd_tien_dot_tt': dot.bsd_tien_dot_tt,
-                            'bsd_tl_ck_dot': bsd_tl_ck_dot,
-                            'bsd_tien_ck': bsd_tien_ck,
-                            'bsd_tien_tt': bsd_tien_tt,
-                        })
-                        break
-                    bsd_so_ngay_th = (dot.bsd_ngay_hh_tt - ngay_ut).days
-                    bsd_tl_ck_dot = ck_ttth.bsd_tl_ck * bsd_so_ngay_th
-                    bsd_tien_ck = bsd_tien_tt * bsd_tl_ck_dot / 100
-                    tong_tien_ck_ttth += bsd_tien_ck
-                    doc['ck_ttth'].append({
-                        'bsd_stt': dot.bsd_stt,
-                        'bsd_ten_dtt': dot.bsd_ten_dtt,
-                        'bsd_ngay_hh_tt': dot.bsd_ngay_hh_tt.strftime("%d/%m/%Y"),
-                        'bsd_ngay_tt': ngay_ut.strftime("%d/%m/%Y"),
-                        'bsd_so_ngay_th': bsd_so_ngay_th,
-                        'bsd_tien_dot_tt': dot.bsd_tien_dot_tt,
-                        'bsd_tl_ck_dot': bsd_tl_ck_dot,
-                        'bsd_tien_ck': bsd_tien_ck,
-                        'bsd_tien_tt': bsd_tien_tt,
-                    })
+                # Kiểm tra để break
+                if so_tien_ut_can_tru == 0:
+                    break
 
         doc['doc_ids'] = data['ids']
         doc['doc_model'] = data['model']

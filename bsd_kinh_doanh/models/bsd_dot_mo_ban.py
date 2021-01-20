@@ -365,12 +365,12 @@ class BsdDotMoBan(models.Model):
             })
             # KD.04.06 Cập nhật tình trạng Sản phẩm phát hành
             if unit.state == 'chuan_bi':
-                unit.write({
+                unit.sudo().write({
                     'bsd_dot_mb_id': self.id,
                     'state': 'san_sang',
                 })
             else:
-                unit.write({
+                unit.sudo().write({
                     'bsd_dot_mb_id': self.id,
                 })
         # Cập lại lại trạng thái đợt mở bán ngày phát hình và người phát hành

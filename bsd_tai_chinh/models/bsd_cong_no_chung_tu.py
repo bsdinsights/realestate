@@ -82,7 +82,7 @@ class BsdCongNoCT(models.Model):
                     # Chuyển trạng thái của giữ chỗ
                     self.bsd_giu_cho_id.tinh_lai_hbg()
                     if self.bsd_giu_cho_id.bsd_unit_id.state == 'dat_cho':
-                        self.bsd_giu_cho_id.bsd_unit_id.write({
+                        self.bsd_giu_cho_id.bsd_unit_id.sudo().write({
                             'state': 'giu_cho',
                         })
 

@@ -36,7 +36,7 @@ class ResPartner(models.Model):
                                     ('nc', 'Người nước ngoài')], string="Quốc tịch",
                                    help="Khách hàng là công dân Việt Nam hay Người nước ngoài",
                                    required=True, default='vn')
-    bsd_nguoi_bh = fields.Boolean(string="Có người bh", help="Khách hàng có người bảo hộ")
+    bsd_nguoi_bh = fields.Boolean(string="Có người bảo hộ", help="Khách hàng có người bảo hộ")
     bsd_cmnd = fields.Char(string="CMND/ CCCD", help="Số CMND/ CCCD")
     bsd_ngay_cap_cmnd = fields.Date(string="Ngày cấp CMND", help="Ngày cấp CMND/ CCCD")
     bsd_noi_cap_cmnd = fields.Char(string="Nơi cấp CMND", help="Nơi cấp CMND")

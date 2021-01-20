@@ -25,7 +25,7 @@ class BsdKyBG(models.TransientModel):
             'bsd_ngay_ky_bg': self.bsd_ngay_ky_bg,
             'state': 'da_ky'
         })
-        self.bsd_bao_gia_id.bsd_unit_id.write({
+        self.bsd_bao_gia_id.bsd_unit_id.sudo().write({
             'state': 'dat_coc'
         })
 
@@ -84,12 +84,13 @@ class BsdBaoGiaChonCK(models.TransientModel):
             })
         return res
 
-    @api.onchange('bsd_bao_gia_id', 'bsd_dot_mb_id', 'bsd_cs_tt_id')
+    @api.onchange('bsd_dot_mb_id', 'bsd_cs_tt_id')
     def _onchange_ck(self):
         res = {}
         list_ck_chung = self.bsd_dot_mb_id.bsd_ck_ch_id.bsd_ct_ids.mapped('bsd_chiet_khau_id').ids or []
         list_ck_nb = self.bsd_dot_mb_id.bsd_ck_nb_id.bsd_ct_ids.mapped('bsd_chiet_khau_id').ids or []
-        list_ck_pttt = self.bsd_dot_mb_id.bsd_ck_cstt_id.bsd_ct_ids.mapped('bsd_chiet_khau_id').ids or []
+        list_ck_pttt = self.bsd_dot_mb_id.bsd_ck_cstt_id.bsd_ct_ids.mapped('bsd_chiet_khau_id')\
+                           .filtered(lambda x: x.bsd_cs_tt_id == self.bsd_cs_tt_id).ids or []
         res.update({
             'domain': {
                 'bsd_ck_ch_ids': [('id', 'in', list_ck_chung)],

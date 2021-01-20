@@ -545,6 +545,10 @@ class BsdHopDongMuaBan(models.Model):
         self.bsd_dat_coc_id.write({
             'state': 'hoan_thanh',
         })
+        # Cập nhật trạng thái sản phẩm
+        self.bsd_unit_id.sudo().write({
+            'state': 'ht_dc',
+        })
         # Ghi nhận giao dịch chiết khấu
         self.tao_gd_chiet_khau()
         # Cập nhật tiền đặt cọc vào trong đợt 1 của hợp đồng

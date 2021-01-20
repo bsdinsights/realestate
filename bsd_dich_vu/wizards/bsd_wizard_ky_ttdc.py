@@ -22,4 +22,7 @@ class BsdKyttdc(models.TransientModel):
             'bsd_ngay_ky_ttdc': self.bsd_ngay_ky_ttdc,
             'state': 'da_ky_ttdc'
         })
+        self.bsd_hd_ban_id.bsd_unit_id.sudo().write({
+            'state': 'ky_tt_coc',
+        })
 

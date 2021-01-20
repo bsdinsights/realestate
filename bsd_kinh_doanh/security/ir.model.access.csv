@@ -1,7 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_bsd_dot_mb,Đợt mở bán,model_bsd_dot_mb,bsd_kinh_doanh.group_user,1,1,1,0
 access_bsd_dot_mb_sgd,Sàn giao dịch cho đợt mở bán,model_bsd_dot_mb_sgd,bsd_kinh_doanh.group_user,1,1,1,0
-access_bsd_dot_mb_cb,Unit chuẩn bị cho đợt mở bán,model_bsd_dot_mb_cb,bsd_kinh_doanh.group_user,1,1,1,0
+access_bsd_dot_mb_cb,Unit chuẩn bị cho đợt mở bán,model_bsd_dot_mb_cb,bsd_kinh_doanh.group_user,1,1,1,1
 access_bsd_dot_mb_unit,Unit phát hành cho đợt mở bán,model_bsd_dot_mb_unit,bsd_kinh_doanh.group_user,1,1,1,0
 
 access_bsd_gc_tc, Phiếu giữ chỗ thiện chí,model_bsd_gc_tc,bsd_kinh_doanh.group_user,1,1,1,0

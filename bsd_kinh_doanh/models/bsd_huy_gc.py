@@ -133,20 +133,20 @@ class BsdHuyGC(models.Model):
                                                           ('id', '!=', self.id)])
                 if not self.bsd_unit_id.bsd_dot_mb_id:
                     if not giu_cho:
-                        self.bsd_unit_id.write({
+                        self.bsd_unit_id.sudo().write({
                             'state': 'chuan_bi',
                         })
                     elif not giu_cho.filtered(lambda g: g.state in ['dang_cho', 'giu_cho']):
-                        self.bsd_unit_id.write({
+                        self.bsd_unit_id.sudo().write({
                             'state': 'dat_cho'
                         })
                 else:
                     if not giu_cho:
-                        self.bsd_unit_id.write({
+                        self.bsd_unit_id.sudo().write({
                             'state': 'san_sang',
                         })
                     elif not giu_cho.filtered(lambda g: g.state in ['dang_cho', 'giu_cho']):
-                        self.bsd_unit_id.write({
+                        self.bsd_unit_id.sudo().write({
                             'state': 'dat_cho'
                         })
         if self.bsd_loai_gc == 'gc_tc':

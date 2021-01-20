@@ -89,15 +89,15 @@ class BsdBaoGiaLTT(models.Model):
         if ck_ttth.bsd_chiet_khau_id.bsd_cach_tinh == 'tien':
             tien_ck = so_ngay_th * ck_ttth.bsd_chiet_khau_id.bsd_tien_ck
         else:
-            tien_ck = float_round(((ck_ttth.bsd_chiet_khau_id.bsd_tl_ck/100/ck_ttth.bsd_chiet_khau_id.bsd_so_ngay_nam) * so_ngay_th) * tien_tt, 0)
+            tien_ck = float_round(((ck_ttth.bsd_chiet_khau_id.bsd_tl_ck /100/ck_ttth.bsd_chiet_khau_id.bsd_so_ngay_nam) * so_ngay_th) * tien_tt, 0)
         # Tạo Giao dich chiết khấu
         self.env['bsd.ps_gd_ck'].create({
-            'bsd_ma_ck': ck_ttth.bsd_chiet_khau_id.bsd_ma_ck,
-            'bsd_ten_ck': ck_ttth.bsd_chiet_khau_id.bsd_ten_ck,
-            'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
+            'bsd_ma': ck_ttth.bsd_chiet_khau_id.bsd_ma_ck,
+            'bsd_ten': ck_ttth.bsd_chiet_khau_id.bsd_ten_ck,
             'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
+            'bsd_du_an_id': self.bsd_hd_ban_id.bsd_du_an_id.id,
             'bsd_unit_id': self.bsd_hd_ban_id.bsd_unit_id.id,
-            'bsd_loai_ck': 'ttth',
+            'bsd_loai_ps': 'ttth',
             'bsd_ltt_id': self.id,
             'bsd_sn_th': so_ngay_th,
             'bsd_tien_dot_tt': tien_tt,
@@ -135,12 +135,13 @@ class BsdBaoGiaLTT(models.Model):
             tien_ck = ck_ttn.bsd_chiet_khau_id.bsd_tl_ck / 100 * self.bsd_hd_ban_id.bsd_gia_truoc_thue
         # Tạo Giao dich chiết khấu
         self.env['bsd.ps_gd_ck'].create({
-            'bsd_ma_ck': ck_ttn.bsd_chiet_khau_id.bsd_ma_ck,
-            'bsd_ten_ck': ck_ttn.bsd_chiet_khau_id.bsd_ten_ck,
+            'bsd_ma': ck_ttn.bsd_chiet_khau_id.bsd_ma_ck,
+            'bsd_ten': ck_ttn.bsd_chiet_khau_id.bsd_ten_ck,
             'bsd_dat_coc_id': self.bsd_dat_coc_id.id,
             'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
+            'bsd_du_an_id': self.bsd_hd_ban_id.bsd_du_an_id.id,
             'bsd_unit_id': self.bsd_hd_ban_id.bsd_unit_id.id,
-            'bsd_loai_ck': 'ttn',
+            'bsd_loai_ps': 'ttn',
             'bsd_tl_ck': ck_ttn.bsd_chiet_khau_id.bsd_tl_ck,
             'bsd_tien': ck_ttn.bsd_chiet_khau_id.bsd_tien_ck,
             'bsd_tien_ck': tien_ck,

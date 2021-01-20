@@ -48,7 +48,9 @@
                         </group>
                         <field name="bsd_ct_ids" nolabel="1">
                             <tree editable="bottom">
-                                <field name="bsd_chiet_khau_id" options="{'no_create':true}"/>
+                                <field name="bsd_chiet_khau_id"
+                                       domain="[('state', '=', 'duyet'), ('bsd_loai_ck', '=', 'ltt'), ('bsd_du_an_id', '=', parent.bsd_du_an_id)]"
+                                       options="{'no_create':true}"/>
                                 <field name="bsd_ma_ck"/>
                                 <field name="bsd_tu_ngay"/>
                                 <field name="bsd_den_ngay"/>
@@ -104,11 +106,11 @@
         </field>
     </record>
     <record model="ir.actions.act_window" id="bsd_chiet_khau_cstt_action">
-        <field name="name">Chiết khấu theo chính sách thanh toán</field>
+        <field name="name">Chiết khấu theo phương thức thanh toán</field>
         <field name="res_model">bsd.ck_cstt</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="xml">
-            <p>Tạo Chiết khấu theo chính sách thanh toán</p>
+            <p>Tạo Chiết khấu theo phương thức thanh toán</p>
         </field>
     </record>
 </odoo>

@@ -18,8 +18,8 @@ class BsdThueSuat(models.Model):
     bsd_ten_ts = fields.Char(string="Tên", help="Tên", required=True)
     bsd_thue_suat = fields.Float(string="Thuế suất", required=True, help="Thuế suất áp dụng")
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải")
-    state = fields.Selection([('active', 'Đang sử dụng'),
-                              ('inactive', 'Không sử dụng')],
+    state = fields.Selection([('active', 'Áp dụng'),
+                              ('inactive', 'Ngưng áp dụng')],
                              string="Trạng thái", default='active', required=True, tracking=1, help="Trạng thái")
 
     @api.constrains('bsd_thue_suat')

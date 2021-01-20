@@ -120,6 +120,10 @@ class BsdHdBan(models.Model):
             self.write({
                 'state': 'tt_dot1'
             })
+            # Cập nhật trạng thái sản phẩm
+            self.bsd_unit_id.sudo().write({
+                'state': 'tt_dot_1'
+            })
 
     # DV.01.16 - Cập nhật trạng thái Đủ điều kiện
     def action_du_dk(self):
@@ -128,6 +132,10 @@ class BsdHdBan(models.Model):
             return
         if self.state in ['tt_dot1', 'da_ky_ttdc']:
             self.write({
+                'state': 'du_dk'
+            })
+            # Cập nhật trạng thái sản phẩm
+            self.bsd_unit_id.sudo().write({
                 'state': 'du_dk'
             })
 

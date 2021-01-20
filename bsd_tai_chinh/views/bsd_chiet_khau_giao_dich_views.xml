@@ -18,7 +18,7 @@
                         <group>
                             <field name="bsd_ma"/>
                             <field name="bsd_ten"/>
-                            <field name="bsd_dat_coc_id"/>
+                            <field name="bsd_du_an_id"/>
                             <field name="bsd_unit_id"/>
                             <field name="bsd_hd_ban_id"/>
                             <field name="bsd_pl_cktm_id"/>

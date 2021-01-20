@@ -73,7 +73,7 @@ class BsdBaoGia(models.Model):
                              readonly=True)
 
     def _get_thue(self):
-        return self.env['bsd.thue_suat'].search([('bsd_ma_ts', '=', 'VAT10')], limit=1)
+        return self.env['bsd.thue_suat'].search([('state', '=', 'active')], limit=1)
 
     bsd_thue_id = fields.Many2one('bsd.thue_suat', string="Thuế", help="Thuế", required=True,
                                   readonly=True, default=_get_thue,
