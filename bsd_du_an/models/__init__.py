@@ -8,3 +8,4 @@ from . import bsd_loai_san_pham
 from . import bsd_thong_tin_ky_thuat
 from . import res_bank
 from . import bsd_hs_gt
+from . import res_users

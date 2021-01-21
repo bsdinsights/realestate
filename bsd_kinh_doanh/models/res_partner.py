@@ -296,10 +296,3 @@ class BsdLoaikhcn(models.Model):
     _rec_name = 'bsd_ten'
 
     bsd_ten = fields.Char(string="Loại khách hàng", required=True)
-
-
-class ResUsers(models.Model):
-    _inherit = 'res.users'
-
-    bsd_kh_ids = fields.Many2many('res.partner', string="Khách hàng",
-                                  relation="bsd_kh_rel", column1="nvkd_id", column2="kh_id")

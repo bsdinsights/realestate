@@ -880,7 +880,7 @@
             <field name="name">bsd.hd_ban.pivot</field>
             <field name="model">bsd.hd_ban</field>
             <field name="arch" type="xml">
-                <pivot default_order="bsd_stt_state,id asc">
+                <pivot>
                     <field name="bsd_nvbh_id" type="row"/>
                 </pivot>
             </field>
