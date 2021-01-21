@@ -1,316 +1,313 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_res_partner_cn_form">
-        <field name="name">bsd.res.partner.cn.form</field>
-        <field name="model">res.partner</field>
-        <field name="arch" type="xml">
-            <form duplicate="false">
-                <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button name="action_view_giu_cho" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_sl_giu_cho', '=', 0)]}">
-                            <field name="bsd_sl_giu_cho" widget="statinfo" string="Giữ chỗ"/>
-                        </button>
-                    </div>
-                    <field name="image_1920" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;: &quot;image_128&quot;}"/>
-                    <div class="oe_title">
-                        <div class="o_row no-gutters d-flex">
-                            <h3>
-                                <field name="display_name" readonly="1"/>
-                            </h3>
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_res_partner_cn_form">
+            <field name="name">bsd.res.partner.cn.form</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <form duplicate="false">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_giu_cho" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_sl_giu_cho', '=', 0)]}">
+                                <field name="bsd_sl_giu_cho" widget="statinfo" string="Giữ chỗ"/>
+                            </button>
                         </div>
-                        <div class="o_row no-gutters d-flex">
-                            <label for="bsd_ma_kh"/>:
-                            <field name="bsd_ma_kh"/>
-                            <strong class="ml-4">Sở hữu: </strong>
-                            <field name="user_id"/>
-                        </div>
-                    </div>
-                    <notebook>
-                        <page string="THÔNG TIN CÁ NHÂN">
-                            <group>
-                                <group>
-                                    <field name="bsd_ho_tl"/>
-                                    <field name="name" required="1"/>
-                                    <field name="bsd_ngay_sinh"/>
-                                    <field name="bsd_gioi_tinh"/>
-                                    <field name="phone"/>
-                                    <field name="mobile" required="1"/>
-                                    <field name="email" string=" Email "/>
-                                    <field name="bsd_loai_kh"/>
-                                    <field name="bsd_nguoi_bh"/>
-                                    <field name="bsd_nguoi_bh_id"
-                                           attrs="{'invisible':[('bsd_nguoi_bh', '=', False)]}"
-                                           domain="[('bsd_nguoi_bh', '=', False)]"/>
-                                    <field name="is_company" invisible="1"/>
-                                    <field name="bsd_la_kh" invisible="1"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_loai_kh_cn_ids"
-                                           widget="many2many_tags"
-                                           options="{'no_create': true}"
-                                           required="1"
-                                    />
-                                    <field name="function"/>
-                                    <field name="bsd_cmnd"/>
-                                    <field name="bsd_ngay_cap_cmnd"/>
-                                    <field name="bsd_noi_cap_cmnd"/>
-                                    <field name="bsd_ho_chieu"/>
-                                    <field name="bsd_ngay_cap_hc"/>
-                                    <field name="bsd_noi_cap_hc"/>
-                                    <field name="bsd_mst"/>
-                                </group>
-                            </group>
-                            <group string="ĐỊA CHỈ">
-                                <group>
-                                    <field name="bsd_dia_chi_lh"/>
-                                    <field name="bsd_quoc_gia_lh_id"
-                                           required="1"
-                                           options="{'no_create':true}"/>
-                                    <field name="bsd_tinh_lh_id"
-                                           domain="[('country_id', 'in',[bsd_quoc_gia_lh_id])]"
-                                           options="{'no_create':true}"/>
-                                    <field name="bsd_quan_lh_id"
-                                           domain="[('bsd_tinh_thanh_id', 'in',[bsd_tinh_lh_id])]"
-                                           options="{'no_create':true}"/>
-                                    <field name="bsd_phuong_lh_id"
-                                           domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_lh_id])]"
-                                           options="{'no_create':true}"/>
-                                    <field name="bsd_so_nha_lh"
-                                           required="1"/>
-                                    <field name="bsd_cung_dc"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_dia_chi_tt"/>
-                                    <field name="bsd_quoc_gia_tt_id"
-                                           attrs="{'readonly':[('bsd_cung_dc','=',True)]}"
-                                           force_save="1"
-                                           options="{'no_create':true}"/>
-                                    <field name="bsd_tinh_tt_id"
-                                           attrs="{'readonly':[('bsd_cung_dc','=',True)]}"
-                                           force_save="1"
-                                           domain="[('country_id', 'in',[bsd_quoc_gia_tt_id])]"
-                                           options="{'no_create':true}" />
-                                    <field name="bsd_quan_tt_id"
-                                           attrs="{'readonly':[('bsd_cung_dc','=',True)]}"
-                                           force_save="1"
-                                           domain="[('bsd_tinh_thanh_id', 'in',[bsd_tinh_tt_id])]"
-                                           options="{'no_create':true}"/>
-                                    <field name="bsd_phuong_tt_id"
-                                           attrs="{'readonly':[('bsd_cung_dc','=',True)]}"
-                                           force_save="1"
-                                           domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_tt_id])]"
-                                           options="{'no_create':true}"/>
-                                    <field name="bsd_so_nha_tt"
-                                           attrs="{'readonly':[('bsd_cung_dc','=',True)]}"
-                                           force_save="1"/>
-                                </group>
-                            </group>
-                        </page>
-                        <page string="Tài khoản">
-                            <field name="bank_ids" context="{'default_partner_id': id}">
-                                    <tree>
-                                        <field name="acc_number"/>
-                                        <field name="partner_id"/>
-                                        <field name="bank_id"/>
-                                        <field name="bsd_chi_nhanh"/>
-                                        <field name="bsd_tu_ngay"/>
-                                        <field name="bsd_den_ngay"/>
-                                        <field name="bsd_tk_chinh"/>
-                                    </tree>
-                                    <form duplicate="false">
-                                        <sheet>
-                                            <group>
-                                                <group>
-                                                    <field name="acc_number"/>
-                                                    <field name="partner_id"/>
-                                                    <field name="bank_id"/>
-                                                    <field name="bsd_chi_nhanh"/>
-                                                </group>
-                                                <group>
-                                                    <field name="bsd_tk_chinh"/>
-                                                    <field name="acc_holder_name"/>
-                                                    <field name="bsd_tu_ngay"/>
-                                                    <field name="bsd_den_ngay"/>
-                                                </group>
-                                            </group>
-                                        </sheet>
-                                    </form>
-                            </field>
-                        </page>
-                        <page string="Giữ chỗ thiện chí">
-                            <field name="bsd_gc_tc_ids">
-                                <tree create="false">
-                                    <field name="bsd_ma_gctc"/>
-                                    <field name="bsd_ngay_gctc"/>
-                                    <field name="bsd_du_an_id"/>
-                                    <field name="bsd_stt"/>
-                                    <field name="bsd_tien_gc"/>
-                                    <field name="bsd_thanh_toan"/>
-                                    <field name="bsd_ngay_ut"/>
-                                    <field name="state"/>
-                                    <field name="bsd_het_han"/>
-                                    <field name="currency_id" invisible="1"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="Giữ chỗ">
-                            <field name="bsd_giu_cho_ids">
-                                <tree create="false">
-                                    <field name="bsd_ma_gc"/>
-                                    <field name="bsd_du_an_id"/>
-                                    <field name="bsd_unit_id"/>
-                                    <field name="bsd_ngay_hh_gc"/>
-                                    <field name="bsd_stt_bg"/>
-                                    <field name="bsd_ngay_hh_bg"/>
-                                    <field name="state"/>
-                                    <field name="currency_id" invisible="1"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="Bảng tính giá">
-                            <field name="bsd_bao_gia_ids">
-                                <tree create="false" duplicate="false" delete="false">
-                                    <field name="bsd_ma_bao_gia"/>
-                                    <field name="bsd_giu_cho_id"/>
-                                    <field name="bsd_du_an_id"/>
-                                    <field name="bsd_unit_id"/>
-                                    <field name="bsd_cs_tt_id"/>
-                                    <field name="bsd_tong_gia"/>
-                                    <field name="state"/>
-                                    <field name="currency_id" invisible="1"/>
-                                    <field name="company_id" invisible="1"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="Đặt cọc">
-                            <field name="bsd_dat_coc_ids">
-                                <tree create="false" duplicate="false" delete="false">
-                                    <field name="bsd_ma_dat_coc"/>
-                                    <field name="bsd_du_an_id"/>
-                                    <field name="bsd_unit_id"/>
-                                    <field name="bsd_ngay_ky_dc"/>
-                                    <field name="bsd_thanh_toan"/>
-                                    <field name="state"/>
-                                    <field name="currency_id" invisible="1"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="bsd_res_partner_cn_tree">
-        <field name="name">bsd.res.partner.cn.tree</field>
-        <field name="model">res.partner</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="bsd_ma_kh"/>
-                <field name="display_name"/>
-                <field name="bsd_gioi_tinh"/>
-                <field name="bsd_cmnd"/>
-                <field name="bsd_ho_chieu"/>
-                <field name="mobile"/>
-            </tree>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="bsd_res_partner_cn_kanban">
-        <field name="name">bsd.res.partner.cn.kanban</field>
-        <field name="model">res.partner</field>
-        <field name="arch" type="xml">
-                <kanban class="o_res_partner_kanban">
-                    <field name="id"/>
-                    <field name="color"/>
-                    <field name="display_name"/>
-                    <field name="email"/>
-                    <field name="is_company"/>
-                    <field name="phone"/>
-                    <field name="mobile"/>
-                    <field name="image_128"/>
-                    <field name="parent_id"/>
-                    <field name="type"/>
-                    <field name="display_name"/>
-                    <field name="bsd_dia_chi_lh"/>
-                    <field name="bsd_sl_giu_cho"/>
-                    <templates>
-                        <t t-name="kanban-box">
-                            <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
-                                <t t-if="!record.is_company.raw_value">
-                                    <t t-if="record.type.raw_value === 'delivery'" t-set="placeholder" t-value="'/base/static/img/truck.png'"/>
-                                    <t t-elif="record.type.raw_value === 'invoice'" t-set="placeholder" t-value="'/base/static/img/money.png'"/>
-                                    <t t-else="" t-set="placeholder" t-value="'/base/static/img/avatar_grey.png'"/>
-                                    <div class="o_kanban_image_fill_left d-none d-md-block" t-attf-style="background-image:url('#{kanban_image('res.partner', 'image_128', record.id.raw_value,  placeholder)}')">
-                                        <img class="o_kanban_image_inner_pic" t-if="record.parent_id.raw_value" t-att-alt="record.parent_id.value" t-att-src="kanban_image('res.partner', 'image_128', record.parent_id.raw_value)"/>
-                                    </div>
-                                    <div class="o_kanban_image rounded-circle d-md-none" t-attf-style="background-image:url('#{kanban_image('res.partner', 'image_128', record.id.raw_value,  placeholder)}')">
-                                        <img class="o_kanban_image_inner_pic" t-if="record.parent_id.raw_value" t-att-alt="record.parent_id.value" t-att-src="kanban_image('res.partner', 'image_128', record.parent_id.raw_value)"/>
-                                    </div>
-                                </t>
-                                <t t-else="">
-                                    <t t-set="placeholder" t-value="'/base/static/img/company_image.png'"/>
-                                    <div class="o_kanban_image_fill_left o_kanban_image_full" t-attf-style="background-image: url(#{kanban_image('res.partner', 'image_128', record.id.raw_value, placeholder)})" role="img"/>
-                                </t>
-                                <div class="oe_kanban_details">
-                                    <strong class="o_kanban_record_title oe_partner_heading"><field name="display_name"/></strong>
-                                    <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
-                                    <div><span>Mã:</span><field name="bsd_ma_kh"/></div>
-                                    <ul>
-                                        <li t-if="record.mobile.raw_value" class="o_text_overflow"><field name="mobile"/></li>
-                                        <li t-if="record.email.raw_value" class="o_text_overflow"><field name="email"/></li>
-                                        <li t-if="record.bsd_dia_chi_lh.raw_value" class="o_text_overflow"><field name="bsd_dia_chi_lh"/></li>
-                                        <li name="tien_ich">
-                                            <span class="badge badge-pill" modifiers="{}">
-                                                Giữ chỗ
-                                                <field name="bsd_sl_giu_cho"/>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
+                        <field name="image_1920" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;: &quot;image_128&quot;}"/>
+                        <div class="oe_title">
+                            <div class="o_row no-gutters d-flex">
+                                <h3>
+                                    <field name="display_name" readonly="1"/>
+                                </h3>
                             </div>
-                        </t>
-                    </templates>
-                </kanban>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="bsd_res_partner_cn_filter">
-        <field name="name">bsd.res.partner.cn.filter</field>
-        <field name="model">res.partner</field>
-        <field name="arch" type="xml">
-            <search>
-                <field name="bsd_ma_kh"/>
-                <field name="display_name" string="Tên khách hàng"/>
-                <field name="bsd_cmnd"/>
-                <field name="bsd_ho_chieu"/>
-                <field name="mobile"/>
-                <field name="email"/>
-            </search>
-        </field>
-    </record>
-
-    <record model="ir.actions.act_window" id="bsd_res_partner_cn_action">
-        <field name="name">Khách hàng cá nhân</field>
-        <field name="res_model">res.partner</field>
-        <field name="view_mode">kanban,tree,form</field>
-        <field name="domain">[('is_company','=',False),('bsd_la_kh', '=', True)]</field>
-        <field name="context">{'default_company_type':'person', 'default_is_company':False,'default_bsd_la_kh':True}</field>
-        <field name="help" type="xml">
-            <p>Tạo mới khách hàng cá nhân</p>
-        </field>
-        <field name="view_id" ref="bsd_res_partner_cn_tree"/>
-        <field name="view_ids"
-               eval="[(5, 0, 0),
-                      (0, 0, {'view_mode': 'kanban', 'view_id': ref('bsd_res_partner_cn_kanban')}),
-                      (0, 0, {'view_mode': 'tree', 'view_id': ref('bsd_res_partner_cn_tree')}),
-                      (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_res_partner_cn_form')})]"/>
-        <field name="search_view_id" ref="bsd_kinh_doanh.bsd_res_partner_cn_filter"/>
-    </record>
-
+                            <div class="o_row no-gutters d-flex">
+                                <label for="bsd_ma_kh"/>:
+                                <field name="bsd_ma_kh"/>
+                                <strong class="ml-4">Sở hữu: </strong>
+                                <field name="user_id"/>
+                            </div>
+                        </div>
+                        <notebook>
+                            <page string="THÔNG TIN CÁ NHÂN">
+                                <group>
+                                    <group>
+                                        <field name="bsd_ho_tl"/>
+                                        <field name="name" required="1"/>
+                                        <field name="bsd_ngay_sinh"/>
+                                        <field name="bsd_gioi_tinh"/>
+                                        <field name="phone"/>
+                                        <field name="mobile" required="1"/>
+                                        <field name="email" string=" Email "/>
+                                        <field name="bsd_loai_kh"/>
+                                        <field name="bsd_nguoi_bh"/>
+                                        <field name="bsd_nguoi_bh_id"
+                                               attrs="{'invisible':[('bsd_nguoi_bh', '=', False)]}"
+                                               domain="[('bsd_nguoi_bh', '=', False)]"/>
+                                        <field name="is_company" invisible="1"/>
+                                        <field name="bsd_la_kh" invisible="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_loai_kh_cn_ids"
+                                               widget="many2many_tags"
+                                               options="{'no_create': true}"
+                                               required="1"
+                                        />
+                                        <field name="function"/>
+                                        <field name="bsd_cmnd"/>
+                                        <field name="bsd_ngay_cap_cmnd"/>
+                                        <field name="bsd_noi_cap_cmnd"/>
+                                        <field name="bsd_ho_chieu"/>
+                                        <field name="bsd_ngay_cap_hc"/>
+                                        <field name="bsd_noi_cap_hc"/>
+                                        <field name="bsd_mst"/>
+                                    </group>
+                                </group>
+                                <group string="ĐỊA CHỈ">
+                                    <group>
+                                        <field name="bsd_dia_chi_lh"/>
+                                        <field name="bsd_quoc_gia_lh_id"
+                                               required="1"
+                                               options="{'no_create':true}"/>
+                                        <field name="bsd_tinh_lh_id"
+                                               domain="[('country_id', 'in',[bsd_quoc_gia_lh_id])]"
+                                               options="{'no_create':true}"/>
+                                        <field name="bsd_quan_lh_id"
+                                               domain="[('bsd_tinh_thanh_id', 'in',[bsd_tinh_lh_id])]"
+                                               options="{'no_create':true}"/>
+                                        <field name="bsd_phuong_lh_id"
+                                               domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_lh_id])]"
+                                               options="{'no_create':true}"/>
+                                        <field name="bsd_so_nha_lh"
+                                               required="1"/>
+                                        <field name="bsd_cung_dc"/>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_dia_chi_tt"/>
+                                        <field name="bsd_quoc_gia_tt_id"
+                                               attrs="{'readonly':[('bsd_cung_dc','=',True)]}"
+                                               force_save="1"
+                                               options="{'no_create':true}"/>
+                                        <field name="bsd_tinh_tt_id"
+                                               attrs="{'readonly':[('bsd_cung_dc','=',True)]}"
+                                               force_save="1"
+                                               domain="[('country_id', 'in',[bsd_quoc_gia_tt_id])]"
+                                               options="{'no_create':true}" />
+                                        <field name="bsd_quan_tt_id"
+                                               attrs="{'readonly':[('bsd_cung_dc','=',True)]}"
+                                               force_save="1"
+                                               domain="[('bsd_tinh_thanh_id', 'in',[bsd_tinh_tt_id])]"
+                                               options="{'no_create':true}"/>
+                                        <field name="bsd_phuong_tt_id"
+                                               attrs="{'readonly':[('bsd_cung_dc','=',True)]}"
+                                               force_save="1"
+                                               domain="[('bsd_quan_huyen_id', 'in',[bsd_quan_tt_id])]"
+                                               options="{'no_create':true}"/>
+                                        <field name="bsd_so_nha_tt"
+                                               attrs="{'readonly':[('bsd_cung_dc','=',True)]}"
+                                               force_save="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Tài khoản">
+                                <field name="bank_ids" context="{'default_partner_id': id}">
+                                        <tree>
+                                            <field name="acc_number"/>
+                                            <field name="partner_id"/>
+                                            <field name="bank_id"/>
+                                            <field name="bsd_chi_nhanh"/>
+                                            <field name="bsd_tu_ngay"/>
+                                            <field name="bsd_den_ngay"/>
+                                            <field name="bsd_tk_chinh"/>
+                                        </tree>
+                                        <form duplicate="false">
+                                            <sheet>
+                                                <group>
+                                                    <group>
+                                                        <field name="acc_number"/>
+                                                        <field name="partner_id"/>
+                                                        <field name="bank_id"/>
+                                                        <field name="bsd_chi_nhanh"/>
+                                                    </group>
+                                                    <group>
+                                                        <field name="bsd_tk_chinh"/>
+                                                        <field name="acc_holder_name"/>
+                                                        <field name="bsd_tu_ngay"/>
+                                                        <field name="bsd_den_ngay"/>
+                                                    </group>
+                                                </group>
+                                            </sheet>
+                                        </form>
+                                </field>
+                            </page>
+                            <page string="Giữ chỗ thiện chí">
+                                <field name="bsd_gc_tc_ids">
+                                    <tree create="false">
+                                        <field name="bsd_ma_gctc"/>
+                                        <field name="bsd_ngay_gctc"/>
+                                        <field name="bsd_du_an_id"/>
+                                        <field name="bsd_stt"/>
+                                        <field name="bsd_tien_gc"/>
+                                        <field name="bsd_thanh_toan"/>
+                                        <field name="bsd_ngay_ut"/>
+                                        <field name="state"/>
+                                        <field name="bsd_het_han"/>
+                                        <field name="currency_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Giữ chỗ">
+                                <field name="bsd_giu_cho_ids">
+                                    <tree create="false">
+                                        <field name="bsd_ma_gc"/>
+                                        <field name="bsd_du_an_id"/>
+                                        <field name="bsd_unit_id"/>
+                                        <field name="bsd_ngay_hh_gc"/>
+                                        <field name="bsd_stt_bg"/>
+                                        <field name="bsd_ngay_hh_bg"/>
+                                        <field name="state"/>
+                                        <field name="currency_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Bảng tính giá">
+                                <field name="bsd_bao_gia_ids">
+                                    <tree create="false" duplicate="false" delete="false">
+                                        <field name="bsd_ma_bao_gia"/>
+                                        <field name="bsd_giu_cho_id"/>
+                                        <field name="bsd_du_an_id"/>
+                                        <field name="bsd_unit_id"/>
+                                        <field name="bsd_cs_tt_id"/>
+                                        <field name="bsd_tong_gia"/>
+                                        <field name="state"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="company_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Đặt cọc">
+                                <field name="bsd_dat_coc_ids">
+                                    <tree create="false" duplicate="false" delete="false">
+                                        <field name="bsd_ma_dat_coc"/>
+                                        <field name="bsd_du_an_id"/>
+                                        <field name="bsd_unit_id"/>
+                                        <field name="bsd_ngay_ky_dc"/>
+                                        <field name="bsd_thanh_toan"/>
+                                        <field name="state"/>
+                                        <field name="currency_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_res_partner_cn_tree">
+            <field name="name">bsd.res.partner.cn.tree</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="bsd_ma_kh"/>
+                    <field name="display_name"/>
+                    <field name="bsd_gioi_tinh"/>
+                    <field name="bsd_cmnd"/>
+                    <field name="bsd_ho_chieu"/>
+                    <field name="mobile"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_res_partner_cn_kanban">
+            <field name="name">bsd.res.partner.cn.kanban</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                    <kanban class="o_res_partner_kanban">
+                        <field name="id"/>
+                        <field name="color"/>
+                        <field name="display_name"/>
+                        <field name="email"/>
+                        <field name="is_company"/>
+                        <field name="phone"/>
+                        <field name="mobile"/>
+                        <field name="image_128"/>
+                        <field name="parent_id"/>
+                        <field name="type"/>
+                        <field name="display_name"/>
+                        <field name="bsd_dia_chi_lh"/>
+                        <field name="bsd_sl_giu_cho"/>
+                        <templates>
+                            <t t-name="kanban-box">
+                                <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
+                                    <t t-if="!record.is_company.raw_value">
+                                        <t t-if="record.type.raw_value === 'delivery'" t-set="placeholder" t-value="'/base/static/img/truck.png'"/>
+                                        <t t-elif="record.type.raw_value === 'invoice'" t-set="placeholder" t-value="'/base/static/img/money.png'"/>
+                                        <t t-else="" t-set="placeholder" t-value="'/base/static/img/avatar_grey.png'"/>
+                                        <div class="o_kanban_image_fill_left d-none d-md-block" t-attf-style="background-image:url('#{kanban_image('res.partner', 'image_128', record.id.raw_value,  placeholder)}')">
+                                            <img class="o_kanban_image_inner_pic" t-if="record.parent_id.raw_value" t-att-alt="record.parent_id.value" t-att-src="kanban_image('res.partner', 'image_128', record.parent_id.raw_value)"/>
+                                        </div>
+                                        <div class="o_kanban_image rounded-circle d-md-none" t-attf-style="background-image:url('#{kanban_image('res.partner', 'image_128', record.id.raw_value,  placeholder)}')">
+                                            <img class="o_kanban_image_inner_pic" t-if="record.parent_id.raw_value" t-att-alt="record.parent_id.value" t-att-src="kanban_image('res.partner', 'image_128', record.parent_id.raw_value)"/>
+                                        </div>
+                                    </t>
+                                    <t t-else="">
+                                        <t t-set="placeholder" t-value="'/base/static/img/company_image.png'"/>
+                                        <div class="o_kanban_image_fill_left o_kanban_image_full" t-attf-style="background-image: url(#{kanban_image('res.partner', 'image_128', record.id.raw_value, placeholder)})" role="img"/>
+                                    </t>
+                                    <div class="oe_kanban_details">
+                                        <strong class="o_kanban_record_title oe_partner_heading"><field name="display_name"/></strong>
+                                        <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
+                                        <div><span>Mã:</span><field name="bsd_ma_kh"/></div>
+                                        <ul>
+                                            <li t-if="record.mobile.raw_value" class="o_text_overflow"><field name="mobile"/></li>
+                                            <li t-if="record.email.raw_value" class="o_text_overflow"><field name="email"/></li>
+                                            <li t-if="record.bsd_dia_chi_lh.raw_value" class="o_text_overflow"><field name="bsd_dia_chi_lh"/></li>
+                                            <li name="tien_ich">
+                                                <span class="badge badge-pill" modifiers="{}">
+                                                    Giữ chỗ
+                                                    <field name="bsd_sl_giu_cho"/>
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </t>
+                        </templates>
+                    </kanban>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_res_partner_cn_filter">
+            <field name="name">bsd.res.partner.cn.filter</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="bsd_ma_kh"/>
+                    <field name="display_name" string="Tên khách hàng"/>
+                    <field name="bsd_cmnd"/>
+                    <field name="bsd_ho_chieu"/>
+                    <field name="mobile"/>
+                    <field name="email"/>
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_res_partner_cn_action">
+            <field name="name">Khách hàng cá nhân</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('is_company','=',False),('bsd_la_kh', '=', True)]</field>
+            <field name="context">{'default_company_type':'person', 'default_is_company':False,'default_bsd_la_kh':True}</field>
+            <field name="help" type="xml">
+                <p>Tạo mới khách hàng cá nhân</p>
+            </field>
+            <field name="view_id" ref="bsd_res_partner_cn_tree"/>
+            <field name="view_ids"
+                   eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'kanban', 'view_id': ref('bsd_res_partner_cn_kanban')}),
+                          (0, 0, {'view_mode': 'tree', 'view_id': ref('bsd_res_partner_cn_tree')}),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_res_partner_cn_form')})]"/>
+            <field name="search_view_id" ref="bsd_kinh_doanh.bsd_res_partner_cn_filter"/>
+        </record>
+    </data>
 </odoo>

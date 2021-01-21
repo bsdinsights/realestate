@@ -1,86 +1,86 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_lai_phat_tt_form">
-        <field name="name">bsd.lai_phat_tt.form</field>
-        <field name="model">bsd.lai_phat_tt</field>
-        <field name="arch" type="xml">
-            <form duplicate="false">
-                <header>
-                    <field name="state" widget="statusbar" options="{'clickable':1}"/>
-                </header>
-                <sheet>
-                    <group>
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_lai_phat_tt_form">
+            <field name="name">bsd.lai_phat_tt.form</field>
+            <field name="model">bsd.lai_phat_tt</field>
+            <field name="arch" type="xml">
+                <form duplicate="false">
+                    <header>
+                        <field name="state" widget="statusbar" options="{'clickable':1}"/>
+                    </header>
+                    <sheet>
                         <group>
-                            <field name="currency_id" invisible="1"/>
-                            <field name="company_id" invisible="1"/>
-                            <field name="bsd_ma_lptt"/>
-                            <field name="bsd_ten_lptt"/>
-                            <field name="bsd_du_an_id" options="{'no_create':true, 'no_option':true}"/>
-                            <field name="bsd_tinh_phat"/>
-                            <field name="bsd_an_han"/>
+                            <group>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="company_id" invisible="1"/>
+                                <field name="bsd_ma_lptt"/>
+                                <field name="bsd_ten_lptt"/>
+                                <field name="bsd_du_an_id" options="{'no_create':true, 'no_option':true}"/>
+                                <field name="bsd_tinh_phat"/>
+                                <field name="bsd_an_han"/>
+                            </group>
+                            <group>
+                                <label for="bsd_lai_phat"/>
+                                <div class="o_row d-flex no-gutters">
+                                    <field name="bsd_lai_phat" class="mr-1"/>
+                                    <span>%/ năm</span>
+                                </div>
+                                <field name="bsd_tien_td"/>
+                                <label for="bsd_tl_td"/>
+                                <div class="o_row d-flex no-gutters">
+                                    <field name="bsd_tl_td" class="mr-1"/>
+                                    <span>%</span>
+                                </div>
+                                <field name="bsd_so_ngay_nam"/>
+                                <field name="bsd_dien_giai"/>
+                            </group>
                         </group>
-                        <group>
-                            <label for="bsd_lai_phat"/>
-                            <div class="o_row d-flex no-gutters">
-                                <field name="bsd_lai_phat" class="mr-1"/>
-                                <span>%/ năm</span>
-                            </div>
-                            <field name="bsd_tien_td"/>
-                            <label for="bsd_tl_td"/>
-                            <div class="o_row d-flex no-gutters">
-                                <field name="bsd_tl_td" class="mr-1"/>
-                                <span>%</span>
-                            </div>
-                            <field name="bsd_so_ngay_nam"/>
-                            <field name="bsd_dien_giai"/>
-                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_lai_phat_tt_tree">
+            <field name="name">bsd.lai_phat_tt.tree</field>
+            <field name="model">bsd.lai_phat_tt</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_ma_lptt"/>
+                    <field name="bsd_ten_lptt"/>
+                    <field name="bsd_tinh_phat"/>
+                    <field name="bsd_an_han"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_lai_phat_tt_filter">
+            <field name="name">bsd.lai_phat_tt.list.filter</field>
+            <field name="model">bsd.lai_phat_tt</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="bsd_ma_lptt"/>
+                    <field name="bsd_ten_lptt"/>
+                    <field name="bsd_du_an_id"/>
+                    <group expand="0" string="Group by">
+                        <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                        <filter string="Tính phạt" name="bsd_tinh_phat" domain="[]" context="{'group_by': 'bsd_tinh_phat'}"/>
                     </group>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
-            </form>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_lai_phat_tt_tree">
-        <field name="name">bsd.lai_phat_tt.tree</field>
-        <field name="model">bsd.lai_phat_tt</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_ma_lptt"/>
-                <field name="bsd_ten_lptt"/>
-                <field name="bsd_tinh_phat"/>
-                <field name="bsd_an_han"/>
-                <field name="state"/>
-            </tree>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="bsd_lai_phat_tt_filter">
-        <field name="name">bsd.lai_phat_tt.list.filter</field>
-        <field name="model">bsd.lai_phat_tt</field>
-        <field name="arch" type="xml">
-            <search>
-                <field name="bsd_ma_lptt"/>
-                <field name="bsd_ten_lptt"/>
-                <field name="bsd_du_an_id"/>
-                <group expand="0" string="Group by">
-                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
-                    <filter string="Tính phạt" name="bsd_tinh_phat" domain="[]" context="{'group_by': 'bsd_tinh_phat'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
-
-    <record model="ir.actions.act_window" id="bsd_lai_phat_tt_action">
-        <field name="name">Lãi phạt chậm thanh toán</field>
-        <field name="res_model">bsd.lai_phat_tt</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="xml">
-            <p>Tạo lãi phạt chậm thanh toán</p>
-        </field>
-    </record>
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_lai_phat_tt_action">
+            <field name="name">Lãi phạt chậm thanh toán</field>
+            <field name="res_model">bsd.lai_phat_tt</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="xml">
+                <p>Tạo lãi phạt chậm thanh toán</p>
+            </field>
+        </record>
+    </data>
 </odoo>

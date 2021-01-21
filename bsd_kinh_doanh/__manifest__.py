@@ -58,7 +58,8 @@
         'reports/report_bsd_giu_cho_views.xml',
         'reports/report_bsd_bao_gia_views.xml',
         'reports/report_bsd_dat_coc_views.xml',
-        'views/bsd_du_an_views.xml'
+        'views/bsd_du_an_views.xml',
+        'views/res_users_views.xml'
     ],
     'application': True,
 }

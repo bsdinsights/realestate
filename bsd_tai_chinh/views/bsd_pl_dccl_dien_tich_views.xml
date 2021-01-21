@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_pl_cldt_form_inherit">
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_pl_cldt_form_inherit">
         <field name="name">bsd.pl_cldt.form.inherit</field>
         <field name="model">bsd.pl_cldt</field>
         <field name="inherit_id" ref="bsd_dich_vu.bsd_pl_cldt_form"/>
@@ -15,4 +16,5 @@
             </xpath>
         </field>
     </record>
+    </data>
 </odoo>

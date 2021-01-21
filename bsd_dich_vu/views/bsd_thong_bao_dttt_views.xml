@@ -1,131 +1,132 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_tb_kq_dttt_form">
-        <field name="name">bsd.tb_kq_dttt.form</field>
-        <field name="model">bsd.tb_kq_dttt</field>
-        <field name="arch" type="xml">
-            <form duplicate="false">
-                <header>
-                    <button string="Xác nhận"
-                            name="action_xac_nhan"
-                            states="nhap"
-                            confirm="Bạn có muốn xác nhận yêu cầu không?"
-                            attrs="{'invisible': ['|',('id', '=',False)]}"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="In thông báo"
-                            name="action_in_tb"
-                            attrs="{'invisible': [('state', 'in',['nhap','huy'])]}"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Gửi thông báo"
-                            name="action_gui_tb"
-                            states="xac_nhan"
-                            type="object"
-                            attrs="{'invisible': ['|',('bsd_ngay_in', '=',False)]}"
-                            class="oe_highlight"/>
-                    <button string="Hủy"
-                            name="action_huy"
-                            type="object"
-                            confirm="Bạn có muốn hủy yêu cầu này không ?"
-                            attrs="{'invisible': ['|',('id', '=',False)]}"
-                            states="nhap"/>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
-                </header>
-                <sheet>
-                    <group>
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_tb_kq_dttt_form">
+            <field name="name">bsd.tb_kq_dttt.form</field>
+            <field name="model">bsd.tb_kq_dttt</field>
+            <field name="arch" type="xml">
+                <form duplicate="false">
+                    <header>
+                        <button string="Xác nhận"
+                                name="action_xac_nhan"
+                                states="nhap"
+                                confirm="Bạn có muốn xác nhận yêu cầu không?"
+                                attrs="{'invisible': ['|',('id', '=',False)]}"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="In thông báo"
+                                name="action_in_tb"
+                                attrs="{'invisible': [('state', 'in',['nhap','huy'])]}"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Gửi thông báo"
+                                name="action_gui_tb"
+                                states="xac_nhan"
+                                type="object"
+                                attrs="{'invisible': ['|',('bsd_ngay_in', '=',False)]}"
+                                class="oe_highlight"/>
+                        <button string="Hủy"
+                                name="action_huy"
+                                type="object"
+                                confirm="Bạn có muốn hủy yêu cầu này không ?"
+                                attrs="{'invisible': ['|',('id', '=',False)]}"
+                                states="nhap"/>
+                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    </header>
+                    <sheet>
                         <group>
-                            <field name="bsd_ma_tb"/>
-                            <field name="bsd_ngay_tao_tb"/>
-                            <field name="bsd_tieu_de"/>
-                            <field name="bsd_khach_hang_id"
-                                   options="{'no_create':true}"/>
-                        </group>
-                        <group>
-                            <field name="bsd_hd_ban_id"
-                                   options="{'no_create':true}"
-                                   domain="[('bsd_khach_hang_id', '=', bsd_khach_hang_id)]"/>
-                            <field name="bsd_du_an_id"
-                                   options="{'no_create':true}"
-                                   readonly="1"
-                                   force_save="1"/>
-                            <field name="bsd_unit_id" readonly="1" force_save="1"
-                                   domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_dien_giai"/>
+                            <group>
+                                <field name="bsd_ma_tb"/>
+                                <field name="bsd_ngay_tao_tb"/>
+                                <field name="bsd_tieu_de"/>
+                                <field name="bsd_khach_hang_id"
+                                       options="{'no_create':true}"/>
+                            </group>
+                            <group>
+                                <field name="bsd_hd_ban_id"
+                                       options="{'no_create':true}"
+                                       domain="[('bsd_khach_hang_id', '=', bsd_khach_hang_id)]"/>
+                                <field name="bsd_du_an_id"
+                                       options="{'no_create':true}"
+                                       readonly="1"
+                                       force_save="1"/>
+                                <field name="bsd_unit_id" readonly="1" force_save="1"
+                                       domain="[('bsd_du_an_id', '=', bsd_du_an_id)]"
+                                       options="{'no_create':true}"/>
+                                <field name="bsd_dien_giai"/>
 
+                            </group>
                         </group>
-                    </group>
-                    <group string="KẾT QUẢ">
-                        <group>
-                            <label for="bsd_dt_tt_tk"/>
-                            <div class="o_row no-gutters d-flex">
-                                <field name="bsd_dt_tt_tk" class="mr-1" readonly="1" force_save="1"/>
-                                <span>m2</span>
-                            </div>
-                            <label for="bsd_dt_tt_tt"/>
-                            <div class="o_row no-gutters d-flex">
-                                <field name="bsd_dt_tt_tt" class="mr-1"/>
-                                <span>m2</span>
-                            </div>
+                        <group string="KẾT QUẢ">
+                            <group>
+                                <label for="bsd_dt_tt_tk"/>
+                                <div class="o_row no-gutters d-flex">
+                                    <field name="bsd_dt_tt_tk" class="mr-1" readonly="1" force_save="1"/>
+                                    <span>m2</span>
+                                </div>
+                                <label for="bsd_dt_tt_tt"/>
+                                <div class="o_row no-gutters d-flex">
+                                    <field name="bsd_dt_tt_tt" class="mr-1"/>
+                                    <span>m2</span>
+                                </div>
+                            </group>
+                            <group>
+                                <label for="bsd_cl_cp"/>
+                                <div class="o_row no-gutters d-flex">
+                                    <field name="bsd_cl_cp" class="mr-1" readonly="1" force_save="1"/>
+                                    <span>%</span>
+                                </div>
+                                <label for="bsd_cl_tt"/>
+                                <div class="o_row no-gutters d-flex">
+                                    <field name="bsd_cl_tt" class="mr-1" readonly="1" force_save="1"/>
+                                    <span>%</span>
+                                </div>
+                            </group>
                         </group>
-                        <group>
-                            <label for="bsd_cl_cp"/>
-                            <div class="o_row no-gutters d-flex">
-                                <field name="bsd_cl_cp" class="mr-1" readonly="1" force_save="1"/>
-                                <span>%</span>
-                            </div>
-                            <label for="bsd_cl_tt"/>
-                            <div class="o_row no-gutters d-flex">
-                                <field name="bsd_cl_tt" class="mr-1" readonly="1" force_save="1"/>
-                                <span>%</span>
-                            </div>
+                        <group string="XÁC NHẬN">
+                            <group>
+                                <field name="bsd_ngay_in"/>
+                                <field name="bsd_nguoi_in_id"/>
+                            </group>
+                            <group>
+                                <field name="bsd_ngay_gui"/>
+                                <field name="bsd_nguoi_gui_id"/>
+                            </group>
                         </group>
-                    </group>
-                    <group string="XÁC NHẬN">
-                        <group>
-                            <field name="bsd_ngay_in"/>
-                            <field name="bsd_nguoi_in_id"/>
-                        </group>
-                        <group>
-                            <field name="bsd_ngay_gui"/>
-                            <field name="bsd_nguoi_gui_id"/>
-                        </group>
-                    </group>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
-            </form>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_tb_kq_dttt_tree">
-        <field name="name">bsd.tb_kq_dttt.tree</field>
-        <field name="model">bsd.tb_kq_dttt</field>
-        <field name="arch" type="xml">
-            <tree decoration-warning="state=='xac_nhan'"
-                  decoration-success="state=='hoan_thanh'"
-                  decoration-muted="state=='huy'"
-            >
-                <field name="bsd_ma_tb"/>
-                <field name="bsd_ngay_tao_tb"/>
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_unit_id"/>
-                <field name="bsd_hd_ban_id"/>
-                <field name="bsd_khach_hang_id"/>
-                <field name="state"/>
-            </tree>
-        </field>
-    </record>
-
-    <record model="ir.actions.act_window" id="bsd_tb_kq_dttt_action">
-        <field name="name">Thông báo kết quả đo đạt thực tế</field>
-        <field name="res_model">bsd.tb_kq_dttt</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="xml">
-            <p>Tạo thông báo kết quả đo đạt thực tế</p>
-        </field>
-    </record>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_tb_kq_dttt_tree">
+            <field name="name">bsd.tb_kq_dttt.tree</field>
+            <field name="model">bsd.tb_kq_dttt</field>
+            <field name="arch" type="xml">
+                <tree decoration-warning="state=='xac_nhan'"
+                      decoration-success="state=='hoan_thanh'"
+                      decoration-muted="state=='huy'"
+                >
+                    <field name="bsd_ma_tb"/>
+                    <field name="bsd_ngay_tao_tb"/>
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_unit_id"/>
+                    <field name="bsd_hd_ban_id"/>
+                    <field name="bsd_khach_hang_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_tb_kq_dttt_action">
+            <field name="name">Thông báo kết quả đo đạt thực tế</field>
+            <field name="res_model">bsd.tb_kq_dttt</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="xml">
+                <p>Tạo thông báo kết quả đo đạt thực tế</p>
+            </field>
+        </record>
+    </data>
 </odoo>

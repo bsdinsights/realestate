@@ -1,145 +1,145 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_hoan_tien_form">
-        <field name="name">bsd.hoan_tien.form</field>
-        <field name="model">bsd.hoan_tien</field>
-        <field name="arch" type="xml">
-            <form duplicate="false" create="false">
-                <header>
-                    <button string="Xác nhận"
-                            name="action_xac_nhan"
-                            type="object"
-                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
-                            class="oe_highlight"/>
-                    <button string="Hủy"
-                            name="action_huy"
-                            type="object"
-                            confirm="Bạn có muốn Hủy chứng từ không?"
-                            states="nhap"/>
-                    <button string="In"
-                            name="action_in"
-                            states="xac_nhan"
-                            type="object"
-                            class="oe_highlight"/>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
-                </header>
-                <sheet>
-                    <group>
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_hoan_tien_form">
+            <field name="name">bsd.hoan_tien.form</field>
+            <field name="model">bsd.hoan_tien</field>
+            <field name="arch" type="xml">
+                <form duplicate="false" create="false">
+                    <header>
+                        <button string="Xác nhận"
+                                name="action_xac_nhan"
+                                type="object"
+                                attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                                class="oe_highlight"/>
+                        <button string="Hủy"
+                                name="action_huy"
+                                type="object"
+                                confirm="Bạn có muốn Hủy chứng từ không?"
+                                states="nhap"/>
+                        <button string="In"
+                                name="action_in"
+                                states="xac_nhan"
+                                type="object"
+                                class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    </header>
+                    <sheet>
                         <group>
-                            <field name="bsd_so_ct"/>
-                            <field name="bsd_ngay_ct" readonly="1" force_save="1"/>
-                            <field name="bsd_khach_hang_id"
-                                   readonly="1" force_save="1"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_du_an_id"
-                                    readonly="1" force_save="1"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_loai"
-                                    readonly="1" force_save="1"
-                                   required="1"/>
-                            <field name="bsd_gc_tc_id"
-                                   readonly="1" force_save="1"
-                                   attrs="{'invisible':[('bsd_loai', '!=', 'gc_tc')],
-                                            'required':[('bsd_loai', '=', 'gc_tc')]}"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_giu_cho_id"
-                                   readonly="1" force_save="1"
-                                   attrs="{'invisible':[('bsd_loai', '!=', 'giu_cho')],
-                                            'required':[('bsd_loai', '=', 'giu_cho')]}"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_dat_coc_id"
-                                   readonly="1" force_save="1"
-                                   attrs="{'invisible':[('bsd_loai', '!=', 'tl_dc')],
-                                           'required':[('bsd_loai', '=', 'tl_dc')]}"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_hd_ban_id"
-                                   readonly="1" force_save="1"
-                                   attrs="{'invisible':[('bsd_loai', 'not in', ['tl_gd','vp_hd'])],
-                                           'required':[('bsd_loai', 'in', ['tl_gd','vp_hd'])]}"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_phieu_thu_id"
-                                   readonly="1" force_save="1"
-                                   attrs="{'invisible':[('bsd_loai', '!=', 'phieu_thu')],
-                                           'required':[('bsd_loai', '=', 'phieu_thu')]}"
-                                   options="{'no_create':true}"
-                                   domain="[('bsd_loai_pt', 'in', ['tra_truoc']),('bsd_tien_con_lai','>',0),
-                                   ('bsd_khach_hang_id', 'in', [bsd_khach_hang_id]),('state', '!=', 'nhap')]"/>
-                            <field name="bsd_thanh_ly_id"
-                                   readonly="1" force_save="1"
-                                   attrs="{'invisible':[('bsd_loai', 'not in', ['tl_ttdc','tl_hd','tl_dc'])],
-                                           'required':[('bsd_loai', 'in', ['tl_ttdc','tl_hd','tl_dc'])]}"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_vp_hd_id"
-                                   attrs="{'invisible':[('bsd_loai', '!=', 'vp_hd')]}"/>
-                            <field name="company_id" invisible="1"/>
+                            <group>
+                                <field name="bsd_so_ct"/>
+                                <field name="bsd_ngay_ct" readonly="1" force_save="1"/>
+                                <field name="bsd_khach_hang_id"
+                                       readonly="1" force_save="1"
+                                       options="{'no_create':true}"/>
+                                <field name="bsd_du_an_id"
+                                        readonly="1" force_save="1"
+                                       options="{'no_create':true}"/>
+                                <field name="bsd_loai"
+                                        readonly="1" force_save="1"
+                                       required="1"/>
+                                <field name="bsd_gc_tc_id"
+                                       readonly="1" force_save="1"
+                                       attrs="{'invisible':[('bsd_loai', '!=', 'gc_tc')],
+                                                'required':[('bsd_loai', '=', 'gc_tc')]}"
+                                       options="{'no_create':true}"/>
+                                <field name="bsd_giu_cho_id"
+                                       readonly="1" force_save="1"
+                                       attrs="{'invisible':[('bsd_loai', '!=', 'giu_cho')],
+                                                'required':[('bsd_loai', '=', 'giu_cho')]}"
+                                       options="{'no_create':true}"/>
+                                <field name="bsd_dat_coc_id"
+                                       readonly="1" force_save="1"
+                                       attrs="{'invisible':[('bsd_loai', '!=', 'tl_dc')],
+                                               'required':[('bsd_loai', '=', 'tl_dc')]}"
+                                       options="{'no_create':true}"/>
+                                <field name="bsd_hd_ban_id"
+                                       readonly="1" force_save="1"
+                                       attrs="{'invisible':[('bsd_loai', 'not in', ['tl_gd','vp_hd'])],
+                                               'required':[('bsd_loai', 'in', ['tl_gd','vp_hd'])]}"
+                                       options="{'no_create':true}"/>
+                                <field name="bsd_phieu_thu_id"
+                                       readonly="1" force_save="1"
+                                       attrs="{'invisible':[('bsd_loai', '!=', 'phieu_thu')],
+                                               'required':[('bsd_loai', '=', 'phieu_thu')]}"
+                                       options="{'no_create':true}"
+                                       domain="[('bsd_loai_pt', 'in', ['tra_truoc']),('bsd_tien_con_lai','>',0),
+                                       ('bsd_khach_hang_id', 'in', [bsd_khach_hang_id]),('state', '!=', 'nhap')]"/>
+                                <field name="bsd_thanh_ly_id"
+                                       readonly="1" force_save="1"
+                                       attrs="{'invisible':[('bsd_loai', 'not in', ['tl_ttdc','tl_hd','tl_dc'])],
+                                               'required':[('bsd_loai', 'in', ['tl_ttdc','tl_hd','tl_dc'])]}"
+                                       options="{'no_create':true}"/>
+                                <field name="bsd_vp_hd_id"
+                                       attrs="{'invisible':[('bsd_loai', '!=', 'vp_hd')]}"/>
+                                <field name="company_id" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="bsd_chuyen_pt"/>
+                                <field name="bsd_pt_tt_id"
+                                       required="1"
+                                       options="{'no_create':true}"/>
+                                <field name="bsd_ngay_ht_tt"
+                                       required="1"/>
+                                <field name="bsd_ngan_hang_id" options="{'no_create':true}"/>
+                                <field name="bsd_tk_nh_id"
+                                       domain="[('partner_id', '=', bsd_khach_hang_id), ('bank_id', '=', 'bsd_ngan_hang_id')]"
+                                       options="{'no_create':true}"/>
+                                <field name="bsd_tien"/>
+                                <field name="bsd_dien_giai"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
                         </group>
-                        <group>
-                            <field name="bsd_chuyen_pt"/>
-                            <field name="bsd_pt_tt_id"
-                                   required="1"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_ngay_ht_tt"
-                                   required="1"/>
-                            <field name="bsd_ngan_hang_id" options="{'no_create':true}"/>
-                            <field name="bsd_tk_nh_id"
-                                   domain="[('partner_id', '=', bsd_khach_hang_id), ('bank_id', '=', 'bsd_ngan_hang_id')]"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_tien"/>
-                            <field name="bsd_dien_giai"/>
-                            <field name="currency_id" invisible="1"/>
-                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_hoan_tien_tree">
+            <field name="name">bsd.hoan_tien.tree</field>
+            <field name="model">bsd.hoan_tien</field>
+            <field name="arch" type="xml">
+                <tree create="false"
+                      decoration-success="state=='xac_nhan'"
+                      decoration-muted="state=='huy'"
+                      duplicate="false">
+                    <field name="bsd_so_ct"/>
+                    <field name="bsd_ngay_ct"/>
+                    <field name="bsd_khach_hang_id"/>
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_loai"/>
+                    <field name="bsd_tien"/>
+                    <field name="state"/>
+                    <field name="currency_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_hoan_tien_filter">
+            <field name="name">bsd.hoan_tien.list.filter</field>
+            <field name="model">bsd.hoan_tien</field>
+            <field name="arch" type="xml">
+                <search string="Lọc dữ liệu">
+                    <field name="bsd_so_ct"/>
+                    <field name="bsd_khach_hang_id"/>
+                    <filter string="Phiếu thu của tôi" domain="[('create_uid', '=', uid)]" name="my_phiếu thu_filter"/>
+                    <group expand="0" string="Group by">
+                        <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                        <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
                     </group>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
-            </form>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_hoan_tien_tree">
-        <field name="name">bsd.hoan_tien.tree</field>
-        <field name="model">bsd.hoan_tien</field>
-        <field name="arch" type="xml">
-            <tree create="false"
-                  decoration-success="state=='xac_nhan'"
-                  decoration-muted="state=='huy'"
-                  duplicate="false">
-                <field name="bsd_so_ct"/>
-                <field name="bsd_ngay_ct"/>
-                <field name="bsd_khach_hang_id"/>
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_loai"/>
-                <field name="bsd_tien"/>
-                <field name="state"/>
-                <field name="currency_id" invisible="1"/>
-            </tree>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="bsd_hoan_tien_filter">
-        <field name="name">bsd.hoan_tien.list.filter</field>
-        <field name="model">bsd.hoan_tien</field>
-        <field name="arch" type="xml">
-            <search string="Lọc dữ liệu">
-                <field name="bsd_so_ct"/>
-                <field name="bsd_khach_hang_id"/>
-                <filter string="Phiếu thu của tôi" domain="[('create_uid', '=', uid)]" name="my_phiếu thu_filter"/>
-                <group expand="0" string="Group by">
-                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
-                    <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
-
-    <record model="ir.actions.act_window" id="bsd_hoan_tien_action">
-        <field name="name">Hoàn tiền</field>
-        <field name="res_model">bsd.hoan_tien</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="xml">
-            <p>Hoàn tiền khách hàng</p>
-        </field>
-    </record>
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_hoan_tien_action">
+            <field name="name">Hoàn tiền</field>
+            <field name="res_model">bsd.hoan_tien</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="xml">
+                <p>Hoàn tiền khách hàng</p>
+            </field>
+        </record>
+    </data>
 </odoo>

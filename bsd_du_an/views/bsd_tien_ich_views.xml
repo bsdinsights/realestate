@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_tien_ich_tree">
-        <field name="name">bsd.du_an.tien_ich.tree</field>
-        <field name="model">bsd.du_an.tien_ich</field>
-        <field name="arch" type="xml">
-            <tree editable="top">
-                <field name="bsd_ma"/>
-                <field name="bsd_ten"/>
-                <field name="bsd_mo_ta"/>
-                <field name="bsd_loai"/>
-            </tree>
-        </field>
-    </record>
-
-    <record model="ir.actions.act_window" id="bsd_tien_ich_action">
-        <field name="name">Tiện ích</field>
-        <field name="res_model">bsd.du_an.tien_ich</field>
-        <field name="view_mode">tree</field>
-        <field name="help" type="xml">
-            <p>Tạo thông tin tiện tích</p>
-        </field>
-    </record>
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_tien_ich_tree">
+            <field name="name">bsd.du_an.tien_ich.tree</field>
+            <field name="model">bsd.du_an.tien_ich</field>
+            <field name="arch" type="xml">
+                <tree editable="top">
+                    <field name="bsd_ma"/>
+                    <field name="bsd_ten"/>
+                    <field name="bsd_mo_ta"/>
+                    <field name="bsd_loai"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_tien_ich_action">
+            <field name="name">Tiện ích</field>
+            <field name="res_model">bsd.du_an.tien_ich</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="xml">
+                <p>Tạo thông tin tiện tích</p>
+            </field>
+        </record>
+    </data>
 </odoo>

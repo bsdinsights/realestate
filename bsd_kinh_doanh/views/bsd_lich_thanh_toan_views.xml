@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_lich_thanh_toan_form">
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_lich_thanh_toan_form">
         <field name="name">bsd.lich_thanh_toan.form</field>
         <field name="model">bsd.lich_thanh_toan</field>
         <field name="arch" type="xml">
@@ -102,4 +103,5 @@
             </form>
         </field>
     </record>
+    </data>
 </odoo>

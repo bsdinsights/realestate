@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_giu_cho_form_inherit">
-        <field name="name">bsd.giu_cho.form.inherit</field>
-        <field name="model">bsd.giu_cho</field>
-        <field name="inherit_id" ref="bsd_kinh_doanh.bsd_giu_cho_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='bsd_ngay_tt']" position="after">
-                <field name="bsd_tien_da_tt"/>
-                <field name="bsd_tien_phai_tt"/>
-                <field name="bsd_tt_ht" force_save="1"/>
-            </xpath>
-            <xpath expr="//header" position="inside">
-                <button string="Thanh toán"
-                        name="action_thanh_toan"
-                        sequence="1"
-                        states="dat_cho"
-                        type="object"
-                        class="oe_highlight"/>
-            </xpath>
-            <xpath expr="//div[@name='button_box']" position="inside">
-                <button name="action_view_pt" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_pt', '=', 0)]}">
-                    <field name="bsd_so_pt" widget="statinfo" string="Thanh toán"/>
-                </button>
-                <button name="action_view_ht" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_ht', '=', 0)]}">
-                    <field name="bsd_so_ht" widget="statinfo" string="Hoàn tiền"/>
-                </button>
-            </xpath>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="bsd_giu_cho_tree_inherit">
-        <field name="name">bsd.giu_cho.tree.inherit</field>
-        <field name="model">bsd.giu_cho</field>
-        <field name="inherit_id" ref="bsd_kinh_doanh.bsd_giu_cho_tree"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='bsd_het_han_gc']" position="after">
-                <field name="bsd_tt_ht"/>
-            </xpath>
-        </field>
-    </record>
-
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_giu_cho_form_inherit">
+            <field name="name">bsd.giu_cho.form.inherit</field>
+            <field name="model">bsd.giu_cho</field>
+            <field name="inherit_id" ref="bsd_kinh_doanh.bsd_giu_cho_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='bsd_ngay_tt']" position="after">
+                    <field name="bsd_tien_da_tt"/>
+                    <field name="bsd_tien_phai_tt"/>
+                    <field name="bsd_tt_ht" force_save="1"/>
+                </xpath>
+                <xpath expr="//header" position="inside">
+                    <button string="Thanh toán"
+                            name="action_thanh_toan"
+                            sequence="1"
+                            states="dat_cho"
+                            type="object"
+                            class="oe_highlight"/>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_view_pt" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_pt', '=', 0)]}">
+                        <field name="bsd_so_pt" widget="statinfo" string="Thanh toán"/>
+                    </button>
+                    <button name="action_view_ht" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_ht', '=', 0)]}">
+                        <field name="bsd_so_ht" widget="statinfo" string="Hoàn tiền"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_giu_cho_tree_inherit">
+            <field name="name">bsd.giu_cho.tree.inherit</field>
+            <field name="model">bsd.giu_cho</field>
+            <field name="inherit_id" ref="bsd_kinh_doanh.bsd_giu_cho_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='bsd_het_han_gc']" position="after">
+                    <field name="bsd_tt_ht"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
 </odoo>

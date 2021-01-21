@@ -216,7 +216,7 @@ class ResPartner(models.Model):
     @api.model
     def create(self, vals):
         sequence = False
-        if vals.get('bsd_ma_kh', '/') == '/' and vals.get('company_type') == 'person':
+        if vals.get('bsd_ma_kh', '/') == '/' and not vals.get('company_type'):
             sequence = self.env['bsd.ma_bo_cn_chung'].search([('bsd_loai_cn', '=', 'bsd.kh_cn'),
                                                               ('state', '=', 'active')], limit=1).bsd_ma_tt_id
         if vals.get('bsd_ma_kh', '/') == '/' and vals.get('company_type') == 'company':

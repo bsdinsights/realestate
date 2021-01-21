@@ -1,169 +1,169 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_nghiem_thu_form">
-        <field name="name">bsd.nghiem_thu.form</field>
-        <field name="model">bsd.nghiem_thu</field>
-        <field name="arch" type="xml">
-            <form duplicate="false">
-                <header>
-                    <button string="Xác nhận"
-                            name="action_xac_nhan"
-                            states="nhap"
-                            confirm="Bạn có muốn xác nhận yêu cầu không?"
-                            attrs="{'invisible': ['|',('id', '=',False)]}"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Phí phát sinh"
-                            name="action_phi_ps"
-                            states="xac_nhan_tt"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Đóng nghiệm thu"
-                            name="action_dong"
-                            states="xac_nhan"
-                            attrs="{'invisible': ['|',('bsd_ngay_in_bb', '=',False)]}"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Hủy"
-                            name="action_huy"
-                            states="nhap,xac_nhan,xac_nhan_tt"
-                            attrs="{'invisible': ['|',('id', '=',False)]}"
-                            type="object"/>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
-                </header>
-                <sheet>
-                    <notebook>
-                        <page string="Thông tin chung">
-                            <group string="KẾT QUẢ NGHIỆM THU">
-                                <group>
-                                    <field name="bsd_ma_nt"/>
-                                    <field name="bsd_ngay_tao_nt"/>
-                                    <field name="bsd_tb_nt_id" options="{'no_create':true}"/>
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_nghiem_thu_form">
+            <field name="name">bsd.nghiem_thu.form</field>
+            <field name="model">bsd.nghiem_thu</field>
+            <field name="arch" type="xml">
+                <form duplicate="false">
+                    <header>
+                        <button string="Xác nhận"
+                                name="action_xac_nhan"
+                                states="nhap"
+                                confirm="Bạn có muốn xác nhận yêu cầu không?"
+                                attrs="{'invisible': ['|',('id', '=',False)]}"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Phí phát sinh"
+                                name="action_phi_ps"
+                                states="xac_nhan_tt"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Đóng nghiệm thu"
+                                name="action_dong"
+                                states="xac_nhan"
+                                attrs="{'invisible': ['|',('bsd_ngay_in_bb', '=',False)]}"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Hủy"
+                                name="action_huy"
+                                states="nhap,xac_nhan,xac_nhan_tt"
+                                attrs="{'invisible': ['|',('id', '=',False)]}"
+                                type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    </header>
+                    <sheet>
+                        <notebook>
+                            <page string="Thông tin chung">
+                                <group string="KẾT QUẢ NGHIỆM THU">
+                                    <group>
+                                        <field name="bsd_ma_nt"/>
+                                        <field name="bsd_ngay_tao_nt"/>
+                                        <field name="bsd_tb_nt_id" options="{'no_create':true}"/>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_loai"/>
+                                        <field name="bsd_yc_sc"/>
+                                        <field name="bsd_dien_giai"/>
+                                    </group>
                                 </group>
-                                <group>
-                                    <field name="bsd_loai"/>
-                                    <field name="bsd_yc_sc"/>
-                                    <field name="bsd_dien_giai"/>
+                                <group string="HỢP ĐỒNG">
+                                    <group>
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                                        <field name="bsd_unit_id"
+                                               options="{'no_create':true}"
+                                        />
+                                        <field name="bsd_nghiem_thu_id"/>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_hd_ban_id" options="{'no_create':true}"/>
+                                        <field name="bsd_khach_hang_id"
+                                               options="{'no_create':true}"/>
+                                    </group>
                                 </group>
-                            </group>
-                            <group string="HỢP ĐỒNG">
-                                <group>
-                                    <field name="company_id" invisible="1"/>
-                                    <field name="currency_id" invisible="1"/>
-                                    <field name="bsd_du_an_id" options="{'no_create':true}"/>
-                                    <field name="bsd_unit_id"
-                                           options="{'no_create':true}"
-                                    />
-                                    <field name="bsd_nghiem_thu_id"/>
+                                <group string="PHẢN HỒI CHỦ ĐẦU TƯ" attrs="{'invisible':[('bsd_yc_sc', '=', False)]}">
+                                    <group>
+                                        <field name="bsd_duyet_yc"
+                                               attrs="{'invisible':[('bsd_yc_sc', '=', False)]}"/>
+                                        <field name="bsd_so_ngay_sc"
+                                               attrs="{'invisible':['|',('bsd_duyet_yc','=','khong'),('bsd_yc_sc', '=', False)]}"/>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_ly_do"
+                                               attrs="{'invisible':[('bsd_duyet_yc','=','co')]}"/>
+                                        <field name="bsd_ngay_nt_lai"
+                                               attrs="{'invisible':['|',('bsd_duyet_yc','=','khong'),'&amp;',('bsd_loai','=','dat'),('bsd_yc_sc', '=', False)]}"/>
+                                        <field name="bsd_tien_ps"
+                                               attrs="{'invisible':['|',('bsd_duyet_yc','=','khong'),'&amp;',('bsd_loai','=','dat'),('bsd_yc_sc', '=', False)]}"/>
+                                    </group>
                                 </group>
-                                <group>
-                                    <field name="bsd_hd_ban_id" options="{'no_create':true}"/>
-                                    <field name="bsd_khach_hang_id"
-                                           options="{'no_create':true}"/>
+                                <group string="XÁC NHẬN CỦA KHÁCH HÀNG"
+                                       attrs="{'invisible':['|',('bsd_duyet_yc','=','khong'),('bsd_yc_sc', '=', False)]}">
+                                    <group>
+                                        <field name="bsd_ngay_nt_lai_kh"/>
+                                        <field name="bsd_tien_ps_kh"/>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_ngay_kt_xn"/>
+                                        <field name="bsd_dot_tt_id"/>
+                                    </group>
                                 </group>
-                            </group>
-                            <group string="PHẢN HỒI CHỦ ĐẦU TƯ" attrs="{'invisible':[('bsd_yc_sc', '=', False)]}">
-                                <group>
-                                    <field name="bsd_duyet_yc"
-                                           attrs="{'invisible':[('bsd_yc_sc', '=', False)]}"/>
-                                    <field name="bsd_so_ngay_sc"
-                                           attrs="{'invisible':['|',('bsd_duyet_yc','=','khong'),('bsd_yc_sc', '=', False)]}"/>
+                                <group string="XÁC NHẬN">
+                                    <group>
+                                        <field name="bsd_ngay_in_bb"/>
+                                        <field name="bsd_nguoi_in_id"/>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_ngay_nt_tt"/>
+                                        <field name="bsd_nguoi_nt_id" options="{'no_create':true}"/>
+                                        <field name="bsd_ly_do_huy" attrs="{'invisible':[('state', '!=', 'huy')]}"/>
+                                    </group>
                                 </group>
-                                <group>
-                                    <field name="bsd_ly_do"
-                                           attrs="{'invisible':[('bsd_duyet_yc','=','co')]}"/>
-                                    <field name="bsd_ngay_nt_lai"
-                                           attrs="{'invisible':['|',('bsd_duyet_yc','=','khong'),'&amp;',('bsd_loai','=','dat'),('bsd_yc_sc', '=', False)]}"/>
-                                    <field name="bsd_tien_ps"
-                                           attrs="{'invisible':['|',('bsd_duyet_yc','=','khong'),'&amp;',('bsd_loai','=','dat'),('bsd_yc_sc', '=', False)]}"/>
-                                </group>
-                            </group>
-                            <group string="XÁC NHẬN CỦA KHÁCH HÀNG"
-                                   attrs="{'invisible':['|',('bsd_duyet_yc','=','khong'),('bsd_yc_sc', '=', False)]}">
-                                <group>
-                                    <field name="bsd_ngay_nt_lai_kh"/>
-                                    <field name="bsd_tien_ps_kh"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_ngay_kt_xn"/>
-                                    <field name="bsd_dot_tt_id"/>
-                                </group>
-                            </group>
-                            <group string="XÁC NHẬN">
-                                <group>
-                                    <field name="bsd_ngay_in_bb"/>
-                                    <field name="bsd_nguoi_in_id"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_ngay_nt_tt"/>
-                                    <field name="bsd_nguoi_nt_id" options="{'no_create':true}"/>
-                                    <field name="bsd_ly_do_huy" attrs="{'invisible':[('state', '!=', 'huy')]}"/>
-                                </group>
-                            </group>
-                        </page>
-                        <page string="Chi tiết lỗi" attrs="{'invisible':[('bsd_loai','=', 'dat')]}">
-                            <field name="bsd_tt_loi" nolabel="1"/>
-                        </page>
-                        <page string="Yêu cầu sửa chữa" attrs="{'invisible':[('bsd_yc_sc','=', False)]}">
-                            <field name="bsd_tt_yc_sc" nolabel="1"/>
-                        </page>
-                    </notebook>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
-            </form>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_nghiem_thu_tree">
-        <field name="name">bsd.nghiem_thu.tree</field>
-        <field name="model">bsd.nghiem_thu</field>
-        <field name="arch" type="xml">
-            <tree decoration-warning="state=='xac_nhan_tt'"
-                  decoration-info="state=='xac_nhan'"
-                  decoration-success="state=='dong_nt'"
-                  decoration-muted="state=='huy'">
-                <field name="bsd_ma_nt"/>
-                <field name="bsd_ngay_tao_nt"/>
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_unit_id"/>
-                <field name="bsd_khach_hang_id"/>
-                <field name="bsd_hd_ban_id"/>
-                <field name="state"/>
-            </tree>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="bsd_nghiem_thu_filter">
-        <field name="name">bsd.nghiem_thu.list.filter</field>
-        <field name="model">bsd.nghiem_thu</field>
-        <field name="arch" type="xml">
-            <search string="Lọc dữ liệu">
-                <field name="bsd_hd_ban_id"/>
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_khach_hang_id"/>
-                <field name="bsd_unit_id"/>
-                <field name="state"/>
-                <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_tb_filter"/>
-                <group expand="0" string="Group by">
-                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
-                    <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
-                    <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
-                    <filter string="Hợp đồng" name="bsd_hd_ban_id" domain="[]" context="{'group_by': 'bsd_hd_ban_id'}"/>
-                    <filter string="Trạng thái" name="state" domain="[]" context="{'group_by':'state'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
-
-    <record model="ir.actions.act_window" id="bsd_nghiem_thu_action">
-        <field name="name">Nghiệm thu</field>
-        <field name="res_model">bsd.nghiem_thu</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="xml">
-            <p>Tạo nghiệm thu</p>
-        </field>
-    </record>
+                            </page>
+                            <page string="Chi tiết lỗi" attrs="{'invisible':[('bsd_loai','=', 'dat')]}">
+                                <field name="bsd_tt_loi" nolabel="1"/>
+                            </page>
+                            <page string="Yêu cầu sửa chữa" attrs="{'invisible':[('bsd_yc_sc','=', False)]}">
+                                <field name="bsd_tt_yc_sc" nolabel="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_nghiem_thu_tree">
+            <field name="name">bsd.nghiem_thu.tree</field>
+            <field name="model">bsd.nghiem_thu</field>
+            <field name="arch" type="xml">
+                <tree decoration-warning="state=='xac_nhan_tt'"
+                      decoration-info="state=='xac_nhan'"
+                      decoration-success="state=='dong_nt'"
+                      decoration-muted="state=='huy'">
+                    <field name="bsd_ma_nt"/>
+                    <field name="bsd_ngay_tao_nt"/>
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_unit_id"/>
+                    <field name="bsd_khach_hang_id"/>
+                    <field name="bsd_hd_ban_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_nghiem_thu_filter">
+            <field name="name">bsd.nghiem_thu.list.filter</field>
+            <field name="model">bsd.nghiem_thu</field>
+            <field name="arch" type="xml">
+                <search string="Lọc dữ liệu">
+                    <field name="bsd_hd_ban_id"/>
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_khach_hang_id"/>
+                    <field name="bsd_unit_id"/>
+                    <field name="state"/>
+                    <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_tb_filter"/>
+                    <group expand="0" string="Group by">
+                        <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                        <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
+                        <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
+                        <filter string="Hợp đồng" name="bsd_hd_ban_id" domain="[]" context="{'group_by': 'bsd_hd_ban_id'}"/>
+                        <filter string="Trạng thái" name="state" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_nghiem_thu_action">
+            <field name="name">Nghiệm thu</field>
+            <field name="res_model">bsd.nghiem_thu</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="xml">
+                <p>Tạo nghiệm thu</p>
+            </field>
+        </record>
+    </data>
 </odoo>

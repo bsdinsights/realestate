@@ -1,157 +1,157 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_pl_tti_form">
-        <field name="name">bsd.pl_tti.form</field>
-        <field name="model">bsd.pl_tti</field>
-        <field name="arch" type="xml">
-            <form duplicate="false">
-                <header>
-                    <button string="Xác nhận"
-                            name="action_xac_nhan"
-                            confirm="Bạn có muốn xác nhận phụ lục hợp đồng không?"
-                            attrs="{'invisible': ['|', ('state', '!=', 'nhap'),('id', '=', False)]}"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Duyệt"
-                            name="action_duyet"
-                            comfirm="Bạn có chắc muốn duyệt phụ lục hợp đồng này?"
-                            states="xac_nhan"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Ký phụ lục"
-                            name="action_ky_pl"
-                            states="duyet"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Không duyệt"
-                            name="action_khong_duyet"
-                            states="xac_nhan"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Hủy"
-                            name="action_huy"
-                            states="nhap,xac_nhan"
-                            ttrs="{'invisible': ['|',('id', '=',False)]}"
-                            type="object"/>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
-                </header>
-                <sheet>
-                    <group>
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_pl_tti_form">
+            <field name="name">bsd.pl_tti.form</field>
+            <field name="model">bsd.pl_tti</field>
+            <field name="arch" type="xml">
+                <form duplicate="false">
+                    <header>
+                        <button string="Xác nhận"
+                                name="action_xac_nhan"
+                                confirm="Bạn có muốn xác nhận phụ lục hợp đồng không?"
+                                attrs="{'invisible': ['|', ('state', '!=', 'nhap'),('id', '=', False)]}"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Duyệt"
+                                name="action_duyet"
+                                comfirm="Bạn có chắc muốn duyệt phụ lục hợp đồng này?"
+                                states="xac_nhan"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Ký phụ lục"
+                                name="action_ky_pl"
+                                states="duyet"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Không duyệt"
+                                name="action_khong_duyet"
+                                states="xac_nhan"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Hủy"
+                                name="action_huy"
+                                states="nhap,xac_nhan"
+                                ttrs="{'invisible': ['|',('id', '=',False)]}"
+                                type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    </header>
+                    <sheet>
                         <group>
-                            <field name="bsd_ma"/>
-                            <field name="bsd_ngay"/>
-                            <field name="bsd_loai_pl"/>
-                            <field name="bsd_khach_hang_id"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_hd_ban_id"
-                                   options="{'no_create':true}"
-                                   domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id])]"/>
-                            <field name="bsd_dien_giai"/>
-                        </group>
-                        <group>
-                            <field name="bsd_du_an_id" readonly="1" force_save="1"/>
-                            <field name="bsd_unit_id" readonly="1" force_save="1"/>
-                            <field name="bsd_cn_dttt_unit_id"
-                                   attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"
-                                   options="{'no_create':true}"/>
-                            <label for="bsd_dt_tt_tk" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"/>
-                            <div class="o_row no-gutters d-flex" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}">
-                                <field name="bsd_dt_tt_tk" class="mr-1" readonly="1" force_save="1"
-                                       attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"/>
-                                <span>m2</span>
-                            </div>
-                            <label for="bsd_dt_tt_tt" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"/>
-                            <div class="o_row no-gutters d-flex" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}">
-                                <field name="bsd_dt_tt_tt" class="mr-1" readonly="1" force_save="1"
-                                       attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"/>
-                                <span>m2</span>
-                            </div>
-                            <label for="bsd_cl_cp" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"/>
-                            <div class="o_row no-gutters d-flex" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}">
-                                <field name="bsd_cl_cp" class="mr-1" readonly="1"
-                                        attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"
-                                       force_save="1"/>
-                                <span>%</span>
-                            </div>
-                            <label for="bsd_cl_tt" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"/>
-                            <div class="o_row no-gutters d-flex" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}">
-                                <field name="bsd_cl_tt" class="mr-1" readonly="1"
-                                        attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"
-                                       force_save="1"/>
-                                <span>%</span>
-                            </div>
-                            <field name="bsd_ten_unit_moi"
-                                   attrs="{'invisible':[('bsd_loai_pl','=', 'dien_tich')],
-                                           'required':[('bsd_loai_pl','=','ten_ch')]}"/>
-                            <field name="bsd_ten_unit_cu"
-                                   attrs="{'invisible':[('bsd_loai_pl','=', 'dien_tich')]}"/>
-                        </group>
-                    </group>
-                            <group string="XÉT DUYỆT">
-                                <group>
-                                    <field name="bsd_ngay_xn"/>
-                                    <field name="bsd_nguoi_xn_id"/>
-                                    <field name="bsd_ngay_huy"/>
-                                    <field name="bsd_nguoi_huy_id"/>
-                                    <field name="bsd_ly_do_huy"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_ngay_duyet"/>
-                                    <field name="bsd_nguoi_duyet_id"/>
-                                    <field name="bsd_ngay_ky_pl"/>
-                                    <field name="bsd_nguoi_xn_ky_id"/>
-                                    <field name="bsd_ly_do"/>
-                                </group>
+                            <group>
+                                <field name="bsd_ma"/>
+                                <field name="bsd_ngay"/>
+                                <field name="bsd_loai_pl"/>
+                                <field name="bsd_khach_hang_id"
+                                       options="{'no_create':true}"/>
+                                <field name="bsd_hd_ban_id"
+                                       options="{'no_create':true}"
+                                       domain="[('bsd_khach_hang_id', 'in', [bsd_khach_hang_id])]"/>
+                                <field name="bsd_dien_giai"/>
                             </group>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
-            </form>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_pl_tti_tree">
-        <field name="name">bsd.pl_tti.tree</field>
-        <field name="model">bsd.pl_tti</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="bsd_ma"/>
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_khach_hang_id"/>
-                <field name="bsd_hd_ban_id"/>
-                <field name="bsd_unit_id"/>
-                <field name="state"/>
-            </tree>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="bsd_pl_tti_filter">
-        <field name="name">bsd.pl_tti.list.filter</field>
-        <field name="model">bsd.pl_tti</field>
-        <field name="arch" type="xml">
-            <search string="Lọc dữ liệu">
-                <field name="bsd_ma"/>
-                <field name="bsd_khach_hang_id"/>
-                <field name="bsd_unit_id"/>
-                <field name="bsd_du_an_id"/>
-                <filter string="Phụ lục HĐ của tôi" domain="[('create_uid', '=', uid)]" name="my_pl_dsh_filter"/>
-                <group expand="0" string="Group by">
-                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
-                    <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
-                    <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
-
-    <record model="ir.actions.act_window" id="bsd_pl_tti_action">
-        <field name="name">PL thay đổi thông tin</field>
-        <field name="res_model">bsd.pl_tti</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="xml">
-            <p>Tạo phụ lục hợp đồng thay đổi thông tin</p>
-        </field>
-    </record>
+                            <group>
+                                <field name="bsd_du_an_id" readonly="1" force_save="1"/>
+                                <field name="bsd_unit_id" readonly="1" force_save="1"/>
+                                <field name="bsd_cn_dttt_unit_id"
+                                       attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"
+                                       options="{'no_create':true}"/>
+                                <label for="bsd_dt_tt_tk" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"/>
+                                <div class="o_row no-gutters d-flex" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}">
+                                    <field name="bsd_dt_tt_tk" class="mr-1" readonly="1" force_save="1"
+                                           attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"/>
+                                    <span>m2</span>
+                                </div>
+                                <label for="bsd_dt_tt_tt" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"/>
+                                <div class="o_row no-gutters d-flex" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}">
+                                    <field name="bsd_dt_tt_tt" class="mr-1" readonly="1" force_save="1"
+                                           attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"/>
+                                    <span>m2</span>
+                                </div>
+                                <label for="bsd_cl_cp" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"/>
+                                <div class="o_row no-gutters d-flex" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}">
+                                    <field name="bsd_cl_cp" class="mr-1" readonly="1"
+                                            attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"
+                                           force_save="1"/>
+                                    <span>%</span>
+                                </div>
+                                <label for="bsd_cl_tt" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"/>
+                                <div class="o_row no-gutters d-flex" attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}">
+                                    <field name="bsd_cl_tt" class="mr-1" readonly="1"
+                                            attrs="{'invisible': [('bsd_loai_pl','=','ten_ch')]}"
+                                           force_save="1"/>
+                                    <span>%</span>
+                                </div>
+                                <field name="bsd_ten_unit_moi"
+                                       attrs="{'invisible':[('bsd_loai_pl','=', 'dien_tich')],
+                                               'required':[('bsd_loai_pl','=','ten_ch')]}"/>
+                                <field name="bsd_ten_unit_cu"
+                                       attrs="{'invisible':[('bsd_loai_pl','=', 'dien_tich')]}"/>
+                            </group>
+                        </group>
+                                <group string="XÉT DUYỆT">
+                                    <group>
+                                        <field name="bsd_ngay_xn"/>
+                                        <field name="bsd_nguoi_xn_id"/>
+                                        <field name="bsd_ngay_huy"/>
+                                        <field name="bsd_nguoi_huy_id"/>
+                                        <field name="bsd_ly_do_huy"/>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_ngay_duyet"/>
+                                        <field name="bsd_nguoi_duyet_id"/>
+                                        <field name="bsd_ngay_ky_pl"/>
+                                        <field name="bsd_nguoi_xn_ky_id"/>
+                                        <field name="bsd_ly_do"/>
+                                    </group>
+                                </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_pl_tti_tree">
+            <field name="name">bsd.pl_tti.tree</field>
+            <field name="model">bsd.pl_tti</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="bsd_ma"/>
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_khach_hang_id"/>
+                    <field name="bsd_hd_ban_id"/>
+                    <field name="bsd_unit_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_pl_tti_filter">
+            <field name="name">bsd.pl_tti.list.filter</field>
+            <field name="model">bsd.pl_tti</field>
+            <field name="arch" type="xml">
+                <search string="Lọc dữ liệu">
+                    <field name="bsd_ma"/>
+                    <field name="bsd_khach_hang_id"/>
+                    <field name="bsd_unit_id"/>
+                    <field name="bsd_du_an_id"/>
+                    <filter string="Phụ lục HĐ của tôi" domain="[('create_uid', '=', uid)]" name="my_pl_dsh_filter"/>
+                    <group expand="0" string="Group by">
+                        <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                        <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
+                        <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_pl_tti_action">
+            <field name="name">PL thay đổi thông tin</field>
+            <field name="res_model">bsd.pl_tti</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="xml">
+                <p>Tạo phụ lục hợp đồng thay đổi thông tin</p>
+            </field>
+        </record>
+    </data>
 </odoo>

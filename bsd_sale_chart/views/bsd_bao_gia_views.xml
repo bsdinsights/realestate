@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-
     <record model="ir.ui.view" id="bsd_bao_gia_form_popup_2">
         <field name="name">bsd.bao_gia.form</field>
         <field name="model">bsd.bao_gia</field>

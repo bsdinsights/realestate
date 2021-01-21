@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_du_an_inherit_form">
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_du_an_inherit_form">
         <field name="name">bsd.du_an.form</field>
         <field name="model">bsd.du_an</field>
         <field name="inherit_id" ref="bsd_du_an.bsd_du_an_form"/>
@@ -53,4 +54,5 @@
             </xpath>
         </field>
     </record>
+    </data>
 </odoo>

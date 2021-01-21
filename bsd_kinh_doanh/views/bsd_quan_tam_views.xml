@@ -1,112 +1,109 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_quan_tam_form">
-        <field name="name">bsd.quan_tam.form</field>
-        <field name="model">bsd.quan_tam</field>
-        <field name="arch" type="xml">
-            <form duplicate="false">
-                <header>
-                    <button string="Xác nhận"
-                            name="action_xac_nhan"
-                            class="oe_highlight"
-                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
-                            type="object"/>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
-                </header>
-                <sheet>
-                    <group>
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_quan_tam_form">
+            <field name="name">bsd.quan_tam.form</field>
+            <field name="model">bsd.quan_tam</field>
+            <field name="arch" type="xml">
+                <form duplicate="false">
+                    <header>
+                        <button string="Xác nhận"
+                                name="action_xac_nhan"
+                                class="oe_highlight"
+                                attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                                type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    </header>
+                    <sheet>
                         <group>
-                            <field name="bsd_ngay_qt" readonly="1" force_save="1"/>
-                            <field name="bsd_khach_hang_id"
-                                   context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_nvbh_id" options="{'no_create':true}"/>
+                            <group>
+                                <field name="bsd_ngay_qt" readonly="1" force_save="1"/>
+                                <field name="bsd_khach_hang_id"
+                                       context="{'form_view_ref': 'bsd_kinh_doanh.bsd_res_partner_cn_form'}"
+                                       options="{'no_create':true}"/>
+                                <field name="bsd_nvbh_id" options="{'no_create':true}"/>
+                            </group>
+                            <group>
+                                <field name="bsd_du_an_id"
+                                       domain="[('state','=','phat_hanh')]"
+                                       options="{'no_create':true}"/>
+                                <field name="bsd_unit_id"
+                                       context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                       options="{'no_create':true}"
+                                       domain="[('bsd_du_an_id', 'in',[bsd_du_an_id]),
+                                                ('state','in',['chuan_bi','san_sang','dat_cho','giu_cho'])]"/>
+                                <field name="bsd_ngay_hh_qt"/>
+                                <field name="bsd_dien_giai"/>
+                            </group>
                         </group>
-                        <group>
-                            <field name="bsd_du_an_id"
-                                   domain="[('state','=','phat_hanh')]"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_unit_id"
-                                   context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
-                                   options="{'no_create':true}"
-                                   domain="[('bsd_du_an_id', 'in',[bsd_du_an_id]),
-                                            ('state','in',['chuan_bi','san_sang','dat_cho','giu_cho'])]"/>
-                            <field name="bsd_ngay_hh_qt"/>
-                            <field name="bsd_dien_giai"/>
-                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_quan_tam_tree">
+            <field name="name">bsd.quan_tam.tree</field>
+            <field name="model">bsd.quan_tam</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="bsd_ngay_qt"/>
+                    <field name="bsd_khach_hang_id"/>
+                    <field name="bsd_nvbh_id"/>
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_unit_id"/>
+                    <field name="bsd_ngay_hh_qt"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_quan_tam_pivot">
+            <field name="name">bsd.quan_tam.pivot</field>
+            <field name="model">bsd.quan_tam</field>
+            <field name="arch" type="xml">
+                <pivot>
+                    <field name="bsd_khach_hang_id" type="row"/>
+                    <field name="bsd_nvbh_id" type="col"/>
+                </pivot>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_quan_tam_filter">
+            <field name="name">bsd.quan_tam.list.filter</field>
+            <field name="model">bsd.quan_tam</field>
+            <field name="arch" type="xml">
+                <search string="Lọc dữ liệu">
+                    <field name="bsd_khach_hang_id"/>
+                    <field name="bsd_nvbh_id"/>
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_unit_id"/>
+                    <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_quan_tam_filter"/>
+                    <group expand="0" string="Group by">
+                        <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                        <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
+                        <filter string="Sản phẩm" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
                     </group>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
-            </form>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_quan_tam_tree">
-        <field name="name">bsd.quan_tam.tree</field>
-        <field name="model">bsd.quan_tam</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="bsd_ngay_qt"/>
-                <field name="bsd_khach_hang_id"/>
-                <field name="bsd_nvbh_id"/>
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_unit_id"/>
-                <field name="bsd_ngay_hh_qt"/>
-                <field name="state"/>
-            </tree>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="bsd_quan_tam_pivot">
-        <field name="name">bsd.quan_tam.pivot</field>
-        <field name="model">bsd.quan_tam</field>
-        <field name="arch" type="xml">
-            <pivot>
-                <field name="bsd_khach_hang_id" type="row"/>
-                <field name="bsd_nvbh_id" type="col"/>
-            </pivot>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="bsd_quan_tam_filter">
-        <field name="name">bsd.quan_tam.list.filter</field>
-        <field name="model">bsd.quan_tam</field>
-        <field name="arch" type="xml">
-            <search string="Lọc dữ liệu">
-                <field name="bsd_khach_hang_id"/>
-                <field name="bsd_nvbh_id"/>
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_unit_id"/>
-                <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_quan_tam_filter"/>
-                <group expand="0" string="Group by">
-                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
-                    <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
-                    <filter string="Sản phẩm" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="bsd_quan_tam_graph">
-        <field name="name">bsd.quan_tam.graph</field>
-        <field name="model">bsd.quan_tam</field>
-        <field name="arch" type="xml">
-            <graph>
-                <field name="bsd_khach_hang_id"/>
-            </graph>
-        </field>
-    </record>
-
-    <record model="ir.actions.act_window" id="bsd_quan_tam_action">
-        <field name="name">Quan tâm</field>
-        <field name="res_model">bsd.quan_tam</field>
-        <field name="view_mode">tree,pivot,graph,activity,form</field>
-        <field name="help" type="xml">
-            <p>Tạo phiếu quan tâm</p>
-        </field>
-    </record>
-    
+                </search>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_quan_tam_graph">
+            <field name="name">bsd.quan_tam.graph</field>
+            <field name="model">bsd.quan_tam</field>
+            <field name="arch" type="xml">
+                <graph>
+                    <field name="bsd_khach_hang_id"/>
+                </graph>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_quan_tam_action">
+            <field name="name">Quan tâm</field>
+            <field name="res_model">bsd.quan_tam</field>
+            <field name="view_mode">tree,pivot,graph,activity,form</field>
+            <field name="help" type="xml">
+                <p>Tạo phiếu quan tâm</p>
+            </field>
+        </record>
+    </data>
 </odoo>

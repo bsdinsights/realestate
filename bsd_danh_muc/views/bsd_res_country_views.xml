@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_res_country_state_inherit_tree">
-        <field name="name">bsd.res.country.state.tree</field>
-        <field name="model">res.country.state</field>
-        <field name="inherit_id" ref="base.view_country_state_tree"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='name']" position="before">
-                <field name="sequence" widget="handle"/>
-            </xpath>
-            <xpath expr="//field[@name='country_id']" position="after">
-                <field name="state"/>
-            </xpath>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="bsd_res_country_inherit_tree">
-        <field name="name">bsd.res.country.tree</field>
-        <field name="model">res.country</field>
-        <field name="inherit_id" ref="base.view_country_tree"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='name']" position="before">
-                <field name="sequence" widget="handle"/>
-            </xpath>
-            <xpath expr="//field[@name='code']" position="after">
-                <field name="state"/>
-            </xpath>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_res_country_inherit_form">
-        <field name="name">bsd.res.country.form</field>
-        <field name="model">res.country</field>
-        <field name="inherit_id" ref="base.view_country_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='vat_label']" position="after">
-                <field name="state" widget="radio"/>
-                <field name="sequence"/>
-            </xpath>
-        </field>
-    </record>
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_res_country_state_inherit_tree">
+            <field name="name">bsd.res.country.state.tree</field>
+            <field name="model">res.country.state</field>
+            <field name="inherit_id" ref="base.view_country_state_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="sequence" widget="handle"/>
+                </xpath>
+                <xpath expr="//field[@name='country_id']" position="after">
+                    <field name="state"/>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_res_country_inherit_tree">
+            <field name="name">bsd.res.country.tree</field>
+            <field name="model">res.country</field>
+            <field name="inherit_id" ref="base.view_country_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="sequence" widget="handle"/>
+                </xpath>
+                <xpath expr="//field[@name='code']" position="after">
+                    <field name="state"/>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_res_country_inherit_form">
+            <field name="name">bsd.res.country.form</field>
+            <field name="model">res.country</field>
+            <field name="inherit_id" ref="base.view_country_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vat_label']" position="after">
+                    <field name="state" widget="radio"/>
+                    <field name="sequence"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
 </odoo>

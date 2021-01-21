@@ -1,372 +1,371 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_cs_tt_form">
-        <field name="name">bsd.cs_tt.form</field>
-        <field name="model">bsd.cs_tt</field>
-        <field name="arch" type="xml">
-            <form delete="false">
-                <header>
-                    <button string="Xác nhận"
-                            name="action_xac_nhan"
-                            class="oe_highlight"
-                            confirm="Bạn có muốn Xác nhận yêu cầu không?"
-                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
-                            type="object"/>
-                    <button string="Duyệt"
-                            name="action_duyet"
-                            class="oe_highlight"
-                            states="xac_nhan"
-                            confirm="Bạn có muốn Duyệt yêu cầu không?"
-                            type="object"/>
-                    <button string="Không duyệt"
-                            name="action_khong_duyet"
-                            class="oe_highlight"
-                            states="xac_nhan"
-                            type="object"
-                            confirm="Bạn có muốn Từ chối yêu cầu không?"/>
-                    <button string="Hủy"
-                            name="action_huy"
-                            states="xac_nhan"
-                            confirm="Bạn có muốn Hủy yêu cầu không?"
-                            type="object"/>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
-                </header>
-                <sheet>
-                    <notebook>
-                        <page string="Thông tin chung">
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_cs_tt_form">
+            <field name="name">bsd.cs_tt.form</field>
+            <field name="model">bsd.cs_tt</field>
+            <field name="arch" type="xml">
+                <form delete="false">
+                    <header>
+                        <button string="Xác nhận"
+                                name="action_xac_nhan"
+                                class="oe_highlight"
+                                confirm="Bạn có muốn Xác nhận yêu cầu không?"
+                                attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                                type="object"/>
+                        <button string="Duyệt"
+                                name="action_duyet"
+                                class="oe_highlight"
+                                states="xac_nhan"
+                                confirm="Bạn có muốn Duyệt yêu cầu không?"
+                                type="object"/>
+                        <button string="Không duyệt"
+                                name="action_khong_duyet"
+                                class="oe_highlight"
+                                states="xac_nhan"
+                                type="object"
+                                confirm="Bạn có muốn Từ chối yêu cầu không?"/>
+                        <button string="Hủy"
+                                name="action_huy"
+                                states="xac_nhan"
+                                confirm="Bạn có muốn Hủy yêu cầu không?"
+                                type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    </header>
+                    <sheet>
+                        <notebook>
+                            <page string="Thông tin chung">
+                                <group>
+                                    <group>
+                                        <field name="bsd_ma_cstt"/>
+                                        <field name="bsd_ten_cstt"/>
+                                        <field name="bsd_du_an_id"
+                                               domain="[('state', '=', 'phat_hanh')]"
+                                               options="{'no_create':true}"/>
+                                        <field name="bsd_lai_phat_tt_id"
+                                               domain="[('state', '=', 'active'),
+                                                        ('bsd_du_an_id', '=', bsd_du_an_id)]"
+                                               options="{'no_create':true}"/>
+                                        <field name="bsd_ngay_tinh"/>
+                                        <label for="bsd_dk_hd"/>
+                                        <div class="o_row d-flex no-gutters">
+                                            <field name="bsd_dk_hd" class="mr-1"/>
+                                            <span>%</span>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_tu_ngay"/>
+                                        <field name="bsd_den_ngay"/>
+                                        <field name="bsd_dien_giai"/>
+                                        <field name="bsd_nguoi_duyet_id"/>
+                                        <field name="bsd_ngay_duyet"/>
+                                        <field name="bsd_ly_do"/>
+
+                                    </group>
+                                </group >
+                                <group string="PHẠT THANH LÝ">
+                                    <group>
+                                        <label for="bsd_phat_dc"/>
+                                        <div class="o_row d-flex no-gutters">
+                                            <field name="bsd_phat_dc" class="mr-1"/>
+                                            <span>%</span>
+                                        </div>
+                                        <label for="bsd_phat_ttdc"/>
+                                        <div class="o_row d-flex no-gutters">
+                                            <field name="bsd_phat_ttdc" class="mr-1"/>
+                                            <span>%</span>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <label for="bsd_phat_hd"/>
+                                        <div class="o_row d-flex no-gutters">
+                                            <field name="bsd_phat_hd" class="mr-1"/>
+                                            <span>%</span>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group string="Thông báo">
+                                    <group>
+                                        <label for="bsd_tb_tt"/>
+                                        <div class="o_row d-flex no-gutters">
+                                            <field name="bsd_tb_tt" class="mr-1"/>
+                                            <span>ngày</span>
+                                        </div>
+                                        <label for="bsd_tl_hd"/>
+                                        <div class="o_row d-flex no-gutters">
+                                            <field name="bsd_tl_hd" class="mr-1"/>
+                                            <span>ngày</span>
+                                        </div>
+                                        <label for="bsd_qh_tt"/>
+                                        <div class="o_row d-flex no-gutters">
+                                            <field name="bsd_qh_tt" class="mr-1"/>
+                                            <span>ngày</span>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <label for="bsd_canh_bao1"/>
+                                        <div class="o_row d-flex no-gutters">
+                                            <field name="bsd_tl_cb1" class="mr-1"/>
+                                            <field name="bsd_canh_bao1" class="mr-1" attrs="{'readonly':[('bsd_tl_cb1','=',False)]}"/>
+                                            <span>ngày</span>
+                                        </div>
+                                        <label for="bsd_canh_bao2"/>
+                                        <div class="o_row d-flex no-gutters">
+                                            <field name="bsd_tl_cb2" class="mr-1"/>
+                                            <field name="bsd_canh_bao2" class="mr-1" attrs="{'readonly':[('bsd_tl_cb2','=',False)]}"/>
+                                            <span>ngày</span>
+                                        </div>
+                                        <label for="bsd_canh_bao3"/>
+                                        <div class="o_row d-flex no-gutters">
+                                            <field name="bsd_tl_cb3" class="mr-1"/>
+                                            <field name="bsd_canh_bao3" class="mr-1" attrs="{'readonly':[('bsd_tl_cb3','=',False)]}"/>
+                                            <span>ngày</span>
+                                        </div>
+                                        <label for="bsd_canh_bao4"/>
+                                        <div class="o_row d-flex no-gutters">
+                                            <field name="bsd_tl_cb4" class="mr-1"/>
+                                            <field name="bsd_canh_bao4" class="mr-1" attrs="{'readonly':[('bsd_tl_cb4','=',False)]}"/>
+                                            <span>ngày</span>
+                                        </div>
+                                        <label for="bsd_canh_bao5"/>
+                                        <div class="o_row d-flex no-gutters">
+                                            <field name="bsd_tl_cb5" class="mr-1"/>
+                                            <field name="bsd_canh_bao5" class="mr-1" attrs="{'readonly':[('bsd_tl_cb5','=',False)]}"/>
+                                            <span>ngày</span>
+                                        </div>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Đợt thanh toán" attrs="{'invisible':[('id', '=', False)]}">
+                                <field name="bsd_ct_ids">
+                                    <tree create="false">
+                                        <field name="bsd_stt"/>
+                                        <field name="bsd_dot_tt"/>
+                                        <field name="bsd_cach_tinh"/>
+                                        <field name="bsd_tl_tt"/>
+                                        <field name="bsd_ngay_cd"/>
+                                        <field name="bsd_dot_cuoi"/>
+                                        <field name="bsd_dot_ky_hd"/>
+                                        <field name="bsd_bg_tam"/>
+                                        <field name="bsd_tinh_pbt"/>
+                                        <field name="bsd_tinh_pql"/>
+                                    </tree>
+                                    <form duplicate="false">
+                                        <sheet>
+                                            <group>
+                                                <group>
+                                                    <field name="bsd_cs_tt_id" invisible="1"/>
+                                                    <field name="bsd_stt"/>
+                                                    <field name="bsd_dot_tt"/>
+                                                    <field name="bsd_dot_cuoi"/>
+                                                    <field name="bsd_dot_ky_hd"/>
+                                                </group>
+                                                <group>
+                                                    <field name="bsd_cach_tinh"
+                                                           attrs="{'readonly':[('bsd_dot_cuoi', '=',True)],
+                                                                    'required':[('bsd_dot_cuoi', '=',False)]}"/>
+                                                    <field name="bsd_ngay_cd" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'cd')],
+                                                                                      'required':[('bsd_cach_tinh', '=','cd')]}"/>
+                                                    <label for="bsd_tl_tt"/>
+                                                    <div class="o_row d-flex no-gutters">
+                                                        <field name="bsd_tl_tt" class="mr-1"/>
+                                                        <span>%</span>
+                                                    </div>
+                                                    <field name="bsd_bg_tam"/>
+                                                    <field name="bsd_dien_giai"/>
+                                                </group>
+                                            </group>
+                                            <group string="Hạn thanh toán">
+                                                <group>
+                                                    <field name="bsd_tiep_theo" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
+                                                                                        'required':[('bsd_cach_tinh', '=','td')]}"/>
+                                                    <field name="bsd_so_ngay"
+                                                           attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_tiep_theo','=','thang')],
+                                                                    'required':[('bsd_tiep_theo','=','ngay')]}"/>
+                                                </group>
+                                                <group>
+                                                    <field name="bsd_so_thang"
+                                                           attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_tiep_theo','=','ngay')],
+                                                                    'required':[('bsd_tiep_theo','=','thang')]}"/>
+                                                    <p colspan="2" class="oe_grey" attrs="{'invisible': [('bsd_lap_lai','!=','1')]}">
+                                                        <ul>
+                                                            Số lần lặp lại đã bao gồm đợt thanh toán này.
+                                                            <li>
+                                                                Ví dụ: nhập số lần lặp = 7 thì hệ thống sẽ tự động tạo 7 đợt như nhau.
+                                                            </li>
+                                                        </ul>
+                                                    </p>
+                                                </group>
+                                            </group>
+                                            <group string="Đợt thanh toán">
+                                                <group>
+                                                    <field name="bsd_lap_lai" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
+                                                                                      'required':[('bsd_cach_tinh', '=','td')]}"/>
+                                                    <field name="bsd_ngay_thang" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
+                                                                                         'required':[('bsd_lap_lai','=','1')]}"/>
+                                                </group>
+                                                <group>
+                                                    <field name="bsd_so_dot"
+                                                           attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_lap_lai','=','0')],
+                                                                   'required':[('bsd_lap_lai','=','1')]}"/>
+                                                    <field name="bsd_ngay_gh"
+                                                           attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
+                                                                   'required':[('bsd_lap_lai','=','1')]}"/>
+                                                </group>
+                                            </group>
+                                            <group string="Bàn giao">
+                                                <group>
+                                                    <field name="bsd_tinh_pbt"/>
+                                                </group>
+                                                <group>
+                                                    <field name="bsd_tinh_pql"/>
+                                                </group>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                                <button string="Thêm đợt"
+                                        type="object"
+                                        name="action_them_dot"
+                                        states="nhap"
+                                        class="oe_highlight oe_right"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_cs_tt_tree">
+            <field name="name">bsd.cs_tt.tree</field>
+            <field name="model">bsd.cs_tt</field>
+            <field name="arch" type="xml">
+                <tree delete="false">
+                    <field name="bsd_ma_cstt"/>
+                    <field name="bsd_ten_cstt"/>
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_ngay_tinh"/>
+                    <field name="bsd_tu_ngay"/>
+                    <field name="bsd_den_ngay"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_cs_tt_filter">
+            <field name="name">bsd.cs_tt.list.filter</field>
+            <field name="model">bsd.cs_tt</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="bsd_ma_cstt"/>
+                    <field name="bsd_ten_cstt"/>
+                    <field name="bsd_du_an_id"/>
+                    <group expand="0" string="Group by">
+                        <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                        <filter string="Ngày tính" name="bsd_ngay_tinh" domain="[]" context="{'group_by': 'bsd_ngay_tinh'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_cs_tt_action">
+            <field name="name">Phương thức thanh toán</field>
+            <field name="res_model">bsd.cs_tt</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="xml">
+                <p>Tạo phương thức thanh toán</p>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_cs_tt_ct_form">
+            <field name="name">bsd.cs_tt_ct.form</field>
+            <field name="model">bsd.cs_tt_ct</field>
+            <field name="arch" type="xml">
+                <form duplicate="false">
+                    <sheet>
+                        <group>
                             <group>
-                                <group>
-                                    <field name="bsd_ma_cstt"/>
-                                    <field name="bsd_ten_cstt"/>
-                                    <field name="bsd_du_an_id"
-                                           domain="[('state', '=', 'phat_hanh')]"
-                                           options="{'no_create':true}"/>
-                                    <field name="bsd_lai_phat_tt_id"
-                                           domain="[('state', '=', 'active'),
-                                                    ('bsd_du_an_id', '=', bsd_du_an_id)]"
-                                           options="{'no_create':true}"/>
-                                    <field name="bsd_ngay_tinh"/>
-                                    <label for="bsd_dk_hd"/>
-                                    <div class="o_row d-flex no-gutters">
-                                        <field name="bsd_dk_hd" class="mr-1"/>
-                                        <span>%</span>
-                                    </div>
-                                </group>
-                                <group>
-                                    <field name="bsd_tu_ngay"/>
-                                    <field name="bsd_den_ngay"/>
-                                    <field name="bsd_dien_giai"/>
-                                    <field name="bsd_nguoi_duyet_id"/>
-                                    <field name="bsd_ngay_duyet"/>
-                                    <field name="bsd_ly_do"/>
-
-                                </group>
-                            </group >
-                            <group string="PHẠT THANH LÝ">
-                                <group>
-                                    <label for="bsd_phat_dc"/>
-                                    <div class="o_row d-flex no-gutters">
-                                        <field name="bsd_phat_dc" class="mr-1"/>
-                                        <span>%</span>
-                                    </div>
-                                    <label for="bsd_phat_ttdc"/>
-                                    <div class="o_row d-flex no-gutters">
-                                        <field name="bsd_phat_ttdc" class="mr-1"/>
-                                        <span>%</span>
-                                    </div>
-                                </group>
-                                <group>
-                                    <label for="bsd_phat_hd"/>
-                                    <div class="o_row d-flex no-gutters">
-                                        <field name="bsd_phat_hd" class="mr-1"/>
-                                        <span>%</span>
-                                    </div>
-                                </group>
+                                <field name="bsd_cs_tt_id" invisible="1"/>
+                                <field name="bsd_stt"/>
+                                <field name="bsd_dot_tt"/>
+                                <field name="bsd_dot_cuoi"/>
+                                <field name="bsd_dot_ky_hd"/>
                             </group>
-                            <group string="Thông báo">
-                                <group>
-                                    <label for="bsd_tb_tt"/>
-                                    <div class="o_row d-flex no-gutters">
-                                        <field name="bsd_tb_tt" class="mr-1"/>
-                                        <span>ngày</span>
-                                    </div>
-                                    <label for="bsd_tl_hd"/>
-                                    <div class="o_row d-flex no-gutters">
-                                        <field name="bsd_tl_hd" class="mr-1"/>
-                                        <span>ngày</span>
-                                    </div>
-                                    <label for="bsd_qh_tt"/>
-                                    <div class="o_row d-flex no-gutters">
-                                        <field name="bsd_qh_tt" class="mr-1"/>
-                                        <span>ngày</span>
-                                    </div>
-                                </group>
-                                <group>
-                                    <label for="bsd_canh_bao1"/>
-                                    <div class="o_row d-flex no-gutters">
-                                        <field name="bsd_tl_cb1" class="mr-1"/>
-                                        <field name="bsd_canh_bao1" class="mr-1" attrs="{'readonly':[('bsd_tl_cb1','=',False)]}"/>
-                                        <span>ngày</span>
-                                    </div>
-                                    <label for="bsd_canh_bao2"/>
-                                    <div class="o_row d-flex no-gutters">
-                                        <field name="bsd_tl_cb2" class="mr-1"/>
-                                        <field name="bsd_canh_bao2" class="mr-1" attrs="{'readonly':[('bsd_tl_cb2','=',False)]}"/>
-                                        <span>ngày</span>
-                                    </div>
-                                    <label for="bsd_canh_bao3"/>
-                                    <div class="o_row d-flex no-gutters">
-                                        <field name="bsd_tl_cb3" class="mr-1"/>
-                                        <field name="bsd_canh_bao3" class="mr-1" attrs="{'readonly':[('bsd_tl_cb3','=',False)]}"/>
-                                        <span>ngày</span>
-                                    </div>
-                                    <label for="bsd_canh_bao4"/>
-                                    <div class="o_row d-flex no-gutters">
-                                        <field name="bsd_tl_cb4" class="mr-1"/>
-                                        <field name="bsd_canh_bao4" class="mr-1" attrs="{'readonly':[('bsd_tl_cb4','=',False)]}"/>
-                                        <span>ngày</span>
-                                    </div>
-                                    <label for="bsd_canh_bao5"/>
-                                    <div class="o_row d-flex no-gutters">
-                                        <field name="bsd_tl_cb5" class="mr-1"/>
-                                        <field name="bsd_canh_bao5" class="mr-1" attrs="{'readonly':[('bsd_tl_cb5','=',False)]}"/>
-                                        <span>ngày</span>
-                                    </div>
-                                </group>
+                            <group>
+                                <field name="bsd_cach_tinh"
+                                       attrs="{'readonly':[('bsd_dot_cuoi', '=',True)],
+                                                'required':[('bsd_dot_cuoi', '=',False)]}"/>
+                                <field name="bsd_ngay_cd" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'cd')],
+                                                                  'required':[('bsd_cach_tinh', '=','cd')]}"/>
+                                <label for="bsd_tl_tt"/>
+                                <div class="o_row d-flex no-gutters">
+                                    <field name="bsd_tl_tt" class="mr-1"/>
+                                    <span>%</span>
+                                </div>
+                                <field name="bsd_bg_tam"/>
+                                <field name="bsd_dien_giai"/>
                             </group>
-                        </page>
-                        <page string="Đợt thanh toán" attrs="{'invisible':[('id', '=', False)]}">
-                            <field name="bsd_ct_ids">
-                                <tree create="false">
-                                    <field name="bsd_stt"/>
-                                    <field name="bsd_dot_tt"/>
-                                    <field name="bsd_cach_tinh"/>
-                                    <field name="bsd_tl_tt"/>
-                                    <field name="bsd_ngay_cd"/>
-                                    <field name="bsd_dot_cuoi"/>
-                                    <field name="bsd_dot_ky_hd"/>
-                                    <field name="bsd_bg_tam"/>
-                                    <field name="bsd_tinh_pbt"/>
-                                    <field name="bsd_tinh_pql"/>
-                                </tree>
-                                <form duplicate="false">
-                                    <sheet>
-                                        <group>
-                                            <group>
-                                                <field name="bsd_cs_tt_id" invisible="1"/>
-                                                <field name="bsd_stt"/>
-                                                <field name="bsd_dot_tt"/>
-                                                <field name="bsd_dot_cuoi"/>
-                                                <field name="bsd_dot_ky_hd"/>
-                                            </group>
-                                            <group>
-                                                <field name="bsd_cach_tinh"
-                                                       attrs="{'readonly':[('bsd_dot_cuoi', '=',True)],
-                                                                'required':[('bsd_dot_cuoi', '=',False)]}"/>
-                                                <field name="bsd_ngay_cd" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'cd')],
-                                                                                  'required':[('bsd_cach_tinh', '=','cd')]}"/>
-                                                <label for="bsd_tl_tt"/>
-                                                <div class="o_row d-flex no-gutters">
-                                                    <field name="bsd_tl_tt" class="mr-1"/>
-                                                    <span>%</span>
-                                                </div>
-                                                <field name="bsd_bg_tam"/>
-                                                <field name="bsd_dien_giai"/>
-                                            </group>
-                                        </group>
-                                        <group string="Hạn thanh toán">
-                                            <group>
-                                                <field name="bsd_tiep_theo" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
-                                                                                    'required':[('bsd_cach_tinh', '=','td')]}"/>
-                                                <field name="bsd_so_ngay"
-                                                       attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_tiep_theo','=','thang')],
-                                                                'required':[('bsd_tiep_theo','=','ngay')]}"/>
-                                            </group>
-                                            <group>
-                                                <field name="bsd_so_thang"
-                                                       attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_tiep_theo','=','ngay')],
-                                                                'required':[('bsd_tiep_theo','=','thang')]}"/>
-                                                <p colspan="2" class="oe_grey" attrs="{'invisible': [('bsd_lap_lai','!=','1')]}">
-                                                    <ul>
-                                                        Số lần lặp lại đã bao gồm đợt thanh toán này.
-                                                        <li>
-                                                            Ví dụ: nhập số lần lặp = 7 thì hệ thống sẽ tự động tạo 7 đợt như nhau.
-                                                        </li>
-                                                    </ul>
-                                                </p>
-                                            </group>
-                                        </group>
-                                        <group string="Đợt thanh toán">
-                                            <group>
-                                                <field name="bsd_lap_lai" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
-                                                                                  'required':[('bsd_cach_tinh', '=','td')]}"/>
-                                                <field name="bsd_ngay_thang" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
-                                                                                     'required':[('bsd_lap_lai','=','1')]}"/>
-                                            </group>
-                                            <group>
-                                                <field name="bsd_so_dot"
-                                                       attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_lap_lai','=','0')],
-                                                               'required':[('bsd_lap_lai','=','1')]}"/>
-                                                <field name="bsd_ngay_gh"
-                                                       attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
-                                                               'required':[('bsd_lap_lai','=','1')]}"/>
-                                            </group>
-                                        </group>
-                                        <group string="Bàn giao">
-                                            <group>
-                                                <field name="bsd_tinh_pbt"/>
-                                            </group>
-                                            <group>
-                                                <field name="bsd_tinh_pql"/>
-                                            </group>
-                                        </group>
-                                    </sheet>
-                                </form>
-                            </field>
-                            <button string="Thêm đợt"
-                                    type="object"
-                                    name="action_them_dot"
-                                    states="nhap"
-                                    class="oe_highlight oe_right"/>
-                        </page>
-                    </notebook>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
-            </form>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_cs_tt_tree">
-        <field name="name">bsd.cs_tt.tree</field>
-        <field name="model">bsd.cs_tt</field>
-        <field name="arch" type="xml">
-            <tree delete="false">
-                <field name="bsd_ma_cstt"/>
-                <field name="bsd_ten_cstt"/>
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_ngay_tinh"/>
-                <field name="bsd_tu_ngay"/>
-                <field name="bsd_den_ngay"/>
-                <field name="state"/>
-            </tree>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="bsd_cs_tt_filter">
-        <field name="name">bsd.cs_tt.list.filter</field>
-        <field name="model">bsd.cs_tt</field>
-        <field name="arch" type="xml">
-            <search>
-                <field name="bsd_ma_cstt"/>
-                <field name="bsd_ten_cstt"/>
-                <field name="bsd_du_an_id"/>
-                <group expand="0" string="Group by">
-                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
-                    <filter string="Ngày tính" name="bsd_ngay_tinh" domain="[]" context="{'group_by': 'bsd_ngay_tinh'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
-
-    <record model="ir.actions.act_window" id="bsd_cs_tt_action">
-        <field name="name">Phương thức thanh toán</field>
-        <field name="res_model">bsd.cs_tt</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="xml">
-            <p>Tạo phương thức thanh toán</p>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="bsd_cs_tt_ct_form">
-        <field name="name">bsd.cs_tt_ct.form</field>
-        <field name="model">bsd.cs_tt_ct</field>
-        <field name="arch" type="xml">
-            <form duplicate="false">
-                <sheet>
-                    <group>
-                        <group>
-                            <field name="bsd_cs_tt_id" invisible="1"/>
-                            <field name="bsd_stt"/>
-                            <field name="bsd_dot_tt"/>
-                            <field name="bsd_dot_cuoi"/>
-                            <field name="bsd_dot_ky_hd"/>
                         </group>
-                        <group>
-                            <field name="bsd_cach_tinh"
-                                   attrs="{'readonly':[('bsd_dot_cuoi', '=',True)],
-                                            'required':[('bsd_dot_cuoi', '=',False)]}"/>
-                            <field name="bsd_ngay_cd" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'cd')],
-                                                              'required':[('bsd_cach_tinh', '=','cd')]}"/>
-                            <label for="bsd_tl_tt"/>
-                            <div class="o_row d-flex no-gutters">
-                                <field name="bsd_tl_tt" class="mr-1"/>
-                                <span>%</span>
-                            </div>
-                            <field name="bsd_bg_tam"/>
-                            <field name="bsd_dien_giai"/>
+                        <group string="Hạn thanh toán">
+                            <group>
+                                <field name="bsd_tiep_theo" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
+                                                                    'required':[('bsd_cach_tinh', '=','td')]}"/>
+                                <field name="bsd_so_ngay"
+                                       attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_tiep_theo','=','thang')],
+                                                'required':[('bsd_tiep_theo','=','ngay')]}"/>
+                            </group>
+                            <group>
+                                <field name="bsd_so_thang"
+                                       attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_tiep_theo','=','ngay')],
+                                                'required':[('bsd_tiep_theo','=','thang')]}"/>
+                                <p colspan="2" class="oe_grey" attrs="{'invisible': [('bsd_lap_lai','!=','1')]}">
+                                    <ul>
+                                        Số lần lặp lại đã bao gồm đợt thanh toán này.
+                                        <li>
+                                            Ví dụ: nhập số lần lặp = 7 thì hệ thống sẽ tự động tạo 7 đợt như nhau.
+                                        </li>
+                                    </ul>
+                                </p>
+                            </group>
                         </group>
-                    </group>
-                    <group string="Hạn thanh toán">
-                        <group>
-                            <field name="bsd_tiep_theo" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
-                                                                'required':[('bsd_cach_tinh', '=','td')]}"/>
-                            <field name="bsd_so_ngay"
-                                   attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_tiep_theo','=','thang')],
-                                            'required':[('bsd_tiep_theo','=','ngay')]}"/>
+                        <group string="Đợt thanh toán">
+                            <group>
+                                <field name="bsd_lap_lai" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
+                                                                  'required':[('bsd_cach_tinh', '=','td')]}"/>
+                                <field name="bsd_ngay_thang" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
+                                                                     'required':[('bsd_lap_lai','=','1')]}"/>
+                            </group>
+                            <group>
+                                <field name="bsd_so_dot"
+                                       attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_lap_lai','=','0')],
+                                               'required':[('bsd_lap_lai','=','1')]}"/>
+                                <field name="bsd_ngay_gh"
+                                       attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
+                                               'required':[('bsd_lap_lai','=','1')]}"/>
+                            </group>
                         </group>
-                        <group>
-                            <field name="bsd_so_thang"
-                                   attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_tiep_theo','=','ngay')],
-                                            'required':[('bsd_tiep_theo','=','thang')]}"/>
-                            <p colspan="2" class="oe_grey" attrs="{'invisible': [('bsd_lap_lai','!=','1')]}">
-                                <ul>
-                                    Số lần lặp lại đã bao gồm đợt thanh toán này.
-                                    <li>
-                                        Ví dụ: nhập số lần lặp = 7 thì hệ thống sẽ tự động tạo 7 đợt như nhau.
-                                    </li>
-                                </ul>
-                            </p>
+                        <group string="Bàn giao">
+                            <group>
+                                <field name="bsd_tinh_pbt"/>
+                            </group>
+                            <group>
+                                <field name="bsd_tinh_pql"/>
+                            </group>
                         </group>
-                    </group>
-                    <group string="Đợt thanh toán">
-                        <group>
-                            <field name="bsd_lap_lai" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
-                                                              'required':[('bsd_cach_tinh', '=','td')]}"/>
-                            <field name="bsd_ngay_thang" attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
-                                                                 'required':[('bsd_lap_lai','=','1')]}"/>
-                        </group>
-                        <group>
-                            <field name="bsd_so_dot"
-                                   attrs="{'readonly':['|',('bsd_cach_tinh', '!=', 'td'),('bsd_lap_lai','=','0')],
-                                           'required':[('bsd_lap_lai','=','1')]}"/>
-                            <field name="bsd_ngay_gh"
-                                   attrs="{'readonly':[('bsd_cach_tinh', '!=', 'td')],
-                                           'required':[('bsd_lap_lai','=','1')]}"/>
-                        </group>
-                    </group>
-                    <group string="Bàn giao">
-                        <group>
-                            <field name="bsd_tinh_pbt"/>
-                        </group>
-                        <group>
-                            <field name="bsd_tinh_pql"/>
-                        </group>
-                    </group>
-                </sheet>
-                <footer>
-                    <button string="Xác nhận" type="object" name="action_xac_nhan" class="oe_highlight"/>
-                    <button string="Hủy bỏ" special="cancel"/>
-                </footer>
-            </form>
-        </field>
-    </record>
-    <record model="ir.actions.act_window" id="bsd_cs_tt_ct_action_popup">
-        <field name="name">Thêm đợt thanh toán</field>
-        <field name="res_model">bsd.cs_tt_ct</field>
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
-    </record>
+                    </sheet>
+                    <footer>
+                        <button string="Xác nhận" type="object" name="action_xac_nhan" class="oe_highlight"/>
+                        <button string="Hủy bỏ" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_cs_tt_ct_action_popup">
+            <field name="name">Thêm đợt thanh toán</field>
+            <field name="res_model">bsd.cs_tt_ct</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
 </odoo>

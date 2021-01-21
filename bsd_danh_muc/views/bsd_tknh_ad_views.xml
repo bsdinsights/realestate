@@ -1,76 +1,78 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_tknh_ap_form">
-        <field name="name">bsd.tknh_ad.form</field>
-        <field name="model">bsd.tknh_ad</field>
-        <field name="arch" type="xml">
-            <form duplicate="false">
-                <sheet>
-                    <group>
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_tknh_ap_form">
+            <field name="name">bsd.tknh_ad.form</field>
+            <field name="model">bsd.tknh_ad</field>
+            <field name="arch" type="xml">
+                <form duplicate="false">
+                    <sheet>
                         <group>
-                            <field name="bsd_ma_tkad"/>
-                            <field name="bsd_ten_tkad"/>
-                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
-                            <field name="bsd_da_tknh_id" options="{'no_create':true}"/>
-                        </group>
-                        <group>
-                            <field name="bsd_tu_ngay"/>
-                            <field name="bsd_den_ngay"/>
-                            <field name="bsd_dien_giai"/>
-                            <field name="state"/>
-                        </group>
-                    </group>
-                    <notebook>
-                        <page string="Chi tiết">
                             <group>
-                                <group>
-                                    <field name="bsd_tknh_ch_ids"
-                                           nolabel="1"
-                                           context="{'default_bsd_du_an_id': bsd_du_an_id}">
-                                        <tree editable="bottom">
-                                            <field name="bsd_can_ho_id"
-                                                   options="{'no_create':true}"
-                                                   domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
-                                            <field name="bsd_so_tk"/>
-                                            <field name="state"/>
-                                            <field name="bsd_du_an_id" invisible="1"/>
-                                            <field name="bsd_ma_tkad_id" invisible="1"/>
-                                        </tree>
-                                    </field>
-                                </group>
+                                <field name="bsd_ma_tkad"/>
+                                <field name="bsd_ten_tkad"/>
+                                <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                                <field name="bsd_da_tknh_id" options="{'no_create':true}"/>
                             </group>
-                        </page>
-                    </notebook>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
-            </form>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_tknh_ad_tree">
-        <field name="name">bsd.tknh_ad.tree</field>
-        <field name="model">bsd.tknh_ad</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_ma_tkad"/>
-                <field name="bsd_ten_tkad"/>
-                <field name="bsd_da_tknh_id"/>
-                <field name="bsd_tu_ngay"/>
-                <field name="bsd_den_ngay"/>
-                <field name="state"/>
-            </tree>
-        </field>
-    </record>
-    <record model="ir.actions.act_window" id="bsd_tknh_ad_action">
-        <field name="name">Tài khoản đang áp dụng</field>
-        <field name="res_model">bsd.tknh_ad</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="xml">
-            <p>Tạo ngân hàng đang áp dụng</p>
-        </field>
-    </record>
+                            <group>
+                                <field name="bsd_tu_ngay"/>
+                                <field name="bsd_den_ngay"/>
+                                <field name="bsd_dien_giai"/>
+                                <field name="state"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Chi tiết">
+                                <group>
+                                    <group>
+                                        <field name="bsd_tknh_ch_ids"
+                                               nolabel="1"
+                                               context="{'default_bsd_du_an_id': bsd_du_an_id}">
+                                            <tree editable="bottom">
+                                                <field name="bsd_can_ho_id"
+                                                       options="{'no_create':true}"
+                                                       domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
+                                                <field name="bsd_so_tk"/>
+                                                <field name="state"/>
+                                                <field name="bsd_du_an_id" invisible="1"/>
+                                                <field name="bsd_ma_tkad_id" invisible="1"/>
+                                            </tree>
+                                        </field>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_tknh_ad_tree">
+            <field name="name">bsd.tknh_ad.tree</field>
+            <field name="model">bsd.tknh_ad</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_ma_tkad"/>
+                    <field name="bsd_ten_tkad"/>
+                    <field name="bsd_da_tknh_id"/>
+                    <field name="bsd_tu_ngay"/>
+                    <field name="bsd_den_ngay"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_tknh_ad_action">
+            <field name="name">Tài khoản đang áp dụng</field>
+            <field name="res_model">bsd.tknh_ad</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="xml">
+                <p>Tạo ngân hàng đang áp dụng</p>
+            </field>
+        </record>
+    </data>
 </odoo>

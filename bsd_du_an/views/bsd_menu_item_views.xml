@@ -1,57 +1,50 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-<!--    Tạo icon màn hình menu -->
-    <menuitem id="bsd_du_an_menu_2"
-              name="Dự án"
-              sequence="1"
-              web_icon="fa fa-building-o ,#FFFFFF,#cb6483"/>
-        <menuitem id="bsd_du_an_menu_action_2"
+    <data noupdate="1">
+    <!--    Tạo icon màn hình menu -->
+        <menuitem id="bsd_du_an_menu_2"
                   name="Dự án"
-                  sequence="101"
-                  action="bsd_du_an_action"
-                  parent="bsd_du_an_menu_2"/>
-        <menuitem id="bsd_toa_nha_menu_action_2"
-                  name="Tòa nhà"
-                  sequence="102"
-                  action="bsd_toa_nha_action"
-                  parent="bsd_du_an_menu_2"/>
-        <menuitem id="bsd_tang_menu_action_2"
-                  name="Tầng"
-                  sequence="103"
-                  action="bsd_tang_action"
-                  parent="bsd_du_an_menu_2"/>
-<!--        <menuitem id="bsd_hs_gt_menu_action_2"-->
-<!--                  name="Hồ sơ - Giấy tờ"-->
-<!--                  sequence="104"-->
-<!--                  action="bsd_hs_gt_action"-->
-<!--                  parent="bsd_du_an_menu_2"/>-->
-<!--        <menuitem id="bsd_tien_ich_menu_action_2"-->
-<!--                  name="Tiện ích"-->
-<!--                  sequence="105"-->
-<!--                  action="bsd_tien_ich_action"-->
-<!--                  parent="bsd_du_an_menu_2"/>-->
-    <menuitem id="bsd_unit_menu_2"
-          name="Sản phẩm"
-          sequence="2"
-          web_icon="fa fa-home,#FFFFFF,#80aac1"/>
-        <menuitem id="bsd_unit_menu_action_2"
-                  name="Sản phẩm"
-                  sequence="101"
-                  action="bsd_product_template_action"
-                  parent="bsd_unit_menu_2"/>
-        <menuitem id="bsd_loai_san_pham_menu_action_2"
-                  name="Loại sản phẩm"
-                  sequence="102"
-                  action="bsd_loai_san_pham_action"
-                  parent="bsd_unit_menu_2"/>
-        <menuitem id="bsd_thong_tin_ky_thuat_menu_action_2"
-                  name="Thông tin kỹ thuật"
-                  sequence="103"
-                  action="bsd_thong_tin_ky_thuat_action"
-                  parent="bsd_unit_menu_2"/>
-<!--Chuyển icon thảo luận về cuối màn hình-->
-    <menuitem
-        id="mail.menu_root_discuss"
-        sequence="100"/>
-
+                  sequence="1"
+                  web_icon="fa fa-building-o ,#FFFFFF,#cb6483"/>
+            <menuitem id="bsd_du_an_menu_action_2"
+                      name="Dự án"
+                      sequence="101"
+                      action="bsd_du_an_action"
+                      parent="bsd_du_an_menu_2"/>
+            <menuitem id="bsd_toa_nha_menu_action_2"
+                      name="Tòa nhà"
+                      sequence="102"
+                      action="bsd_toa_nha_action"
+                      parent="bsd_du_an_menu_2"/>
+            <menuitem id="bsd_tang_menu_action_2"
+                      name="Tầng"
+                      sequence="103"
+                      action="bsd_tang_action"
+                      parent="bsd_du_an_menu_2"/>
+        <menuitem id="bsd_unit_menu_2"
+              name="Sản phẩm"
+              sequence="2"
+              web_icon="fa fa-home,#FFFFFF,#80aac1"/>
+            <menuitem id="bsd_unit_menu_action_2"
+                      name="Sản phẩm"
+                      sequence="101"
+                      action="bsd_product_template_action"
+                      parent="bsd_unit_menu_2"/>
+            <menuitem id="bsd_loai_san_pham_menu_action_2"
+                      name="Loại sản phẩm"
+                      sequence="102"
+                      action="bsd_loai_san_pham_action"
+                      parent="bsd_unit_menu_2"/>
+            <menuitem id="bsd_thong_tin_ky_thuat_menu_action_2"
+                      name="Thông tin kỹ thuật"
+                      sequence="103"
+                      action="bsd_thong_tin_ky_thuat_action"
+                      parent="bsd_unit_menu_2"/>
+    </data>
+    <data>
+    <!--Chuyển icon thảo luận về cuối màn hình-->
+        <menuitem
+            id="mail.menu_root_discuss"
+            sequence="100"/>
+    </data>
 </odoo>

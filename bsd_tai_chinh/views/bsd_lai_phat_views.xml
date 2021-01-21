@@ -1,65 +1,67 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_lai_phat_form">
-        <field name="name">bsd.lai_phat.form</field>
-        <field name="model">bsd.lai_phat</field>
-        <field name="arch" type="xml">
-            <form>
-                <header>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
-                </header>
-                <sheet>
-                    <widget name="web_ribbon" text="Đã TT" attrs="{'invisible':[('bsd_thanh_toan', '!=', 'da_tt')]}"/>
-                    <widget name="web_ribbon" text="Đang TT" bg_color="bg-warning" attrs="{'invisible':[('bsd_thanh_toan', '!=', 'dang_tt')]}"/>
-                    <widget name="web_ribbon" text="Chưa TT" bg_color="bg-danger" attrs="{'invisible':[('bsd_thanh_toan', '!=', 'chua_tt')]}"/>
-                    <group>
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_lai_phat_form">
+            <field name="name">bsd.lai_phat.form</field>
+            <field name="model">bsd.lai_phat</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    </header>
+                    <sheet>
+                        <widget name="web_ribbon" text="Đã TT" attrs="{'invisible':[('bsd_thanh_toan', '!=', 'da_tt')]}"/>
+                        <widget name="web_ribbon" text="Đang TT" bg_color="bg-warning" attrs="{'invisible':[('bsd_thanh_toan', '!=', 'dang_tt')]}"/>
+                        <widget name="web_ribbon" text="Chưa TT" bg_color="bg-danger" attrs="{'invisible':[('bsd_thanh_toan', '!=', 'chua_tt')]}"/>
                         <group>
-                            <field name="company_id" invisible="1"/>
-                            <field name="currency_id" invisible="1"/>
-                            <field name="bsd_ngay_lp"/>
-                            <field name="bsd_hd_ban_id"/>
-                            <field name="bsd_dot_tt_id"/>
-                            <field name="bsd_phieu_thu_id"/>
-                            <field name="bsd_tien_tt"/>
+                            <group>
+                                <field name="company_id" invisible="1"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="bsd_ngay_lp"/>
+                                <field name="bsd_hd_ban_id"/>
+                                <field name="bsd_dot_tt_id"/>
+                                <field name="bsd_phieu_thu_id"/>
+                                <field name="bsd_tien_tt"/>
+                            </group>
+                            <group>
+                                <field name="bsd_so_ngay"/>
+                                <field name="bsd_tien_phat"/>
+                                <field name="bsd_tien_da_tt"/>
+                                <field name="bsd_tien_phai_tt"/>
+                                <field name="bsd_tien_mg"/>
+                                <field name="bsd_thanh_toan" invisible="1"/>
+                            </group>
                         </group>
-                        <group>
-                            <field name="bsd_so_ngay"/>
-                            <field name="bsd_tien_phat"/>
-                            <field name="bsd_tien_da_tt"/>
-                            <field name="bsd_tien_phai_tt"/>
-                            <field name="bsd_tien_mg"/>
-                            <field name="bsd_thanh_toan" invisible="1"/>
-                        </group>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_lai_phat_tree">
-        <field name="name">bsd.lai_phat.tree</field>
-        <field name="model">bsd.lai_phat</field>
-        <field name="arch" type="xml">
-            <tree delete="false">
-                <field name="bsd_ngay_lp"/>
-                <field name="bsd_hd_ban_id"/>
-                <field name="bsd_dot_tt_id"/>
-                <field name="bsd_phieu_thu_id"/>
-                <field name="bsd_tien_tt"/>
-                <field name="bsd_so_ngay"/>
-                <field name="bsd_tien_phat"/>
-                <field name="bsd_tien_mg"/>
-                <field name="bsd_tien_da_tt"/>
-                <field name="bsd_tien_phai_tt"/>
-                <field name="bsd_thanh_toan"/>
-                <field name="state"/>
-                <field name="currency_id" invisible="1"/>
-                <field name="company_id" invisible="1"/>
-            </tree>
-        </field>
-    </record>
-    <record model="ir.actions.act_window" id="bsd_lai_phat_action">
-        <field name="name">Tiền phạt chậm TT</field>
-        <field name="res_model">bsd.lai_phat</field>
-        <field name="view_mode">tree,form</field>
-    </record>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_lai_phat_tree">
+            <field name="name">bsd.lai_phat.tree</field>
+            <field name="model">bsd.lai_phat</field>
+            <field name="arch" type="xml">
+                <tree delete="false">
+                    <field name="bsd_ngay_lp"/>
+                    <field name="bsd_hd_ban_id"/>
+                    <field name="bsd_dot_tt_id"/>
+                    <field name="bsd_phieu_thu_id"/>
+                    <field name="bsd_tien_tt"/>
+                    <field name="bsd_so_ngay"/>
+                    <field name="bsd_tien_phat"/>
+                    <field name="bsd_tien_mg"/>
+                    <field name="bsd_tien_da_tt"/>
+                    <field name="bsd_tien_phai_tt"/>
+                    <field name="bsd_thanh_toan"/>
+                    <field name="state"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="company_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_lai_phat_action">
+            <field name="name">Tiền phạt chậm TT</field>
+            <field name="res_model">bsd.lai_phat</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
 </odoo>

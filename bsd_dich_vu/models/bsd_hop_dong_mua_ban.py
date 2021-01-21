@@ -165,6 +165,35 @@ class BsdHopDongMuaBan(models.Model):
                               ('da_ht', 'Đã hoàn tất'),
                               ('thanh_ly', 'Thanh lý')], string="Trạng thái", default="nhap",
                              help="Trạng thái", tracking=1)
+    bsd_stt_state = fields.Integer(string="Thứ tự sắp xếp", compute="_compute_stt", store=True)
+
+    @api.depends("state")
+    def _compute_stt(self):
+        for each in self:
+            if each.state == 'ht_dc':
+                each.bsd_stt_state = 1
+            if each.state == 'tt_dot1':
+                each.bsd_stt_state = 2
+            if each.state == 'da_ky_ttdc':
+                each.bsd_stt_state = 3
+            if each.state == 'du_dk':
+                each.bsd_stt_state = 4
+            if each.state == 'da_ky':
+                each.bsd_stt_state = 5
+            if each.state == 'dang_tt':
+                each.bsd_stt_state = 6
+            if each.state == 'du_dkbg':
+                each.bsd_stt_state = 7
+            if each.state == 'da_bg':
+                each.bsd_stt_state = 8
+            if each.state == 'ht_tt':
+                each.bsd_stt_state = 9
+            if each.state == 'bg_gt':
+                each.bsd_stt_state = 10
+            if each.state == 'da_ht':
+                each.bsd_stt_state = 11
+            if each.state == 'thanh_ly':
+                each.bsd_stt_state = 12
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 

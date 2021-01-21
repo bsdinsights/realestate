@@ -30,10 +30,15 @@ class BsdFloor(models.Model):
     bsd_stt = fields.Integer(string="Số thứ tự", help="Số thứ tự sắp xếp của tầng", required=True)
     bsd_dien_giai = fields.Char(string="Diễn giải",
                                 help="Thông tin chi tiết về tòa nhà")
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True, help="Tên dư án")
-    bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà", required=True, help="Tên tòa nhà")
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True, help="Tên dư án",
+                                   readonly=True,
+                                   states={'chuan_bi': [('readonly', False)]})
+    bsd_toa_nha_id = fields.Many2one('bsd.toa_nha', string="Tòa nhà", required=True, help="Tên tòa nhà",
+                                     readonly=True,
+                                     states={'chuan_bi': [('readonly', False)]})
     active = fields.Boolean(default=True)
     bsd_unit_ids = fields.One2many('product.template', 'bsd_tang_id', string="Danh sách sản phẩm")
+    state = fields.Selection(related='bsd_du_an_id.state', store=True)
 
     def name_get(self):
         res = []

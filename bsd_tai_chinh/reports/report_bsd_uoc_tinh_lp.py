@@ -43,7 +43,8 @@ class ReportBsdUocTinhLaiPhat(models.AbstractModel):
         })
         # Load các đợt chưa thanh toán của hợp đồng
         dot_tt_ids = hd_ban.bsd_ltt_ids\
-            .filtered(lambda d: d.bsd_thanh_toan != 'da_tt' and d.bsd_ngay_hh_tt)\
+            .filtered(lambda dot: dot.bsd_thanh_toan != 'da_tt' and dot.bsd_ngay_hh_tt
+                      and dot.bsd_ngay_hh_tt < ngay_ut)\
             .sorted('bsd_stt')
         tong_tien_chua_tt = 0
         tong_tien_phat_t = 0
@@ -87,7 +88,7 @@ class ReportBsdUocTinhLaiPhat(models.AbstractModel):
                 'han_tt': dot_tt.bsd_ngay_hh_tt.strftime("%d/%m/%Y"),
                 'so_ngay_qh': so_ngay_tp,
                 'tien_dot': dot_tt.bsd_tien_dot_tt,
-                'tien_mg': 0,
+                'tien_mg': dot_tt.bsd_tien_mg_dot,
                 'tien_phai_tt': dot_tt.bsd_tien_phai_tt,
                 'tien_phat_truoc': dot_tt.bsd_tien_phat,
                 'tien_phat': tien_phat,

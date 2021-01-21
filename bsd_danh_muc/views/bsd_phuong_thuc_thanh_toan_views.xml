@@ -1,56 +1,58 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_pt_tt_form">
-        <field name="name">bsd.pt_tt.form</field>
-        <field name="model">bsd.pt_tt</field>
-        <field name="arch" type="xml">
-            <form duplicate="false">
-                <sheet>
-                    <group>
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_pt_tt_form">
+            <field name="name">bsd.pt_tt.form</field>
+            <field name="model">bsd.pt_tt</field>
+            <field name="arch" type="xml">
+                <form duplicate="false">
+                    <sheet>
                         <group>
-                            <field name="bsd_ma"/>
-                            <field name="bsd_ten"/>
+                            <group>
+                                <field name="bsd_ma"/>
+                                <field name="bsd_ten"/>
+                            </group>
+                            <group>
+                                <field name="bsd_dien_giai"/>
+                            </group>
                         </group>
-                        <group>
-                            <field name="bsd_dien_giai"/>
-                        </group>
-                    </group>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
-            </form>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_pt_tt_tree">
-        <field name="name">bsd.pt_tt.tree</field>
-        <field name="model">bsd.pt_tt</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="bsd_ma"/>
-                <field name="bsd_ten"/>
-                <field name="bsd_dien_giai"/>
-            </tree>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_pt_tt_filter">
-        <field name="name">bsd.pt_tt.list.filter</field>
-        <field name="model">bsd.pt_tt</field>
-        <field name="arch" type="xml">
-            <search string="Lọc dữ liệu">
-                <field name="bsd_ma"/>
-                <field name="bsd_ten"/>
-            </search>
-        </field>
-    </record>
-    <record model="ir.actions.act_window" id="bsd_pt_tt_action">
-        <field name="name">Hình thức thanh toán</field>
-        <field name="res_model">bsd.pt_tt</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="xml">
-            <p>Tạo Hình thức thanh toán</p>
-        </field>
-    </record>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_pt_tt_tree">
+            <field name="name">bsd.pt_tt.tree</field>
+            <field name="model">bsd.pt_tt</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="bsd_ma"/>
+                    <field name="bsd_ten"/>
+                    <field name="bsd_dien_giai"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_pt_tt_filter">
+            <field name="name">bsd.pt_tt.list.filter</field>
+            <field name="model">bsd.pt_tt</field>
+            <field name="arch" type="xml">
+                <search string="Lọc dữ liệu">
+                    <field name="bsd_ma"/>
+                    <field name="bsd_ten"/>
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_pt_tt_action">
+            <field name="name">Hình thức thanh toán</field>
+            <field name="res_model">bsd.pt_tt</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="xml">
+                <p>Tạo Hình thức thanh toán</p>
+            </field>
+        </record>
+    </data>
 </odoo>

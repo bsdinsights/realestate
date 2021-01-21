@@ -1,135 +1,135 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_bg_sp_form">
-        <field name="name">bsd.bg_sp.form</field>
-        <field name="model">bsd.bg_sp</field>
-        <field name="arch" type="xml">
-            <form duplicate="false">
-                <header>
-                    <button string="Xác nhận"
-                            name="action_xac_nhan"
-                            states="nhap"
-                            confirm="Bạn có muốn xác nhận yêu cầu không?"
-                            attrs="{'invisible': ['|',('id', '=',False)]}"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="In biên bản"
-                            name="action_in"
-                            states="xac_nhan"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Ký biên bản"
-                            name="action_ky"
-                            states="xac_nhan"
-                            attrs="{'invisible': ['|', ('bsd_ngay_in', '=', False)]}"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Hủy"
-                            name="action_huy"
-                            type="object"
-                            attrs="{'invisible': ['|',('id', '=',False)]}"
-                            states="xac_nhan,nhap"/>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
-                </header>
-                <sheet>
-                    <group>
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_bg_sp_form">
+            <field name="name">bsd.bg_sp.form</field>
+            <field name="model">bsd.bg_sp</field>
+            <field name="arch" type="xml">
+                <form duplicate="false">
+                    <header>
+                        <button string="Xác nhận"
+                                name="action_xac_nhan"
+                                states="nhap"
+                                confirm="Bạn có muốn xác nhận yêu cầu không?"
+                                attrs="{'invisible': ['|',('id', '=',False)]}"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="In biên bản"
+                                name="action_in"
+                                states="xac_nhan"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Ký biên bản"
+                                name="action_ky"
+                                states="xac_nhan"
+                                attrs="{'invisible': ['|', ('bsd_ngay_in', '=', False)]}"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Hủy"
+                                name="action_huy"
+                                type="object"
+                                attrs="{'invisible': ['|',('id', '=',False)]}"
+                                states="xac_nhan,nhap"/>
+                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    </header>
+                    <sheet>
                         <group>
-                            <field name="bsd_ma_bg"/>
-                            <field name="bsd_ngay_tao_bg"/>
-                            <field name="bsd_ten_bg"/>
-                            <field name="bsd_tb_bg_id"/>
-                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
-                            <field name="bsd_hd_ban_id"
-                                   domain="['&amp;',('bsd_du_an_id', '=', bsd_du_an_id),
-                                            '&amp;',('bsd_ngay_cn', '!=', False),
-                                            '|',('state', '=', 'du_dkbg'),('bsd_duyet_bgdb', '=', True)]"
-                                   options="{'no_create':true}"/>
-                            <field name="bsd_khach_hang_id" readonly="1" force_save="1"/>
+                            <group>
+                                <field name="bsd_ma_bg"/>
+                                <field name="bsd_ngay_tao_bg"/>
+                                <field name="bsd_ten_bg"/>
+                                <field name="bsd_tb_bg_id"/>
+                                <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                                <field name="bsd_hd_ban_id"
+                                       domain="['&amp;',('bsd_du_an_id', '=', bsd_du_an_id),
+                                                '&amp;',('bsd_ngay_cn', '!=', False),
+                                                '|',('state', '=', 'du_dkbg'),('bsd_duyet_bgdb', '=', True)]"
+                                       options="{'no_create':true}"/>
+                                <field name="bsd_khach_hang_id" readonly="1" force_save="1"/>
+                            </group>
+                            <group>
+                                <field name="bsd_duyet_bgdb" readonly="1" force_save="1"/>
+                                <field name="bsd_unit_id" readonly="1" force_save="1"/>
+                                <field name="bsd_tien_tt_hd" readonly="1" force_save="1"/>
+                                <label for="bsd_tl_tt_hd"/>
+                                <div class="o_row no-gutters d-flex">
+                                    <field name="bsd_tl_tt_hd" readonly="1" force_save="1" class="mr-1"/>
+                                    <span>%</span>
+                                </div>
+                                <label for="bsd_dt_tt"/>
+                                <div class="o_row no-gutters d-flex">
+                                    <field name="bsd_dt_tt" readonly="1" force_save="1" class="mr-1"/>
+                                    <span>m2</span>
+                                </div>
+                                <field name="bsd_ngay_dkbg" readonly="1" force_save="1"/>
+                                <field name="company_id" invisible="1"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
                         </group>
-                        <group>
-                            <field name="bsd_duyet_bgdb" readonly="1" force_save="1"/>
-                            <field name="bsd_unit_id" readonly="1" force_save="1"/>
-                            <field name="bsd_tien_tt_hd" readonly="1" force_save="1"/>
-                            <label for="bsd_tl_tt_hd"/>
-                            <div class="o_row no-gutters d-flex">
-                                <field name="bsd_tl_tt_hd" readonly="1" force_save="1" class="mr-1"/>
-                                <span>%</span>
-                            </div>
-                            <label for="bsd_dt_tt"/>
-                            <div class="o_row no-gutters d-flex">
-                                <field name="bsd_dt_tt" readonly="1" force_save="1" class="mr-1"/>
-                                <span>m2</span>
-                            </div>
-                            <field name="bsd_ngay_dkbg" readonly="1" force_save="1"/>
-                            <field name="company_id" invisible="1"/>
-                            <field name="currency_id" invisible="1"/>
+                        <group string="XÁC NHẬN">
+                            <group>
+                                <field name="bsd_ngay_in"/>
+                                <field name="bsd_nguoi_in_id"/>
+                            </group>
+                            <group>
+                                <field name="bsd_ngay_bg_tt"/>
+                                <field name="bsd_nguoi_bg_tt_id"/>
+                            </group>
                         </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_bg_sp_tree">
+            <field name="name">bsd.bg_sp.tree</field>
+            <field name="model">bsd.bg_sp</field>
+            <field name="arch" type="xml">
+                <tree decoration-warning="state=='xac_nhan'"
+                      decoration-success="state=='ban_giao'"
+                      decoration-muted="state=='huy'">
+                    <field name="bsd_ma_bg"/>
+                    <field name="bsd_ngay_tao_bg"/>
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_unit_id"/>
+                    <field name="bsd_khach_hang_id"/>
+                    <field name="bsd_hd_ban_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_bg_sp_filter">
+            <field name="name">bsd.bg_sp.list.filter</field>
+            <field name="model">bsd.bg_sp</field>
+            <field name="arch" type="xml">
+                <search string="Lọc dữ liệu">
+                    <field name="bsd_hd_ban_id"/>
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_khach_hang_id"/>
+                    <field name="bsd_unit_id"/>
+                    <field name="state"/>
+                    <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_tb_filter"/>
+                    <group expand="0" string="Group by">
+                        <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                        <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
+                        <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
+                        <filter string="Hợp đồng" name="bsd_hd_ban_id" domain="[]" context="{'group_by': 'bsd_hd_ban_id'}"/>
+                        <filter string="Trạng thái" name="state" domain="[]" context="{'group_by':'state'}"/>
                     </group>
-                    <group string="XÁC NHẬN">
-                        <group>
-                            <field name="bsd_ngay_in"/>
-                            <field name="bsd_nguoi_in_id"/>
-                        </group>
-                        <group>
-                            <field name="bsd_ngay_bg_tt"/>
-                            <field name="bsd_nguoi_bg_tt_id"/>
-                        </group>
-                    </group>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
-            </form>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_bg_sp_tree">
-        <field name="name">bsd.bg_sp.tree</field>
-        <field name="model">bsd.bg_sp</field>
-        <field name="arch" type="xml">
-            <tree decoration-warning="state=='xac_nhan'"
-                  decoration-success="state=='ban_giao'"
-                  decoration-muted="state=='huy'">
-                <field name="bsd_ma_bg"/>
-                <field name="bsd_ngay_tao_bg"/>
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_unit_id"/>
-                <field name="bsd_khach_hang_id"/>
-                <field name="bsd_hd_ban_id"/>
-                <field name="state"/>
-            </tree>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="bsd_bg_sp_filter">
-        <field name="name">bsd.bg_sp.list.filter</field>
-        <field name="model">bsd.bg_sp</field>
-        <field name="arch" type="xml">
-            <search string="Lọc dữ liệu">
-                <field name="bsd_hd_ban_id"/>
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_khach_hang_id"/>
-                <field name="bsd_unit_id"/>
-                <field name="state"/>
-                <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_tb_filter"/>
-                <group expand="0" string="Group by">
-                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
-                    <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
-                    <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
-                    <filter string="Hợp đồng" name="bsd_hd_ban_id" domain="[]" context="{'group_by': 'bsd_hd_ban_id'}"/>
-                    <filter string="Trạng thái" name="state" domain="[]" context="{'group_by':'state'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
-
-    <record model="ir.actions.act_window" id="bsd_bg_sp_action">
-        <field name="name">Bàn giao sản phẩm</field>
-        <field name="res_model">bsd.bg_sp</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="xml">
-            <p>Tạo bàn giao sản phẩm</p>
-        </field>
-    </record>
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_bg_sp_action">
+            <field name="name">Bàn giao sản phẩm</field>
+            <field name="res_model">bsd.bg_sp</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="xml">
+                <p>Tạo bàn giao sản phẩm</p>
+            </field>
+        </record>
+    </data>
 </odoo>

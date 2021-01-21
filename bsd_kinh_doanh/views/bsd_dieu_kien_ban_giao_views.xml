@@ -1,36 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_dk_bg_inherit_form">
-        <field name="name">bsd.dk_bg.inherit.form</field>
-        <field name="model">bsd.dk_bg</field>
-        <field name="inherit_id" ref="bsd_danh_muc.bsd_dk_bg_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='bsd_du_an_id']" position="after">
-                <field name="bsd_dot_mb_id" domain="[('bsd_du_an_id', '=', bsd_du_an_id)]" options="{'no_create': true}"/>
-            </xpath>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_dk_bg_inherit_tree">
-        <field name="name">bsd.dk_bg.inherit.tree</field>
-        <field name="model">bsd.dk_bg</field>
-        <field name="inherit_id" ref="bsd_danh_muc.bsd_dk_bg_tree"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='bsd_du_an_id']" position="after">
-                <field name="bsd_dot_mb_id"/>
-            </xpath>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_dk_bg_inherit_filter">
-        <field name="name">bsd.dk_bg.inherit.list.filter</field>
-        <field name="model">bsd.dk_bg</field>
-        <field name="inherit_id" ref="bsd_danh_muc.bsd_dk_bg_filter"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='bsd_du_an_id']" position="after">
-                <field name="bsd_dot_mb_id"/>
-            </xpath>
-            <xpath expr="//filter[@name='bsd_du_an_id']" position="after">
-                <filter string="Đợt mở bán" name="bsd_dot_mb_id" domain="[]" context="{'group_by': 'bsd_dot_mb_id'}"/>
-            </xpath>
-        </field>
-    </record>
+    <data>
+        <record model="ir.ui.view" id="bsd_dk_bg_inherit_form">
+            <field name="name">bsd.dk_bg.inherit.form</field>
+            <field name="model">bsd.dk_bg</field>
+            <field name="inherit_id" ref="bsd_danh_muc.bsd_dk_bg_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='bsd_du_an_id']" position="after">
+                    <field name="bsd_dot_mb_id" domain="[('bsd_du_an_id', '=', bsd_du_an_id)]" options="{'no_create': true}"/>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_dk_bg_inherit_tree">
+            <field name="name">bsd.dk_bg.inherit.tree</field>
+            <field name="model">bsd.dk_bg</field>
+            <field name="inherit_id" ref="bsd_danh_muc.bsd_dk_bg_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='bsd_du_an_id']" position="after">
+                    <field name="bsd_dot_mb_id"/>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_dk_bg_inherit_filter">
+            <field name="name">bsd.dk_bg.inherit.list.filter</field>
+            <field name="model">bsd.dk_bg</field>
+            <field name="inherit_id" ref="bsd_danh_muc.bsd_dk_bg_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='bsd_du_an_id']" position="after">
+                    <field name="bsd_dot_mb_id"/>
+                </xpath>
+                <xpath expr="//filter[@name='bsd_du_an_id']" position="after">
+                    <filter string="Đợt mở bán" name="bsd_dot_mb_id" domain="[]" context="{'group_by': 'bsd_dot_mb_id'}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
 </odoo>

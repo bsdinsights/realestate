@@ -1,140 +1,142 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_phi_mg_form">
-        <field name="name">bsd.phi_mg.form</field>
-        <field name="model">bsd.phi_mg</field>
-        <field name="arch" type="xml">
-            <form duplicate="false">
-                <header>
-                    <button string="Xác nhận"
-                            name="action_xac_nhan"
-                            class="oe_highlight"
-                            confirm="Bạn có muốn Xác nhận yêu cầu không?"
-                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
-                            type="object"/>
-                    <button string="Duyệt"
-                            name="action_duyet"
-                            class="oe_highlight"
-                            states="xac_nhan"
-                            confirm="Bạn có muốn Duyệt yêu cầu không?"
-                            type="object"/>
-                    <button string="Không duyệt"
-                            name="action_khong_duyet"
-                            class="oe_highlight"
-                            states="xac_nhan"
-                            type="object"
-                            confirm="Bạn có muốn Từ chối yêu cầu không?"/>
-                    <button string="Hủy"
-                            name="action_huy"
-                            states="xac_nhan"
-                            confirm="Bạn có muốn Hủy yêu cầu không?"
-                            type="object"/>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
-                </header>
-                <sheet>
-                    <group>
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_phi_mg_form">
+            <field name="name">bsd.phi_mg.form</field>
+            <field name="model">bsd.phi_mg</field>
+            <field name="arch" type="xml">
+                <form duplicate="false">
+                    <header>
+                        <button string="Xác nhận"
+                                name="action_xac_nhan"
+                                class="oe_highlight"
+                                confirm="Bạn có muốn Xác nhận yêu cầu không?"
+                                attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                                type="object"/>
+                        <button string="Duyệt"
+                                name="action_duyet"
+                                class="oe_highlight"
+                                states="xac_nhan"
+                                confirm="Bạn có muốn Duyệt yêu cầu không?"
+                                type="object"/>
+                        <button string="Không duyệt"
+                                name="action_khong_duyet"
+                                class="oe_highlight"
+                                states="xac_nhan"
+                                type="object"
+                                confirm="Bạn có muốn Từ chối yêu cầu không?"/>
+                        <button string="Hủy"
+                                name="action_huy"
+                                states="xac_nhan"
+                                confirm="Bạn có muốn Hủy yêu cầu không?"
+                                type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    </header>
+                    <sheet>
                         <group>
-                            <field name="bsd_ma"/>
-                            <field name="bsd_ten"/>
-                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
-                            <field name="bsd_loai"/>
-                            <field name="bsd_phuong_thuc"/>
-                            <field name="bsd_cach_tinh"/>
+                            <group>
+                                <field name="bsd_ma"/>
+                                <field name="bsd_ten"/>
+                                <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                                <field name="bsd_loai"/>
+                                <field name="bsd_phuong_thuc"/>
+                                <field name="bsd_cach_tinh"/>
+                            </group>
+                            <group>
+                                <field name="company_id" invisible="1"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="bsd_tu_ngay"/>
+                                <field name="bsd_den_ngay"/>
+                                <field name="bsd_sl_tu"
+                                       attrs="{'invisible':[('bsd_cach_tinh', '!=', 'so_luong')],
+                                               'required':[('bsd_cach_tinh', '=', 'so_luong')]}"/>
+                                <field name="bsd_sl_den"
+                                       attrs="{'invisible':[('bsd_cach_tinh', '!=', 'so_luong')],
+                                               'required':[('bsd_cach_tinh', '=', 'so_luong')]}"/>
+                                <field name="bsd_tien_tu"
+                                       attrs="{'invisible':[('bsd_cach_tinh', '!=', 'so_tien')],
+                                               'required':[('bsd_cach_tinh', '=', 'so_tien')]}"/>
+                                <field name="bsd_tien_den"
+                                       attrs="{'invisible':[('bsd_cach_tinh', '!=', 'so_tien')],
+                                               'required':[('bsd_cach_tinh', '=', 'so_tien')]}"/>
+                                <field name="bsd_loai_tg"
+                                       attrs="{'invisible':[('bsd_loai', '!=', 'dot_tt')],
+                                               'required':[('bsd_loai', '=', 'dot_tt')]}"/>
+                                <field name="bsd_ngay_cd"
+                                       attrs="{'invisible':['|',('bsd_loai', '!=', 'dot_tt'),('bsd_loai_tg','!=','co_dinh')],
+                                               'required':[('bsd_loai', '=', 'dot_tt'),('bsd_loai_tg','=','co_dinh')]}"/>
+                                <field name="bsd_dot_bd"
+                                       attrs="{'invisible':['|',('bsd_loai', '!=', 'dot_tt'),('bsd_loai_tg','!=','dot_tt')],
+                                               'required':[('bsd_loai', '=', 'dot_tt'),('bsd_loai_tg','=','dot_tt')]}"/>
+                                <field name="bsd_dot_kt"
+                                       attrs="{'invisible':['|',('bsd_loai', '!=', 'dot_tt'),('bsd_loai_tg','!=','dot_tt')],
+                                               'required':[('bsd_loai', '=', 'dot_tt'),('bsd_loai_tg','=','dot_tt')]}"/>
+                                <field name="bsd_tl_dc"
+                                       attrs="{'invisible':['|',('bsd_loai', '!=', 'dat_coc'),('bsd_phuong_thuc', '!=', 'phan_tram')],
+                                               'required':[('bsd_loai', '=', 'dat_coc'),('bsd_phuong_thuc', '=', 'phan_tram')]}"/>
+                                <field name="bsd_tien_dc"
+                                       attrs="{'invisible':['|',('bsd_loai', '!=', 'dat_coc'),('bsd_phuong_thuc', '!=', 'gia_tri')],
+                                               'required':[('bsd_loai', '=', 'dat_coc'),('bsd_phuong_thuc', '=', 'gia_tri')]}"/>
+                                <field name="bsd_tl_ttdc"
+                                       attrs="{'invisible':['|',('bsd_loai', '!=', 'ky_ttdc'),('bsd_phuong_thuc', '!=', 'phan_tram')],
+                                               'required':[('bsd_loai', '=', 'ky_ttdc'),('bsd_phuong_thuc', '=', 'phan_tram')]}"/>
+                                <field name="bsd_tien_ttdc"
+                                       attrs="{'invisible':['|',('bsd_loai', '!=', 'ky_ttdc'),('bsd_phuong_thuc', '!=', 'gia_tri')],
+                                               'required':[('bsd_loai', '=', 'ky_ttdc'),('bsd_phuong_thuc', '=', 'gia_tri')]}"/>
+                                <field name="bsd_tl_hd"
+                                       attrs="{'invisible':['|',('bsd_loai', '!=', 'ky_hd'),('bsd_phuong_thuc', '!=', 'phan_tram')],
+                                               'required':[('bsd_loai', '=', 'ky_hd'),('bsd_phuong_thuc', '=', 'phan_tram')]}"/>
+                                <field name="bsd_tien_hd"
+                                       attrs="{'invisible':['|',('bsd_loai', '!=', 'ky_hd'),('bsd_phuong_thuc', '!=', 'gia_tri')],
+                                               'required':[('bsd_loai', '=', 'ky_hd'),('bsd_phuong_thuc', '=', 'gia_tri')]}"/>
+                                <field name="bsd_tl_dtt"
+                                       attrs="{'invisible':['|',('bsd_loai', '!=', 'dot_tt'),('bsd_phuong_thuc', '!=', 'phan_tram')],
+                                               'required':[('bsd_loai', '=', 'dot_tt'),('bsd_phuong_thuc', '=', 'phan_tram')]}"/>
+                                <field name="bsd_tien_dtt"
+                                       attrs="{'invisible':['|',('bsd_loai', '!=', 'dot_tt'),('bsd_phuong_thuc', '!=', 'gia_tri')],
+                                               'required':[('bsd_loai', '=', 'dot_tt'),('bsd_phuong_thuc', '=', 'gia_tri')]}"/>
+                            </group>
                         </group>
-                        <group>
-                            <field name="company_id" invisible="1"/>
-                            <field name="currency_id" invisible="1"/>
-                            <field name="bsd_tu_ngay"/>
-                            <field name="bsd_den_ngay"/>
-                            <field name="bsd_sl_tu"
-                                   attrs="{'invisible':[('bsd_cach_tinh', '!=', 'so_luong')],
-                                           'required':[('bsd_cach_tinh', '=', 'so_luong')]}"/>
-                            <field name="bsd_sl_den"
-                                   attrs="{'invisible':[('bsd_cach_tinh', '!=', 'so_luong')],
-                                           'required':[('bsd_cach_tinh', '=', 'so_luong')]}"/>
-                            <field name="bsd_tien_tu"
-                                   attrs="{'invisible':[('bsd_cach_tinh', '!=', 'so_tien')],
-                                           'required':[('bsd_cach_tinh', '=', 'so_tien')]}"/>
-                            <field name="bsd_tien_den"
-                                   attrs="{'invisible':[('bsd_cach_tinh', '!=', 'so_tien')],
-                                           'required':[('bsd_cach_tinh', '=', 'so_tien')]}"/>
-                            <field name="bsd_loai_tg"
-                                   attrs="{'invisible':[('bsd_loai', '!=', 'dot_tt')],
-                                           'required':[('bsd_loai', '=', 'dot_tt')]}"/>
-                            <field name="bsd_ngay_cd"
-                                   attrs="{'invisible':['|',('bsd_loai', '!=', 'dot_tt'),('bsd_loai_tg','!=','co_dinh')],
-                                           'required':[('bsd_loai', '=', 'dot_tt'),('bsd_loai_tg','=','co_dinh')]}"/>
-                            <field name="bsd_dot_bd"
-                                   attrs="{'invisible':['|',('bsd_loai', '!=', 'dot_tt'),('bsd_loai_tg','!=','dot_tt')],
-                                           'required':[('bsd_loai', '=', 'dot_tt'),('bsd_loai_tg','=','dot_tt')]}"/>
-                            <field name="bsd_dot_kt"
-                                   attrs="{'invisible':['|',('bsd_loai', '!=', 'dot_tt'),('bsd_loai_tg','!=','dot_tt')],
-                                           'required':[('bsd_loai', '=', 'dot_tt'),('bsd_loai_tg','=','dot_tt')]}"/>
-                            <field name="bsd_tl_dc"
-                                   attrs="{'invisible':['|',('bsd_loai', '!=', 'dat_coc'),('bsd_phuong_thuc', '!=', 'phan_tram')],
-                                           'required':[('bsd_loai', '=', 'dat_coc'),('bsd_phuong_thuc', '=', 'phan_tram')]}"/>
-                            <field name="bsd_tien_dc"
-                                   attrs="{'invisible':['|',('bsd_loai', '!=', 'dat_coc'),('bsd_phuong_thuc', '!=', 'gia_tri')],
-                                           'required':[('bsd_loai', '=', 'dat_coc'),('bsd_phuong_thuc', '=', 'gia_tri')]}"/>
-                            <field name="bsd_tl_ttdc"
-                                   attrs="{'invisible':['|',('bsd_loai', '!=', 'ky_ttdc'),('bsd_phuong_thuc', '!=', 'phan_tram')],
-                                           'required':[('bsd_loai', '=', 'ky_ttdc'),('bsd_phuong_thuc', '=', 'phan_tram')]}"/>
-                            <field name="bsd_tien_ttdc"
-                                   attrs="{'invisible':['|',('bsd_loai', '!=', 'ky_ttdc'),('bsd_phuong_thuc', '!=', 'gia_tri')],
-                                           'required':[('bsd_loai', '=', 'ky_ttdc'),('bsd_phuong_thuc', '=', 'gia_tri')]}"/>
-                            <field name="bsd_tl_hd"
-                                   attrs="{'invisible':['|',('bsd_loai', '!=', 'ky_hd'),('bsd_phuong_thuc', '!=', 'phan_tram')],
-                                           'required':[('bsd_loai', '=', 'ky_hd'),('bsd_phuong_thuc', '=', 'phan_tram')]}"/>
-                            <field name="bsd_tien_hd"
-                                   attrs="{'invisible':['|',('bsd_loai', '!=', 'ky_hd'),('bsd_phuong_thuc', '!=', 'gia_tri')],
-                                           'required':[('bsd_loai', '=', 'ky_hd'),('bsd_phuong_thuc', '=', 'gia_tri')]}"/>
-                            <field name="bsd_tl_dtt"
-                                   attrs="{'invisible':['|',('bsd_loai', '!=', 'dot_tt'),('bsd_phuong_thuc', '!=', 'phan_tram')],
-                                           'required':[('bsd_loai', '=', 'dot_tt'),('bsd_phuong_thuc', '=', 'phan_tram')]}"/>
-                            <field name="bsd_tien_dtt"
-                                   attrs="{'invisible':['|',('bsd_loai', '!=', 'dot_tt'),('bsd_phuong_thuc', '!=', 'gia_tri')],
-                                           'required':[('bsd_loai', '=', 'dot_tt'),('bsd_phuong_thuc', '=', 'gia_tri')]}"/>
+                        <group string="XÉT DUYỆT">
+                            <group>
+                                <field name="bsd_ngay_duyet"/>
+                                <field name="bsd_nguoi_duyet_id"/>
+                            </group>
+                            <group>
+                                <field name="bsd_ly_do"/>
+                            </group>
                         </group>
-                    </group>
-                    <group string="XÉT DUYỆT">
-                        <group>
-                            <field name="bsd_ngay_duyet"/>
-                            <field name="bsd_nguoi_duyet_id"/>
-                        </group>
-                        <group>
-                            <field name="bsd_ly_do"/>
-                        </group>
-                    </group>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
-            </form>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_phi_mg_tree">
-        <field name="name">bsd.phi_mg.tree</field>
-        <field name="model">bsd.phi_mg</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="bsd_ma"/>
-                <field name="bsd_ten"/>
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_loai"/>
-                <field name="bsd_phuong_thuc"/>
-                <field name="bsd_cach_tinh"/>
-                <field name="state"/>
-            </tree>
-        </field>
-    </record>
-    <record model="ir.actions.act_window" id="bsd_phi_mg_action">
-        <field name="name">Phí môi giới</field>
-        <field name="res_model">bsd.phi_mg</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="xml">
-            <p>Tạo phí môi giới</p>
-        </field>
-    </record>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_phi_mg_tree">
+            <field name="name">bsd.phi_mg.tree</field>
+            <field name="model">bsd.phi_mg</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="bsd_ma"/>
+                    <field name="bsd_ten"/>
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_loai"/>
+                    <field name="bsd_phuong_thuc"/>
+                    <field name="bsd_cach_tinh"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_phi_mg_action">
+            <field name="name">Phí môi giới</field>
+            <field name="res_model">bsd.phi_mg</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="xml">
+                <p>Tạo phí môi giới</p>
+            </field>
+        </record>
+    </data>
 </odoo>

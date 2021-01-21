@@ -517,9 +517,9 @@ class BsdBaoGia(models.Model):
     # Xóa lịch thanh toán
     def action_xoa_lich_tt(self):
         # Xóa lịch thanh toán hiện tại
-        self.bsd_ltt_ids.unlink()
-        self.bsd_dot_pbt_ids.unlink()
-        self.bsd_dot_pql_ids.unlink()
+        self.bsd_ltt_ids.sudo().unlink()
+        self.bsd_dot_pbt_ids.sudo().unlink()
+        self.bsd_dot_pql_ids.sudo().unlink()
         self.write({
             'bsd_da_co_lich': False
         })

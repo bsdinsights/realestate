@@ -1,70 +1,72 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_cong_no_ct_form">
-        <field name="name">bsd.cong_no_ct.form</field>
-        <field name="model">bsd.cong_no_ct</field>
-        <field name="arch" type="xml">
-            <form create="false" duplicate="false">
-                <header>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
-                </header>
-                <sheet>
-                    <group>
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_cong_no_ct_form">
+            <field name="name">bsd.cong_no_ct.form</field>
+            <field name="model">bsd.cong_no_ct</field>
+            <field name="arch" type="xml">
+                <form create="false" duplicate="false">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    </header>
+                    <sheet>
                         <group>
-                            <field name="bsd_ngay_pb"/>
-                            <field name="bsd_khach_hang_id"
-                                   options="{'no_create':true}"/>
-                            <field name="currency_id" invisible="1"/>
-                            <field name="bsd_loai"/>
-                            <field name="bsd_hd_ban_id"
-                                   attrs="{'invisible':[('bsd_loai', 'not in', ['pt_dtt','pt_pql','pt_pbt','pt_pps','pt_lp'])]}"/>
+                            <group>
+                                <field name="bsd_ngay_pb"/>
+                                <field name="bsd_khach_hang_id"
+                                       options="{'no_create':true}"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="bsd_loai"/>
+                                <field name="bsd_hd_ban_id"
+                                       attrs="{'invisible':[('bsd_loai', 'not in', ['pt_dtt','pt_pql','pt_pbt','pt_pps','pt_lp'])]}"/>
+                            </group>
+                            <group>
+                                <field name="bsd_phieu_thu_id"/>
+                                <field name="bsd_gc_tc_id" attrs="{'invisible':[('bsd_loai', '!=', 'pt_gctc')]}"/>
+                                <field name="bsd_giu_cho_id" attrs="{'invisible':[('bsd_loai', '!=', 'pt_gc')]}"/>
+                                <field name="bsd_dat_coc_id" attrs="{'invisible':[('bsd_loai', '!=', 'pt_dc')]}"/>
+                                <field name="bsd_dot_tt_id"
+                                       attrs="{'invisible':[('bsd_loai', 'not in', ['pt_dtt','pt_pql','pt_pbt'])]}"/>
+                                <field name="bsd_phi_ps_id" attrs="{'invisible':[('bsd_loai', '!=', 'pt_pps')]}"/>
+                                <field name="bsd_lai_phat_id" attrs="{'invisible':[('bsd_loai', '!=', 'pt_lp')]}"/>
+                                <field name="bsd_hoan_tien_id"
+                                       attrs="{'invisible':[('bsd_loai', '!=', 'pt_ht')]}"/>
+                                <field name="bsd_tien_pb"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
                         </group>
-                        <group>
-                            <field name="bsd_phieu_thu_id"/>
-                            <field name="bsd_gc_tc_id" attrs="{'invisible':[('bsd_loai', '!=', 'pt_gctc')]}"/>
-                            <field name="bsd_giu_cho_id" attrs="{'invisible':[('bsd_loai', '!=', 'pt_gc')]}"/>
-                            <field name="bsd_dat_coc_id" attrs="{'invisible':[('bsd_loai', '!=', 'pt_dc')]}"/>
-                            <field name="bsd_dot_tt_id"
-                                   attrs="{'invisible':[('bsd_loai', 'not in', ['pt_dtt','pt_pql','pt_pbt'])]}"/>
-                            <field name="bsd_phi_ps_id" attrs="{'invisible':[('bsd_loai', '!=', 'pt_pps')]}"/>
-                            <field name="bsd_lai_phat_id" attrs="{'invisible':[('bsd_loai', '!=', 'pt_lp')]}"/>
-                            <field name="bsd_hoan_tien_id"
-                                   attrs="{'invisible':[('bsd_loai', '!=', 'pt_ht')]}"/>
-                            <field name="bsd_tien_pb"/>
-                            <field name="currency_id" invisible="1"/>
-                        </group>
-                    </group>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>                
-            </form>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_cong_no_ct_tree">
-        <field name="name">bsd.cong_no_ct.tree</field>
-        <field name="model">bsd.cong_no_ct</field>
-        <field name="arch" type="xml">
-            <tree create="false" duplicate="false">
-                <field name="bsd_ngay_pb"/>
-                <field name="bsd_khach_hang_id"/>
-                <field name="display_name"/>
-                <field name="bsd_loai"/>
-                <field name="bsd_phieu_thu_id"/>
-                <field name="bsd_tien_pb"/>
-                <field name="state"/>
-                <field name="currency_id" invisible="1"/>
-            </tree>
-        </field>
-    </record>
-    <record model="ir.actions.act_window" id="bsd_cong_no_ct_action">
-        <field name="name">Chi tiết thanh toán</field>
-        <field name="res_model">bsd.cong_no_ct</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="xml">
-            <p>Chi tiết thanh toán</p>
-        </field>
-    </record>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_cong_no_ct_tree">
+            <field name="name">bsd.cong_no_ct.tree</field>
+            <field name="model">bsd.cong_no_ct</field>
+            <field name="arch" type="xml">
+                <tree create="false" duplicate="false">
+                    <field name="bsd_ngay_pb"/>
+                    <field name="bsd_khach_hang_id"/>
+                    <field name="display_name"/>
+                    <field name="bsd_loai"/>
+                    <field name="bsd_phieu_thu_id"/>
+                    <field name="bsd_tien_pb"/>
+                    <field name="state"/>
+                    <field name="currency_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_cong_no_ct_action">
+            <field name="name">Chi tiết thanh toán</field>
+            <field name="res_model">bsd.cong_no_ct</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="xml">
+                <p>Chi tiết thanh toán</p>
+            </field>
+        </record>
+    </data>
 </odoo>

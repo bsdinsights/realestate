@@ -1,220 +1,220 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_hd_ban_cn_form">
-        <field name="name">bsd.hd_ban_cn.form</field>
-        <field name="model">bsd.hd_ban_cn</field>
-        <field name="arch" type="xml">
-            <form duplicate="false">
-                <header>
-                    <button string="Xác nhận"
-                            name="action_xac_nhan"
-                            states="nhap"
-                            confirm="Bạn có muốn xác nhận chứng từ không?"
-                            attrs="{'invisible': ['|',('id', '=',False)]}"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Xác nhận TTLK"
-                            name="action_xac_nhan_ttlk"
-                            states="cho_xn_ttlk"
-                            confirm="Bạn có muốn xác nhận lũy kế thanh toán này không?"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Xác nhận TT"
-                            name="action_xac_nhan_tt"
-                            states="da_xn_ttlk"
-                            confirm="Bạn có muốn xác nhận thông tin khách hàng mới không?"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="In"
-                            name="action_in_cn"
-                            type="object"
-                            states="xac_nhan,duyet"
-                            class="oe_highlight"/>
-                    <button string="Duyệt"
-                            name="action_duyet"
-                            states="xac_nhan"
-                            confirm="Bạn có muốn duyệt yêu cầu này không?"
-                            attrs="{'invisible': ['|',('bsd_ngay_in_vb', '=',False)]}"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Không duyệt"
-                            name="action_khong_duyet"
-                            states="xac_nhan"
-                            confirm="Bạn có muốn từ chối yêu cầu này không?"
-                            attrs="{'invisible': ['|',('bsd_ngay_in_vb', '=',False)]}"
-                            type="object"
-                            class="oe_highlight"/>
-                    <button string="Hủy"
-                            name="action_huy"
-                            type="object"
-                            attrs="{'invisible': ['|',('id', '=',False)]}"
-                            states="xac_nhan,nhap"/>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
-                </header>
-                <sheet>
-                    <notebook>
-                        <page string="Thông tin chung">
-                            <group>
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_hd_ban_cn_form">
+            <field name="name">bsd.hd_ban_cn.form</field>
+            <field name="model">bsd.hd_ban_cn</field>
+            <field name="arch" type="xml">
+                <form duplicate="false">
+                    <header>
+                        <button string="Xác nhận"
+                                name="action_xac_nhan"
+                                states="nhap"
+                                confirm="Bạn có muốn xác nhận chứng từ không?"
+                                attrs="{'invisible': ['|',('id', '=',False)]}"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Xác nhận TTLK"
+                                name="action_xac_nhan_ttlk"
+                                states="cho_xn_ttlk"
+                                confirm="Bạn có muốn xác nhận lũy kế thanh toán này không?"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Xác nhận TT"
+                                name="action_xac_nhan_tt"
+                                states="da_xn_ttlk"
+                                confirm="Bạn có muốn xác nhận thông tin khách hàng mới không?"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="In"
+                                name="action_in_cn"
+                                type="object"
+                                states="xac_nhan,duyet"
+                                class="oe_highlight"/>
+                        <button string="Duyệt"
+                                name="action_duyet"
+                                states="xac_nhan"
+                                confirm="Bạn có muốn duyệt yêu cầu này không?"
+                                attrs="{'invisible': ['|',('bsd_ngay_in_vb', '=',False)]}"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Không duyệt"
+                                name="action_khong_duyet"
+                                states="xac_nhan"
+                                confirm="Bạn có muốn từ chối yêu cầu này không?"
+                                attrs="{'invisible': ['|',('bsd_ngay_in_vb', '=',False)]}"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Hủy"
+                                name="action_huy"
+                                type="object"
+                                attrs="{'invisible': ['|',('id', '=',False)]}"
+                                states="xac_nhan,nhap"/>
+                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    </header>
+                    <sheet>
+                        <notebook>
+                            <page string="Thông tin chung">
                                 <group>
-                                    <field name="bsd_ma_cn"/>
-                                    <field name="bsd_ten_cn"/>
-                                    <field name="bsd_ngay_cn"/>
-                                    <field name="bsd_loai"/>
+                                    <group>
+                                        <field name="bsd_ma_cn"/>
+                                        <field name="bsd_ten_cn"/>
+                                        <field name="bsd_ngay_cn"/>
+                                        <field name="bsd_loai"/>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                                        <field name="bsd_hd_ban_id"
+                                               domain="[('bsd_du_an_id', '=', bsd_du_an_id),
+                                                        ('state','not in',['nhap','ht_dc','tt_dot1','du_dk','da_ky_ttdc'])]"
+                                               options="{'no_create':true}"/>
+                                        <field name="bsd_unit_id"
+                                               context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
+                                               options="{'no_create':true}"/>
+                                        <field name="bsd_hd_ban_state" readonly="1" force_save="1"/>
+                                        <field name="bsd_ly_do" readonly="1"/>
+                                    </group>
                                 </group>
+                                <group string="XÁC NHẬN">
+                                    <group>
+                                        <field name="bsd_ngay_hl_cn"/>
+                                        <field name="bsd_ngay_hl_cn" invisible="1" readonly="0"/>
+                                        <field name="bsd_ngay_kt_xn"/>
+                                        <field name="bsd_ngay_in_vb"/>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_ngay_duyet"/>
+                                        <field name="bsd_nguoi_duyet_id"/>
+                                        <field name="bsd_ngay_in_xn_vb"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Khách hàng">
                                 <group>
-                                    <field name="bsd_du_an_id" options="{'no_create':true}"/>
-                                    <field name="bsd_hd_ban_id"
-                                           domain="[('bsd_du_an_id', '=', bsd_du_an_id),
-                                                    ('state','not in',['nhap','ht_dc','tt_dot1','du_dk','da_ky_ttdc'])]"
-                                           options="{'no_create':true}"/>
-                                    <field name="bsd_unit_id"
-                                           context="{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}"
-                                           options="{'no_create':true}"/>
-                                    <field name="bsd_hd_ban_state" readonly="1" force_save="1"/>
-                                    <field name="bsd_ly_do" readonly="1"/>
+                                    <group>
+                                        <field name="bsd_khach_hang_id"
+                                               readonly="1"
+                                               force_save="1"
+                                               options="{'no_create':true}"/>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_co_dsh_ht" readonly="1" force_save="1"/>
+                                    </group>
                                 </group>
-                            </group>
-                            <group string="XÁC NHẬN">
+                                <field name="bsd_dsh_ht_ids" readonly="1" nolabel="1" attrs="{'invisible':[('bsd_co_dsh_ht', '=', False)]}">
+                                    <tree>
+                                        <field name="bsd_dong_sh_id"/>
+                                        <field name="mobile"/>
+                                        <field name="email"/>
+                                        <field name="bsd_quan_he"/>
+                                    </tree>
+                                </field>
                                 <group>
-                                    <field name="bsd_ngay_hl_cn"/>
-                                    <field name="bsd_ngay_hl_cn" invisible="1" readonly="0"/>
-                                    <field name="bsd_ngay_kt_xn"/>
-                                    <field name="bsd_ngay_in_vb"/>
+                                    <group>
+                                        <field name="bsd_kh_moi_id"
+                                               attrs="{'required':[('state', '=', 'da_xn_ttlk')]}"
+                                               context="{'show_ma_kh': True}"
+                                               options="{'no_create':true}"/>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_co_dsh_moi"/>
+                                    </group>
                                 </group>
-                                <group>
-                                    <field name="bsd_ngay_duyet"/>
-                                    <field name="bsd_nguoi_duyet_id"/>
-                                    <field name="bsd_ngay_in_xn_vb"/>
-                                </group>
-                            </group>
-                        </page>
-                        <page string="Khách hàng">
-                            <group>
-                                <group>
-                                    <field name="bsd_khach_hang_id"
-                                           readonly="1"
-                                           force_save="1"
-                                           options="{'no_create':true}"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_co_dsh_ht" readonly="1" force_save="1"/>
-                                </group>
-                            </group>
-                            <field name="bsd_dsh_ht_ids" readonly="1" nolabel="1" attrs="{'invisible':[('bsd_co_dsh_ht', '=', False)]}">
-                                <tree>
-                                    <field name="bsd_dong_sh_id"/>
-                                    <field name="mobile"/>
-                                    <field name="email"/>
-                                    <field name="bsd_quan_he"/>
-                                </tree>
-                            </field>
-                            <group>
-                                <group>
-                                    <field name="bsd_kh_moi_id"
-                                           attrs="{'required':[('state', '=', 'da_xn_ttlk')]}"
-                                           context="{'show_ma_kh': True}"
-                                           options="{'no_create':true}"/>
-                                </group>
-                                <group>
-                                    <field name="bsd_co_dsh_moi"/>
-                                </group>
-                            </group>
-                            <field name="bsd_dsh_moi_ids"
-                                   nolabel="1" attrs="{'invisible':[('bsd_co_dsh_moi', '=', False)]}">
-                                <tree>
-                                    <field name="bsd_dong_sh_id"
-                                           context="{'show_ma_kh': True}"
-                                           options="{'no_create':true}"/>
-                                    <field name="mobile"/>
-                                    <field name="email"/>
-                                    <field name="bsd_quan_he"/>
-                                </tree>
-                                <form>
-                                    <sheet>
-                                        <group>
+                                <field name="bsd_dsh_moi_ids"
+                                       nolabel="1" attrs="{'invisible':[('bsd_co_dsh_moi', '=', False)]}">
+                                    <tree>
+                                        <field name="bsd_dong_sh_id"
+                                               context="{'show_ma_kh': True}"
+                                               options="{'no_create':true}"/>
+                                        <field name="mobile"/>
+                                        <field name="email"/>
+                                        <field name="bsd_quan_he"/>
+                                    </tree>
+                                    <form>
+                                        <sheet>
                                             <group>
-                                                <field name="bsd_dong_sh_id"
-                                                       domain="[('id', '!=', parent.bsd_kh_moi_id)]"
-                                                       context="{'show_ma_kh': True}"
-                                                       options="{'no_create':true}"/>
-                                                <field name="bsd_quan_he"/>
+                                                <group>
+                                                    <field name="bsd_dong_sh_id"
+                                                           domain="[('id', '!=', parent.bsd_kh_moi_id)]"
+                                                           context="{'show_ma_kh': True}"
+                                                           options="{'no_create':true}"/>
+                                                    <field name="bsd_quan_he"/>
+                                                </group>
+                                                <group>
+                                                    <field name="mobile"/>
+                                                    <field name="email"/>
+                                                </group>
                                             </group>
-                                            <group>
-                                                <field name="mobile"/>
-                                                <field name="email"/>
-                                            </group>
-                                        </group>
-                                    </sheet>
-                                </form>
-                            </field>
-                        </page>
-                        <page string="Công chứng">
-                            <group>
-                                <group string="CÔNG CHỨNG">
-<!--                                    <field name="bsd_giay_cn"/>-->
-                                    <field name="bsd_so_cch"/>
-                                    <field name="bsd_noi_cch"/>
-                                    <field name="bsd_ngay_cch"/>
-                                    <field name="bsd_tt_cch"/>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+                            <page string="Công chứng">
+                                <group>
+                                    <group string="CÔNG CHỨNG">
+    <!--                                    <field name="bsd_giay_cn"/>-->
+                                        <field name="bsd_so_cch"/>
+                                        <field name="bsd_noi_cch"/>
+                                        <field name="bsd_ngay_cch"/>
+                                        <field name="bsd_tt_cch"/>
+                                    </group>
+                                    <group string="THÔNG BÁO NỘP THUẾ">
+                                        <field name="bsd_so_tb"/>
+                                        <field name="bsd_noi_tb"/>
+                                        <field name="bsd_ngay_tb"/>
+                                        <field name="bsd_gcn_nt"/>
+                                    </group>
                                 </group>
-                                <group string="THÔNG BÁO NỘP THUẾ">
-                                    <field name="bsd_so_tb"/>
-                                    <field name="bsd_noi_tb"/>
-                                    <field name="bsd_ngay_tb"/>
-                                    <field name="bsd_gcn_nt"/>
-                                </group>
-                            </group>
-                        </page>
-                    </notebook>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
-            </form>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_hd_ban_cn_tree">
-        <field name="name">bsd.hd_ban_cn.tree</field>
-        <field name="model">bsd.hd_ban_cn</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="bsd_ma_cn"/>
-                <field name="bsd_ten_cn"/>
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_hd_ban_id"/>
-                <field name="bsd_unit_id"/>
-                <field name="state"/>
-            </tree>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="bsd_hd_ban_cn_filter">
-        <field name="name">bsd.hd_ban_cn.list.filter</field>
-        <field name="model">bsd.hd_ban_cn</field>
-        <field name="arch" type="xml">
-            <search string="Lọc dữ liệu">
-                <field name="bsd_ma_cn"/>
-                <field name="bsd_khach_hang_id"/>
-                <field name="bsd_unit_id"/>
-                <field name="bsd_du_an_id"/>
-                <filter string="Phiếu chuyển nhượng của tôi" domain="[('create_uid', '=', uid)]" name="my_hd_ban_cn_filter"/>
-                <group expand="0" string="Group by">
-                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
-                    <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
-                    <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
-
-    <record model="ir.actions.act_window" id="bsd_hd_ban_cn_action">
-        <field name="name">Chuyển nhượng hợp đồng</field>
-        <field name="res_model">bsd.hd_ban_cn</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="xml">
-            <p>Tạo thông tin chuyển nhượng hợp đồng</p>
-        </field>
-    </record>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_hd_ban_cn_tree">
+            <field name="name">bsd.hd_ban_cn.tree</field>
+            <field name="model">bsd.hd_ban_cn</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="bsd_ma_cn"/>
+                    <field name="bsd_ten_cn"/>
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_hd_ban_id"/>
+                    <field name="bsd_unit_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_hd_ban_cn_filter">
+            <field name="name">bsd.hd_ban_cn.list.filter</field>
+            <field name="model">bsd.hd_ban_cn</field>
+            <field name="arch" type="xml">
+                <search string="Lọc dữ liệu">
+                    <field name="bsd_ma_cn"/>
+                    <field name="bsd_khach_hang_id"/>
+                    <field name="bsd_unit_id"/>
+                    <field name="bsd_du_an_id"/>
+                    <filter string="Phiếu chuyển nhượng của tôi" domain="[('create_uid', '=', uid)]" name="my_hd_ban_cn_filter"/>
+                    <group expand="0" string="Group by">
+                        <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                        <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
+                        <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_hd_ban_cn_action">
+            <field name="name">Chuyển nhượng hợp đồng</field>
+            <field name="res_model">bsd.hd_ban_cn</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="xml">
+                <p>Tạo thông tin chuyển nhượng hợp đồng</p>
+            </field>
+        </record>
+    </data>
 </odoo>

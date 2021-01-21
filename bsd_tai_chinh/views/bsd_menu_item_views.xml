@@ -1,82 +1,78 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <!--Top menu-->
-    <menuitem id="bsd_main_tai_chinh_root" name="Tài chính"/>
-    <menuitem id="bsd_cong_no_menu_action"
-              name="Công nợ khách hàng"
-              sequence="11"
-              action="bsd_cong_no_action"
-              parent="bsd_main_tai_chinh_root"/>
-    <menuitem id="bsd_cong_no_ct_menu_action"
-              name="Công nợ chứng từ"
-              sequence="12"
-              action="bsd_cong_no_ct_action"
-              parent="bsd_main_tai_chinh_root"/>
-    <menuitem id="bsd_lai_phat_menu_action"
-              name="Tiền phạt chậm TT"
-              sequence="13"
-              action="bsd_lai_phat_action"
-              parent="bsd_main_tai_chinh_root"/>
-
-    <menuitem id="bsd_cn_qsdd_menu_action"
-              name="Cập nhật QSDĐ"
-              sequence="14"
-              action="bsd_cn_qsdd_action"
-              parent="bsd_main_tai_chinh_root"/>
-
-    <menuitem id="bsd_ps_gd_ck_menu_action"
-              name="Chiết khấu giao dịch"
-              sequence="15"
-              action="bsd_ps_gd_ck_action"
-              parent="bsd_main_tai_chinh_root"/>
-
-    <record id="bsd_tai_chinh.bsd_main_tai_chinh_root" model="ir.ui.menu">
-        <field name="action" eval="False"/>
-        <field name="active" eval="True"/>
-        <field name="groups_id" eval="[(6, 0, [])]"/>
-        <field name="name">Tài chính</field>
-        <field name="parent_id" eval="False"/>
-        <field name="sequence">34</field>
-        <field name="web_icon">fa fa-file-text,#FFFFFF,#D2691E</field>
-    </record>
-
-<!--    Tạo icon màn hình-->
-    <menuitem id="bsd_phieu_thu_menu_action_2"
-              name="Thanh toán"
-              sequence="19"
-              action="bsd_tai_chinh.bsd_phieu_thu_action"
-              web_icon="fa fa-money,#FFFFFF,#238c8f"
-    />
-    <menuitem id="bsd_hoan_tien_menu_action_2"
-              name="Hoàn tiền"
-              sequence="20"
-              action="bsd_tai_chinh.bsd_hoan_tien_action"
-              web_icon="fa fa-undo,#FFFFFF,	#686968"
-    />
-    <menuitem id="bsd_can_tru_menu_action_2"
-              name="Cấn trừ"
-              sequence="21"
-              action="bsd_tai_chinh.bsd_can_tru_action"
-              web_icon="fa fa-credit-card,#FFFFFF,#d38252"
-    />
-    <menuitem id="bsd_phi_ps_menu_action_2"
-              name="Phí phát sinh"
-              sequence="22"
-              action="bsd_tai_chinh.bsd_phi_ps_action"
-              web_icon="fa fa-plus-circle ,#FFFFFF,#7da8c0"
-    />
-    <menuitem id="bsd_mien_giam_menu_action_2"
-              name="Miễn giảm"
-              sequence="23"
-              action="bsd_tai_chinh.bsd_mien_giam_action"
-              web_icon="fa fa-life-ring,#FFFFFF,#c0b66d"
-    />
-
-    <menuitem id="bsd_dashboard_menu_action_2"
-              name="Dashboard"
-              sequence="32"
-              action="bsd_tai_chinh.bsd_phieu_thu_action"
-              web_icon="fa fa-tachometer,#FFFFFF,#cb6483"
-    />
-
+    <data noupdate="1">
+        <!--Top menu-->
+        <menuitem id="bsd_main_tai_chinh_root" name="Tài chính"/>
+        <menuitem id="bsd_cong_no_menu_action"
+                  name="Công nợ khách hàng"
+                  sequence="11"
+                  action="bsd_cong_no_action"
+                  parent="bsd_main_tai_chinh_root"/>
+        <menuitem id="bsd_cong_no_ct_menu_action"
+                  name="Công nợ chứng từ"
+                  sequence="12"
+                  action="bsd_cong_no_ct_action"
+                  parent="bsd_main_tai_chinh_root"/>
+        <menuitem id="bsd_lai_phat_menu_action"
+                  name="Tiền phạt chậm TT"
+                  sequence="13"
+                  action="bsd_lai_phat_action"
+                  parent="bsd_main_tai_chinh_root"/>
+        <menuitem id="bsd_cn_qsdd_menu_action"
+                  name="Cập nhật QSDĐ"
+                  sequence="14"
+                  action="bsd_cn_qsdd_action"
+                  parent="bsd_main_tai_chinh_root"/>
+        <menuitem id="bsd_ps_gd_ck_menu_action"
+                  name="Chiết khấu giao dịch"
+                  sequence="15"
+                  action="bsd_ps_gd_ck_action"
+                  parent="bsd_main_tai_chinh_root"/>
+        <record id="bsd_tai_chinh.bsd_main_tai_chinh_root" model="ir.ui.menu">
+            <field name="action" eval="False"/>
+            <field name="active" eval="True"/>
+            <field name="groups_id" eval="[(6, 0, [])]"/>
+            <field name="name">Tài chính</field>
+            <field name="parent_id" eval="False"/>
+            <field name="sequence">34</field>
+            <field name="web_icon">fa fa-file-text,#FFFFFF,#D2691E</field>
+        </record>
+    <!--    Tạo icon màn hình-->
+        <menuitem id="bsd_phieu_thu_menu_action_2"
+                  name="Thanh toán"
+                  sequence="19"
+                  action="bsd_tai_chinh.bsd_phieu_thu_action"
+                  web_icon="fa fa-money,#FFFFFF,#238c8f"
+        />
+        <menuitem id="bsd_hoan_tien_menu_action_2"
+                  name="Hoàn tiền"
+                  sequence="20"
+                  action="bsd_tai_chinh.bsd_hoan_tien_action"
+                  web_icon="fa fa-undo,#FFFFFF,	#686968"
+        />
+        <menuitem id="bsd_can_tru_menu_action_2"
+                  name="Cấn trừ"
+                  sequence="21"
+                  action="bsd_tai_chinh.bsd_can_tru_action"
+                  web_icon="fa fa-credit-card,#FFFFFF,#d38252"
+        />
+        <menuitem id="bsd_phi_ps_menu_action_2"
+                  name="Phí phát sinh"
+                  sequence="22"
+                  action="bsd_tai_chinh.bsd_phi_ps_action"
+                  web_icon="fa fa-plus-circle ,#FFFFFF,#7da8c0"
+        />
+        <menuitem id="bsd_mien_giam_menu_action_2"
+                  name="Miễn giảm"
+                  sequence="23"
+                  action="bsd_tai_chinh.bsd_mien_giam_action"
+                  web_icon="fa fa-life-ring,#FFFFFF,#c0b66d"
+        />
+        <menuitem id="bsd_dashboard_menu_action_2"
+                  name="Dashboard"
+                  sequence="32"
+                  action="bsd_tai_chinh.bsd_phieu_thu_action"
+                  web_icon="fa fa-tachometer,#FFFFFF,#cb6483"
+        />
+    </data>
 </odoo>

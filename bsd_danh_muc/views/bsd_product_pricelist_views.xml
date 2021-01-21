@@ -1,144 +1,145 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_product_pricelist_form">
-        <field name="name">bsd.product.pricelist.form</field>
-        <field name="model">product.pricelist</field>
-        <field name="inherit_id" ref="product.product_pricelist_view"/>
-        <field name="arch" type="xml">
-            <xpath expr="//sheet" position="before">
-                <header>
-                    <button string="Xác nhận"
-                            name="action_xac_nhan"
-                            class="oe_highlight"
-                            confirm="Bạn có muốn Xác nhận yêu cầu không?"
-                            attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
-                            type="object"/>
-                    <button string="Duyệt"
-                            name="action_duyet"
-                            class="oe_highlight"
-                            states="xac_nhan"
-                            confirm="Bạn có muốn Duyệt yêu cầu không?"
-                            type="object"/>
-                    <button string="Không duyệt"
-                            name="action_khong_duyet"
-                            class="oe_highlight"
-                            states="xac_nhan"
-                            type="object"
-                            confirm="Bạn có muốn Từ chối yêu cầu không?"/>
-                    <button string="Hủy"
-                            name="action_huy"
-                            states="xac_nhan"
-                            confirm="Bạn có muốn Hủy yêu cầu không?"
-                            type="object"/>
-                    <field name="state" widget="statusbar" statusbar_visible="0"/>
-                </header>
-            </xpath>
-            <xpath expr="//form" position="attributes">
-                <attribute name="delete">false</attribute>
-            </xpath>
-            <xpath expr="//div[@class='oe_title']" position="attributes">
-                <attribute name="attrs">{'invisible':1}</attribute>
-            </xpath>
-            <xpath expr="//page[@name='pricelist_config']" position="attributes">
-                <attribute name="attrs">{'invisible':1}</attribute>
-            </xpath>
-            <xpath expr="//group[@name='pricelist_settings']" position="replace">
-                    <group>
-                        <field name="bsd_ma_bg"/>
-                        <field name="name"/>
-                        <field name="bsd_du_an_id"/>
-                        <field name="bsd_ngay_bd"/>
-                        <field name="bsd_ngay_kt"/>
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_product_pricelist_form">
+            <field name="name">bsd.product.pricelist.form</field>
+            <field name="model">product.pricelist</field>
+            <field name="inherit_id" ref="product.product_pricelist_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="before">
+                    <header>
+                        <button string="Xác nhận"
+                                name="action_xac_nhan"
+                                class="oe_highlight"
+                                confirm="Bạn có muốn Xác nhận yêu cầu không?"
+                                attrs="{'invisible': ['|',('id', '=',False),('state','not in',['nhap'])]}"
+                                type="object"/>
+                        <button string="Duyệt"
+                                name="action_duyet"
+                                class="oe_highlight"
+                                states="xac_nhan"
+                                confirm="Bạn có muốn Duyệt yêu cầu không?"
+                                type="object"/>
+                        <button string="Không duyệt"
+                                name="action_khong_duyet"
+                                class="oe_highlight"
+                                states="xac_nhan"
+                                type="object"
+                                confirm="Bạn có muốn Từ chối yêu cầu không?"/>
+                        <button string="Hủy"
+                                name="action_huy"
+                                states="xac_nhan"
+                                confirm="Bạn có muốn Hủy yêu cầu không?"
+                                type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    </header>
+                </xpath>
+                <xpath expr="//form" position="attributes">
+                    <attribute name="delete">false</attribute>
+                </xpath>
+                <xpath expr="//div[@class='oe_title']" position="attributes">
+                    <attribute name="attrs">{'invisible':1}</attribute>
+                </xpath>
+                <xpath expr="//page[@name='pricelist_config']" position="attributes">
+                    <attribute name="attrs">{'invisible':1}</attribute>
+                </xpath>
+                <xpath expr="//group[@name='pricelist_settings']" position="replace">
+                        <group>
+                            <field name="bsd_ma_bg"/>
+                            <field name="name"/>
+                            <field name="bsd_du_an_id"/>
+                            <field name="bsd_ngay_bd"/>
+                            <field name="bsd_ngay_kt"/>
+                        </group>
+                        <group>
+                            <field name="currency_id" readonly="1" force_save="1"/>
+                            <field name="bsd_nguoi_duyet_id"/>
+                            <field name="bsd_ngay_duyet"/>
+                            <field name="active" invisible="1"/>
+                            <field name="bsd_dien_giai"/>
+                            <field name="bsd_ly_do"/>
+                        </group>
+                </xpath>
+                <xpath expr="//field[@name='item_ids']" position="replace">
+                      <field name="item_ids" nolabel="1"
+                             attrs="{'invisible':[('id', '=', False)]}"
+                             context="{'default_base':'list_price', 'default_date_start':bsd_ngay_bd, 'default_date_end':bsd_ngay_kt}" groups="product.group_product_pricelist">
+                          <tree string="Pricelist Items">
+                              <field name="product_tmpl_id" domain="[('bsd_du_an_id','in',[parent.bsd_du_an_id])]"/>
+                              <field name="fixed_price" string="Giá bán" class="oe_inline" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                              <field name="base" invisible="1"/>
+                              <field name="price_discount" invisible="1"/>
+                              <field name="applied_on" invisible="1"/>
+                              <field name="compute_price" invisible="1"/>
+                              <field name="currency_id" invisible="1"/>
+                              <field name="company_id" invisible="1"/>
+                          </tree>
+                      </field>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_product_pricelist_item_form">
+            <field name="name">bsd.product.pricelist.item.form</field>
+            <field name="model">product.pricelist.item</field>
+            <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='min_quantity']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_start']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_end']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='fixed_price']" position="attributes">
+                    <attribute name="class">oe_inline</attribute>
+                    <attribute name="widget">monetary</attribute>
+                    <attribute name="options">{'currency_field': 'currency_id'}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_tmpl_id']" position="attributes">
+                    <attribute name="domain">[('bsd_du_an_id','in',[parent.bsd_du_an_id])]</attribute>
+                    <attribute name="context">{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_tmpl_id']" position="before">
+                    <field name="currency_id" invisible="0"/>
+                    <field name="company_id" invisible="0"/>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_product_pricelist_inherit_tree">
+            <field name="name">bsd.product_pricelist.inherit.tree</field>
+            <field name="model">product.pricelist</field>
+            <field name="inherit_id" ref="product.product_pricelist_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="bsd_ma_bg"/>
+                </xpath>
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="delete">false</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_ngay_bd"/>
+                    <field name="bsd_ngay_kt"/>
+                    <field name="state"/>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_product_pricelist_filter">
+            <field name="name">bsd.product_pricelist.list.filter</field>
+            <field name="model">product.pricelist</field>
+            <field name="inherit_id" ref="product.product_pricelist_view_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <field name="bsd_ma_bg"/>
+                    <field name="name"/>
+                    <field name="bsd_du_an_id"/>
+                    <group expand="0" string="Group by">
+                        <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
                     </group>
-                    <group>
-                        <field name="currency_id" readonly="1" force_save="1"/>
-                        <field name="bsd_nguoi_duyet_id"/>
-                        <field name="bsd_ngay_duyet"/>
-                        <field name="active" invisible="1"/>
-                        <field name="bsd_dien_giai"/>
-                        <field name="bsd_ly_do"/>
-                    </group>
-            </xpath>
-            <xpath expr="//field[@name='item_ids']" position="replace">
-                  <field name="item_ids" nolabel="1"
-                         attrs="{'invisible':[('id', '=', False)]}"
-                         context="{'default_base':'list_price', 'default_date_start':bsd_ngay_bd, 'default_date_end':bsd_ngay_kt}" groups="product.group_product_pricelist">
-                      <tree string="Pricelist Items">
-                          <field name="product_tmpl_id" domain="[('bsd_du_an_id','in',[parent.bsd_du_an_id])]"/>
-                          <field name="fixed_price" string="Giá bán" class="oe_inline" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                          <field name="base" invisible="1"/>
-                          <field name="price_discount" invisible="1"/>
-                          <field name="applied_on" invisible="1"/>
-                          <field name="compute_price" invisible="1"/>
-                          <field name="currency_id" invisible="1"/>
-                          <field name="company_id" invisible="1"/>
-                      </tree>
-                  </field>
-            </xpath>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_product_pricelist_item_form">
-        <field name="name">bsd.product.pricelist.item.form</field>
-        <field name="model">product.pricelist.item</field>
-        <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='min_quantity']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-            <xpath expr="//field[@name='date_start']" position="attributes">
-                <attribute name="readonly">1</attribute>
-            </xpath>
-            <xpath expr="//field[@name='date_end']" position="attributes">
-                <attribute name="readonly">1</attribute>
-            </xpath>
-            <xpath expr="//field[@name='fixed_price']" position="attributes">
-                <attribute name="class">oe_inline</attribute>
-                <attribute name="widget">monetary</attribute>
-                <attribute name="options">{'currency_field': 'currency_id'}</attribute>
-            </xpath>
-            <xpath expr="//field[@name='product_tmpl_id']" position="attributes">
-                <attribute name="domain">[('bsd_du_an_id','in',[parent.bsd_du_an_id])]</attribute>
-                <attribute name="context">{'form_view_ref': 'bsd_du_an.bsd_product_template_form'}</attribute>
-            </xpath>
-            <xpath expr="//field[@name='product_tmpl_id']" position="before">
-                <field name="currency_id" invisible="0"/>
-                <field name="company_id" invisible="0"/>
-            </xpath>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_product_pricelist_inherit_tree">
-        <field name="name">bsd.product_pricelist.inherit.tree</field>
-        <field name="model">product.pricelist</field>
-        <field name="inherit_id" ref="product.product_pricelist_view_tree"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='name']" position="before">
-                <field name="bsd_ma_bg"/>
-            </xpath>
-            <xpath expr="//tree" position="attributes">
-                <attribute name="delete">false</attribute>
-            </xpath>
-            <xpath expr="//field[@name='name']" position="after">
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_ngay_bd"/>
-                <field name="bsd_ngay_kt"/>
-                <field name="state"/>
-            </xpath>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="bsd_product_pricelist_filter">
-        <field name="name">bsd.product_pricelist.list.filter</field>
-        <field name="model">product.pricelist</field>
-        <field name="inherit_id" ref="product.product_pricelist_view_search"/>
-        <field name="arch" type="xml">
-            <xpath expr="//search" position="inside">
-                <field name="bsd_ma_bg"/>
-                <field name="name"/>
-                <field name="bsd_du_an_id"/>
-                <group expand="0" string="Group by">
-                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
-                </group>
-            </xpath>
-        </field>
-    </record>
+                </xpath>
+            </field>
+        </record>
+    </data>
 </odoo>

@@ -186,7 +186,7 @@ class BsdProject(models.Model):
                                 readonly=True,
                                 states={'chuan_bi': [('readonly', False)]})
     state = fields.Selection([('chuan_bi', 'Chuẩn bị'),
-                              ('phat_hanh', 'Đã ban hành')],
+                              ('phat_hanh', 'Công bố')],
                              string="Trạng thái", default='chuan_bi', required=True, tracking=1, help="Trạng thái")
     bsd_tk_ng_ids = fields.One2many('res.partner.bank', 'bsd_du_an_id', string="Tài khoản ngân hàng",
                                     readonly=True,
@@ -210,7 +210,9 @@ class BsdProject(models.Model):
                              help="% thanh toán đủ điều kiện bàn giao(tối thiểu",
                              readonly=True,
                              states={'chuan_bi': [('readonly', False)]})
-    bsd_dien_giai = fields.Text(string="Mô tả", help="Mô tả dự án")
+    bsd_dien_giai = fields.Text(string="Mô tả", help="Mô tả dự án",
+                                readonly=True,
+                                states={'chuan_bi': [('readonly', False)]})
     bsd_tien_ich_ids = fields.Many2many('bsd.du_an.tien_ich', string="Tiện ích nội khu",
                                         help="Tiện ích nội khu của dự án",
                                         readonly=True,

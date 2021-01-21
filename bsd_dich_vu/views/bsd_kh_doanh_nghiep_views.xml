@@ -1,48 +1,49 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_res_partner_dn_kanban_inherit">
-        <field name="name">bsd.res.partner.dn.kanban.inherit</field>
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="bsd_kinh_doanh.bsd_res_partner_dn_kanban"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='email']" position="after">
-                <field name="bsd_sl_hd_ban"/>
-            </xpath>
-            <xpath expr="//li[@name='tien_ich']" position="inside">
-                <span class="badge badge-pill" modifiers="{}">
-                    Hợp đồng
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_res_partner_dn_kanban_inherit">
+            <field name="name">bsd.res.partner.dn.kanban.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="bsd_kinh_doanh.bsd_res_partner_dn_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='email']" position="after">
                     <field name="bsd_sl_hd_ban"/>
-                </span>
-            </xpath>
-        </field>
-    </record>
+                </xpath>
+                <xpath expr="//li[@name='tien_ich']" position="inside">
+                    <span class="badge badge-pill" modifiers="{}">
+                        Hợp đồng
+                        <field name="bsd_sl_hd_ban"/>
+                    </span>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_res_partner_dn_form_inherit">
+            <field name="name">bsd.res.partner.dn.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="bsd_kinh_doanh.bsd_res_partner_dn_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_view_hd_ban" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_sl_hd_ban', '=', 0)]}">
+                        <field name="bsd_sl_hd_ban" widget="statinfo" string="Hợp đồng"/>
+                    </button>
+                </xpath>
+                <xpath expr="//page[last()]" position="after">
+                    <page string="Hợp đồng">
+                        <field name="bsd_hd_ban_ids">
+                            <tree>
+                                <field name="bsd_ma_hd_ban"/>
+                                <field name="bsd_du_an_id"/>
+                                <field name="bsd_unit_id"/>
+                                <field name="bsd_tong_gia"/>
+                                <field name="state"/>
+                                <field name="company_id" invisible="1"/>
+                                <field name="currency_id" invisible="1"/>
+                            </tree>
 
-    <record model="ir.ui.view" id="bsd_res_partner_dn_form_inherit">
-        <field name="name">bsd.res.partner.dn.form.inherit</field>
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="bsd_kinh_doanh.bsd_res_partner_dn_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//div[@name='button_box']" position="inside">
-                <button name="action_view_hd_ban" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_sl_hd_ban', '=', 0)]}">
-                    <field name="bsd_sl_hd_ban" widget="statinfo" string="Hợp đồng"/>
-                </button>
-            </xpath>
-            <xpath expr="//page[last()]" position="after">
-                <page string="Hợp đồng">
-                    <field name="bsd_hd_ban_ids">
-                        <tree>
-                            <field name="bsd_ma_hd_ban"/>
-                            <field name="bsd_du_an_id"/>
-                            <field name="bsd_unit_id"/>
-                            <field name="bsd_tong_gia"/>
-                            <field name="state"/>
-                            <field name="company_id" invisible="1"/>
-                            <field name="currency_id" invisible="1"/>
-                        </tree>
-
-                    </field>
-                </page>
-            </xpath>
-        </field>
-    </record>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
 </odoo>

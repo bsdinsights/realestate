@@ -1,88 +1,90 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="bsd_tang_form">
-        <field name="name">bsd.tang.form</field>
-        <field name="model">bsd.tang</field>
-        <field name="arch" type="xml">
-            <form duplicate="false">
-                <sheet>
-                    <notebook>
-                    <page string="Thông tin chung">
+    <data noupdate="1">
+        <record model="ir.ui.view" id="bsd_tang_form">
+            <field name="name">bsd.tang.form</field>
+            <field name="model">bsd.tang</field>
+            <field name="arch" type="xml">
+                <form duplicate="false">
+                    <sheet>
+                        <notebook>
+                        <page string="Thông tin chung">
+                            <group>
                         <group>
-                    <group>
-                        <field name="bsd_du_an_id" options="{'no_create':true}"/>
-                        <field name="bsd_toa_nha_id"
-                               options="{'no_create':true}"
-                               domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
-                        <field name="bsd_ten_tang"/>
+                            <field name="bsd_du_an_id" options="{'no_create':true}"/>
+                            <field name="bsd_toa_nha_id"
+                                   options="{'no_create':true}"
+                                   domain="[('bsd_du_an_id', 'in',[bsd_du_an_id])]"/>
+                            <field name="bsd_ten_tang"/>
+                        </group>
+                        <group>
+                            <field name="bsd_ma_tang"/>
+                            <field name="bsd_stt"/>
+                            <field name="bsd_dien_giai"/>
+                        </group>
                     </group>
-                    <group>
-                        <field name="bsd_ma_tang"/>
-                        <field name="bsd_stt"/>
-                        <field name="bsd_dien_giai"/>
+                        </page>
+                        <page string="Danh sách sản phẩm">
+                            <field name="bsd_unit_ids">
+                                <tree>
+                                    <field name="bsd_ma_unit"/>
+                                    <field name="bsd_du_an_id"/>
+                                    <field name="bsd_toa_nha_id"/>
+                                    <field name="bsd_tang_id"/>
+                                    <field name="bsd_stt"/>
+                                    <field name="bsd_tong_gb"/>
+                                    <field name="bsd_uu_tien"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_tang_tree">
+            <field name="name">bsd.tang.tree</field>
+            <field name="model">bsd.tang</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="bsd_ma_tang"/>
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_toa_nha_id"/>
+                    <field name="bsd_ten_tang"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="bsd_tang_filter">
+            <field name="name">bsd.tang.list.filter</field>
+            <field name="model">bsd.tang</field>
+            <field name="arch" type="xml">
+                <search string="Lọc dữ liệu">
+                    <field name="bsd_ma_tang"/>
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_toa_nha_id"/>
+
+                    <group expand="0" string="Group by">
+                        <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                        <filter string="Tòa nhà" name="bsd_toa_nha_id" domain="[]" context="{'group_by': 'bsd_toa_nha_id'}"/>
                     </group>
-                </group>
-                    </page>
-                    <page string="Danh sách sản phẩm">
-                        <field name="bsd_unit_ids">
-                            <tree>
-                                <field name="bsd_ma_unit"/>
-                                <field name="bsd_du_an_id"/>
-                                <field name="bsd_toa_nha_id"/>
-                                <field name="bsd_tang_id"/>
-                                <field name="bsd_stt"/>
-                                <field name="bsd_tong_gb"/>
-                                <field name="bsd_uu_tien"/>
-                                <field name="state"/>
-                            </tree>
-                        </field>
-                    </page>
-                </notebook>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
-                </div>
-            </form>
-        </field>
-    </record>
-    <record model="ir.ui.view" id="bsd_tang_tree">
-        <field name="name">bsd.tang.tree</field>
-        <field name="model">bsd.tang</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="bsd_ma_tang"/>
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_toa_nha_id"/>
-                <field name="bsd_ten_tang"/>
-            </tree>
-        </field>
-    </record>
+                </search>
+            </field>
+        </record>
 
-    <record model="ir.ui.view" id="bsd_tang_filter">
-        <field name="name">bsd.tang.list.filter</field>
-        <field name="model">bsd.tang</field>
-        <field name="arch" type="xml">
-            <search string="Lọc dữ liệu">
-                <field name="bsd_ma_tang"/>
-                <field name="bsd_du_an_id"/>
-                <field name="bsd_toa_nha_id"/>
-
-                <group expand="0" string="Group by">
-                    <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
-                    <filter string="Tòa nhà" name="bsd_toa_nha_id" domain="[]" context="{'group_by': 'bsd_toa_nha_id'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
-
-    <record model="ir.actions.act_window" id="bsd_tang_action">
-        <field name="name">Tầng</field>
-        <field name="res_model">bsd.tang</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="xml">
-            <p>Tạo thông tin tầng</p>
-        </field>
-    </record>
+        <record model="ir.actions.act_window" id="bsd_tang_action">
+            <field name="name">Tầng</field>
+            <field name="res_model">bsd.tang</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="xml">
+                <p>Tạo thông tin tầng</p>
+            </field>
+        </record>
+    </data>
 </odoo>
