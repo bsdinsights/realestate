@@ -5,6 +5,11 @@
         <field name="model">bsd.wizard.tt_hd</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_phan_bo_dot" string="Phân bổ"
+                            type="object" class="oe_highlight"/>
+                    <button name="action_xoa_phan_bo" string="Xóa phân bổ" type="object"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
@@ -86,7 +91,7 @@
                     </field>
                 </sheet>
                 <footer>
-                    <button name="action_tao" string="Tạo" type="object" class="oe_highlight oe_right"/>
+                    <button name="action_tao" string="Tạo" type="object" class="oe_highlight"/>
                     <button string="Hủy" special="cancel"/>
                 </footer>
             </form>

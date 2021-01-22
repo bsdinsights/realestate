@@ -132,6 +132,11 @@ class BsdWizardTTDOT(models.TransientModel):
         for each in self:
             each.bsd_so_lp = len(each.bsd_dot_lp_ids)
 
+    @api.constrains('bsd_tien_kh')
+    def _constraint_tien_kh(self):
+        if self.bsd_tien_kh < 0:
+            raise UserError(_("Số tiền thanh toán của khách hàng không hợp lệ. Vui lòng kiểm tra lại thông tin"))
+
     @api.onchange('bsd_hd_ban_id')
     def _onchange_hd(self):
         self.bsd_khach_hang_id = self.bsd_hd_ban_id.bsd_khach_hang_id
@@ -270,6 +275,45 @@ class BsdWizardTTDOT(models.TransientModel):
             'view_mode': 'form'
         }
 
+    # Action phân bổ tiền thanh toán tự động
+    def action_phan_bo_dot(self):
+        # Lấy tất cả chi tiết cần thanh toán nếu ko có chi tiết thì báo lỗi
+        self.bsd_ltt_ids.filtered(lambda x: x.bsd_tien_tt > 0).write({'bsd_tien_tt': 0})
+        self.bsd_dot_phi_ids.filtered(lambda x: x.bsd_tien_tt > 0).write({'bsd_tien_tt': 0})
+        self.bsd_phi_ps_ids.filtered(lambda x: x.bsd_tien_tt > 0).write({'bsd_tien_tt': 0})
+        self.bsd_ltt_ids.filtered(lambda x: x.bsd_tt_phat > 0).write({'bsd_tt_phat': 0})
+        self.bsd_dot_lp_ids.filtered(lambda x: x.bsd_tt_phat > 0).write({'bsd_tt_phat': 0})
+
+        tien_kh = self.bsd_tien_kh
+        for dot_tt in self.bsd_ltt_ids.sorted('bsd_stt'):
+            if tien_kh > dot_tt.bsd_tien_phai_tt:
+                dot_tt.write({
+                    'bsd_tien_tt': dot_tt.bsd_tien_phai_tt
+                })
+                tien_kh -= dot_tt.bsd_tien_phai_tt
+            else:
+                dot_tt.write({
+                    'bsd_tien_tt': tien_kh
+                })
+                break
+
+        action = self.env.ref('bsd_tai_chinh.bsd_wizard_tt_dot_action').read()[0]
+        action['res_id'] = self.id
+        return action
+
+    # Action xóa phân bổ tiền thanh toán tự động
+    def action_xoa_phan_bo(self):
+        # Lấy tất cả chi tiết cần thanh toán nếu ko có chi tiết thì báo lỗi
+        self.bsd_ltt_ids.filtered(lambda x: x.bsd_tien_tt > 0).write({'bsd_tien_tt': 0})
+        self.bsd_dot_phi_ids.filtered(lambda x: x.bsd_tien_tt > 0).write({'bsd_tien_tt': 0})
+        self.bsd_phi_ps_ids.filtered(lambda x: x.bsd_tien_tt > 0).write({'bsd_tien_tt': 0})
+        self.bsd_ltt_ids.filtered(lambda x: x.bsd_tt_phat > 0).write({'bsd_tt_phat': 0})
+        self.bsd_dot_lp_ids.filtered(lambda x: x.bsd_tt_phat > 0).write({'bsd_tt_phat': 0})
+
+        action = self.env.ref('bsd_tai_chinh.bsd_wizard_tt_dot_action').read()[0]
+        action['res_id'] = self.id
+        return action
+
 
 class BsdWizardChitietDot(models.TransientModel):
     _name = 'bsd.wizard.ct_dot'
@@ -279,6 +323,7 @@ class BsdWizardChitietDot(models.TransientModel):
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt TT",
                                     readonly=True,
                                     help="Đợt thanh toán của hợp đồng")
+    bsd_stt = fields.Integer(related='bsd_dot_tt_id.bsd_stt')
     bsd_tien_dot_tt = fields.Monetary(related='bsd_dot_tt_id.bsd_tien_dot_tt')
     bsd_tien_phai_tt = fields.Monetary(related='bsd_dot_tt_id.bsd_tien_phai_tt', string="Phải thanh toán")
     bsd_tien_tt = fields.Monetary(string="TT Đợt", help="Tiền thanh toán đợt")
