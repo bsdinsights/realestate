@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record model="ir.ui.view" id="bsd_hd_ban_form_inherit">
         <field name="name">bsd.hd_ban.form.inherit</field>
         <field name="model">bsd.hd_ban</field>
@@ -18,17 +18,17 @@
                         type="object"
                         class="oe_highlight"/>
             </xpath>
-            <xpath expr="//button[@name='action_xac_nhan']" position="after">
+            <xpath expr="//button[@name='action_uoc_tinh_ck']" position="after">
                 <button string="Ước tính lãi phạt"
                         name="action_uoc_tinh_lp"
                         attrs="{'invisible':[('state', 'in',['thanh_ly','da_ht','bg_gt','ht_tt'])]}"
                         type="object"
                         class="oe_highlight"/>
-                <button string="Miễn giảm"
-                        name="action_mien_giam"
-                        type="object"
-                        attrs="{'invisible':[('state', 'in',['thanh_ly','da_ht','bg_gt','ht_tt'])]}"
-                        class="oe_highlight"/>
+<!--                <button string="Miễn giảm"-->
+<!--                        name="action_mien_giam"-->
+<!--                        type="object"-->
+<!--                        attrs="{'invisible':[('state', 'in',['thanh_ly','da_ht','bg_gt','ht_tt'])]}"-->
+<!--                        class="oe_highlight"/>-->
             </xpath>
             <xpath expr="//field[@name='bsd_ltt_ids']" position="before">
                 <group>
@@ -45,43 +45,7 @@
                     </group>
                 </group>
             </xpath>
-            <xpath expr="//notebook" position="inside">
-                <page string="Phí phát sinh">
-                    <field name="bsd_phi_ps_ids">
-                        <tree decoration-warning="bsd_thanh_toan=='dang_tt'"
-                              decoration-info="bsd_thanh_toan=='da_tt'"
-                              decoration-danger="bsd_thanh_toan=='chua_tt'">
-                            <field name="bsd_ma_ps"/>
-                            <field name="bsd_ten_ps"/>
-                            <field name="bsd_tong_tien"/>
-                            <field name="bsd_tien_da_tt"/>
-                            <field name="bsd_tien_phai_tt"/>
-                            <field name="bsd_thanh_toan"/>
-                            <field name="state"/>
-                            <field name="currency_id" invisible="1"/>
-                            <field name="company_id" invisible="1"/>
-                        </tree>
-                    </field>
-                </page>
-                <page string="Lãi phạt">
-                    <field name="bsd_lai_phat_ids">
-                        <tree decoration-warning="bsd_thanh_toan=='dang_tt'"
-                              decoration-info="bsd_thanh_toan=='da_tt'"
-                              decoration-danger="bsd_thanh_toan=='chua_tt'">
-                            <field name="bsd_ngay_lp"/>
-                            <field name="bsd_dot_tt_id"/>
-                            <field name="bsd_phieu_thu_id"/>
-                            <field name="bsd_tien_tt"/>
-                            <field name="bsd_so_ngay"/>
-                            <field name="bsd_tien_phat"/>
-                            <field name="bsd_tien_da_tt"/>
-                            <field name="bsd_tien_phai_tt"/>
-                            <field name="bsd_thanh_toan"/>
-                            <field name="company_id" invisible="1"/>
-                            <field name="currency_id" invisible="1"/>
-                        </tree>
-                    </field>
-                </page>
+            <xpath expr="//page[@name='lich_thanh_toan']" position="after">
                 <page string="Thanh toán">
                     <field name="bsd_phieu_thu_ids">
                         <tree default_order="bsd_ngay_pt desc"
@@ -101,6 +65,42 @@
                         </tree>
                     </field>
                 </page>
+                <page string="Phí phát sinh">
+                    <field name="bsd_phi_ps_ids">
+                        <tree decoration-warning="bsd_thanh_toan=='dang_tt'"
+                              decoration-info="bsd_thanh_toan=='da_tt'"
+                              decoration-danger="bsd_thanh_toan=='chua_tt'">
+                            <field name="bsd_ma_ps"/>
+                            <field name="bsd_ten_ps"/>
+                            <field name="bsd_tong_tien"/>
+                            <field name="bsd_tien_da_tt"/>
+                            <field name="bsd_tien_phai_tt"/>
+                            <field name="bsd_thanh_toan"/>
+                            <field name="state"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
+                        </tree>
+                    </field>
+                </page>
+<!--                <page string="Lãi phạt">-->
+<!--                    <field name="bsd_lai_phat_ids">-->
+<!--                        <tree decoration-warning="bsd_thanh_toan=='dang_tt'"-->
+<!--                              decoration-info="bsd_thanh_toan=='da_tt'"-->
+<!--                              decoration-danger="bsd_thanh_toan=='chua_tt'">-->
+<!--                            <field name="bsd_ngay_lp"/>-->
+<!--                            <field name="bsd_dot_tt_id"/>-->
+<!--                            <field name="bsd_phieu_thu_id"/>-->
+<!--                            <field name="bsd_tien_tt"/>-->
+<!--                            <field name="bsd_so_ngay"/>-->
+<!--                            <field name="bsd_tien_phat"/>-->
+<!--                            <field name="bsd_tien_da_tt"/>-->
+<!--                            <field name="bsd_tien_phai_tt"/>-->
+<!--                            <field name="bsd_thanh_toan"/>-->
+<!--                            <field name="company_id" invisible="1"/>-->
+<!--                            <field name="currency_id" invisible="1"/>-->
+<!--                        </tree>-->
+<!--                    </field>-->
+<!--                </page>-->
             </xpath>
         </field>
     </record>

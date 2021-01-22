@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record model="ir.ui.view" id="bsd_du_an_form">
             <field name="name">bsd.du_an.form</field>
             <field name="model">bsd.du_an</field>
@@ -45,10 +45,18 @@
                                         <field name="bsd_loai_sd_ids"
                                                options="{'no_create': true}"
                                                widget="many2many_tags"/>
+                                        <field name="bsd_phan_khuc_ids"
+                                               options="{'no_create': true}"
+                                               widget="many2many_tags"/>
                                         <field name="bsd_gp_dt"/>
                                         <field name="bsd_ngay_gp"/>
+                                        <field name="bsd_tinh_id"
+                                               domain="[('country_id.code', '=', 'VN')]"
+                                               options="{'no_create': true}"/>
+                                        <field name="bsd_dv_ql_id"
+                                               domain="[('is_company', '=', True)]"
+                                               options="{'no_create': true}"/>
                                         <field name="bsd_dia_chi"/>
-
                                     </group>
                                     <group>
                                         <field name="bsd_ngay_dkcn"/>

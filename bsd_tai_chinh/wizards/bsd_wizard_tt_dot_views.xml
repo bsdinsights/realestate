@@ -41,7 +41,7 @@
                             <field name="bsd_tien_phai_tt"/>
                             <field name="bsd_tien_tt"/>
                             <field name="bsd_tien_lp"/>
-                            <field name="bsd_tt_phat"/>
+                            <field name="bsd_tt_phat" attrs="{'readonly':[('bsd_tien_lp','=',0)]}"/>
                             <field name="bsd_tien_lp_ut" readonly="1" force_save="1"/>
                             <field name="company_id" invisible="1"/>
                             <field name="currency_id" invisible="1"/>

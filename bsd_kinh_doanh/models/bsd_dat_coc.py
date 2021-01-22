@@ -280,17 +280,22 @@ class BsdDatCoc(models.Model):
 
     @api.model
     def create(self, vals):
+        # Kiểm tra khách hàng đã cập nhật số CMND hoặc hộ chiếu
+        if 'bsd_khach_hang_id' in vals.keys():
+            khach_hang = self.env['res.partner'].browse(vals['bsd_khach_hang_id'])
+            if not khach_hang.bsd_cmnd and not khach_hang.bsd_ho_chieu:
+                raise UserError(_("Khách hàng chưa cập nhật số CMND hoặc số hộ chiếu.\n"
+                                  "Vui lòng kiểm tra lại thông tin khách hàng."))
         # KD.10.07 kiểm tra báo giá đã có đặt cọc chưa:
         if 'bsd_bao_gia_id' in vals.keys():
             id_bao_gia = vals['bsd_bao_gia_id']
             dat_coc = self.env['bsd.dat_coc'].search([('bsd_bao_gia_id', '=', id_bao_gia)])
-            _logger.debug(dat_coc)
             if dat_coc:
                 raise UserError("Bảng tính giá đã được tạo Đặt cọc.\nVui lòng kiểm tra lại thông tin!")
         sequence = False
-        if 'bsd_bao_gia_id' in vals:
-            bao_gia = self.env['bsd.bao_gia'].browse(vals['bsd_bao_gia_id'])
-            sequence = bao_gia.bsd_du_an_id.get_ma_bo_cn(loai_cn=self._name)
+        if 'bsd_du_an_id' in vals.keys():
+            du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
+            sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
             raise UserError(_('Dự án chưa có mã phiếu đặt cọc.'))
         vals['bsd_ma_dat_coc'] = sequence.next_by_id()

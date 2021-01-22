@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record model="ir.ui.view" id="bsd_toa_nha_form">
             <field name="name">bsd.toa_nha.form</field>
             <field name="model">bsd.toa_nha</field>
             <field name="arch" type="xml">
                 <form duplicate="false">
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
                     <sheet>
                         <notebook>
                             <page string="Thông tin chung">
                                 <group>
                             <group>
-                                <field name="bsd_du_an_id" options="{'no_create':true}"/>
-                                <field name="bsd_ma_tn"/>
+                                <field name="bsd_du_an_id"
+                                       attrs="{'readonly':[('state', '=', 'phat_hanh')]}"
+                                       domain="[('state', '!=', 'phat_hanh')]"
+                                       options="{'no_create':true}"/>
+                                <field name="bsd_ma_tn"
+                                       attrs="{'readonly':[('state', '=', 'phat_hanh')]}"/>
                                 <field name="bsd_ten_tn"/>
                                 <field name="bsd_dia_chi"/>
                             </group>
@@ -56,6 +63,7 @@
                     <field name="bsd_ten_tn"/>
                     <field name="bsd_so_tang"/>
                     <field name="bsd_so_unit"/>
+                    <field name="state"/>
                 </tree>
             </field>
         </record>

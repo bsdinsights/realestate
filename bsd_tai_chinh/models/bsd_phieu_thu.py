@@ -96,6 +96,14 @@ class BsdPhieuThu(models.Model):
     bsd_tt_id = fields.Many2one('bsd.phieu_thu', string="TT trả trước",
                                 help="Thanh toán trả trước khi thanh toán có dư", readonly=True)
 
+    @api.onchange('bsd_du_an_id')
+    def _onchange_du_an(self):
+        self.bsd_gc_tc_id = False
+        self.bsd_giu_cho_id = False
+        self.bsd_dat_coc_id = False
+        self.bsd_hd_ban_id = False
+        self.bsd_unit_id = False
+
     @api.depends('bsd_ct_ids', 'bsd_ct_ids.state', 'bsd_tien')
     def _compute_tien_ct(self):
         for each in self:
@@ -104,6 +112,10 @@ class BsdPhieuThu(models.Model):
 
     # TC.01.01 Xác nhận phiếu thu
     def action_xac_nhan(self):
+        # Kiểm tra nếu không có chi tiết không cho xác nhận với loại phiếu thu khác trả trước
+        if self.bsd_loai_pt != 'tra_truoc':
+            if not self.bsd_ct_ids:
+                raise UserError(_("Không có chi tiết thanh toán. Vui lòng kiểm tra lại thông tin."))
         # Kiểm tra dự án
         if self.bsd_du_an_id.state != 'phat_hanh':
             raise UserError(_("Dự án đang ở giai đoạn chuẩn bị, không thể xác nhận giữ chỗ thiện chí."

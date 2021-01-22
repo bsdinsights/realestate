@@ -33,18 +33,6 @@ class BsdWizardTTDOT(models.TransientModel):
         if self.bsd_tien_con_lai < 0:
             raise UserError(_("Tiền còn lại không thể âm.\nVui lòng kiểm tra lại thông tin"))
 
-    @api.model
-    def default_get(self, fields_list):
-        res = super(BsdWizardTTDOT, self).default_get(fields_list)
-        hd_ban = self.env['bsd.hd_ban'].browse(self._context.get('active_ids', []))
-        res.update({
-            'bsd_hd_ban_id': hd_ban.id,
-            'bsd_unit_id': hd_ban.bsd_unit_id.id,
-            'bsd_khach_hang_id': hd_ban.bsd_khach_hang_id.id,
-            'bsd_du_an_id': hd_ban.bsd_du_an_id.id,
-        })
-        return res
-
     @api.onchange('bsd_ltt_ids', 'bsd_dot_phi_ids', 'bsd_tien_kh',
                   'bsd_phi_ps_ids', 'bsd_loai', 'bsd_dot_lp_ids')
     def _onchange_tien(self):
@@ -53,6 +41,7 @@ class BsdWizardTTDOT(models.TransientModel):
                 sum(self.bsd_ltt_ids.mapped(lambda r: r.bsd_tien_tt + r.bsd_tt_phat)) - \
                 sum(self.bsd_dot_phi_ids.mapped(lambda r: r.bsd_tien_tt)) - \
                 sum(self.bsd_phi_ps_ids.mapped(lambda r: r.bsd_tien_tt))
+
         else:
             self.bsd_tien_con_lai = self.bsd_tien_kh - \
                 sum(self.bsd_dot_phi_ids.mapped(lambda r: r.bsd_tien_tt)) - \
@@ -181,6 +170,17 @@ class BsdWizardTTDOT(models.TransientModel):
         return action
 
     def action_tao(self):
+        # Lấy tất cả chi tiết cần thanh toán nếu ko có chi tiết thì báo lỗi
+        bsd_ltt = self.bsd_ltt_ids.filtered(lambda x: x.bsd_tien_tt > 0)
+        bsd_dot_phi = self.bsd_dot_phi_ids.filtered(lambda x: x.bsd_tien_tt > 0)
+        bsd_dot_pps = self.bsd_phi_ps_ids.filtered(lambda x: x.bsd_tien_tt > 0)
+        # Tạo công nợ chứng từ lãi phạt
+        if self.bsd_loai == 'dtt':
+            bsd_dot_lp = self.bsd_ltt_ids.filtered(lambda x: x.bsd_tt_phat > 0)
+        else:
+            bsd_dot_lp = self.bsd_dot_lp_ids.filtered(lambda x: x.bsd_tt_phat > 0)
+        if not bsd_ltt and not bsd_dot_phi and not bsd_dot_pps and not bsd_dot_lp:
+            raise UserError("Không có chi tiết thanh toán. Vui lòng kiểm tra lại thông tin.")
         # Tạo thanh toán
         now = datetime.datetime.now()
         get_time = now.replace(year=self.bsd_ngay_pt.year,
@@ -196,7 +196,7 @@ class BsdWizardTTDOT(models.TransientModel):
             'bsd_tien_kh': self.bsd_tien_kh,
         })
         # Tạo công nợ chứng từ cho đợt thanh toán theo thứ tự
-        for dot in self.bsd_ltt_ids.filtered(lambda x: x.bsd_tien_tt > 0):
+        for dot in bsd_ltt:
             self.env['bsd.cong_no_ct'].create({
                 'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                 'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
@@ -207,7 +207,7 @@ class BsdWizardTTDOT(models.TransientModel):
                 'state': 'nhap',
             })
         # Tạo công nợ chứng từ cho phi
-        for phi in self.bsd_dot_phi_ids.filtered(lambda x: x.bsd_tien_tt > 0):
+        for phi in bsd_dot_phi:
             # kiểm tra phí bảo trì hay quản lý
             if phi.bsd_phi_tt_id.bsd_loai == 'pbt':
                 self.env['bsd.cong_no_ct'].create({
@@ -230,7 +230,7 @@ class BsdWizardTTDOT(models.TransientModel):
                     'state': 'nhap',
                 })
         # Tạo công nợ chứng từ phí phát sinh
-        for pps in self.bsd_phi_ps_ids:
+        for pps in bsd_dot_pps:
             self.env['bsd.cong_no_ct'].create({
                 'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                 'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
@@ -240,12 +240,7 @@ class BsdWizardTTDOT(models.TransientModel):
                 'bsd_loai': 'pt_pps',
                 'state': 'nhap',
             })
-        # Tạo công nợ chứng từ lãi phạt
-        if self.bsd_loai == 'dtt':
-            dot_lp = self.bsd_ltt_ids.filtered(lambda x: x.bsd_tt_phat > 0)
-        else:
-            dot_lp = self.bsd_dot_lp_ids.filtered(lambda x: x.bsd_tt_phat > 0)
-        for lp in dot_lp:
+        for lp in bsd_dot_lp:
             dot_tt = lp.bsd_dot_tt_id
             tien_lp = lp.bsd_tt_phat
             lai_phat_dot = self.env['bsd.lai_phat'].search([('bsd_dot_tt_id', '=', dot_tt.id)])\
@@ -334,14 +329,14 @@ class BsdWizardChitietDot(models.TransientModel):
 
     @api.constrains('bsd_tien_phai_tt', 'bsd_tien_tt')
     def _constraint_tien_tt(self):
-        if self.bsd_tien_tt > self.bsd_tien_phai_tt:
-            raise UserError(_("Tiền thanh toán đợt không thể lớn hơn tiền phải thanh toán.\n"
+        if self.bsd_tien_tt > self.bsd_tien_phai_tt or self.bsd_tien_tt < 0:
+            raise UserError(_("Số tiền thanh toán không hợp lệ.\n"
                               "Vui lòng kiểm tra lại thông tin."))
 
     @api.constrains('bsd_tien_lp', 'bsd_tt_phat')
     def _constraint_tien_phat(self):
-        if self.bsd_tt_phat > self.bsd_tien_lp:
-            raise UserError(_("Tiền thanh toán phạt đợt không thể lớn hơn tiền phạt chậm thanh toán.\n"
+        if self.bsd_tt_phat > self.bsd_tien_lp or self.bsd_tt_phat < 0:
+            raise UserError(_("Số tiền thanh toán tiền phạt chậm thanh toán không hợp lệ.\n"
                               "Vui lòng kiểm tra lại thông tin."))
 
 
@@ -356,6 +351,12 @@ class BsdWizardChitietPhi(models.TransientModel):
     bsd_tien_tt = fields.Monetary(string="Tiền TT", help="Tiền thanh toán phí")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+
+    @api.constrains('bsd_tien_phai_tt', 'bsd_tien_tt')
+    def _constraint_tien_tt(self):
+        if self.bsd_tien_tt > self.bsd_tien_phai_tt or self.bsd_tien_tt < 0:
+            raise UserError(_("Số tiền thanh toán phí không hợp lệ.\n"
+                              "Vui lòng kiểm tra lại thông tin."))
     
     
 class BsdWizardChitietPPS(models.TransientModel):
@@ -370,6 +371,12 @@ class BsdWizardChitietPPS(models.TransientModel):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
+    @api.constrains('bsd_tien_phai_tt', 'bsd_tien_tt')
+    def _constraint_tien_tt(self):
+        if self.bsd_tien_tt > self.bsd_tien_phai_tt or self.bsd_tien_tt < 0:
+            raise UserError(_("Số tiền thanh toán phí phát sinh không hợp lệ.\n"
+                              "Vui lòng kiểm tra lại thông tin."))
+
 
 class BsdWizardChitietLP(models.TransientModel):
     _name = 'bsd.wizard.ct_lp'
@@ -382,3 +389,9 @@ class BsdWizardChitietLP(models.TransientModel):
     bsd_tt_phat = fields.Monetary(string="TT phạt", help="Tiền thanh toán phạt")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
+
+    @api.constrains('bsd_tien_phai_tt', 'bsd_tien_tt')
+    def _constraint_tien_tt(self):
+        if self.bsd_tt_phat > self.bsd_tp_phai_tt or self.bsd_tt_phat < 0:
+            raise UserError(_("Số tiền thanh toán tiền phạt chậm thanh toán không hợp lệ.\n"
+                              "Vui lòng kiểm tra lại thông tin."))

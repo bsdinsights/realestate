@@ -20,7 +20,7 @@ class BsdBaoGia(models.Model):
                                  default='/')
     _sql_constraints = [
         ('bsd_ma_bao_gia_unique', 'unique (bsd_ma_bao_gia)',
-         'Mã bảng giá đã tồn tại !'),
+         'Mã bảng tính giá đã tồn tại !'),
     ]
     bsd_ten_bao_gia = fields.Char(string="Tiêu đề", help="Tên bảng tính giá", required=True,
                                   readonly=True,

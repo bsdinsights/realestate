@@ -35,8 +35,8 @@ class BsdBaoGiaLTT(models.Model):
     bsd_lai_phat = fields.Float(string="Lãi phạt", help="Tỷ lệ đóng lãi phạt theo năm")
     bsd_tien_td = fields.Monetary(string="Tiền phạt tối đa", help="Tiền phạt chậm thanh toán tối đa")
     bsd_tl_td = fields.Float(string="Tỷ lệ phạt tối đa", help="Tỷ lệ tối đa phạt chậm thanh toán")
-    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="CS thanh toán", help="Chính sách thanh toán")
-    bsd_cs_tt_ct_id = fields.Many2one('bsd.cs_tt_ct', string="CSTT chi tiết",
+    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="PT thanh toán", help="Chính sách thanh toán")
+    bsd_cs_tt_ct_id = fields.Many2one('bsd.cs_tt_ct', string="PTTT chi tiết",
                                       help="Đợt thanh toán theo chính sách thanh toán")
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record model="ir.ui.view" id="bsd_res_partner_cn_form">
             <field name="name">bsd.res.partner.cn.form</field>
             <field name="model">res.partner</field>
@@ -23,7 +23,7 @@
                                 <label for="bsd_ma_kh"/>:
                                 <field name="bsd_ma_kh"/>
                                 <strong class="ml-4">Sở hữu: </strong>
-                                <field name="user_id"/>
+                                <field name="user_id" readonly="1"/>
                             </div>
                         </div>
                         <notebook>
@@ -40,8 +40,9 @@
                                         <field name="bsd_loai_kh"/>
                                         <field name="bsd_nguoi_bh"/>
                                         <field name="bsd_nguoi_bh_id"
-                                               attrs="{'invisible':[('bsd_nguoi_bh', '=', False)]}"
-                                               domain="[('bsd_nguoi_bh', '=', False)]"/>
+                                               attrs="{'invisible':[('bsd_nguoi_bh', '=', False)],
+                                                       'required':[('bsd_nguoi_bh', '=', True)]}"
+                                               domain="[('is_company', '=', False)]"/>
                                         <field name="is_company" invisible="1"/>
                                         <field name="bsd_la_kh" invisible="1"/>
                                     </group>

@@ -71,7 +71,7 @@ class BsdProject(models.Model):
                                 help="Ngày hoàn thành tất cả các thủ tục cho khách hàng",
                                 readonly=True,
                                 states={'chuan_bi': [('readonly', False)]})
-    bsd_ngay_qsdd = fields.Date(string="Ngày chứng nhận quyền sử dụng đất",
+    bsd_ngay_qsdd = fields.Date(string="Ngày cấp GCN.QSDĐ",
                                 help="Ngày trên sổ đỏ hoặc ngày chứng nhân quyền thuê đất của chủ đầu tư",
                                 readonly=True,
                                 states={'chuan_bi': [('readonly', False)]})
@@ -83,7 +83,7 @@ class BsdProject(models.Model):
                                         phí quản lý và thu tiền đợt cuối của căn hộ""",
                                 readonly=True,
                                 states={'chuan_bi': [('readonly', False)]})
-    bsd_ngay_cpb = fields.Date(string="Ngày cấp phép bán",
+    bsd_ngay_cpb = fields.Date(string="Ngày cấp GCN.KD",
                                help="""Ngày Sở Xây Dựng chính thức cấp phép dự án đã đủ điều kiện mở bán""",
                                readonly=True,
                                states={'chuan_bi': [('readonly', False)]})
@@ -210,9 +210,7 @@ class BsdProject(models.Model):
                              help="% thanh toán đủ điều kiện bàn giao(tối thiểu",
                              readonly=True,
                              states={'chuan_bi': [('readonly', False)]})
-    bsd_dien_giai = fields.Text(string="Mô tả", help="Mô tả dự án",
-                                readonly=True,
-                                states={'chuan_bi': [('readonly', False)]})
+    bsd_dien_giai = fields.Text(string="Mô tả", help="Mô tả dự án")
     bsd_tien_ich_ids = fields.Many2many('bsd.du_an.tien_ich', string="Tiện ích nội khu",
                                         help="Tiện ích nội khu của dự án",
                                         readonly=True,
@@ -222,6 +220,16 @@ class BsdProject(models.Model):
                                            relation='bsd_du_an_nk_rel',
                                            readonly=True,
                                            states={'chuan_bi': [('readonly', False)]})
+    bsd_phan_khuc_ids = fields.Many2many('bsd.du_an.phan_khuc', string="Phân khúc", help="Phân khúc",
+                                         readonly=True,
+                                         states={'chuan_bi': [('readonly', False)]})
+    bsd_tinh_id = fields.Many2one('res.country.state', string="Tỉnh/ Thành", help="Tên tỉnh thành, thành phố",
+                                  readonly=True,
+                                  states={'chuan_bi': [('readonly', False)]})
+    bsd_dv_ql_id = fields.Many2one('res.partner', string="Đơn Vị Quản Lý & PT DA",
+                                   help="Đơn vị quản lý và phát triển dự án",
+                                   readonly=True,
+                                   states={'chuan_bi': [('readonly', False)]})
 
     @api.constrains('bsd_tl_dc')
     def _check_ty_le_coc(self):
@@ -423,6 +431,7 @@ class BsdDuanTaiKhoanNganHang(models.Model):
 
 class BsdLoaiHinhSuDung(models.Model):
     _name = 'bsd.lh_sd'
+    _description = "Loại hình sử dụng"
     _rec_name = 'bsd_ten'
 
     bsd_ten = fields.Char(string="Loại hình sử dụng", help="Loại hình sử dụng", required=True)
@@ -430,6 +439,7 @@ class BsdLoaiHinhSuDung(models.Model):
 
 class BsdTienIch(models.Model):
     _name = 'bsd.du_an.tien_ich'
+    _description = "Tiện ích dự án"
     _rec_name = 'bsd_ten'
 
     bsd_ma = fields.Char(string="Mã", help="Mã tiện ích", required=True)
@@ -443,3 +453,10 @@ class BsdTienIch(models.Model):
     bsd_mo_ta = fields.Char(string="Mô tả", help="Mô tả tiện ích")
     bsd_loai = fields.Selection([('noi', 'Nội khu'), ('ngoai', 'Ngoại khu')], string="Loại", required=True)
 
+
+class BsdPhanKhuc(models.Model):
+    _name = 'bsd.du_an.phan_khuc'
+    _description = "Phân khúc dự án"
+    _rec_name = 'bsd_ten'
+
+    bsd_ten = fields.Char(string="Tên", help="Tên phân khúc", required=True)

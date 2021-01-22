@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record model="ir.ui.view" id="bsd_hd_ban_form">
             <field name="name">bsd.hd_ban.form</field>
             <field name="model">bsd.hd_ban</field>
@@ -17,17 +17,25 @@
                         <button string="Duyệt in ĐB"
                                 name="action_duyet_db"
                                 type="object"
-                                states="ht_dc"
+                                states="ht_dc,da_ky_ttdc"
                                 attrs="{'invisible': ['|',('bsd_duyet_db', '=',True)]}"
                                 class="oe_highlight"/>
                         <button string="Xác nhận in TTĐC/HĐĐC"
                                 name="action_in_ttdc"
                                 type="object"
-                                attrs="{'invisible': ['!','|',('state', 'in',['tt_dot1']),'&amp;',('bsd_duyet_db','=',True),('state', '=','ht_dc')]}"
+                                attrs="{'invisible': ['|',('bsd_ngay_in_ttdc', '!=', False),'!','|',('state', 'in',['tt_dot1']),'&amp;',('bsd_duyet_db','=',True),('state', '=','ht_dc')]}"
+                                class="oe_highlight"/>
+                        <button string="Ký TTDC"
+                                name="action_ky_ttdc"
+                                type="object"
+                                confirm="Bạn có muốn ký thỏa thuận đặt cọc không ?"
+                                attrs="{'invisible':['|',('bsd_ngay_in_ttdc', '=',False),
+                                                            '|','&amp;',('state','not in',['ht_dc']),('bsd_duyet_db', '=',True),
+                                                                '&amp;',('state','not in',['tt_dot1']),('bsd_duyet_db', '=',False)]}"
                                 class="oe_highlight"/>
                         <button string="Xác nhận in HĐMB"
                                 name="action_in_hd"
-                                attrs="{'invisible': ['!','|',('state', 'in',['du_dk']),'&amp;',('bsd_duyet_db','=',True),('state', 'in',['ht_dc', 'da_ky_ttdc'])]}"
+                                attrs="{'invisible': ['|',('bsd_ngay_in_hdb', '!=', False),'!','|',('state', 'in',['du_dk']),'&amp;',('bsd_duyet_db','=',True),('state', 'in',['ht_dc', 'da_ky_ttdc'])]}"
                                 type="object"
                                 class="oe_highlight"/>
                         <button string="Ký hợp đồng"
@@ -46,14 +54,7 @@
                                 attrs="{'invisible':[('state', 'in',['thanh_ly','da_ht','bg_gt','ht_tt'])]}"
                                 type="object"
                                 class="oe_highlight"/>
-                        <button string="Ký TTDC"
-                                name="action_ky_ttdc"
-                                type="object"
-                                confirm="Bạn có muốn ký thỏa thuận đặt cọc không ?"
-                                attrs="{'invisible':['|',('bsd_ngay_in_ttdc', '=',False),
-                                                            '|','&amp;',('state','not in',['ht_dc']),('bsd_duyet_db', '=',True),
-                                                                '&amp;',('state','not in',['tt_dot1']),('bsd_duyet_db', '=',False)]}"
-                                class="oe_highlight"/>
+
                         <button string="Duyệt BGĐB"
                                 name="action_duyet_bgdb"
                                 type="object"
@@ -562,161 +563,20 @@
                                 </field>
                             </page>
                             <page string="Chiết khấu">
-                                <field name="bsd_ps_ck_ids">
-                                    <tree editable="bottom">
-                                        <field name="bsd_loai_ck"/>
-                                        <field name="bsd_bao_gia_id" invisible="1"/>
-                                        <field name="bsd_ck_ch_id" invisible="1"/>
-                                        <field name="bsd_ck_cstt_id" invisible="1"/>
-                                        <field name="bsd_ck_nb_id" invisible="1"/>
-                                        <field name="bsd_cs_tt_id" invisible="1"/>
-                                        <field name="bsd_chiet_khau_id" options="{'no_create':true}"/>
-                                        <field name="bsd_ma_ck"/>
-                                        <field name="bsd_tu_ngay"/>
-                                        <field name="bsd_den_ngay"/>
-                                        <field name="bsd_cach_tinh"/>
-                                        <field name="bsd_tien" readonly="1"/>
-                                        <field name="bsd_tl_ck" readonly="1"/>
-                                        <field name="bsd_tien" invisible="1"/>
-                                        <field name="bsd_tl_ck" invisible="1"/>
+                                <field name="bsd_ps_gd_ck_ids">
+                                    <tree>
+                                        <field name="bsd_ma"/>
+                                        <field name="bsd_ten"/>
+                                        <field name="bsd_tien"/>
+                                        <field name="bsd_tl_ck"/>
+                                        <field name="bsd_tien_ck" sum="Tổng tiền CK"/>
+                                        <field name="state"/>
                                         <field name="currency_id" invisible="1"/>
                                         <field name="company_id" invisible="1"/>
                                     </tree>
-                                    <kanban class="o_kanban_mobile">
-                                        <field name="bsd_loai_ck"/>
-                                        <field name="bsd_bao_gia_id"/>
-                                        <field name="bsd_ck_ch_id"/>
-                                        <field name="bsd_ck_cstt_id"/>
-                                        <field name="bsd_ck_nb_id"/>
-                                        <field name="bsd_cs_tt_id"/>
-                                        <field name="bsd_chiet_khau_id"/>
-                                        <field name="bsd_ma_ck"/>
-                                        <field name="bsd_tu_ngay"/>
-                                        <field name="bsd_den_ngay"/>
-                                        <field name="bsd_cach_tinh"/>
-                                        <field name="bsd_tien"/>
-                                        <field name="bsd_tl_ck"/>
-                                        <field name="currency_id"/>
-                                        <field name="company_id"/>
-                                        <templates>
-                                            <t t-name="kanban-box">
-                                                <div t-attf-class="oe_kanban_card oe_kanban_global_click">
-                                                    <div class="row">
-                                                        <div class="col-8">
-                                                            <strong>
-                                                                <field name="bsd_chiet_khau_id"/>
-                                                            </strong>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <strong>
-                                                                <span class="float-right text-right">
-                                                                    <field name="bsd_ma_ck"/>
-                                                                </span>
-                                                            </strong>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <t t-if="record.bsd_loai_ck.raw_value == 'chung'">
-                                                                <span>Loại: Chung</span>
-                                                            </t>
-                                                            <t t-elif="record.bsd_loai_ck.raw_value == 'noi_bo'">
-                                                                <span>Loại: Nội bộ</span>
-                                                            </t>
-                                                            <t t-else="">
-                                                                <span>Loại: Phương thức thanh toán</span>
-                                                            </t>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <t t-if="record.bsd_cach_tinh.raw_value == 'tien'">
-                                                                <span>Giá trị: <field name="bsd_tien"
-                                                                                      widget="monetary"
-                                                                                      options="{'currency_field': 'currency_id'}"/></span>
-                                                            </t>
-                                                            <t t-else="">
-                                                                <span>Phần trăm: <field name="bsd_tl_ck"/> %</span>
-                                                            </t>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </t>
-                                        </templates>
-                                    </kanban>
                                 </field>
                             </page>
-                            <page string="Chiết khấu đặc biệt">
-                                <field name="id" invisible="1"/>
-                                <field name="bsd_ck_db_ids">
-                                    <tree delete="false" create="false">
-                                        <field name="currency_id" invisible="1"/>
-                                        <field name="company_id" invisible="1"/>
-                                        <field name="bsd_ma_ck_db"/>
-                                        <field name="bsd_ten_ck_db"/>
-                                        <field name="bsd_cach_tinh"/>
-                                        <field name="bsd_tien"/>
-                                        <field name="bsd_tl_ck"/>
-                                        <field name="state"/>
-                                    </tree>
-                                    <kanban class="o_kanban_mobile">
-                                        <field name="currency_id" invisible="1"/>
-                                        <field name="company_id" invisible="1"/>
-                                        <field name="bsd_ma_ck_db"/>
-                                        <field name="bsd_ten_ck_db"/>
-                                        <field name="bsd_cach_tinh"/>
-                                        <field name="bsd_tien"/>
-                                        <field name="bsd_tl_ck"/>
-                                        <field name="state"/>
-                                        <templates>
-                                            <t t-name="kanban-box">
-                                                <div t-attf-class="oe_kanban_card oe_kanban_global_click">
-                                                    <div class="row">
-                                                        <div class="col-8">
-                                                            <strong>
-                                                                <field name="bsd_ten_ck_db"/>
-                                                            </strong>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <strong>
-                                                                <span class="float-right text-right">
-                                                                    <field name="bsd_ma_ck_db"/>
-                                                                </span>
-                                                            </strong>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <t t-if="record.bsd_cach_tinh.raw_value == 'tien'">
-                                                                <span>Giá trị: <field name="bsd_tien"
-                                                                                      widget="monetary"
-                                                                                      options="{'currency_field': 'currency_id'}"/></span>
-                                                            </t>
-                                                            <t t-else="">
-                                                                <span>Phần trăm: <field name="bsd_tl_ck"/> %</span>
-                                                            </t>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <a type="button">
-                                                                <button string="Xét duyệt"
-                                                                        name="action_xet_duyet"
-                                                                        type="object"
-                                                                        class="oe_highlight "
-                                                                        attrs="{'invisible': ['|',('id', '=',False),('state','not in',['xac_nhan'])]}">
-                                                                    <span>Xét duyệt</span>
-                                                                </button>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </t>
-                                        </templates>
-                                    </kanban>
-                                </field>
-                            </page>
-                            <page string="Lịch thanh toán">
+                            <page string="Lịch thanh toán" name="lich_thanh_toan">
                                 <field name="bsd_ltt_ids">
                                     <tree decoration-warning="bsd_thanh_toan=='dang_tt'"
                                           decoration-info="bsd_thanh_toan=='da_tt'"
@@ -803,20 +663,6 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="Chiết khấu giao dịch">
-                                <field name="bsd_ps_gd_ck_ids">
-                                    <tree>
-                                        <field name="bsd_ma"/>
-                                        <field name="bsd_ten"/>
-                                        <field name="bsd_tien"/>
-                                        <field name="bsd_tl_ck"/>
-                                        <field name="bsd_tien_ck" sum="Tổng tiền CK"/>
-                                        <field name="state"/>
-                                        <field name="currency_id" invisible="1"/>
-                                        <field name="company_id" invisible="1"/>
-                                    </tree>
-                                </field>
-                            </page>
                         </notebook>
                     </sheet>
                     <div class="oe_chatter">
@@ -895,7 +741,7 @@
             </field>
         </record>
         <record model="ir.actions.act_window" id="bsd_hd_ban_action">
-            <field name="name">Hợp đồng mua bán</field>
+            <field name="name">Thỏa thuận/ Hợp đồng</field>
             <field name="res_model">bsd.hd_ban</field>
             <field name="view_mode">tree,pivot,graph,activity,form</field>
             <field name="help" type="xml">

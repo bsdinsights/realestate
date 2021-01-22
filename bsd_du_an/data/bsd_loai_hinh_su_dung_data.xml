@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
+    <data noupdate="1">
         <record id="bsd_can_ho_chung_cu" model="bsd.lh_sd">
             <field name="bsd_ten">Căn hộ chung cư</field>
         </record>
@@ -18,6 +18,19 @@
         </record>
         <record id="bsd_xuong_kho" model="bsd.lh_sd">
             <field name="bsd_ten">Xưởng/ Kho</field>
+        </record>
+
+        <record id="pk_cao_cap" model="bsd.du_an.phan_khuc">
+            <field name="bsd_ten">Cao cấp</field>
+        </record>
+        <record id="pk_trung_cap" model="bsd.du_an.phan_khuc">
+            <field name="bsd_ten">Trung cấp</field>
+        </record>
+        <record id="pk_pho_thong" model="bsd.du_an.phan_khuc">
+            <field name="bsd_ten">Phổ thông</field>
+        </record>
+        <record id="pk_noxh" model="bsd.du_an.phan_khuc">
+            <field name="bsd_ten">Nhà ở xã hội (NOXH)</field>
         </record>
     </data>
 </odoo>

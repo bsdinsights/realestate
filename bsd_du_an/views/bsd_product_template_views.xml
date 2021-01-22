@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record model="ir.ui.view" id="bsd_product_template_form">
             <field name="name">bsd.product.template.form</field>
             <field name="model">product.template</field>
@@ -35,7 +35,7 @@
                                        attrs="{'readonly':[('id', '!=', False)]}"
                                        domain="[('bsd_toa_nha_id','in',[bsd_toa_nha_id])]"
                                        options="{'no_create':true}"/>
-                                <field name="bsd_ky_tu_sp"/>
+                                <field name="bsd_ky_tu_sp" attrs="{'readonly':[('id', '!=', False)]}"/>
                                 <field name="bsd_stt"/>
                             </group>
                             <group>

@@ -118,7 +118,7 @@ class BsdCongNoCT(models.Model):
                 self.bsd_dot_tt_id.tao_lp_tt(ngay_tt=self.bsd_ngay_pb, tien_tt=self.bsd_tien_pb,
                                              thanh_toan=self.bsd_phieu_thu_id)
             # Cập nhật trạng thái hợp đồng khi thanh toán đủ đợt thanh toán
-            tien_thu_dot = self.bsd_dot_tt_id.bsd_tien_dot_tt - self.bsd_dot_tt_id.bsd_tien_dc
+            tien_thu_dot = self.bsd_dot_tt_id.bsd_tien_dot_tt - self.bsd_dot_tt_id.bsd_tien_dc - self.bsd_dot_tt_id.bsd_tien_mg_dot
             if float_utils.float_compare(tien_thu_dot, tien, 4) == 0:
                 # Gọi hàm xử lý khi thanh toán đợt 1 cho hợp đồng
                 if self.bsd_dot_tt_id.bsd_stt == 1:
@@ -148,6 +148,7 @@ class BsdCongNoCT(models.Model):
             if self.bsd_phi_ps_id.bsd_tong_tien < tien:
                 raise UserError("Không thể thực hiện thanh toán dư phí phát sinh.")
             self.bsd_phi_ps_id.bsd_hd_ban_id.action_du_dkbg()
+            self.bsd_phi_ps_id.bsd_hd_ban_id.action_ht_tt()
 
         elif self.bsd_loai == 'pt_lp':
             cong_no_ct = self.env['bsd.cong_no_ct'].search([('bsd_lai_phat_id', '=', self.bsd_lai_phat_id.id),
@@ -155,6 +156,8 @@ class BsdCongNoCT(models.Model):
             tien = sum(cong_no_ct.mapped('bsd_tien_pb'))
             if self.bsd_lai_phat_id.bsd_tien_phat < tien:
                 raise UserError("Không thể thực hiện thanh toán dư lãi phạt.")
+            self.bsd_lai_phat_id.bsd_hd_ban_id.action_du_dkbg()
+            self.bsd_lai_phat_id.bsd_hd_ban_id.action_ht_tt()
 
     @api.model
     def create(self, vals):

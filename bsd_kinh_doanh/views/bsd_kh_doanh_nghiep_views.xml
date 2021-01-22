@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record model="ir.ui.view" id="bsd_res_partner_dn_form">
             <field name="name">bsd.res.partner.dn.form</field>
             <field name="model">res.partner</field>
@@ -21,7 +21,7 @@
                                 <label for="bsd_ma_kh"/>:
                                 <field name="bsd_ma_kh"/>
                                 <strong class="ml-4">Sở hữu: </strong>
-                                <field name="user_id"/>
+                                <field name="user_id" readonly="1"/>
                             </div>
                         </div>
                         <notebook>
