@@ -31,6 +31,12 @@
                 report_type="qweb-html"
                 name="bsd_dich_vu.bsd_tb_nt_view"
                 menu="False"/>
+        <report id="bsd_mau_in_tb_nt"
+                model="bsd.tb_nt.report.wizard"
+                string="Thông báo nghiệm thu"
+                report_type="qweb-pdf"
+                name="bsd_dich_vu.bsd_tb_nt_view"
+                menu="False"/>
         <template id="bsd_tb_nt_view">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">

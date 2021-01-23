@@ -40,28 +40,49 @@ class BsdDanhSachThongBao(models.TransientModel):
                                   .format(','.join(da_tao_ct.mapped('bsd_ten')))))
         # Lấy các chi tiết thỏa điều kiện trạng thái duyệt và có hợp đồng chưa thanh lý
         cn_dkbg_ct = self.env['bsd.cn_dkbg_unit']
+        _logger.debug("Tao thong bao thanh ly")
+        message = '<ul>'
         for cn_dkbg in self.bsd_cn_dkbg_ids:
-            each_ct_khong_tl = cn_dkbg.bsd_ct_ids.filtered(lambda c: c.bsd_hd_ban_id.state != 'thanh_ly')
+            sl_tao_tc = 0
+            sl_tao_ko_tc = 0
+            # Cập nhật chi tiết chưa có sản phẩm
+            each_ct_khong_hd = cn_dkbg.bsd_ct_ids.filtered(lambda c: not c.bsd_hd_ban_id)
+            cn_dkbg_ct_da_co_hd = cn_dkbg.bsd_ct_ids - each_ct_khong_hd
+            if each_ct_khong_hd:
+                sl_tao_ko_tc += len(each_ct_khong_hd)
+                message += "<li>Những sản phẩm chưa có hợp đồng: {}</li>".format(
+                    ','.join(each_ct_khong_hd.bsd_unit_id.mapped('bsd_ma_unit')))
+            # hợp đồng đã bị thanh lý
+            each_ct_khong_tl = cn_dkbg_ct_da_co_hd.filtered(lambda c: c.bsd_hd_ban_id.state != 'thanh_ly')
             cn_dkbg_ct_da_tl = cn_dkbg.bsd_ct_ids - each_ct_khong_tl
-            message = ''
             if cn_dkbg_ct_da_tl:
                 hop_dong = cn_dkbg_ct_da_tl.mapped('bsd_hd_ban_id')
                 if hop_dong:
-                    message += "<ul><li>Những hợp đồng đã bị thanh lý: {}</li>".format(
+                    sl_tao_ko_tc += len(cn_dkbg_ct_da_tl)
+                    message += "<li>Những hợp đồng đã bị thanh lý: {}</li>".format(
                         ','.join(hop_dong.mapped('bsd_ma_hd_ban')))
             # Nếu tạo thông báo bàn giao thì kiểm tra tình trạng thanh toán đợt dự kiến bàn giao
             if self.bsd_loai != 'nt':
                 each_chua_tt = each_ct_khong_tl.filtered(lambda c: c.bsd_dot_tt_id.bsd_thanh_toan == 'chua_tt')
+                _logger.debug("each_chua_tt")
+                _logger.debug(each_chua_tt)
                 cn_dkbg_ct_da_tt = each_ct_khong_tl - each_chua_tt
                 # ghi chú các hợp đồng đã hoặc đang thanh toán
                 if cn_dkbg_ct_da_tt:
                     hop_dong = cn_dkbg_ct_da_tt.mapped('bsd_hd_ban_id')
+                    sl_tao_ko_tc += len(cn_dkbg_ct_da_tt)
                     if hop_dong:
-                        message += "<ul><li>Những hợp đồng đã thanh toán hoặc đang thanh toán: {}</li>".format(
+                        message += "<li>Những hợp đồng đã thanh toán hoặc đang thanh toán: {}</li>".format(
                             ','.join(hop_dong.mapped('bsd_ma_hd_ban')))
                 # gán lại biến
                 each_ct_khong_tl = each_chua_tt
             cn_dkbg_ct += each_ct_khong_tl
+            # Cập nhật số lượng tạo thành công và không thành công
+            message += "<li>Số lượng chi tiết tạo không thành công: {0}</li>" \
+                       "<li>Số lượng chi tiết tạo thành công: {1}</li></ul>".format(sl_tao_ko_tc, sl_tao_tc)
+            _logger.debug("cn_dkbg_ct")
+            _logger.debug(cn_dkbg_ct)
+
             # note trên cập nhật ngày dự kiến bàn giao chi tiết
             cn_dkbg.message_post(body=message)
         # Lấy các unit ở chi tiết
@@ -70,6 +91,8 @@ class BsdDanhSachThongBao(models.TransientModel):
             raise UserError(_("Có sản phẩm bị trùng cập nhật dự kiến bàn giao"))
         # Lấy hợp đồng tạo thông báo
         hd_ban_ids = tuple(cn_dkbg_ct.mapped('bsd_hd_ban_id').ids)
+        _logger.debug("hop dong ban")
+        _logger.debug(cn_dkbg_ct.mapped('bsd_hd_ban_id'))
         if not hd_ban_ids:
             if self.bsd_loai == 'nt':
                 # Cập nhật field đã tạo thông báo nghiệm thu
@@ -92,7 +115,8 @@ class BsdDanhSachThongBao(models.TransientModel):
             str_cn = str(cn_dkbg).replace(',', '')
         else:
             str_cn = str(cn_dkbg)
-
+        _logger.debug("str_hd_ban")
+        _logger.debug(str_hd_ban)
         self.env.cr.execute("""
             SELECT  hd_ban.id,
                     hd_ban.bsd_du_an_id,

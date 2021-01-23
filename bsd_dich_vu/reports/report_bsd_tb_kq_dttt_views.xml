@@ -49,7 +49,7 @@
             <field name="paperformat_id" ref="bsd_dich_vu.bsd_giay_in_bsd_tb_kq_dttt"/>
         </record>
 
-        <record id="bsd_mau_in_tb_tt" model="ir.actions.report">
+        <record id="bsd_mau_in_tb_kq_dttt_tt" model="ir.actions.report">
             <field name="name">Thông báo kết quả đo đạtn</field>
             <field name="model">bsd.tb_tt.report.wizard</field>
             <field name="report_type">qweb-pdf</field>

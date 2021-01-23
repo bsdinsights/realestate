@@ -39,7 +39,11 @@ class BsdWizardReportThongBaoTT(models.TransientModel):
             'bsd_nguoi_in_id': self.env.uid,
         })
         ref_id = 'bsd_dich_vu.' + self.bsd_mau_in
-        return self.env.ref(ref_id).report_action(self, data=data)
+        _logger.debug("nut in ne")
+        _logger.debug(data)
+        res = self.env.ref(ref_id).report_action(self, data=data)
+        _logger.debug(res)
+        return res
 
 
 class ReportBsdTBTTNN(models.AbstractModel):
@@ -47,7 +51,10 @@ class ReportBsdTBTTNN(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
+        _logger.debug("In thoong bao")
+        _logger.debug(data)
         doc = self.env['bsd.tb_tt'].browse(data['ids'])
+        _logger.debug(doc)
         tai_khoan = doc.bsd_du_an_id.bsd_tk_ng_ids
         tai_khoan = tai_khoan.filtered(lambda t: t.bsd_tk_chinh)
         ngay_ht = datetime.datetime.now()
