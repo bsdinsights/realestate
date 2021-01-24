@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record model="ir.ui.view" id="bsd_phieu_thu_form">
             <field name="name">bsd.phieu_thu.form</field>
             <field name="model">bsd.phieu_thu</field>
@@ -93,8 +93,7 @@
                                         <field name="company_id" invisible="1"/>
                                         <field name="bsd_tien_kh"/>
                                         <field name="bsd_tien" readonly="1"/>
-                                        <field name="bsd_tien_con_lai"
-                                               attrs="{'invisible':[('bsd_loai_pt', 'not in', ['tra_truoc','pps'])]}"/>
+                                        <field name="bsd_tien_con_lai"/>
                                         <field name="bsd_tt_id"/>
                                         <field name="bsd_dien_giai"/>
                                     </group>
@@ -133,12 +132,15 @@
                       delete="false" duplicate="false" create="false"
                 >
                     <field name="bsd_so_pt"/>
-                    <field name="bsd_ngay_pt"/>
                     <field name="bsd_loai_pt"/>
-                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_ngay_pt"/>
                     <field name="bsd_khach_hang_id"/>
-                    <field name="bsd_tien_kh"/>
+                    <field name="bsd_unit_id"/>
+                    <field name="bsd_hd_ban_id"/>
+                    <field name="bsd_du_an_id"/>
                     <field name="bsd_tien"/>
+                    <field name="bsd_tien_kh"/>
+                    <field name="bsd_tien_con_lai"/>
                     <field name="state"/>
                     <field name="currency_id" invisible="1"/>
                     <field name="company_id" invisible="1"/>

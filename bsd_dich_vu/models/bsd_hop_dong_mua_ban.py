@@ -15,7 +15,7 @@ class BsdHopDongMuaBan(models.Model):
 
     bsd_ma_hd_ban = fields.Char(string="Mã hệ thống", help="Mã hệ thống của hợp đồng mua bán", required=True, readonly=True, copy=False,
                                 default='/')
-    bsd_ma_so_hd = fields.Char(string="Mã HĐMB", help="Mã hợp đồng mua bán", readonly=True)
+    bsd_ma_so_hd = fields.Char(string="Mã HĐ", help="Mã hợp đồng", readonly=True)
     _sql_constraints = [
         ('bsd_ma_hd_ban_unique', 'unique (bsd_ma_hd_ban)',
          'Mã hợp đồng đã tồn tại !'),
@@ -27,6 +27,8 @@ class BsdHopDongMuaBan(models.Model):
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
+    bsd_dc_kh = fields.Char(related='bsd_khach_hang_id.bsd_dia_chi_lh')
+    bsd_dt_kh = fields.Char(related='bsd_khach_hang_id.mobile')
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Tên đặt cọc", required=True,
                                      readonly=True,
                                      states={'nhap': [('readonly', False)]})
@@ -283,6 +285,24 @@ class BsdHopDongMuaBan(models.Model):
     bsd_so_pl_cldt = fields.Integer(string="# PL CLDT", compute='_compute_pl_cldt')
     bsd_ps_gd_ck_ids = fields.One2many('bsd.ps_gd_ck', 'bsd_hd_ban_id', domain=[('state', '=', 'xac_nhan')],
                                        string="Chiết khấu giao dịch", readonly=True)
+    bsd_tt_nt = fields.Selection([('dt_tb', 'Đã tạo thông báo'),
+                                  ('gui_tb', 'Gửi thông báo'),
+                                  ('dat_lh', 'Đặt lịch hẹn'),
+                                  ('dang_nt', 'Đang nghiệm thu'),
+                                  ('da_nt', 'Đã nghiệm thu')], string="Nghiệm thu")
+    bsd_tt_bg = fields.Selection([('dt_tb', 'Đã tạo thông báo'),
+                                  ('gui_tb', 'Gửi thông báo'),
+                                  ('dat_lh', 'Đặt lịch hẹn'),
+                                  ('dang_nt', 'Đang bàn giao'),
+                                  ('da_nt', 'Đã bàn giao')], string="Bàn giao SP")
+    bsd_tt_gcn = fields.Selection([('dt_tb', 'Đã tạo thông báo'),
+                                  ('gui_tb', 'Gửi thông báo'),
+                                  ('xn_dhs', 'Xác nhận đủ hồ sơ'),
+                                  ('da_gui_gcn', 'Đã gửi GCN'),
+                                  ('nhan_gcn', 'Nhận GCN'),
+                                  ('dat_lh', 'Đặt lịch hẹn'),
+                                  ('dang_nt', 'Đang bàn giao'),
+                                  ('da_nt', 'Đã bàn giao')], string="Bàn giao GCN")
 
     def _compute_pl_cldt(self):
         for each in self:

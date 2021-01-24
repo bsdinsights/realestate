@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <!--Top menu-->
         <menuitem id="bsd_main_tai_chinh_root" name="Tài chính"/>
         <menuitem id="bsd_cong_no_menu_action"
@@ -68,11 +68,20 @@
                   action="bsd_tai_chinh.bsd_mien_giam_action"
                   web_icon="fa fa-life-ring,#FFFFFF,#c0b66d"
         />
-        <menuitem id="bsd_dashboard_menu_action_2"
+        <menuitem id="bsd_dashboard_menu_2"
                   name="Dashboard"
                   sequence="32"
-                  action="bsd_tai_chinh.bsd_phieu_thu_action"
                   web_icon="fa fa-tachometer,#FFFFFF,#cb6483"
         />
+        <menuitem id="bsd_dvkh_action_menu"
+                  name="Dịch vụ khách hàng"
+                  sequence="2"
+                  action="bsd_tai_chinh.bsd_hop_dong_dashboard_action"
+                  parent="bsd_dashboard_menu_2"/>
+        <menuitem id="bsd_dashboard_thanh_toan_menu"
+                  name="Thanh toán"
+                  sequence="3"
+                  action="bsd_tai_chinh.bsd_phieu_thu_action"
+                  parent="bsd_dashboard_menu_2"/>
     </data>
 </odoo>

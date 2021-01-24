@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="0">
+        <record model="ir.ui.view" id="bsd_hd_ban_dashboard_tree">
+            <field name="name">bsd.hd_ban.tree</field>
+            <field name="model">bsd.hd_ban</field>
+            <field name="arch" type="xml">
+                <tree duplicate="false"
+                      create="false"
+                      decoration-danger="state=='ht_dc'"
+                      decoration-warning="state=='tt_dot1'"
+                      decoration-info="state=='da_ky_ttdc' or state=='du_dk'"
+                      decoration-primary="state=='da_ky' or state=='dang_tt' or state=='du_dkbg'"
+                      decoration-success ="state=='da_bg' or state=='ht_tt' or state=='bg_gt' or state=='da_ht'"
+                      decoration-muted="state=='thanh_ly'"
+                      default_order="bsd_stt_state,id asc"
+                      delete="false">
+                    <field name="bsd_unit_id"/>
+                    <field name="bsd_ma_so_hd"/>
+                    <field name="bsd_ma_hd_ban"/>
+                    <field name="bsd_khach_hang_id"/>
+                    <field name="bsd_dt_kh" string="Số điện thoại"/>
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_tt_nt"/>
+                    <field name="bsd_tt_bg"/>
+                    <field name="bsd_tt_gcn"/>
+                    <field name="state"/>
+                    <field name="bsd_stt_state" invisible="1"/>
+                    <field name="company_id" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_hop_dong_dashboard_action">
+            <field name="name">Thỏa thuận/ Hợp đồng</field>
+            <field name="res_model">bsd.hd_ban</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_ids"
+                   eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'tree', 'view_id': ref('bsd_tai_chinh.bsd_hd_ban_dashboard_tree')})]"/>
+        </record>
+    </data>
+</odoo>

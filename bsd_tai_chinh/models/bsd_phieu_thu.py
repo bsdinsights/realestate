@@ -13,7 +13,7 @@ class BsdPhieuThu(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_so_pt'
 
-    bsd_so_pt = fields.Char(string="Số", help="Số", required=True, readonly=True, copy=False,
+    bsd_so_pt = fields.Char(string="Mã số", help="Số", required=True, readonly=True, copy=False,
                             default='/')
     _sql_constraints = [
         ('bsd_so_pt_unique', 'unique (bsd_so_pt)',
@@ -74,12 +74,12 @@ class BsdPhieuThu(models.Model):
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng",
                                     readonly=True,
                                     states={'nhap': [('readonly', False)]})
-    bsd_tien_kh = fields.Monetary(string="Tiền khách hàng", help="Số tiền thanh toán của khách hàng", required=True,
+    bsd_tien_kh = fields.Monetary(string="Thanh toán", help="Số tiền thanh toán của khách hàng", required=True,
                                   readonly=True,
                                   states={'nhap': [('readonly', False)]})
-    bsd_tien = fields.Monetary(string="Tiền thanh toán", help="Tiền thanh toán",
+    bsd_tien = fields.Monetary(string="Số tiền", help="Tiền thanh toán",
                                compute='_compute_tien_ct', store=True)
-    bsd_tien_con_lai = fields.Monetary(string="Tiền còn lại", help="Tiền còn lại",
+    bsd_tien_con_lai = fields.Monetary(string="Còn lại", help="Tiền còn lại",
                                        compute='_compute_tien_ct', store=True)
     bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_phieu_thu_id', string="Chi tiết TT", readonly=True)
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",

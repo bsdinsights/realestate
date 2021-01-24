@@ -113,7 +113,6 @@
                                 <field name="bsd_so_ds_td" widget="statinfo" string="DS theo dõi"/>
                             </button>
                         </div>
-
                         <notebook>
                             <page string="Thông tin chung">
                                 <group>
@@ -190,6 +189,15 @@
                                         <field name="bsd_duyet_bgdb"/>
                                         <field name="bsd_ngay_duyet_bgdb"/>
                                         <field name="bsd_nguoi_duyet_bgdb_id"/>
+                                    </group>
+                                </group>
+                                <group string="Nghiệm thu &amp; Bàn giao">
+                                    <group>
+                                        <field name="bsd_tt_nt"/>
+                                        <field name="bsd_tt_bg"/>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_tt_gcn"/>
                                     </group>
                                 </group>
                             </page>
