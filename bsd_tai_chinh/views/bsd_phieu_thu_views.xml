@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="0">
+    <data noupdate="1">
         <record model="ir.ui.view" id="bsd_phieu_thu_form">
             <field name="name">bsd.phieu_thu.form</field>
             <field name="model">bsd.phieu_thu</field>

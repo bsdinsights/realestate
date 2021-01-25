@@ -250,7 +250,7 @@ class BsdThongBaoBanGiao(models.Model):
     # DV.16.06 Kiểm tra điều kiện của cập nhật DKBG chi tiết
     @api.constrains('bsd_hd_ban_id')
     def _constrains_hd_ban(self):
-        if self.bsd_hd_ban_id.state == 'thanh_ly':
+        if self.bsd_hd_ban_id.state == '12_thanh_ly':
             raise UserError(_('Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại!'))
 
     # Hẹn ngày gặp khách hàng

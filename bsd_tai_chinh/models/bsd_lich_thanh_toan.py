@@ -67,7 +67,7 @@ class BsdBaoGiaLTT(models.Model):
     # DV.01.09 Theo dõi chiết khấu thanh toán trước hạn
     def tao_ck_ttth(self, ngay_tt, tien_tt):
         # Kiểm tra trạng thái của hợp đồng đã ký hoặc đang thanh toán
-        if self.bsd_hd_ban_id.state not in ['da_ky', 'dang_tt']:
+        if self.bsd_hd_ban_id.state not in ['05_da_ky', '06_dang_tt']:
             return
         # Lấy thông tin đợt mở bán của hợp đồng
         dot_mb = self.bsd_hd_ban_id.bsd_dot_mb_id
@@ -109,7 +109,7 @@ class BsdBaoGiaLTT(models.Model):
     # DV.01.09 Theo dõi chiết khấu thanh toán nhanh
     def tao_ck_ttn(self):
         # Kiểm tra trạng thái của hợp đồng
-        if self.bsd_hd_ban_id.state not in ['da_ky', 'dang_tt']:
+        if self.bsd_hd_ban_id.state not in ['05_da_ky', '06_dang_tt']:
             return
         # Lấy thông tin đợt mở bán của hợp đồng
         dot_mb = self.bsd_hd_ban_id.bsd_dot_mb_id

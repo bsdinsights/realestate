@@ -118,7 +118,7 @@
                         </group>
                         <group string="HIỆU LỰC">
                             <group>
-                                <field name="bsd_ngay_hh_gc" force_save="1"/>
+                                <field name="bsd_ngay_hh_gc" force_save="1" readonly="1"/>
                                 <field name="bsd_het_han_gc"/>
                                 <field name="bsd_stt_bg"/>
                                 <field name="bsd_ngay_hh_bg"/>
@@ -275,7 +275,7 @@
                         </group>
                         <group string="HIỆU LỰC">
                             <group>
-                                <field name="bsd_ngay_hh_gc" force_save="1"/>
+                                <field name="bsd_ngay_hh_gc" force_save="1" readonly="1"/>
                                 <field name="bsd_het_han_gc"/>
                                 <field name="bsd_stt_bg"/>
                                 <field name="bsd_ngay_hh_bg"/>

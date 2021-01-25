@@ -175,7 +175,7 @@ class BsdNghiemThu(models.Model):
     # DV.10.07 Kiểm tra điều kiện nghiệm thu sản phẩm
     def kiem_tra_nt(self):
         # Kiểm tra hợp đồng
-        if self.bsd_hd_ban_id.state == 'thanh_ly':
+        if self.bsd_hd_ban_id.state == '12_thanh_ly':
             if self.state in ['nhap', 'xac_nhan_tt', 'xac_nhan']:
                 self.write({
                     'state': 'huy',

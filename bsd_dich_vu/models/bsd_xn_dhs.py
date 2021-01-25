@@ -63,7 +63,7 @@ class BsdXacNhanDHS(models.Model):
             raise UserError("Không có sản phẩm .\nVui lòng kiểm tra lại thông tin.")
         message = ''
         # Lọc các hợp đồng đã bị thanh lý
-        hop_dong_da_tl = ct_ids.mapped('bsd_hd_ban_id').filtered(lambda h: h.state == 'thanh_ly')
+        hop_dong_da_tl = ct_ids.mapped('bsd_hd_ban_id').filtered(lambda h: h.state == '12_thanh_ly')
         if hop_dong_da_tl:
             message += "<ul><li>Những hợp đồng đã bị thanh lý: {}</li>".format(','.join(hop_dong_da_tl.mapped('bsd_ma_hd_ban')))
 
@@ -143,7 +143,7 @@ class BsdXacNhanDHS(models.Model):
             raise UserError("Không có sản phẩm .\nVui lòng kiểm tra lại thông tin.")
         message = ''
         # Lọc các hợp đồng đã bị thanh lý
-        hop_dong_da_tl = ct_ids.mapped('bsd_hd_ban_id').filtered(lambda h: h.state == 'thanh_ly')
+        hop_dong_da_tl = ct_ids.mapped('bsd_hd_ban_id').filtered(lambda h: h.state == '12_thanh_ly')
         if hop_dong_da_tl:
             message += "<ul><li>Những hợp đồng đã bị thanh lý: {}</li>".format(','.join(hop_dong_da_tl.mapped('bsd_ma_hd_ban')))
 

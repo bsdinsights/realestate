@@ -23,9 +23,9 @@ class BsdKyBGGT(models.TransientModel):
             'bsd_nguoi_bg_tt_id': self.bsd_nguoi_bg_tt_id.id,
             'state': 'ban_giao'
         })
-        if self.bsd_bg_gt_id.bsd_hd_ban_id.state == 'ht_tt':
+        if self.bsd_bg_gt_id.bsd_hd_ban_id.state == '09_ht_tt':
             self.bsd_bg_gt_id.bsd_hd_ban_id.write({
-                'state': 'bg_gt',
+                'state': '10_bg_gt',
             })
         self.bsd_bg_gt_id.bsd_unit_id.write({
             'bsd_ngay_cap_sh': self.bsd_ngay_bg_tt,

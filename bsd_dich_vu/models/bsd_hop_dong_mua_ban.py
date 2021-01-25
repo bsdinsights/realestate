@@ -12,6 +12,7 @@ class BsdHopDongMuaBan(models.Model):
     _description = "Hợp đồng mua bán"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_ma_hd_ban'
+    _order = 'bsd_stt_state asc'
 
     bsd_ma_hd_ban = fields.Char(string="Mã hệ thống", help="Mã hệ thống của hợp đồng mua bán", required=True, readonly=True, copy=False,
                                 default='/')
@@ -23,15 +24,15 @@ class BsdHopDongMuaBan(models.Model):
     bsd_ngay_hd_ban = fields.Date(string="Ngày", help="Ngày làm hợp đồng mua bán", required=True,
                                   default=lambda self: fields.Date.today(),
                                   readonly=True,
-                                  states={'nhap': [('readonly', False)]})
+                                  states={'00_nhap': [('readonly', False)]})
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,
                                         readonly=True,
-                                        states={'nhap': [('readonly', False)]})
+                                        states={'00_nhap': [('readonly', False)]})
     bsd_dc_kh = fields.Char(related='bsd_khach_hang_id.bsd_dia_chi_lh')
     bsd_dt_kh = fields.Char(related='bsd_khach_hang_id.mobile')
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Tên đặt cọc", required=True,
                                      readonly=True,
-                                     states={'nhap': [('readonly', False)]})
+                                     states={'00_nhap': [('readonly', False)]})
     # môi giới
     bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên KD", help="Nhân viên kinh doanh",
                                   readonly=True, required=True)
@@ -46,10 +47,10 @@ class BsdHopDongMuaBan(models.Model):
                                  store=True, digits=(12, 2))
     bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="Phương thức TT", tracking=2,
                                    help="Phương thức thanh toán", required=True)
-    bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán", readonly=True)
-    bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý", readonly=True,
+    bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán")
+    bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý",
                                    help="Số tháng đóng phí quản lý trước đợt bàn giao tạm thời hoặc bàn giao chính thức")
-    bsd_tien_pql = fields.Monetary(string="Phí quản lý", help="Số tiền phí quản lý cần đóng", readonly=True)
+    bsd_tien_pql = fields.Monetary(string="Phí quản lý", help="Số tiền phí quản lý cần đóng")
 
     # Cập nhật đồng sở hữu từ báo giá, đợt mở bán , dự án, sản phẩm
     @api.onchange('bsd_dat_coc_id')
@@ -74,41 +75,41 @@ class BsdHopDongMuaBan(models.Model):
 
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
-                                states={'nhap': [('readonly', False)]})
+                                states={'00_nhap': [('readonly', False)]})
     bsd_bao_gia_id = fields.Many2one('bsd.bao_gia', related="bsd_dat_coc_id.bsd_bao_gia_id", store=True,
                                      readonly=True,
-                                     states={'nhap': [('readonly', False)]})
+                                     states={'00_nhap': [('readonly', False)]})
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True,
                                    readonly=True,
-                                   states={'nhap': [('readonly', False)]})
+                                   states={'00_nhap': [('readonly', False)]})
     bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Tên đợt mở bán", required=True,
                                     readonly=True,
-                                    states={'nhap': [('readonly', False)]})
+                                    states={'00_nhap': [('readonly', False)]})
     bsd_bang_gia_id = fields.Many2one('product.pricelist', string="Bảng giá", help="Bảng giá bán",
                                       related="bsd_dat_coc_id.bsd_bang_gia_id", store=True)
     bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Tên Sản phẩm", required=True,
                                   readonly=True,
-                                  states={'nhap': [('readonly', False)]})
+                                  states={'00_nhap': [('readonly', False)]})
     bsd_toa_nha_id = fields.Many2one(related='bsd_unit_id.bsd_toa_nha_id', store=True)
     bsd_tang_id = fields.Many2one(related='bsd_unit_id.bsd_tang_id', store=True)
     bsd_ngay_cn = fields.Date(related='bsd_unit_id.bsd_ngay_cn', store=True)
     bsd_ten_sp = fields.Char(related="bsd_unit_id.name", store=True)
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích tim tường",
                              readonly=True,
-                             states={'nhap': [('readonly', False)]})
+                             states={'00_nhap': [('readonly', False)]})
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",
                              readonly=True,
-                             states={'nhap': [('readonly', False)]})
+                             states={'00_nhap': [('readonly', False)]})
     bsd_qsdd_m2 = fields.Monetary(string="Giá trị QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2",
                                   readonly=True,
-                                  states={'nhap': [('readonly', False)]})
+                                  states={'00_nhap': [('readonly', False)]})
     bsd_tien_qsdd = fields.Monetary(string="Giá trị QSDĐ",
                                     help="""Giá trị sử dụng đất: bằng QSDĐ/m2 nhân với diện tích sử dung""",
                                     readonly=True,
-                                    states={'nhap': [('readonly', False)]})
+                                    states={'00_nhap': [('readonly', False)]})
     bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì",
                               readonly=True,
-                              states={'nhap': [('readonly', False)]})
+                              states={'00_nhap': [('readonly', False)]})
 
     @api.onchange('bsd_unit_id')
     def _onchange_unit(self):
@@ -153,48 +154,48 @@ class BsdHopDongMuaBan(models.Model):
         for each in self:
             each.bsd_tong_gia = each.bsd_gia_truoc_thue + each.bsd_tien_thue + each.bsd_tien_pbt
 
-    state = fields.Selection([('nhap', 'Nháp'),
-                              ('ht_dc', 'Hoàn tất đặt cọc'),
-                              ('tt_dot1', 'Thanh toán đợt 1'),
-                              ('da_ky_ttdc', 'Đã ký TTĐC'),
-                              ('du_dk', 'Đủ điều kiện'),
-                              ('da_ky', 'Đã ký HĐMB'),
-                              ('dang_tt', 'Đang thanh toán'),
-                              ('du_dkbg', 'Đủ ĐKBG'),
-                              ('da_bg', 'Đã bàn giao'),
-                              ('ht_tt', 'Hoàn tất thanh toán'),
-                              ('bg_gt', 'Bàn giao giấy tờ'),
-                              ('da_ht', 'Đã hoàn tất'),
-                              ('thanh_ly', 'Thanh lý')], string="Trạng thái", default="nhap",
+    state = fields.Selection([('00_nhap', 'Nháp'),
+                              ('01_ht_dc', 'Hoàn tất đặt cọc'),
+                              ('02_tt_dot1', 'Thanh toán đợt 1'),
+                              ('03_da_ky_ttdc', 'Đã ký TTĐC/HĐĐC'),
+                              ('04_du_dk', 'Đủ ĐK ký HĐMB'),
+                              ('05_da_ky', 'Đã ký HĐMB'),
+                              ('06_dang_tt', 'Đang thanh toán'),
+                              ('07_du_dkbg', 'Đủ ĐK Bàn giao SP'),
+                              ('08_da_bg', 'Đã bàn giao SP'),
+                              ('09_ht_tt', 'Hoàn tất thanh toán'),
+                              ('10_bg_gt', 'Đã Bàn giao GCN'),
+                              ('11_da_ht', 'Kết thúc HĐ'),
+                              ('12_thanh_ly', 'Thanh lý')], string="Trạng thái", default="00_nhap",
                              help="Trạng thái", tracking=1)
     bsd_stt_state = fields.Integer(string="Thứ tự sắp xếp", compute="_compute_stt", store=True)
 
     @api.depends("state")
     def _compute_stt(self):
         for each in self:
-            if each.state == 'ht_dc':
+            if each.state == '01_ht_dc':
                 each.bsd_stt_state = 1
-            elif each.state == 'tt_dot1':
+            elif each.state == '02_tt_dot1':
                 each.bsd_stt_state = 2
-            elif each.state == 'da_ky_ttdc':
+            elif each.state == '03_da_ky_ttdc':
                 each.bsd_stt_state = 3
-            elif each.state == 'du_dk':
+            elif each.state == '04_du_dk':
                 each.bsd_stt_state = 4
-            elif each.state == 'da_ky':
+            elif each.state == '05_da_ky':
                 each.bsd_stt_state = 5
             elif each.state == 'dang_tt':
                 each.bsd_stt_state = 6
-            elif each.state == 'du_dkbg':
+            elif each.state == '07_du_dkbg':
                 each.bsd_stt_state = 7
-            elif each.state == 'da_bg':
+            elif each.state == '08_da_bg':
                 each.bsd_stt_state = 8
-            elif each.state == 'ht_tt':
+            elif each.state == '09_ht_tt':
                 each.bsd_stt_state = 9
-            elif each.state == 'bg_gt':
+            elif each.state == '10_bg_gt':
                 each.bsd_stt_state = 10
-            elif each.state == 'da_ht':
+            elif each.state == '11_da_ht':
                 each.bsd_stt_state = 11
-            elif each.state == 'thanh_ly':
+            elif each.state == '12_thanh_ly':
                 each.bsd_stt_state = 12
             else:
                 each.bsd_stt_state = 0
@@ -233,7 +234,7 @@ class BsdHopDongMuaBan(models.Model):
 
     bsd_dong_sh_ids = fields.One2many('bsd.dong_so_huu', 'bsd_hd_ban_id', string="Đồng sở hữu hiện tại",
                                       readonly=True, domain=[('state', '=', 'active')],
-                                      states={'nhap': [('readonly', False)]})
+                                      states={'00_nhap': [('readonly', False)]})
     bsd_dong_sh_cu_ids = fields.One2many('bsd.dong_so_huu', 'bsd_hd_ban_id', string="Đồng sở hữu cũ",
                                          readonly=True, domain=[('state', '=', 'inactive')])
     bsd_ngay_in_hdb = fields.Date(string="Ngày in hợp đồng", help="Ngày in hợp đồng mua bán", readonly=True)
@@ -265,7 +266,7 @@ class BsdHopDongMuaBan(models.Model):
     bsd_nguoi_duyet_db_id = fields.Many2one('res.users', string="Người duyệt in ĐB", readonly=True, tracking=2)
     bsd_ngay_dkbg = fields.Date(string="Ngày dự kiến BG", help="Ngày dự kiến bàn giao ký kết với khách hàng",
                                 readonly=True,
-                                states={'nhap': [('readonly', False)]})
+                                states={'00_nhap': [('readonly', False)]})
     bsd_cn_ids = fields.One2many('bsd.hd_ban_cn', 'bsd_hd_ban_id', string="Chuyển nhượng hợp đồng",
                                  domain=[('state', '=', 'duyet')], readonly=True)
     bsd_duyet_bgdb = fields.Boolean(string="Duyệt BGĐB", help="Duyệt bàn giao đặc biệt", readonly=True)
@@ -447,13 +448,13 @@ class BsdHopDongMuaBan(models.Model):
     # Tính năng tạo danh sách theo dõi khi khách hàng yêu cầu thanh lý
     def action_tao_ds_tt(self):
         # kiểm tra trạng thái hợp đồng
-        if self.state in ['ht_dc', 'tt_dot1']:
+        if self.state in ['01_ht_dc', '02_tt_dot1']:
             loai_dt = 'tl_dc_cbhd'
             tl_phat = self.bsd_cs_tt_id.bsd_phat_dc
-        elif self.state in ['da_ky_ttdc', 'du_dk']:
+        elif self.state in ['03_da_ky_ttdc', '04_du_dk']:
             loai_dt = 'tl_ttdc_hd'
             tl_phat = self.bsd_cs_tt_id.bsd_phat_ttdc
-        elif self.state in ['da_ky', 'dang_tt']:
+        elif self.state in ['05_da_ky', 'dang_tt']:
             loai_dt = 'tl_ttdc_hd'
             tl_phat = self.bsd_cs_tt_id.bsd_phat_hd
         action = self.env.ref('bsd_dich_vu.bsd_ds_td_action_popup').read()[0]
@@ -590,7 +591,7 @@ class BsdHopDongMuaBan(models.Model):
     # DV.01.01 - Xác nhận hợp đồng
     def action_xac_nhan(self):
         self.write({
-            'state': 'ht_dc',
+            'state': '01_ht_dc',
         })
         # Cập nhật trạng thái hoàn thành cho đặt cọc
         self.bsd_dat_coc_id.write({
@@ -793,6 +794,20 @@ class BsdHopDongMuaBan(models.Model):
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
             raise UserError(_('Dự án chưa có mã hợp đồng.'))
+        # import
+        if 'bsd_dat_coc_id' in vals:
+            dat_coc = self.env['bsd.dat_coc'].browse(vals['bsd_dat_coc_id'])
+            vals['bsd_khach_hang_id'] = dat_coc.bsd_nguoi_dd_id.id
+            vals['bsd_nvbh_id'] = dat_coc.bsd_nvbh_id.id
+            vals['bsd_ctv_id'] = dat_coc.bsd_ctv_id.id
+            vals['bsd_san_gd_id'] = dat_coc.bsd_san_gd_id.id
+            vals['bsd_gioi_thieu_id'] = dat_coc.bsd_gioi_thieu_id.id
+            vals['bsd_tien_ck'] = dat_coc.bsd_tien_ck
+            vals['bsd_tien_pbt'] = dat_coc.bsd_tien_pbt
+            vals['bsd_tien_qsdd'] = dat_coc.bsd_tien_qsdd
+            vals['bsd_tien_thue'] = dat_coc.bsd_tien_thue
+            vals['bsd_dt_xd'] = dat_coc.bsd_dt_xd
+        # nhớ xóa
         vals['bsd_ma_hd_ban'] = sequence.next_by_id()
         res = super(BsdHopDongMuaBan, self).create(vals)
         ids_bg = res.bsd_dat_coc_id.bsd_bg_ids.ids
@@ -816,6 +831,8 @@ class BsdHopDongMuaBan(models.Model):
         # res.bsd_dat_coc_id.write({
         #     'state': 'hoan_thanh',
         # })
+        # import
+        res.action_xac_nhan()
         return res
 
 
@@ -893,7 +910,7 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     bsd_hd_ban_ids = fields.One2many('bsd.hd_ban', 'bsd_khach_hang_id', string="Danh sách hợp đồng",
-                                     domain=[('state', '!=', 'nhap')], readonly=True)
+                                     domain=[('state', '!=', '00_nhap')], readonly=True)
 
     bsd_sl_hd_ban = fields.Integer(string="# Hợp đồng", compute="_compute_sl_hd", store=True)
 
@@ -909,7 +926,7 @@ class ResPartner(models.Model):
         if len(hd_ban) > 1:
             action['domain'] = [('id', 'in', hd_ban.ids)]
         elif hd_ban:
-            form_view = [(self.env.ref('bsd_kinh_doanh.bsd_hd_ban_form').id, 'form')]
+            form_view = [(self.env.ref('bsd_dich_vu.bsd_hd_ban_form').id, 'form')]
             if 'views' in action:
                 action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
             else:

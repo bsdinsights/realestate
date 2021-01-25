@@ -84,7 +84,7 @@ class BsdMienGiam(models.Model):
         if len(ct_ids) != len(ct_ids.mapped('bsd_dot_tt_id')):
             raise UserError("Đợt thanh toán bị trùng. Vui lòng kiểm tra lại thông tin.")
         # Kiểm tra hợp đồng bị thanh lý chưa
-        if self.bsd_hd_ban_id.state == 'thanh_ly':
+        if self.bsd_hd_ban_id.state == '12_thanh_ly':
             self.write({
                 "state": 'huy',
                 'bsd_ly_do': 'Hợp đồng đã bị thanh lý',
@@ -113,7 +113,7 @@ class BsdMienGiam(models.Model):
         if len(ct_ids) != len(ct_ids.mapped('bsd_dot_tt_id')):
             raise UserError("Đợt thanh toán bị trùng. Vui lòng kiểm tra lại thông tin.")
         # Kiểm tra hợp đồng bị thanh lý chưa
-        if self.bsd_hd_ban_id.state == 'thanh_ly':
+        if self.bsd_hd_ban_id.state == '12_thanh_ly':
             self.write({
                 "state": 'huy',
                 'bsd_ly_do': 'Hợp đồng đã bị thanh lý',

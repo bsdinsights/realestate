@@ -110,7 +110,7 @@ class BsdCapNhatDKBG(models.Model):
         message = ''
         ct_xac_nhan = self.bsd_ct_ids.filtered(lambda c: c.state == 'xac_nhan')
         # Lọc các hợp đồng đã bị thanh lý
-        hop_dong = self.bsd_ct_ids.mapped('bsd_hd_ban_id').filtered(lambda h: h.state == 'thanh_ly')
+        hop_dong = self.bsd_ct_ids.mapped('bsd_hd_ban_id').filtered(lambda h: h.state == '12_thanh_ly')
         if hop_dong:
             message += "<ul><li>Những hợp đồng đã bị thanh lý: {}</li>".format(','.join(hop_dong.mapped('bsd_ma_hd_ban')))
         # Lọc các unit đã bàn giao

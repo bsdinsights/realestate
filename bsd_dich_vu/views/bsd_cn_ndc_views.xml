@@ -79,7 +79,7 @@
                                                     <field name="bsd_du_an_id"
                                                            options="{'no_create':true}"/>
                                                     <field name="bsd_hd_ban_id"
-                                                           domain="[('bsd_du_an_id', '=', bsd_du_an_id),('state', '=','da_bg')]"
+                                                           domain="[('bsd_du_an_id', '=', bsd_du_an_id),('state', '=','08_da_bg')]"
                                                            options="{'no_create':true}"/>
                                                     <field name="bsd_cn_ndc_id" invisible="1"/>
                                                 </group>

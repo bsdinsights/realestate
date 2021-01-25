@@ -52,7 +52,7 @@ class BsdCapNhatHTT(models.Model):
         if not self.bsd_ct_ids.filtered(lambda x: x.state == 'nhap'):
             raise UserError("Không có thông tin đợt thay dổi ngày đến hạn thanh toán.\nVui lòng kiểm tra lại thông tin.")
         # Kiểm tra hợp đồng đã bị thanh lý chưa
-        if self.bsd_hd_ban_id.state == 'thanh_ly':
+        if self.bsd_hd_ban_id.state == '12_thanh_ly':
             if self.state in ['nhap', 'xac_nhan']:
                 self.write({
                     'state': 'huy',
@@ -102,7 +102,7 @@ class BsdCapNhatHTT(models.Model):
         if not self.bsd_ct_ids.filtered(lambda x: x.state == 'xac_nhan'):
             raise UserError("Không có thông tin đợt thay dổi ngày đến hạn thanh toán.\nVui lòng kiểm tra lại thông tin.")
         # Kiểm tra hợp đồng đã bị thanh lý chưa
-        if self.bsd_hd_ban_id.state == 'thanh_ly':
+        if self.bsd_hd_ban_id.state == '12_thanh_ly':
             if self.state in ['nhap', 'xac_nhan']:
                 self.write({
                     'state': 'huy',

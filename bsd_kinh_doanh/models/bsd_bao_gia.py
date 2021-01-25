@@ -69,8 +69,7 @@ class BsdBaoGia(models.Model):
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích tim tường",
                              related="bsd_unit_id.bsd_dt_xd", store=True)
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",
-                             required=True,
-                             readonly=True)
+                             required=True)
 
     def _get_thue(self):
         return self.env['bsd.thue_suat'].search([('state', '=', 'active')], limit=1)
@@ -79,7 +78,7 @@ class BsdBaoGia(models.Model):
                                   readonly=True, default=_get_thue,
                                   states={'nhap': [('readonly', False)]})
     bsd_qsdd_m2 = fields.Monetary(string="Giá trị QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2")
-    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", required=True, readonly=True,
+    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", required=True,
                                  digits=(12, 2))
 
     @api.onchange('bsd_thue_id')
@@ -127,6 +126,19 @@ class BsdBaoGia(models.Model):
                                  readonly=True,
                                  states={'nhap': [('readonly', False)]})
 
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        args = list(args or [])
+        if name:
+            if operator == 'ilike':
+                args += [('bsd_ten_sp', operator, name)]
+            elif operator == '=':
+                args += [('bsd_ma_bao_gia', operator, name)]
+        access_rights_uid = name_get_uid or self._uid
+        ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
+        recs = self.browse(ids)
+        return models.lazy_name_get(recs.with_user(access_rights_uid))
+
     # Tên hiện thị record
     def name_get(self):
         res = []
@@ -162,9 +174,9 @@ class BsdBaoGia(models.Model):
             if len(record) > len(ck):
                 raise UserError("Có Chiết khâu bị trùng.\nVui lòng kiểm tra lại thông tin chiết khấu.")
 
-    bsd_ngay_in_bg = fields.Date(string="Ngày in BTG", help="Ngày in báo giá", readonly=True)
-    bsd_ngay_hh_kbg = fields.Date(string="Hết hạn ký BTG", help="Ngày hết hiệu lực ký báo giá", readonly=True)
-    bsd_ngay_ky_bg = fields.Date(string="Ngày ký BTG", help="Ngày ký báo giá", readonly=True)
+    bsd_ngay_in_bg = fields.Date(string="Ngày in BTG", help="Ngày in báo giá")
+    bsd_ngay_hh_kbg = fields.Date(string="Hết hạn ký BTG", help="Ngày hết hiệu lực ký báo giá")
+    bsd_ngay_ky_bg = fields.Date(string="Ngày ký BTG", help="Ngày ký báo giá")
 
     bsd_ngay_hl_bg = fields.Date(string="Hiệu lực BTG", help="Hiệu lực bảng tính giá",
                                      compute="_compute_ngay_hl", store=True)
@@ -553,8 +565,27 @@ class BsdBaoGia(models.Model):
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         if not sequence:
             raise UserError(_('Dự án chưa có mã bảng tính giá.'))
+        # Tạo dữ liệu khách hàng khi import giữ chỗ thiện chí
+        if 'bsd_giu_cho_id' in vals:
+            giu_cho = self.env['bsd.giu_cho'].browse(vals['bsd_giu_cho_id'])
+            vals['bsd_khach_hang_id'] = giu_cho.bsd_khach_hang_id.id
+            vals['bsd_ctv_id'] = giu_cho.bsd_ctv_id.id
+            vals['bsd_san_gd_id'] = giu_cho.bsd_san_gd_id.id
+            vals['bsd_gioi_thieu_id'] = giu_cho.bsd_gioi_thieu_id.id
+        # nhớ xóa sau khi import
         vals['bsd_ma_bao_gia'] = sequence.next_by_id()
-        return super(BsdBaoGia, self).create(vals)
+        _logger.debug("chạy tới đây")
+        _logger.debug(vals['bsd_ma_bao_gia'])
+        res = super(BsdBaoGia, self).create(vals)
+        # Tạo dữ liệu khách hàng khi import giữ chỗ thiện chí
+        res.action_lich_tt()
+        res.action_xac_nhan()
+        res.write({
+            'state': 'da_ky',
+            'bsd_ngay_ky_bg': fields.Date.today()
+        })
+        # nhớ xóa sau khi import
+        return res
 
     # KD.09.09 Tạo Bảng tính giá từ màn hình Giữ chỗ
     def action_tao_dat_coc(self):
@@ -643,7 +674,6 @@ class BsdBaoGiaKhuyenMai(models.Model):
 
     @api.onchange('bsd_dot_mb_id')
     def _onchange_dot_mb(self):
-        _logger.debug("onchange khuyến mãi")
         res = {}
         list_id = []
         if self.bsd_dot_mb_id:

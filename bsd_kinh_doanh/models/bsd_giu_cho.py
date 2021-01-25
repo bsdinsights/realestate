@@ -62,9 +62,7 @@ class BsdGiuCho(models.Model):
     bsd_gioi_thieu_id = fields.Many2one('res.partner', string="Giới thiệu", help="Cá nhân hoặc đơn vị giới thiệu",
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
-    bsd_ngay_hh_gc = fields.Datetime(string="Hạn giữ chỗ", help="Hiệu lực của giữ chỗ",
-                                     readonly=True,
-                                     required=True, tracking=3)
+    bsd_ngay_hh_gc = fields.Datetime(string="Hạn giữ chỗ", help="Hiệu lực của giữ chỗ", tracking=3)
 
     bsd_gc_da = fields.Boolean(string="Giữ chỗ dự án", help="""Thông tin ghi nhận Giữ chỗ được tự động tạo từ 
                                                                 giữ chỗ thiện chí hay không""", readonly=True)
@@ -194,8 +192,11 @@ class BsdGiuCho(models.Model):
     @api.model
     def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
         args = list(args or [])
-        if not (name == '' and operator == 'ilike'):
-            args += [('bsd_ten_sp', operator, name)]
+        if name:
+            if operator == 'ilike':
+                args += [('bsd_ten_sp', operator, name)]
+            elif operator == '=':
+                args += [('bsd_ma_gc', operator, name)]
         access_rights_uid = name_get_uid or self._uid
         ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
         recs = self.browse(ids)

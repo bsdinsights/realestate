@@ -73,6 +73,25 @@
                   sequence="32"
                   web_icon="fa fa-tachometer,#FFFFFF,#cb6483"
         />
+        <menuitem id="bsd_kinh_doanh_menu_dashboard"
+                  name="Kinh doanh"
+                  sequence="1"
+                  parent="bsd_dashboard_menu_2"/>
+            <menuitem id="bsd_san_pham_menu_action_dashboard"
+                      name="Sản phẩm"
+                      sequence="1"
+                      action="bsd_du_an.bsd_product_template_action"
+                      parent="bsd_kinh_doanh_menu_dashboard"/>
+            <menuitem id="bsd_giu_cho_menu_action_dashboard"
+                      name="Giữ chỗ"
+                      sequence="2"
+                      action="bsd_kinh_doanh.bsd_giu_cho_action"
+                      parent="bsd_kinh_doanh_menu_dashboard"/>
+            <menuitem id="bsd_dat_coc_menu_action_dashboard"
+                      name="Đặt cọc"
+                      sequence="3"
+                      action="bsd_kinh_doanh.bsd_dat_coc_action"
+                      parent="bsd_kinh_doanh_menu_dashboard"/>
         <menuitem id="bsd_dvkh_action_menu"
                   name="Dịch vụ khách hàng"
                   sequence="2"

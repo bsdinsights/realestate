@@ -63,7 +63,7 @@ class BsdKyHDB(models.TransientModel):
         # Cập nhật trạng thái hợp đồng
         self.bsd_hd_ban_id.write({
             'bsd_ngay_ky_hdb': self.bsd_ngay_ky_hdb,
-            'state': 'da_ky'
+            'state': '05_da_ky'
         })
         # Cập nhật field hợp đồng trên unit , chuyển trạng thái đã bán
         self.bsd_hd_ban_id.bsd_unit_id.sudo().write({

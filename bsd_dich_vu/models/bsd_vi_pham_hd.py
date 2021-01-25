@@ -86,7 +86,7 @@ class BsdViPhamHopDong(models.Model):
     # DV.09.01 Xác nhận
     def action_xac_nhan(self):
         # Kiểm tra hợp đông đã bị thanh lý thì hủy , ghi nhận lý do hủy
-        if self.bsd_hd_ban_id.state == 'thanh_ly':
+        if self.bsd_hd_ban_id.state == '12_thanh_ly':
             self.write({
                 'state': 'huy',
                 'bsd_ly_do': 'Hợp đồng đã bị thanh lý',

@@ -93,7 +93,9 @@ class BsdCongNoCT(models.Model):
             if self.bsd_dat_coc_id.bsd_tien_dc < tien:
                 raise UserError("Không thể thực hiện thanh toán dư đặt cọc")
             if self.bsd_dat_coc_id.bsd_tien_dc == tien:
-                self.bsd_dat_coc_id.cap_nhat_trang_thai()
+                pass
+                # Sửa dụng để import dữ liệu
+                # self.bsd_dat_coc_id.cap_nhat_trang_thai()
 
         elif self.bsd_loai in ['pt_dtt', 'pt_pql', 'pt_pbt']:
             # Kiểm tra đợt thanh toán đã có hạn thanh toán chưa
@@ -127,10 +129,10 @@ class BsdCongNoCT(models.Model):
                 if self.bsd_dot_tt_id.bsd_dot_ky_hd:
                     hd_ban.action_du_dk()
                 # Gọi hàm xử lý khi thanh toán đợt sau khi ký hợp đồng
-                if hd_ban.state == 'da_ky':
+                if hd_ban.state == '05_da_ky':
                     hd_ban.action_dang_tt()
                 # Gọi hàm xử lý khi thanh toám đợt dự kiến bàn giao
-                if hd_ban.state in ['da_ky', 'dang_tt']:
+                if hd_ban.state in ['05_da_ky', '06_dang_tt']:
                     hd_ban.action_du_dkbg()
                 # Gọi hàm kiểm tra đã hoàn tất thanh toán hợp đồng
                 hd_ban.action_ht_tt()

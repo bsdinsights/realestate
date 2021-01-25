@@ -7,13 +7,13 @@
             <field name="arch" type="xml">
                 <tree duplicate="false"
                       create="false"
-                      decoration-danger="state=='ht_dc'"
-                      decoration-warning="state=='tt_dot1'"
-                      decoration-info="state=='da_ky_ttdc' or state=='du_dk'"
-                      decoration-primary="state=='da_ky' or state=='dang_tt' or state=='du_dkbg'"
-                      decoration-success ="state=='da_bg' or state=='ht_tt' or state=='bg_gt' or state=='da_ht'"
-                      decoration-muted="state=='thanh_ly'"
-                      default_order="bsd_stt_state,id asc"
+                      decoration-danger="state=='01_ht_dc'"
+                      decoration-warning="state=='02_tt_dot1'"
+                      decoration-info="state=='03_da_ky_ttdc' or state=='04_du_dk'"
+                      decoration-primary="state=='05_da_ky' or state=='06_dang_tt' or state=='07_du_dkbg'"
+                      decoration-success ="state=='08_da_bg' or state=='09_ht_tt' or state=='10_bg_gt' or state=='11_da_ht'"
+                      decoration-muted="state=='12_thanh_ly'"
+                      default_order="state asc"
                       delete="false">
                     <field name="bsd_unit_id"/>
                     <field name="bsd_ma_so_hd"/>

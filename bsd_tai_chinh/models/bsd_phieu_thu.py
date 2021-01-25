@@ -23,11 +23,11 @@ class BsdPhieuThu(models.Model):
                                   readonly=True, default=lambda self: fields.Datetime.now(),
                                   states={'nhap': [('readonly', False)]})
 
-    @api.constrains('bsd_ngay_pt')
-    def _onchange_ngay_pt(self):
-        today = datetime.date.today()
-        if self.bsd_ngay_pt.date() > today:
-            raise UserError(_("Ngày thanh toán không được lớn hơn ngày hiện tại."))
+    # @api.constrains('bsd_ngay_pt')
+    # def _onchange_ngay_pt(self):
+    #     today = datetime.date.today()
+    #     if self.bsd_ngay_pt.date() > today:
+    #         raise UserError(_("Ngày thanh toán không được lớn hơn ngày hiện tại."))
 
     def _get_pt(self):
         return self.env.ref('bsd_danh_muc.bsd_tien_mat').id
@@ -81,7 +81,8 @@ class BsdPhieuThu(models.Model):
                                compute='_compute_tien_ct', store=True)
     bsd_tien_con_lai = fields.Monetary(string="Còn lại", help="Tiền còn lại",
                                        compute='_compute_tien_ct', store=True)
-    bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_phieu_thu_id', string="Chi tiết TT", readonly=True)
+    bsd_ct_ids = fields.One2many('bsd.cong_no_ct', 'bsd_phieu_thu_id', string="Chi tiết TT", readonly=True,
+                                 states={'nhap': [('readonly', False)]})
     bsd_dien_giai = fields.Char(string="Diễn giải", help="Diễn giải",
                                 readonly=True,
                                 states={'nhap': [('readonly', False)]})
@@ -121,7 +122,7 @@ class BsdPhieuThu(models.Model):
             raise UserError(_("Dự án đang ở giai đoạn chuẩn bị, không thể xác nhận giữ chỗ thiện chí."
                               "\nVui lòng kiểm tra lại thông tin."))
         # Kiểm tra hợp đồng đã bị thanh lý chưa
-        if self.bsd_hd_ban_id.state == 'thanh_ly':
+        if self.bsd_hd_ban_id.state == '12_thanh_ly':
             raise UserError(_('Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin hợp đồng.'))
         # Kiểm tra nếu thu phí quản lý, phí bảo trì Sản phẩm phải có ngày cất nóc
         if self.bsd_loai_pt in ['pql', 'pbt']:
@@ -140,7 +141,7 @@ class BsdPhieuThu(models.Model):
         # Ghi nhận công nợ cho các thanh toán khác
         elif self.bsd_loai_pt == 'hd':
             # Kiểm tra hợp đồng đã bị thanh lý chưa
-            if self.bsd_hd_ban_id.state == 'thanh_ly':
+            if self.bsd_hd_ban_id.state == '12_thanh_ly':
                 raise UserError(_('Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin hợp đồng.'))
             self.env['bsd.cong_no'].create({
                 'bsd_chung_tu': self.bsd_so_pt,
@@ -210,7 +211,7 @@ class BsdPhieuThu(models.Model):
 
     # TC.01.12 Cấn trừ công nợ phiếu thu
     def action_can_tru(self):    
-        if self.bsd_hd_ban_id.state == 'thanh_ly':
+        if self.bsd_hd_ban_id.state == '12_thanh_ly':
             raise UserError(_('Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin!'))
         return {
             'type': 'ir.actions.act_window',
@@ -241,10 +242,25 @@ class BsdPhieuThu(models.Model):
         if 'bsd_du_an_id' in vals:
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
+        # Tạo dữ liệu khách hàng khi import giữ chỗ thiện chí
+        if 'bsd_gc_tc_id' in vals:
+            gc_tc = self.env['bsd.gc_tc'].browse(vals['bsd_gc_tc_id'])
+            vals['bsd_khach_hang_id'] = gc_tc.bsd_khach_hang_id.id
+        if 'bsd_giu_cho_id' in vals:
+            giu_cho = self.env['bsd.giu_cho'].browse(vals['bsd_giu_cho_id'])
+            vals['bsd_khach_hang_id'] = giu_cho.bsd_khach_hang_id.id
+        if 'bsd_dat_coc_id' in vals:
+            dat_coc = self.env['bsd.dat_coc'].browse(vals['bsd_dat_coc_id'])
+            vals['bsd_khach_hang_id'] = dat_coc.bsd_khach_hang_id.id
+        # nhớ xóa sau khi import
         if not sequence:
             raise UserError(_('Dự án chưa có mã phiếu thu.'))
         vals['bsd_so_pt'] = sequence.next_by_id()
-        return super(BsdPhieuThu, self).create(vals)
+        res = super(BsdPhieuThu, self).create(vals)
+        # Tự động xác nhận giữ chỗ thiện chí
+        res.action_xac_nhan()
+        # nhớ xóa sau khi import
+        return res
 
     def _get_name(self):
         pt = self

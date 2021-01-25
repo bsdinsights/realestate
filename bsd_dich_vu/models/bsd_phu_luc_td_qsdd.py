@@ -143,7 +143,7 @@ class BsdPLQSDD(models.Model):
     # Xác nhận phụ lục hợp đồng
     def action_xac_nhan(self):
         # Kiểm tra hợp đồng đã bị thanh lý chưa
-        if self.bsd_hd_ban_id.state == 'thanh_ly':
+        if self.bsd_hd_ban_id.state == '12_thanh_ly':
             raise UserError(_("Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin."))
         # Kiểm tra đợt thanh toán chưa thanh toán hoàn tất
         if self.bsd_dot_ct_id.bsd_thanh_toan == 'da_tt':
@@ -162,7 +162,7 @@ class BsdPLQSDD(models.Model):
 
     def action_duyet(self):
         # Kiểm tra hợp đồng đã bị thanh lý chưa
-        if self.bsd_hd_ban_id.state == 'thanh_ly':
+        if self.bsd_hd_ban_id.state == '12_thanh_ly':
             raise UserError(_("Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin."))
         # Kiểm tra đợt thanh toán chưa thanh toán hoàn tất
         if self.bsd_dot_ct_id.bsd_thanh_toan == 'da_tt':
@@ -185,7 +185,7 @@ class BsdPLQSDD(models.Model):
     # Ký phụ lục hợp đồng
     def action_ky_pl(self):
         # Kiểm tra hợp đồng đã bị thanh lý chưa
-        if self.bsd_hd_ban_id.state == 'thanh_ly':
+        if self.bsd_hd_ban_id.state == '12_thanh_ly':
             raise UserError(_("Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin."))
         if self.state == 'duyet':
             action = self.env.ref('bsd_dich_vu.bsd_wizard_ky_pl_action').read()[0]
@@ -193,7 +193,7 @@ class BsdPLQSDD(models.Model):
 
     def thay_doi_qsdd(self):
         # Kiểm tra hợp đồng đã bị thanh lý chưa
-        if self.bsd_hd_ban_id.state == 'thanh_ly':
+        if self.bsd_hd_ban_id.state == '12_thanh_ly':
             raise UserError(_("Hợp đồng đã bị thanh lý.\nVui lòng kiểm tra lại thông tin."))
         # Kiểm tra đợt thanh toán chưa thanh toán hoàn tất
         if self.bsd_dot_ct_id.bsd_thanh_toan == 'da_tt':

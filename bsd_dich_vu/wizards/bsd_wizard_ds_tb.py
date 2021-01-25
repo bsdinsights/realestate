@@ -53,7 +53,7 @@ class BsdDanhSachThongBao(models.TransientModel):
                 message += "<li>Những sản phẩm chưa có hợp đồng: {}</li>".format(
                     ','.join(each_ct_khong_hd.bsd_unit_id.mapped('bsd_ma_unit')))
             # hợp đồng đã bị thanh lý
-            each_ct_khong_tl = cn_dkbg_ct_da_co_hd.filtered(lambda c: c.bsd_hd_ban_id.state != 'thanh_ly')
+            each_ct_khong_tl = cn_dkbg_ct_da_co_hd.filtered(lambda c: c.bsd_hd_ban_id.state != '12_thanh_ly')
             cn_dkbg_ct_da_tl = cn_dkbg.bsd_ct_ids - each_ct_khong_tl
             if cn_dkbg_ct_da_tl:
                 hop_dong = cn_dkbg_ct_da_tl.mapped('bsd_hd_ban_id')

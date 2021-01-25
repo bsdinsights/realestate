@@ -116,9 +116,9 @@ class BsdHdBan(models.Model):
 
     # DV.01.15 - Cập nhật trạng thái Thanh toán đợt 1
     def action_tt_dot1(self):
-        if self.state == 'ht_dc' and not self.bsd_duyet_db:
+        if self.state == '01_ht_dc' and not self.bsd_duyet_db:
             self.write({
-                'state': 'tt_dot1'
+                'state': '02_tt_dot1'
             })
             # Cập nhật trạng thái sản phẩm
             self.bsd_unit_id.sudo().write({
@@ -130,9 +130,9 @@ class BsdHdBan(models.Model):
         # Kiểm tra nếu hợp đồng có duyệt đặc biệt thì ko cập nhật trạng thái đủ dk
         if self.bsd_duyet_db:
             return
-        if self.state in ['tt_dot1', 'da_ky_ttdc']:
+        if self.state in ['02_tt_dot1', '03_da_ky_ttdc']:
             self.write({
-                'state': 'du_dk'
+                'state': '04_du_dk'
             })
             # Cập nhật trạng thái sản phẩm
             self.bsd_unit_id.sudo().write({
@@ -151,9 +151,9 @@ class BsdHdBan(models.Model):
         dot_sau_ky_hd = self.bsd_ltt_ids.filtered(lambda l: dot_ky_hd.bsd_stt < l.bsd_stt < dot_dkbg.bsd_stt)
         # Lấy đợt thanh toán sau ký hợp đồng
         dot_state = dot_sau_ky_hd.mapped('bsd_thanh_toan')
-        if self.state == 'da_ky' and 'da_tt' in dot_state:
+        if self.state == '05_da_ky' and 'da_tt' in dot_state:
             self.write({
-                'state': 'dang_tt'
+                'state': '06_dang_tt'
             })
 
     # DV.01.22 Cập nhật trạng thái đủ điều kiện bàn giao
@@ -206,7 +206,7 @@ class BsdHdBan(models.Model):
             return
         # Ghi nhận trạng thái đủ dk bàn giao
         self.write({
-            'state': 'du_dkbg'
+            'state': '07_du_dkbg'
         })
 
     # DV.01.23 Cập nhật trạng thái hoàn tất thanh toán
@@ -229,7 +229,7 @@ class BsdHdBan(models.Model):
 
         # Cập nhật trạng thái hoàn tất thanh toán
         self.write({
-            'state': 'ht_tt'
+            'state': '09_ht_tt'
         })
 
     # Tạo thanh toán

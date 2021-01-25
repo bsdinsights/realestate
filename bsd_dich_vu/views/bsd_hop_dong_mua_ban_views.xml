@@ -17,41 +17,41 @@
                         <button string="Duyệt in ĐB"
                                 name="action_duyet_db"
                                 type="object"
-                                states="ht_dc,da_ky_ttdc"
+                                states="01_ht_dc,03_da_ky_ttdc"
                                 attrs="{'invisible': ['|',('bsd_duyet_db', '=',True)]}"
                                 class="oe_highlight"/>
                         <button string="Xác nhận in TTĐC/HĐĐC"
                                 name="action_in_ttdc"
                                 type="object"
-                                attrs="{'invisible': ['|',('bsd_ngay_in_ttdc', '!=', False),'!','|',('state', 'in',['tt_dot1']),'&amp;',('bsd_duyet_db','=',True),('state', '=','ht_dc')]}"
+                                attrs="{'invisible': ['|',('bsd_ngay_in_ttdc', '!=', False),'!','|',('state', 'in',['02_tt_dot1']),'&amp;',('bsd_duyet_db','=',True),('state', '=','01_ht_dc')]}"
                                 class="oe_highlight"/>
                         <button string="Ký TTDC"
                                 name="action_ky_ttdc"
                                 type="object"
                                 confirm="Bạn có muốn ký thỏa thuận đặt cọc không ?"
                                 attrs="{'invisible':['|',('bsd_ngay_in_ttdc', '=',False),
-                                                            '|','&amp;',('state','not in',['ht_dc']),('bsd_duyet_db', '=',True),
-                                                                '&amp;',('state','not in',['tt_dot1']),('bsd_duyet_db', '=',False)]}"
+                                                            '|','&amp;',('state','not in',['01_ht_dc']),('bsd_duyet_db', '=',True),
+                                                                '&amp;',('state','not in',['02_tt_dot1']),('bsd_duyet_db', '=',False)]}"
                                 class="oe_highlight"/>
                         <button string="Xác nhận in HĐMB"
                                 name="action_in_hd"
-                                attrs="{'invisible': ['|',('bsd_ngay_in_hdb', '!=', False),'!','|',('state', 'in',['du_dk']),'&amp;',('bsd_duyet_db','=',True),('state', 'in',['ht_dc', 'da_ky_ttdc'])]}"
+                                attrs="{'invisible': ['|',('bsd_ngay_in_hdb', '!=', False),'!','|',('state', 'in',['04_du_dk']),'&amp;',('bsd_duyet_db','=',True),('state', 'in',['01_ht_dc', '03_da_ky_ttdc'])]}"
                                 type="object"
                                 class="oe_highlight"/>
                         <button string="Ký hợp đồng"
                                 name="action_ky_hdb"
-                                attrs="{'invisible':['|',('bsd_ngay_in_hdb', '=',False),('state', 'not in',['du_dk','ht_dc', 'da_ky_ttdc'])]}"
+                                attrs="{'invisible':['|',('bsd_ngay_in_hdb', '=',False),('state', 'not in',['04_du_dk','01_ht_dc', '03_da_ky_ttdc'])]}"
                                 type="object"
                                 class="oe_highlight"/>
                         <button string="Chiết khấu mua sỉ"
                                 name="action_ck_ms"
                                 type="object"
-                                attrs="{'invisible': ['|','&amp;',('state', '!=','tt_dot1'), ('bsd_co_ttdc', '=', True),
-                                                     '&amp;',('state', '!=','du_dk'),('bsd_co_ttdc', '=', False)]}"
+                                attrs="{'invisible': ['|','&amp;',('state', '!=','02_tt_dot1'), ('bsd_co_ttdc', '=', True),
+                                                     '&amp;',('state', '!=','04_du_dk'),('bsd_co_ttdc', '=', False)]}"
                                 class="oe_highlight"/>
                         <button string="Ước tính"
                                 name="action_uoc_tinh_ck"
-                                attrs="{'invisible':[('state', 'in',['thanh_ly','da_ht','bg_gt','ht_tt'])]}"
+                                attrs="{'invisible':[('state', 'in',['12_thanh_ly','11_da_ht','10_bg_gt','09_ht_tt'])]}"
                                 type="object"
                                 class="oe_highlight"/>
 
@@ -61,29 +61,29 @@
                                 confirm="Bàn có muốn duyệt bàn giao đặc biệt cho hợp đồng không?"
                                 attrs="{'invisible':['|', ('bsd_duyet_bgdb', '=', True),
                                                      '|', ('bsd_ngay_duyet_bgdb', '!=', False),
-                                                     ('state', 'not in', ['da_ky', 'dang_tt'])]}"
+                                                     ('state', 'not in', ['05_da_ky', '06_dang_tt'])]}"
                                 class="oe_highlight"/>
                         <button string="Theo dõi"
                                 name="action_tao_ds_tt"
-                                states="ht_dc,tt_dot1,da_ky_ttdc,du_dk,da_ky,dang_tt"
+                                states="01_ht_dc,02_tt_dot1,03_da_ky_ttdc,04_du_dk,05_da_ky,06_dang_tt"
                                 type="object"
                                 class="oe_highlight"
                                 />
                         <button string="Tạo PL PTTT"
                                 name="action_tao_pl_pttt"
-                                attrs="{'invisible':['|',('bsd_ngay_ky_hdb', '=', False),('state', '=', 'thanh_ly')]}"
+                                attrs="{'invisible':['|',('bsd_ngay_ky_hdb', '=', False),('state', '=', '12_thanh_ly')]}"
                                 type="object"
                                 class="oe_highlight"
                                 />
                         <button string="Tạo PL CKTM"
                                 name="action_tao_pl_cktm"
-                                attrs="{'invisible':['|',('bsd_ngay_ky_hdb', '=', False),('state', '=', 'thanh_ly')]}"
+                                attrs="{'invisible':['|',('bsd_ngay_ky_hdb', '=', False),('state', '=', '12_thanh_ly')]}"
                                 type="object"
                                 class="oe_highlight"
                                 />
                         <button string="Tạo PL ĐKBG"
                                 name="action_tao_pl_dkbg"
-                                attrs="{'invisible':['|',('bsd_ngay_ky_hdb', '=', False),('state', '=', 'thanh_ly')]}"
+                                attrs="{'invisible':['|',('bsd_ngay_ky_hdb', '=', False),('state', '=', '12_thanh_ly')]}"
                                 type="object"
                                 class="oe_highlight"
                                 />
@@ -586,7 +586,7 @@
                             </page>
                             <page string="Lịch thanh toán" name="lich_thanh_toan">
                                 <field name="bsd_ltt_ids">
-                                    <tree decoration-warning="bsd_thanh_toan=='dang_tt'"
+                                    <tree decoration-warning="bsd_thanh_toan=='06_dang_tt'"
                                           decoration-info="bsd_thanh_toan=='da_tt'"
                                           decoration-danger="bsd_thanh_toan=='chua_tt'">
                                         <field name="bsd_stt"/>
@@ -687,13 +687,13 @@
             <field name="arch" type="xml">
                 <tree duplicate="false"
                       create="false"
-                      decoration-danger="state=='ht_dc'"
-                      decoration-warning="state=='tt_dot1'"
-                      decoration-info="state=='da_ky_ttdc' or state=='du_dk'"
-                      decoration-primary="state=='da_ky' or state=='dang_tt' or state=='du_dkbg'"
-                      decoration-success ="state=='da_bg' or state=='ht_tt' or state=='bg_gt' or state=='da_ht'"
-                      decoration-muted="state=='thanh_ly'"
-                      default_order="bsd_stt_state,id asc"
+                      decoration-danger="state=='01_ht_dc'"
+                      decoration-warning="state=='02_tt_dot1'"
+                      decoration-info="state=='03_da_ky_ttdc' or state=='04_du_dk'"
+                      decoration-primary="state=='05_da_ky' or state=='06_dang_tt' or state=='07_du_dkbg'"
+                      decoration-success ="state=='08_da_bg' or state=='09_ht_tt' or state=='10_bg_gt' or state=='11_da_ht'"
+                      decoration-muted="state=='12_thanh_ly'"
+                      default_order="state,id asc"
                       delete="false">
                     <field name="bsd_ma_hd_ban"/>
                     <field name="bsd_du_an_id"/>

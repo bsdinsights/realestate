@@ -184,7 +184,13 @@ class BsdWizardTTDOT(models.TransientModel):
             bsd_dot_lp = self.bsd_ltt_ids.filtered(lambda x: x.bsd_tt_phat > 0)
         else:
             bsd_dot_lp = self.bsd_dot_lp_ids.filtered(lambda x: x.bsd_tt_phat > 0)
-        if not bsd_ltt and not bsd_dot_phi and not bsd_dot_pps and not bsd_dot_lp:
+        _logger.debug("action_tao")
+        _logger.debug(bsd_ltt)
+        _logger.debug(bsd_dot_phi)
+        _logger.debug(bsd_dot_pps)
+        _logger.debug(bsd_dot_lp)
+        _logger.debug(not(bsd_ltt or bsd_dot_phi or bsd_dot_pps or bsd_dot_lp))
+        if not(bsd_ltt or bsd_dot_phi or bsd_dot_pps or bsd_dot_lp):
             raise UserError("Không có chi tiết thanh toán. Vui lòng kiểm tra lại thông tin.")
         # Tạo thanh toán
         now = datetime.datetime.now()

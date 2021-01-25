@@ -105,7 +105,7 @@
                         </group>
                         <group string="RÁP CĂN">
                             <group>
-                                <field name="bsd_ngay_hh_gctc" force_save="1"/>
+                                <field name="bsd_ngay_hh_gctc" force_save="1" readonly="1"/>
                                 <field name="bsd_thanh_toan" attrs="{'invisible':[('id', '=', False)]}"/>
                                 <field name="bsd_ngay_tt" attrs="{'invisible':[('id', '=', False)]}"/>
 

@@ -31,28 +31,36 @@ class BsdDatCoc(models.Model):
                                      states={'nhap': [('readonly', False)]})
     # Thông tin dữ liệu được load từ báo giá
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Tên khách hàng", required=True,
-                                        readonly=True)
+                                        readonly=True, states={'nhap': [('readonly', False)]})
     bsd_nvbh_id = fields.Many2one('hr.employee', string="Nhân viên KD", help="Nhân viên kinh doanh",
-                                  readonly=True, required=True)
+                                  readonly=True, states={'nhap': [('readonly', False)]}, required=True)
     bsd_san_gd_id = fields.Many2one('res.partner', string="Sàn giao dịch", domain=[('is_company', '=', True)],
-                                    readonly=True, help="Sàn giao dịch")
+                                    readonly=True, states={'nhap': [('readonly', False)]}, help="Sàn giao dịch")
     bsd_ctv_id = fields.Many2one('res.partner', string="Công tác viên", domain=[('is_company', '=', False)],
-                                 help="Cộng tác viên", readonly=True)
+                                 help="Cộng tác viên", readonly=True, states={'nhap': [('readonly', False)]})
     bsd_gioi_thieu_id = fields.Many2one('res.partner', string="Giới thiệu", help="Cá nhân hoặc đơn vị giới thiệu",
-                                        readonly=True)
-    bsd_giu_cho_id = fields.Many2one('bsd.giu_cho', string="Giữ chỗ", help="Tên giữ chỗ", readonly=True)
-    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True, readonly=True)
-    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Tên đợt mở bán", readonly=True, required=True)
+                                        readonly=True, states={'nhap': [('readonly', False)]})
+    bsd_giu_cho_id = fields.Many2one('bsd.giu_cho', string="Giữ chỗ", help="Tên giữ chỗ", readonly=True,
+                                     states={'nhap': [('readonly', False)]})
+    bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", help="Tên dự án", required=True, readonly=True,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_dot_mb_id = fields.Many2one('bsd.dot_mb', string="Đợt mở bán", help="Tên đợt mở bán", readonly=True, required=True,
+                                    states={'nhap': [('readonly', False)]})
     bsd_bang_gia_id = fields.Many2one('product.pricelist', string="Bảng giá", help="Bảng giá bán",
                                       related="bsd_dot_mb_id.bsd_bang_gia_id", store=True)
-    bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ", readonly=True)
-    bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc", readonly=True)
-    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Tên sản phẩm", readonly=1)
-    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="CS thanh toán", help="Chính sách thanh toán", readonly=1)
-    bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán", readonly=True)
+    bsd_tien_gc = fields.Monetary(string="Tiền giữ chỗ", help="Tiền giữ chỗ", readonly=True,
+                                  states={'nhap': [('readonly', False)]})
+    bsd_tien_dc = fields.Monetary(string="Tiền đặt cọc", help="Tiền đặt cọc", readonly=True,
+                                  states={'nhap': [('readonly', False)]})
+    bsd_unit_id = fields.Many2one('product.product', string="Sản phẩm", help="Tên sản phẩm", readonly=1,
+                                  states={'nhap': [('readonly', False)]})
+    bsd_cs_tt_id = fields.Many2one('bsd.cs_tt', string="Phương thức TT", help="Chính sách thanh toán", readonly=1,
+                                   states={'nhap': [('readonly', False)]})
+    bsd_gia_ban = fields.Monetary(string="Giá bán", help="Giá bán", readonly=True,
+                                  states={'nhap': [('readonly', False)]})
     bsd_thang_pql = fields.Integer(string="Số tháng đóng phí quản lý",
                                    help="Số tháng đóng phí quản lý trước đợt bàn giao tạm thời hoặc bàn giao chính thức",
-                                   readonly=True)
+                                   readonly=True, states={'nhap': [('readonly', False)]})
     bsd_tien_pql = fields.Monetary(string="Phí quản lý", help="Số tiền phí quản lý",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
@@ -77,20 +85,22 @@ class BsdDatCoc(models.Model):
         self.bsd_tien_pql = self.bsd_bao_gia_id.bsd_tien_pql
         self.bsd_thue_id = self.bsd_bao_gia_id.bsd_thue_id
         self.bsd_co_ttdc = self.bsd_bao_gia_id.bsd_du_an_id.bsd_hd_coc
-
+        self.bsd_dt_sd = self.bsd_bao_gia_id.bsd_dt_sd
+        self.bsd_qsdd_m2 = self.bsd_bao_gia_id.bsd_qsdd_m2
+        self.bsd_tien_thue = self.bsd_tien_thue
     # Hết thông tin load từ báo giá
     bsd_ten_sp = fields.Char(related="bsd_unit_id.name", store=True)
     bsd_dt_xd = fields.Float(string="Diện tích xây dựng", help="Diện tích tim tường",
                              related="bsd_unit_id.bsd_dt_xd", store=True)
     bsd_dt_sd = fields.Float(string="Diện tích sử dụng", help="Diện tích thông thủy thiết kế",
-                             related="bsd_unit_id.bsd_dt_sd", store=True)
+                             readonly=True, states={'nhap': [('readonly', False)]})
 
     bsd_qsdd_m2 = fields.Monetary(string="Giá trị QSDĐ/ m2", help="Giá trị quyền sử dụng đất trên m2",
-                                  related="bsd_unit_id.bsd_qsdd_m2", store=True)
-    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", related="bsd_thue_id.bsd_thue_suat", store=True,
+                                  readonly=True, states={'nhap': [('readonly', False)]})
+    bsd_thue_suat = fields.Float(string="Thuế suất", help="Thuế suất", readonly=True, states={'nhap': [('readonly', False)]},
                                  digits=(12, 2))
     bsd_tl_pbt = fields.Float(string="Tỷ lệ phí bảo trì", help="Tỷ lệ phí bảo trì",
-                              related="bsd_unit_id.bsd_tl_pbt", store=True)
+                              readonly=True, states={'nhap': [('readonly', False)]})
     bsd_tien_ck = fields.Monetary(string="Chiết khấu", help="Tổng tiền chiết khấu", compute="_compute_tien_ck", store=True)
 
     bsd_tien_bg = fields.Monetary(string="Giá trị ĐKBG", help="Tổng tiền bàn giao",
@@ -179,11 +189,10 @@ class BsdDatCoc(models.Model):
                                       readonly=True, domain=[('bsd_loai', '=', 'pql')])
     bsd_co_ttdc = fields.Boolean(string="Thỏa thuận đặt cọc", help="Thông tin quy định thỏa thuận đặt cọc hay không")
 
-    bsd_ngay_in_dc = fields.Date(string="Ngày in", help="Ngày in phiếu cọc, hợp đồng cọc", readonly=True)
-    bsd_ngay_hh_kdc = fields.Date(string="Hạn ký đặt cọc", help="Ngày hết hạn ký phiếu cọc",
-                                      readonly=True)
-    bsd_ngay_up_dc = fields.Date(string="Upload đặt cọc", readonly=True,
-                                     help="""Ngày tải lên hệ thống phiếu đặt cọc đã được khách hàng 
+    bsd_ngay_in_dc = fields.Date(string="Ngày in", help="Ngày in phiếu cọc, hợp đồng cọc")
+    bsd_ngay_hh_kdc = fields.Date(string="Hạn ký đặt cọc", help="Ngày hết hạn ký phiếu cọc")
+    bsd_ngay_up_dc = fields.Date(string="Upload đặt cọc",
+                                 help="""Ngày tải lên hệ thống phiếu đặt cọc đã được khách hàng 
                                              ký xác nhận""")
     bsd_ngay_ky_dc = fields.Date(string="Ngày ký đặt cọc", help="Ngày ký đặt cọc", readonly=True)
 
@@ -292,6 +301,15 @@ class BsdDatCoc(models.Model):
             dat_coc = self.env['bsd.dat_coc'].search([('bsd_bao_gia_id', '=', id_bao_gia)])
             if dat_coc:
                 raise UserError("Bảng tính giá đã được tạo Đặt cọc.\nVui lòng kiểm tra lại thông tin!")
+            # Dùng để import dữ liệu
+            bao_gia = self.env['bsd.bao_gia'].browse(id_bao_gia)
+            vals['bsd_khach_hang_id'] = bao_gia.bsd_khach_hang_id.id
+            vals['bsd_nguoi_dd_id'] = vals['bsd_khach_hang_id']
+            vals['bsd_nvbh_id'] = bao_gia.bsd_nvbh_id.id
+            vals['bsd_ctv_id'] = bao_gia.bsd_ctv_id.id
+            vals['bsd_san_gd_id'] = bao_gia.bsd_san_gd_id.id
+            vals['bsd_gioi_thieu_id'] = bao_gia.bsd_gioi_thieu_id.id
+            # Nhớ xóa sau khi import
         sequence = False
         if 'bsd_du_an_id' in vals.keys():
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
@@ -318,6 +336,13 @@ class BsdDatCoc(models.Model):
             'bsd_dot_pbt_ids': [(6, 0, ids_pbt)],
             'bsd_dot_pql_ids': [(6, 0, ids_pql)],
         })
+        # import
+        res.action_xac_nhan()
+        res.write({
+            'bsd_ngay_ky_dc': fields.date.today(),
+            'state': 'dat_coc',
+        })
+        # nhớ remove
         return res
 
     # KD.10.06 Theo dõi công nợ đặt cọc
@@ -430,8 +455,11 @@ class BsdDatCoc(models.Model):
         # private implementation of name_search, allows passing a dedicated user
         # for the name_get part to solve some access rights issues
         args = list(args or [])
-        if not (name == '' and operator == 'ilike'):
-            args += [('bsd_ten_sp', operator, name)]
+        if name:
+            if operator == 'ilike':
+                args += [('bsd_ten_sp', operator, name)]
+            elif operator == '=':
+                args += [('bsd_ma_dat_coc', operator, name)]
         access_rights_uid = name_get_uid or self._uid
         ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
         recs = self.browse(ids)

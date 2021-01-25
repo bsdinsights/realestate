@@ -52,7 +52,7 @@
                                                domain="[('state','=', 'phat_hanh')]"
                                                options="{'no_create':true}"/>
                                         <field name="bsd_hd_ban_id"
-                                               domain="[('bsd_du_an_id','=', bsd_du_an_id), ('state','=','thanh_ly')]"
+                                               domain="[('bsd_du_an_id','=', bsd_du_an_id), ('state','=','12_thanh_ly')]"
                                                options="{'no_create':true}"/>
                                         <field name="bsd_unit_id" readonly="1" force_save="1"/>
                                         <field name="bsd_khach_hang_id" readonly="1" force_save="1"/>
@@ -168,7 +168,7 @@
                                        domain="[('state','=', 'phat_hanh')]"
                                        options="{'no_create':true}"/>
                                 <field name="bsd_hd_ban_id" force_save="1" readonly="1"
-                                       domain="[('bsd_du_an_id','=', bsd_du_an_id), ('state','=','thanh_ly')]"
+                                       domain="[('bsd_du_an_id','=', bsd_du_an_id), ('state','=','12_thanh_ly')]"
                                        options="{'no_create':true}"/>
                                 <field name="bsd_unit_id" readonly="1" force_save="1"/>
                                 <field name="bsd_khach_hang_id" readonly="1" force_save="1"/>

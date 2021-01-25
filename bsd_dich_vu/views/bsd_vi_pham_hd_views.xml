@@ -56,7 +56,7 @@
                             <group>
                                 <field name="bsd_hd_ban_id"
                                        domain="[('bsd_du_an_id', '=', bsd_du_an_id),
-                                                ('state','not in',['thanh_ly'])]"
+                                                ('state','not in',['12_thanh_ly'])]"
                                        options="{'no_create':true}"/>
                                 <field name="bsd_unit_id" readonly="1" force_save="1"
                                        options="{'no_create':true}"/>
@@ -133,7 +133,7 @@
                     <group expand="0" string="Group by">
                         <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
                         <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
-                        <filter string="Hợp đồng" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_hd_ban_id'}"/>
+                        <filter string="Hợp đồng" name="bsd_hd_ban_id" domain="[]" context="{'group_by': 'bsd_hd_ban_id'}"/>
                         <filter string="chủ đầu tư" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_chu_dt_id'}"/>
                     </group>
                 </search>

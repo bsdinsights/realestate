@@ -238,7 +238,7 @@ class BsdThanhLy(models.Model):
             })
         else:
             self.bsd_hd_ban_id.write({
-                'state': 'thanh_ly',
+                'state': '12_thanh_ly',
             })
         self.write({
             'state': 'da_tl',

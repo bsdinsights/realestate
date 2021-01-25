@@ -41,7 +41,7 @@ class BsdCapNhatNDC(models.Model):
         if not self.bsd_ct_ids:
             raise UserError(_('Không có Hợp đồng cần được cập nhật đến hạn thanh toán của đợt cuối.'))
         else:
-            ct = self.bsd_ct_ids.filtered(lambda x: x.bsd_hd_ban_id.state == 'thanh_ly')
+            ct = self.bsd_ct_ids.filtered(lambda x: x.bsd_hd_ban_id.state == '12_thanh_ly')
             ct.write({
                 'state': 'huy',
                 'bsd_ly_do_huy': 'Hợp đồng bị thanh lý'
@@ -54,7 +54,7 @@ class BsdCapNhatNDC(models.Model):
     # DV.22.02 Duyệt cập nhật ngày đến hạn thanh toán đợt cuối
     def action_duyet(self):
         # Kiểm tra các hợp đồng đã bị thanh lý chưa
-        ct_da_tl = self.bsd_ct_ids.filtered(lambda x: x.bsd_hd_ban_id.state == 'thanh_ly')
+        ct_da_tl = self.bsd_ct_ids.filtered(lambda x: x.bsd_hd_ban_id.state == '12_thanh_ly')
         if ct_da_tl:
             ct_da_tl.write({
                     'state': 'huy',

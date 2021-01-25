@@ -80,7 +80,7 @@ class BsdVayNganHang(models.Model):
         # Kiểm tra hợp đồng đã ký và chưa thanh lý
         if not self.bsd_hd_ban_id.bsd_ngay_ky_hdb:
             raise UserError(_("Hợp đồng chưa ký. Vui lòng kiểm tra lại thông tin."))
-        if self.bsd_hd_ban_id.state == 'thanh_ly':
+        if self.bsd_hd_ban_id.state == '12_thanh_ly':
             raise UserError(_("Hợp đồng đã thanh lý. Vui lòng kiểm tra lại thông tin."))
         # Kiểm tra hợp đồng đã vay ngân hàng chưa
         if self.bsd_hd_ban_id.bsd_unit_id.bsd_tt_vay == '1':

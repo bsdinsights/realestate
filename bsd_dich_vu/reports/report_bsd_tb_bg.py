@@ -3,6 +3,7 @@
 from odoo import api, models, fields
 import logging
 import datetime
+from dateutil import tz
 _logger = logging.getLogger(__name__)
 
 
@@ -38,8 +39,15 @@ class ReportBsdTBNT(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
+        _logger.debug("Chạy tới đây")
+        ngay_ht = datetime.datetime.now()
+        from_zone = tz.gettz('UTC')
+        to_zone = tz.gettz(self._context['tz'])
+        ngay_ht = ngay_ht.replace(tzinfo=from_zone)
+        ngay_ht = ngay_ht.astimezone(to_zone)
         return {
             'doc_ids': data['ids'],
             'doc_model': data['model'],
-            'docs': self.env['bsd.tb_bg'].browse(data['ids']),
+            'docs': self.env['bsd.tb_nt'].browse(data['ids']),
+            'ngay_ht': ngay_ht,
         }

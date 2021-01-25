@@ -24,7 +24,7 @@ class BsdKyBGSP(models.TransientModel):
             'state': 'ban_giao'
         })
         self.bsd_bg_sp_id.bsd_hd_ban_id.write({
-            'state': 'da_bg',
+            'state': '08_da_bg',
         })
         self.bsd_bg_sp_id.bsd_unit_id.sudo().write({
             'bsd_ngay_bg': self.bsd_ngay_bg_tt,

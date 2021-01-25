@@ -43,7 +43,7 @@
                                 <field name="bsd_hd_ban_id"
                                        domain="['&amp;',('bsd_du_an_id', '=', bsd_du_an_id),
                                                 '&amp;',('bsd_ngay_cn', '!=', False),
-                                                '|',('state', '=', 'du_dkbg'),('bsd_duyet_bgdb', '=', True)]"
+                                                '|',('state', '=', '07_du_dkbg'),('bsd_duyet_bgdb', '=', True)]"
                                        options="{'no_create':true}"/>
                                 <field name="bsd_khach_hang_id" readonly="1" force_save="1"/>
                             </group>

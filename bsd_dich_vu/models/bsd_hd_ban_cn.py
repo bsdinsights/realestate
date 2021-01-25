@@ -148,7 +148,7 @@ class BsdChuyenNhuong(models.Model):
     # DV.09.05 Duyệt chuyển nhượng
     def action_duyet(self):
         # Kiểm tra trạng thái của hợp đồng
-        if self.bsd_hd_ban_id.state in ['thanh_ly', 'huy']:
+        if self.bsd_hd_ban_id.state in ['12_thanh_ly']:
             raise UserError("Hợp đồng đã bị thanh lý. Vui lòng kiểm tra lại thông tin hợp đồng.")
         # Cập nhật trạng thái vào chuyến nhượng
         self.write({

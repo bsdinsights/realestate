@@ -55,8 +55,6 @@ class BsdGiuChoThienChi(models.Model):
                                         readonly=True,
                                         states={'nhap': [('readonly', False)]})
     bsd_ngay_hh_gctc = fields.Datetime(string="Hạn giữ chỗ", help="Hiệu lực của giữ chỗ",
-                                       readonly=True,
-                                       required=True,
                                        tracking=3)
 
     @api.onchange('bsd_ngay_gctc', 'bsd_du_an_id')
@@ -391,6 +389,8 @@ class BsdGiuChoThienChi(models.Model):
         res.write({
             'bsd_kh_moi_id': res.bsd_khach_hang_id.id
         })
+        # dùng để tạo dữ liệu import
+        res.action_xac_nhan()
         return res
 
     def write(self, vals):

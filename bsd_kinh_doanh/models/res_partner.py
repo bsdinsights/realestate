@@ -284,7 +284,7 @@ class ResPartner(models.Model):
             if operator == 'ilike':
                 args += [('bsd_search_ten', operator, name)]
             elif operator == '=':
-                args += [('bsd_ma_kh', operator, name)]
+                args += [('bsd_cmnd', operator, name)]
         access_rights_uid = name_get_uid or self._uid
         ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
         recs = self.browse(ids)
