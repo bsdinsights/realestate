@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record model="ir.ui.view" id="bsd_phieu_thu_form">
             <field name="name">bsd.phieu_thu.form</field>
             <field name="model">bsd.phieu_thu</field>
@@ -161,6 +161,7 @@
                         <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
                         <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
                         <filter string="Căn hộ" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
+                        <filter string="Loại thanh toán" name="bsd_loai_pt" domain="[]" context="{'group_by': 'bsd_loai_pt'}"/>
                     </group>
                 </search>
             </field>

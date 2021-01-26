@@ -16,7 +16,7 @@ access_bsd_cn_dsh_moi, Đồng sở hữu mới (chuyển nhượng),model_bsd_c
 access_bsd_cn_dsh_cu, Đồng sở hữu (chuyển nhượng),model_bsd_cn_dsh_cu,bsd_dich_vu.group_user,1,1,1,0
 
 access_bsd_cn_dkbg,Cập nhật dự kiến bàn giao,model_bsd_cn_dkbg,bsd_dich_vu.group_user,1,1,1,0
-access_bsd_cn_dkbg_unit,Cập nhật dự kiến bàn giao unit,model_bsd_cn_dkbg_unit,bsd_dich_vu.group_user,1,1,1,0
+access_bsd_cn_dkbg_unit,Cập nhật dự kiến bàn giao unit,model_bsd_cn_dkbg_unit,bsd_dich_vu.group_user,1,1,1,1
 
 access_bsd_tb_nt,Thông báo nghiệm thu,model_bsd_tb_nt,bsd_dich_vu.group_user,1,1,1,0
 access_bsd_tb_bg,Thông báo bàn giao,model_bsd_tb_bg,bsd_dich_vu.group_user,1,1,1,0

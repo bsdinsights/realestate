@@ -112,6 +112,12 @@
                             <button name="action_view_ds_td" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_ds_td', '=', 0)]}">
                                 <field name="bsd_so_ds_td" widget="statinfo" string="DS theo dõi"/>
                             </button>
+                            <button name="action_view_nghiem_thu" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_nt', '=', 0)]}">
+                                <field name="bsd_so_nt" widget="statinfo" string="Nghiệm thu"/>
+                            </button>
+                            <button name="action_view_ban_giao" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_bg', '=', 0)]}">
+                                <field name="bsd_so_bg" widget="statinfo" string="Bàn giao SP"/>
+                            </button>
                         </div>
                         <notebook>
                             <page string="Thông tin chung">

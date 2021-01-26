@@ -212,6 +212,7 @@
                         <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
                         <filter string="Tòa nhà" name="bsd_toa_nha_id" domain="[]" context="{'group_by': 'bsd_toa_nha_id'}"/>
                         <filter string="Tầng" name="bsd_tang_id" domain="[]" context="{'group_by': 'bsd_tang_id'}"/>
+                        <filter string="Trạng thái" name="state" domain="[]" context="{'group_by': 'state'}"/>
                     </group>
                 </search>
             </field>

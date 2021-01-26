@@ -63,7 +63,7 @@ class BsdDanhSachThongBao(models.TransientModel):
                         ','.join(hop_dong.mapped('bsd_ma_hd_ban')))
             # Nếu tạo thông báo bàn giao thì kiểm tra tình trạng thanh toán đợt dự kiến bàn giao
             if self.bsd_loai != 'nt':
-                each_chua_tt = each_ct_khong_tl.filtered(lambda c: c.bsd_dot_tt_id.bsd_thanh_toan == 'chua_tt')
+                each_chua_tt = each_ct_khong_tl.filtered(lambda c: c.bsd_dot_tt_id.bsd_thanh_toan != 'da_tt')
                 _logger.debug("each_chua_tt")
                 _logger.debug(each_chua_tt)
                 cn_dkbg_ct_da_tt = each_ct_khong_tl - each_chua_tt

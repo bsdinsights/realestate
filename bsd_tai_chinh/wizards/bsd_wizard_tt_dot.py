@@ -380,15 +380,17 @@ class BsdWizardChitietDot(models.TransientModel):
 
     @api.constrains('bsd_tien_phai_tt', 'bsd_tien_tt')
     def _constraint_tien_tt(self):
-        if self.bsd_tien_tt > self.bsd_tien_phai_tt or self.bsd_tien_tt < 0:
-            raise UserError(_("Số tiền thanh toán không hợp lệ.\n"
-                              "Vui lòng kiểm tra lại thông tin."))
+        for each in self:
+            if each.bsd_tien_tt > each.bsd_tien_phai_tt or each.bsd_tien_tt < 0:
+                raise UserError(_("Số tiền thanh toán không hợp lệ.\n"
+                                  "Vui lòng kiểm tra lại thông tin."))
 
     @api.constrains('bsd_tien_lp', 'bsd_tt_phat')
     def _constraint_tien_phat(self):
-        if self.bsd_tt_phat > self.bsd_tien_lp or self.bsd_tt_phat < 0:
-            raise UserError(_("Số tiền thanh toán tiền phạt chậm thanh toán không hợp lệ.\n"
-                              "Vui lòng kiểm tra lại thông tin."))
+        for each in self:
+            if each.bsd_tt_phat > each.bsd_tien_lp or each.bsd_tt_phat < 0:
+                raise UserError(_("Số tiền thanh toán tiền phạt chậm thanh toán không hợp lệ.\n"
+                                  "Vui lòng kiểm tra lại thông tin."))
 
 
 class BsdWizardChitietPhi(models.TransientModel):
@@ -405,9 +407,10 @@ class BsdWizardChitietPhi(models.TransientModel):
 
     @api.constrains('bsd_tien_phai_tt', 'bsd_tien_tt')
     def _constraint_tien_tt(self):
-        if self.bsd_tien_tt > self.bsd_tien_phai_tt or self.bsd_tien_tt < 0:
-            raise UserError(_("Số tiền thanh toán phí không hợp lệ.\n"
-                              "Vui lòng kiểm tra lại thông tin."))
+        for each in self:
+            if each.bsd_tien_tt > each.bsd_tien_phai_tt or each.bsd_tien_tt < 0:
+                raise UserError(_("Số tiền thanh toán phí không hợp lệ.\n"
+                                  "Vui lòng kiểm tra lại thông tin."))
     
     
 class BsdWizardChitietPPS(models.TransientModel):
@@ -424,9 +427,10 @@ class BsdWizardChitietPPS(models.TransientModel):
 
     @api.constrains('bsd_tien_phai_tt', 'bsd_tien_tt')
     def _constraint_tien_tt(self):
-        if self.bsd_tien_tt > self.bsd_tien_phai_tt or self.bsd_tien_tt < 0:
-            raise UserError(_("Số tiền thanh toán phí phát sinh không hợp lệ.\n"
-                              "Vui lòng kiểm tra lại thông tin."))
+        for each in self:
+            if each.bsd_tien_tt > each.bsd_tien_phai_tt or each.bsd_tien_tt < 0:
+                raise UserError(_("Số tiền thanh toán phí phát sinh không hợp lệ.\n"
+                                  "Vui lòng kiểm tra lại thông tin."))
 
 
 class BsdWizardChitietLP(models.TransientModel):
@@ -443,6 +447,7 @@ class BsdWizardChitietLP(models.TransientModel):
 
     @api.constrains('bsd_tien_phai_tt', 'bsd_tien_tt')
     def _constraint_tien_tt(self):
-        if self.bsd_tt_phat > self.bsd_tp_phai_tt or self.bsd_tt_phat < 0:
-            raise UserError(_("Số tiền thanh toán tiền phạt chậm thanh toán không hợp lệ.\n"
-                              "Vui lòng kiểm tra lại thông tin."))
+        for each in self:
+            if each.bsd_tt_phat > each.bsd_tp_phai_tt or each.bsd_tt_phat < 0:
+                raise UserError(_("Số tiền thanh toán tiền phạt chậm thanh toán không hợp lệ.\n"
+                                  "Vui lòng kiểm tra lại thông tin."))

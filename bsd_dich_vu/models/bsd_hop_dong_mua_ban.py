@@ -304,6 +304,48 @@ class BsdHopDongMuaBan(models.Model):
                                   ('dat_lh', 'Đặt lịch hẹn'),
                                   ('dang_nt', 'Đang bàn giao'),
                                   ('da_nt', 'Đã bàn giao')], string="Bàn giao GCN")
+    bsd_so_nt = fields.Integer(string="# Nghiệm thu", compute='_compute_nghiem_thu')
+    bsd_so_bg = fields.Integer(string="# Bàn giao", compute='_compute_ban_giao')
+
+    def _compute_nghiem_thu(self):
+        for each in self:
+            nghiem_thu = self.env['bsd.nghiem_thu'].search([('bsd_hd_ban_id', '=', self.id)])
+            each.bsd_so_nt = len(nghiem_thu)
+
+    def action_view_nghiem_thu(self):
+        action = self.env.ref('bsd_dich_vu.bsd_nghiem_thu_action').read()[0]
+
+        nghiem_thu = self.env['bsd.nghiem_thu'].search([('bsd_hd_ban_id', '=', self.id)])
+        if len(nghiem_thu) > 1:
+            action['domain'] = [('id', 'in', nghiem_thu.ids)]
+        elif nghiem_thu:
+            form_view = [(self.env.ref('bsd_dich_vu.bsd_nghiem_thu_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = nghiem_thu.id
+        return action
+
+    def action_view_ban_giao(self):
+        action = self.env.ref('bsd_dich_vu.bsd_bg_sp_action').read()[0]
+
+        ban_giao = self.env['bsd.bg_sp'].search([('bsd_hd_ban_id', '=', self.id)])
+        if len(ban_giao) > 1:
+            action['domain'] = [('id', 'in', ban_giao.ids)]
+        elif ban_giao:
+            form_view = [(self.env.ref('bsd_dich_vu.bsd_bg_sp_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = ban_giao.id
+        return action
+
+    def _compute_ban_giao(self):
+        for each in self:
+            ban_giao = self.env['bsd.bg_sp'].search([('bsd_hd_ban_id', '=', self.id)])
+            each.bsd_so_bg = len(ban_giao)
 
     def _compute_pl_cldt(self):
         for each in self:

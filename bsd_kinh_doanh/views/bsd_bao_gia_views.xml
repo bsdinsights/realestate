@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record model="ir.ui.view" id="bsd_bao_gia_form">
             <field name="name">bsd.bao_gia.form</field>
             <field name="model">bsd.bao_gia</field>
@@ -701,6 +701,7 @@
                         <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
                         <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
                         <filter string="Sản phẩm" name="bsd_unit_id" domain="[]" context="{'group_by': 'bsd_unit_id'}"/>
+                        <filter string="Trạng thái" name="state" domain="[]" context="{'group_by': 'state'}"/>
                     </group>
                 </search>
             </field>

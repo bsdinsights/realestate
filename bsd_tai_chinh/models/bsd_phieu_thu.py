@@ -258,7 +258,7 @@ class BsdPhieuThu(models.Model):
         vals['bsd_so_pt'] = sequence.next_by_id()
         res = super(BsdPhieuThu, self).create(vals)
         # Tự động xác nhận giữ chỗ thiện chí
-        res.action_xac_nhan()
+        # res.action_xac_nhan()
         # nhớ xóa sau khi import
         return res
 

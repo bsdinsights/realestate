@@ -128,21 +128,22 @@ class BsdNghiemThu(models.Model):
         return action
 
     def kiem_tra_ket_qua_nt(self):
+        # import
         # Kiểm tra sản phẩm nghiệm thu
-        kiem_tra = self.kiem_tra_nt()
-        if isinstance(kiem_tra, dict):
-            return kiem_tra
-        else:
-            # Kiểm tra nghiệm thu lỗi sản phẩm hoặc có yêu cầu sửa chữa thì tạo thông báo nghiệm thu
-            if self.bsd_loai == 'khong_dat' or self.bsd_yc_sc:
-                self._tao_tb_nt()
-            # Kiểm tra xem có tiền phí phát sinh
-            if self.bsd_tien_ps_kh:
-                self._tao_dot_thu_pps()
-            if self.state == 'xac_nhan':
-                self.write({
-                    'state': 'dong_nt'
-                })
+        # kiem_tra = self.kiem_tra_nt()
+        # if isinstance(kiem_tra, dict):
+        #     return kiem_tra
+        # else:
+        # Kiểm tra nghiệm thu lỗi sản phẩm hoặc có yêu cầu sửa chữa thì tạo thông báo nghiệm thu
+        if self.bsd_loai == 'khong_dat' or self.bsd_yc_sc:
+            self._tao_tb_nt()
+        # Kiểm tra xem có tiền phí phát sinh
+        if self.bsd_tien_ps_kh:
+            self._tao_dot_thu_pps()
+        if self.state == 'xac_nhan':
+            self.write({
+                'state': 'dong_nt'
+            })
 
     # DV.10.05 Hủy nghiệm thu
     def action_huy(self):
@@ -166,7 +167,7 @@ class BsdNghiemThu(models.Model):
             'bsd_ngay_ut': fields.Date.today(),
             'bsd_doi_tuong': "Thông báo nghiệm thu " + self.bsd_unit_id.bsd_ma_unit + " Lần " + str(so_lan),
             'bsd_tao_td': True,
-            'bsd_cn_dkbg_unit_id': self.bsd_hd_ban_id.id,
+            'bsd_cn_dkbg_unit_id': self.bsd_tb_nt_id.bsd_cn_dkbg_unit_id.id,
             'bsd_tien_lp': self.bsd_hd_ban_id.bsd_lt_phai_tt,
             'bsd_nghiem_thu_id': self.id,
             'state': 'nhap',
@@ -216,6 +217,8 @@ class BsdNghiemThu(models.Model):
                     'bsd_du_an_id': self.bsd_du_an_id.id,
                     'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
                     'bsd_dot_tt_id': self.bsd_dot_tt_id.id,
+                    'bsd_unit_id': self.bsd_unit_id.id,
+                    'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                     'bsd_loai': 'nt',
                     'bsd_tien_ps': self.bsd_tien_ps_kh,
                     'bsd_nghiem_thu_id': self.id,

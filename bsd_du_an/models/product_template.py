@@ -190,8 +190,8 @@ class ProductTemplate(models.Model):
                               ('da_tc', 'Đã thu cọc'),
                               ('ht_dc', 'Hoàn tất đặt cọc'),
                               ('tt_dot_1', 'Thanh toán đợt 1'),
-                              ('ky_tt_coc', 'Ký thỏa thuận cọc'),
-                              ('du_dk', 'Đủ điều kiện'),
+                              ('ky_tt_coc', 'Đã ký TTĐC/HĐĐC'),
+                              ('du_dk', 'Đủ ĐK ký HĐMB'),
                               ('da_ban', 'Đã bán')], string="Trạng thái",
                              default="chuan_bi", tracking=1, help="Trạng thái", required=True, readonly=True)
     bsd_sequence_gc_id = fields.Many2one('ir.sequence', string="STT giữ chỗ", readonly=1)
