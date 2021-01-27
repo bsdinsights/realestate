@@ -6,3 +6,4 @@ from . import bsd_wizard_tt_giu_cho
 from . import bsd_wizard_tt_dat_coc
 from . import bsd_wizard_tt_pps_nghiem_thu
 from . import bsd_wizard_mien_giam
+from . import bsd_wizard_huy_tt

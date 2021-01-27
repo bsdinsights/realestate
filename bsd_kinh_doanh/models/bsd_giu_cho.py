@@ -482,7 +482,7 @@ class BsdGiuCho(models.Model):
             'bsd_kh_moi_id': res.bsd_khach_hang_id.id
         })
         # import
-        res.action_xac_nhan()
+        # res.action_xac_nhan()
         return res
 
     def write(self, vals):

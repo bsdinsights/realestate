@@ -13,4 +13,5 @@ access_bsd_cn_qsdd,Cập nhật giá trị QSDĐ,model_bsd_cn_qsdd,bsd_tai_chinh
 access_bsd_cn_qsdd_unit,Cập nhật giá trị QSDĐ chi tiết,model_bsd_cn_qsdd_unit,bsd_tai_chinh.group_user,1,1,1,0
 access_bsd_mien_giam,Miễn giảm,model_bsd_mien_giam,bsd_tai_chinh.group_user,1,1,1,0
 access_bsd_mien_giam_ct,Miễn giảm chi tiết,model_bsd_mien_giam_ct,bsd_tai_chinh.group_user,1,1,1,0
+access_bsd_huy_tt,Phiếu hủy thanh toán,model_bsd_huy_tt,bsd_tai_chinh.group_user,1,1,1,0
 

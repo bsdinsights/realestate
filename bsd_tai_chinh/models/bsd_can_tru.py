@@ -67,6 +67,7 @@ class BsdCanTru(models.Model):
     bsd_du_an_id = fields.Many2one('bsd.du_an', string="Dự án", required=True)
     state = fields.Selection([('nhap', 'Nháp'),
                               ('xac_nhan', 'Xác nhận'),
+                              ('dang_huy', 'Đang hủy'),
                               ('huy', 'Hủy')], string="Trạng thái", requried=True, tracking=1,
                              default='nhap', readonly=True)
 
@@ -110,6 +111,9 @@ class BsdCanTru(models.Model):
 
     # TC.04.03 Cấn trừ công nợ
     def action_can_tru(self):
+        # Kiểm tra trạng thái phiếu thanh toan trả trước còn hiệu lực hay không
+        if self.bsd_phieu_thu_ids.filtered(lambda x: x.state != 'da_gs'):
+            raise UserError(_("Có phiếu thanh toán đang hủy. Vui lòng kiểm tra lại thông tin."))
         # Xóa các chi tiết không cấn trừ
         self.bsd_ltt_ids.filtered(lambda x: x.bsd_tien_tt == 0 and x.bsd_tt_phat == 0).sudo().unlink()
         self.bsd_dot_phi_ids.filtered(lambda x: x.bsd_tien_tt == 0).sudo().unlink()
@@ -179,14 +183,15 @@ class BsdCanTru(models.Model):
                         else:
                             tien_phat = tien_lp
                         self.env['bsd.cong_no_ct'].create({
+                            'bsd_ngay_pb': ngay_phan_bo,
                             'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                             'bsd_hd_ban_id': self.bsd_hd_ban_id.id,
                             'bsd_lai_phat_id': lai_phat.id,
                             'bsd_phieu_thu_id': phieu_thu.id,
                             'bsd_tien_pb': tien_phat,
                             'bsd_loai': 'pt_lp',
-                            'state': 'nhap',
-                        })
+                            'state': 'hieu_luc',
+                        }).kiem_tra_chung_tu()
                 # Kiểm tra còn tiền thanh toán hay ko
                 if tien_tt == 0:
                     break

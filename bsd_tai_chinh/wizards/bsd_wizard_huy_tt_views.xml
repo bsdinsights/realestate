@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="bsd_wizard_huy_tt_tu_choi_form">
+        <field name="name">bsd.wizard.huy_tt.form</field>
+        <field name="model">bsd.wizard.huy_tt.tu_choi</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bsd_huy_tt_id"/>
+
+                        </group>
+                        <group>
+                            <field name="bsd_ly_do"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_xac_nhan" type="object"
+                            string="Xác nhận" class="oe_highlight"/>
+                    <button special="cancel" string="Hủy bỏ"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="bsd_wizard_huy_tt_tu_choi_action">
+        <field name="name">Ghi nhận lý do</field>
+        <field name="res_model">bsd.wizard.huy_tt.tu_choi</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
+</odoo>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record model="ir.ui.view" id="bsd_dat_coc_form_inherit">
         <field name="name">bsd.dat_coc.form.inherit</field>
         <field name="model">bsd.dat_coc</field>
@@ -20,6 +20,11 @@
                         type="object"
                         class="oe_highlight"/>
             </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_view_pt" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_pt', '=', 0)]}">
+                        <field name="bsd_so_pt" widget="statinfo" string="Thanh toán"/>
+                    </button>
+                </xpath>
         </field>
     </record>
     </data>

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="0">
+        <record model="ir.ui.view" id="bsd_huy_tt_form">
+            <field name="name">bsd.huy_tt.form</field>
+            <field name="model">bsd.huy_tt</field>
+            <field name="arch" type="xml">
+                <form duplicate="false" create="false" delete="false">
+                    <header>
+                        <button string="Xác nhận"
+                                name="action_xac_nhan"
+                                states="nhap"
+                                attrs="{'invisible': ['|',('id', '=',False)]}"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Duyệt"
+                                name="action_duyet"
+                                states="xac_nhan"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Không duyệt"
+                                name="action_khong_duyet"
+                                states="xac_nhan"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Hủy"
+                                name="action_huy"
+                                states="nhap"
+                                attrs="{'invisible': ['|',('id', '=',False)]}"
+                                type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    </header>
+                    <sheet>
+                        <notebook>
+                            <page string="Thông tin chung">
+                                <group>
+                                    <group>
+                                        <field name="bsd_ma"/>
+                                        <field name="bsd_ngay"/>
+                                        <field name="bsd_loai"/>
+                                        <field name="bsd_can_tru_id"
+                                               options="{'no_create':true}"
+                                               attrs="{'invisible':[('bsd_loai', '!=', 'can_tru')],
+                                                       'required':[('bsd_loai', '==', 'can_tru')]}"
+                                               domain="[('state', '=', 'xac_nhan')]"/>
+                                        <field name="bsd_phieu_thu_id"
+                                               options="{'no_create':true}"
+                                               attrs="{'invisible':[('bsd_loai', '!=', 'thanh_toan')],
+                                                       'required':[('bsd_loai', '==', 'thanh_toan')]}"
+                                               domain="[('state', '=', 'da_gs'), ('bsd_loai_pt','in',['dat_coc','hd'])]"/>
+                                        <field name="bsd_dien_giai"/>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_loai_pt"
+                                               attrs="{'invisible':[('bsd_loai', '!=', 'thanh_toan')]}"
+                                               readonly="1" force_save="1"/>
+                                        <field name="bsd_dat_coc_id"
+                                               attrs="{'invisible':[('bsd_loai_pt', '!=', 'dat_coc')]}"
+                                               readonly="1" force_save="1"/>
+                                        <field name="bsd_hd_ban_id"
+                                               attrs="{'invisible':[('bsd_loai_pt', '!=', 'hd')]}"
+                                               readonly="1" force_save="1"/>
+                                        <field name="bsd_du_an_id" readonly="1" force_save="1"/>
+                                        <field name="bsd_unit_id" readonly="1" force_save="1"/>
+                                        <field name="bsd_khach_hang_id" readonly="1" force_save="1"/>
+                                        <field name="bsd_tien_kh" readonly="1" force_save="1"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="company_id" invisible="1"/>
+                                    </group>
+                                </group>
+                                <group string="XÉT DUYỆT">
+                                    <group>
+                                        <field name="bsd_ngay_xn"/>
+                                        <field name="bsd_nguoi_xn_id"/>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_ngay_duyet"/>
+                                        <field name="bsd_nguoi_duyet_id"/>
+                                        <field name="bsd_ly_do"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_huy_tt_tree">
+            <field name="name">bsd.huy_tt.tree</field>
+            <field name="model">bsd.huy_tt</field>
+            <field name="arch" type="xml">
+                <tree default_order="bsd_ngay desc"
+                      decoration-success="state=='da_gs'"
+                      decoration-muted="state=='huy'"
+                      duplicate="false" delete="false"
+                >
+                    <field name="bsd_du_an_id"/>
+                    <field name="bsd_ma"/>
+                    <field name="bsd_ngay"/>
+                    <field name="bsd_loai"/>
+                    <field name="bsd_can_tru_id"/>
+                    <field name="bsd_phieu_thu_id"/>
+                    <field name="bsd_loai_pt"/>
+                    <field name="bsd_dat_coc_id"/>
+                    <field name="bsd_hd_ban_id"/>
+                    <field name="bsd_khach_hang_id"/>
+                    <field name="bsd_unit_id"/>
+                    <field name="bsd_tien_kh"/>
+                    <field name="state"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="company_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="bsd_huy_tt_filter">
+            <field name="name">bsd.huy_tt.list.filter</field>
+            <field name="model">bsd.huy_tt</field>
+            <field name="arch" type="xml">
+                <search string="Lọc dữ liệu">
+                    <field name="bsd_ma"/>
+                    <field name="bsd_khach_hang_id"/>
+                    <filter string="Phiếu của tôi" domain="[('create_uid', '=', uid)]" name="my_huy_tt_filter"/>
+                    <group expand="0" string="Group by">
+                        <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>
+                        <filter string="Khách hàng" name="bsd_khach_hang_id" domain="[]" context="{'group_by': 'bsd_khach_hang_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_huy_tt_action">
+            <field name="name">Hủy thanh toán</field>
+            <field name="res_model">bsd.huy_tt</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="xml">
+                <p>Tạo mới hủy thanh toán</p>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="bsd_huy_tt_form_popup">
+            <field name="name">bsd.huy_tt.form</field>
+            <field name="model">bsd.huy_tt</field>
+            <field name="arch" type="xml">
+                <form duplicate="false" create="false" delete="false">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    </header>
+                    <sheet>
+                        <notebook>
+                            <page string="Thông tin chung">
+                                <group>
+                                    <group>
+                                        <field name="bsd_ma"/>
+                                        <field name="bsd_ngay"/>
+                                        <field name="bsd_loai" readonly="1" force_save="1"/>
+                                        <field name="bsd_can_tru_id" readonly="1" force_save="1"
+                                               options="{'no_create':true}"
+                                               attrs="{'invisible':[('bsd_loai', '!=', 'can_tru')],
+                                                       'required':[('bsd_loai', '==', 'can_tru')]}"
+                                               domain="[('state', '=', 'xac_nhan')]"/>
+                                        <field name="bsd_phieu_thu_id" readonly="1" force_save="1"
+                                               options="{'no_create':true}"
+                                               attrs="{'invisible':[('bsd_loai', '!=', 'thanh_toan')],
+                                                       'required':[('bsd_loai', '==', 'thanh_toan')]}"
+                                               domain="[('state', '=', 'da_gs'), ('bsd_loai_pt','in',['dat_coc','hd'])]"/>
+                                        <field name="bsd_dien_giai"/>
+                                    </group>
+                                    <group>
+                                        <field name="bsd_loai_pt"
+                                               attrs="{'invisible':[('bsd_loai', '!=', 'thanh_toan')]}"
+                                               readonly="1" force_save="1"/>
+                                        <field name="bsd_dat_coc_id"
+                                               attrs="{'invisible':[('bsd_loai_pt', '!=', 'dat_coc')]}"
+                                               readonly="1" force_save="1"/>
+                                        <field name="bsd_hd_ban_id"
+                                               attrs="{'invisible':[('bsd_loai_pt', '!=', 'hd')]}"
+                                               readonly="1" force_save="1"/>
+                                        <field name="bsd_du_an_id" readonly="1" force_save="1"/>
+                                        <field name="bsd_unit_id" readonly="1" force_save="1"/>
+                                        <field name="bsd_khach_hang_id" readonly="1" force_save="1"/>
+                                        <field name="bsd_tien_kh" readonly="1" force_save="1"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="company_id" invisible="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <footer>
+                        <button name="action_xac_nhan" type="object"
+                                string="Xác nhận" class="oe_highlight"/>
+                        <button special="cancel" string="Hủy bỏ"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_huy_tt_action_popup">
+            <field name="name">Hủy thanh toán</field>
+            <field name="res_model">bsd.huy_tt</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_ids"
+                   eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_huy_tt_form_popup')})]"/>
+        </record>
+    </data>
+</odoo>

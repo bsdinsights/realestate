@@ -302,13 +302,13 @@ class BsdDatCoc(models.Model):
             if dat_coc:
                 raise UserError("Bảng tính giá đã được tạo Đặt cọc.\nVui lòng kiểm tra lại thông tin!")
             # Dùng để import dữ liệu
-            bao_gia = self.env['bsd.bao_gia'].browse(id_bao_gia)
-            vals['bsd_khach_hang_id'] = bao_gia.bsd_khach_hang_id.id
-            vals['bsd_nguoi_dd_id'] = vals['bsd_khach_hang_id']
-            vals['bsd_nvbh_id'] = bao_gia.bsd_nvbh_id.id
-            vals['bsd_ctv_id'] = bao_gia.bsd_ctv_id.id
-            vals['bsd_san_gd_id'] = bao_gia.bsd_san_gd_id.id
-            vals['bsd_gioi_thieu_id'] = bao_gia.bsd_gioi_thieu_id.id
+            # bao_gia = self.env['bsd.bao_gia'].browse(id_bao_gia)
+            # vals['bsd_khach_hang_id'] = bao_gia.bsd_khach_hang_id.id
+            # vals['bsd_nguoi_dd_id'] = vals['bsd_khach_hang_id']
+            # vals['bsd_nvbh_id'] = bao_gia.bsd_nvbh_id.id
+            # vals['bsd_ctv_id'] = bao_gia.bsd_ctv_id.id
+            # vals['bsd_san_gd_id'] = bao_gia.bsd_san_gd_id.id
+            # vals['bsd_gioi_thieu_id'] = bao_gia.bsd_gioi_thieu_id.id
             # Nhớ xóa sau khi import
         sequence = False
         if 'bsd_du_an_id' in vals.keys():
@@ -337,11 +337,11 @@ class BsdDatCoc(models.Model):
             'bsd_dot_pql_ids': [(6, 0, ids_pql)],
         })
         # import
-        res.action_xac_nhan()
-        res.write({
-            'bsd_ngay_ky_dc': fields.date.today(),
-            'state': 'dat_coc',
-        })
+        # res.action_xac_nhan()
+        # res.write({
+        #     'bsd_ngay_ky_dc': fields.date.today(),
+        #     'state': 'dat_coc',
+        # })
         # nhớ remove
         return res
 

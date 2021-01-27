@@ -309,7 +309,7 @@ class BsdHopDongMuaBan(models.Model):
 
     def _compute_nghiem_thu(self):
         for each in self:
-            nghiem_thu = self.env['bsd.nghiem_thu'].search([('bsd_hd_ban_id', '=', self.id)])
+            nghiem_thu = self.env['bsd.nghiem_thu'].search([('bsd_hd_ban_id', '=', each.id)])
             each.bsd_so_nt = len(nghiem_thu)
 
     def action_view_nghiem_thu(self):
@@ -344,42 +344,42 @@ class BsdHopDongMuaBan(models.Model):
 
     def _compute_ban_giao(self):
         for each in self:
-            ban_giao = self.env['bsd.bg_sp'].search([('bsd_hd_ban_id', '=', self.id)])
+            ban_giao = self.env['bsd.bg_sp'].search([('bsd_hd_ban_id', '=', each.id)])
             each.bsd_so_bg = len(ban_giao)
 
     def _compute_pl_cldt(self):
         for each in self:
-            pl_cldt = self.env['bsd.pl_cldt'].search([('bsd_hd_ban_id', '=', self.id)])
+            pl_cldt = self.env['bsd.pl_cldt'].search([('bsd_hd_ban_id', '=', each.id)])
             each.bsd_so_pl_cldt = len(pl_cldt)
 
     def _compute_pl_tdtt(self):
         for each in self:
-            pl_tdtt = self.env['bsd.pl_tti'].search([('bsd_hd_ban_id', '=', self.id)])
+            pl_tdtt = self.env['bsd.pl_tti'].search([('bsd_hd_ban_id', '=', each.id)])
             each.bsd_so_pl_tdtt = len(pl_tdtt)
 
     def _compute_pl_qsdd(self):
         for each in self:
-            pl_qsdd = self.env['bsd.pl_qsdd'].search([('bsd_hd_ban_id', '=', self.id)])
+            pl_qsdd = self.env['bsd.pl_qsdd'].search([('bsd_hd_ban_id', '=', each.id)])
             each.bsd_so_pl_qsdd = len(pl_qsdd)
 
     def _compute_pl_pttt(self):
         for each in self:
-            pl_pttt = self.env['bsd.pl_pttt'].search([('bsd_hd_ban_id', '=', self.id)])
+            pl_pttt = self.env['bsd.pl_pttt'].search([('bsd_hd_ban_id', '=', each.id)])
             each.bsd_so_pl_pttt = len(pl_pttt)
 
     def _compute_pl_cktm(self):
         for each in self:
-            pl_cktm = self.env['bsd.pl_cktm'].search([('bsd_hd_ban_id', '=', self.id)])
+            pl_cktm = self.env['bsd.pl_cktm'].search([('bsd_hd_ban_id', '=', each.id)])
             each.bsd_so_pl_cktm = len(pl_cktm)
 
     def _compute_pl_dkbg(self):
         for each in self:
-            pl_dkbg = self.env['bsd.pl_dkbg'].search([('bsd_hd_ban_id', '=', self.id)])
+            pl_dkbg = self.env['bsd.pl_dkbg'].search([('bsd_hd_ban_id', '=', each.id)])
             each.bsd_so_pl_dkbg = len(pl_dkbg)
 
     def _compute_ds_td(self):
         for each in self:
-            ds_td = self.env['bsd.ds_td'].search([('bsd_hd_ban_id', '=', self.id)])
+            ds_td = self.env['bsd.ds_td'].search([('bsd_hd_ban_id', '=', each.id)])
             each.bsd_so_ds_td = len(ds_td)
 
     def action_view_pl_cldt(self):
@@ -837,18 +837,18 @@ class BsdHopDongMuaBan(models.Model):
         if not sequence:
             raise UserError(_('Dự án chưa có mã hợp đồng.'))
         # import
-        if 'bsd_dat_coc_id' in vals:
-            dat_coc = self.env['bsd.dat_coc'].browse(vals['bsd_dat_coc_id'])
-            vals['bsd_khach_hang_id'] = dat_coc.bsd_nguoi_dd_id.id
-            vals['bsd_nvbh_id'] = dat_coc.bsd_nvbh_id.id
-            vals['bsd_ctv_id'] = dat_coc.bsd_ctv_id.id
-            vals['bsd_san_gd_id'] = dat_coc.bsd_san_gd_id.id
-            vals['bsd_gioi_thieu_id'] = dat_coc.bsd_gioi_thieu_id.id
-            vals['bsd_tien_ck'] = dat_coc.bsd_tien_ck
-            vals['bsd_tien_pbt'] = dat_coc.bsd_tien_pbt
-            vals['bsd_tien_qsdd'] = dat_coc.bsd_tien_qsdd
-            vals['bsd_tien_thue'] = dat_coc.bsd_tien_thue
-            vals['bsd_dt_xd'] = dat_coc.bsd_dt_xd
+        # if 'bsd_dat_coc_id' in vals:
+        #     dat_coc = self.env['bsd.dat_coc'].browse(vals['bsd_dat_coc_id'])
+        #     vals['bsd_khach_hang_id'] = dat_coc.bsd_nguoi_dd_id.id
+        #     vals['bsd_nvbh_id'] = dat_coc.bsd_nvbh_id.id
+        #     vals['bsd_ctv_id'] = dat_coc.bsd_ctv_id.id
+        #     vals['bsd_san_gd_id'] = dat_coc.bsd_san_gd_id.id
+        #     vals['bsd_gioi_thieu_id'] = dat_coc.bsd_gioi_thieu_id.id
+        #     vals['bsd_tien_ck'] = dat_coc.bsd_tien_ck
+        #     vals['bsd_tien_pbt'] = dat_coc.bsd_tien_pbt
+        #     vals['bsd_tien_qsdd'] = dat_coc.bsd_tien_qsdd
+        #     vals['bsd_tien_thue'] = dat_coc.bsd_tien_thue
+        #     vals['bsd_dt_xd'] = dat_coc.bsd_dt_xd
         # nhớ xóa
         vals['bsd_ma_hd_ban'] = sequence.next_by_id()
         res = super(BsdHopDongMuaBan, self).create(vals)
@@ -874,7 +874,7 @@ class BsdHopDongMuaBan(models.Model):
         #     'state': 'hoan_thanh',
         # })
         # import
-        res.action_xac_nhan()
+        # res.action_xac_nhan()
         return res
 
 

@@ -13,7 +13,7 @@ class BsdPhieuThu(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'bsd_so_pt'
 
-    bsd_so_pt = fields.Char(string="Mã số", help="Số", required=True, readonly=True, copy=False,
+    bsd_so_pt = fields.Char(string="Mã", help="Mã phiếu thanh toán", required=True, readonly=True, copy=False,
                             default='/')
     _sql_constraints = [
         ('bsd_so_pt_unique', 'unique (bsd_so_pt)',
@@ -23,11 +23,11 @@ class BsdPhieuThu(models.Model):
                                   readonly=True, default=lambda self: fields.Datetime.now(),
                                   states={'nhap': [('readonly', False)]})
 
-    # @api.constrains('bsd_ngay_pt')
-    # def _onchange_ngay_pt(self):
-    #     today = datetime.date.today()
-    #     if self.bsd_ngay_pt.date() > today:
-    #         raise UserError(_("Ngày thanh toán không được lớn hơn ngày hiện tại."))
+    @api.constrains('bsd_ngay_pt')
+    def _onchange_ngay_pt(self):
+        today = datetime.date.today()
+        if self.bsd_ngay_pt.date() > today:
+            raise UserError(_("Ngày thanh toán không được lớn hơn ngày hiện tại."))
 
     def _get_pt(self):
         return self.env.ref('bsd_danh_muc.bsd_tien_mat').id
@@ -92,10 +92,32 @@ class BsdPhieuThu(models.Model):
 
     state = fields.Selection([('nhap', 'Nháp'),
                               ('da_gs', 'Xác nhận'),
+                              ('dang_huy', 'Đang hủy'),
                               ('huy', 'Hủy')], string="Trạng thái", help="Trạng thái",
                              required=True, readonly=True, default='nhap', tracking=1)
     bsd_tt_id = fields.Many2one('bsd.phieu_thu', string="TT trả trước",
                                 help="Thanh toán trả trước khi thanh toán có dư", readonly=True)
+    bsd_so_huy_tt = fields.Integer(string="# Hủy TT", help="Hủy thanh toán", compute='_compute_so_huy_tt')
+
+    def _compute_so_huy_tt(self):
+        for each in self:
+            huy_tt = each.env['bsd.huy_tt'].search([('bsd_phieu_thu_id', '=', each.id)])
+            each.bsd_so_huy_tt = len(huy_tt)
+
+    def action_view_huy_tt(self):
+        action = self.env.ref('bsd_tai_chinh.bsd_huy_tt_action').read()[0]
+
+        huy_tt = self.env['bsd.huy_tt'].search([('bsd_phieu_thu_id', '=', self.id)])
+        if len(huy_tt) > 1:
+            action['domain'] = [('id', 'in', huy_tt.ids)]
+        elif huy_tt:
+            form_view = [(self.env.ref('bsd_tai_chinh.bsd_huy_tt_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = huy_tt.id
+        return action
 
     @api.onchange('bsd_du_an_id')
     def _onchange_du_an(self):
@@ -221,9 +243,31 @@ class BsdPhieuThu(models.Model):
             'target': 'current',
             'context': {'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                         'default_bsd_hd_ban_id': self.bsd_hd_ban_id.id,
-                        'default_bsd_phieu_thu_id': self.id,
+                        'default_bsd_phieu_thu_ids': [(6, 0, [self.id])]
                         }
         }
+
+    def action_huy_tt(self):
+        context = {'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                   'default_bsd_unit_id': self.bsd_unit_id.id,
+                   'default_bsd_loai': 'thanh_toan',
+                   'default_bsd_tien_kh': self.bsd_tien_kh,
+                   'default_bsd_phieu_thu_id': self.id}
+        if self.bsd_loai_pt == 'dat_coc':
+            context.update({
+                'default_loai_pt': 'dat_coc',
+                'default_bsd_dat_coc_id': self.bsd_dat_coc_id.id
+            })
+        elif self.bsd_loai_pt == 'hd':
+            context.update({
+                'default_loai_pt': 'hd',
+                'default_bsd_dat_coc_id': self.bsd_dat_coc_id.id
+            })
+        _logger.debug("huy_tt")
+        _logger.debug(context)
+        action = self.env.ref('bsd_tai_chinh.bsd_huy_tt_action_popup').read()[0]
+        action['context'] = context
+        return action
 
     # Action in phiếu thu
     def action_in(self):
@@ -243,18 +287,18 @@ class BsdPhieuThu(models.Model):
             du_an = self.env['bsd.du_an'].browse(vals['bsd_du_an_id'])
             sequence = du_an.get_ma_bo_cn(loai_cn=self._name)
         # Tạo dữ liệu khách hàng khi import giữ chỗ thiện chí
-        if 'bsd_gc_tc_id' in vals:
-            gc_tc = self.env['bsd.gc_tc'].browse(vals['bsd_gc_tc_id'])
-            vals['bsd_khach_hang_id'] = gc_tc.bsd_khach_hang_id.id
-        if 'bsd_giu_cho_id' in vals:
-            giu_cho = self.env['bsd.giu_cho'].browse(vals['bsd_giu_cho_id'])
-            vals['bsd_khach_hang_id'] = giu_cho.bsd_khach_hang_id.id
-        if 'bsd_dat_coc_id' in vals:
-            dat_coc = self.env['bsd.dat_coc'].browse(vals['bsd_dat_coc_id'])
-            vals['bsd_khach_hang_id'] = dat_coc.bsd_khach_hang_id.id
+        # if 'bsd_gc_tc_id' in vals:
+        #     gc_tc = self.env['bsd.gc_tc'].browse(vals['bsd_gc_tc_id'])
+        #     vals['bsd_khach_hang_id'] = gc_tc.bsd_khach_hang_id.id
+        # if 'bsd_giu_cho_id' in vals:
+        #     giu_cho = self.env['bsd.giu_cho'].browse(vals['bsd_giu_cho_id'])
+        #     vals['bsd_khach_hang_id'] = giu_cho.bsd_khach_hang_id.id
+        # if 'bsd_dat_coc_id' in vals:
+        #     dat_coc = self.env['bsd.dat_coc'].browse(vals['bsd_dat_coc_id'])
+        #     vals['bsd_khach_hang_id'] = dat_coc.bsd_khach_hang_id.id
         # nhớ xóa sau khi import
         if not sequence:
-            raise UserError(_('Dự án chưa có mã phiếu thu.'))
+            raise UserError(_('Dự án chưa có mã phiếu thanh toán.'))
         vals['bsd_so_pt'] = sequence.next_by_id()
         res = super(BsdPhieuThu, self).create(vals)
         # Tự động xác nhận giữ chỗ thiện chí

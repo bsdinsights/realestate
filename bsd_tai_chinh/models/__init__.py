@@ -18,3 +18,4 @@ from . import bsd_nghiem_thu
 from . import bsd_pl_dccl_dien_tich
 from . import bsd_vi_pham_hd
 from . import bsd_mien_giam
+from . import bsd_huy_thanh_toan

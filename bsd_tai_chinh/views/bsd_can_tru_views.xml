@@ -50,7 +50,9 @@
                                 <field name="currency_id" invisible="1"/>
                             </group>
                         </group>
-                        <button string="Load" name="action_load" type="object" class="oe_highlight oe_right"/>
+                        <button string="Load"
+                                states="nhap"
+                                name="action_load" type="object" class="oe_highlight oe_right"/>
                         <field name="bsd_ltt_ids"
                                attrs="{'invisible':[('bsd_so_dot', '=',0)]}"
                                nolabel="1">

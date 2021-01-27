@@ -38,12 +38,23 @@
             <field name="web_icon">fa fa-file-text,#FFFFFF,#D2691E</field>
         </record>
     <!--    Tạo icon màn hình-->
-        <menuitem id="bsd_phieu_thu_menu_action_2"
+        <menuitem id="bsd_phieu_thu_menu_2"
                   name="Thanh toán"
                   sequence="19"
-                  action="bsd_tai_chinh.bsd_phieu_thu_action"
                   web_icon="fa fa-money,#FFFFFF,#238c8f"
         />
+            <menuitem id="bsd_phieu_thu_menu_action_2"
+                      name="Thanh toán"
+                      sequence="1"
+                      action="bsd_tai_chinh.bsd_phieu_thu_action"
+                      parent="bsd_phieu_thu_menu_2"
+            />
+            <menuitem id="bsd_huy_tt_menu_action_2"
+                      name="Hủy thanh toán"
+                      sequence="1"
+                      action="bsd_tai_chinh.bsd_huy_tt_action"
+                      parent="bsd_phieu_thu_menu_2"
+            />
         <menuitem id="bsd_hoan_tien_menu_action_2"
                   name="Hoàn tiền"
                   sequence="20"

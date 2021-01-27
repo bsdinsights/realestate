@@ -566,24 +566,24 @@ class BsdBaoGia(models.Model):
         if not sequence:
             raise UserError(_('Dự án chưa có mã bảng tính giá.'))
         # Tạo dữ liệu khách hàng khi import giữ chỗ thiện chí
-        if 'bsd_giu_cho_id' in vals:
-            giu_cho = self.env['bsd.giu_cho'].browse(vals['bsd_giu_cho_id'])
-            vals['bsd_khach_hang_id'] = giu_cho.bsd_khach_hang_id.id
-            vals['bsd_ctv_id'] = giu_cho.bsd_ctv_id.id
-            vals['bsd_san_gd_id'] = giu_cho.bsd_san_gd_id.id
-            vals['bsd_gioi_thieu_id'] = giu_cho.bsd_gioi_thieu_id.id
+        # if 'bsd_giu_cho_id' in vals:
+        #     giu_cho = self.env['bsd.giu_cho'].browse(vals['bsd_giu_cho_id'])
+        #     vals['bsd_khach_hang_id'] = giu_cho.bsd_khach_hang_id.id
+        #     vals['bsd_ctv_id'] = giu_cho.bsd_ctv_id.id
+        #     vals['bsd_san_gd_id'] = giu_cho.bsd_san_gd_id.id
+        #     vals['bsd_gioi_thieu_id'] = giu_cho.bsd_gioi_thieu_id.id
         # nhớ xóa sau khi import
         vals['bsd_ma_bao_gia'] = sequence.next_by_id()
         _logger.debug("chạy tới đây")
         _logger.debug(vals['bsd_ma_bao_gia'])
         res = super(BsdBaoGia, self).create(vals)
         # Tạo dữ liệu khách hàng khi import giữ chỗ thiện chí
-        res.action_lich_tt()
-        res.action_xac_nhan()
-        res.write({
-            'state': 'da_ky',
-            'bsd_ngay_ky_bg': fields.Date.today()
-        })
+        # res.action_lich_tt()
+        # res.action_xac_nhan()
+        # res.write({
+        #     'state': 'da_ky',
+        #     'bsd_ngay_ky_bg': fields.Date.today()
+        # })
         # nhớ xóa sau khi import
         return res
 

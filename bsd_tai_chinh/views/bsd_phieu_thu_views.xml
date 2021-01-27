@@ -22,7 +22,6 @@
                                 name="action_can_tru"
                                 type="object"
                                 states="da_gs"
-                                confirm="Bạn có muốn cấn trừ công nợ cho chứng từ này không?"
                                 attrs="{'invisible':['|',('bsd_tien_con_lai', '=', 0),
                                                      '|',('bsd_loai_pt', 'not in',['tra_truoc'])]}"
                                 class="oe_highlight"/>
@@ -31,9 +30,20 @@
                                 states="da_gs"
                                 type="object"
                                 class="oe_highlight"/>
+                        <button string="Hủy thanh toán"
+                                name="action_huy_tt"
+                                type="object"
+                                attrs="{'invisible':['|', ('state', '!=', 'da_gs'),
+                                                          ('bsd_loai_pt', 'not in',['dat_coc','hd'])]}"
+                                states="da_gs"/>
                         <field name="state" widget="statusbar" statusbar_visible="0"/>
                     </header>
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_huy_tt" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_huy_tt', '=', 0)]}">
+                                <field name="bsd_so_huy_tt" widget="statinfo" string="Hủy TT"/>
+                            </button>
+                        </div>
                         <notebook>
                             <page string="Thông tin chung">
                                 <group>
@@ -127,7 +137,9 @@
             <field name="model">bsd.phieu_thu</field>
             <field name="arch" type="xml">
                 <tree default_order="bsd_ngay_pt desc"
+                      decoration-warning="state=='nhap'"
                       decoration-success="state=='da_gs'"
+                      decoration-danger="state=='dang_huy'"
                       decoration-muted="state=='huy'"
                       delete="false" duplicate="false" create="false"
                 >
