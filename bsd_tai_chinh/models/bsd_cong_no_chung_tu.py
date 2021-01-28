@@ -46,6 +46,7 @@ class BsdCongNoCT(models.Model):
                                  ('pt_ht', 'Hoàn tiền')], string="Phân loại",
                                 help="Phân loại", required=True)
     bsd_can_tru_id = fields.Many2one('bsd.can_tru', string="Cấn trừ", readonly=True)
+    bsd_huy_tt_id = fields.Many2one('bsd.huy_tt', string="Hủy thanh toán", readonly=True)
 
     def kiem_tra_chung_tu(self):
         if self.bsd_loai == 'pt_gctc':
@@ -214,11 +215,13 @@ class BsdCongNoCT(models.Model):
         elif rec.bsd_loai == 'pt_pps':
             ma_hd = rec.bsd_hd_ban_id.bsd_ma_hd_ban
             ten_pps = rec.bsd_phi_ps_id.bsd_ma_ps
-            _logger.debug("Tên phí")
-            _logger.debug(ma_hd)
-            _logger.debug(ten_pps)
             rec.write({
                 'display_name': ma_hd + ' - ' + ten_pps
+            })
+        elif rec.bsd_loai == 'pt_ht':
+            ma_ht = rec.bsd_hoan_tien_id.bsd_so_ct
+            rec.write({
+                'display_name':ma_ht
             })
         return rec
 

@@ -30,12 +30,17 @@
                                 states="da_gs"
                                 type="object"
                                 class="oe_highlight"/>
+                        <button string="Hoàn tiền"
+                                name="action_hoan_tien"
+                                type="object"
+                                attrs="{'invisible':['|', ('state', '!=', 'da_gs'),
+                                                     '|',('bsd_tt_tt', '=', 'da_ct'),
+                                                          ('bsd_loai_pt', 'not in',['tra_truoc'])]}"/>
                         <button string="Hủy thanh toán"
                                 name="action_huy_tt"
                                 type="object"
                                 attrs="{'invisible':['|', ('state', '!=', 'da_gs'),
-                                                          ('bsd_loai_pt', 'not in',['dat_coc','hd'])]}"
-                                states="da_gs"/>
+                                                          ('bsd_loai_pt', 'not in',['dat_coc','hd'])]}"/>
                         <field name="state" widget="statusbar" statusbar_visible="0"/>
                     </header>
                     <sheet>
@@ -43,11 +48,16 @@
                             <button name="action_view_huy_tt" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_huy_tt', '=', 0)]}">
                                 <field name="bsd_so_huy_tt" widget="statinfo" string="Hủy TT"/>
                             </button>
+                            <button name="action_view_hoan_tien" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('bsd_so_ht', '=', 0)]}">
+                                <field name="bsd_so_ht" widget="statinfo" string="Hoàn tiền"/>
+                            </button>
                         </div>
+                        <widget name="web_ribbon" text="Đã trả hết" attrs="{'invisible':[('bsd_tt_tt', '!=', 'da_ct')]}"/>
                         <notebook>
                             <page string="Thông tin chung">
                                 <group>
                                     <group>
+                                        <field name="bsd_tt_tt" invisible="1"/>
                                         <field name="bsd_so_pt"/>
                                         <field name="bsd_ngay_pt"
                                                widget="date"/>
@@ -122,6 +132,26 @@
                                     </tree>
                                 </field>
                             </page>
+                            <page string="Tiền phạt chậm TT">
+                                <field name="bsd_lai_phat_ids">
+                                    <tree>
+                                        <field name="bsd_ngay_lp" invisible="1"/>
+                                        <field name="bsd_hd_ban_id" invisible="1"/>
+                                        <field name="bsd_dot_tt_id"/>
+                                        <field name="bsd_phieu_thu_id" invisible="1"/>
+                                        <field name="bsd_tien_tt"/>
+                                        <field name="bsd_so_ngay"/>
+                                        <field name="bsd_tien_phat"/>
+                                        <field name="bsd_tien_mg"/>
+                                        <field name="bsd_tien_da_tt"/>
+                                        <field name="bsd_tien_phai_tt"/>
+                                        <field name="bsd_thanh_toan"/>
+                                        <field name="state"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="company_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
                         </notebook>
                     </sheet>
                     <div class="oe_chatter">
@@ -168,6 +198,7 @@
                     <field name="bsd_khach_hang_id"/>
                     <field name="bsd_unit_id"/>
                     <field name="bsd_du_an_id"/>
+                    <field name="bsd_loai_pt"/>
                     <filter string="Phiếu thu của tôi" domain="[('create_uid', '=', uid)]" name="my_phiếu thu_filter"/>
                     <group expand="0" string="Group by">
                         <filter string="Dự án" name="bsd_du_an_id" domain="[]" context="{'group_by': 'bsd_du_an_id'}"/>

@@ -4,6 +4,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import datetime
 import logging
+from odoo.tools.float_utils import float_is_zero
 _logger = logging.getLogger(__name__)
 
 
@@ -98,6 +99,40 @@ class BsdPhieuThu(models.Model):
     bsd_tt_id = fields.Many2one('bsd.phieu_thu', string="TT trả trước",
                                 help="Thanh toán trả trước khi thanh toán có dư", readonly=True)
     bsd_so_huy_tt = fields.Integer(string="# Hủy TT", help="Hủy thanh toán", compute='_compute_so_huy_tt')
+    bsd_tt_tt = fields.Selection([('ct_ct', "Có thể cấn trừ"), ('da_ct', 'Đã trả hết')], string="Tình trạng TTTT",
+                                 help="Tình trạng thanh toán trả trước", compute='_compute_tt_tttt', store=True)
+    bsd_lai_phat_ids = fields.One2many('bsd.lai_phat', 'bsd_phieu_thu_id', string="Tiền phạt chậm TT",
+                                       help="Tiền phạt chậm thanh toán",
+                                       readonly=True)
+    bsd_so_ht = fields.Integer(string="# Hoàn tiền", help="Hoàn tiền", compute='_compute_so_ht')
+
+    def _compute_so_ht(self):
+        for each in self:
+            hoan_tien = each.env['bsd.hoan_tien'].search([('bsd_phieu_thu_id', '=', each.id)])
+            each.bsd_so_ht = len(hoan_tien)
+
+    def action_view_hoan_tien(self):
+        action = self.env.ref('bsd_tai_chinh.bsd_hoan_tien_action').read()[0]
+
+        hoan_tien = self.env['bsd.hoan_tien'].search([('bsd_phieu_thu_id', '=', self.id)])
+        if len(hoan_tien) > 1:
+            action['domain'] = [('id', 'in', hoan_tien.ids)]
+        elif hoan_tien:
+            form_view = [(self.env.ref('bsd_tai_chinh.bsd_hoan_tien_form').id, 'form')]
+            if 'views' in action:
+                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
+            else:
+                action['views'] = form_view
+            action['res_id'] = hoan_tien.id
+        return action
+
+    @api.depends('bsd_tien_con_lai')
+    def _compute_tt_tttt(self):
+        for each in self:
+            if float_is_zero(each.bsd_tien_con_lai, 0):
+                each.bsd_tt_tt = 'da_ct'
+            else:
+                each.bsd_tt_tt = 'ct_ct'
 
     def _compute_so_huy_tt(self):
         for each in self:
@@ -252,6 +287,7 @@ class BsdPhieuThu(models.Model):
                    'default_bsd_unit_id': self.bsd_unit_id.id,
                    'default_bsd_loai': 'thanh_toan',
                    'default_bsd_tien_kh': self.bsd_tien_kh,
+                   'default_bsd_ps_tt_id': self.bsd_tt_id.id,
                    'default_bsd_phieu_thu_id': self.id}
         if self.bsd_loai_pt == 'dat_coc':
             context.update({
@@ -263,10 +299,17 @@ class BsdPhieuThu(models.Model):
                 'default_loai_pt': 'hd',
                 'default_bsd_dat_coc_id': self.bsd_dat_coc_id.id
             })
-        _logger.debug("huy_tt")
-        _logger.debug(context)
         action = self.env.ref('bsd_tai_chinh.bsd_huy_tt_action_popup').read()[0]
         action['context'] = context
+        return action
+
+    def action_hoan_tien(self):
+        action = self.env.ref('bsd_tai_chinh.bsd_hoan_tien_action_popup').read()[0]
+        action['context'] = {'default_bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                             'default_bsd_du_an_id': self.bsd_du_an_id.id,
+                             'default_bsd_loai': 'phieu_thu',
+                             'default_bsd_phieu_thu_id': self.id,
+                             'default_bsd_tien': self.bsd_tien_con_lai}
         return action
 
     # Action in phiếu thu

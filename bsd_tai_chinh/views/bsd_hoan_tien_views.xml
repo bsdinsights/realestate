@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record model="ir.ui.view" id="bsd_hoan_tien_form">
             <field name="name">bsd.hoan_tien.form</field>
             <field name="model">bsd.hoan_tien</field>
@@ -140,6 +140,59 @@
             <field name="help" type="xml">
                 <p>Hoàn tiền khách hàng</p>
             </field>
+        </record>
+
+        <record model="ir.ui.view" id="bsd_hoan_tien_form_popup">
+            <field name="name">bsd.hoan_tien.form</field>
+            <field name="model">bsd.hoan_tien</field>
+            <field name="arch" type="xml">
+                <form duplicate="false" create="false">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="0"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="bsd_so_ct"/>
+                                <field name="bsd_ngay_ct" readonly="1" force_save="1"/>
+                                <field name="bsd_phieu_thu_id"
+                                       readonly="1" force_save="1"/>
+                                <field name="bsd_tien"/>
+                            </group>
+                            <group>
+                                <field name="bsd_loai"
+                                        readonly="1" force_save="1"
+                                       required="1"/>
+                                <field name="bsd_khach_hang_id"
+                                       readonly="1" force_save="1"
+                                       options="{'no_create':true}"/>
+                                <field name="bsd_du_an_id"
+                                        readonly="1" force_save="1"
+                                       options="{'no_create':true}"/>
+                                <field name="bsd_dien_giai"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="company_id" invisible="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Tạo"
+                                name="action_tao"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button string="Hủy" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="bsd_hoan_tien_action_popup">
+            <field name="name">Tạo hoàn tiền</field>
+            <field name="res_model">bsd.hoan_tien</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_ids"
+                   eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('bsd_hoan_tien_form_popup')})]"/>
         </record>
     </data>
 </odoo>

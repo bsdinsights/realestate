@@ -37,6 +37,7 @@ class BsdLaiPhat(models.Model):
                              string="Trạng thái",
                              required=True, default='hieu_luc')
     bsd_tien_mg = fields.Monetary(string="Tiền miễn giảm", help="Tiền miễn giảm", readonly=True)
+    bsd_huy_tt = fields.Many2one('bsd.huy_tt', string="Hủy thanh toán", readonly=True)
 
     @api.depends('bsd_ct_ids', 'bsd_ct_ids.bsd_tien_pb', 'bsd_tien_phat', 'bsd_tien_mg')
     def _compute_tien_tt(self):

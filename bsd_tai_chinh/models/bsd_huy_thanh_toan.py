@@ -70,7 +70,11 @@ class BsdHuyThanhToan(models.Model):
     bsd_ly_do = fields.Char(string="Lý do", readonly=True, tracking=2)
     bsd_nguoi_xn_id = fields.Many2one('res.users', string="Người xác nhận", readonly=True)
     bsd_ngay_xn = fields.Date(string="Ngày xác nhận", readonly=True)
-
+    bsd_lai_phat_ids = fields.One2many(related='bsd_phieu_thu_id.bsd_lai_phat_ids')
+    bsd_ct_tt_ids = fields.One2many(related='bsd_phieu_thu_id.bsd_ct_ids')
+    bsd_ps_tt_id = fields.Many2one('bsd.phieu_thu', string="TT trả trước", help="Phát sinh thanh toán trả trước",
+                                   readonly=True,
+                                   states={'nhap': [('readonly', False)]})
     # @api.onchange('bsd_loai')
     # def _onchange_loai(self):
     #     self.bsd_can_tru_id = False
@@ -93,6 +97,7 @@ class BsdHuyThanhToan(models.Model):
             self.bsd_khach_hang_id = self.bsd_phieu_thu_id.bsd_khach_hang_id
             self.bsd_unit_id = self.bsd_phieu_thu_id.bsd_unit_id
             self.bsd_tien_kh = self.bsd_phieu_thu_id.bsd_tien_kh
+            self.bsd_ps_tt_id = self.bsd_phieu_thu_id.bsd_tt_id
 
             if self.bsd_loai_pt == 'hd':
                 self.bsd_hd_ban_id = self.bsd_phieu_thu_id.bsd_hd_ban_id

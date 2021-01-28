@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+import datetime
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -18,10 +19,10 @@ class BsdHoanTien(models.Model):
         ('bsd_so_ct_unique', 'unique (bsd_so_ct)',
          'Số chứng từ hoàn tiền đã tồn tại !'),
     ]
-    bsd_ngay_ct = fields.Datetime(string="Ngày", help="Ngày chứng từ", required=True,
-                                  default=lambda self: fields.Datetime.now(),
-                                  readonly=True,
-                                  states={'nhap': [('readonly', False)]})
+    bsd_ngay_ct = fields.Date(string="Ngày", help="Ngày chứng từ", required=True,
+                              default=lambda self: fields.Date.today(),
+                              readonly=True,
+                              states={'nhap': [('readonly', False)]})
 
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng",
                                         required=True,
@@ -88,8 +89,9 @@ class BsdHoanTien(models.Model):
     company_id = fields.Many2one('res.company', string='Công ty', default=lambda self: self.env.company)
     currency_id = fields.Many2one(related="company_id.currency_id", string="Tiền tệ", readonly=True)
 
-    # TC.07.01 Xác nhận hoàn tiền
-    # TC.07.03 Ghi sổ hoàn tiền
+    def action_tao(self):
+        pass
+
     def action_xac_nhan(self):
         self.write({
             'state': 'xac_nhan',
@@ -105,7 +107,7 @@ class BsdHoanTien(models.Model):
             self.bsd_giu_cho_id.write({
                 'bsd_tt_ht': 'da_ht'
             })
-
+        # Cập nhật trạng thái hoàn tiền thanh lý
         if self.bsd_thanh_ly_id:
             self.bsd_thanh_ly_id.write({
                 'bsd_tt_ht': 'da_ht'
@@ -137,15 +139,16 @@ class BsdHoanTien(models.Model):
 
         # tạo record trong bảng công nợ chứng từ
         if self.bsd_loai == 'phieu_thu':
-            self.env['bsd.cong_no_ct'].create({
-                'bsd_ngay_pb': self.bsd_ngay_ct,
-                'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
-                'bsd_phieu_thu_id': self.bsd_phieu_thu_id.id,
-                'bsd_hoan_tien_id': self.id,
-                'bsd_tien_pb': self.bsd_tien,
-                'bsd_loai': 'pt_ht',
-                'state': 'hoan_thanh'
-            })
+            ct = self.env['bsd.cong_no_ct'].create({
+                    'bsd_ngay_pb': datetime.datetime.now(),
+                    'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
+                    'bsd_phieu_thu_id': self.bsd_phieu_thu_id.id,
+                    'bsd_hoan_tien_id': self.id,
+                    'bsd_tien_pb': self.bsd_tien,
+                    'bsd_loai': 'pt_ht',
+                    'state': 'hieu_luc',
+                })
+            ct.kiem_tra_chung_tu()
 
     # TC.07.02 Hủy hoàn tiền
     def action_huy(self):
