@@ -592,7 +592,7 @@
                             </page>
                             <page string="Lịch thanh toán" name="lich_thanh_toan">
                                 <field name="bsd_ltt_ids">
-                                    <tree decoration-warning="bsd_thanh_toan=='06_dang_tt'"
+                                    <tree decoration-warning="bsd_thanh_toan=='dang_tt'"
                                           decoration-info="bsd_thanh_toan=='da_tt'"
                                           decoration-danger="bsd_thanh_toan=='chua_tt'">
                                         <field name="bsd_stt"/>

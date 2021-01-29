@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record model="ir.ui.view" id="bsd_ps_gd_ck_form">
             <field name="name">bsd.ps_gd_ck.form</field>
             <field name="model">bsd.ps_gd_ck</field>
             <field name="arch" type="xml">
                 <form>
                     <header>
+                        <button string="Xác nhận"
+                                name="action_xac_nhan"
+                                type="object"
+                                class="oe_highlight"
+                                attrs="{'invisible':['|',('state','!=','nhap'),('bsd_loai_ps','not in',['ttth','ttn'])]}"
+                                confirm="Bạn có muốn Hủy giao dịch chiết khấu này không?"/>
+                        <button string="Chuyển TTTT"
+                                name="action_chuyen_tttt"
+                                type="object"
+                                class="oe_highlight"
+                                attrs="{'invisible':['|',('state','!=','xac_nhan'),('bsd_loai_ps','not in',['ttth','ttn'])]}"
+                                confirm="Bạn có muốn chuyển sang thanh toán trả trước không?"/>
                         <button string="Hủy"
                                 name="action_huy"
                                 type="object"
@@ -15,6 +27,7 @@
                         <field name="state" widget="statusbar" statusbar_visible="0"/>
                     </header>
                     <sheet>
+                        <widget name="web_ribbon" text="Đã chuyển TTTT" attrs="{'invisible':[('bsd_tt_xl', '=', False)]}"/>
                         <group>
                             <group>
                                 <field name="bsd_ma"/>
@@ -22,11 +35,12 @@
                                 <field name="bsd_du_an_id"/>
                                 <field name="bsd_unit_id"/>
                                 <field name="bsd_hd_ban_id"/>
+                                <field name="bsd_ltt_id"/>
                                 <field name="bsd_pl_cktm_id"/>
                                 <field name="bsd_loai_ps"/>
                             </group>
                             <group>
-                                <field name="bsd_ltt_id"/>
+                                <field name="bsd_phieu_thu_id"/>
                                 <field name="bsd_sn_th"/>
                                 <field name="bsd_tien_dot_tt"/>
                                 <field name="bsd_tien"/>
@@ -36,8 +50,11 @@
                                     <span>%</span>
                                 </div>
                                 <field name="bsd_tien_ck"/>
+                                <field name="bsd_tien_nhap"/>
+                                <field name="bsd_tt_id"/>
                                 <field name="currency_id" invisible="1"/>
                                 <field name="company_id" invisible="1"/>
+                                <field name="bsd_tt_xl" invisible="1"/>
                             </group>
                         </group>
                     </sheet>
@@ -53,7 +70,9 @@
             <field name="name">bsd.ps_gd_ck.tree</field>
             <field name="model">bsd.ps_gd_ck</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree decoration-warning="state=='nhap'"
+                      decoration-success="state=='xac_nhan'"
+                      decoration-muted="state=='huy'">
                     <field name="bsd_ma"/>
                     <field name="bsd_ten"/>
                     <field name="bsd_unit_id"/>

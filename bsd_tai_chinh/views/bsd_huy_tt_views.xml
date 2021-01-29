@@ -203,6 +203,7 @@
                                                attrs="{'invisible':[('bsd_loai', '!=', 'thanh_toan')],
                                                        'required':[('bsd_loai', '==', 'thanh_toan')]}"
                                                domain="[('state', '=', 'da_gs'), ('bsd_loai_pt','in',['dat_coc','hd'])]"/>
+                                        <field name="bsd_ps_tt_id" readonly="1" force_save="1"/>
                                         <field name="bsd_dien_giai"/>
                                     </group>
                                     <group>
@@ -223,6 +224,39 @@
                                         <field name="company_id" invisible="1"/>
                                     </group>
                                 </group>
+                            </page>
+                            <page string="Chi tiết thanh toán">
+                                <field name="bsd_ct_tt_ids">
+                                    <tree>
+                                        <field name="bsd_ngay_pb"/>
+                                        <field name="display_name"/>
+                                        <field name="bsd_loai"/>
+                                        <field name="bsd_tien_pb"/>
+                                        <field name="state"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="company_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Tiền phạt chậm TT">
+                                <field name="bsd_lai_phat_ids">
+                                    <tree>
+                                        <field name="bsd_ngay_lp" invisible="1"/>
+                                        <field name="bsd_hd_ban_id" invisible="1"/>
+                                        <field name="bsd_dot_tt_id"/>
+                                        <field name="bsd_phieu_thu_id" invisible="1"/>
+                                        <field name="bsd_tien_tt"/>
+                                        <field name="bsd_so_ngay"/>
+                                        <field name="bsd_tien_phat"/>
+                                        <field name="bsd_tien_mg"/>
+                                        <field name="bsd_tien_da_tt"/>
+                                        <field name="bsd_tien_phai_tt"/>
+                                        <field name="bsd_thanh_toan"/>
+                                        <field name="state"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="company_id" invisible="1"/>
+                                    </tree>
+                                </field>
                             </page>
                         </notebook>
                     </sheet>

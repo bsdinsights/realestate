@@ -11,7 +11,7 @@ class BsdCongNoCT(models.Model):
     _name = 'bsd.cong_no_ct'
     _description = 'Chi tiết thanh toán'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _order = 'bsd_ngay_pb desc'
+    _order = 'bsd_ngay_pb desc,id asc'
 
     bsd_ngay_pb = fields.Datetime(string="Ngày", help="Ngày phân bổ")
     bsd_khach_hang_id = fields.Many2one('res.partner', string="Khách hàng", help="Khách hàng")
@@ -111,15 +111,18 @@ class BsdCongNoCT(models.Model):
             hd_ban = self.bsd_dot_tt_id.bsd_hd_ban_id
             # Kiểm tra điều kiện đợt tt tạo giao dịch chiết khấu và khuyến mãi
             if hd_ban:
-                # Gọi hàm xử lý giao dịch chiết khấu thanh toán trước hạn
-                self.bsd_dot_tt_id.tao_ck_ttth(ngay_tt=self.bsd_ngay_pb, tien_tt=self.bsd_tien_pb)
-                # Gọi hàm xử lý giao dịch chiết khấu thanh toán nhanh
-                self.bsd_dot_tt_id.tao_ck_ttn()
-                # Gọi hàm xứ lý khuyến mãi
-                hd_ban.tao_giao_dich_khuyen_mai(ngay_tt=self.bsd_ngay_pb)
-                # Gọi hàm xử lý lãi phạt chậm thanh toán
-                self.bsd_dot_tt_id.tao_lp_tt(ngay_tt=self.bsd_ngay_pb, tien_tt=self.bsd_tien_pb,
-                                             thanh_toan=self.bsd_phieu_thu_id)
+                # Thanh toán tiền nợ gốc mới được tính chiết khấu thanh toán hoặc khuyến mãi
+                if self.bsd_loai == 'pt_dtt':
+                    # Gọi hàm xử lý giao dịch chiết khấu thanh toán trước hạn
+                    self.bsd_dot_tt_id.tao_ck_ttth(ngay_tt=self.bsd_ngay_pb, tien_tt=self.bsd_tien_pb,
+                                                   phieu_tt=self.bsd_phieu_thu_id)
+                    # Gọi hàm xử lý giao dịch chiết khấu thanh toán nhanh
+                    self.bsd_dot_tt_id.tao_ck_ttn(phieu_tt=self.bsd_phieu_thu_id)
+                    # Gọi hàm xứ lý khuyến mãi
+                    hd_ban.tao_giao_dich_khuyen_mai(ngay_tt=self.bsd_ngay_pb, phieu_tt=self.bsd_phieu_thu_id)
+                    # Gọi hàm xử lý lãi phạt chậm thanh toán
+                    self.bsd_dot_tt_id.tao_lp_tt(ngay_tt=self.bsd_ngay_pb, tien_tt=self.bsd_tien_pb,
+                                                 thanh_toan=self.bsd_phieu_thu_id)
             # Cập nhật trạng thái hợp đồng khi thanh toán đủ đợt thanh toán
             tien_thu_dot = self.bsd_dot_tt_id.bsd_tien_dot_tt - self.bsd_dot_tt_id.bsd_tien_dc - self.bsd_dot_tt_id.bsd_tien_mg_dot
             if float_utils.float_compare(tien_thu_dot, tien, 4) == 0:

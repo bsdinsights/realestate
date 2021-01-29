@@ -392,4 +392,4 @@ class BsdChietKhauGiaoDich(models.Model):
     _inherit = 'bsd.ps_gd_ck'
 
     bsd_pl_cktm_id = fields.Many2one('bsd.pl_cktm', string="Phụ lục",
-                                     help="Phụ lục thanh đổi chiết khấu thương mại")
+                                     help="Phụ lục thanh đổi chiết khấu thương mại", readonly=True)

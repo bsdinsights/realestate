@@ -65,7 +65,7 @@ class BsdBaoGiaLTT(models.Model):
                 each.bsd_ngay_tt = None
 
     # DV.01.09 Theo dõi chiết khấu thanh toán trước hạn
-    def tao_ck_ttth(self, ngay_tt, tien_tt):
+    def tao_ck_ttth(self, ngay_tt, tien_tt, phieu_tt):
         # Kiểm tra trạng thái của hợp đồng đã ký hoặc đang thanh toán
         if self.bsd_hd_ban_id.state not in ['05_da_ky', '06_dang_tt']:
             return
@@ -103,11 +103,14 @@ class BsdBaoGiaLTT(models.Model):
             'bsd_tien_dot_tt': tien_tt,
             'bsd_tl_ck': ck_ttth.bsd_chiet_khau_id.bsd_tl_ck,
             'bsd_tien': ck_ttth.bsd_chiet_khau_id.bsd_tien_ck,
+            'bsd_phieu_thu_id': phieu_tt.id,
             'bsd_tien_ck': tien_ck,
+            'bsd_tien_nhap': tien_ck,
+            'state': 'nhap',
         })
 
     # DV.01.09 Theo dõi chiết khấu thanh toán nhanh
-    def tao_ck_ttn(self):
+    def tao_ck_ttn(self, phieu_tt=None):
         # Kiểm tra trạng thái của hợp đồng
         if self.bsd_hd_ban_id.state not in ['05_da_ky', '06_dang_tt']:
             return
@@ -144,7 +147,10 @@ class BsdBaoGiaLTT(models.Model):
             'bsd_loai_ps': 'ttn',
             'bsd_tl_ck': ck_ttn.bsd_chiet_khau_id.bsd_tl_ck,
             'bsd_tien': ck_ttn.bsd_chiet_khau_id.bsd_tien_ck,
+            'bsd_phieu_thu_id': phieu_tt.id,
             'bsd_tien_ck': tien_ck,
+            'bsd_tien_nhap': tien_ck,
+            'state': 'nhap',
         })
         self.bsd_hd_ban_id.write({
             'bsd_dh_ck_ttn': True

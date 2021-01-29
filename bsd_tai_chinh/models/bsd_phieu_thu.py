@@ -104,6 +104,12 @@ class BsdPhieuThu(models.Model):
     bsd_lai_phat_ids = fields.One2many('bsd.lai_phat', 'bsd_phieu_thu_id', string="Tiền phạt chậm TT",
                                        help="Tiền phạt chậm thanh toán",
                                        readonly=True)
+    bsd_km_gd_ids = fields.One2many('bsd.ps_gd_km', 'bsd_phieu_thu_id', string="Khuyến mãi giao dịch",
+                                    help="Khuyến mãi giao dịch",
+                                    readonly=True)
+    bsd_ck_gd_ids = fields.One2many('bsd.ps_gd_ck', 'bsd_phieu_thu_id', string="Chiết khấu giao dịch",
+                                    help="Chiết khấu giao dịch",
+                                    readonly=True)
     bsd_so_ht = fields.Integer(string="# Hoàn tiền", help="Hoàn tiền", compute='_compute_so_ht')
 
     def _compute_so_ht(self):
@@ -374,3 +380,31 @@ class BsdPhieuThu(models.Model):
                     })
         tra_truoc.action_xac_nhan()
         self.write({'bsd_tt_id': tra_truoc.id})
+
+
+class BsdPSGDCK(models.Model):
+    _inherit = 'bsd.ps_gd_ck'
+
+    bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thanh toán", help="Phiếu thanh toán",
+                                       readonly=True)
+    bsd_tt_id = fields.Many2one('bsd.phieu_thu', string="TT trả trước", help="Phiếu thanh toán",
+                                readonly=True)
+
+    def action_chuyen_tttt(self):
+        # Tạo ra thanh toán trả trước khi thanh toán dư
+        tra_truoc = self.env['bsd.phieu_thu'].create({
+            'bsd_loai_pt': 'tra_truoc',
+            'bsd_khach_hang_id': self.bsd_hd_ban_id.bsd_khach_hang_id.id,
+            'bsd_du_an_id': self.bsd_du_an_id.id,
+            'bsd_pt_tt_id': self.env.ref('bsd_danh_muc.bsd_coa').id,
+            'bsd_tien_kh': self.bsd_tien_nhap,
+        })
+        self.write({'bsd_tt_id': tra_truoc.id})
+        tra_truoc.action_xac_nhan()
+
+
+class BsdPSGDKM(models.Model):
+    _inherit = 'bsd.ps_gd_km'
+
+    bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thanh toán", help="Phiếu thanh toán",
+                                       readonly=True)

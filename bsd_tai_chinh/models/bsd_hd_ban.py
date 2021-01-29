@@ -62,7 +62,7 @@ class BsdHdBan(models.Model):
                 each.bsd_tl_tt_hd = 0
 
     # DV.01.13 Theo dõi giao dịch khuyến mãi
-    def tao_giao_dich_khuyen_mai(self, ngay_tt):
+    def tao_giao_dich_khuyen_mai(self, ngay_tt, phieu_tt):
         ngay_tt = ngay_tt.date()
         # Các khuyến mãi có điều kiện của hợp đồng
         km_hd = self.bsd_dot_mb_id.bsd_km_ids\
@@ -111,6 +111,7 @@ class BsdHdBan(models.Model):
                 'bsd_hd_ban_id': self.id,
                 'bsd_khach_hang_id': self.bsd_khach_hang_id.id,
                 'bsd_ngay_tt': ngay_tt,
+                'bsd_phieu_thu_id': phieu_tt.id,
                 'state': 'xac_nhan',
             })
 

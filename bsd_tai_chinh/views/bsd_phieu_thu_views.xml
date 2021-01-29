@@ -152,6 +152,34 @@
                                     </tree>
                                 </field>
                             </page>
+                            <page string="Chiết khấu giao dịch">
+                                <field name="bsd_ck_gd_ids">
+                                    <tree>
+                                        <field name="bsd_ma"/>
+                                        <field name="bsd_ten"/>
+                                        <field name="bsd_ltt_id"/>
+                                        <field name="bsd_tien_ck"/>
+                                        <field name="bsd_tien_nhap"/>
+                                        <field name="state"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="company_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Khuyến mãi giao dịch">
+                                <field name="bsd_km_gd_ids">
+                                    <tree>
+                                        <field name="bsd_ma_ht"/>
+                                        <field name="bsd_khuyen_mai_id"/>
+                                        <field name="bsd_ma_km"/>
+                                        <field name="bsd_gia_tri"/>
+                                        <field name="bsd_khach_hang_id"/>
+                                        <field name="state"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="company_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
                         </notebook>
                     </sheet>
                     <div class="oe_chatter">

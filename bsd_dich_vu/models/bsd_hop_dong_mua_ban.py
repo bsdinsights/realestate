@@ -985,4 +985,4 @@ class ResPartner(models.Model):
 class BsdChietKhauGiaoDich(models.Model):
     _inherit = 'bsd.ps_gd_ck'
 
-    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string='Hợp đồng', help="Hợp đồng")
+    bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string='Hợp đồng', help="Hợp đồng", readonly=True)
