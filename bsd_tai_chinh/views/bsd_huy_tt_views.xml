@@ -116,6 +116,21 @@
                                     </tree>
                                 </field>
                             </page>
+                            <page string="Chiết khấu giao dịch">
+                                <field name="bsd_ck_gd_ids">
+                                    <tree>
+                                        <field name="bsd_ma"/>
+                                        <field name="bsd_ten"/>
+                                        <field name="bsd_ltt_id"/>
+                                        <field name="bsd_tien_ck"/>
+                                        <field name="bsd_tien_nhap"/>
+                                        <field name="bsd_tt_xl"/>
+                                        <field name="state"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="company_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
                         </notebook>
                     </sheet>
                     <div class="oe_chatter">
@@ -258,11 +273,26 @@
                                     </tree>
                                 </field>
                             </page>
+                            <page string="Chiết khấu giao dịch">
+                                <field name="bsd_ck_gd_ids">
+                                    <tree>
+                                        <field name="bsd_ma"/>
+                                        <field name="bsd_ten"/>
+                                        <field name="bsd_ltt_id"/>
+                                        <field name="bsd_tien_ck"/>
+                                        <field name="bsd_tien_nhap"/>
+                                        <field name="bsd_tt_xl"/>
+                                        <field name="state"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="company_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
                         </notebook>
                     </sheet>
                     <footer>
-                        <button name="action_xac_nhan" type="object"
-                                string="Xác nhận" class="oe_highlight"/>
+                        <button name="action_tao" type="object"
+                                string="Tạo" class="oe_highlight"/>
                         <button special="cancel" string="Hủy bỏ"/>
                     </footer>
                 </form>

@@ -77,10 +77,6 @@ class BsdHuyThanhToan(models.Model):
     bsd_ps_tt_id = fields.Many2one('bsd.phieu_thu', string="TT trả trước", help="Phát sinh thanh toán trả trước",
                                    readonly=True,
                                    states={'nhap': [('readonly', False)]})
-    # @api.onchange('bsd_loai')
-    # def _onchange_loai(self):
-    #     self.bsd_can_tru_id = False
-    #     self.bsd_phieu_thu_id = False
 
     @api.onchange('bsd_can_tru_id', 'bsd_phieu_thu_id')
     def _onchange_ct_pt(self):
@@ -106,7 +102,26 @@ class BsdHuyThanhToan(models.Model):
             else:
                 self.bsd_dat_coc_id = self.bsd_phieu_thu_id.bsd_dat_coc_id
 
+    def action_tao(self):
+        pass
+
     def action_xac_nhan(self):
+        # Kiểm tra thanh toán có tạo ra thanh toán trả trước
+        if self.bsd_phieu_thu_id.bsd_tt_id:
+            # Kiểm tra xem phiếu thanh toán trả trước có chi tiết thanh toán hay chưa
+            if self.bsd_phieu_thu_id.bsd_tt_id.bsd_ct_ids and self.bsd_phieu_thu_id.bsd_tt_id == 'da_gs':
+                raise UserError(_("Tiền dư của phiếu thanh toán đã được cấn trừ. Vui lòng kiểm tra lại thông tin."))
+        # Kiểm tra thanh toán có tạo ra tiền phạt chậm thanh toán đã được thanh toán hoặc miễn giảm
+        if self.bsd_phieu_thu_id.bsd_lai_phat_ids.filtered(lambda x: x.bsd_thanh_toan != 'chua_tt'):
+            raise UserError(_("Phiếu thanh toán đã phát sinh tiền phạt đã được thanh toán. "
+                              "Vui lòng kiểm tra lại thông tin."))
+        # Kiểm tra thanh toán phát sinh chiết khấu thanh toán có được sử dụng thanh toán
+        ck_gd_ids = self.bsd_phieu_thu_id.bsd_ck_gd_ids.filtered(lambda x: x.bsd_tt_xl)
+        if ck_gd_ids:
+            for ck_gd in ck_gd_ids:
+                if ck_gd.bsd_tt_id.bsd_ct_ids and ck_gd.bsd_tt_id == 'da_gs':
+                    raise UserError(_("Chiết khấu thanh toán đã được sử dụng. Vui lòng kiểm tra lại thông tin."))
+
         if self.state == 'nhap':
             self.write({
                 "state": 'xac_nhan',
@@ -202,13 +217,19 @@ class BsdHuyThanhToan(models.Model):
         # Kiểm tra thanh toán có tạo ra thanh toán trả trước
         if self.bsd_phieu_thu_id.bsd_tt_id:
             # Kiểm tra xem phiếu thanh toán trả trước có chi tiết thanh toán hay chưa
-            if not self.bsd_phieu_thu_id.bsd_tt_id.bsd_ct_ids:
+            if self.bsd_phieu_thu_id.bsd_tt_id.bsd_ct_ids and self.bsd_phieu_thu_id.bsd_tt_id == 'da_gs':
                 raise UserError(_("Tiền dư của phiếu thanh toán đã được cấn trừ. Vui lòng kiểm tra lại thông tin."))
-            # Kiểm tra thanh toán có tạo ra tiền phạt chậm thanh toán đã được thanh toán hoặc miễn giảm
+        # Kiểm tra thanh toán có tạo ra tiền phạt chậm thanh toán đã được thanh toán hoặc miễn giảm
         if self.bsd_phieu_thu_id.bsd_lai_phat_ids.filtered(lambda x: x.bsd_thanh_toan != 'chua_tt'):
             raise UserError(_("Phiếu thanh toán đã phát sinh tiền phạt đã được thanh toán. "
                               "Vui lòng kiểm tra lại thông tin."))
-
+        # Kiểm tra thanh toán phát sinh chiết khấu thanh toán có được sử dụng thanh toán
+        ck_gd_ids = self.bsd_phieu_thu_id.bsd_ck_gd_ids.filtered(lambda x: x.bsd_tt_xl)
+        if ck_gd_ids:
+            for ck_gd in ck_gd_ids:
+                if ck_gd.bsd_tt_id.bsd_ct_ids:
+                    raise UserError(_("Chiết khấu thanh toán đã được sử dụng. Vui lòng kiểm tra lại thông tin."))
+        # Kiểm tra thanh toán
         # Cập nhật thông tin với loại phiếu thu tiền đặt cọc
         if self.bsd_loai_pt == 'dat_coc':
             # Cập nhật lại trạng thái của đặt cọc
@@ -256,7 +277,7 @@ class BsdHuyThanhToan(models.Model):
             })
             # Cập nhật trạng thái hủy chi tiết thanh toán đợt
             ct_dtt = self.bsd_phieu_thu_id.bsd_ct_ids.filtered(lambda x: x.bsd_loai == 'pt_dtt')\
-                .sorted('id', reverse=True)
+                .sorted('bsd_stt', reverse=True)
             for ct in ct_dtt:
                 ct.write({
                     'state': 'vo_hieu_luc'

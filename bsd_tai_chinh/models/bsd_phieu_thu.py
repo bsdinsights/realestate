@@ -399,7 +399,10 @@ class BsdPSGDCK(models.Model):
             'bsd_pt_tt_id': self.env.ref('bsd_danh_muc.bsd_coa').id,
             'bsd_tien_kh': self.bsd_tien_nhap,
         })
-        self.write({'bsd_tt_id': tra_truoc.id})
+        self.write({
+            'bsd_tt_id': tra_truoc.id,
+            'bsd_tt_xl': True,
+        })
         tra_truoc.action_xac_nhan()
 
 

@@ -22,6 +22,7 @@ class BsdCongNoCT(models.Model):
     bsd_dat_coc_id = fields.Many2one('bsd.dat_coc', string="Đặt cọc", help="Đặt cọc")
     bsd_hd_ban_id = fields.Many2one('bsd.hd_ban', string="Hợp đồng", help="Hợp đồng")
     bsd_dot_tt_id = fields.Many2one('bsd.lich_thanh_toan', string="Đợt thanh toán")
+    bsd_stt_dot = fields.Integer(related="bsd_dot_tt_id.bsd_stt")
     bsd_phieu_thu_id = fields.Many2one('bsd.phieu_thu', string="Phiếu thanh toán",
                                        required=True,
                                        help="Phiếu thanh toán")

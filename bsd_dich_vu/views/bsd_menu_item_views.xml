@@ -10,6 +10,10 @@
                       sequence="1"
                       action="bsd_dich_vu.bsd_hd_ban_action"
                       parent="bsd_hd_ban_menu_2"/>
+            <menuitem id="bsd_ps_gd_km_menu_action"
+                      name="Khuyến mãi giao dịch"
+                      action="bsd_dich_vu.bsd_ps_gd_km_action"
+                      parent="bsd_hd_ban_menu_2"/>
         <menuitem id="bsd_phu_luc_menu_2"
                   name="Phụ lục"
                   sequence="14"

@@ -17,7 +17,9 @@
                                 name="action_chuyen_tttt"
                                 type="object"
                                 class="oe_highlight"
-                                attrs="{'invisible':['|',('state','!=','xac_nhan'),('bsd_loai_ps','not in',['ttth','ttn'])]}"
+                                attrs="{'invisible':['|',('state','!=','xac_nhan'),
+                                                     '|',('bsd_loai_ps','not in',['ttth','ttn']),
+                                                         ('bsd_tt_xl', '=', True)]}"
                                 confirm="Bạn có muốn chuyển sang thanh toán trả trước không?"/>
                         <button string="Hủy"
                                 name="action_huy"
@@ -27,7 +29,7 @@
                         <field name="state" widget="statusbar" statusbar_visible="0"/>
                     </header>
                     <sheet>
-                        <widget name="web_ribbon" text="Đã chuyển TTTT" attrs="{'invisible':[('bsd_tt_xl', '=', False)]}"/>
+                        <widget name="web_ribbon" text="Đã xử lý" attrs="{'invisible':[('bsd_tt_xl', '=', False)]}"/>
                         <group>
                             <group>
                                 <field name="bsd_ma"/>
